@@ -238,15 +238,27 @@ public class StoreFrontHomePage extends StoreFrontRFWebsiteBasePage {
 	}
 
 	public void selectEnrollmentKitPage(String kitName,String regimenName){
-		//		driver.waitForElementPresent(By.xpath("//img[@title='"+kitName+"']"));
-		driver.click(By.xpath("//img[@title='"+kitName+"']"));
+		try{
+			driver.waitForElementPresent(By.xpath("//img[@title='"+kitName+"']"));
+			driver.click(By.xpath("//img[@title='"+kitName+"']"));
+		}catch(Exception e){
+			driver.click(By.xpath("//div[@class='enrollment-kits row']/div[1]//img"));
+		}
 		regimenName = regimenName.toUpperCase();
 		Actions actions = new Actions(RFWebsiteDriver.driver);
-		actions.moveToElement(driver.findElement(By.xpath("//span[@class='regimen-name' and contains(.,'"+regimenName+"')]"))).click();
+		WebElement allProducts = driver.findElement(By.xpath("//span[@class='regimen-name' and contains(text(),'"+regimenName+"')]"));
+		String strJavaScript = "var element = arguments[0];"
+				+ "var mouseEventObj = document.createEvent('MouseEvents');"
+				+ "mouseEventObj.initEvent( 'mouseover', true, true );"
+				+ "element.dispatchEvent(mouseEventObj);";
+		JavascriptExecutor js = (JavascriptExecutor) (RFWebsiteDriver.driver);
+		js.executeScript(strJavaScript, allProducts);
+		js.executeScript("arguments[0].click();", allProducts);
+		//actions.moveToElement(driver.findElement(By.xpath("//span[@class='regimen-name' and contains(.,'"+regimenName+"')]"))).click();
 		logger.info("Regimen is selected as "+regimenName);
 		driver.click (By.id("next-button")); // - old UI (By.cssSelector("input[value='Next']"));
 		logger.info("Next button clicked after selected Kit and regimen");
-		//		driver.waitForLoadingImageToDisappear();
+		//  driver.waitForLoadingImageToDisappear();
 	}
 
 	public void selectEnrollmentKitPage(String kitName){
@@ -958,7 +970,16 @@ public class StoreFrontHomePage extends StoreFrontRFWebsiteBasePage {
 
 	public void mouseHoverSponsorDataAndClickContinueForPC() throws InterruptedException{
 		actions =  new Actions(RFWebsiteDriver.driver);
-		actions.moveToElement(driver.findElement(By.xpath("//div[@id='the-search-results']/div[1]/div[@class='result-inner shadow']"))).click(driver.findElement(By.cssSelector("input[value='Select']"))).build().perform();
+		driver.quickWaitForElementPresent(By.xpath("//div[@id='the-search-results']/div[1]/div[@class='result-inner shadow']"));
+		WebElement allUsers = driver.findElement(By.xpath("//div[@id='the-search-results']/div[1]/div[@class='result-inner shadow']"));
+		String strJavaScript = "var element = arguments[0];"
+				+ "var mouseEventObj = document.createEvent('MouseEvents');"
+				+ "mouseEventObj.initEvent( 'mouseover', true, true );"
+				+ "element.dispatchEvent(mouseEventObj);";
+		JavascriptExecutor js = (JavascriptExecutor) (RFWebsiteDriver.driver);
+		js.executeScript(strJavaScript, allUsers);
+		js.executeScript("arguments[0].click();",driver.findElement(By.cssSelector("input[value='Select']")));
+		//actions.moveToElement(driver.findElement(By.xpath("//div[@id='the-search-results']/div[1]/div[@class='result-inner shadow']"))).click(driver.findElement(By.cssSelector("input[value='Select']"))).build().perform();
 		logger.info("First result of sponsor has been clicked");
 		driver.waitForLoadingImageToDisappear();
 		driver.waitForPageLoad();
@@ -2153,13 +2174,14 @@ public class StoreFrontHomePage extends StoreFrontRFWebsiteBasePage {
 		}
 		try{
 			driver.waitForElementPresent(By.id("search-sponsor-button"));
-			driver.click(By.id("search-sponsor-button"));			   
-		}catch(NoSuchElementException e){			
+			driver.click(By.id("search-sponsor-button"));      
+		}catch(NoSuchElementException e){   
 			driver.click(By.xpath("//input[@value='Search']"));
 
 		}
 		logger.info("Sponsor entered as "+sponsor+" and search button clicked");
 		driver.waitForLoadingImageToDisappear();
+		driver.pauseExecutionFor(5000);
 	}
 
 	public boolean verifyPCPerksCheckBoxIsSelected(){

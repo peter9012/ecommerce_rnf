@@ -180,7 +180,7 @@ public class StoreFrontAccountTerminationPage extends StoreFrontRFWebsiteBasePag
 
 	public void clickConfirmTerminationBtn(){
 		driver.click(By.xpath("//input[@onclick='confirmTermination()']"));
-		driver.pauseExecutionFor(2000);
+		driver.pauseExecutionFor(4000);
 	}
 
 }

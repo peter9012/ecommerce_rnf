@@ -264,7 +264,8 @@ public class StoreFrontLegacyHomePage extends StoreFrontLegacyRFWebsiteBasePage{
 	private static final By CLOSE_OF_ORDER_DETAILS_POPUP = By.xpath("//h2[@class='FL modal']/following::cufontext[text()='X']/..");
 	private static final By CONNECT_WITH_A_CONSULTANT = By.cssSelector("a[href*='LocatePWS']");
 	private static final By CLICK_HERE_TO_LEARN_MORE_ABOUT_DIRECT_SELLING = By.cssSelector("a[href*='directselling']");
-
+	private static final By PRESS_ROOM = By.xpath("//span[contains(text(),'Press Room')]");
+		
 	public StoreFrontLegacyHomePage(RFWebsiteDriver driver) {
 		super(driver);
 		// TODO Auto-generated constructor stub
@@ -1925,6 +1926,13 @@ public class StoreFrontLegacyHomePage extends StoreFrontLegacyRFWebsiteBasePage{
 		driver.click(CLICK_HERE_TO_LEARN_MORE_ABOUT_DIRECT_SELLING);
 		logger.info("Click here link clicked");
 		logger.info("Redirect to direct selling page");
+		driver.waitForPageLoad();
+	}
+	
+	public void clickCompanyPressRoomLink(){
+		driver.quickWaitForElementPresent(PRESS_ROOM);
+		driver.click(PRESS_ROOM);
+		logger.info("Company Press Room Link clicked");
 		driver.waitForPageLoad();
 	}
 	

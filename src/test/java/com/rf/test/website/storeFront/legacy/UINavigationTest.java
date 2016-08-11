@@ -1038,8 +1038,9 @@ public class UINavigationTest extends RFLegacyStoreFrontWebsiteBaseTest{
 	public void testCorporateRFInTheNews(){
 		String expectedURL = "Company/PR";
 		storeFrontLegacyHomePage =  new StoreFrontLegacyHomePage(driver);
-		storeFrontLegacyHomePage.clickHomeTabBtn();
-		storeFrontLegacyHomePage.clickRFInTheNewsImageLink();
+/*		storeFrontLegacyHomePage.clickHomeTabBtn();
+		storeFrontLegacyHomePage.clickRFInTheNewsImageLink();*/
+		storeFrontLegacyHomePage.clickCompanyPressRoomLink();
 		s_assert.assertTrue(storeFrontLegacyHomePage.getCurrentURL().contains(expectedURL), "Current url expected is: "+expectedURL+" while actual on UI is "+storeFrontLegacyHomePage.getCurrentURL());
 		s_assert.assertAll();
 	}

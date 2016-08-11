@@ -52,7 +52,8 @@ public class StoreFrontHomePage extends StoreFrontRFWebsiteBasePage {
 		driver.waitForElementPresent(USERNAME_TXTFLD_LOC);
 		driver.type(USERNAME_TXTFLD_LOC, username);
 		driver.type(PASSWORD_TXTFLD_LOC, password);   
-		driver.click(LOGIN_BTN_LOC); 
+		driver.click(LOGIN_BTN_LOC);
+		clickOnAcceptSecurityCertificate();		
 		dismissPolicyPopup();
 		clickRenewLater();
 		logger.info("login button clicked");
@@ -69,6 +70,7 @@ public class StoreFrontHomePage extends StoreFrontRFWebsiteBasePage {
 		logger.info("login username is "+username);
 		logger.info("login password is "+password);
 		driver.click(LOGIN_BTN_LOC);
+		clickOnAcceptSecurityCertificate();
 		dismissPolicyPopup();
 		clickRenewLater();
 		logger.info("login button clicked");
@@ -1503,7 +1505,7 @@ public class StoreFrontHomePage extends StoreFrontRFWebsiteBasePage {
 		driver.click(By.xpath(".//div[@id='left-shopping']/a[contains(text(),'Continue shopping')]"));
 		driver.waitForPageLoad();
 	}
-	
+
 	public void clickOnAddMoreItemsBtn(){
 		driver.waitForElementPresent(By.xpath("//input[@value='ADD MORE ITEMS']"));
 		driver.click(By.xpath("//input[@value='ADD MORE ITEMS']"));
@@ -1970,8 +1972,8 @@ public class StoreFrontHomePage extends StoreFrontRFWebsiteBasePage {
 		driver.waitForLoadingImageToDisappear();
 		driver.waitForElementPresent(By.xpath("//ul[@id='subtotal']/li/span[1]")); 
 		String productCount=driver.findElement(By.xpath("//ul[@id='subtotal']/li/span[1]")).getText();
-//		Boolean bCount;
-//		if productCoun
+		//		Boolean bCount;
+		//		if productCoun
 		return productCount!="0";
 	}
 
@@ -4044,8 +4046,8 @@ public class StoreFrontHomePage extends StoreFrontRFWebsiteBasePage {
 	public boolean isAccessSolutionToolPresent() {
 		boolean status = false;
 		driver.get(driver.getCurrentUrl()+"/dynamic/url/solutionTool");
-//		driver.waitForElementPresent(By.xpath("//div[@id='corp_content']/div/div[1]/div[3]/descendant::a"));
-//		driver.click(By.xpath("//div[@id='corp_content']/div/div[1]/div[3]/descendant::a"));
+		//		driver.waitForElementPresent(By.xpath("//div[@id='corp_content']/div/div[1]/div[3]/descendant::a"));
+		//		driver.click(By.xpath("//div[@id='corp_content']/div/div[1]/div[3]/descendant::a"));
 		driver.waitForPageLoad();
 		if(driver.getCurrentUrl().contains("solutiontool") && driver.isElementPresent(By.id("mirror"))){
 			status = true;
@@ -4163,6 +4165,18 @@ public class StoreFrontHomePage extends StoreFrontRFWebsiteBasePage {
 	public void clickOnCancelButtonOfNotYourCountryPopUp(){
 		driver.quickWaitForElementPresent(By.xpath("//span[@class='icon-close']"));
 		driver.click(By.xpath("//span[@class='icon-close']"));
+	}
+
+	public void clickOnAcceptSecurityCertificate(){
+		if(driver.getBrowser().equalsIgnoreCase("ie")){
+			try{
+				driver.waitForPageLoad();
+				driver.get("javascript:document.getElementById('overridelink').click();");
+				driver.waitForPageLoad();
+			}catch(Exception e){
+				logger.info("No Certificate error");
+			}
+		}
 	}
 
 }

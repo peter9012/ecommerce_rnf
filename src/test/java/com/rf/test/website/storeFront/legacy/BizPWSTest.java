@@ -813,7 +813,7 @@ public class BizPWSTest extends RFLegacyStoreFrontWebsiteBaseTest{
 //		}
 		storeFrontLegacyHomePage =  new StoreFrontLegacyHomePage(driver);
 		storeFrontLegacyHomePage.clickEnrollNowBtnOnbizPWSPage();
-		storeFrontLegacyHomePage.clickEnrollNowBtnAtWhyRFPage();
+		/*storeFrontLegacyHomePage.clickEnrollNowBtnAtWhyRFPage();*/
 		storeFrontLegacyHomePage.selectConsultantEnrollmentKitByPrice(kitName);
 		storeFrontLegacyHomePage.selectRegimenForConsultant(regimen);
 		storeFrontLegacyHomePage.clickNextBtnAfterSelectRegimen();
@@ -830,7 +830,7 @@ public class BizPWSTest extends RFLegacyStoreFrontWebsiteBaseTest{
 		logout();
 		driver.get(PWS);
 		storeFrontLegacyHomePage.clickEnrollNowBtnOnbizPWSPage();
-		storeFrontLegacyHomePage.clickEnrollNowBtnAtWhyRFPage();
+		/*storeFrontLegacyHomePage.clickEnrollNowBtnAtWhyRFPage();*/
 		storeFrontLegacyHomePage.selectConsultantEnrollmentKitByPrice(kitName);
 		storeFrontLegacyHomePage.selectRegimenForConsultant(regimen);
 		storeFrontLegacyHomePage.clickNextBtnAfterSelectRegimen();
@@ -843,7 +843,7 @@ public class BizPWSTest extends RFLegacyStoreFrontWebsiteBaseTest{
 		storeFrontLegacyHomePage.clickCancelEnrollmentBtn();
 		driver.get(PWS);
 		storeFrontLegacyHomePage.clickEnrollNowBtnOnbizPWSPage();
-		storeFrontLegacyHomePage.clickEnrollNowBtnAtWhyRFPage();
+		/*storeFrontLegacyHomePage.clickEnrollNowBtnAtWhyRFPage();*/
 		storeFrontLegacyHomePage.selectConsultantEnrollmentKitByPrice(kitName);
 		storeFrontLegacyHomePage.selectRegimenForConsultant(regimen);
 		storeFrontLegacyHomePage.clickNextBtnAfterSelectRegimen();

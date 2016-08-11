@@ -38,7 +38,7 @@ public class TestConstantsRFL {
 	public static final String REGIMEN_NAME_ENHANCEMENTS = "ENHANCEMENTS";
 
 	public static final String REGIMEN_NAME_PROMOTIONS = "PROMOTIONS";
-	public static final String CONSULTANT_ONLY_BUSINESS_PROMOTION = "Consultant-Only Business Promotion";
+	public static final String CONSULTANT_ONLY_BUSINESS_PROMOTION = "Consultant-Only Product Promotion";
 	public static final String CONSULTANT_ONLY_EVENT_SUPPORT = "Consultant-Only Event Support";
 	public static final String CONSULTANT_ONLY_PRODUCT_PROMOTION = "Consultant-Only Product Promotion";
 	public static final String CONSULTANT_ONLY_PRODUCT = "Consultant-Only Products";

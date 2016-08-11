@@ -10,9 +10,10 @@ public class DSVStoreFrontAutoshipCartPage extends DSVRFWebsiteBasePage{
 	private static final Logger logger = LogManager
 			.getLogger(DSVStoreFrontAutoshipCartPage.class.getName());
 
-	private static final By CONTINUE_SHOPPING_LINK = By.xpath("//div[@id='left-shopping']/a[contains(text(),'Continue shopping')]");
+	private static final By CONTINUE_SHOPPING_LINK = By.xpath("//input[@value='ADD MORE ITEMS']");
 	private static String RetailPrice =  "//p[@id='cart-retail-price']/span[contains(@class,'old-price')][contains(text(),'%s')]"; 	
-
+	private static String allItemsNameInCart = "//div[@class='shopping-item row']//h3";
+	
 	public DSVStoreFrontAutoshipCartPage(RFWebsiteDriver driver) {
 		super(driver);
 		// TODO Auto-generated constructor stub

@@ -18,14 +18,15 @@ public class DSVStoreFrontHomePage extends DSVRFWebsiteBasePage{
 	private static final By PASSWORD_TXTFIELD = By.id("password");
 	private static final By LOGIN_BTN = By.xpath("//input[@value='Log in']");
 	private static final By WELCOME_TXT = By.xpath("//a[@class='dropdown-toggle']/span[2]");
+	private static final By USERNAME_DROPDOWN = By.xpath("//a[@class='dropdown-toggle']/span[2]");
 	private static final By CART_IMG = By.id("bag-special");
 	private static final By NXT_CRP_TXT = By.xpath("//div[@id='bag-special']/following-sibling::div[1]");
-	private static final By WELCOME_DROP_DOWN = By.xpath("//div[@id='account-info-button']/a/span[3]"); 
-	private static final By SHIPPING_INFO_LINK_WELCOME_DROP_DOWN = By.xpath("//div[@id='account-info-dropdown']//a[text()='Shipping Info']");
-	private static final By BILLING_INFO_LINK_WELCOME_DROP_DOWN = By.xpath("//div[@id='account-info-dropdown']//a[text()='Billing Info']");
-	private static final By ACCOUNT_INFO_LINK_WELCOME_DROP_DOWN = By.xpath("//div[@id='account-info-dropdown']//a[text()='Account Info']");
+	private static final By WELCOME_DROP_DOWN = By.xpath("//div[contains(@id,'account-info')]/a/span[3]"); 
+	private static final By SHIPPING_INFO_LINK_WELCOME_DROP_DOWN = By.xpath("//div[contains(@id,'account-info')]//a[text()='Shipping Info']");
+	private static final By BILLING_INFO_LINK_WELCOME_DROP_DOWN = By.xpath("//div[contains(@id,'account-info')]//a[text()='Billing Info']");
+	private static final By ACCOUNT_INFO_LINK_WELCOME_DROP_DOWN = By.xpath("//div[contains(@id,'account-info')]//a[text()='Account Info']");
 	private static final By OUR_BUSINESS_LINK_LOC = By.xpath("//a[@id='corp-opp']");
-	private static final By ENROLL_NOW_LINK_LOC = By.xpath("//div[@id='dropdown-menu']//a[@title='Enroll Now']"); 
+	private static final By ENROLL_NOW_LINK_LOC = By.xpath("//ul[@id='dropdown-menu']//a[@title='Enroll Now']"); 
 	private static final By SPONSOR_SEARCH_FIELD_LOC = By.id("sponserparam");
 	private static final By SEARCH_BUTTON_LOC = By.id("search-sponsor-button");
 	
@@ -94,6 +95,10 @@ public class DSVStoreFrontHomePage extends DSVRFWebsiteBasePage{
 	public String getWelcomeText(){
 		return driver.findElement(WELCOME_TXT).getText();
 	}
+	
+	public Boolean isUserNameDropDownPresent(){
+		return driver.isElementPresent(USERNAME_DROPDOWN);
+	}
 
 	public boolean isCRPCartImagePresent(){
 		return driver.isElementPresent(CART_IMG);
@@ -120,7 +125,8 @@ public class DSVStoreFrontHomePage extends DSVRFWebsiteBasePage{
 
 	public void clickWelcomeDropDown(){
 		driver.quickWaitForElementPresent(WELCOME_DROP_DOWN);
-		driver.click(WELCOME_DROP_DOWN);		
+		driver.click(WELCOME_DROP_DOWN);
+		driver.pauseExecutionFor(2000);
 	}
 
 	public DSVStoreFrontShippingInfoPage clickShippingInfoLinkFromWelcomeDropDown(){
@@ -153,7 +159,7 @@ public class DSVStoreFrontHomePage extends DSVRFWebsiteBasePage{
 
 	public DSVStoreFrontAccountInfoPage clickAccountInfoLinkFromWelcomeDropDown(){
 		driver.quickWaitForElementPresent(ACCOUNT_INFO_LINK_WELCOME_DROP_DOWN);
-		driver.click(ACCOUNT_INFO_LINK_WELCOME_DROP_DOWN);
+		driver.click(ACCOUNT_INFO_LINK_WELCOME_DROP_DOWN);		
 		return new DSVStoreFrontAccountInfoPage(driver);
 	}
 
@@ -190,7 +196,7 @@ public class DSVStoreFrontHomePage extends DSVRFWebsiteBasePage{
 
 	public void mouseHoverOnSponsorAndClickSelectAndContinue() {
 		JavascriptExecutor js = (JavascriptExecutor)(RFWebsiteDriver.driver);
-		js.executeScript("arguments[0].click();", driver.findElement(By.xpath("//div[@id='search-results']//input[@value='Select & Continue']")));
+		js.executeScript("arguments[0].click();", driver.findElement(By.xpath("//div[@id='search-results']//input[contains(@value,'Select')]")));
 		logger.info("sponsor's Select & Continue has been clicked");
 		driver.waitForLoadingImageToDisappear();
 		driver.waitForPageLoad();

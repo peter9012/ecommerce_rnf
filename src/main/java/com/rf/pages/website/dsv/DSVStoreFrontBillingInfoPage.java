@@ -15,8 +15,8 @@ public class DSVStoreFrontBillingInfoPage extends DSVRFWebsiteBasePage {
 	private static final Logger logger = LogManager
 			.getLogger(DSVStoreFrontBillingInfoPage.class.getName());
 
-	private static final By ADD_A_NEW_BILLING_PROFILE_LINK = By.xpath("//a[contains(text(),'Add a new billing profile')]");
-	private static String BillingProfiles = "//ul[@id='multiple-billing-profiles']//span[contains(@class,'font-bold')][contains(text(),'%s')]";
+	private static final By ADD_A_NEW_BILLING_PROFILE_LINK = By.xpath("//a[contains(text(),'Add new billing profile')]");
+	private static String BillingProfiles = "//div[@id='multiple-billing-profiles']//span[contains(@class,'font-bold')][contains(text(),'%s')]";
 	private static final By CARD_NUMBER_TXT_FIELD =  By.id("card-nr");
 	private static final By NAME_ON_CARD_TXT_FIELD =  By.id("card-name");
 	private static final By EXPIRY_MONTH_DROP_DOWN =  By.id("expiryMonth");

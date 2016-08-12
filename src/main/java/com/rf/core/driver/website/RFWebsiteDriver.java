@@ -72,6 +72,7 @@ public class RFWebsiteDriver implements RFDriver,WebDriver {
 			System.setProperty("webdriver.chrome.driver", "src\\test\\resources\\chromedriver.exe");
 			ChromeOptions options = new ChromeOptions();
 			options.addArguments("no-sandbox");
+			options.addArguments("chrome.switches","--disable-extensions");
 			DesiredCapabilities capabilities = new DesiredCapabilities();
 			capabilities.setCapability(ChromeOptions.CAPABILITY, options);
 			// for clearing cache

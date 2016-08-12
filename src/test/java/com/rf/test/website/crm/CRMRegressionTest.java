@@ -3766,7 +3766,7 @@ public class CRMRegressionTest extends RFCRMWebsiteBaseTest{
 	
 	// RF Saleforecem CRM-167:Log In As A Logistics Agent
 	@Test
-	public void LoginAsALogisticsAgent() throws InterruptedException{
+	public void testLoginAsALogisticsAgent() throws InterruptedException{
 		crmLoginpage.crmLogout();
 		crmLoginpage.loginLogisticsUser(TestConstants.CRM_LOGIN_LOGISTICS_USERNAME, TestConstants.CRM_LOGIN_LOGISTICS_PASSWORD);
 		int randomNum = CommonUtils.getRandomNum(10000, 1000000);

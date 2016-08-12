@@ -431,7 +431,7 @@ public class UpgradeDowngradeTest extends RFWebsiteBaseTest{
 		storeFrontHomePage.clickOnLoginToTerminateToMyPCAccount();
 		storeFrontHomePage.enterEmailAddress(consultantEmailID);
 		storeFrontHomePage.clickOnEnrollUnderLastUpline();
-		storeFrontHomePage.hoverOnBecomeAConsultantAndClickEnrollNowLink();
+		//storeFrontHomePage.hoverOnBecomeAConsultantAndClickEnrollNowLink();
 		storeFrontHomePage.selectEnrollmentKitPage(kitName, regimenName);		
 		storeFrontHomePage.chooseEnrollmentOption(enrollmentType);
 		storeFrontHomePage.enterEmailAddress(consultantEmailID);
@@ -2585,6 +2585,7 @@ public class UpgradeDowngradeTest extends RFWebsiteBaseTest{
 		storeFrontHomePage.clickOnBillingNextStepBtn();
 		storeFrontHomePage.clickPlaceOrderBtn();
 		s_assert.assertTrue(storeFrontHomePage.isOrderPlacedSuccessfully(), "Order Not placed successfully");
+		storeFrontHomePage.clickOnRodanAndFieldsLogo();
 		s_assert.assertTrue(storeFrontHomePage.verifyWelcomeDropdownToCheckUserRegistered(), "User NOT registered successfully");
 		//upgrade to PC
 		storeFrontHomePage.hoverOnShopLinkAndClickAllProductsLinks();

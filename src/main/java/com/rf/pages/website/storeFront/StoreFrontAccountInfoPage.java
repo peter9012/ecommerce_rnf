@@ -564,7 +564,7 @@ public class StoreFrontAccountInfoPage extends StoreFrontRFWebsiteBasePage{
 		driver.clear(By.xpath("//input[@id='spouse-last']"));
 		driver.type(By.xpath("//input[@id='spouse-last']"),spouseLastName);
 		driver.findElement(By.xpath("//input[@id='spouse-last']")).sendKeys(Keys.ENTER);
-/*		driver.quickWaitForElementPresent(By.xpath("//input[@id='acceptSpouse']"));
+		/*		driver.quickWaitForElementPresent(By.xpath("//input[@id='acceptSpouse']"));
 		driver.click(By.xpath("//input[@id='acceptSpouse']"));*/
 		driver.pauseExecutionFor(1500);
 		return driver.findElement(By.xpath("//input[@id='spouse-first']")).getAttribute("value").contains(spouseFirstName);
@@ -802,10 +802,23 @@ public class StoreFrontAccountInfoPage extends StoreFrontRFWebsiteBasePage{
 	}
 
 	public void clickOnNextDuringPulseSubscribtion(){
-		driver.waitForElementPresent(By.xpath("//*[@id='pulse-enroll']"));
-		JavascriptExecutor js = (JavascriptExecutor)(RFWebsiteDriver.driver);
-		js.executeScript("arguments[0].click();", driver.findElement(By.xpath("//*[@id='pulse-enroll']")));
-		driver.pauseExecutionFor(3000);
+		driver.pauseExecutionFor(5000);
+		driver.waitForElementPresent(By.xpath("//input[@id='pulse-enroll']"));
+		WebElement allProducts = driver.findElement(By.xpath("//input[@id='pulse-enroll']"));
+		String strJavaScript = "var element = arguments[0];"
+				+ "var mouseEventObj = document.createEvent('MouseEvents');"
+				+ "mouseEventObj.initEvent( 'mouseover', true, true );"
+				+ "element.dispatchEvent(mouseEventObj);";
+		JavascriptExecutor js = (JavascriptExecutor) (RFWebsiteDriver.driver);
+		js.executeScript(strJavaScript, allProducts);
+		js.executeScript("arguments[0].click();", allProducts);
+
+		//   js = (JavascriptExecutor)(RFWebsiteDriver.driver);
+		//  js.executeScript("arguments[0].click();", driver.findElement(By.xpath("//input[@id='pulse-enroll']")));
+		driver.pauseExecutionFor(5000);
+		driver.findElement(By.xpath("//input[@id='pulse-enroll']")).click();
+		driver.pauseExecutionFor(5000);
+
 		driver.waitForPageLoad();
 	}
 
@@ -1007,19 +1020,19 @@ public class StoreFrontAccountInfoPage extends StoreFrontRFWebsiteBasePage{
 		String spouseFirstName="Mary"+randomNumber;
 		String spouseLastName="Rose";
 		driver.waitForElementTobeEnabled(By.xpath("//input[@id='spouse-first']"));
-		
+
 		driver.clear(By.xpath("//input[@id='spouse-first']"));
 		driver.clear(By.xpath("//input[@id='spouse-last']"));
 		driver.type(By.xpath("//input[@id='spouse-first']"),spouseFirstName);
 		driver.type(By.xpath("//input[@id='spouse-last']"),spouseLastName);
 		/*actions.sendKeys(Keys.TAB).build().perform();*/
-/*		driver.pauseExecutionFor(1000);
+		/*		driver.pauseExecutionFor(1000);
 		driver.quickWaitForElementPresent(By.xpath("//span[@class='icon-close']"));
 		driver.click(By.xpath("//span[@class='icon-close']"));*/
 
 		JavascriptExecutor executor = (JavascriptExecutor) RFWebsiteDriver.driver;
 		executor.executeScript("arguments[0].click();", driver.findElement(By.xpath("//span[@class='icon-close']")));
-		
+
 		driver.pauseExecutionFor(1500);
 		System.out.println(!driver.findElement(By.xpath("//input[@id='spouse-first']")).getAttribute("value").contains(spouseFirstName));
 		System.out.println(spouseFirstName);

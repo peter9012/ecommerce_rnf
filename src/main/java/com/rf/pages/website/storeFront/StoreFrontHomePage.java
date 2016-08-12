@@ -527,8 +527,8 @@ public class StoreFrontHomePage extends StoreFrontRFWebsiteBasePage {
 	}
 
 	public boolean validateInvalidCreditCardMessage(){
-		driver.waitForElementPresent(By.xpath("//div[@id='add-new-billing']/descendant::label[@class='error']"));
-		if(driver.findElement(By.xpath("//div[@id='add-new-billing']/descendant::label[@class='error']")).isDisplayed()){
+		driver.waitForElementPresent(By.xpath("//div[@class='ssn-table']/descendant::label[@class='error']"));
+		if(driver.findElement(By.xpath("//div[@class='ssn-table']/descendant::label[@class='error']")).isDisplayed()){
 			return true;
 		}
 		else{
@@ -563,7 +563,9 @@ public class StoreFrontHomePage extends StoreFrontRFWebsiteBasePage {
 	}
 
 	public void enterSocialInsuranceNumber(String sin) throws InterruptedException{
-		driver.type(By.id("S-S-N"),sin+"\t");
+		driver.type(By.id("S-S-N"),sin);
+		driver.pauseExecutionFor(5000);
+		driver.click(By.id("name-on-card"));
 		logger.info("Social Insurance Number is "+sin);
 	}
 
@@ -1836,14 +1838,27 @@ public class StoreFrontHomePage extends StoreFrontRFWebsiteBasePage {
 	public void enterInvalidPassword(String password){
 		driver.waitForElementPresent(By.id("new-password-account"));
 		driver.clear(By.id("new-password-account"));
-		driver.type(By.id("new-password-account"),password+"\t");
-		driver.clear(By.id("new-password-account"));
+		driver.type(By.id("new-password-account"),password);
+		//driver.findElement(By.id("new-password-account")).sendKeys(Keys.TAB);
+		logger.info("Password entered as "+password);
+		driver.pauseExecutionFor(10000);
+		//Actions action = new Actions(RFWebsiteDriver.driver);
+		//action.sendKeys(Keys.TAB).build().perform();
+		driver.click(By.id("new-password-account2"));
+		driver.pauseExecutionFor(3000);
+
 	}
+
 
 	public void enterInvalidConfirmPassword(String password){
 		driver.waitForElementPresent(By.id("new-password-account2"));
 		driver.clear(By.id("new-password-account2"));
-		driver.type(By.id("new-password-account2"),password+"\t");
+		driver.type(By.id("new-password-account2"),password);
+		//driver.findElement(By.id("new-password-account2")).sendKeys(Keys.TAB);
+		driver.pauseExecutionFor(10000);
+		//Actions action = new Actions(RFWebsiteDriver.driver);
+		//action.sendKeys(Keys.TAB).build().perform();
+		driver.click(By.id("address-1"));
 		driver.clear(By.id("new-password-account2"));
 	}
 
@@ -3495,6 +3510,7 @@ public class StoreFrontHomePage extends StoreFrontRFWebsiteBasePage {
 			driver.click(By.xpath("//button/img"));
 			driver.waitForElementPresent(By.xpath("//a[contains(text(),'USA')]"));
 			driver.clickByJS(RFWebsiteDriver.driver, driver.findElement(By.xpath("//a[contains(text(),'USA')]")));
+			driver.pauseExecutionFor(5000);
 			// driver.click(By.xpath("//a[contains(text(),'USA')]"));
 			logger.info("country changed Canada to Us");
 			country="us";

@@ -20,10 +20,10 @@ public class DSVStoreFrontHomePage extends DSVRFWebsiteBasePage{
 	private static final By WELCOME_TXT = By.xpath("//a[@class='dropdown-toggle']/span[2]");
 	private static final By CART_IMG = By.id("bag-special");
 	private static final By NXT_CRP_TXT = By.xpath("//div[@id='bag-special']/following-sibling::div[1]");
-	private static final By WELCOME_DROP_DOWN = By.xpath("//li[@id='account-info-button']/a"); 
-	private static final By SHIPPING_INFO_LINK_WELCOME_DROP_DOWN = By.xpath("//div[@id='account-info']//a[text()='Shipping Info']");
-	private static final By BILLING_INFO_LINK_WELCOME_DROP_DOWN = By.xpath("//div[@id='account-info']//a[text()='Billing Info']");
-	private static final By ACCOUNT_INFO_LINK_WELCOME_DROP_DOWN = By.xpath("//div[@id='account-info']//a[text()='Account Info']");
+	private static final By WELCOME_DROP_DOWN = By.xpath("//div[@id='account-info-button']/a/span[3]"); 
+	private static final By SHIPPING_INFO_LINK_WELCOME_DROP_DOWN = By.xpath("//div[@id='account-info-dropdown']//a[text()='Shipping Info']");
+	private static final By BILLING_INFO_LINK_WELCOME_DROP_DOWN = By.xpath("//div[@id='account-info-dropdown']//a[text()='Billing Info']");
+	private static final By ACCOUNT_INFO_LINK_WELCOME_DROP_DOWN = By.xpath("//div[@id='account-info-dropdown']//a[text()='Account Info']");
 	private static final By OUR_BUSINESS_LINK_LOC = By.xpath("//a[@id='corp-opp']");
 	private static final By ENROLL_NOW_LINK_LOC = By.xpath("//div[@id='dropdown-menu']//a[@title='Enroll Now']"); 
 	private static final By SPONSOR_SEARCH_FIELD_LOC = By.id("sponserparam");

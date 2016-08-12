@@ -3762,4 +3762,41 @@ public class CRMRegressionTest extends RFCRMWebsiteBaseTest{
 		//s_assert.assertTrue(inActivePCEmailID.equalsIgnoreCase(modifiedEmailId),"Email address of PC User is not updated");
 		s_assert.assertAll();
 	}
+	
+	
+	// RF Saleforecem CRM-167:Log In As A Logistics Agent
+	@Test
+	public void LoginAsALogisticsAgent() throws InterruptedException{
+		crmLoginpage.crmLogout();
+		crmLoginpage.loginLogisticsUser(TestConstants.CRM_LOGIN_LOGISTICS_USERNAME, TestConstants.CRM_LOGIN_LOGISTICS_PASSWORD);
+		int randomNum = CommonUtils.getRandomNum(10000, 1000000);
+		String orderNote="This is automation note"+randomNum;
+		logger.info("The username is "+consultantEmailID); 
+		s_assert.assertTrue(crmHomePage.verifyHomePage(),"Home page does not come after login");
+		crmHomePage.enterTextInSearchFieldAndHitEnter(consultantEmailID);
+		while(true){
+			if(crmHomePage.isSearchResultHasActiveUser("Consultant") ==false || crmHomePage.isAccountSectionPresent()==false){
+				logger.info("No active user in the search results..searching new user");
+				randomConsultantList = DBUtil.performDatabaseQuery(DBQueries_RFO.callQueryWithArguement(DBQueries_RFO.GET_RANDOM_ACTIVE_CONSULTANT_WITH_AUTOSHIPS_RFO,countryId),RFO_DB);
+				accountID = String.valueOf(getValueFromQueryResult(randomConsultantList, "AccountID"));
+				randomConsultantUsernameList = DBUtil.performDatabaseQuery(DBQueries_RFO.callQueryWithArguement(DBQueries_RFO.GET_EMAIL_ID_FROM_ACCOUNT_ID,accountID),RFO_DB);
+				consultantEmailID = String.valueOf(getValueFromQueryResult(randomConsultantUsernameList, "EmailAddress"));
+
+				logger.info("The email address is "+consultantEmailID);
+				s_assert.assertTrue(crmHomePage.verifyHomePage(),"Home page does not come after login");
+				crmHomePage.enterTextInSearchFieldAndHitEnter(consultantEmailID);
+			}else{
+				break;
+			}
+		}
+		String emailOnfirstRow = crmHomePage.getEmailOnFirstRowInSearchResults();
+		//s_assert.assertTrue(emailOnfirstRow.toLowerCase().trim().contains(consultantEmailID.toLowerCase().trim()) || consultantEmailID.toLowerCase().trim().contains(emailOnfirstRow.toLowerCase().trim()), "the email on first row which is = "+emailOnfirstRow.toLowerCase().trim()+" is expected to contain email = "+consultantEmailID.toLowerCase().trim());
+
+		crmHomePage.clickAnyTypeOfActiveCustomerInSearchResult("Consultant");
+		//Verify account overview page
+		s_assert.assertTrue(crmAccountDetailsPage.isAccountDetailsPagePresent(),"Account Details page has not displayed");
+		s_assert.assertAll();
+	}
+	
+	
 }

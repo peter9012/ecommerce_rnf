@@ -33,6 +33,29 @@ public class CRMLoginPage extends CRMRFWebsiteBasePage {
 		//driver.waitForLoadingImageBoxToDisappear();
 		return new CRMHomePage(driver);
 	}
+	
+	public void crmLogout(){
+		driver.switchTo().defaultContent();
+		driver.quickWaitForElementPresent(By.id("userNavLabel"));
+		driver.click(By.id("userNavLabel"));
+		driver.waitForElementPresent(By.id("app_logout"));
+		driver.click(By.id("app_logout"));
+		logger.info("Logout");
+		driver.pauseExecutionFor(3000);
+	}
+	
+	public void loginLogisticsUser(String username, String password){
+		driver.waitForElementPresent(LOGIN_BOX_LOCATION);
+		driver.clear(USERNAME_TXTFLD_LOC);
+		driver.type(USERNAME_TXTFLD_LOC, username);
+		driver.clear(PASSWORD_TXTFLD_LOC);
+		driver.type(PASSWORD_TXTFLD_LOC, password);		
+		logger.info("login username is: "+username);
+		logger.info("login password is: "+password);
+		driver.click(LOGIN_BTN_LOC);
+		logger.info("login button clicked");		
+	}
+	
 	public String getErrorMessageOnLoginPage() throws InterruptedException{		
 		driver.waitForElementPresent(ERROR_MESSAGE_LOC);
 		return driver.findElement(ERROR_MESSAGE_LOC).getText();

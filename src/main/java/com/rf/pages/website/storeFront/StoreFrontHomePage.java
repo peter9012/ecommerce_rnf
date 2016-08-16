@@ -2836,8 +2836,8 @@ public class StoreFrontHomePage extends StoreFrontRFWebsiteBasePage {
 	}
 
 	public void clickLearnMoreLinkUnderSolutionToolAndSwitchControl(){
-		driver.waitForElementPresent(By.xpath("//div[@id='corp_content']/div/div[1]/div[3]/descendant::a"));
-		driver.click(By.xpath("//div[@id='corp_content']/div/div[1]/div[3]/descendant::a"));
+		driver.waitForElementPresent(By.xpath("//div[@id='corp_content']/div/div[1]//h3[text()='SOLUTION TOOL']/following-sibling::a"));
+		driver.click(By.xpath("//div[@id='corp_content']/div/div[1]//h3[text()='SOLUTION TOOL']/following-sibling::a"));
 		driver.pauseExecutionFor(11000);
 		String parentWindowID=driver.getWindowHandle();
 		Set<String> set=driver.getWindowHandles();

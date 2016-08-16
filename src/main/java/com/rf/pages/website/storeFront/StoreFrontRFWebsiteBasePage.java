@@ -1170,7 +1170,7 @@ public class StoreFrontRFWebsiteBasePage extends RFBasePage{
 			driver.get(driver.getCurrentUrl()+"/quick-shop/quickShop");
 		}else{
 			WebElement allProducts = driver.findElement(By.xpath("//ul[@id='dropdown-menu' and @style='display: block;']//a[text()='All Products']"));
-			((JavascriptExecutor) driver).executeScript("arguments[0].click();", allProducts);
+			((JavascriptExecutor) RFWebsiteDriver.driver).executeScript("arguments[0].click();", allProducts);
 			while(true){
 				try{
 					driver.clickByJS(RFWebsiteDriver.driver, driver.findElement(By.xpath(" //ul[@id='dropdown-menu' and @style='display: block;']//a[text()='All Products']")));

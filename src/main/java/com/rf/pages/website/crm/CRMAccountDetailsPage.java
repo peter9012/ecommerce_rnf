@@ -821,7 +821,15 @@ public class CRMAccountDetailsPage extends CRMRFWebsiteBasePage {
 		driver.findElement(By.xpath("//div[@class='listRelatedObject contactBlock']//table[1]//h3[text()='Contacts']/../../td[2]/input")).click();
 		driver.waitForCRMLoadingImageToDisappear();
 	}
-
+	
+	public boolean verifyNewContactButtonUnderContactSectionNotAvaliable(){
+		driver.switchTo().defaultContent();
+		driver.waitForElementPresent(By.xpath("//div[@id='navigatortab']/div[3]/div/div[3]/descendant::iframe[1]"));
+		driver.switchTo().frame(driver.findElement(By.xpath("//div[@id='navigatortab']/div[3]/div/div[3]/descendant::iframe[1]")));
+		return !driver.isElementPresent(By.xpath("//div[@class='listRelatedObject contactBlock']//table[1]//h3[text()='Contacts']/../../td[2]/input"));
+	}
+	
+	
 	public void enterFirstAndLastNameInCreatingNewContactForSpouse(String firstName , String lastName){
 		driver.switchTo().defaultContent();
 		driver.waitForElementPresent(By.xpath("//div[@id='navigatortab']/div[3]/div/div[3]/descendant::iframe[2]"));
@@ -1551,6 +1559,34 @@ public class CRMAccountDetailsPage extends CRMRFWebsiteBasePage {
 			}
 		}
 
+	}
+	
+	public boolean isEditActionNotPresentUnderContactSection(){
+		driver.switchTo().defaultContent();
+		driver.waitForElementPresent(By.xpath("//div[@id='navigatortab']/div[3]/div/div[3]/descendant::iframe[1]"));
+		driver.switchTo().frame(driver.findElement(By.xpath("//div[@id='navigatortab']/div[3]/div/div[3]/descendant::iframe[1]")));
+		return !driver.isElementPresent(By.xpath("//a[@class='actionLink' and contains(text(),'Edit')]"));
+	}
+	
+	
+	public boolean isMouseHoverContactsSectionEditLinkNotPresentOfFields(String field){
+		Actions actions = new Actions(RFWebsiteDriver.driver);
+		driver.switchTo().defaultContent();
+		driver.waitForElementPresent(By.xpath("//div[@id='navigatortab']/div[3]/div/div[3]/descendant::iframe[1]"));
+		driver.switchTo().frame(driver.findElement(By.xpath("//div[@id='navigatortab']/div[3]/div/div[3]/descendant::iframe[1]")));
+		actions.moveToElement(driver.findElement(By.xpath("//span[@class='listTitle' and contains(text(),'Contacts')]"))).build().perform();
+		return !driver.isElementPresent(By.xpath("//tr[@class='dataRow even last first highlight']//a[contains(text(),'"+field+"')]/preceding::a[contains(text(),'Edit')]"));
+		
+	}
+	
+	public boolean isMouseHoverContactsSectionNewContentButtonNotPresentOfFields(String field){
+		Actions actions = new Actions(RFWebsiteDriver.driver);
+		driver.switchTo().defaultContent();
+		driver.waitForElementPresent(By.xpath("//div[@id='navigatortab']/div[3]/div/div[3]/descendant::iframe[1]"));
+		driver.switchTo().frame(driver.findElement(By.xpath("//div[@id='navigatortab']/div[3]/div/div[3]/descendant::iframe[1]")));
+		actions.moveToElement(driver.findElement(By.xpath("//span[@class='listTitle' and contains(text(),'Contacts')]"))).build().perform();
+		return !driver.isElementPresent(By.xpath("//tr[@class='dataRow even last first highlight']//a[contains(text(),'"+field+"')]/ancestor::div//input"));
+		
 	}
 }
 

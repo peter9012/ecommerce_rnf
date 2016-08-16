@@ -35,8 +35,9 @@ public class CRMLoginPage extends CRMRFWebsiteBasePage {
 	}
 	
 	public void crmLogout(){
+		driver.pauseExecutionFor(5000);
 		driver.switchTo().defaultContent();
-		driver.quickWaitForElementPresent(By.id("userNavLabel"));
+		driver.waitForElementPresent(By.id("userNavLabel"));
 		driver.click(By.id("userNavLabel"));
 		driver.waitForElementPresent(By.id("app_logout"));
 		driver.click(By.id("app_logout"));

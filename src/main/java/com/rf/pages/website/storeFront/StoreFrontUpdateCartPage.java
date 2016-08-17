@@ -28,11 +28,18 @@ public class StoreFrontUpdateCartPage extends StoreFrontRFWebsiteBasePage{
 	}
 
 	public void clickOnEditPaymentBillingProfile(){
-		driver.waitForElementPresent(PAYMENT_BILLING_EDIT_BTN_LOC);
-		driver.click(PAYMENT_BILLING_EDIT_BTN_LOC);
+		try{
+			driver.waitForElementPresent(PAYMENT_BILLING_EDIT_BTN_LOC);
+			driver.click(PAYMENT_BILLING_EDIT_BTN_LOC);
+		}
+		catch(Exception e){
+			driver.waitForElementPresent(By.cssSelector(".editPayment"));
+			driver.findElement(By.cssSelector(".editPayment")).click();
+		}
 		driver.pauseExecutionFor(2000);
 		driver.waitForLoadingImageToDisappear();
 	}
+
 
 	public boolean isNewBillingProfileIsSelectedByDefault(String profileName){
 		driver.waitForElementPresent(By.xpath("//span[contains(text(),'"+profileName+"')]/following::span[@class='radio-button billtothis'][1]/input"));
@@ -103,9 +110,15 @@ public class StoreFrontUpdateCartPage extends StoreFrontRFWebsiteBasePage{
 	}
 
 	public void clickOnSaveBillingProfile() throws InterruptedException{
-		driver.waitForElementPresent(By.xpath("//input[@id='submitButton']"));
-		driver.click(By.xpath("//input[@id='submitButton']"));
-		driver.pauseExecutionFor(5000);		
+		try{
+			driver.waitForElementPresent(By.xpath("//input[@id='submitButton']"));
+			driver.click(By.xpath("//input[@id='submitButton']"));
+		}
+		catch(Exception e){
+			driver.waitForElementPresent(By.cssSelector("#submitButton"));
+			driver.findElement(By.cssSelector("#submitButton")).click();
+		}
+		driver.pauseExecutionFor(5000);  
 		driver.waitForLoadingImageToDisappear();
 		logger.info("Save billing profile button clicked");
 	}

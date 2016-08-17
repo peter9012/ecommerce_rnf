@@ -39,7 +39,7 @@ public class StoreFrontRFWebsiteBasePage extends RFBasePage{
 	private final By WELCOME_USER_DD_LOC = By.id("account-info-button");
 	private final By WELCOME_DD_ORDERS_LINK_LOC = By.xpath("//a[text()='Orders']");
 	private final By YOUR_ACCOUNT_DROPDOWN_LOC = By.xpath("//button[@class='btn btn-default dropdown-toggle']");
-	private final By WELCOME_DD_BILLING_INFO_LINK_LOC = By.xpath("//*[@id='account-info-dropdown']/ul[1]/li[4]/a");
+	private final By WELCOME_DD_BILLING_INFO_LINK_LOC = By.xpath("//a[contains(text(),'Billing Info')]");
 	private final By WELCOME_DD_SHIPPING_INFO_LINK_LOC = By.xpath("//a[text()='Shipping Info']");
 	private final By ADD_NEW_SHIPPING_LINK_LOC = By.xpath("//a[contains(@class,'add-new-shipping-address')]");
 	private final By WELCOME_DD_ACCOUNT_INFO_LOC = By.xpath("//a[text()='Account Info']");
@@ -756,7 +756,12 @@ public class StoreFrontRFWebsiteBasePage extends RFBasePage{
 	public void enterSpouseLastName(String firstName){
 		driver.waitForElementPresent(By.id("spouse-last"));
 		driver.type(By.id("spouse-last"),firstName);
-		driver.findElement(By.xpath("//div[@id='pulsesubscription']//span[@class='icon-search']")).click();
+		try{
+			driver.findElement(By.xpath("//div[@id='pulsesubscription']//span[@class='icon-search']")).click();
+		}catch(Exception e){
+			driver.findElement(By.xpath("//form[@id='accountInfo']")).click();
+		}
+
 		logger.info("Spouse last name entered as "+firstName);
 	}
 
@@ -1402,7 +1407,7 @@ public class StoreFrontRFWebsiteBasePage extends RFBasePage{
 		}
 		catch(Exception e){
 			JavascriptExecutor js = (JavascriptExecutor)(RFWebsiteDriver.driver);
-			js.executeScript("arguments[0].click();", driver.findElement(By.xpath("//*[@id='account-info-button']/ul/li/ul[1]/li[4]/a")));
+			js.executeScript("arguments[0].click();", driver.findElement(By.xpath("//div[@id='account-info-button']/ul/li/ul[1]/li[5]/a")));
 		}
 		logger.info("User has clicked on billing link from welcome drop down");
 		driver.waitForPageLoad();
@@ -1617,9 +1622,13 @@ public class StoreFrontRFWebsiteBasePage extends RFBasePage{
 	public void enterWebsitePrefixName(String name){
 		driver.waitForElementPresent(By.xpath("//*[@id='webSitePrefix']"));
 		driver.type(By.xpath("//*[@id='webSitePrefix']"), name);
-		driver.findElement(By.xpath("//div[@id='pulsesubscription']//span[@class='icon-search']")).click();
-		//driver.findElement(By.xpath("//*[@id='webSitePrefixForm']")).click();
-		driver.pauseExecutionFor(5000);
+		driver.pauseExecutionFor(8000);
+		try{
+			driver.waitForElementPresent(By.xpath("//div[@id='main-content']/div/div[4]"));
+			driver.findElement(By.xpath("//div[@id='main-content']/div/div[4]")).click();
+		}catch(Exception e){
+			driver.findElement(By.xpath("//div[@id='pulsesubscription']//span[@class='icon-search']")).click();
+		}
 	}
 
 	public boolean verifySpecialCharNotAcceptInPrefixName(){

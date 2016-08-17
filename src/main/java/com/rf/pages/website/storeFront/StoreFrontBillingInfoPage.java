@@ -70,17 +70,18 @@ public class StoreFrontBillingInfoPage extends StoreFrontRFWebsiteBasePage{
 
 	public String getDefaultBillingAddress(){
 		try{
-			driver.waitForElementPresent(By.xpath("//input[@class='paymentAddress' and @checked='checked']/preceding::p[3]//span"));
-			String defaultBillingAddress = driver.findElement(By.xpath("//input[@class='paymentAddress' and @checked='checked']/preceding::p[3]//span")).getText();
-			logger.info("Default Billing address is "+DEFAULT_BILLING_ADDRESSES_LOC);
+			driver.waitForElementPresent(By.xpath("//input[@class='paymentAddress' and @checked='checked']/preceding::p[3]//span[1]"));
+			String defaultBillingAddress = driver.findElement(By.xpath("//input[@class='paymentAddress' and @checked='checked']/preceding::p[3]//span[1]")).getText();
+			logger.info("Default Billing address is "+defaultBillingAddress);
 			return defaultBillingAddress;
 		}catch(Exception e){
-			driver.waitForElementPresent(DEFAULT_BILLING_ADDRESSES_LOC);
-			String defaultBillingAddress = driver.findElement(DEFAULT_BILLING_ADDRESSES_LOC).getText();
-			logger.info("Default Billing address is "+DEFAULT_BILLING_ADDRESSES_LOC);
+			driver.waitForElementPresent(By.cssSelector(".font-bold"));
+			String defaultBillingAddress = driver.findElement(By.cssSelector(".font-bold")).getText();
+			logger.info("Default Billing address is "+defaultBillingAddress);
 			return defaultBillingAddress;
 		}
 	}
+
 
 	public void clickAddNewBillingProfileLink() throws InterruptedException{
 		driver.waitForElementPresent(ADD_NEW_BILLING_LINK_LOC);
@@ -189,5 +190,5 @@ public class StoreFrontBillingInfoPage extends StoreFrontRFWebsiteBasePage{
 		driver.waitForElementPresent(By.xpath("//div[@class='successMessage']/span"));
 		return driver.isElementPresent(By.xpath("//div[@class='successMessage']/span"));
 	}
-	
+
 }

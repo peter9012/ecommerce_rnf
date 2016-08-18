@@ -3913,6 +3913,7 @@ public class CRMRegressionTest extends RFCRMWebsiteBaseTest{
 		int randomNum = CommonUtils.getRandomNum(10000, 1000000);
 		String orderNote="This is automation note"+randomNum;
 		logger.info("The username is "+consultantEmailID); 
+		s_assert.assertTrue(crmHomePage.verifyHomePage(),"Home page does not come after login");
 		crmHomePage.enterTextInSearchFieldAndHitEnter(consultantEmailID);
 		crmHomePage.clickAnyTypeOfActiveCustomerInSearchResult("Consultant");
 

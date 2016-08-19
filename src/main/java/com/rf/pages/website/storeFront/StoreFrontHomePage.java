@@ -2009,17 +2009,22 @@ public class StoreFrontHomePage extends StoreFrontRFWebsiteBasePage {
 		}		
 	}
 
-
 	public boolean verifyNumberOfProductsInMiniCart(){
 		Actions actions = new Actions(RFWebsiteDriver.driver);
 		driver.waitForElementPresent(By.xpath("//a[@id='shopping-cart']")); 
 		WebElement allProducts = driver.findElement(By.xpath("//a[@id='shopping-cart']"));
-		actions.moveToElement(allProducts).build().perform();
+		String strJavaScript = "var element = arguments[0];"
+				+ "var mouseEventObj = document.createEvent('MouseEvents');"
+				+ "mouseEventObj.initEvent( 'mouseover', true, true );"
+				+ "element.dispatchEvent(mouseEventObj);";
+		JavascriptExecutor js = (JavascriptExecutor) (RFWebsiteDriver.driver);
+		js.executeScript(strJavaScript, allProducts);
+		//actions.moveToElement(allProducts).build().perform();
 		driver.waitForLoadingImageToDisappear();
 		driver.waitForElementPresent(By.xpath("//ul[@id='subtotal']/li/span[1]")); 
 		String productCount=driver.findElement(By.xpath("//ul[@id='subtotal']/li/span[1]")).getText();
-		//		Boolean bCount;
-		//		if productCoun
+		//  Boolean bCount;
+		//  if productCoun
 		return productCount!="0";
 	}
 

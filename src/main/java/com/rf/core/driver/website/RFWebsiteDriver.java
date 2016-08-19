@@ -26,6 +26,7 @@ import org.openqa.selenium.WebElement;
 import org.openqa.selenium.chrome.ChromeDriver;
 import org.openqa.selenium.chrome.ChromeOptions;
 import org.openqa.selenium.firefox.FirefoxDriver;
+import org.openqa.selenium.firefox.FirefoxProfile;
 import org.openqa.selenium.htmlunit.HtmlUnitDriver;
 import org.openqa.selenium.ie.InternetExplorerDriver;
 import org.openqa.selenium.interactions.Actions;
@@ -93,6 +94,10 @@ public class RFWebsiteDriver implements RFDriver,WebDriver {
 		driver.manage().window().maximize();
 		if (propertyFile.getProperty("browser").equalsIgnoreCase("firefox")){
 			System.out.println(driver.manage().window().getSize());
+			FirefoxProfile prof = new FirefoxProfile();
+			prof.setPreference("browser.startup.homepage_override.mstone", "ignore");
+			prof.setPreference("startup.homepage_welcome_url.additional",  "about:blank");
+			driver = new FirefoxDriver(prof);
 			Dimension d = new Dimension(1936, 1056);
 			driver.manage().window().setSize(d);
 			System.out.println("Dimension reset to larger");

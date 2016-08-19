@@ -66,7 +66,10 @@ public class RFWebsiteDriver implements RFDriver,WebDriver {
 	 *             Prepares the environment that tests to be run on
 	 */
 	public void loadApplication() throws MalformedURLException {
-
+		FirefoxProfile prof = new FirefoxProfile();
+		prof.setPreference("brower.startup.homepage", "about:blank");
+		prof.setPreference("startup.homepage_welcome_url", "about:blank");
+		prof.setPreference("startup.homepage_welcome_url.additional",  "about:blank");
 		if (propertyFile.getProperty("browser").equalsIgnoreCase("firefox"))
 			driver = new FirefoxDriver();
 		else if (propertyFile.getProperty("browser").equalsIgnoreCase("chrome")){
@@ -94,10 +97,6 @@ public class RFWebsiteDriver implements RFDriver,WebDriver {
 		driver.manage().window().maximize();
 		if (propertyFile.getProperty("browser").equalsIgnoreCase("firefox")){
 			System.out.println(driver.manage().window().getSize());
-			FirefoxProfile prof = new FirefoxProfile();
-			prof.setPreference("browser.startup.homepage_override.mstone", "ignore");
-			prof.setPreference("startup.homepage_welcome_url.additional",  "about:blank");
-			driver = new FirefoxDriver(prof);
 			Dimension d = new Dimension(1936, 1056);
 			driver.manage().window().setSize(d);
 			System.out.println("Dimension reset to larger");

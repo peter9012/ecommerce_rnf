@@ -71,7 +71,7 @@ public class RFWebsiteDriver implements RFDriver,WebDriver {
 		prof.setPreference("startup.homepage_welcome_url", "about:blank");
 		prof.setPreference("startup.homepage_welcome_url.additional",  "about:blank");
 		if (propertyFile.getProperty("browser").equalsIgnoreCase("firefox"))
-			driver = new FirefoxDriver();
+			driver = new FirefoxDriver(prof);
 		else if (propertyFile.getProperty("browser").equalsIgnoreCase("chrome")){
 			System.setProperty("webdriver.chrome.driver", "src\\test\\resources\\chromedriver.exe");
 			ChromeOptions options = new ChromeOptions();

@@ -1377,6 +1377,8 @@ public class StoreFrontUpdateCartPage extends StoreFrontRFWebsiteBasePage{
 		driver.waitForElementPresent(By.xpath("//div[@id='multiple-addresses-summary']/div[1]/div[3]/span"));
 		driver.click(By.xpath("//div[@id='multiple-addresses-summary']/div[1]/div[3]/span"));
 		driver.pauseExecutionFor(2000);
+		driver.navigate().refresh();
+		driver.waitForPageLoad();
 		return driver.findElement(By.xpath("//div[@id='multiple-addresses-summary']/div[2]/div[3]/span")).isSelected();
 	}
 

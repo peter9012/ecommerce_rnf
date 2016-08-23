@@ -527,14 +527,23 @@ public class StoreFrontHomePage extends StoreFrontRFWebsiteBasePage {
 	}
 
 	public boolean validateInvalidCreditCardMessage(){
-		driver.waitForElementPresent(By.xpath("//div[@class='ssn-table']/descendant::label[@class='error']"));
-		if(driver.findElement(By.xpath("//div[@class='ssn-table']/descendant::label[@class='error']")).isDisplayed()){
-			return true;
-		}
-		else{
-			return false;
-		}
+		try{
+			driver.quickWaitForElementPresent(By.xpath("//div[@class='mat-div']/descendant::label[@class='error']"));
+			if(driver.findElement(By.xpath("//div[@class='mat-div']/descendant::label[@class='error']")).isDisplayed()){
+				return true;
+			}else{
+				return false;
+			}
+		}catch(Exception e){
+			driver.waitForElementPresent(By.xpath("//div[@class='ssn-table']/descendant::label[@class='error']"));
+			if(driver.findElement(By.xpath("//div[@class='ssn-table']/descendant::label[@class='error']")).isDisplayed()){
+				return true;
+			}
+			else{
+				return false;
+			}}
 	}
+
 
 	public boolean validateEmptyCreditCardMessage(){
 		if(driver.findElement(By.xpath("//input[@id='card-nr']/following::label[1][contains(text(),'This field is required')]")).isDisplayed()){

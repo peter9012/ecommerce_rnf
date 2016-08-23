@@ -2161,7 +2161,7 @@ public class CartAndCheckoutValidationTest extends RFWebsiteBaseTest{
 	}
 
 	//Hybris Project-1885:Create Adhoc Order with American Express Card
-	@Test
+	@Test(enabled=false)//CVV not accepting issue during automation execution
 	public void testCreateAdhocOrderWithAmericanExpressCard_1885() throws InterruptedException{
 		int randomNum = CommonUtils.getRandomNum(10000, 1000000);
 		RFO_DB = driver.getDBNameRFO();

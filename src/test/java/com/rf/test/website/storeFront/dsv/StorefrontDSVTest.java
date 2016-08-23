@@ -35,7 +35,7 @@ public class StorefrontDSVTest extends RFDSVStoreFrontWebsiteBaseTest{
 	public void testUserAccountLoginAsConsultant_5314(){
 		dsvStoreFrontHomePage = new DSVStoreFrontHomePage(driver);
 		s_assert.assertTrue(dsvStoreFrontHomePage.getWebdriver().getCurrentUrl().contains(TestConstants.DSV_PWS_SUFFIX), "Consultant is not on PWS after login,the url coming is "+dsvStoreFrontHomePage.getWebdriver().getCurrentUrl());
-		s_assert.assertTrue(dsvStoreFrontHomePage.getWelcomeText().contains("Welcome"), "Home page doesn't have the 'Welcome' link");
+		s_assert.assertTrue(dsvStoreFrontHomePage.isUserNameDropDownPresent(), "Home page doesn't have the username dropdown");
 		s_assert.assertTrue(dsvStoreFrontHomePage.isCRPCartImagePresent(), "CRP Cart image is not present on home page");
 		s_assert.assertTrue(dsvStoreFrontHomePage.isUserNameDropDownPresent(), "Home page doesn't have the username dropdown");
 		dsvStoreFrontHomePage.clickLogo();

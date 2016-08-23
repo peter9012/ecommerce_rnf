@@ -16,7 +16,7 @@ public class DSVStoreFrontHomePage extends DSVRFWebsiteBasePage{
 	private static final By LOGIN_LINK = By.xpath("//li[@id='log-in-button']/a");
 	private static final By USERNAME_TXTFIELD = By.id("username");
 	private static final By PASSWORD_TXTFIELD = By.id("password");
-	private static final By LOGIN_BTN = By.xpath("//input[@value='Log in']");
+	private static final By LOGIN_BTN = By.xpath("//input[@value='SIGN IN']");
 	private static final By WELCOME_TXT = By.xpath("//a[@class='dropdown-toggle']/span[2]");
 	private static final By USERNAME_DROPDOWN = By.xpath("//a[@class='dropdown-toggle']/span[2]");
 	private static final By CART_IMG = By.id("bag-special");

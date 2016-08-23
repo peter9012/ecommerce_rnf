@@ -259,7 +259,7 @@ public class StorefrontDSVTest extends RFDSVStoreFrontWebsiteBaseTest{
 		String baseURL = dsvStoreFrontHomePage.getBaseURL();
 		dsvStoreFrontHomePage = new DSVStoreFrontHomePage(driver);
 		s_assert.assertTrue(dsvStoreFrontHomePage.getWebdriver().getCurrentUrl().contains(baseURL)||dsvStoreFrontHomePage.getWebdriver().getCurrentUrl().contains("myrandf"), "PC is not corp site or Sponsor's PWS after login,the url coming is "+dsvStoreFrontHomePage.getWebdriver().getCurrentUrl());
-		s_assert.assertTrue(dsvStoreFrontHomePage.getWelcomeText().contains("Welcome"), "Home page doesn't have the 'Welcome' link");
+		s_assert.assertTrue(dsvStoreFrontHomePage.isUserNameDropDownPresent(), "Home page doesn't have the username dropdown");
 		dsvStoreFrontAutoshipCartPage = dsvStoreFrontHomePage.clickOnPCPerksCartImg();
 		dsvStoreFrontQuickShopPage = dsvStoreFrontAutoshipCartPage.clickTopContinueShoppingLink();
 		String firstProductRetailPrice = dsvStoreFrontQuickShopPage.getFirstProductRetailPrice();

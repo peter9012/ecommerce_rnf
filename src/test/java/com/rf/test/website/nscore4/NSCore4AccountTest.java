@@ -1048,7 +1048,7 @@ public class NSCore4AccountTest extends RFNSCoreWebsiteBaseTest{
 
 	
 	
-	@Test(invocationCount = 10)
+	@Test(enabled=false)
 	public void testOrdersTab_NewOrder_RC() {
 		
 		/*for(int i=0; i<200; i++){*/

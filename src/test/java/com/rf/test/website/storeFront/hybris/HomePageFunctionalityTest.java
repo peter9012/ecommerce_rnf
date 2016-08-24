@@ -2090,7 +2090,7 @@ public class HomePageFunctionalityTest extends RFWebsiteBaseTest{
 			boolean isError = driver.getCurrentUrl().contains("error");
 			if(isError){
 				logger.info("login error for the user "+rcUserEmailID);
-				driver.get(driver.getURL());
+				driver.get(driver.getURL()+"/"+driver.getCountry());
 			}
 			else
 				break;
@@ -2107,7 +2107,7 @@ public class HomePageFunctionalityTest extends RFWebsiteBaseTest{
 		s_assert.assertTrue(storeFrontAccountTerminationPage.verifyPopupHeader(),"Account termination Page Pop Up Header is not Present");
 		storeFrontAccountTerminationPage.clickOnConfirmTerminationPopup(); 
 		//Navigate to the base url
-		driver.get(driver.getURL());
+		driver.get(driver.getURL()+"/"+driver.getCountry());
 		//connect with a consultant
 		storeFrontHomePage.clickConnectUnderConnectWithAConsultantSection();
 		//search with terminated RC

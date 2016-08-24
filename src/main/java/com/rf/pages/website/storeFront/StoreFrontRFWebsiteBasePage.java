@@ -1003,8 +1003,10 @@ public class StoreFrontRFWebsiteBasePage extends RFBasePage{
 	}
 
 	public void navigateToBackPage(){
+		((JavascriptExecutor)RFWebsiteDriver.driver).executeScript("history.back");
+		((JavascriptExecutor)RFWebsiteDriver.driver).executeScript("history.go(-1)");
+		//driver.navigate().back();
 		driver.waitForPageLoad();
-		driver.navigate().back();
 	}
 
 	public void clickOnAllowMySpouseOrDomesticPartnerCheckboxForUncheck() {

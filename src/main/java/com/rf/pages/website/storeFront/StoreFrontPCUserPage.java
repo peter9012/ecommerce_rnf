@@ -95,6 +95,7 @@ public class StoreFrontPCUserPage extends StoreFrontRFWebsiteBasePage{
 			driver.click(By.xpath("//div[@id='popup-content']/div/div/following::input[@value='Close window']"));
 		}
 		driver.waitForPageLoad();
+		driver.waitForLoadingImageToDisappear();
 		return new StoreFrontHomePage(driver);
 	}
 

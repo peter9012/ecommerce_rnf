@@ -698,7 +698,7 @@ public class StoreFrontOrdersPage extends StoreFrontRFWebsiteBasePage{
 		String shippingMethodName = null;
 		switch (Integer.parseInt(methodId)) {  
 		case 1:
-			shippingMethodName="FedEx 2Day";
+			shippingMethodName="FedEx Standard Overnight";
 			break;
 
 		case 2:
@@ -714,11 +714,11 @@ public class StoreFrontOrdersPage extends StoreFrontRFWebsiteBasePage{
 			break;
 
 		case 5:
-			shippingMethodName="USPS 2Day";
+			shippingMethodName="UPS Standard Overnight";
 			break;
 
 		case 6:
-			shippingMethodName="USPS Grnd";
+			shippingMethodName="UPS 2Day";
 			break;
 
 		case 7:

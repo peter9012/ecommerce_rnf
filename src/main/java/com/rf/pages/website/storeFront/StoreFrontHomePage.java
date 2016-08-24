@@ -190,11 +190,14 @@ public class StoreFrontHomePage extends StoreFrontRFWebsiteBasePage {
 	}
 
 	public void mouseHoverSponsorInResultAndClickContinue(){
-		Actions actions = new Actions(RFWebsiteDriver.driver);
-		actions.moveToElement(driver.findElements(By.xpath("//div[@class='sponsorDataDiv']")).get(0)).build().perform();
-		driver.pauseExecutionFor(1000);
-		//		driver.click(By.xpath("//input[@value='Select & Continue']"));
-		driver.click(By.xpath("//input[contains(@value,'Select')]"));
+		WebElement sponser = driver.findElement(By.xpath("//div[@class='sponsorDataDiv']"));
+		String strJavaScript = "var element = arguments[0];"
+				+ "var mouseEventObj = document.createEvent('MouseEvents');"
+				+ "mouseEventObj.initEvent( 'mouseover', true, true );"
+				+ "element.dispatchEvent(mouseEventObj);";
+		JavascriptExecutor js = (JavascriptExecutor) (RFWebsiteDriver.driver);
+		js.executeScript(strJavaScript, sponser);
+		js.executeScript("arguments[0].click();", sponser);
 		driver.waitForLoadingImageToDisappear();
 	}
 

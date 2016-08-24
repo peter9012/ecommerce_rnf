@@ -358,7 +358,8 @@ public class StoreFrontUpdateCartPage extends StoreFrontRFWebsiteBasePage{
 		if(tax.contains(",")){
 			tax = tax.replaceAll(",","");
 		}
-		return tax;
+		logger.info("tax value is "+tax);
+		return tax.trim();
 	}
 
 	public String getTotal(){

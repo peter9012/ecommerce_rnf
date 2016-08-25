@@ -28,7 +28,7 @@ public class CSCockpitCustomerTabPage extends CSCockpitRFWebsiteBasePage{
 	private static String creditCardOwnerName ="//div[contains(text(),'%s')]";
 	private static String crpAutoshipIdWhoseAutoshipIsCancelledLoc = "//span[text()='Autoship Templates']/following::span[text()='crpAutoship']/../../..//span[contains(text(),'Cancelled')]/../../preceding-sibling::td//a[contains(text(),'%s')]";
 	private static String statusOfAutoshipTemplateID ="//a[text()='%s']/ancestor::tr[1]/td[3]//span";
-	
+
 	private static final By FIRST_SHIPPED_ORDER_LINK_CUSTOMER_ORDER_SECTION = By.xpath("//span[contains(text(),'Customer Orders')]/following::div[contains(text(),'Order Status')][1]/following::span[text()='Shipped'][1]/preceding::a[1]");
 	private static final By FIRST_SUBMITTED_ORDER_LINK_CUSTOMER_ORDER_SECTION = By.xpath("//span[contains(text(),'Customer Orders')]/following::div[contains(text(),'Order Status')][1]/following::span[text()='Shipped'][1]/preceding::a[1]");
 	private static final By PLACE_ORDER_BUTTON = By.xpath("//td[contains(text(),'PLACE AN ORDER')]");	
@@ -60,6 +60,7 @@ public class CSCockpitCustomerTabPage extends CSCockpitRFWebsiteBasePage{
 	private static final By SHIPPING_PROFILE_ERROR_POPUP_OK_BTN = By.xpath("//div[@class='z-window-modal']//td[text()='OK']");
 	private static final By USE_THIS_ADDRESS = By.xpath("//td[contains(text(),'Use this Address')]");
 	private static final By SHIPPING_ADDRESS_PROFILE_FIRST_NAME = By.xpath("//span[text()='Customer Addresses']/following::div[1]//div[contains(@class,'listbox-body')]//tbody[2]/descendant::div[contains(text(),'Shipping Address')][1]/ancestor::tr[1]/td[1]/div");
+	private static final By SHIPPING_ADDRESS_PROFILE_LAST_NAME = By.xpath("//span[text()='Customer Addresses']/following::div[1]//div[contains(@class,'listbox-body')]//tbody[2]/descendant::div[contains(text(),'Shipping Address')][1]/ancestor::tr[1]/td[2]/div");
 	private static final By SET_AS_AUTOSHIP_SHIPPING_ADDRESS_CHKBOX= By.xpath("//span[contains(text(),'Set as a Autoship Shipping Address')]/preceding::span[@class='z-checkbox'][1]/input");
 	private static final By YES_BTN_OF_UPDATE_AUTOSHIP_ADDRESS_POPUP = By.xpath("//td[text()='Yes']");
 	private static final By CREATE_NEW_ADDRESS_IN_SHIPPING_ADDRESS_POPUP = By.xpath("//td[contains(text(),'Create new address')]");
@@ -89,7 +90,7 @@ public class CSCockpitCustomerTabPage extends CSCockpitRFWebsiteBasePage{
 	private static final By CLOSE_POPUP_OF_EDIT_PAYMENT_PROFILE = By.xpath("//div[contains(text(),'EDIT PAYMENT PROFILE')]/div[contains(@id,'close')]");
 	private static final By CLOSE_POPUP_OF_ADD_NEW_PAYMENT_PROFILE = By.xpath("//div[contains(text(),'ADD NEW PAYMENT PROFILE')]/div[contains(@id,'close')]");
 
-	
+
 	protected RFWebsiteDriver driver;
 
 	public CSCockpitCustomerTabPage(RFWebsiteDriver driver) {
@@ -401,8 +402,11 @@ public class CSCockpitCustomerTabPage extends CSCockpitRFWebsiteBasePage{
 	}
 
 	public String getFirstShippingAddressProfileName(){
-		driver.waitForElementPresent(SHIPPING_ADDRESS_PROFILE_FIRST_NAME);
-		return driver.findElement(SHIPPING_ADDRESS_PROFILE_FIRST_NAME).getText();
+		driver.waitForElementPresent(SHIPPING_ADDRESS_PROFILE_LAST_NAME);
+		String firstname = driver.findElement(SHIPPING_ADDRESS_PROFILE_FIRST_NAME).getText();
+		String lastname = driver.findElement(SHIPPING_ADDRESS_PROFILE_LAST_NAME).getText();
+		String fullname = firstname+" "+lastname;
+		return fullname;
 	}
 
 	public void clickSetAsAutoshipChkBoxInCreateNewAddressPopup(){

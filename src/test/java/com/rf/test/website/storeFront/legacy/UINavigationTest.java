@@ -400,7 +400,7 @@ public class UINavigationTest extends RFLegacyStoreFrontWebsiteBaseTest{
 	}
 
 	//Solution Tool-Find a Rodan  + Fields consultant should be working properly
-	@Test
+	@Test(enabled=false)
 	public void testVerifyUserIsRedirectedToPwsAfterSelectingSponser(){
 		String sponsorID = TestConstantsRFL.CID_CONSULTANT;
 		String fetchedPWS = null;

@@ -1415,8 +1415,8 @@ public class StoreFrontLegacyHomePage extends StoreFrontLegacyRFWebsiteBasePage{
 		logger.info("Postal code entered as: "+postalCode);
 		driver.waitForStorfrontLegacyLoadingImageToDisappear();
 		driver.click(CITY_DD);
-		logger.info("City dropdown clicked");
-		driver.click(FIRST_VALUE_OF_CITY_DD);
+/*		logger.info("City dropdown clicked");
+		driver.click(FIRST_VALUE_OF_CITY_DD);*/
 		logger.info("City selected");
 		driver.type(CITY_DD, "Fremont");
 		logger.info("City Selected");

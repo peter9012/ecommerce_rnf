@@ -1,15 +1,18 @@
 package com.rf.test.website.nscore4;
 
+import java.io.IOException;
 import java.util.List;
 import java.util.Map;
 
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.testng.annotations.BeforeClass;
+import org.testng.annotations.DataProvider;
 import org.testng.annotations.Test;
 
 import com.rf.core.utils.CommonUtils;
 import com.rf.core.utils.DBUtil;
+import com.rf.core.utils.ExcelReader;
 import com.rf.core.website.constants.TestConstantsRFL;
 import com.rf.core.website.constants.dbQueries.DBQueries_RFL;
 import com.rf.pages.website.nscore.NSCore4AdminPage;
@@ -46,7 +49,7 @@ public class NSCore4AccountTest extends RFNSCoreWebsiteBaseTest{
 	@BeforeClass
 	public void executeCommonQuery(){
 		RFL_DB = driver.getDBNameRFL();
-		randomAccountList = DBUtil.performDatabaseQuery(DBQueries_RFL.GET_RANDOM_ACTIVE_CONSULTANT_WITH_ORDERS_AND_AUTOSHIPS_RFL,RFL_DB);
+		randomAccountList = DBUtil.performDatabaseQuery(DBQueries_RFL.GET_RANDOM_ACTIVE_RC_HAVING_ORDERS,RFL_DB);
 	}
 
 	//NSC4_AdministratorLogin_LogingLogout
@@ -1043,7 +1046,52 @@ public class NSCore4AccountTest extends RFNSCoreWebsiteBaseTest{
 		s_assert.assertAll();
 	}
 
+	
+	
+	@Test(enabled=false)
+	public void testOrdersTab_NewOrder_RC() {
+		
+		/*for(int i=0; i<200; i++){*/
+            /*System.out.println("Count is: " + i);*/
+    		String accountNumber = null;
+    		List<Map<String, Object>> completeNameList =  null;
+    		String SKU = null;
+    		logger.info("DB is "+RFL_DB);
+    		randomAccountList = DBUtil.performDatabaseQuery(DBQueries_RFL.GET_RANDOM_ACTIVE_RC_HAVING_ORDERS,RFL_DB);
+    		accountNumber = (String) getValueFromQueryResult(randomAccountList, "AccountNumber"); 
+    		logger.info("Account number from DB is "+accountNumber);
+    		nscore4HomePage.enterAccountNumberInAccountSearchField(accountNumber);
+    		nscore4HomePage.clickGoBtnOfSearch(accountNumber);
+    		nscore4OrdersTabPage = nscore4HomePage.clickOrdersTab();
+    		nscore4OrdersTabPage.clickStartANewOrderLink();
+    		completeNameList = DBUtil.performDatabaseQuery(DBQueries_RFL.callQueryWithArguement(DBQueries_RFL.GET_SPONSER_DETAILS_FROM_SPONSER_ACCOUNT_NUMBER, accountNumber),RFL_DB);
+    		String firstNameDB = String.valueOf(getValueFromQueryResult(completeNameList, "FirstName"));
+    		String lastNameDB = String.valueOf(getValueFromQueryResult(completeNameList, "LastName"));
+    		String completeNameDB = firstNameDB+" "+lastNameDB;
+    		logger.info("Complete name from DB is: "+completeNameDB);
+    		nscore4OrdersTabPage.enterAccountNameAndClickStartOrder(completeNameDB, accountNumber);
+    		//SKU = nscore4HomePage.addAndGetProductSKU("1");
+    		nscore4HomePage.addAndGetSpecficProductSKU("1");
+    		//s_assert.assertTrue(nscore4HomePage.isProductAddedToOrder(SKU), "SKU = "+SKU+" is not added to the Autoship Order");
+    		driver.pauseExecutionFor(3000);
+    		nscore4OrdersTabPage.clickPaymentApplyLink();
+    		nscore4OrdersTabPage.clickSubmitOrderBtn();
+    		s_assert.assertTrue(nscore4OrdersTabPage.isOrderInformationPresent("Products"),"Product information not present as expected");
+    /*		s_assert.assertTrue(nscore4OrdersTabPage.isOrderInformationPresent("Shipments"),"Shipments information not present as expected");
+    		s_assert.assertTrue(nscore4OrdersTabPage.isOrderInformationPresent("Payment"),"Payment information not present as expected");
+    		s_assert.assertTrue(nscore4OrdersTabPage.validateOrderStatusAfterSubmitOrder(),"Order is not submitted after submit order");
+    		s_assert.assertTrue(nscore4OrdersTabPage.isOrderDetailPagePresent(),"This is not order details page");*/
+    		s_assert.assertAll();
+    		try {
+    			ExcelReader.ExcelWriter(firstNameDB, lastNameDB, accountNumber, "C:\\Users\\plu\\heirloom\\rf-automation\\JavaBooks.xlsx");
+    		} catch (IOException e) {
+    			
+    		/*}*/
+    		
+       }
 
+	}
+	
 
 	//	//Override Shipping and handling with a higher value
 	//	@Test

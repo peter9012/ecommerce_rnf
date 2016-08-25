@@ -1897,6 +1897,8 @@ public class UpgradeDowngradeTest extends RFWebsiteBaseTest{
 		//Verify enrolled consultant in cscockpit.
 		driver.get(driver.getCSCockpitURL());
 		cscockpitLoginPage = new CSCockpitLoginPage(driver);
+		cscockpitLoginPage.enterUsername(TestConstants.CS_AGENT_USERNAME);
+		cscockpitLoginPage.enterPassword("1234");
 		cscockpitCustomerSearchTabPage = cscockpitLoginPage.clickLoginBtn();
 		cscockpitCustomerSearchTabPage.selectCustomerTypeFromDropDownInCustomerSearchTab("CONSULTANT");
 		cscockpitCustomerSearchTabPage.selectCountryFromDropDownInCustomerSearchTab(reqCountry);
@@ -2292,9 +2294,9 @@ public class UpgradeDowngradeTest extends RFWebsiteBaseTest{
 		logout();
 		//Verify enrolled consultant in cscockpit.
 		driver.get(driver.getCSCockpitURL());
-		cscockpitLoginPage.enterUsername(TestConstants.CS_AGENT_USERNAME);
-		cscockpitLoginPage.enterPassword("1234");
 		cscockpitLoginPage = new CSCockpitLoginPage(driver);
+		cscockpitLoginPage.enterUsername(TestConstants.CS_AGENT_USERNAME);
+		cscockpitLoginPage.enterPassword("1234");		
 		cscockpitCustomerSearchTabPage = cscockpitLoginPage.clickLoginBtn();
 		cscockpitCustomerSearchTabPage.selectCustomerTypeFromDropDownInCustomerSearchTab("CONSULTANT");
 		cscockpitCustomerSearchTabPage.selectCountryFromDropDownInCustomerSearchTab(reqCountry);

@@ -1676,6 +1676,7 @@ public class StoreFrontHomePage extends StoreFrontRFWebsiteBasePage {
 		}
 		driver.waitForPageLoad();
 		driver.waitForLoadingImageToDisappear();
+		driver.pauseExecutionFor(5000);
 	}
 
 	public void enterPasswordForReactivationForConsultant(){
@@ -3414,12 +3415,14 @@ public class StoreFrontHomePage extends StoreFrontRFWebsiteBasePage {
 			driver.waitForElementPresent(By.xpath("//div[@id='corp_content']/div/div[1]/div[1]//a[contains(text(),'ENROLL NOW')]"));
 			driver.click(By.xpath("//div[@id='corp_content']/div/div[1]/div[1]//a[contains(text(),'ENROLL NOW')]"));
 		}driver.waitForPageLoad();
+		driver.pauseExecutionFor(5000);
 	}
 
 	public void clickEnrollNowFromWhyRFPage(){
 		driver.waitForElementPresent(By.xpath("//div[@class='editorial-pages whyR+F']//div[@class='container']/div[2]/a"));
 		driver.click(By.xpath("//div[@class='editorial-pages whyR+F']//div[@class='container']/div[2]/a"));
 		driver.waitForPageLoad();
+		driver.pauseExecutionFor(5000);
 	}
 
 	public double getProductPricingOnSummaryPage(){
@@ -4163,24 +4166,24 @@ public class StoreFrontHomePage extends StoreFrontRFWebsiteBasePage {
 
 	public boolean isProcedurePageIsDisplayedAfterClickPolicyAndProcedureLink(){
 		String parentWindowID = driver.getWindowHandle();
+		driver.pauseExecutionFor(15000);
 		driver.waitForElementPresent(POLICY_AND_PROCEDURE_LINK);
-		driver.click(POLICY_AND_PROCEDURE_LINK);
-		driver.pauseExecutionFor(2000);
-		Set<String> set=driver.getWindowHandles();
-		Iterator<String> it=set.iterator();
+		String suffixURL="/_ui/responsive/common/pdf/Archives/Policies_Procedures_CANADA.pdf";
+		driver.get(driver.getURL()+suffixURL);
+		driver.pauseExecutionFor(5000);
+		logger.info("Policy and Procedure link is clicked.");
+		//Set<String> set=driver.getWindowHandles();
+		//Iterator<String> it=set.iterator();
 		boolean status=false;
-		while(it.hasNext()){
-			String childWindowID=it.next();
-			if(!parentWindowID.equalsIgnoreCase(childWindowID)){
-				driver.switchTo().window(childWindowID);
-				if(driver.getCurrentUrl().contains("pdf")){
-					status=true;
-				}
-
-			}
+		//while(it.hasNext()){
+		// String childWindowID=it.next();
+		// if(!parentWindowID.equalsIgnoreCase(childWindowID)){
+		//  driver.switchTo().window(childWindowID);
+		if(driver.getCurrentUrl().contains("pdf")){
+			status=true;
 		}
-		driver.close();
-		driver.switchTo().window(parentWindowID);
+		//driver.close();
+		//driver.switchTo().window(parentWindowID);
 		return status;
 	}
 

@@ -3186,7 +3186,7 @@ public class HomePageFunctionalityTest extends RFWebsiteBaseTest{
 			env = driver.getEnvironment();
 			storeFrontHomePage = new StoreFrontHomePage(driver);
 			String PWS = storeFrontHomePage.getBizPWS(country, env);
-			storeFrontHomePage.openPWS(PWS);
+			storeFrontHomePage.openPWSSite(country, env);
 			storeFrontHomePage.hoverOnBecomeAConsultantAndClickEnrollNowLink();
 			s_assert.assertTrue(storeFrontHomePage.isProcedurePageIsDisplayedAfterClickPolicyAndProcedureLink(),"Policy and procedure page is not displayed after clicked on policy link");
 			s_assert.assertAll();
@@ -3282,7 +3282,7 @@ public class HomePageFunctionalityTest extends RFWebsiteBaseTest{
 		env = driver.getEnvironment();  
 		storeFrontHomePage = new StoreFrontHomePage(driver);
 		String PWS = storeFrontHomePage.getBizPWS(country, env);
-		storeFrontHomePage.openPWS(PWS);
+		storeFrontHomePage.openPWSSite(country, env);
 		//click Enroll now from the Home-Page..
 		storeFrontHomePage.clickEnrollNowFromBizHomePage();
 		//validate user is navigated to why R+F Page..

@@ -35,7 +35,8 @@ public class StoreFrontRFWebsiteBasePage extends RFBasePage{
 	private final By RODAN_AND_FIELDS_IMG_LOC = By.xpath("//div[@id='header-logo']//a");
 	private final By RODAN_AND_FIELDS_LOGO_IMG_LOC = By.xpath("//img[@title='Rodan+Fields']");
 	private final By WELCOME_DD_EDIT_CRP_LINK_LOC = By.xpath("//a[contains(text(),'Edit')]");
-	private final By WELCOME_USER_DD_LOC = By.id("account-info-button");
+	//private final By WELCOME_USER_DD_LOC = By.id("account-info-button");
+	private final By WELCOME_USER_DD_LOC = By.xpath("//div[@id='account-info-button']/a");
 	private final By WELCOME_DD_ORDERS_LINK_LOC = By.xpath("//a[text()='Orders']");
 	private final By YOUR_ACCOUNT_DROPDOWN_LOC = By.xpath("//button[@class='btn btn-default dropdown-toggle']");
 	private final By WELCOME_DD_BILLING_INFO_LINK_LOC = By.linkText("Billing Info");
@@ -1184,8 +1185,11 @@ public class StoreFrontRFWebsiteBasePage extends RFBasePage{
 	}
 
 	public StoreFrontOrdersPage clickOrdersLinkPresentOnWelcomeDropDown() throws InterruptedException{
+		Actions actions = new Actions(RFWebsiteDriver.driver);
+		driver.waitForElementPresent(WELCOME_USER_DD_LOC);
+		actions.moveToElement(driver.findElement(WELCOME_USER_DD_LOC)).perform();
 		driver.waitForElementPresent(WELCOME_DD_ORDERS_LINK_LOC);
-		driver.click(WELCOME_DD_ORDERS_LINK_LOC);
+		actions.moveToElement(driver.findElement(WELCOME_DD_ORDERS_LINK_LOC)).click().perform();
 		logger.info("User has clicked on orders link from welcome drop down");
 		return new StoreFrontOrdersPage(driver);
 	}

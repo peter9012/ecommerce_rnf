@@ -1166,29 +1166,14 @@ public class StoreFrontRFWebsiteBasePage extends RFBasePage{
 
 	@SuppressWarnings("deprecation")
 	public void hoverOnShopLinkAndClickAllProductsLinks(){
-		Actions actions = new Actions(RFWebsiteDriver.driver);
-		driver.waitForElementPresent(By.id("our-products")); 
-		/*		WebElement shopSkinCare = driver.findElement(By.id("our-products"));
-		actions.moveToElement(shopSkinCare).pause(1000).click().build().perform();*/
-
-		driver.pauseExecutionFor(2000);
-		if(driver.isElementPresent(By.xpath("//ul[@id='dropdown-menu' and @style='display: block;']//a[text()='All Products']"))==false){
-			logger.warn("HEADER LINKS ARE NOT PRESENT..loading the shop URL");
-			driver.get(driver.getCurrentUrl()+"/quick-shop/quickShop");
-		}else{
-			WebElement allProducts = driver.findElement(By.xpath("//ul[@id='dropdown-menu' and @style='display: block;']//a[text()='All Products']"));
-			((JavascriptExecutor) RFWebsiteDriver.driver).executeScript("arguments[0].click();", allProducts);
-			while(true){
-				try{
-					driver.clickByJS(RFWebsiteDriver.driver, driver.findElement(By.xpath(" //ul[@id='dropdown-menu' and @style='display: block;']//a[text()='All Products']")));
-					break;
-				}catch(Exception e){
-					System.out.println("element not clicked..trying again");
-
-				}
-			}
-			logger.info("All products link clicked "); 
-
+		try{
+			driver.waitForElementPresent(By.xpath("//div[@id='header']//a[@id='our-products']"));
+			driver.click(By.xpath("//div[@id='header']//a[@id='our-products']"));
+			driver.pauseExecutionFor(3000);
+			driver.click(By.xpath("//ul[@id='dropdown-menu' and @style='display: block;']//a[text()='All Products']"));
+		}catch(Exception e){
+			driver.get(driver.getCurrentUrl()+"quick-shop/quickShop");
+			driver.waitForPageLoad();
 		}
 		driver.waitForPageLoad();
 		driver.waitForLoadingImageToDisappear();

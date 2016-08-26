@@ -2686,7 +2686,7 @@ public class HomePageFunctionalityTest extends RFWebsiteBaseTest{
 	}
 
 	//Hybris Project-4058:View US consultant's PWS site on Canada as another US Consultant
-	@Test
+	@Test(enabled=false)//US specific test
 	public void testViewUSConsultantPWSSiteOnCanadaAsAnotherUSConsultant_4058() throws InterruptedException{
 		if(driver.getCountry().equalsIgnoreCase("ca")){
 			RFO_DB = driver.getDBNameRFO();

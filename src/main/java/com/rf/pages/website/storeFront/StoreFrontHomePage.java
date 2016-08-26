@@ -2752,9 +2752,15 @@ public class StoreFrontHomePage extends StoreFrontRFWebsiteBasePage {
 	}
 
 	public void clickOnEditMyPWS(){
-		driver.waitForElementPresent(By.xpath("//a[contains(text(),'EDIT MY PWS')]"));
-		driver.click(By.xpath("//a[contains(text(),'EDIT MY PWS')]"));
-	}
+		try{
+			driver.waitForElementPresent(By.xpath("//a[contains(text(),'Edit My PWS')]"));
+			driver.click(By.xpath("//a[contains(text(),'Edit My PWS')]"));
+		}catch(Exception e){
+			driver.get(driver.getCurrentUrl()+"meetYourConsultant/editConsultantInfo/meetYourConsultant");
+			logger.info("Navigated to edit pws page.");
+			driver.waitForPageLoad();
+			driver.pauseExecutionFor(2000);
+		}}
 
 	public void enterPhoneNumberOnEditPWS(String number){
 		driver.waitForElementPresent(By.id("phone"));

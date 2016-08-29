@@ -502,12 +502,27 @@ public class StoreFrontRFWebsiteBasePage extends RFBasePage{
 	}
 
 	public void enterNewBillingCardNumber(String cardNumber){
-		driver.waitForElementPresent(By.id("card-nr"));
-		JavascriptExecutor executor = (JavascriptExecutor) RFWebsiteDriver.driver;
-		driver.type(By.xpath("//*[@id='card-nr']"),cardNumber);
-		executor.executeScript("arguments[0].setAttribute('value', 'VISA')", driver.findElement(By.xpath("//*[@id='cardTypeCode']")));
-		logger.info("Billing card number entered is "+cardNumber);
-	}
+		try{
+			driver.waitForElementPresent(By.id("card-nr"));
+			driver.pauseExecutionFor(3000);
+			driver.click(By.id("card-nr"));
+			String val = cardNumber; 
+			WebElement element = driver.findElement(By.id("card-nr"));
+			element.clear();
+			for (int i = 0; i < val.length(); i++){
+				char c = val.charAt(i);
+				String s = new StringBuilder().append(c).toString();
+				element.sendKeys(s);
+			} } catch(Exception e){     
+				//  driver.waitForPageLoad();
+				driver.quickWaitForElementPresent(By.id("card-nr"));  
+				JavascriptExecutor js = ((JavascriptExecutor)RFWebsiteDriver.driver);
+				js.executeScript("$('#card-nr-masked').hide();$('#card-nr').show(); ", driver.findElement(ADD_NEW_BILLING_CARD_NUMBER_LOC));
+				driver.pauseExecutionFor(2000);  
+				driver.type(ADD_NEW_BILLING_CARD_NUMBER_LOC,cardNumber);
+				js.executeScript("arguments[0].setAttribute('value', 'VISA')", driver.findElement(By.xpath("//*[@id='cardTypeCode']")));
+				logger.info("New Billing card number enterd as "+cardNumber);  
+			}}
 
 	public void enterNewBillingNameOnCard(String nameOnCard){
 		//driver.waitForElementPresent(By.id("card-name"));

@@ -431,7 +431,7 @@ public class UpgradeDowngradeTest extends RFWebsiteBaseTest{
 		storeFrontHomePage.clickOnLoginToTerminateToMyPCAccount();
 		storeFrontHomePage.enterEmailAddress(consultantEmailID);
 		storeFrontHomePage.clickOnEnrollUnderLastUpline();
-		//storeFrontHomePage.hoverOnBecomeAConsultantAndClickEnrollNowLink();
+		storeFrontHomePage.hoverOnBecomeAConsultantAndClickEnrollNowLink();
 		storeFrontHomePage.selectEnrollmentKitPage(kitName, regimenName);		
 		storeFrontHomePage.chooseEnrollmentOption(enrollmentType);
 		storeFrontHomePage.enterEmailAddress(consultantEmailID);
@@ -688,7 +688,7 @@ public class UpgradeDowngradeTest extends RFWebsiteBaseTest{
 	}
 
 	//Hybris Project-4777:Consultant to RC downgrade(Cross Country)
-	@Test
+	@Test(enabled=false)//US specific test wull not execute
 	public void testConsultantToRCDowngrade_4777() throws InterruptedException{
 		int randomNum = CommonUtils.getRandomNum(10000, 1000000);
 		RFO_DB = driver.getDBNameRFO();

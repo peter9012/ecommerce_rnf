@@ -339,10 +339,12 @@ public class StoreFrontHomePage extends StoreFrontRFWebsiteBasePage {
 		logger.info("City entered is "+city);
 	}
 
-	public void selectProvince(String province){		
-		driver.click(By.id("state"));
-		driver.waitForElementPresent(By.xpath("//select[@id='state']/option[contains(text(),'"+province+"')]"));
-		driver.click(By.xpath("//select[@id='state']/option[contains(text(),'"+province+"')]"));
+	public void selectProvince(String province){
+		Select select = new Select(driver.findElement(By.id("state")));
+		//driver.click(By.id("state"));
+		select.selectByVisibleText(province);
+/*		driver.waitForElementPresent(By.xpath("//select[@id='state']/option[contains(text(),'"+province+"')]"));
+		driver.click(By.xpath("//select[@id='state']/option[contains(text(),'"+province+"')]"));*/
 		logger.info("state selected");
 	}
 

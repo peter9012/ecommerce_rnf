@@ -516,8 +516,10 @@ public class StoreFrontAccountInfoPage extends StoreFrontRFWebsiteBasePage{
 		return false;
 	}
 
-	public void enterUserName(String username) throws InterruptedException	{
+	public void enterUserName(String username) throws InterruptedException {
+		Thread.sleep(2000);
 		driver.clear(By.id("username-account"));
+		Thread.sleep(2000);
 		driver.type(By.id("username-account"),username+"\t");
 		driver.waitForLoadingImageToDisappear();
 	}

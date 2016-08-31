@@ -84,15 +84,19 @@ public class RFWebsiteDriver implements RFDriver,WebDriver {
 			driver = new InternetExplorerDriver(capabilities);
 		}
 		else if(propertyFile.getProperty("browser").equalsIgnoreCase("safari"))
-		{	
+		{ 
 			System.setProperty("webdriver.safari.noinstall", "false");
 			DesiredCapabilities capabilities = new DesiredCapabilities();
 			// for clearing cache
 			capabilities.setCapability(CapabilityType.ACCEPT_SSL_CERTS, true);
 			capabilities.setCapability(CapabilityType.ForSeleniumServer.ENSURING_CLEAN_SESSION, true);
+			capabilities.setCapability(CapabilityType.HAS_NATIVE_EVENTS, true);
+			capabilities.setCapability(CapabilityType.ENABLE_PERSISTENT_HOVERING, true);
+			capabilities.setCapability(CapabilityType.SUPPORTS_JAVASCRIPT, true);
+			capabilities.setCapability(CapabilityType.SUPPORTS_FINDING_BY_CSS, true);
+			capabilities.setCapability(CapabilityType.SUPPORTS_ALERTS, true);
 			driver = new SafariDriver(capabilities);
 			pauseExecutionFor(2000);
-			
 		}
 		driver.manage().timeouts().implicitlyWait(15, TimeUnit.SECONDS);
 		driver.manage().window().maximize();
@@ -512,6 +516,7 @@ public class RFWebsiteDriver implements RFDriver,WebDriver {
 		logger.info("URL hit is "+Url);
 		driver.get(Url);
 		waitForPageLoad();
+		pauseExecutionFor(5000);
 	}
 
 	public void click(By locator) {		

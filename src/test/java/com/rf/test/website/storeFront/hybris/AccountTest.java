@@ -303,7 +303,7 @@ public class AccountTest extends RFWebsiteBaseTest{
 		s_assert.assertTrue(storeFrontAccountInfoPage.getErrorMessage().contains("Please enter valid username"),"Validation for username more than 6 alphanumneric characters combination with atleast a special char IS NOT PRESENT");
 		storeFrontAccountInfoPage.enterUserName(TestConstants.CONSULTANT_USERNAME_MORE_THAN_6_ALPHA_WITH_SINGLE_SPCL_CHAR);
 		storeFrontAccountInfoPage.clickSaveAccountPageInfo();
-		s_assert.assertTrue(storeFrontAccountInfoPage.enterUserNameWithSpclChar(TestConstants.CONSULTANT_USERNAME_PREFIX),"validity message not present");
+		s_assert.assertTrue(storeFrontAccountInfoPage.enterUserNameWithSpclChar(TestConstants.CONSULTANT_USERNAME_MORE_THAN_6_ALPHA_WITH_SINGLE_SPCL_CHAR),"validity message not present");
 		storeFrontAccountInfoPage.enterUserName(username);
 		storeFrontAccountInfoPage.clickSaveAccountPageInfo();
 		storeFrontAccountInfoPage.enterUserName(anotherConsultantEmailID);

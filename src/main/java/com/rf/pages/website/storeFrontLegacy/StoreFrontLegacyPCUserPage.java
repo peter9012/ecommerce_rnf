@@ -79,6 +79,7 @@ public class StoreFrontLegacyPCUserPage extends StoreFrontLegacyRFWebsiteBasePag
 		driver.click(CHANGED_MY_MIND_BTN);
 		logger.info("I changed my mind button clicked");
 		driver.waitForPageLoad();
+		driver.pauseExecutionFor(5000);
 	}
 
 	public void selectReasonForPCTermination(){

@@ -1179,15 +1179,14 @@ public class StoreFrontRFWebsiteBasePage extends RFBasePage{
 		driver.waitForLoadingImageToDisappear();
 	}
 
-	@SuppressWarnings("deprecation")
 	public void hoverOnShopLinkAndClickAllProductsLinks(){
 		try{
-			driver.waitForElementPresent(By.xpath("//div[@id='header']//a[@id='our-products']"));
-			driver.click(By.xpath("//div[@id='header']//a[@id='our-products']"));
+			driver.waitForElementPresent(By.xpath("//div[@id='header']/following::a[@id='our-products']"));
+			driver.click(By.xpath("//div[@id='header']/following::a[@id='our-products']"));
 			driver.pauseExecutionFor(3000);
-			driver.click(By.xpath("//ul[@id='dropdown-menu' and @style='display: block;']//a[text()='All Products']"));
+			driver.click(By.xpath(".//*[@id='dropdown-menu']/following::a[text()='All Products']"));
 		}catch(Exception e){
-			driver.get(driver.getCurrentUrl()+"quick-shop/quickShop");
+			driver.get(driver.getCurrentUrl()+"/quick-shop/quickShop");
 			driver.waitForPageLoad();
 		}
 		driver.waitForPageLoad();

@@ -4,12 +4,13 @@ import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.openqa.selenium.Alert;
 import org.openqa.selenium.By;
+import org.openqa.selenium.JavascriptExecutor;
 import org.openqa.selenium.NoSuchElementException;
+import org.openqa.selenium.WebElement;
 import org.openqa.selenium.interactions.Actions;
 
 import com.rf.core.driver.website.RFWebsiteDriver;
 import com.rf.core.website.constants.TestConstantsRFL;
-
 import com.rf.pages.RFBasePage;
 
 public class StoreFrontLegacyRFWebsiteBasePage extends RFBasePage{
@@ -96,16 +97,22 @@ public class StoreFrontLegacyRFWebsiteBasePage extends RFBasePage{
 			logger.info("Add to cart button is clicked");
 
 		}
-
-
-
-
-
 	}
+
 	public void mouseHoverOnMyShoppingBagLinkAndClickOnCheckoutBtn(){
-		actions =  new Actions(RFWebsiteDriver.driver);
-		actions.moveToElement(driver.findElement(MY_SHOPPING_BAG_LINK)).click(driver.findElement(CHECKOUT_BTN_OF_MY_SHOPPING_BAG_LINK)).build().perform();
+		WebElement allProducts = driver.findElement(MY_SHOPPING_BAG_LINK);
+		String strJavaScript = "var element = arguments[0];"
+				+ "var mouseEventObj = document.createEvent('MouseEvents');"
+				+ "mouseEventObj.initEvent( 'mouseover', true, true );"
+				+ "element.dispatchEvent(mouseEventObj);";
+		JavascriptExecutor js = (JavascriptExecutor) (RFWebsiteDriver.driver);
+		js.executeScript(strJavaScript, allProducts);
+		logger.info("Mouse hover performed on my shopping bag link");
+		js.executeScript("arguments[0].click();",driver.findElement(CHECKOUT_BTN_OF_MY_SHOPPING_BAG_LINK));
+		//actions =  new Actions(RFWebsiteDriver.driver);
+		//actions.moveToElement(driver.findElement(MY_SHOPPING_BAG_LINK)).click(driver.findElement(CHECKOUT_BTN_OF_MY_SHOPPING_BAG_LINK)).build().perform();
 		logger.info("Mouse hover on My shopping bag link and clicked on checkout button");
+		driver.waitForPageLoad();
 	}
 
 
@@ -199,7 +206,11 @@ public class StoreFrontLegacyRFWebsiteBasePage extends RFBasePage{
 
 	public void navigateToBackPage(){
 		driver.waitForPageLoad();
-		driver.navigate().back();
+		driver.pauseExecutionFor(1000);
+		((JavascriptExecutor)RFWebsiteDriver.driver).executeScript("history.back");
+		((JavascriptExecutor)RFWebsiteDriver.driver).executeScript("history.go(-1)");
+		//driver.navigate().back();
+		driver.waitForPageLoad();
 	}
 
 	public String getOrderConfirmationTextMsgAfterOrderPlaced(){
@@ -252,6 +263,7 @@ public class StoreFrontLegacyRFWebsiteBasePage extends RFBasePage{
 		driver.click(CHANGE_BILLING_INFO);
 		logger.info("Change billing information button clicked");
 		driver.waitForPageLoad();
+		driver.pauseExecutionFor(5000);
 	}
 
 	public void clickUseThisBillingInformationBtn(){

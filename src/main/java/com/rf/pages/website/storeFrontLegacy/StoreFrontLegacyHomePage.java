@@ -263,7 +263,7 @@ public class StoreFrontLegacyHomePage extends StoreFrontLegacyRFWebsiteBasePage{
 	private static final By ORDER_DETAILS_POPUP = By.xpath("//h2[@class='FL modal']//cufontext[contains(text(),'Order')]/../following-sibling::cufon/cufontext[text()='Details']");
 	private static final By CLOSE_OF_ORDER_DETAILS_POPUP = By.xpath("//h2[@class='FL modal']/following::cufontext[text()='X']/..");
 	private static final By BILLING_NAME_FOR_BILLING_PROFILE_RC = By.id("ctl00_ctl00_ctl00_ContentPlaceHolder1_ContentPlaceHolder1_MainContent_uxBillingInfo_uxBillingEditor_uxBillingProfileName");
-	
+
 	public StoreFrontLegacyHomePage(RFWebsiteDriver driver) {
 		super(driver);
 		// TODO Auto-generated constructor stub
@@ -420,11 +420,12 @@ public class StoreFrontLegacyHomePage extends StoreFrontLegacyRFWebsiteBasePage{
 		driver.quickWaitForElementPresent(CHARGE_AND_ENROLL_ME_BTN_LOC);
 		driver.click(CHARGE_AND_ENROLL_ME_BTN_LOC);
 		logger.info("Charge and enroll me button clicked");
-		driver.pauseExecutionFor(2000);
-		driver.quickWaitForElementPresent(CONFIRM_AUTOSHIP_BTN_LOC);
+		driver.pauseExecutionFor(10000);
+		driver.waitForElementPresent(CONFIRM_AUTOSHIP_BTN_LOC);
 		driver.click(CONFIRM_AUTOSHIP_BTN_LOC);
 		logger.info("Confirm autoship button clicked");
 		driver.waitForPageLoad();
+		driver.pauseExecutionFor(5000);
 	}
 
 	public boolean isCongratulationsMessageAppeared(){
@@ -475,12 +476,22 @@ public class StoreFrontLegacyHomePage extends StoreFrontLegacyRFWebsiteBasePage{
 	}
 
 	public void clickEnrollNowBtnOnbizPWSPage(){
-		//driver.get(driver.getCurrentUrl()+"/Pages/BusinessSystem/WhyRF/GettingStarted");
-		driver.click(BECOME_A_CONSULTANT_MENU);
-		//		driver.quickWaitForElementPresent(ENROLL_NOW_ON_BIZ_PWS_PAGE_LOC);
-		driver.click(ENROLL_NOW_ON_BIZ_PWS_PAGE_LOC);
-		//		driver.get(driver.getCurrentUrl()+"/NewEnrollment/EnrollmentKit");
-		logger.info("Enroll Now button on biz PWS page is clicked");
+		driver.waitForElementPresent(BECOME_A_CONSULTANT_MENU);
+		String strJavaScript = "var element = arguments[0];"
+				+ "var mouseEventObj = document.createEvent('MouseEvents');"
+				+ "mouseEventObj.initEvent( 'mouseover', true, true );"
+				+ "element.dispatchEvent(mouseEventObj);";
+		JavascriptExecutor js = (JavascriptExecutor) (RFWebsiteDriver.driver);
+		js.executeScript(strJavaScript, driver.findElement(BECOME_A_CONSULTANT_MENU));
+		logger.info("Mouse hover performed");
+		driver.pauseExecutionFor(5000);
+		js.executeScript("arguments[0].click();",driver.findElement( ENROLL_NOW_ON_BIZ_PWS_PAGE_LOC));
+		logger.info("Enrolled now link clicked");
+		//driver.click(BECOME_A_CONSULTANT_MENU);
+		//  driver.quickWaitForElementPresent(ENROLL_NOW_ON_BIZ_PWS_PAGE_LOC);
+		//driver.click(ENROLL_NOW_ON_BIZ_PWS_PAGE_LOC);
+		//  driver.get(driver.getCurrentUrl()+"/NewEnrollment/EnrollmentKit");
+		//logger.info("Enroll Now button on biz PWS page is clicked");
 		driver.waitForPageLoad();
 	}
 
@@ -496,13 +507,15 @@ public class StoreFrontLegacyHomePage extends StoreFrontLegacyRFWebsiteBasePage{
 		driver.click(RODAN_AND_FIELDS_IMG_LOC);
 		logger.info("Rodan and Fields logo clicked"); 
 		driver.waitForPageLoad();
+		driver.pauseExecutionFor(3000);
 	}
 
-	public void logOut(){
-		driver.quickWaitForElementPresent(LOGOUT_LOC);
-		driver.click(LOGOUT_LOC);
-		logger.info("Log Out Link clicked"); 
-		driver.waitForPageLoad();
+	public void logout(){
+		driver.waitForElementPresent(By.xpath("//a[text()='Log-Out' or text()='Log Out']"));
+		driver.click(By.xpath("//a[text()='Log-Out' or text()='Log Out']"));
+		logger.info("Logout done");  
+		driver.pauseExecutionFor(3000);
+		driver.waitForPageLoad();  
 	}
 
 	public boolean validateExistingConsultantPopUp(String emailAddress){
@@ -728,7 +741,8 @@ public class StoreFrontLegacyHomePage extends StoreFrontLegacyRFWebsiteBasePage{
 		driver.click(LOGIN_BTN_LOC);
 		logger.info("login button clicked");
 		driver.waitForPageLoad();
-		return new StoreFrontLegacyPCUserPage(driver);		
+		driver.pauseExecutionFor(5000);
+		return new StoreFrontLegacyPCUserPage(driver);  
 	}
 
 	public void loginAsRCUser(String username,String password){
@@ -1471,12 +1485,14 @@ public class StoreFrontLegacyHomePage extends StoreFrontLegacyRFWebsiteBasePage{
 		driver.quickWaitForElementPresent(By.xpath(String.format(myAccountLinkAfterLoginLink, linkName)));
 		driver.click(By.xpath(String.format(myAccountLinkAfterLoginLink, linkName)));
 		logger.info("my account link is clicked");
+		driver.waitForPageLoad();
 	}
 
 	public void clickEditOrderLink(){
 		driver.quickWaitForElementPresent(EDIT_ORDER_UNDER_MY_ACCOUNT_LOC);
 		driver.click(EDIT_ORDER_UNDER_MY_ACCOUNT_LOC);
 		logger.info("edit order link is clicked"); 
+		driver.waitForPageLoad();
 	}
 
 	public void clickChangeLinkUnderShippingToOnPWS(){
@@ -1484,6 +1500,7 @@ public class StoreFrontLegacyHomePage extends StoreFrontLegacyRFWebsiteBasePage{
 		driver.click(CHANGE_LINK_FOR_SHIPPING_INFO_ON_PWS);
 		logger.info("Change Link under shipping to clicked");
 		driver.waitForPageLoad();
+		driver.pauseExecutionFor(5000);
 	}
 
 	public void enterShippingProfileDetailsForPWS(String addressName, String firstName,String lastName,String addressLine1,String postalCode,String phnNumber){

@@ -421,9 +421,9 @@ public class TestConstants {
 	public static final String DSV_PWS_SUFFIX ="myrandf";
 	public static final String DSV_NEXT_CRP_TEXT = "Next CRP";
 
-	public static final String DSV_ADDRESS_LINE_1_CA = "5502 - 54th Street";
-	public static final String DSV_CITY_CA = "Bonnyville";
-	public static final String DSV_POSTAL_CODE_CA = "T9N 2H4";
+	public static final String DSV_ADDRESS_LINE_1_CA = "5940 Macleod Trail SW Suite 500";
+	public static final String DSV_CITY_CA = "Calgary";
+	public static final String DSV_POSTAL_CODE_CA = "T2H 2G4";
 	public static final String DSV_PHONE_NUMBER = "8067736419";
 	//public static final String DSV_SECURITY_CODE = "5487";
 	public static final String DSV_SECURITY_CODE = "7475";

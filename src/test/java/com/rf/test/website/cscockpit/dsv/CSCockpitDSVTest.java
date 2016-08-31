@@ -131,7 +131,7 @@ public class CSCockpitDSVTest extends RFDSVCscockpitWebsiteBaseTest{
 	public void testVerifyAddAndEditBillingForPC_5497() throws InterruptedException{
 		int randomNum = CommonUtils.getRandomNum(1000, 9999);
 		String newBillingProfileName = TestConstants.NEW_BILLING_PROFILE_NAME+" "+randomNum;
-		String editBillingProfileName = TestConstants.NEW_BILLING_PROFILE_NAME+" "+randomNum+"edit";
+		String editBillingProfileName = TestConstants.NEW_BILLING_PROFILE_NAME+" "+randomNum+" edit";
 		cscockpitCustomerSearchTabPage.clickCustomerSearchTab();
 		cscockpitCustomerSearchTabPage.selectCustomerTypeFromDropDownInCustomerSearchTab("PC");
 		cscockpitCustomerSearchTabPage.selectAccountStatusFromDropDownInCustomerSearchTab("Active");
@@ -191,9 +191,9 @@ public class CSCockpitDSVTest extends RFDSVCscockpitWebsiteBaseTest{
 		String province = null;
 		String phoneNumber = null;
 		String contry = null;		
-		addressLine = TestConstants.ADDRESS_LINE_1_CA;
-		city = TestConstants.CITY_CA;
-		postal = TestConstants.POSTAL_CODE_CA;
+		addressLine = TestConstants.DSV_ADDRESS_LINE_1_CA;
+		city = TestConstants.DSV_CITY_CA;
+		postal = TestConstants.DSV_POSTAL_CODE_CA;
 		province = TestConstants.PROVINCE_ALBERTA;
 		phoneNumber = TestConstants.PHONE_NUMBER_CA;
 		contry = "Canada";
@@ -215,7 +215,7 @@ public class CSCockpitDSVTest extends RFDSVCscockpitWebsiteBaseTest{
 		cscockpitCustomerTabPage.clickUseThisAddressBtn();
 		s_assert.assertTrue(cscockpitCustomerTabPage.getFirstShippingAddressProfileName().contains(attendentFirstName), "shipping profile name expected in customer tab page "+attendentFirstName+" actual on UI "+cscockpitCustomerTabPage.getFirstShippingAddressProfileName());
 		cscockpitCustomerTabPage.clickEditButtonOfShippingAddressInCustomerTab();
-		attendentFirstName= attendentFirstName+"edit";
+		attendentFirstName= attendentFirstName+" edit";
 		cscockpitCustomerTabPage.enterShippingInfoInAddNewPaymentProfilePopupWithoutSaveBtn(attendentFirstName, addressLine, city, postal, contry, province, phoneNumber);
 //		cscockpitCustomerTabPage.selectCreditCardDropDownImgOnNewShippingAddressPopUp();
 //		cscockpitCustomerTabPage.enterCVVOnNewShippingAddressPopUp(TestConstants.DSV_SECURITY_CODE);
@@ -236,9 +236,9 @@ public class CSCockpitDSVTest extends RFDSVCscockpitWebsiteBaseTest{
 		String province = null;
 		String phoneNumber = null;
 		String contry = null;		
-		addressLine = TestConstants.ADDRESS_LINE_1_CA;
-		city = TestConstants.CITY_CA;
-		postal = TestConstants.POSTAL_CODE_CA;
+		addressLine = TestConstants.DSV_ADDRESS_LINE_1_CA;
+		city = TestConstants.DSV_CITY_CA;
+		postal = TestConstants.DSV_POSTAL_CODE_CA;
 		province = TestConstants.PROVINCE_ALBERTA;
 		phoneNumber = TestConstants.PHONE_NUMBER_CA;
 		contry = "Canada";
@@ -260,7 +260,7 @@ public class CSCockpitDSVTest extends RFDSVCscockpitWebsiteBaseTest{
 		cscockpitCustomerTabPage.clickUseThisAddressBtn();
 		s_assert.assertTrue(cscockpitCustomerTabPage.getFirstShippingAddressProfileName().contains(attendentFirstName), "shipping profile name expected in customer tab page "+attendentFirstName+" actual on UI "+cscockpitCustomerTabPage.getFirstShippingAddressProfileName());
 		cscockpitCustomerTabPage.clickEditButtonOfShippingAddressInCustomerTab();
-		attendentFirstName= attendentFirstName+"edit";
+		attendentFirstName= attendentFirstName+" edit";
 		cscockpitCustomerTabPage.enterShippingInfoInAddNewPaymentProfilePopupWithoutSaveBtn(attendentFirstName, addressLine, city, postal, contry, province, phoneNumber);
 		//cscockpitCustomerTabPage.selectCreditCardDropDownImgOnNewShippingAddressPopUp();
 		//cscockpitCustomerTabPage.enterCVVOnNewShippingAddressPopUp(TestConstants.DSV_SECURITY_CODE);
@@ -281,9 +281,9 @@ public class CSCockpitDSVTest extends RFDSVCscockpitWebsiteBaseTest{
 		String province = null;
 		String phoneNumber = null;
 		String contry = null;		
-		addressLine = TestConstants.ADDRESS_LINE_1_CA;
-		city = TestConstants.CITY_CA;
-		postal = TestConstants.POSTAL_CODE_CA;
+		addressLine = TestConstants.DSV_ADDRESS_LINE_1_CA;
+		city = TestConstants.DSV_CITY_CA;
+		postal = TestConstants.DSV_POSTAL_CODE_CA;
 		province = TestConstants.PROVINCE_ALBERTA;
 		phoneNumber = TestConstants.PHONE_NUMBER_CA;
 		contry = "Canada";
@@ -305,7 +305,7 @@ public class CSCockpitDSVTest extends RFDSVCscockpitWebsiteBaseTest{
 		cscockpitCustomerTabPage.clickUseThisAddressBtn();
 		s_assert.assertTrue(cscockpitCustomerTabPage.getFirstShippingAddressProfileName().contains(attendentFirstName), "shipping profile name expected in customer tab page "+attendentFirstName+" actual on UI "+cscockpitCustomerTabPage.getFirstShippingAddressProfileName());
 		cscockpitCustomerTabPage.clickEditButtonOfShippingAddressInCustomerTab();
-		attendentFirstName= attendentFirstName+"edit";
+		attendentFirstName= attendentFirstName+" edit";
 		cscockpitCustomerTabPage.enterShippingInfoInAddNewPaymentProfilePopupWithoutSaveBtn(attendentFirstName, addressLine, city, postal, contry, province, phoneNumber);
 //		cscockpitCustomerTabPage.selectCreditCardDropDownImgOnNewShippingAddressPopUp();
 //		cscockpitCustomerTabPage.enterCVVOnNewShippingAddressPopUp(TestConstants.DSV_SECURITY_CODE);

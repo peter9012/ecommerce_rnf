@@ -138,7 +138,7 @@ public class StorefrontDSVTest extends RFDSVStoreFrontWebsiteBaseTest{
 		int randomNum = CommonUtils.getRandomNum(1000, 9999);
 		String fName = "RFAutoSF"; 
 		String lName1 = String.valueOf(randomNum);
-		String lName2 = lName1+"edit";
+		String lName2 = lName1+" edit";
 		String name1 = fName+" "+lName1;
 		String name2 = fName+" "+lName2;
 		dsvStoreFrontHomePage = new DSVStoreFrontHomePage(driver);
@@ -165,7 +165,7 @@ public class StorefrontDSVTest extends RFDSVStoreFrontWebsiteBaseTest{
 		int randomNum = CommonUtils.getRandomNum(1000, 9999);
 		String fName = "RFAutoSF"; 
 		String lName1 = String.valueOf(randomNum);
-		String lName2 = lName1+"edit";
+		String lName2 = lName1+" edit";
 		String name1 = fName+" "+lName1;
 		String name2 = fName+" "+lName2;
 		dsvStoreFrontHomePage = new DSVStoreFrontHomePage(driver);
@@ -321,7 +321,7 @@ public class StorefrontDSVTest extends RFDSVStoreFrontWebsiteBaseTest{
 		int randomNum = CommonUtils.getRandomNum(1000, 9999);
 		String fName = "RFAutoSF"; 
 		String lName1 = String.valueOf(randomNum);
-		String lName2 = lName1+"edit";
+		String lName2 = lName1+" edit";
 		String name1 = fName+" "+lName1;
 		String name2 = fName+" "+lName2;
 		dsvStoreFrontHomePage = new DSVStoreFrontHomePage(driver);
@@ -349,7 +349,7 @@ public class StorefrontDSVTest extends RFDSVStoreFrontWebsiteBaseTest{
 		int randomNum = CommonUtils.getRandomNum(1000, 9999);
 		String fName = "RFAutoSF"; 
 		String lName1 = String.valueOf(randomNum);
-		String lName2 = lName1+"edit";
+		String lName2 = lName1+" edit";
 		String name1 = fName+" "+lName1;
 		String name2 = fName+" "+lName2;		
 		dsvStoreFrontHomePage = new DSVStoreFrontHomePage(driver);
@@ -439,7 +439,7 @@ public class StorefrontDSVTest extends RFDSVStoreFrontWebsiteBaseTest{
 		int randomNum = CommonUtils.getRandomNum(1000, 9999);
 		String fName = "RFAutoSF"; 
 		String lName1 = String.valueOf(randomNum);
-		String lName2 = lName1+"edit";
+		String lName2 = lName1+" edit";
 		String name1 = fName+" "+lName1;
 		String name2 = fName+" "+lName2;
 		dsvStoreFrontHomePage = new DSVStoreFrontHomePage(driver);
@@ -467,11 +467,13 @@ public class StorefrontDSVTest extends RFDSVStoreFrontWebsiteBaseTest{
 		int randomNum = CommonUtils.getRandomNum(1000, 9999);
 		String fName = "RFAutoSF"; 
 		String lName1 = String.valueOf(randomNum);
-		String lName2 = lName1+"edit";
+		String lName2 = lName1+" edit";
 		String name1 = fName+" "+lName1;
 		String name2 = fName+" "+lName2;
 		dsvStoreFrontHomePage = new DSVStoreFrontHomePage(driver);
 		String baseURL = dsvStoreFrontHomePage.getBaseURL();
+		System.out.println("baseURL.."+baseURL);
+		System.out.println("currentURL.."+dsvStoreFrontHomePage.getWebdriver().getCurrentUrl());
 		s_assert.assertTrue(dsvStoreFrontHomePage.getWebdriver().getCurrentUrl().contains(baseURL), "RC is not corp site after login,the url coming is "+dsvStoreFrontHomePage.getWebdriver().getCurrentUrl());
 		s_assert.assertTrue(dsvStoreFrontHomePage.isUserNameDropDownPresent(), "Home page doesn't have the username dropdown");		
 		dsvStoreFrontHomePage.clickWelcomeDropDown();

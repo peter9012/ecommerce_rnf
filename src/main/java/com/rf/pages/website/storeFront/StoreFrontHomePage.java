@@ -498,9 +498,15 @@ public class StoreFrontHomePage extends StoreFrontRFWebsiteBasePage {
 	}
 
 	public void enterCardNumber(String cardNumber){
-		driver.waitForElementPresent(By.id("card-nr"));
+/*		driver.waitForElementPresent(By.id("card-nr"));
 		driver.type(By.id("card-nr"),cardNumber+"\t");
-		logger.info("card number entered as "+cardNumber);
+		logger.info("card number entered as "+cardNumber);*/
+		 driver.waitForElementPresent(By.xpath("//*[@id='card-nr']"));
+         JavascriptExecutor executor = (JavascriptExecutor) RFWebsiteDriver.driver;
+         //executor.executeScript("arguments[0].setAttribute('value', '"+cardNumber+"')", driver.findElement(By.xpath("//*[@id='card-nr']")));
+         driver.type(By.xpath("//*[@id='card-nr']"),cardNumber);
+         executor.executeScript("arguments[0].setAttribute('value', 'VISA')", driver.findElement(By.xpath("//*[@id='cardTypeCode']")));
+         logger.info("card number entered as "+cardNumber);
 	}
 
 	public void enterNameOnCard(String nameOnCard){

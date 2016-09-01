@@ -512,10 +512,14 @@ public class StoreFrontRFWebsiteBasePage extends RFBasePage{
 	}
 
 	public void selectNewBillingCardExpirationDate(){
-		driver.click(By.id("expiryMonth"));
-		driver.click(By.xpath("//select[@id='expiryMonth']/option[10]"));
-		driver.click(By.id("expiryYear"));
-		driver.click(By.xpath("//select[@id='expiryYear']/option[10]"));
+		Select select01 = new Select(driver.findElement(By.id("expiryMonth")));
+		//driver.click(By.id("expiryMonth"));
+		select01.selectByValue("09");
+		//driver.click(By.xpath("//select[@id='expiryMonth']/option[10]"));
+		Select select02 = new Select(driver.findElement(By.id("expiryYear")));
+		//driver.click(By.id("expiryYear"));
+		//driver.click(By.xpath("//select[@id='expiryYear']/option[10]"));
+		select02.selectByValue("2025");
 		logger.info("expiration date is selected");
 	}
 

@@ -53,7 +53,7 @@ public class StoreFrontHomePage extends StoreFrontRFWebsiteBasePage {
 		driver.type(USERNAME_TXTFLD_LOC, username);
 		driver.type(PASSWORD_TXTFLD_LOC, password);   
 		driver.click(LOGIN_BTN_LOC);
-		clickOnAcceptSecurityCertificate();		
+		/*clickOnAcceptSecurityCertificate();*/		
 		dismissPolicyPopup();
 		clickRenewLater();
 		logger.info("login button clicked");
@@ -70,7 +70,7 @@ public class StoreFrontHomePage extends StoreFrontRFWebsiteBasePage {
 		logger.info("login username is "+username);
 		logger.info("login password is "+password);
 		driver.click(LOGIN_BTN_LOC);
-		clickOnAcceptSecurityCertificate();
+		/*clickOnAcceptSecurityCertificate();*/
 		dismissPolicyPopup();
 		clickRenewLater();
 		logger.info("login button clicked");
@@ -4167,7 +4167,7 @@ public class StoreFrontHomePage extends StoreFrontRFWebsiteBasePage {
 		driver.click(By.xpath("//span[@class='icon-close']"));
 	}
 
-	public void clickOnAcceptSecurityCertificate(){
+/*	public void clickOnAcceptSecurityCertificate(){
 		if(driver.getBrowser().equalsIgnoreCase("ie")){
 			try{
 				driver.waitForPageLoad();
@@ -4177,6 +4177,6 @@ public class StoreFrontHomePage extends StoreFrontRFWebsiteBasePage {
 				logger.info("No Certificate error");
 			}
 		}
-	}
+	}*/
 
 }

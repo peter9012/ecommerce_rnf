@@ -8,6 +8,5 @@ output/
 buildHistory/
 test-output/
 *.log
-
 *DS_Store
 logs/rf-info.html

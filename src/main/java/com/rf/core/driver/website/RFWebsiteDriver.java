@@ -49,7 +49,7 @@ import com.rf.core.utils.PropertyFile;
 public class RFWebsiteDriver implements RFDriver,WebDriver {
 	public static WebDriver driver; // added static and changed visibility from public to private
 	private PropertyFile propertyFile;
-	private static int DEFAULT_TIMEOUT = 30;
+	private static int DEFAULT_TIMEOUT = 50;
 	private static int DEFAULT_TIMEOUT_CSCOCKPIT = 60;
 
 	public RFWebsiteDriver(PropertyFile propertyFile) {

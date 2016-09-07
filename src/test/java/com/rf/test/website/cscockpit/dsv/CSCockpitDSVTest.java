@@ -212,7 +212,7 @@ public class CSCockpitDSVTest extends RFDSVCscockpitWebsiteBaseTest{
 //		cscockpitCustomerTabPage.selectCreditCardDropDownImgOnNewShippingAddressPopUp();
 //		cscockpitCustomerTabPage.enterCVVOnNewShippingAddressPopUp(TestConstants.DSV_SECURITY_CODE);
 		cscockpitCustomerTabPage.clickCreateNewAddressBtn();
-		cscockpitCustomerTabPage.clickUseThisAddressBtn();
+		cscockpitCustomerTabPage.clickUseEnteredAddressBtn();
 		s_assert.assertTrue(cscockpitCustomerTabPage.getFirstShippingAddressProfileName().contains(attendentFirstName), "shipping profile name expected in customer tab page "+attendentFirstName+" actual on UI "+cscockpitCustomerTabPage.getFirstShippingAddressProfileName());
 		cscockpitCustomerTabPage.clickEditButtonOfShippingAddressInCustomerTab();
 		attendentFirstName= attendentFirstName+" edit";
@@ -220,7 +220,7 @@ public class CSCockpitDSVTest extends RFDSVCscockpitWebsiteBaseTest{
 //		cscockpitCustomerTabPage.selectCreditCardDropDownImgOnNewShippingAddressPopUp();
 //		cscockpitCustomerTabPage.enterCVVOnNewShippingAddressPopUp(TestConstants.DSV_SECURITY_CODE);
 		cscockpitCustomerTabPage.clickUpdateAddressBtn();
-		cscockpitCustomerTabPage.clickUseThisAddressBtn();
+		cscockpitCustomerTabPage.clickUseEnteredAddressBtn();
 		s_assert.assertTrue(cscockpitCustomerTabPage.getFirstShippingAddressProfileName().contains(attendentFirstName), "shipping profile name expected in customer tab page "+attendentFirstName+" actual on UI "+cscockpitCustomerTabPage.getFirstShippingAddressProfileName());
 		s_assert.assertAll();
 	}
@@ -257,7 +257,7 @@ public class CSCockpitDSVTest extends RFDSVCscockpitWebsiteBaseTest{
 		//cscockpitCustomerTabPage.selectCreditCardDropDownImgOnNewShippingAddressPopUp();
 		//cscockpitCustomerTabPage.enterCVVOnNewShippingAddressPopUp(TestConstants.DSV_SECURITY_CODE);
 		cscockpitCustomerTabPage.clickCreateNewAddressBtn();
-		cscockpitCustomerTabPage.clickUseThisAddressBtn();
+		cscockpitCustomerTabPage.clickUseEnteredAddressBtn();
 		s_assert.assertTrue(cscockpitCustomerTabPage.getFirstShippingAddressProfileName().contains(attendentFirstName), "shipping profile name expected in customer tab page "+attendentFirstName+" actual on UI "+cscockpitCustomerTabPage.getFirstShippingAddressProfileName());
 		cscockpitCustomerTabPage.clickEditButtonOfShippingAddressInCustomerTab();
 		attendentFirstName= attendentFirstName+" edit";
@@ -265,7 +265,7 @@ public class CSCockpitDSVTest extends RFDSVCscockpitWebsiteBaseTest{
 		//cscockpitCustomerTabPage.selectCreditCardDropDownImgOnNewShippingAddressPopUp();
 		//cscockpitCustomerTabPage.enterCVVOnNewShippingAddressPopUp(TestConstants.DSV_SECURITY_CODE);
 		cscockpitCustomerTabPage.clickUpdateAddressBtn();
-		cscockpitCustomerTabPage.clickUseThisAddressBtn();
+		cscockpitCustomerTabPage.clickUseEnteredAddressBtn();
 		s_assert.assertTrue(cscockpitCustomerTabPage.getFirstShippingAddressProfileName().contains(attendentFirstName), "shipping profile name expected in customer tab page "+attendentFirstName+" actual on UI "+cscockpitCustomerTabPage.getFirstShippingAddressProfileName());
 		s_assert.assertAll();
 	}
@@ -302,7 +302,7 @@ public class CSCockpitDSVTest extends RFDSVCscockpitWebsiteBaseTest{
 //		cscockpitCustomerTabPage.selectCreditCardDropDownImgOnNewShippingAddressPopUp();
 //		cscockpitCustomerTabPage.enterCVVOnNewShippingAddressPopUp(TestConstants.DSV_SECURITY_CODE);
 		cscockpitCustomerTabPage.clickCreateNewAddressBtn();
-		cscockpitCustomerTabPage.clickUseThisAddressBtn();
+		cscockpitCustomerTabPage.clickUseEnteredAddressBtn();
 		s_assert.assertTrue(cscockpitCustomerTabPage.getFirstShippingAddressProfileName().contains(attendentFirstName), "shipping profile name expected in customer tab page "+attendentFirstName+" actual on UI "+cscockpitCustomerTabPage.getFirstShippingAddressProfileName());
 		cscockpitCustomerTabPage.clickEditButtonOfShippingAddressInCustomerTab();
 		attendentFirstName= attendentFirstName+" edit";
@@ -310,7 +310,7 @@ public class CSCockpitDSVTest extends RFDSVCscockpitWebsiteBaseTest{
 //		cscockpitCustomerTabPage.selectCreditCardDropDownImgOnNewShippingAddressPopUp();
 //		cscockpitCustomerTabPage.enterCVVOnNewShippingAddressPopUp(TestConstants.DSV_SECURITY_CODE);
 		cscockpitCustomerTabPage.clickUpdateAddressBtn();
-		cscockpitCustomerTabPage.clickUseThisAddressBtn();
+		cscockpitCustomerTabPage.clickUseEnteredAddressBtn();
 		s_assert.assertTrue(cscockpitCustomerTabPage.getFirstShippingAddressProfileName().contains(attendentFirstName), "shipping profile name expected in customer tab page "+attendentFirstName+" actual on UI "+cscockpitCustomerTabPage.getFirstShippingAddressProfileName());
 		s_assert.assertAll();
 	}

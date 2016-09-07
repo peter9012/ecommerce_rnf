@@ -46,9 +46,9 @@ public class RFWebsiteBaseTest extends RFBaseTest {
 	 */
 	@BeforeSuite(alwaysRun=true)
 	public void setUp() throws Exception {
-		driver.loadApplication();                               
+		driver.loadApplication();
 		logger.info("Application loaded");                                                            
-		driver.setDBConnectionString();                
+		driver.setDBConnectionString();
 	}
 
 	public void navigateToStoreFrontBaseURL(){
@@ -69,12 +69,14 @@ public class RFWebsiteBaseTest extends RFBaseTest {
 		if(driver.getURL().contains("cscockpit")==true||driver.getURL().contains("salesforce")==true){  
 
 		}else{
-			try{
-				logout();		
-			}catch(NoSuchElementException e){
-
-			}   
-		}		           
+//			try{
+//				logout();		
+//			}catch(NoSuchElementException e){
+//
+//			} 
+			if(isLogoutBtnPresent())
+				logout();
+		}	
 		if(country.equalsIgnoreCase("ca"))
 			countryId = "40";
 		else if(country.equalsIgnoreCase("us"))
@@ -156,9 +158,17 @@ public class RFWebsiteBaseTest extends RFBaseTest {
 		}
 		catch(Exception e)
 		{
-			
+
 		}
-		
+
+	}
+
+	public boolean isLogoutBtnPresent(){
+		int listSize = driver.findElements(By.id("account-info-button")).size();
+		if(listSize>0)
+			return true;
+		else
+			return false;
 	}
 
 	// This assertion for the UI Texts

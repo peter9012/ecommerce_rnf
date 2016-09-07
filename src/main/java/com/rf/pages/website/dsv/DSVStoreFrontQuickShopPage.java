@@ -6,8 +6,10 @@ import java.util.List;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.openqa.selenium.By;
+import org.openqa.selenium.JavascriptExecutor;
 import org.openqa.selenium.WebElement;
 
+import com.rf.core.driver.RFDriver;
 import com.rf.core.driver.website.RFWebsiteDriver;
 import com.rf.core.utils.CommonUtils;
 
@@ -105,13 +107,18 @@ public class DSVStoreFrontQuickShopPage extends DSVRFWebsiteBasePage {
 
 	public boolean isProductFilterApplied(String selectedProduct){
 		//driver.quickWaitForElementPresent(By.xpath(String.format(SelectedProductCheckbox, selectedProduct)));
-		return driver.isElementPresent(By.xpath(String.format(SelectedProductCheckbox, selectedProduct)))
+		driver.turnOffImplicitWaits();
+		boolean isProductFilterApplied = driver.isElementPresent(By.xpath(String.format(SelectedProductCheckbox, selectedProduct)))
 				&& driver.isElementPresent(By.xpath(String.format(SelectedProductAsHeadingOnProductPage, selectedProduct)));
+		driver.turnOnImplicitWaits();
+		return isProductFilterApplied;
 	}
 
 	public void clickClearAllLink(){
-		driver.click(CLEAR_ALL_LINK);
 		driver.pauseExecutionFor(2000);
+		((JavascriptExecutor)RFWebsiteDriver.driver).executeScript("arguments[0].click();", driver.findElement(CLEAR_ALL_LINK));
+		driver.pauseExecutionFor(2000);
+		System.out.println("clear link clicked");
 		driver.waitForPageLoad();
 	}
 

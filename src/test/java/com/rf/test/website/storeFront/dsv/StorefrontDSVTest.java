@@ -85,8 +85,10 @@ public class StorefrontDSVTest extends RFDSVStoreFrontWebsiteBaseTest{
 		dsvStoreFrontHomePage = new DSVStoreFrontHomePage(driver);
 		s_assert.assertTrue(dsvStoreFrontHomePage.getWebdriver().getCurrentUrl().contains(TestConstants.DSV_PWS_SUFFIX), "Consultant is not on PWS after login,the url coming is "+dsvStoreFrontHomePage.getWebdriver().getCurrentUrl());
 		s_assert.assertTrue(dsvStoreFrontHomePage.isUserNameDropDownPresent(), "Home page doesn't have the username dropdown");
-		dsvStoreFrontAutoshipCartPage = dsvStoreFrontHomePage.clickOnCRPCartImg();
-		dsvStoreFrontQuickShopPage = dsvStoreFrontAutoshipCartPage.clickTopContinueShoppingLink();
+//		dsvStoreFrontAutoshipCartPage = dsvStoreFrontHomePage.clickOnCRPCartImg();
+//		dsvStoreFrontQuickShopPage = dsvStoreFrontAutoshipCartPage.clickTopContinueShoppingLink();
+		dsvStoreFrontHomePage.hoverOnShopLinkAndClickAllProductsLinks();
+		dsvStoreFrontQuickShopPage = new DSVStoreFrontQuickShopPage(driver);
 		dsvStoreFrontQuickShopPage.clickProductFilterDropDown();
 		List<String> allProductsList = dsvStoreFrontQuickShopPage.getAllProductsFromProductFilterList();
 		String selectedProduct = dsvStoreFrontQuickShopPage.selectAndReturnTheSelectedProductFromFilter();
@@ -98,7 +100,7 @@ public class StorefrontDSVTest extends RFDSVStoreFrontWebsiteBaseTest{
 		}
 		String selectedPrice = dsvStoreFrontQuickShopPage.selectAndReturnTheSelectedPriceFromFilter();
 		Double selectedPriceDoubleValue = Double.parseDouble(selectedPrice);
-		System.out.println("maximum price os selected price range in double is "+selectedPriceDoubleValue);
+		System.out.println("maximum price of selected price range in double is "+selectedPriceDoubleValue);
 		s_assert.assertTrue(selectedPriceDoubleValue>dsvStoreFrontQuickShopPage.getPriceOfRandomProductAfterPriceFilterApplied(), "Price filter is not applied on products");
 		dsvStoreFrontQuickShopPage.clickClearAllLink();
 		String selectedOrder = dsvStoreFrontQuickShopPage.selectAndReturnTheSelectedSortOrderFromFilter();

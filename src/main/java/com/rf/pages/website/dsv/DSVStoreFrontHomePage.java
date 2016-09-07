@@ -29,13 +29,14 @@ public class DSVStoreFrontHomePage extends DSVRFWebsiteBasePage{
 	private static final By ENROLL_NOW_LINK_LOC = By.xpath("//ul[@id='dropdown-menu']//a[@title='Enroll Now']"); 
 	private static final By SPONSOR_SEARCH_FIELD_LOC = By.id("sponserparam");
 	private static final By SEARCH_BUTTON_LOC = By.id("search-sponsor-button");
-	
+
 
 	public DSVStoreFrontHomePage(RFWebsiteDriver driver) {
 		super(driver);		
 	}
 
 	public void clickLoginLink(){
+		System.out.println("***************** 3");
 		driver.quickWaitForElementPresent(LOGIN_LINK);
 		driver.click(LOGIN_LINK);
 	}
@@ -95,7 +96,7 @@ public class DSVStoreFrontHomePage extends DSVRFWebsiteBasePage{
 	public String getWelcomeText(){
 		return driver.findElement(WELCOME_TXT).getText();
 	}
-	
+
 	public Boolean isUserNameDropDownPresent(){
 		return driver.isElementPresent(USERNAME_DROPDOWN);
 	}
@@ -219,4 +220,33 @@ public class DSVStoreFrontHomePage extends DSVRFWebsiteBasePage{
 		driver.waitForPageLoad();
 		return new DSVStoreFrontAutoshipCartPage(driver);
 	}	
+
+	public void hoverOnShopLinkAndClickAllProductsLinks(){
+		Actions actions = new Actions(RFWebsiteDriver.driver);
+		driver.waitForElementPresent(By.id("our-products")); 
+		WebElement shopSkinCare = driver.findElement(By.id("our-products"));
+		actions.moveToElement(shopSkinCare).pause(1000).click().build().perform();
+		driver.pauseExecutionFor(2000);
+		if(driver.isElementPresent(By.xpath("//ul[@id='dropdown-menu' and @style='display: block;']//a[text()='All Products']"))==false){
+			logger.warn("HEADER LINKS ARE NOT PRESENT..loading the shop URL");
+			driver.get(driver.getCurrentUrl()+"/quick-shop/quickShop");
+		}else{
+			WebElement allProducts = driver.findElement(By.xpath("//ul[@id='dropdown-menu' and @style='display: block;']//a[text()='All Products']"));
+			actions.moveToElement(allProducts).pause(1000).build().perform();
+			while(true){
+				try{
+					driver.clickByJS(RFWebsiteDriver.driver, driver.findElement(By.xpath(" //ul[@id='dropdown-menu' and @style='display: block;']//a[text()='All Products']")));
+					break;
+				}catch(Exception e){
+					System.out.println("element not clicked..trying again");
+					actions.moveToElement(shopSkinCare).pause(1000).click().build().perform();
+
+				}
+			}
+			logger.info("All products link clicked "); 
+
+		}
+		driver.waitForPageLoad();
+		driver.waitForLoadingImageToDisappear();
+	}
 }

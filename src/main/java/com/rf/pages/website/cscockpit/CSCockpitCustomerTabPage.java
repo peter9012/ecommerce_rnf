@@ -58,7 +58,8 @@ public class CSCockpitCustomerTabPage extends CSCockpitRFWebsiteBasePage{
 	private static final By PULSE_AUTOSHIP_ID_HAVING_TYPE_AS_PULSE_AUTOSHIP = By.xpath("//span[text()='Autoship Templates']/following::span[text()='pulseAutoshipTemplate'][1]/../../preceding-sibling::td//a");
 	private static final By SET_AS_AUTOSHIP_SHIPPING_PROFILE_TEXT = By.xpath("//span[contains(text(),'Set as a Autoship Shipping Address')]/ancestor::td[contains(@style,'display:none;')]");
 	private static final By SHIPPING_PROFILE_ERROR_POPUP_OK_BTN = By.xpath("//div[@class='z-window-modal']//td[text()='OK']");
-	private static final By USE_THIS_ADDRESS = By.xpath("//td[contains(text(),'Use this Address')]");
+	private static final By USE_THIS_ADDRESS = By.xpath("//td[contains(text(),'Use this address')]");
+	private static final By USE_ENTERED_ADDRESS = By.xpath("//td[contains(text(),'Use Entered Address')]");
 	private static final By SHIPPING_ADDRESS_PROFILE_FIRST_NAME = By.xpath("//span[text()='Customer Addresses']/following::div[1]//div[contains(@class,'listbox-body')]//tbody[2]/descendant::div[contains(text(),'Shipping Address')][1]/ancestor::tr[1]/td[1]/div");
 	private static final By SHIPPING_ADDRESS_PROFILE_LAST_NAME = By.xpath("//span[text()='Customer Addresses']/following::div[1]//div[contains(@class,'listbox-body')]//tbody[2]/descendant::div[contains(text(),'Shipping Address')][1]/ancestor::tr[1]/td[2]/div");
 	private static final By SET_AS_AUTOSHIP_SHIPPING_ADDRESS_CHKBOX= By.xpath("//span[contains(text(),'Set as a Autoship Shipping Address')]/preceding::span[@class='z-checkbox'][1]/input");
@@ -394,6 +395,13 @@ public class CSCockpitCustomerTabPage extends CSCockpitRFWebsiteBasePage{
 		return isPopupPresent;
 	}
 
+	public void clickUseEnteredAddressBtn(){
+		driver.pauseExecutionFor(2000);
+		driver.waitForElementPresent(USE_ENTERED_ADDRESS);
+		driver.click(USE_ENTERED_ADDRESS);
+		driver.waitForCSCockpitLoadingImageToDisappear();
+	}
+	
 	public void clickUseThisAddressBtn(){
 		driver.pauseExecutionFor(2000);
 		driver.waitForElementPresent(USE_THIS_ADDRESS);

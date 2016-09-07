@@ -238,7 +238,7 @@ public class CRMRegressionTest extends RFCRMWebsiteBaseTest{
 		logger.info("The username is "+consultantEmailID); 
 		s_assert.assertTrue(crmHomePage.verifyHomePage(),"Home page does not come after login");
 		crmHomePage.enterTextInSearchFieldAndHitEnter(consultantEmailID);
-		String emailOnfirstRow = crmHomePage.getEmailOnFirstRowInSearchResults();
+//		String emailOnfirstRow = crmHomePage.getEmailOnFirstRowInSearchResults();
 		//s_assert.assertTrue(emailOnfirstRow.toLowerCase().trim().contains(consultantEmailID.toLowerCase().trim()), "the email on first row which is = "+emailOnfirstRow.toLowerCase().trim()+" is expected to contain email = "+consultantEmailID.toLowerCase().trim());
 		s_assert.assertTrue(crmHomePage.isAccountLinkPresentInLeftNaviagation(), "Accounts link is not present on left navigation panel");
 		s_assert.assertTrue(crmHomePage.isContactsLinkPresentInLeftNaviagation(), "Contacts link is not present on left navigation panel");

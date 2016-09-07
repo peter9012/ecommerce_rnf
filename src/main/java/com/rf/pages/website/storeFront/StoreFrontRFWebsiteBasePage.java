@@ -1043,13 +1043,18 @@ public class StoreFrontRFWebsiteBasePage extends RFBasePage{
 		else if(country.equalsIgnoreCase("us")){
 			countryID="236";
 		} 
-		
-//		randomActiveSitePrefixList = DBUtil.performDatabaseQuery(DBQueries_RFO.callQueryWithArguement(DBQueries_RFO.GET_RANDOM_ACTIVE_SITE_PREFIX_RFO,countryID),RFO_DB);
-//		activeSitePrefix = (String) getValueFromQueryResult(randomActiveSitePrefixList, "SitePrefix");			
-		PWS = "http://bhopkins"+driver.getBizPWSURL()+"/"+country.toLowerCase();
-		System.out.println(PWS);
+
+		////		randomActiveSitePrefixList = DBUtil.performDatabaseQuery(DBQueries_RFO.callQueryWithArguement(DBQueries_RFO.GET_RANDOM_ACTIVE_SITE_PREFIX_RFO,countryID),RFO_DB);
+		////		activeSitePrefix = (String) getValueFromQueryResult(randomActiveSitePrefixList, "SitePrefix");			
+		//		PWS = "http://bhopkins"+driver.getBizPWSURL()+"/"+country.toLowerCase();
+		//		System.out.println(PWS);
+		//		logger.info("PWS is "+PWS);
+
+		randomActiveSitePrefixList = DBUtil.performDatabaseQuery(DBQueries_RFO.callQueryWithArguement(DBQueries_RFO.GET_RANDOM_ACTIVE_SITE_PREFIX_RFO,countryID),RFO_DB);
+		activeSitePrefix = (String) getValueFromQueryResult(randomActiveSitePrefixList, "SitePrefix");   
+		PWS = "http://"+activeSitePrefix+".myrfo"+env+".biz/"+country.toLowerCase();
 		logger.info("PWS is "+PWS);
-		
+
 		return PWS;
 	}
 
@@ -1506,7 +1511,7 @@ public class StoreFrontRFWebsiteBasePage extends RFBasePage{
 				driver.quickWaitForElementPresent(By.xpath("//input[@value='ADD MORE ITEMS']"));
 				driver.click(By.xpath("//input[@value='ADD MORE ITEMS']")); 
 			}
-  
+
 		}
 		driver.waitForPageLoad();
 	}
@@ -1721,9 +1726,9 @@ public class StoreFrontRFWebsiteBasePage extends RFBasePage{
 		boolean status = false;
 		//click learn more..	
 		driver.get(driver.getCurrentUrl()+"/dynamic/url/solutionTool");
-//		
-//		driver.waitForElementPresent(By.xpath("//div[@id='corp_content']/div/div[1]/div[3]/descendant::a"));
-//		driver.click(By.xpath("//div[@id='corp_content']/div/div[1]/div[3]/descendant::a"));
+		//		
+		//		driver.waitForElementPresent(By.xpath("//div[@id='corp_content']/div/div[1]/div[3]/descendant::a"));
+		//		driver.click(By.xpath("//div[@id='corp_content']/div/div[1]/div[3]/descendant::a"));
 		driver.waitForPageLoad();
 		driver.waitForElementPresent(By.id("mirror"));
 		if(driver.getCountry().equalsIgnoreCase("us")){
@@ -1857,7 +1862,7 @@ public class StoreFrontRFWebsiteBasePage extends RFBasePage{
 		driver.waitForPageLoad();
 		return driver.findElement(By.xpath("//li[contains(text(),'"+CID+"')]")).getText();
 	}
-	
+
 	public boolean isSearchedSponsorIdPresentInSearchList(String CID){
 		driver.waitForPageLoad();
 		return driver.isElementPresent(By.xpath("//li[contains(text(),'"+CID+"')]"));

@@ -1681,11 +1681,11 @@ public class CRMRegressionTest extends RFCRMWebsiteBaseTest{
 		crmAccountDetailsPage.clickClearButtonInLogAccountActivity();
 		
 		/*s_assert.assertTrue(crmAccountDetailsPage.verifyDropdownTextfieldsAreClearedInLogAccountActivity("Channel"), "Channel DropDown Contains value");*/
-		s_assert.assertTrue(crmAccountDetailsPage.isValueCallDisplayedOnChannelOptionsPresent(), "Channel Contains value Call");
+		s_assert.assertTrue(crmAccountDetailsPage.isValueCallDisplayedOnChannelOptionsPresent("Channel"), "Channel Contains value Call");
 		s_assert.assertTrue(crmAccountDetailsPage.verifyDropdownTextfieldsAreClearedInLogAccountActivity("Reason"), "Channel DropDown Contains value");
 		s_assert.assertTrue(crmAccountDetailsPage.verifyDropdownTextfieldsAreClearedInLogAccountActivity("Detail"), "Channel DropDown Contains value");
 
-		//crmAccountDetailsPage.selectChannelDropdown("Email");
+		crmAccountDetailsPage.selectChannelDropdown("Email");
 		crmAccountDetailsPage.selectReasonDropdown("Consultants");
 		crmAccountDetailsPage.selectDetailDropdown("Consultant event approval");
 		crmAccountDetailsPage.enterNote(accountActivityNote);
@@ -1711,11 +1711,11 @@ public class CRMRegressionTest extends RFCRMWebsiteBaseTest{
 		s_assert.assertTrue(crmAccountDetailsPage.isDataValuesInDropDownUnderLogAccountActivityPresent("Reason"), "Reason Dropdown is Empty");
 		crmAccountDetailsPage.clickClearButtonInLogAccountActivity();
 
-		s_assert.assertTrue(crmAccountDetailsPage.isValueCallDisplayedOnChannelOptionsPresent(), "Channel Contains value Call");
+		s_assert.assertTrue(crmAccountDetailsPage.isValueCallDisplayedOnChannelOptionsPresent("Channel"), "Channel Contains value Call");
 		s_assert.assertTrue(crmAccountDetailsPage.verifyDropdownTextfieldsAreClearedInLogAccountActivity("Reason"), "Channel DropDown Contains value");
 		s_assert.assertTrue(crmAccountDetailsPage.verifyDropdownTextfieldsAreClearedInLogAccountActivity("Detail"), "Channel DropDown Contains value");
 
-		//crmAccountDetailsPage.selectChannelDropdown("Email");
+		crmAccountDetailsPage.selectChannelDropdown("Email");
 		crmAccountDetailsPage.selectReasonDropdown("Consultants");
 		crmAccountDetailsPage.selectDetailDropdown("Consultant event approval");
 		crmAccountDetailsPage.enterNote(accountActivityNote);
@@ -1741,11 +1741,11 @@ public class CRMRegressionTest extends RFCRMWebsiteBaseTest{
 		s_assert.assertTrue(crmAccountDetailsPage.isDataValuesInDropDownUnderLogAccountActivityPresent("Reason"), "Reason Dropdown is Empty");
 		crmAccountDetailsPage.clickClearButtonInLogAccountActivity();
 
-		s_assert.assertTrue(crmAccountDetailsPage.isValueCallDisplayedOnChannelOptionsPresent(), "Channel Contains value Call");
+		s_assert.assertTrue(crmAccountDetailsPage.isValueCallDisplayedOnChannelOptionsPresent("Channel"), "Channel Contains value Call");
 		s_assert.assertTrue(crmAccountDetailsPage.verifyDropdownTextfieldsAreClearedInLogAccountActivity("Reason"), "Channel DropDown Contains value");
 		s_assert.assertTrue(crmAccountDetailsPage.verifyDropdownTextfieldsAreClearedInLogAccountActivity("Detail"), "Channel DropDown Contains value");
 
-		//crmAccountDetailsPage.selectChannelDropdown("Email");
+		crmAccountDetailsPage.selectChannelDropdown("Email");
 		crmAccountDetailsPage.selectReasonDropdown("Consultants");
 		crmAccountDetailsPage.selectDetailDropdown("Consultant event approval");
 		crmAccountDetailsPage.enterNote(accountActivityNote);
@@ -1891,7 +1891,7 @@ public class CRMRegressionTest extends RFCRMWebsiteBaseTest{
 		logger.info("The username is "+consultantEmailID); 
 		s_assert.assertTrue(crmHomePage.verifyHomePage(),"Home page does not come after login");
 		crmHomePage.enterTextInSearchFieldAndHitEnter(consultantEmailID);
-		String emailOnfirstRow = crmHomePage.getEmailOnFirstRowInSearchResults();
+		//String emailOnfirstRow = crmHomePage.getEmailOnFirstRowInSearchResults();
 		//s_assert.assertTrue(emailOnfirstRow.toLowerCase().trim().contains(consultantEmailID.toLowerCase().trim()), "the email on first row which is = "+emailOnfirstRow.toLowerCase().trim()+" is expected to contain email = "+consultantEmailID.toLowerCase().trim());
 
 		crmHomePage.clickAnyTypeOfActiveCustomerInSearchResult("Consultant");
@@ -1901,8 +1901,8 @@ public class CRMRegressionTest extends RFCRMWebsiteBaseTest{
 		s_assert.assertTrue(crmAccountDetailsPage.isLogAccountActivitySectionIsPresent(),"Log Account Activity Section is not present on Account Details page");
 		//verify channel dropdown
 		s_assert.assertTrue(crmAccountDetailsPage.isChannelDropdownOnAccountDetailPagePresent(),"Channel dropdown is not present on Account Details page");
-/*		s_assert.assertTrue(crmAccountDetailsPage.isChannelDropdownOptionsPresent("Email"),"Channel dropdown Email option is not present on Account Details page");
-		s_assert.assertTrue(crmAccountDetailsPage.isChannelDropdownOptionsPresent("Call"),"Channel dropdown call option is not present on Account Details page");*/
+		s_assert.assertTrue(crmAccountDetailsPage.isChannelDropdownOptionsPresent("Email"),"Channel dropdown Email option is not present on Account Details page");
+		s_assert.assertTrue(crmAccountDetailsPage.isChannelDropdownOptionsPresent("Call"),"Channel dropdown call option is not present on Account Details page");
 		//Verify reason dropdown
 		s_assert.assertTrue(crmAccountDetailsPage.isReasonDropdownOnAccountDetailPagePresent(),"Reason dropdown is not present on Account Details page");
 		s_assert.assertTrue(crmAccountDetailsPage.isReasonDropdownOptionsPresent("Consultants"),"Reason dropdown Consultants option is not present on Account Details page");
@@ -1920,7 +1920,7 @@ public class CRMRegressionTest extends RFCRMWebsiteBaseTest{
 		//verify note section
 		s_assert.assertTrue(crmAccountDetailsPage.isNoteSectionOnAccountDetailPagePresent(),"Note section is not present on Account Details page");
 		//add note and click save.
-		//crmAccountDetailsPage.selectChannelDropdown("Email");
+		crmAccountDetailsPage.selectChannelDropdown("Email");
 		crmAccountDetailsPage.selectReasonDropdown("Consultants");
 		crmAccountDetailsPage.selectDetailDropdown("Consultant event approval");
 		crmAccountDetailsPage.enterNote(orderNote);
@@ -2680,7 +2680,7 @@ public class CRMRegressionTest extends RFCRMWebsiteBaseTest{
 		logger.info("The email address is "+consultantEmailID);	
 		s_assert.assertTrue(crmHomePage.verifyHomePage(),"Home page does not come after login");
 		crmHomePage.enterTextInSearchFieldAndHitEnter(consultantEmailID);
-		String emailOnfirstRow = crmHomePage.getEmailOnFirstRowInSearchResults();
+		//String emailOnfirstRow = crmHomePage.getEmailOnFirstRowInSearchResults();
 		//s_assert.assertTrue(emailOnfirstRow.toLowerCase().trim().contains(consultantEmailID.toLowerCase().trim()), "the email on first row which is = "+emailOnfirstRow.toLowerCase().trim()+" is expected to contain email = "+consultantEmailID.toLowerCase().trim());		
 		crmHomePage.clickAnyTypeOfActiveCustomerInSearchResult("Consultant");
 		crmAccountDetailsPage.clickAccountDetailsButton("Pulse");

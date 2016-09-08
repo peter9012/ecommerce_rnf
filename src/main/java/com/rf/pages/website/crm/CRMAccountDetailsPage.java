@@ -118,9 +118,21 @@ public class CRMAccountDetailsPage extends CRMRFWebsiteBasePage {
 		driver.switchTo().defaultContent();
 		driver.waitForElementPresent(By.xpath("//div[@id='navigatortab']/div[3]/div/div[3]/descendant::iframe[1]"));
 		driver.switchTo().frame(driver.findElement(By.xpath("//div[@id='navigatortab']/div[3]/div/div[3]/descendant::iframe[1]")));
-		driver.switchTo().frame(driver.findElement(By.xpath("//iframe[@title='AccountButtons']")));		
+		driver.switchTo().frame(driver.findElement(By.xpath("//iframe[@title='AccountButtons']")));  
 		driver.pauseExecutionFor(2000);
-		driver.click(By.xpath("//input[@value='"+buttonName+"']"));
+		//driver.click(By.xpath("//input[@value='"+buttonName+"']"));
+		WebElement wb =driver.findElement(By.xpath("//input[@value='"+buttonName+"']"));
+		Actions action = new Actions(RFWebsiteDriver.driver);
+		action.moveToElement(wb).click(wb).build().perform();
+		//driver.waitForElementPresent(By.xpath("//input[@value='"+buttonName+"']"));
+		//driver.clickByJS(RFWebsiteDriver.driver,wb);
+		logger.info("Pulse btn clicked via Action class.");
+		driver.pauseExecutionFor(3000);
+		if(driver.isElementPresent(By.xpath("//input[@value='"+buttonName+"']"))){
+			driver.click(By.xpath("//input[@value='"+buttonName+"']"));
+		}else{
+			logger.info("pulse byn clicked in first attempt.");
+		}
 		try{
 			driver.pauseExecutionFor(2000);
 			Alert alert = driver.switchTo().alert();
@@ -130,6 +142,7 @@ public class CRMAccountDetailsPage extends CRMRFWebsiteBasePage {
 			logger.info("No Alert.");
 		}
 		driver.waitForLoadingImageToDisappear();
+		driver.waitForPageLoad();
 	}
 
 	public boolean isSVSectionPresentOnPulsePage(){
@@ -329,12 +342,21 @@ public class CRMAccountDetailsPage extends CRMRFWebsiteBasePage {
 		driver.switchTo().frame(driver.findElement(By.xpath("//div[@id='navigatortab']/div[3]/div/div[3]/div[3]/descendant::iframe[1]")));
 		return driver.isElementPresent(By.xpath("//div[@id='mainDiv']//div[contains(text(),'Channel')]/following::select[1]/option[@value='"+option+"']"));
 	}
-	
-	public boolean isValueCallDisplayedOnChannelOptionsPresent(){
+
+	public boolean isValueCallDisplayedOnChannelOptionsPresent(String label){
+		boolean flag = false;
 		driver.switchTo().defaultContent();
 		driver.waitForElementPresent(By.xpath("//div[@id='navigatortab']/div[3]/div/div[3]/div[3]/descendant::iframe[1]"));
 		driver.switchTo().frame(driver.findElement(By.xpath("//div[@id='navigatortab']/div[3]/div/div[3]/div[3]/descendant::iframe[1]")));
-		return driver.isElementPresent(By.xpath("//div[@id='mainDiv']//div[contains(text(),'Channel')]/following::div/span[text()='Call']"));
+		WebElement mySelectElm = driver.findElement(By.xpath("//div[@id='mainDiv']//div[contains(text(),'"+label+"')]/following::div[1]/select"));
+		Select mySelect= new Select(mySelectElm);
+		WebElement option = mySelect.getFirstSelectedOption();
+		String dropdownSelectedValue = option.getText();
+		if(dropdownSelectedValue.equals("--None--")){
+			flag = true;
+		}
+		return flag;
+		//return driver.isElementPresent(By.xpath("//div[@id='mainDiv']//div[contains(text(),'Channel')]/following::div/span[text()='Call']"));
 	}
 
 	public boolean isReasonDropdownOnAccountDetailPagePresent(){
@@ -369,9 +391,9 @@ public class CRMAccountDetailsPage extends CRMRFWebsiteBasePage {
 		driver.switchTo().defaultContent();
 		driver.waitForElementPresent(By.xpath("//div[@id='navigatortab']/div[3]/div/div[3]/div[3]/descendant::iframe[1]"));
 		driver.switchTo().frame(driver.findElement(By.xpath("//div[@id='navigatortab']/div[3]/div/div[3]/div[3]/descendant::iframe[1]")));
-		driver.click(By.xpath("//div[@id='mainDiv']//div[contains(text(),'Channel')]/following::select[1]"));
-		driver.waitForElementPresent(By.xpath("//div[@id='mainDiv']//div[contains(text(),'Channel')]/following::select[1]/option[@value='"+dropdownValue+"']"));
-		driver.click(By.xpath("//div[@id='mainDiv']//div[contains(text(),'Channel')]/following::select[1]/option[@value='"+dropdownValue+"']"));
+		driver.click(By.xpath("//div[@id='mainDiv']//div[contains(text(),'Channel')]/following::div[1]/select"));
+		driver.waitForElementPresent(By.xpath("//div[@id='mainDiv']//div[contains(text(),'Channel')]/following::div[1]/select/option[@value='"+dropdownValue+"']"));
+		driver.click(By.xpath("//div[@id='mainDiv']//div[contains(text(),'Channel')]/following::div[1]/select/option[@value='"+dropdownValue+"']"));
 	}
 
 	public void selectReasonDropdown(String dropdownValue){
@@ -828,15 +850,15 @@ public class CRMAccountDetailsPage extends CRMRFWebsiteBasePage {
 		driver.findElement(By.xpath("//div[@class='listRelatedObject contactBlock']//table[1]//h3[text()='Contacts']/../../td[2]/input")).click();
 		driver.waitForCRMLoadingImageToDisappear();
 	}
-	
+
 	public boolean verifyNewContactButtonUnderContactSectionNotAvaliable(){
 		driver.switchTo().defaultContent();
 		driver.waitForElementPresent(By.xpath("//div[@id='navigatortab']/div[3]/div/div[3]/descendant::iframe[1]"));
 		driver.switchTo().frame(driver.findElement(By.xpath("//div[@id='navigatortab']/div[3]/div/div[3]/descendant::iframe[1]")));
 		return !driver.isElementPresent(By.xpath("//div[@class='listRelatedObject contactBlock']//table[1]//h3[text()='Contacts']/../../td[2]/input"));
 	}
-	
-	
+
+
 	public void enterFirstAndLastNameInCreatingNewContactForSpouse(String firstName , String lastName){
 		driver.switchTo().defaultContent();
 		driver.waitForElementPresent(By.xpath("//div[@id='navigatortab']/div[3]/div/div[3]/descendant::iframe[2]"));
@@ -1046,6 +1068,7 @@ public class CRMAccountDetailsPage extends CRMRFWebsiteBasePage {
 		driver.switchTo().frame(driver.findElement(By.xpath("//div[@id='navigatortab']/div[3]/div/div[3]/div[3]/descendant::iframe[1]")));
 		driver.click(By.xpath("//a[text()='Clear fields']"));
 		driver.waitForCRMLoadingImageToDisappear();
+		driver.waitForPageLoad();
 	}
 
 	public boolean verifyDropdownTextfieldsAreClearedInLogAccountActivity(String label){
@@ -1567,15 +1590,15 @@ public class CRMAccountDetailsPage extends CRMRFWebsiteBasePage {
 		}
 
 	}
-	
+
 	public boolean isEditActionNotPresentUnderContactSection(){
 		driver.switchTo().defaultContent();
 		driver.waitForElementPresent(By.xpath("//div[@id='navigatortab']/div[3]/div/div[3]/descendant::iframe[1]"));
 		driver.switchTo().frame(driver.findElement(By.xpath("//div[@id='navigatortab']/div[3]/div/div[3]/descendant::iframe[1]")));
 		return !driver.isElementPresent(By.xpath("//a[@class='actionLink' and contains(text(),'Edit')]"));
 	}
-	
-	
+
+
 	public boolean isMouseHoverContactsSectionEditLinkNotPresentOfFields(String field){
 		Actions actions = new Actions(RFWebsiteDriver.driver);
 		driver.switchTo().defaultContent();
@@ -1583,9 +1606,9 @@ public class CRMAccountDetailsPage extends CRMRFWebsiteBasePage {
 		driver.switchTo().frame(driver.findElement(By.xpath("//div[@id='navigatortab']/div[3]/div/div[3]/descendant::iframe[1]")));
 		actions.moveToElement(driver.findElement(By.xpath("//span[@class='listTitle' and contains(text(),'Contacts')]"))).build().perform();
 		return !driver.isElementPresent(By.xpath("//tr[@class='dataRow even last first highlight']//a[contains(text(),'"+field+"')]/preceding::a[contains(text(),'Edit')]"));
-		
+
 	}
-	
+
 	public boolean isMouseHoverContactsSectionNewContentButtonNotPresentOfFields(String field){
 		Actions actions = new Actions(RFWebsiteDriver.driver);
 		driver.switchTo().defaultContent();
@@ -1593,7 +1616,7 @@ public class CRMAccountDetailsPage extends CRMRFWebsiteBasePage {
 		driver.switchTo().frame(driver.findElement(By.xpath("//div[@id='navigatortab']/div[3]/div/div[3]/descendant::iframe[1]")));
 		actions.moveToElement(driver.findElement(By.xpath("//span[@class='listTitle' and contains(text(),'Contacts')]"))).build().perform();
 		return !driver.isElementPresent(By.xpath("//tr[@class='dataRow even last first highlight']//a[contains(text(),'"+field+"')]/ancestor::div//input"));
-		
+
 	}
 }
 

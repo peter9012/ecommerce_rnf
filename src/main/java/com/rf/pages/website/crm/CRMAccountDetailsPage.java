@@ -128,11 +128,6 @@ public class CRMAccountDetailsPage extends CRMRFWebsiteBasePage {
 		//driver.clickByJS(RFWebsiteDriver.driver,wb);
 		logger.info("Pulse btn clicked via Action class.");
 		driver.pauseExecutionFor(3000);
-		if(driver.isElementPresent(By.xpath("//input[@value='"+buttonName+"']"))){
-			driver.click(By.xpath("//input[@value='"+buttonName+"']"));
-		}else{
-			logger.info("pulse byn clicked in first attempt.");
-		}
 		try{
 			driver.pauseExecutionFor(2000);
 			Alert alert = driver.switchTo().alert();
@@ -142,8 +137,9 @@ public class CRMAccountDetailsPage extends CRMRFWebsiteBasePage {
 			logger.info("No Alert.");
 		}
 		driver.waitForLoadingImageToDisappear();
-		driver.waitForPageLoad();
+		driver.pauseExecutionFor(3000);
 	}
+
 
 	public boolean isSVSectionPresentOnPulsePage(){
 		try{
@@ -478,6 +474,7 @@ public class CRMAccountDetailsPage extends CRMRFWebsiteBasePage {
 		driver.switchTo().frame(driver.findElement(By.xpath("//div[@id='navigatortab']/div[3]/div/div[3]/descendant::iframe[1]")));
 		driver.click(By.xpath("//td[@id='topButtonRow']/input[@title='Save']"));
 		driver.waitForPageLoad();
+		driver.pauseExecutionFor(3000);
 	}
 
 	public String getRecognitionName(){

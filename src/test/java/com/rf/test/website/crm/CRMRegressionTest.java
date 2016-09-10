@@ -95,7 +95,7 @@ public class CRMRegressionTest extends RFCRMWebsiteBaseTest{
 				break;
 			}
 		}
-		String emailOnfirstRow = crmHomePage.getEmailOnFirstRowInSearchResults();
+		//String emailOnfirstRow = crmHomePage.getEmailOnFirstRowInSearchResults();
 		//s_assert.assertTrue(emailOnfirstRow.toLowerCase().trim().contains(consultantEmailID.toLowerCase().trim()) || consultantEmailID.toLowerCase().trim().contains(emailOnfirstRow.toLowerCase().trim()), "the email on first row which is = "+emailOnfirstRow.toLowerCase().trim()+" is expected to contain email = "+consultantEmailID.toLowerCase().trim());
 
 		crmHomePage.clickAnyTypeOfActiveCustomerInSearchResult("Consultant");
@@ -126,7 +126,7 @@ public class CRMRegressionTest extends RFCRMWebsiteBaseTest{
 		//verify note section
 		s_assert.assertTrue(crmAccountDetailsPage.isNoteSectionOnAccountDetailPagePresent(),"Note section is not present on Account Details page");
 		//add note and click save.
-		//crmAccountDetailsPage.selectChannelDropdown("Email");
+		crmAccountDetailsPage.selectChannelDropdown("Email");
 		crmAccountDetailsPage.selectReasonDropdown("Consultants");
 		crmAccountDetailsPage.selectDetailDropdown("Consultant event approval");
 		crmAccountDetailsPage.enterNote(orderNote);
@@ -540,7 +540,7 @@ public class CRMRegressionTest extends RFCRMWebsiteBaseTest{
 		logger.info("The email address is "+consultantEmailID);	
 		s_assert.assertTrue(crmHomePage.verifyHomePage(),"Home page does not come after login");
 		crmHomePage.enterTextInSearchFieldAndHitEnter(consultantEmailID);
-		String emailOnfirstRow = crmHomePage.getEmailOnFirstRowInSearchResults();
+		//String emailOnfirstRow = crmHomePage.getEmailOnFirstRowInSearchResults();
 		//s_assert.assertTrue(emailOnfirstRow.toLowerCase().trim().contains(consultantEmailID.toLowerCase().trim()), "the email on first row which is = "+emailOnfirstRow.toLowerCase().trim()+" is expected to contain email = "+consultantEmailID.toLowerCase().trim());		
 		crmHomePage.clickAnyTypeOfActiveCustomerInSearchResult("Consultant");
 		s_assert.assertTrue(crmAccountDetailsPage.isLabelOnShippingAddressSectionPresent("Action"),"Action label is not present in Shipping address section");
@@ -765,7 +765,7 @@ public class CRMRegressionTest extends RFCRMWebsiteBaseTest{
 		logger.info("The email address is "+rcUserName); 
 		s_assert.assertTrue(crmHomePage.verifyHomePage(),"Home page does not come after login");
 		crmHomePage.enterTextInSearchFieldAndHitEnter(rcUserName);
-		String emailOnfirstRow = crmHomePage.getEmailOnFirstRowInSearchResults();
+		//String emailOnfirstRow = crmHomePage.getEmailOnFirstRowInSearchResults();
 		//s_assert.assertTrue(emailOnfirstRow.toLowerCase().trim().contains(rcUserName.toLowerCase().trim()), "the email on first row which is = "+emailOnfirstRow.toLowerCase().trim()+" is expected to contain email = "+rcUserName.toLowerCase().trim());  
 		crmHomePage.clickAnyTypeOfActiveCustomerInSearchResult("Retail Customer");
 		while(true){
@@ -778,7 +778,7 @@ public class CRMRegressionTest extends RFCRMWebsiteBaseTest{
 				logger.info("The email address is "+rcUserName);
 				s_assert.assertTrue(crmHomePage.verifyHomePage(),"Home page does not come after login");
 				crmHomePage.enterTextInSearchFieldAndHitEnter(rcUserName);
-				emailOnfirstRow = crmHomePage.getEmailOnFirstRowInSearchResults();
+				//emailOnfirstRow = crmHomePage.getEmailOnFirstRowInSearchResults();
 				if(crmHomePage.isSearchResultHasActiveUser() == false){
 					continue;
 				}
@@ -816,7 +816,7 @@ public class CRMRegressionTest extends RFCRMWebsiteBaseTest{
 		logger.info("The email address is "+consultantEmailID);	
 		s_assert.assertTrue(crmHomePage.verifyHomePage(),"Home page does not come after login");
 		crmHomePage.enterTextInSearchFieldAndHitEnter(consultantEmailID);
-		String emailOnfirstRow = crmHomePage.getEmailOnFirstRowInSearchResults();
+		//String emailOnfirstRow = crmHomePage.getEmailOnFirstRowInSearchResults();
 		//s_assert.assertTrue(emailOnfirstRow.toLowerCase().trim().contains(consultantEmailID.toLowerCase().trim()), "the email on first row which is = "+emailOnfirstRow.toLowerCase().trim()+" is expected to contain email = "+consultantEmailID.toLowerCase().trim());		
 		crmHomePage.clickAnyTypeOfActiveCustomerInSearchResult("Consultant");
 		s_assert.assertTrue(crmAccountDetailsPage.isLabelOnBillingAddressSectionPresent("Action"),"Action label is not present in Billing profiles section");

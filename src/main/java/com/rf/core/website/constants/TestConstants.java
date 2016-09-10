@@ -39,7 +39,7 @@ public class TestConstants {
 	public static final String SPONSOR_ID_US_STG1="06371149";
 
 
-	public static final String FIRST_NAME = "AutoCS";
+	public static final String FIRST_NAME = "RFAutoCS";
 	public static final String LAST_NAME = FIRST_NAME;		
 	public static final String EMAIL_ADDRESS_SUFFIX = "@xyz.com";
 

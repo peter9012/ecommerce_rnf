@@ -250,6 +250,7 @@ public class StoreFrontLegacyRFWebsiteBasePage extends RFBasePage{
 		driver.click(CHANGE_BILLING_INFO);
 		logger.info("Change billing information button clicked");
 		driver.waitForPageLoad();
+		driver.pauseExecutionFor(3000);
 	}
 
 	public void clickUseThisBillingInformationBtn(){

@@ -945,6 +945,7 @@ public class CSCockpitRFWebsiteBasePage extends RFBasePage{
 		driver.waitForElementPresent(PHONE_TEXT_BOX);
 		driver.type(PHONE_TEXT_BOX, phoneNumber);
 		logger.info("Phone number entered is "+phoneNumber);
+		driver.waitForCRMLoadingImageToDisappear();
 	}
 
 	public String getNewBillingAddressNameInCheckoutTab(){

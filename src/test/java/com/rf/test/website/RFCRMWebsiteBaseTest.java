@@ -10,6 +10,7 @@ import org.openqa.selenium.By;
 import org.openqa.selenium.NoSuchElementException;
 import org.openqa.selenium.interactions.Actions;
 import org.testng.Assert;
+import org.testng.annotations.AfterClass;
 import org.testng.annotations.AfterMethod;
 import org.testng.annotations.AfterSuite;
 import org.testng.annotations.BeforeClass;
@@ -74,6 +75,11 @@ public class RFCRMWebsiteBaseTest extends RFBaseTest {
 	@BeforeMethod
 	public void initiateSoftAssertObject(){
 		s_assert = new SoftAssert();
+	}
+
+	@AfterClass(alwaysRun = true)
+	public void logoutAfterClass() throws Exception {
+		crmLogout();
 	}
 
 	public void loginUser(String username, String password){

@@ -1146,7 +1146,7 @@ public class CRMAccountDetailsPage extends CRMRFWebsiteBasePage {
 		driver.waitForCRMLoadingImageToDisappear();
 		driver.isElementPresent(By.xpath("//xhtml:h4[text()='Success:']"));
 		String strCurrentDay = CommonUtils.getCurrentDate("M/d/yyyy", timeZone);
-		driver.pauseExecutionFor(2000);
+		driver.pauseExecutionFor(4000);
 		return strCurrentDay;
 	}
 

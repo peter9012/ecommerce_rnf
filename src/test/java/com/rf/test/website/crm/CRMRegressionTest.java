@@ -468,7 +468,7 @@ public class CRMRegressionTest extends RFCRMWebsiteBaseTest{
 		//verify note section
 		s_assert.assertTrue(crmAccountDetailsPage.isNoteSectionOnAccountDetailPagePresent(),"Note section is not present on Account Details page");
 		//add note and click save.
-		//crmAccountDetailsPage.selectChannelDropdown("Email");
+		crmAccountDetailsPage.selectChannelDropdown("Email");
 		crmAccountDetailsPage.selectReasonDropdown("Consultants");
 		crmAccountDetailsPage.selectDetailDropdown("Consultant event approval");
 		crmAccountDetailsPage.enterNote(orderNote);
@@ -520,7 +520,7 @@ public class CRMRegressionTest extends RFCRMWebsiteBaseTest{
 		//verify note section
 		s_assert.assertTrue(crmAccountDetailsPage.isNoteSectionOnAccountDetailPagePresent(),"Note section is not present on Account Details page");
 		//add note and click save.
-		//crmAccountDetailsPage.selectChannelDropdown("Email");
+		crmAccountDetailsPage.selectChannelDropdown("Email");
 		crmAccountDetailsPage.selectReasonDropdown("Consultants");
 		crmAccountDetailsPage.selectDetailDropdown("Consultant event approval");
 		crmAccountDetailsPage.enterNote(orderNote);

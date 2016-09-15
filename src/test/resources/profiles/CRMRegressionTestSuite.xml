@@ -11,8 +11,7 @@
 			<!-- <class name="com.rf.test.website.crm.smoke.CRMSmokeTest"></class> 
 				<class name="com.rf.test.website.crm.miniRegression.CRMMiniRegressionTest"></class> -->
 				<class name="com.rf.test.website.crm.CRMRegressionTest"></class>
-			   <class name="com.rf.test.website.crm.LogisticTeamTest"></class>
-			  
+			   <class name="com.rf.test.website.crm.LogisticTeamTest"></class>			  
 		</classes>
 	</test>
 </suite>

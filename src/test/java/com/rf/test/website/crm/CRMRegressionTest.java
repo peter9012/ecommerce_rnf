@@ -106,7 +106,7 @@ public class CRMRegressionTest extends RFCRMWebsiteBaseTest{
 		s_assert.assertTrue(crmAccountDetailsPage.isAccountDropdownSearchOnAccountDetailPagePresent(),"Account dropdown search button is not present on Account Details page");
 		//verify channel dropdown
 		s_assert.assertTrue(crmAccountDetailsPage.isChannelDropdownOnAccountDetailPagePresent(),"Channel dropdown is not present on Account Details page");
-/*		s_assert.assertTrue(crmAccountDetailsPage.isChannelDropdownOptionsPresent("Email"),"Channel dropdown Email option is not present on Account Details page");
+		/*		s_assert.assertTrue(crmAccountDetailsPage.isChannelDropdownOptionsPresent("Email"),"Channel dropdown Email option is not present on Account Details page");
 		s_assert.assertTrue(crmAccountDetailsPage.isChannelDropdownOptionsPresent("Call"),"Channel dropdown call option is not present on Account Details page");*/
 		//Verify reason dropdown
 		s_assert.assertTrue(crmAccountDetailsPage.isReasonDropdownOnAccountDetailPagePresent(),"Reason dropdown is not present on Account Details page");
@@ -176,9 +176,11 @@ public class CRMRegressionTest extends RFCRMWebsiteBaseTest{
 
 	//Hybris Project-4510:Edit Retail Customer Account details
 	@Test(priority=3)
-	public void testEditRetailCustomerActDetails_4510() throws InterruptedException	{
+	public void testEditRetailCustomerActDetails_4510() throws InterruptedException {
 		String addressLine = TestConstants.CRM_NEW_ADDRESS_LINE_1_CA;
 		String postalCode = TestConstants.CRM_NEW_POSTALCODE_CA;
+		String locale = TestConstants.CITY_CA;
+		String region = TestConstants.PROVINCE_CA;
 		logger.info("The username is "+rcUserName); 
 		s_assert.assertTrue(crmHomePage.verifyHomePage(),"Home page does not come after login");
 		crmHomePage.enterTextInSearchFieldAndHitEnter(rcUserName);
@@ -206,6 +208,9 @@ public class CRMRegressionTest extends RFCRMWebsiteBaseTest{
 		crmAccountDetailsPage.clickAccountDetailsButton("Edit Main Address");
 		crmAccountDetailsPage.editAddressFieldsOfMainAddressSection("Address Line 1", addressLine);
 		crmAccountDetailsPage.editAddressFieldsOfMainAddressSection("Postal Code", postalCode);
+		crmAccountDetailsPage.editAddressFieldsOfMainAddressSection("Locale", locale);
+		crmAccountDetailsPage.editAddressFieldsOfMainAddressSection("Region", region);
+		crmAccountDetailsPage.selectUserEnteredAddressAndClickOnSaveButton();
 		crmAccountDetailsPage.clickSaveAddressButtonInEditMainAddressSection(addressLine);
 		s_assert.assertTrue(crmAccountDetailsPage.getDataValueOfLabelsInMainAddressSection("Address Line 1").trim().equalsIgnoreCase(addressLine),"Actual Value is :"+crmAccountDetailsPage.getDataValueOfLabelsInMainAddressSection("Address Line 1").trim()+"& Expected Value is :"+addressLine+".Main account Address Line 1 is not updated");
 		s_assert.assertAll();
@@ -238,7 +243,7 @@ public class CRMRegressionTest extends RFCRMWebsiteBaseTest{
 		logger.info("The username is "+consultantEmailID); 
 		s_assert.assertTrue(crmHomePage.verifyHomePage(),"Home page does not come after login");
 		crmHomePage.enterTextInSearchFieldAndHitEnter(consultantEmailID);
-//		String emailOnfirstRow = crmHomePage.getEmailOnFirstRowInSearchResults();
+		//		String emailOnfirstRow = crmHomePage.getEmailOnFirstRowInSearchResults();
 		//s_assert.assertTrue(emailOnfirstRow.toLowerCase().trim().contains(consultantEmailID.toLowerCase().trim()), "the email on first row which is = "+emailOnfirstRow.toLowerCase().trim()+" is expected to contain email = "+consultantEmailID.toLowerCase().trim());
 		s_assert.assertTrue(crmHomePage.isAccountLinkPresentInLeftNaviagation(), "Accounts link is not present on left navigation panel");
 		s_assert.assertTrue(crmHomePage.isContactsLinkPresentInLeftNaviagation(), "Contacts link is not present on left navigation panel");
@@ -448,7 +453,7 @@ public class CRMRegressionTest extends RFCRMWebsiteBaseTest{
 		s_assert.assertTrue(crmAccountDetailsPage.isAccountDropdownSearchOnAccountDetailPagePresent(),"Account dropdown search button is not present on Account Details page");
 		//verify channel dropdown
 		s_assert.assertTrue(crmAccountDetailsPage.isChannelDropdownOnAccountDetailPagePresent(),"Channel dropdown is not present on Account Details page");
-/*		s_assert.assertTrue(crmAccountDetailsPage.isChannelDropdownOptionsPresent("Email"),"Channel dropdown Email option is not present on Account Details page");
+		/*		s_assert.assertTrue(crmAccountDetailsPage.isChannelDropdownOptionsPresent("Email"),"Channel dropdown Email option is not present on Account Details page");
 		s_assert.assertTrue(crmAccountDetailsPage.isChannelDropdownOptionsPresent("Call"),"Channel dropdown call option is not present on Account Details page");*/
 		//Verify reason dropdown
 		s_assert.assertTrue(crmAccountDetailsPage.isReasonDropdownOnAccountDetailPagePresent(),"Reason dropdown is not present on Account Details page");
@@ -468,7 +473,7 @@ public class CRMRegressionTest extends RFCRMWebsiteBaseTest{
 		//verify note section
 		s_assert.assertTrue(crmAccountDetailsPage.isNoteSectionOnAccountDetailPagePresent(),"Note section is not present on Account Details page");
 		//add note and click save.
-		//crmAccountDetailsPage.selectChannelDropdown("Email");
+		crmAccountDetailsPage.selectChannelDropdown("Email");
 		crmAccountDetailsPage.selectReasonDropdown("Consultants");
 		crmAccountDetailsPage.selectDetailDropdown("Consultant event approval");
 		crmAccountDetailsPage.enterNote(orderNote);
@@ -500,7 +505,7 @@ public class CRMRegressionTest extends RFCRMWebsiteBaseTest{
 		s_assert.assertTrue(crmAccountDetailsPage.isAccountDropdownSearchOnAccountDetailPagePresent(),"Account dropdown search button is not present on Account Details page");
 		//verify channel dropdown
 		s_assert.assertTrue(crmAccountDetailsPage.isChannelDropdownOnAccountDetailPagePresent(),"Channel dropdown is not present on Account Details page");
-/*		s_assert.assertTrue(crmAccountDetailsPage.isChannelDropdownOptionsPresent("Email"),"Channel dropdown Email option is not present on Account Details page");
+		/*		s_assert.assertTrue(crmAccountDetailsPage.isChannelDropdownOptionsPresent("Email"),"Channel dropdown Email option is not present on Account Details page");
 		s_assert.assertTrue(crmAccountDetailsPage.isChannelDropdownOptionsPresent("Call"),"Channel dropdown call option is not present on Account Details page");*/
 		//Verify reason dropdown
 		s_assert.assertTrue(crmAccountDetailsPage.isReasonDropdownOnAccountDetailPagePresent(),"Reason dropdown is not present on Account Details page");
@@ -520,7 +525,7 @@ public class CRMRegressionTest extends RFCRMWebsiteBaseTest{
 		//verify note section
 		s_assert.assertTrue(crmAccountDetailsPage.isNoteSectionOnAccountDetailPagePresent(),"Note section is not present on Account Details page");
 		//add note and click save.
-		//crmAccountDetailsPage.selectChannelDropdown("Email");
+		crmAccountDetailsPage.selectChannelDropdown("Email");
 		crmAccountDetailsPage.selectReasonDropdown("Consultants");
 		crmAccountDetailsPage.selectDetailDropdown("Consultant event approval");
 		crmAccountDetailsPage.enterNote(orderNote);
@@ -549,17 +554,17 @@ public class CRMRegressionTest extends RFCRMWebsiteBaseTest{
 		s_assert.assertTrue(crmAccountDetailsPage.isLabelOnShippingAddressSectionPresent("Default"),"Default label is not present in Shipping address section");
 		s_assert.assertTrue(crmAccountDetailsPage.isLabelOnShippingAddressSectionPresent("Address Line 1"),"Address Line 1 label is not present in Shipping address section");
 		s_assert.assertTrue(crmAccountDetailsPage.isLabelOnShippingAddressSectionPresent("Address Line 2"),"Address Line 2 label is not present in Shipping address section");
-/*		s_assert.assertTrue(crmAccountDetailsPage.isLabelOnShippingAddressSectionPresent("Address Line 3"),"Address Line 3 label is not present in Shipping address section");
-*/		s_assert.assertTrue(crmAccountDetailsPage.isLabelOnShippingAddressSectionPresent("Locale"),"Locale label is not present in Shipping address section");
-		s_assert.assertTrue(crmAccountDetailsPage.isLabelOnShippingAddressSectionPresent("Region"),"Region label is not present in Shipping address section");
-		s_assert.assertTrue(crmAccountDetailsPage.isLabelOnShippingAddressSectionPresent("Postal code"),"Postal code label is not present in Shipping address section");
+		/*		s_assert.assertTrue(crmAccountDetailsPage.isLabelOnShippingAddressSectionPresent("Address Line 3"),"Address Line 3 label is not present in Shipping address section");
+		 */		s_assert.assertTrue(crmAccountDetailsPage.isLabelOnShippingAddressSectionPresent("Locale"),"Locale label is not present in Shipping address section");
+		 s_assert.assertTrue(crmAccountDetailsPage.isLabelOnShippingAddressSectionPresent("Region"),"Region label is not present in Shipping address section");
+		 s_assert.assertTrue(crmAccountDetailsPage.isLabelOnShippingAddressSectionPresent("Postal code"),"Postal code label is not present in Shipping address section");
 
-		String shippingProfilesCount = crmAccountDetailsPage.getShippingProfilesCount();
-		String countDisplayedWithShippingLink = crmAccountDetailsPage.getCountDisplayedWithLink("Shipping Profiles");
-		s_assert.assertTrue(shippingProfilesCount.equals(countDisplayedWithShippingLink), "shipping profiles count = "+shippingProfilesCount+"while count Displayed With Shipping Link = "+countDisplayedWithShippingLink);
-		s_assert.assertTrue(crmAccountDetailsPage.isOnlyOneShippingProfileIsDefault(),"default shipping profiles is not one");
+		 String shippingProfilesCount = crmAccountDetailsPage.getShippingProfilesCount();
+		 String countDisplayedWithShippingLink = crmAccountDetailsPage.getCountDisplayedWithLink("Shipping Profiles");
+		 s_assert.assertTrue(shippingProfilesCount.equals(countDisplayedWithShippingLink), "shipping profiles count = "+shippingProfilesCount+"while count Displayed With Shipping Link = "+countDisplayedWithShippingLink);
+		 s_assert.assertTrue(crmAccountDetailsPage.isOnlyOneShippingProfileIsDefault(),"default shipping profiles is not one");
 
-		s_assert.assertAll();
+		 s_assert.assertAll();
 	}
 
 
@@ -797,17 +802,17 @@ public class CRMRegressionTest extends RFCRMWebsiteBaseTest{
 		s_assert.assertTrue(crmAccountDetailsPage.isLabelOnShippingAddressSectionPresent("Default"),"Default label is not present in Shipping address section");
 		s_assert.assertTrue(crmAccountDetailsPage.isLabelOnShippingAddressSectionPresent("Address Line 1"),"Address Line 1 label is not present in Shipping address section");
 		s_assert.assertTrue(crmAccountDetailsPage.isLabelOnShippingAddressSectionPresent("Address Line 2"),"Address Line 2 label is not present in Shipping address section");
-/*		s_assert.assertTrue(crmAccountDetailsPage.isLabelOnShippingAddressSectionPresent("Address Line 3"),"Address Line 3 label is not present in Shipping address section");
-*/		s_assert.assertTrue(crmAccountDetailsPage.isLabelOnShippingAddressSectionPresent("Locale"),"Locale label is not present in Shipping address section");
-		s_assert.assertTrue(crmAccountDetailsPage.isLabelOnShippingAddressSectionPresent("Region"),"Region label is not present in Shipping address section");
-		s_assert.assertTrue(crmAccountDetailsPage.isLabelOnShippingAddressSectionPresent("Postal code"),"Postal code label is not present in Shipping address section");
+		/*		s_assert.assertTrue(crmAccountDetailsPage.isLabelOnShippingAddressSectionPresent("Address Line 3"),"Address Line 3 label is not present in Shipping address section");
+		 */		s_assert.assertTrue(crmAccountDetailsPage.isLabelOnShippingAddressSectionPresent("Locale"),"Locale label is not present in Shipping address section");
+		 s_assert.assertTrue(crmAccountDetailsPage.isLabelOnShippingAddressSectionPresent("Region"),"Region label is not present in Shipping address section");
+		 s_assert.assertTrue(crmAccountDetailsPage.isLabelOnShippingAddressSectionPresent("Postal code"),"Postal code label is not present in Shipping address section");
 
-		String shippingProfilesCount = crmAccountDetailsPage.getShippingProfilesCount();
-		String countDisplayedWithShippingLink = crmAccountDetailsPage.getCountDisplayedWithLink("Shipping Profiles");
-		s_assert.assertTrue(shippingProfilesCount.equals(countDisplayedWithShippingLink), "shipping profiles count = "+shippingProfilesCount+"while count Displayed With Shipping Link = "+countDisplayedWithShippingLink);
-		s_assert.assertTrue(crmAccountDetailsPage.isOnlyOneShippingProfileIsDefault(),"default shipping profiles is not one");
+		 String shippingProfilesCount = crmAccountDetailsPage.getShippingProfilesCount();
+		 String countDisplayedWithShippingLink = crmAccountDetailsPage.getCountDisplayedWithLink("Shipping Profiles");
+		 s_assert.assertTrue(shippingProfilesCount.equals(countDisplayedWithShippingLink), "shipping profiles count = "+shippingProfilesCount+"while count Displayed With Shipping Link = "+countDisplayedWithShippingLink);
+		 s_assert.assertTrue(crmAccountDetailsPage.isOnlyOneShippingProfileIsDefault(),"default shipping profiles is not one");
 
-		s_assert.assertAll();
+		 s_assert.assertAll();
 	}
 
 	//Hybris Project-4537:View Billing profile for a consultant
@@ -1679,7 +1684,7 @@ public class CRMRegressionTest extends RFCRMWebsiteBaseTest{
 		s_assert.assertTrue(crmAccountDetailsPage.isChannelDropdownOnAccountDetailPagePresent(), "Channel is not Avaliable");
 		s_assert.assertTrue(crmAccountDetailsPage.isDataValuesInDropDownUnderLogAccountActivityPresent("Reason"), "Reason Dropdown is Empty");
 		crmAccountDetailsPage.clickClearButtonInLogAccountActivity();
-		
+
 		/*s_assert.assertTrue(crmAccountDetailsPage.verifyDropdownTextfieldsAreClearedInLogAccountActivity("Channel"), "Channel DropDown Contains value");*/
 		s_assert.assertTrue(crmAccountDetailsPage.isValueCallDisplayedOnChannelOptionsPresent("Channel"), "Channel Contains value Call");
 		s_assert.assertTrue(crmAccountDetailsPage.verifyDropdownTextfieldsAreClearedInLogAccountActivity("Reason"), "Channel DropDown Contains value");
@@ -3763,6 +3768,6 @@ public class CRMRegressionTest extends RFCRMWebsiteBaseTest{
 		//s_assert.assertTrue(inActivePCEmailID.equalsIgnoreCase(modifiedEmailId),"Email address of PC User is not updated");
 		s_assert.assertAll();
 	}
-	
-			
+
+
 }

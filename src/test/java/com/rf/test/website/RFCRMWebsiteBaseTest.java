@@ -10,6 +10,7 @@ import org.openqa.selenium.By;
 import org.openqa.selenium.NoSuchElementException;
 import org.openqa.selenium.interactions.Actions;
 import org.testng.Assert;
+import org.testng.annotations.AfterClass;
 import org.testng.annotations.AfterMethod;
 import org.testng.annotations.AfterSuite;
 import org.testng.annotations.BeforeClass;
@@ -76,6 +77,11 @@ public class RFCRMWebsiteBaseTest extends RFBaseTest {
 		s_assert = new SoftAssert();
 	}
 
+	@AfterClass(alwaysRun = true)
+	public void logoutAfterClass() throws Exception {
+		crmLogout();
+	}
+
 	public void loginUser(String username, String password){
 		driver.waitForElementPresent(LOGIN_BOX_LOCATION);
 		driver.clear(USERNAME_TXTFLD_LOC);
@@ -105,9 +111,10 @@ public class RFCRMWebsiteBaseTest extends RFBaseTest {
 	 */
 	@AfterSuite(alwaysRun = true)
 	public void tearDown() throws Exception {
-		crmLogout();
+		//crmLogout();
 		new HtmlLogger().createHtmlLogFile();                 
 		driver.quit();
+		
 	}
 
 	public void setStoreFrontPassword(String pass){

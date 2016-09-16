@@ -401,7 +401,7 @@ public class CSCockpitCustomerTabPage extends CSCockpitRFWebsiteBasePage{
 		driver.click(USE_ENTERED_ADDRESS);
 		driver.waitForCSCockpitLoadingImageToDisappear();
 	}
-	
+
 	public void clickUseThisAddressBtn(){
 		driver.pauseExecutionFor(2000);
 		driver.waitForElementPresent(USE_THIS_ADDRESS);
@@ -433,7 +433,7 @@ public class CSCockpitCustomerTabPage extends CSCockpitRFWebsiteBasePage{
 		String autoshipID = driver.findElement(AUTOSHIP_ID_HAVING_TYPE_AS_CRP_AUTOSHIP_STATUS_AS_PENDING).getText();
 		logger.info("Autoship id from CS cockpit UI Is"+autoshipID);
 		driver.click(AUTOSHIP_ID_HAVING_TYPE_AS_CRP_AUTOSHIP_STATUS_AS_PENDING);
-		driver.waitForCSCockpitLoadingImageToDisappear();
+		driver.waitForCSCockpitLoadingImageToDisappear(60);
 		return autoshipID;
 	}
 

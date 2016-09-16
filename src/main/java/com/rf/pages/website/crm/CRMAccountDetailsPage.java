@@ -1146,7 +1146,7 @@ public class CRMAccountDetailsPage extends CRMRFWebsiteBasePage {
 		driver.waitForCRMLoadingImageToDisappear();
 		driver.isElementPresent(By.xpath("//xhtml:h4[text()='Success:']"));
 		String strCurrentDay = CommonUtils.getCurrentDate("M/d/yyyy", timeZone);
-		driver.pauseExecutionFor(2000);
+		driver.pauseExecutionFor(4000);
 		return strCurrentDay;
 	}
 
@@ -1614,6 +1614,25 @@ public class CRMAccountDetailsPage extends CRMRFWebsiteBasePage {
 		actions.moveToElement(driver.findElement(By.xpath("//span[@class='listTitle' and contains(text(),'Contacts')]"))).build().perform();
 		return !driver.isElementPresent(By.xpath("//tr[@class='dataRow even last first highlight']//a[contains(text(),'"+field+"')]/ancestor::div//input"));
 
+	}
+
+	public void selectUserEnteredAddressAndClickOnSaveButton(){
+		try{
+			driver.switchTo().defaultContent();
+			driver.waitForElementPresent(By.xpath("//div[@id='navigatortab']/div[3]/div/div[3]/descendant::iframe[2]"));
+			driver.switchTo().frame(driver.findElement(By.xpath("//div[@id='navigatortab']/div[3]/div/div[3]/descendant::iframe[2]")));
+			driver.waitForElementPresent(By.xpath("//label[contains(text(),'User entered address')]/following::input[1]"));
+			driver.click(By.xpath("//label[contains(text(),'User entered address')]/following::input[1]"));
+			driver.click(By.xpath("//a[text()='Save Address']"));
+			try{
+				driver.click(By.xpath(String.format(userEnteredAddress)));
+				driver.waitForElementPresent(By.xpath("//a[text()='Save Address']"));
+				driver.click(By.xpath("//a[text()='Save Address']"));
+			}catch(Exception e){
+			}  
+		}catch(Exception e1){
+			logger.info("No User Entered Address Button Found");
+		}
 	}
 }
 

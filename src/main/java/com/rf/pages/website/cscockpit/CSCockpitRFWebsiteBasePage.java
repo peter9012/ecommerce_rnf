@@ -1262,9 +1262,10 @@ public class CSCockpitRFWebsiteBasePage extends RFBasePage{
 			}
 		}
 		logger.info("Value of i is:+"+i);
+		driver.waitForCSCockpitLoadingImageToDisappear();
 		return ""+i;
 	}
-
+	
 	public int getDayFromDate(String date){
 		int day = 0;
 		try{
@@ -1275,7 +1276,7 @@ public class CSCockpitRFWebsiteBasePage extends RFBasePage{
 		}
 		return day;
 	}
-	
+
 	public String selectAndReturnAddressFromDropdownBeforeClickingUseThisAddressBtnInPopup(String partOfShippingAddress){
 		driver.waitForElementPresent(SHIPPING_ADDRESS_DROPDOWN_IN_POPUP);
 		driver.click(SHIPPING_ADDRESS_DROPDOWN_IN_POPUP);

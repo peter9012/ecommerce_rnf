@@ -111,9 +111,10 @@ public class RFCRMWebsiteBaseTest extends RFBaseTest {
 	 */
 	@AfterSuite(alwaysRun = true)
 	public void tearDown() throws Exception {
-		crmLogout();
+		//crmLogout();
 		new HtmlLogger().createHtmlLogFile();                 
 		driver.quit();
+		
 	}
 
 	public void setStoreFrontPassword(String pass){

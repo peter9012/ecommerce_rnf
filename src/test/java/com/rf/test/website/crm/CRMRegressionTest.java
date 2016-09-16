@@ -180,6 +180,7 @@ public class CRMRegressionTest extends RFCRMWebsiteBaseTest{
 		String addressLine = TestConstants.CRM_NEW_ADDRESS_LINE_1_CA;
 		String postalCode = TestConstants.CRM_NEW_POSTALCODE_CA;
 		String locale = TestConstants.CITY_CA;
+		String region = TestConstants.PROVINCE_CA;
 		logger.info("The username is "+rcUserName); 
 		s_assert.assertTrue(crmHomePage.verifyHomePage(),"Home page does not come after login");
 		crmHomePage.enterTextInSearchFieldAndHitEnter(rcUserName);
@@ -208,6 +209,7 @@ public class CRMRegressionTest extends RFCRMWebsiteBaseTest{
 		crmAccountDetailsPage.editAddressFieldsOfMainAddressSection("Address Line 1", addressLine);
 		crmAccountDetailsPage.editAddressFieldsOfMainAddressSection("Postal Code", postalCode);
 		crmAccountDetailsPage.editAddressFieldsOfMainAddressSection("Locale", locale);
+		crmAccountDetailsPage.editAddressFieldsOfMainAddressSection("Region", region);
 		crmAccountDetailsPage.selectUserEnteredAddressAndClickOnSaveButton();
 		crmAccountDetailsPage.clickSaveAddressButtonInEditMainAddressSection(addressLine);
 		s_assert.assertTrue(crmAccountDetailsPage.getDataValueOfLabelsInMainAddressSection("Address Line 1").trim().equalsIgnoreCase(addressLine),"Actual Value is :"+crmAccountDetailsPage.getDataValueOfLabelsInMainAddressSection("Address Line 1").trim()+"& Expected Value is :"+addressLine+".Main account Address Line 1 is not updated");

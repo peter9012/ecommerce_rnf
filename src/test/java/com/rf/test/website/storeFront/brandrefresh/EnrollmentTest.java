@@ -77,7 +77,7 @@ public class EnrollmentTest extends RFBrandRefreshStoreFrontWebsiteBaseTest{
 		s_assert.assertAll();
 	}
 
-/*	//RC Enrollment from corp site.
+	//RC Enrollment from corp site.
 	@Test(enabled=true)//smoke
 	public void testRCEnrollment(){
 		int randomNum = CommonUtils.getRandomNum(10000, 1000000);
@@ -104,28 +104,28 @@ public class EnrollmentTest extends RFBrandRefreshStoreFrontWebsiteBaseTest{
 		String sponsorID = TestConstantsRFL.CID_CONSULTANT;
 		String addressName = "Home";
 
-		storeFrontLegacyHomePage =  new StoreFrontLegacyHomePage(driver);
-		storeFrontLegacyHomePage.clickShopSkinCareBtn();
-		storeFrontLegacyHomePage.selectRegimen(regimen);
-		storeFrontLegacyHomePage.clickAddToCartBtn();
-		storeFrontLegacyHomePage.clickCheckoutBtn();
-		storeFrontLegacyHomePage.clickClickHereLinkForRC();
-		storeFrontLegacyHomePage.enterProfileDetailsForPCAndRC(firstName,lastName,emailAddress,password,phnNumber,gender);
-		storeFrontLegacyHomePage.clickCreateMyAccountBtnOnCreateRetailAccountPage();
+		storeFrontBrandRefreshHomePage =  new StoreFrontBrandRefreshHomePage(driver);
+		storeFrontBrandRefreshHomePage.clickShopSkinCareBtn();
+		storeFrontBrandRefreshHomePage.selectRegimen(regimen);
+		storeFrontBrandRefreshHomePage.clickAddToCartBtn();
+		storeFrontBrandRefreshHomePage.clickCheckoutBtn();
+		storeFrontBrandRefreshHomePage.clickClickHereLinkForRC();
+		storeFrontBrandRefreshHomePage.enterProfileDetailsForPCAndRC(firstName,lastName,emailAddress,password,phnNumber,gender);
+		storeFrontBrandRefreshHomePage.clickCreateMyAccountBtnOnCreateRetailAccountPage();
 		//s_assert.assertTrue(storeFrontLegacyHomePage.getJavaScriptPopUpText().contains(javaScriptPopupTxt),"Java Script Popup for RC account confirmation not present");
 		//storeFrontLegacyHomePage.clickOKBtnOfJavaScriptPopUp();
-		storeFrontLegacyHomePage.enterIDNumberAsSponsorForPCAndRC(sponsorID);
-		storeFrontLegacyHomePage.clickBeginSearchBtn();
-		storeFrontLegacyHomePage.selectSponsorRadioBtn();
-		storeFrontLegacyHomePage.clickSelectAndContinueBtnForPCAndRC();
-		storeFrontLegacyHomePage.enterShippingProfileDetails(addressName, shippingProfileFirstName,shippingProfileLastName, addressLine1, postalCode, phnNumber);
-		storeFrontLegacyHomePage.clickContinueBtn();
-		storeFrontLegacyHomePage.clickUseAsEnteredBtn();
-		storeFrontLegacyHomePage.enterBillingInfoDetails(billingName, billingProfileFirstName, billingProfileLastName, nameOnCard, cardNumber, expMonth, expYear, addressLine1, postalCode, phnNumber);
-		storeFrontLegacyHomePage.clickContinueBtn();
-		storeFrontLegacyHomePage.clickUseAsEnteredBtn();
-		storeFrontLegacyHomePage.clickCompleteOrderBtn();
-		s_assert.assertTrue(storeFrontLegacyHomePage.isThankYouTextPresentAfterOrderPlaced(), "Enrollment is not completed successfully");
+		storeFrontBrandRefreshHomePage.enterIDNumberAsSponsorForPCAndRC(sponsorID);
+		storeFrontBrandRefreshHomePage.clickBeginSearchBtn();
+		storeFrontBrandRefreshHomePage.selectSponsorRadioBtn();
+		storeFrontBrandRefreshHomePage.clickSelectAndContinueBtnForPCAndRC();
+		storeFrontBrandRefreshHomePage.enterShippingProfileDetails(addressName, shippingProfileFirstName,shippingProfileLastName, addressLine1, postalCode, phnNumber);
+		storeFrontBrandRefreshHomePage.clickContinueBtn();
+		storeFrontBrandRefreshHomePage.clickUseAsEnteredBtn();
+		storeFrontBrandRefreshHomePage.enterBillingInfoDetails(billingName, billingProfileFirstName, billingProfileLastName, nameOnCard, cardNumber, expMonth, expYear, addressLine1, postalCode, phnNumber);
+		storeFrontBrandRefreshHomePage.clickContinueBtn();
+		storeFrontBrandRefreshHomePage.clickUseAsEnteredBtn();
+		storeFrontBrandRefreshHomePage.clickCompleteOrderBtn();
+		s_assert.assertTrue(storeFrontBrandRefreshHomePage.isThankYouTextPresentAfterOrderPlaced(), "Enrollment is not completed successfully");
 		s_assert.assertAll();	
 	}
 
@@ -153,26 +153,26 @@ public class EnrollmentTest extends RFBrandRefreshStoreFrontWebsiteBaseTest{
 		String phnNumber2 = "780";
 		String phnNumber3 = "9099";
 
-		storeFrontLegacyHomePage =  new StoreFrontLegacyHomePage(driver);
-		storeFrontLegacyHomePage.clickBeAConsultantBtn();
-		storeFrontLegacyHomePage.clickEnrollNowBtnOnBusinessPage();
-		storeFrontLegacyHomePage.enterCID(CID);
-		storeFrontLegacyHomePage.clickSearchResults();
-		storeFrontLegacyHomePage.selectEnrollmentKit(kitName);
-		storeFrontLegacyHomePage.selectRegimenAndClickNext(regimen);
-		storeFrontLegacyHomePage.selectEnrollmentType(enrollemntType);
-		storeFrontLegacyHomePage.enterSetUpAccountInformation(firstName, lastName, emailAddress, password, addressLine1, postalCode, phnNumber1, phnNumber2, phnNumber3);
-		storeFrontLegacyHomePage.clickSetUpAccountNextBtn();
-		storeFrontLegacyHomePage.enterBillingInformation(cardNumber, nameOnCard, expMonth, expYear);
-		storeFrontLegacyHomePage.enterAccountInformation(ssnRandomNum1, ssnRandomNum2, ssnRandomNum3, firstName);
+		storeFrontBrandRefreshHomePage =  new StoreFrontBrandRefreshHomePage(driver);
+		storeFrontBrandRefreshHomePage.clickBeAConsultantBtn();
+		storeFrontBrandRefreshHomePage.clickEnrollNowBtnOnBusinessPage();
+		storeFrontBrandRefreshHomePage.enterCID(CID);
+		storeFrontBrandRefreshHomePage.clickSearchResults();
+		storeFrontBrandRefreshHomePage.selectEnrollmentKit(kitName);
+		storeFrontBrandRefreshHomePage.selectRegimenAndClickNext(regimen);
+		storeFrontBrandRefreshHomePage.selectEnrollmentType(enrollemntType);
+		storeFrontBrandRefreshHomePage.enterSetUpAccountInformation(firstName, lastName, emailAddress, password, addressLine1, postalCode, phnNumber1, phnNumber2, phnNumber3);
+		storeFrontBrandRefreshHomePage.clickSetUpAccountNextBtn();
+		storeFrontBrandRefreshHomePage.enterBillingInformation(cardNumber, nameOnCard, expMonth, expYear);
+		storeFrontBrandRefreshHomePage.enterAccountInformation(ssnRandomNum1, ssnRandomNum2, ssnRandomNum3, firstName);
 		//storeFrontLegacyHomePage.enterPWS(firstName+lastName+randomNum);
-		storeFrontLegacyHomePage.clickCompleteAccountNextBtn();
-		storeFrontLegacyHomePage.clickTermsAndConditions();
-		storeFrontLegacyHomePage.chargeMyCardAndEnrollMe();
-		s_assert.assertTrue(storeFrontLegacyHomePage.isCongratulationsMessageAppeared(),"");
+		storeFrontBrandRefreshHomePage.clickCompleteAccountNextBtn();
+		storeFrontBrandRefreshHomePage.clickTermsAndConditions();
+		storeFrontBrandRefreshHomePage.chargeMyCardAndEnrollMe();
+		s_assert.assertTrue(storeFrontBrandRefreshHomePage.isCongratulationsMessageAppeared(),"");
 		s_assert.assertAll();
 	}
-
+	/*
 	//Consultant Standard Enrollment
 	@Test(enabled=true)//smoke
 	public void testConsultantStandardEnrollment(){

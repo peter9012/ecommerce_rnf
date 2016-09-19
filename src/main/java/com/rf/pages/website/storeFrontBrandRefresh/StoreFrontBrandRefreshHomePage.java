@@ -9,6 +9,7 @@ import org.openqa.selenium.Alert;
 import org.openqa.selenium.By;
 import org.openqa.selenium.NoSuchElementException;
 import org.openqa.selenium.WebElement;
+import org.openqa.selenium.interactions.Actions;
 import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.openqa.selenium.support.ui.Select;
 import org.openqa.selenium.support.ui.WebDriverWait;
@@ -272,16 +273,27 @@ public class StoreFrontBrandRefreshHomePage extends StoreFrontBrandRefreshWebsit
 	}
 
 	public void clickBeAConsultantBtn(){
+		Actions actions = new Actions(RFWebsiteDriver.driver);
 		driver.quickWaitForElementPresent(BE_A_CONSULTANT_LOC);
-		driver.click(BE_A_CONSULTANT_LOC);
-		logger.info("Be a consultant button clicked");
-		driver.waitForPageLoad();
+		WebElement shopSkinCare = driver.findElement(BE_A_CONSULTANT_LOC);
+		actions.moveToElement(shopSkinCare).pause(1000).build().perform();
+		logger.info("Be a consultant drop doen link clicked");
 	}
 
 	public void clickEnrollNowBtnOnBusinessPage(){
 		driver.quickWaitForElementPresent(ENROLL_NOW_ON_BUSINESS_PAGE_LOC);
 		driver.click(ENROLL_NOW_ON_BUSINESS_PAGE_LOC);
 		logger.info("Enroll Now button on business page is clicked");
+		driver.waitForPageLoad();
+	}
+	public void hoverOnBeAConsultantAndClickEnrollNowLink(){
+		Actions actions = new Actions(RFWebsiteDriver.driver);
+		driver.quickWaitForElementPresent(BE_A_CONSULTANT_LOC);
+		WebElement shopSkinCare = driver.findElement(BE_A_CONSULTANT_LOC);
+		actions.moveToElement(shopSkinCare).pause(1000).build().perform();
+		driver.quickWaitForElementPresent(ENROLL_NOW_ON_BUSINESS_PAGE_LOC);
+		driver.click(ENROLL_NOW_ON_BUSINESS_PAGE_LOC);
+		logger.info("Enroll Now button is clicked");
 		driver.waitForPageLoad();
 	}
 
@@ -538,7 +550,7 @@ public class StoreFrontBrandRefreshHomePage extends StoreFrontBrandRefreshWebsit
 
 	public void selectRegimen(String regimen){
 		regimen = regimen.toUpperCase();
-		driver.get(driver.getURL()+"/Shop/"+regimen);
+		driver.get(driver.getURL()+"/Shop/"+regimen+"/Products");
 
 		//		driver.quickWaitForElementPresent(By.xpath(String.format(regimenLoc, regimen)));
 		//		driver.click(By.xpath(String.format(regimenLoc, regimen)));
@@ -554,6 +566,7 @@ public class StoreFrontBrandRefreshHomePage extends StoreFrontBrandRefreshWebsit
 			driver.findElement(By.xpath("//a[text()='Add to Cart']"));
 			driver.click(By.xpath("//a[text()='Add to Cart']"));
 			System.out.println("Add to cart button on ProdDetailPage is clicked");
+			driver.waitForPageLoad();
 
 		} catch (NoSuchElementException e1) {
 			try{
@@ -561,12 +574,14 @@ public class StoreFrontBrandRefreshHomePage extends StoreFrontBrandRefreshWebsit
 				driver.quickWaitForElementPresent(ADD_TO_CART_BTN_LOC);
 				driver.click(ADD_TO_CART_BTN_LOC);
 				logger.info("Add to cart button is clicked");
+				driver.waitForPageLoad();
 			}
 			catch(NoSuchElementException e2)
 			{
 				driver.quickWaitForElementPresent(By.xpath("//*[@id='FullPageItemList']/div[1]//a[@id='addToCartButton']"));
 				driver.click(By.xpath("//*[@id='FullPageItemList']/div[1]//a[@id='addToCartButton']"));
 				logger.info("Add to cart button is clicked");
+				driver.waitForPageLoad();
 
 			}
 

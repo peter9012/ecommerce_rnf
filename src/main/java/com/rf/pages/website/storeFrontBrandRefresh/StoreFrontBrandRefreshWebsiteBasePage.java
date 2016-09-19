@@ -5,11 +5,11 @@ import org.apache.logging.log4j.Logger;
 import org.openqa.selenium.Alert;
 import org.openqa.selenium.By;
 import org.openqa.selenium.NoSuchElementException;
+import org.openqa.selenium.WebElement;
 import org.openqa.selenium.interactions.Actions;
 
 import com.rf.core.driver.website.RFWebsiteDriver;
 import com.rf.core.website.constants.TestConstantsRFL;
-
 import com.rf.pages.RFBasePage;
 
 public class StoreFrontBrandRefreshWebsiteBasePage extends RFBasePage{
@@ -120,7 +120,7 @@ public class StoreFrontBrandRefreshWebsiteBasePage extends RFBasePage{
 		return driver.isElementPresent(ORDER_CONFIRMATION_THANK_YOU_TXT);
 	}
 	public void clickCheckoutBtn(){
-		driver.quickWaitForElementPresent(CHECKOUT_BTN);
+		driver.waitForElementPresent(CHECKOUT_BTN);
 		driver.click(CHECKOUT_BTN);
 		logger.info("Checkout button clicked");
 		driver.waitForPageLoad();
@@ -220,12 +220,18 @@ public class StoreFrontBrandRefreshWebsiteBasePage extends RFBasePage{
 
 	public void clickShopSkinCareBtn(){
 		Actions actions = new Actions(RFWebsiteDriver.driver);
+		driver.quickWaitForElementPresent(SHOP_SKINCARE_LOC);
+		WebElement shopSkinCare = driver.findElement(SHOP_SKINCARE_LOC);
+		actions.moveToElement(shopSkinCare).pause(1000).click().build().perform();
+		logger.info("All products link clicked "); 
+/*		driver.waitForPageLoad();
+		driver.waitForLoadingImageToDisappear();
 		driver.waitForElementPresent(By.id("our-products")); 
 		driver.pauseExecutionFor(2000);
 		driver.quickWaitForElementPresent(SHOP_SKINCARE_LOC);
 		driver.click(SHOP_SKINCARE_LOC);
 		logger.info("Products button clicked");
-		driver.waitForPageLoad();
+		driver.waitForPageLoad();*/
 	}
 
 	public boolean isSublinkOfBusinessSystemPresent(String linkNameOfBusinessSystem){

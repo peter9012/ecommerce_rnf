@@ -2,6 +2,7 @@ package com.rf.pages.website.dsv;
 
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
+
 import com.rf.core.driver.website.RFWebsiteDriver;
 import com.rf.pages.RFBasePage;
 
@@ -28,6 +29,14 @@ public class DSVRFWebsiteBasePage extends RFBasePage{
 		driver.get(URL);
 		driver.waitForPageLoad();
 		driver.pauseExecutionFor(3000);
+	}
+	
+	public String convertHTTPS_To_HTTP(){
+		String URL = driver.getCurrentUrl();
+		if(URL.contains("https")){
+			URL=URL.replaceAll("https", "http");
+		}	
+		return URL;
 	}
 
 

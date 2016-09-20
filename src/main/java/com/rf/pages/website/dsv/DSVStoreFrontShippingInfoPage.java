@@ -34,7 +34,9 @@ public class DSVStoreFrontShippingInfoPage extends DSVRFWebsiteBasePage {
 	}
 	
 	public void clickAddANewShippingAddressLink(){
+		driver.waitForLoadingImageToDisappear();
 		driver.quickWaitForElementPresent(ADD_A_NEW_SHIPPING_ADDRESS_LINK);
+		driver.pauseExecutionFor(2000);
 		driver.click(ADD_A_NEW_SHIPPING_ADDRESS_LINK);
 	}
 	

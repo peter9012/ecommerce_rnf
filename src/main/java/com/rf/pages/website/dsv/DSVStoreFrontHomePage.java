@@ -125,7 +125,9 @@ public class DSVStoreFrontHomePage extends DSVRFWebsiteBasePage{
 	}
 
 	public void clickWelcomeDropDown(){
+		driver.waitForLoadingImageToDisappear();
 		driver.quickWaitForElementPresent(WELCOME_DROP_DOWN);
+		driver.pauseExecutionFor(2000);
 		driver.click(WELCOME_DROP_DOWN);
 		driver.pauseExecutionFor(2000);
 	}

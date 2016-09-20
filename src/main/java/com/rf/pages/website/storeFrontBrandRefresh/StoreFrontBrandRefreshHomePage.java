@@ -37,7 +37,7 @@ public class StoreFrontBrandRefreshHomePage extends StoreFrontBrandRefreshWebsit
 	private static String enhancementsRegimenSubLinks= "//cufontext[text()='ENHANCEMENTS']/following::li//span[text()='%s']";
 	private static String regimenNameOnPwsLoc = "//div[@id='ProductCategories']//p[@class='productInfo']//span[text()='%s']";
 	private static String regimenImageOnPwsLoc = "//div[@id='ProductCategories']//p[@class='productInfo']//span[text()='%s']/../preceding-sibling::p/a";
-	private static String myAccountLinkAfterLoginLink = "//div[@class='topContents']//span[text()='%s']";
+	private static String myAccountLinkAfterLoginLink = "//nav[@id='Col1']//span[text()='%s']/..";
 	private static String consultantEnrollmentKit = "//span[@class='kitPrice']//cufontext[contains(text(),'%s')]/preceding::div[@class='imageWrap'][1]";
 	private static String consultantRegimenLoc = "//span[@class='catName']//cufontext[contains(text(),'%s')]/following::img[1]";
 	private static String retailPriceOfItem = "//div[@class='FloatCol']/div[%s]//tr[2]//div[1]/span[1]";
@@ -47,18 +47,19 @@ public class StoreFrontBrandRefreshHomePage extends StoreFrontBrandRefreshWebsit
 	private static String viewDetailsOnOrderHistoryPage = "//div[@id='RFContent']//tr[@class='tdhead']/following-sibling::tr[%s]//a[contains(text(),'View Details')]";
 	private static String orderNumberOnOrderHistoryPage = "//div[@id='RFContent']//tr[@class='tdhead']/following-sibling::tr[%s]/td[1]";
 	private static String regimenImageHeaderLoc = "//div[@id='HeaderCol']//cufon[@alt='%s']";
+	private static String linkUnderShopSkinCareOrBeAConsultant = "//div[@id='LeftNav']//a/span[text()='%s']";
 
 	private static final By PRODUCTS_LIST_LOC = By.xpath("//div[@id='FullPageItemList']");
-	private static final By RESULTS_TEXT_LOC = By.xpath("//cufontext[text()='RESULTS']/preceding::canvas[1]");
+	private static final By RESULTS_TEXT_LOC = By.xpath("//div[@id='RFContent']//h1[contains(text(),'REAL RESULTS')]");
 	private static final By TESTIMONIAL_PAGE_CONTENT_LOC = By.xpath("//div[@id='RFContent']/div/div/blockquote[1]/div[1]");
 	private static final By NEWS_TEXT_LOC = By.xpath("//div[@id='RFContent']");
-	private static final By FAQS_TEXT_LOC = By.xpath("//div[@id='RFContent']//cufontext[text()='Questions']");
+	private static final By FAQS_TEXT_LOC = By.xpath("//div[@id='RFContent']//h1[contains(text(),'Questions')]");
 	private static final By ADVICE_PAGE_CONTENT_LOC = By.xpath("//div[@id='RFContent']//td[1]");
 	private static final By GLOSSARY_PAGE_CONTENT_LOC = By.xpath("//div[@id='GlossaryAF']");
 	private static final By INGREDIENTS_AND_USAGE_LINK_LOC = By.xpath("//a[text()='Ingredients and Usage']");
 	private static final By INGREDIENTS_CONTENT_LOC = By.xpath("//span[@id='ProductUsage']");
-	private static final By FOOTER_CONTACT_US_LINK_LOC = By.xpath("//div[@id='FooterPane']//span[text()='Contact Us']");
-	private static final By CONTACT_US_PAGE_HEADER_LOC = By.xpath("//cufontext[text()='About ']");
+	private static final By FOOTER_CONTACT_US_LINK_LOC = By.xpath("//footer[@id='FooterPane']//span[text()='Contact Us']");
+	private static final By CONTACT_US_PAGE_HEADER_LOC = By.xpath("//b[text()='HOW MAY WE HELP YOU?']");
 
 	private static final By BE_A_CONSULTANT_LOC = By.xpath("//span[text()='Be a Consultant']");
 	private static final By ENROLL_NOW_ON_BUSINESS_PAGE_LOC = By.xpath("//*[@id='LeftNav']//span[text()='Enroll Now']");
@@ -722,9 +723,9 @@ public class StoreFrontBrandRefreshHomePage extends StoreFrontBrandRefreshWebsit
 		logger.info("Postal code entered as: "+postalCode);
 		driver.waitForStorfrontLegacyLoadingImageToDisappear();
 		/*driver.click(CITY_DD);
-		  logger.info("City dropdown clicked");
-		  driver.click(FIRST_VALUE_OF_CITY_DD);
-		  logger.info("City selected");*/
+		    logger.info("City dropdown clicked");
+		    driver.click(FIRST_VALUE_OF_CITY_DD);
+		    logger.info("City selected");*/
 		driver.type(CITY_DD, "Fremont");
 		logger.info("City Selected");
 		driver.type(PHONE_NUMBER_BILLING_PROFILE_PAGE,phnNumber);
@@ -850,7 +851,7 @@ public class StoreFrontBrandRefreshHomePage extends StoreFrontBrandRefreshWebsit
 
 	public boolean verifyUserIsRedirectedToResultsPage(String regimenType) {
 		driver.waitForElementPresent(RESULTS_TEXT_LOC);
-		return driver.isElementPresent(RESULTS_TEXT_LOC)&& driver.isElementPresent(By.xpath(String.format(regimenImageHeaderLoc, regimenType.toUpperCase()))); 
+		return driver.isElementPresent(RESULTS_TEXT_LOC); 
 	}
 
 	public boolean verifyUserIsRedirectedToTestimonialsPage() {
@@ -866,7 +867,7 @@ public class StoreFrontBrandRefreshHomePage extends StoreFrontBrandRefreshWebsit
 
 	public boolean verifyUserIsRedirectedToFAQsPage(String regimenType) {
 		driver.waitForElementPresent(FAQS_TEXT_LOC);
-		return driver.isElementPresent(FAQS_TEXT_LOC) && driver.isElementPresent(By.xpath(String.format(regimenImageHeaderLoc, regimenType)));
+		return driver.isElementPresent(FAQS_TEXT_LOC);
 	}
 
 	public boolean verifyUserIsRedirectedToAdvicePage() {
@@ -895,6 +896,7 @@ public class StoreFrontBrandRefreshHomePage extends StoreFrontBrandRefreshWebsit
 		driver.waitForElementPresent(FOOTER_CONTACT_US_LINK_LOC);
 		driver.click(FOOTER_CONTACT_US_LINK_LOC);
 		logger.info("contact us link is clicked");
+		driver.waitForPageLoad();
 	}
 
 	public boolean verifylinkIsRedirectedToContactUsPage() {
@@ -1120,17 +1122,23 @@ public class StoreFrontBrandRefreshHomePage extends StoreFrontBrandRefreshWebsit
 
 	public boolean verifySubSectionPresentAtBusinessSystemPage(
 			String SubSectionUnderBusinessSystem) {
-		return driver.isElementPresent(By.xpath(String.format(businessSystemSubTitleLoc, SubSectionUnderBusinessSystem)));
+		return driver.isElementPresent(By.xpath(String.format(linkUnderShopSkinCareOrBeAConsultant, SubSectionUnderBusinessSystem)));
 	}
 
 	public void clickSubSectionUnderBusinessSystem(String secondSubSectionUnderBusinessSystem) {
-		driver.quickWaitForElementPresent(By.xpath(String.format(businessSystemSubTitleLoc, secondSubSectionUnderBusinessSystem)));
-		driver.click(By.xpath(String.format(businessSystemSubTitleLoc, secondSubSectionUnderBusinessSystem)));
+		driver.quickWaitForElementPresent(By.xpath(String.format(linkUnderShopSkinCareOrBeAConsultant, secondSubSectionUnderBusinessSystem)));
+		driver.click(By.xpath(String.format(linkUnderShopSkinCareOrBeAConsultant, secondSubSectionUnderBusinessSystem)));
 		logger.info("business System SubTitle selected is: "+secondSubSectionUnderBusinessSystem);
 	}
 
 	public boolean verifySubSectionPresentAtProgramsAndIncentives(String firstSubSectionUnderProgramsAndIncentives) {
-		return driver.isElementPresent(By.xpath(String.format(subTitleLoc, firstSubSectionUnderProgramsAndIncentives)));
+		boolean flag=false;
+		try{
+			flag =  driver.findElement(By.xpath(String.format("//h2[text()='%s']", firstSubSectionUnderProgramsAndIncentives))).isDisplayed();
+		}catch(NoSuchElementException e){
+			flag =  driver.findElement(By.xpath(String.format("//a[text()='%s']", firstSubSectionUnderProgramsAndIncentives))).isDisplayed();
+		}
+		return flag;
 	}
 
 	public void clickToReadIncomeDisclosure() {
@@ -1433,13 +1441,18 @@ public class StoreFrontBrandRefreshHomePage extends StoreFrontBrandRefreshWebsit
 		logger.info("Billing street address entered as: "+addressLine1);
 		driver.type(ZIP_CODE, postalCode+"\t");
 		logger.info("Postal code entered as: "+postalCode);
+		driver.findElement(By.xpath("//td[text()='* City']")).click();
 		driver.waitForStorfrontLegacyLoadingImageToDisappear();
-		driver.click(CITY_DD);
-		/*		logger.info("City dropdown clicked");
-		driver.click(FIRST_VALUE_OF_CITY_DD);*/
+		//driver.pauseExecutionFor(5000);
+		Actions actions = new Actions(RFWebsiteDriver.driver);
+		actions.moveToElement(driver.findElement(CITY_DD)).click().build().perform();
+		//driver.click(CITY_DD);
+		logger.info("City dropdown clicked");
+		driver.waitForElementPresent(FIRST_VALUE_OF_CITY_DD);
+		driver.click(FIRST_VALUE_OF_CITY_DD);
 		logger.info("City selected");
-		driver.type(CITY_DD, "Fremont");
-		logger.info("City Selected");
+		//		driver.type(CITY_DD, "Fremont");
+		//		logger.info("City Selected");
 		driver.type(PHONE_NUMBER_BILLING_PROFILE_PAGE,phnNumber);
 		logger.info("Phone number entered as: "+phnNumber);
 	}
@@ -1502,7 +1515,8 @@ public class StoreFrontBrandRefreshHomePage extends StoreFrontBrandRefreshWebsit
 	public void clickHeaderLinkAfterLogin(String linkName) {
 		try{
 			driver.quickWaitForElementPresent(By.xpath(String.format(myAccountLinkAfterLoginLink, linkName)));
-			driver.click(By.xpath(String.format(myAccountLinkAfterLoginLink, linkName)));
+			Actions actions = new Actions(RFWebsiteDriver.driver);
+			actions.moveToElement(driver.findElement(By.xpath(String.format("//nav[@id='Col1']//span[text()='%s']/..", linkName)))).click().build().perform();
 			logger.info("my account link is clicked");
 		}
 		catch(NoSuchElementException e){
@@ -1954,5 +1968,22 @@ public class StoreFrontBrandRefreshHomePage extends StoreFrontBrandRefreshWebsit
 		driver.waitForPageLoad();
 	}
 
+	public void hoverOnBeAConsultantAndClickLinkOnEnrollMe(){
+		driver.pauseExecutionFor(2000);
+		Actions actions = new Actions(RFWebsiteDriver.driver);
+		actions =  new Actions(RFWebsiteDriver.driver);
+		actions.moveToElement(driver.findElement(By.xpath("//span[text()= 'BECOME A CONSULTANT']"))).build().perform();
+		logger.info("hover on Products link now as shop skincare");
+		driver.click(By.xpath("//span[text()= 'Enroll Now']"));
+		// logger.info("Clicked "+link+" link is clicked after hovering shop skincare.");
+		driver.waitForPageLoad();
+	}		
+
+	public void mouseHoverBeAConsultant(){
+		driver.pauseExecutionFor(2000);
+		Actions actions =  new Actions(RFWebsiteDriver.driver);
+		actions.moveToElement(driver.findElement(BE_A_CONSULTANT_LOC)).build().perform();
+		logger.info("hover performed on be a consultant link.");
+	}
 
 }

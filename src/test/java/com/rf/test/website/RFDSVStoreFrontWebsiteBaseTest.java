@@ -157,12 +157,10 @@ public class RFDSVStoreFrontWebsiteBaseTest extends RFBaseTest {
 	@BeforeMethod(alwaysRun=true)
 	public void beforeMethod(){
 		s_assert = new SoftAssert();
-		//		String country = driver.getCountry();
-		//		driver.get(driver.getURL()+"/"+country);
-		//		if(country.equalsIgnoreCase("ca"))
-		//			countryId = "40";
-		//		else if(country.equalsIgnoreCase("us"))
-		//			countryId = "236";			
+		if(driver.getCurrentUrl().contains("login")){
+			String country = driver.getCountry();
+			driver.get(driver.getURL()+"/"+country);
+		}		
 	}
 
 	@AfterMethod

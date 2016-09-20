@@ -1,4 +1,4 @@
-package com.rf.test.website.storeFront.brandrefresh;
+package com.rf.test.website.storeFront.brandRefresh;
 
 import java.util.List;
 import java.util.Map;
@@ -11,6 +11,7 @@ import com.rf.core.utils.CommonUtils;
 import com.rf.core.utils.DBUtil;
 import com.rf.core.website.constants.TestConstantsRFL;
 import com.rf.core.website.constants.dbQueries.DBQueries_RFL;
+import com.rf.pages.website.storeFrontBrandRefresh.StoreFrontBrandRefreshConsultantPage;
 /*import com.rf.pages.website.storeFrontBrandRefresh.StoreFrontBrandRefreshWebsiteBasePage;*/
 import com.rf.pages.website.storeFrontBrandRefresh.StoreFrontBrandRefreshHomePage;
 import com.rf.pages.website.storeFrontBrandRefresh.StoreFrontBrandRefreshPCUserPage;
@@ -23,6 +24,11 @@ public class EnrollmentTest extends RFBrandRefreshStoreFrontWebsiteBaseTest{
 	private StoreFrontBrandRefreshHomePage storeFrontBrandRefreshHomePage;
 	private StoreFrontBrandRefreshPCUserPage storeFrontBrandRefreshPCUserPage;
 	String RFL_DB = null;
+
+	public EnrollmentTest() {
+		storeFrontBrandRefreshHomePage = new StoreFrontBrandRefreshHomePage(driver);
+		storeFrontBrandRefreshPCUserPage = new StoreFrontBrandRefreshPCUserPage(driver);
+	}
 
 	//PC Enrollment From Corp site
 	@Test(enabled=true)//smoke
@@ -48,9 +54,10 @@ public class EnrollmentTest extends RFBrandRefreshStoreFrontWebsiteBaseTest{
 		String billingName =TestConstantsRFL.BILLING_PROFILE_NAME;
 		String billingProfileFirstName = TestConstantsRFL.SHIPPING_PROFILE_FIRST_NAME;
 		String billingProfileLastName = TestConstantsRFL.SHIPPING_PROFILE_LAST_NAME+randomNumber;
-		storeFrontBrandRefreshHomePage =  new StoreFrontBrandRefreshHomePage(driver);
-		storeFrontBrandRefreshHomePage.clickShopSkinCareBtn();
-		storeFrontBrandRefreshHomePage.selectRegimen(regimen);
+		
+		storeFrontBrandRefreshHomePage.mouseHoverShopSkinCareAndClickLink(regimen);
+		//		storeFrontBrandRefreshHomePage.clickShopSkinCareBtn();
+		//		storeFrontBrandRefreshHomePage.selectRegimen(regimen);
 		storeFrontBrandRefreshHomePage.clickAddToCartBtn();
 		storeFrontBrandRefreshHomePage.clickCheckoutBtn();
 		storeFrontBrandRefreshHomePage.clickClickHereLinkForPC();
@@ -104,26 +111,27 @@ public class EnrollmentTest extends RFBrandRefreshStoreFrontWebsiteBaseTest{
 		String sponsorID = TestConstantsRFL.CID_CONSULTANT;
 		String addressName = "Home";
 
-		storeFrontBrandRefreshHomePage =  new StoreFrontBrandRefreshHomePage(driver);
-		storeFrontBrandRefreshHomePage.clickShopSkinCareBtn();
-		storeFrontBrandRefreshHomePage.selectRegimen(regimen);
+		
+		storeFrontBrandRefreshHomePage.mouseHoverShopSkinCareAndClickLink(regimen);
+		//		storeFrontBrandRefreshHomePage.clickShopSkinCareBtn();
+		//		storeFrontBrandRefreshHomePage.selectRegimen(regimen);
 		storeFrontBrandRefreshHomePage.clickAddToCartBtn();
 		storeFrontBrandRefreshHomePage.clickCheckoutBtn();
 		storeFrontBrandRefreshHomePage.clickClickHereLinkForRC();
 		storeFrontBrandRefreshHomePage.enterProfileDetailsForPCAndRC(firstName,lastName,emailAddress,password,phnNumber,gender);
 		storeFrontBrandRefreshHomePage.clickCreateMyAccountBtnOnCreateRetailAccountPage();
-		//s_assert.assertTrue(storeFrontLegacyHomePage.getJavaScriptPopUpText().contains(javaScriptPopupTxt),"Java Script Popup for RC account confirmation not present");
-		//storeFrontLegacyHomePage.clickOKBtnOfJavaScriptPopUp();
+		//s_assert.assertTrue(storeFrontBrandRefreshHomePage.getJavaScriptPopUpText().contains(javaScriptPopupTxt),"Java Script Popup for RC account confirmation not present");
+		//storeFrontBrandRefreshHomePage.clickOKBtnOfJavaScriptPopUp();
 		storeFrontBrandRefreshHomePage.enterIDNumberAsSponsorForPCAndRC(sponsorID);
 		storeFrontBrandRefreshHomePage.clickBeginSearchBtn();
 		storeFrontBrandRefreshHomePage.selectSponsorRadioBtn();
 		storeFrontBrandRefreshHomePage.clickSelectAndContinueBtnForPCAndRC();
 		storeFrontBrandRefreshHomePage.enterShippingProfileDetails(addressName, shippingProfileFirstName,shippingProfileLastName, addressLine1, postalCode, phnNumber);
 		storeFrontBrandRefreshHomePage.clickContinueBtn();
-		storeFrontBrandRefreshHomePage.clickUseAsEnteredBtn();
+//		storeFrontBrandRefreshHomePage.clickUseAsEnteredBtn();
 		storeFrontBrandRefreshHomePage.enterBillingInfoDetails(billingName, billingProfileFirstName, billingProfileLastName, nameOnCard, cardNumber, expMonth, expYear, addressLine1, postalCode, phnNumber);
 		storeFrontBrandRefreshHomePage.clickContinueBtn();
-		storeFrontBrandRefreshHomePage.clickUseAsEnteredBtn();
+//		storeFrontBrandRefreshHomePage.clickUseAsEnteredBtn();
 		storeFrontBrandRefreshHomePage.clickCompleteOrderBtn();
 		s_assert.assertTrue(storeFrontBrandRefreshHomePage.isThankYouTextPresentAfterOrderPlaced(), "Enrollment is not completed successfully");
 		s_assert.assertAll();	
@@ -153,9 +161,10 @@ public class EnrollmentTest extends RFBrandRefreshStoreFrontWebsiteBaseTest{
 		String phnNumber2 = "780";
 		String phnNumber3 = "9099";
 
-		storeFrontBrandRefreshHomePage =  new StoreFrontBrandRefreshHomePage(driver);
-		storeFrontBrandRefreshHomePage.clickBeAConsultantBtn();
-		storeFrontBrandRefreshHomePage.clickEnrollNowBtnOnBusinessPage();
+		
+		//		storeFrontBrandRefreshHomePage.clickBeAConsultantBtn();
+		//		storeFrontBrandRefreshHomePage.clickEnrollNowBtnOnBusinessPage();
+		storeFrontBrandRefreshHomePage.mouseHoverBeAConsultantAndClickLink("Enroll Now");
 		storeFrontBrandRefreshHomePage.enterCID(CID);
 		storeFrontBrandRefreshHomePage.clickSearchResults();
 		storeFrontBrandRefreshHomePage.selectEnrollmentKit(kitName);
@@ -165,14 +174,14 @@ public class EnrollmentTest extends RFBrandRefreshStoreFrontWebsiteBaseTest{
 		storeFrontBrandRefreshHomePage.clickSetUpAccountNextBtn();
 		storeFrontBrandRefreshHomePage.enterBillingInformation(cardNumber, nameOnCard, expMonth, expYear);
 		storeFrontBrandRefreshHomePage.enterAccountInformation(ssnRandomNum1, ssnRandomNum2, ssnRandomNum3, firstName);
-		//storeFrontLegacyHomePage.enterPWS(firstName+lastName+randomNum);
+		//storeFrontBrandRefreshHomePage.enterPWS(firstName+lastName+randomNum);
 		storeFrontBrandRefreshHomePage.clickCompleteAccountNextBtn();
 		storeFrontBrandRefreshHomePage.clickTermsAndConditions();
 		storeFrontBrandRefreshHomePage.chargeMyCardAndEnrollMe();
 		s_assert.assertTrue(storeFrontBrandRefreshHomePage.isCongratulationsMessageAppeared(),"");
 		s_assert.assertAll();
 	}
-	/*
+
 	//Consultant Standard Enrollment
 	@Test(enabled=true)//smoke
 	public void testConsultantStandardEnrollment(){
@@ -197,28 +206,29 @@ public class EnrollmentTest extends RFBrandRefreshStoreFrontWebsiteBaseTest{
 		String phnNumber2 = "780";
 		String phnNumber3 = "9099";
 
-		storeFrontLegacyHomePage =  new StoreFrontLegacyHomePage(driver);
-		storeFrontLegacyHomePage.clickBeAConsultantBtn();
-		storeFrontLegacyHomePage.clickEnrollNowBtnOnBusinessPage();
-		storeFrontLegacyHomePage.enterCID(CID);
-		storeFrontLegacyHomePage.clickSearchResults();
-		storeFrontLegacyHomePage.selectEnrollmentKit(kitName);
-		storeFrontLegacyHomePage.selectRegimenAndClickNext(regimen);
-		storeFrontLegacyHomePage.selectEnrollmentType(enrollemntType);
-		storeFrontLegacyHomePage.enterSetUpAccountInformation(firstName, lastName, emailAddress, password, addressLine1, postalCode, phnNumber1, phnNumber2, phnNumber3);
-		storeFrontLegacyHomePage.clickSetUpAccountNextBtn();
-		storeFrontLegacyHomePage.enterBillingInformation(cardNumber, nameOnCard, expMonth, expYear);
+		
+		storeFrontBrandRefreshHomePage.mouseHoverBeAConsultantAndClickLink("Enroll Now");
+		//		storeFrontBrandRefreshHomePage.clickBeAConsultantBtn();
+		//		storeFrontBrandRefreshHomePage.clickEnrollNowBtnOnBusinessPage();
+		storeFrontBrandRefreshHomePage.enterCID(CID);
+		storeFrontBrandRefreshHomePage.clickSearchResults();
+		storeFrontBrandRefreshHomePage.selectEnrollmentKit(kitName);
+		storeFrontBrandRefreshHomePage.selectRegimenAndClickNext(regimen);
+		storeFrontBrandRefreshHomePage.selectEnrollmentType(enrollemntType);
+		storeFrontBrandRefreshHomePage.enterSetUpAccountInformation(firstName, lastName, emailAddress, password, addressLine1, postalCode, phnNumber1, phnNumber2, phnNumber3);
+		storeFrontBrandRefreshHomePage.clickSetUpAccountNextBtn();
+		storeFrontBrandRefreshHomePage.enterBillingInformation(cardNumber, nameOnCard, expMonth, expYear);
 
-		storeFrontLegacyHomePage.enterAccountInformation(ssnRandomNum1, ssnRandomNum2, ssnRandomNum3, firstName);
-		storeFrontLegacyHomePage.clickBillingInfoNextBtn();
-		storeFrontLegacyHomePage.clickYesSubscribeToPulseNow();
-		storeFrontLegacyHomePage.clickYesEnrollInCRPNow();
-		storeFrontLegacyHomePage.clickAutoShipOptionsNextBtn();
-		storeFrontLegacyHomePage.selectProductToAddToCart();
-		storeFrontLegacyHomePage.clickYourCRPOrderPopUpNextBtn();
-		storeFrontLegacyHomePage.clickTermsAndConditions();
-		storeFrontLegacyHomePage.chargeMyCardAndEnrollMe();
-		s_assert.assertTrue(storeFrontLegacyHomePage.isCongratulationsMessageAppeared(),"Congratulations Message not appeared");
+		storeFrontBrandRefreshHomePage.enterAccountInformation(ssnRandomNum1, ssnRandomNum2, ssnRandomNum3, firstName);
+		storeFrontBrandRefreshHomePage.clickBillingInfoNextBtn();
+		storeFrontBrandRefreshHomePage.clickYesSubscribeToPulseNow();
+		storeFrontBrandRefreshHomePage.clickYesEnrollInCRPNow();
+		storeFrontBrandRefreshHomePage.clickAutoShipOptionsNextBtn();
+		storeFrontBrandRefreshHomePage.selectProductToAddToCart();
+		storeFrontBrandRefreshHomePage.clickYourCRPOrderPopUpNextBtn();
+		storeFrontBrandRefreshHomePage.clickTermsAndConditions();
+		storeFrontBrandRefreshHomePage.chargeMyCardAndEnrollMe();
+		s_assert.assertTrue(storeFrontBrandRefreshHomePage.isCongratulationsMessageAppeared(),"Congratulations Message not appeared");
 		s_assert.assertAll();
 	}
 
@@ -228,19 +238,19 @@ public class EnrollmentTest extends RFBrandRefreshStoreFrontWebsiteBaseTest{
 		RFL_DB = driver.getDBNameRFL();
 		List<Map<String, Object>> randomRCList =  null;
 		String rcEmailID = null;
-		storeFrontLegacyHomePage =  new StoreFrontLegacyHomePage(driver);
+		
 
 		randomRCList = DBUtil.performDatabaseQuery(DBQueries_RFL.GET_RANDOM_ACTIVE_RC_HAVING_ORDERS,RFL_DB);
 		rcEmailID = (String) getValueFromQueryResult(randomRCList, "UserName");
-		storeFrontLegacyHomePage.loginAsRCUser(rcEmailID, password);
-		s_assert.assertTrue(storeFrontLegacyHomePage.verifyUserSuccessfullyLoggedInOnCorpSite(),"RC user is not logged in successfully");
-		storeFrontLegacyHomePage.clickMyAccountLink();
-		s_assert.assertTrue(storeFrontLegacyHomePage.verifyLinkPresentUnderMyAccount("Order History"),"order history link is not present");
-		storeFrontLegacyHomePage.clickOrderManagementSublink("Order History");
-		int orderNumber =storeFrontLegacyHomePage.clickViewDetailsForOrderAndReturnOrderNumber();
+		storeFrontBrandRefreshHomePage.loginAsRCUser(rcEmailID, password);
+		s_assert.assertTrue(storeFrontBrandRefreshHomePage.verifyUserSuccessfullyLoggedInOnCorpSite(),"RC user is not logged in successfully");
+		storeFrontBrandRefreshHomePage.clickMyAccountLink();
+		s_assert.assertTrue(storeFrontBrandRefreshHomePage.verifyLinkPresentUnderMyAccount("Order History"),"order history link is not present");
+		storeFrontBrandRefreshHomePage.clickOrderManagementSublink("Order History");
+		int orderNumber =storeFrontBrandRefreshHomePage.clickViewDetailsForOrderAndReturnOrderNumber();
 		if(orderNumber!=0){
-			s_assert.assertTrue(storeFrontLegacyHomePage.isOrderDetailsPopupPresent(),"Order details popup not present after clicking view order details link.");
-			storeFrontLegacyHomePage.clickCloseOfOrderDetailsPopup();
+			s_assert.assertTrue(storeFrontBrandRefreshHomePage.isOrderDetailsPopupPresent(),"Order details popup not present after clicking view order details link.");
+			storeFrontBrandRefreshHomePage.clickCloseOfOrderDetailsPopup();
 		}
 		s_assert.assertAll();
 	}
@@ -253,15 +263,15 @@ public class EnrollmentTest extends RFBrandRefreshStoreFrontWebsiteBaseTest{
 		String accountNumber = null;
 		//String CID = TestConstantsRFL.CID_CONSULTANT;
 		String PWS = null;
-		storeFrontLegacyHomePage =  new StoreFrontLegacyHomePage(driver);
+		
 
 		randomConsultantList = DBUtil.performDatabaseQuery(DBQueries_RFL.GET_RANDOM_ACTIVE_CONSULTANT_WITH_ORDERS_AND_AUTOSHIPS_RFL,RFL_DB);
 		accountNumber = String.valueOf(getValueFromQueryResult(randomConsultantList, "AccountNumber"));
 
-		storeFrontLegacyHomePage.clickFindAConsultantImageLink();
-		storeFrontLegacyHomePage.enterIDNumberAsSponsorForPCAndRC(accountNumber);
-		storeFrontLegacyHomePage.clickBeginSearchBtn();
-		PWS = storeFrontLegacyHomePage.clickAndReturnPWSFromFindConsultantPage();
+		storeFrontBrandRefreshHomePage.clickFindAConsultantImageLink();
+		storeFrontBrandRefreshHomePage.enterIDNumberAsSponsorForPCAndRC(accountNumber);
+		storeFrontBrandRefreshHomePage.clickBeginSearchBtn();
+		PWS = storeFrontBrandRefreshHomePage.clickAndReturnPWSFromFindConsultantPage();
 		s_assert.assertTrue(driver.getCurrentUrl().contains(PWS.split("//")[1]), "User has not been navigated to pws site for searched consultant Expected: "+PWS.split("//")[1]+" While actual: "+driver.getCurrentUrl());
 		s_assert.assertAll();
 	}
@@ -272,11 +282,11 @@ public class EnrollmentTest extends RFBrandRefreshStoreFrontWebsiteBaseTest{
 		RFL_DB = driver.getDBNameRFL();
 		List<Map<String, Object>> randomPCList = null;
 		String pcEmailId = null;
-		storeFrontLegacyHomePage =  new StoreFrontLegacyHomePage(driver);
+		
 		while(true){
 			randomPCList = DBUtil.performDatabaseQuery(DBQueries_RFL.GET_RANDOM_ACTIVE_PC_WITH_ORDERS_AND_AUTOSHIPS_RFL, RFL_DB);
 			pcEmailId = (String) getValueFromQueryResult(randomPCList, "UserName");
-			storeFrontLegacyPCUserPage = storeFrontLegacyHomePage.loginAsPCUser(pcEmailId, password);
+			storeFrontBrandRefreshPCUserPage = storeFrontBrandRefreshHomePage.loginAsPCUser(pcEmailId, password);
 			boolean isSiteNotFoundPresent = driver.getCurrentUrl().contains("SiteNotFound") || driver.getCurrentUrl().contains("SiteNotActive") || driver.getCurrentUrl().contains("Error");
 			if(isSiteNotFoundPresent){
 				continue;
@@ -284,23 +294,23 @@ public class EnrollmentTest extends RFBrandRefreshStoreFrontWebsiteBaseTest{
 				break;
 			}
 		}
-		storeFrontLegacyPCUserPage.clickMyAccountLink();
-		s_assert.assertTrue(storeFrontLegacyPCUserPage.verifyLinkPresentUnderMyAccount("Order History"),"order history link is not present");
-		s_assert.assertTrue(storeFrontLegacyPCUserPage.verifyLinkPresentUnderMyAccount("Edit Order"),"Edit Order link is not present");
-		s_assert.assertTrue(storeFrontLegacyPCUserPage.verifyLinkPresentUnderMyAccount("Change my PC Perks Status"),"Change my PC Perks Status link is not present");
-		s_assert.assertTrue(storeFrontLegacyPCUserPage.verifyLinkPresentUnderMyAccount("PC Perks FAQs"),"PC Perks FAQs Status link is not present");
-		storeFrontLegacyPCUserPage.clickOrderManagementSublink("Order History");
-		s_assert.assertTrue(storeFrontLegacyPCUserPage.verifyOrderHistoryPresent("Order History"),"section order history not present");
-		storeFrontLegacyPCUserPage.navigateToBackPage();
-		storeFrontLegacyPCUserPage.clickOrderManagementSublink("Edit Order");
-		s_assert.assertTrue(storeFrontLegacyPCUserPage.isEditOrderPagePresent(),"Edit order page is not present");
-		storeFrontLegacyPCUserPage.clickMyAccountLink();
-		storeFrontLegacyPCUserPage.clickOrderManagementSublink("Change my PC Perks Status");
-				s_assert.assertTrue(storeFrontLegacyPCUserPage.verifyCurrentPage("PcPerksStatus"),"URL does not contain pcPerksStatus");
-		s_assert.assertTrue(storeFrontLegacyPCUserPage.isPcPerksStatusLinkPresent(),"Delay or Cancel PC Perks link is not present");
-		storeFrontLegacyHomePage.clickBackToMyAccountBtn();
-		storeFrontLegacyPCUserPage.clickOrderManagementSublink("PC Perks FAQs");
-		s_assert.assertTrue(storeFrontLegacyPCUserPage.verifyFaqPagePresent(),"This is not faq's page");
+		storeFrontBrandRefreshPCUserPage.clickMyAccountLink();
+		s_assert.assertTrue(storeFrontBrandRefreshPCUserPage.verifyLinkPresentUnderMyAccount("Order History"),"order history link is not present");
+		s_assert.assertTrue(storeFrontBrandRefreshPCUserPage.verifyLinkPresentUnderMyAccount("Edit Order"),"Edit Order link is not present");
+		s_assert.assertTrue(storeFrontBrandRefreshPCUserPage.verifyLinkPresentUnderMyAccount("Change my PC Perks Status"),"Change my PC Perks Status link is not present");
+		s_assert.assertTrue(storeFrontBrandRefreshPCUserPage.verifyLinkPresentUnderMyAccount("PC Perks FAQs"),"PC Perks FAQs Status link is not present");
+		storeFrontBrandRefreshPCUserPage.clickOrderManagementSublink("Order History");
+		s_assert.assertTrue(storeFrontBrandRefreshPCUserPage.verifyOrderHistoryPresent("Order History"),"section order history not present");
+		storeFrontBrandRefreshPCUserPage.navigateToBackPage();
+		storeFrontBrandRefreshPCUserPage.clickOrderManagementSublink("Edit Order");
+		s_assert.assertTrue(storeFrontBrandRefreshPCUserPage.isEditOrderPagePresent(),"Edit order page is not present");
+		storeFrontBrandRefreshPCUserPage.clickMyAccountLink();
+		storeFrontBrandRefreshPCUserPage.clickOrderManagementSublink("Change my PC Perks Status");
+		s_assert.assertTrue(storeFrontBrandRefreshPCUserPage.verifyCurrentPage("PcPerksStatus"),"URL does not contain pcPerksStatus");
+		s_assert.assertTrue(storeFrontBrandRefreshPCUserPage.isPcPerksStatusLinkPresent(),"Delay or Cancel PC Perks link is not present");
+		storeFrontBrandRefreshHomePage.clickBackToMyAccountBtn();
+		storeFrontBrandRefreshPCUserPage.clickOrderManagementSublink("PC Perks FAQs");
+		s_assert.assertTrue(storeFrontBrandRefreshPCUserPage.verifyFaqPagePresent(),"This is not faq's page");
 		s_assert.assertAll();
 	}
 
@@ -310,11 +320,11 @@ public class EnrollmentTest extends RFBrandRefreshStoreFrontWebsiteBaseTest{
 		RFL_DB = driver.getDBNameRFL();
 		List<Map<String, Object>> randomPCList = null;
 		String pcEmailId = null;
-		storeFrontLegacyHomePage =  new StoreFrontLegacyHomePage(driver);
+		
 		while(true){
 			randomPCList = DBUtil.performDatabaseQuery(DBQueries_RFL.GET_RANDOM_ACTIVE_PC_WITH_ORDERS_AND_AUTOSHIPS_RFL, RFL_DB);
 			pcEmailId = (String) getValueFromQueryResult(randomPCList, "UserName");
-			storeFrontLegacyPCUserPage = storeFrontLegacyHomePage.loginAsPCUser(pcEmailId, password);
+			storeFrontBrandRefreshPCUserPage = storeFrontBrandRefreshHomePage.loginAsPCUser(pcEmailId, password);
 			boolean isSiteNotFoundPresent = driver.getCurrentUrl().contains("SiteNotFound") || driver.getCurrentUrl().contains("SiteNotActive") || driver.getCurrentUrl().contains("Error");
 			if(isSiteNotFoundPresent){
 				continue;
@@ -322,18 +332,18 @@ public class EnrollmentTest extends RFBrandRefreshStoreFrontWebsiteBaseTest{
 				break;
 			}
 		}
-		storeFrontLegacyPCUserPage.clickMyAccountLink();
-		s_assert.assertTrue(storeFrontLegacyPCUserPage.verifyLinkPresentUnderMyAccount("Order History"),"order history link is not present");
-		s_assert.assertTrue(storeFrontLegacyPCUserPage.verifyLinkPresentUnderMyAccount("Edit Order"),"Edit Order link is not present");
-		s_assert.assertTrue(storeFrontLegacyPCUserPage.verifyLinkPresentUnderMyAccount("Change my PC Perks Status"),"Change my PC Perks Status link is not present");
-		s_assert.assertTrue(storeFrontLegacyPCUserPage.verifyLinkPresentUnderMyAccount("PC Perks FAQs"),"PC Perks FAQs Status link is not present");
-		storeFrontLegacyPCUserPage.clickOrderManagementSublink("Edit Order");
-		storeFrontLegacyHomePage.clickEditOrderbtn();
-		storeFrontLegacyHomePage.clickAddToCartBtnForHighPriceItems();
-		storeFrontLegacyHomePage.clickOnUpdateOrderBtn();
-		storeFrontLegacyHomePage.handleAlertAfterUpdateOrder();
-		s_assert.assertTrue(storeFrontLegacyHomePage.getConfirmationMessage().contains("Replenishment Order items successfully updated!"),"No Message appearing after order update");
+		storeFrontBrandRefreshPCUserPage.clickMyAccountLink();
+		s_assert.assertTrue(storeFrontBrandRefreshPCUserPage.verifyLinkPresentUnderMyAccount("Order History"),"order history link is not present");
+		s_assert.assertTrue(storeFrontBrandRefreshPCUserPage.verifyLinkPresentUnderMyAccount("Edit Order"),"Edit Order link is not present");
+		s_assert.assertTrue(storeFrontBrandRefreshPCUserPage.verifyLinkPresentUnderMyAccount("Change my PC Perks Status"),"Change my PC Perks Status link is not present");
+		s_assert.assertTrue(storeFrontBrandRefreshPCUserPage.verifyLinkPresentUnderMyAccount("PC Perks FAQs"),"PC Perks FAQs Status link is not present");
+		storeFrontBrandRefreshPCUserPage.clickOrderManagementSublink("Edit Order");
+		storeFrontBrandRefreshHomePage.clickEditOrderbtn();
+		storeFrontBrandRefreshHomePage.clickAddToCartBtnForHighPriceItems();
+		storeFrontBrandRefreshHomePage.clickOnUpdateOrderBtn();
+		storeFrontBrandRefreshHomePage.handleAlertAfterUpdateOrder();
+		s_assert.assertTrue(storeFrontBrandRefreshHomePage.getConfirmationMessage().contains("Replenishment Order items successfully updated!"),"No Message appearing after order update");
 		s_assert.assertAll();
-	}*/
+	}
 
 }

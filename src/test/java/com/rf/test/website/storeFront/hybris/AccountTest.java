@@ -1,6 +1,5 @@
 package com.rf.test.website.storeFront.hybris;
 
-
 import java.util.List;
 import java.util.Map;
 
@@ -169,7 +168,7 @@ public class AccountTest extends RFWebsiteBaseTest{
 		s_assert.assertAll();
 	}
 
-	// Hybris Phase 2-1977 :: verify with Valid credentials and Logout.
+	//Hybris Phase 2-1977 :: verify with Valid credentials and Logout.
 	@Test
 	public void testVerifyLogoutwithValidCredentials_1977() throws InterruptedException{
 		RFO_DB = driver.getDBNameRFO();

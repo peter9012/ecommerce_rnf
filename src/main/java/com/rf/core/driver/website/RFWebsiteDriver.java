@@ -77,6 +77,7 @@ public class RFWebsiteDriver implements RFDriver,WebDriver {
 			ChromeOptions options = new ChromeOptions();
 			options.addArguments("no-sandbox");
 			options.addArguments("chrome.switches","--disable-extensions");
+			options.addArguments("disable-popup-blocking");
 			DesiredCapabilities capabilities = new DesiredCapabilities();
 			capabilities.setCapability(ChromeOptions.CAPABILITY, options);
 			// for clearing cache

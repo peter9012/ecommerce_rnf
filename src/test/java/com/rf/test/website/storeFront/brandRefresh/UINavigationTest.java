@@ -14,9 +14,9 @@ import com.rf.core.website.constants.dbQueries.DBQueries_RFL;
 import com.rf.pages.website.storeFrontBrandRefresh.StoreFrontBrandRefreshConsultantPage;
 import com.rf.pages.website.storeFrontBrandRefresh.StoreFrontBrandRefreshHomePage;
 import com.rf.pages.website.storeFrontBrandRefresh.StoreFrontBrandRefreshPCUserPage;
-import com.rf.test.website.RFLegacyStoreFrontWebsiteBaseTest;
+import com.rf.test.website.RFBrandRefreshWebsiteBaseTest;
 
-public class UINavigationTest extends RFLegacyStoreFrontWebsiteBaseTest{
+public class UINavigationTest extends RFBrandRefreshWebsiteBaseTest{
 	private static final Logger logger = LogManager
 			.getLogger(UINavigationTest.class.getName());
 
@@ -35,7 +35,7 @@ public class UINavigationTest extends RFLegacyStoreFrontWebsiteBaseTest{
 		String subLinkResults = "Results";
 		String subLinkFAQ = "FAQs";
 
-		storeFrontBrandRefreshHomePage =  new StoreFrontBrandRefreshHomePage(driver);
+
 		storeFrontBrandRefreshHomePage.mouseHoverShopSkinCareAndClickLink(subLinkRegimen);
 		s_assert.assertTrue(storeFrontBrandRefreshHomePage.getCurrentURL().toLowerCase().contains(subLinkRegimen.toLowerCase()), "Expected regimen name is "+subLinkRegimen.toLowerCase()+" Actual on UI is "+storeFrontBrandRefreshHomePage.getCurrentURL().toLowerCase());
 		s_assert.assertTrue(storeFrontBrandRefreshHomePage.getCurrentURL().toLowerCase().contains(subLinkProducts.toLowerCase()), "Expected sublink in url is "+subLinkProducts.toLowerCase()+" Actual on UI is "+storeFrontBrandRefreshHomePage.getCurrentURL().toLowerCase());
@@ -56,7 +56,7 @@ public class UINavigationTest extends RFLegacyStoreFrontWebsiteBaseTest{
 		String subLinkFAQ = "FAQs";
 		String subLinkResults = "Results";
 
-		storeFrontBrandRefreshHomePage =  new StoreFrontBrandRefreshHomePage(driver);
+
 		storeFrontBrandRefreshHomePage.mouseHoverShopSkinCareAndClickLink(subLinkRegimen);
 		s_assert.assertTrue(storeFrontBrandRefreshHomePage.getCurrentURL().toLowerCase().contains(subLinkRegimen.toLowerCase()), "Expected regimen name is "+subLinkRegimen.toLowerCase()+" Actual on UI is "+storeFrontBrandRefreshHomePage.getCurrentURL().toLowerCase());
 		s_assert.assertTrue(storeFrontBrandRefreshHomePage.getCurrentURL().toLowerCase().contains(subLinkProducts.toLowerCase()), "Expected sublink in url is "+subLinkProducts.toLowerCase()+" Actual on UI is "+storeFrontBrandRefreshHomePage.getCurrentURL().toLowerCase());
@@ -77,7 +77,7 @@ public class UINavigationTest extends RFLegacyStoreFrontWebsiteBaseTest{
 		String subLinkFAQ = "FAQs";
 		String subLinkResults = "Results";
 
-		storeFrontBrandRefreshHomePage =  new StoreFrontBrandRefreshHomePage(driver);
+
 		storeFrontBrandRefreshHomePage.mouseHoverShopSkinCareAndClickLink(subLinkRegimen);
 		s_assert.assertTrue(storeFrontBrandRefreshHomePage.getCurrentURL().toLowerCase().contains(subLinkRegimen.toLowerCase()), "Expected regimen name is "+subLinkRegimen.toLowerCase()+" Actual on UI is "+storeFrontBrandRefreshHomePage.getCurrentURL().toLowerCase());
 		s_assert.assertTrue(storeFrontBrandRefreshHomePage.getCurrentURL().toLowerCase().contains(subLinkProducts.toLowerCase()), "Expected sublink in url is "+subLinkProducts.toLowerCase()+" Actual on UI is "+storeFrontBrandRefreshHomePage.getCurrentURL().toLowerCase());
@@ -98,7 +98,7 @@ public class UINavigationTest extends RFLegacyStoreFrontWebsiteBaseTest{
 		String subLinkFAQ = "FAQs";
 		String subLinkResults = "Results";
 
-		storeFrontBrandRefreshHomePage =  new StoreFrontBrandRefreshHomePage(driver);
+
 		storeFrontBrandRefreshHomePage.mouseHoverShopSkinCareAndClickLink(subLinkRegimen);
 		s_assert.assertTrue(storeFrontBrandRefreshHomePage.getCurrentURL().toLowerCase().contains(subLinkRegimen.toLowerCase()), "Expected regimen name is "+subLinkRegimen.toLowerCase()+" Actual on UI is "+storeFrontBrandRefreshHomePage.getCurrentURL().toLowerCase());
 		s_assert.assertTrue(storeFrontBrandRefreshHomePage.getCurrentURL().toLowerCase().contains(subLinkProducts.toLowerCase()), "Expected sublink in url is "+subLinkProducts.toLowerCase()+" Actual on UI is "+storeFrontBrandRefreshHomePage.getCurrentURL().toLowerCase());
@@ -184,47 +184,46 @@ public class UINavigationTest extends RFLegacyStoreFrontWebsiteBaseTest{
 	public void testProductsLinkShouldBeRedirectionToAppropriatePage(){
 
 		//For REDEFINE
-		storeFrontBrandRefreshHomePage.clickShopSkinCareBtn();
+
 		String regimen = TestConstantsRFL.REGIMEN_NAME_REDEFINE;
-		storeFrontBrandRefreshHomePage.selectRegimen(regimen);
+		storeFrontBrandRefreshHomePage.mouseHoverShopSkinCareAndClickLink(regimen);
 		s_assert.assertTrue(storeFrontBrandRefreshHomePage.getCurrentURL().toLowerCase().contains(regimen.toLowerCase()), "Expected regimen name is "+regimen.toLowerCase()+" Actual on UI is "+storeFrontBrandRefreshHomePage.getCurrentURL().toLowerCase());
-		s_assert.assertTrue(storeFrontBrandRefreshHomePage.isRegimenNamePresentAfterClickedOnRegimen(regimen), "regimen name i.e.: "+regimen+" not present");
+		//s_assert.assertTrue(storeFrontBrandRefreshHomePage.isRegimenNamePresentAfterClickedOnRegimen(regimen), "regimen name i.e.: "+regimen+" not present");
 		//For REVERSE
-		storeFrontBrandRefreshHomePage.clickShopSkinCareBtn();
 		regimen = TestConstantsRFL.REGIMEN_NAME_REVERSE;
-		storeFrontBrandRefreshHomePage.selectRegimen(regimen);
+		storeFrontBrandRefreshHomePage.mouseHoverShopSkinCareAndClickLink(regimen);
 		s_assert.assertTrue(storeFrontBrandRefreshHomePage.getCurrentURL().toLowerCase().contains(regimen.toLowerCase()), "Expected regimen name is "+regimen.toLowerCase()+" Actual on UI is "+storeFrontBrandRefreshHomePage.getCurrentURL().toLowerCase());
-		s_assert.assertTrue(storeFrontBrandRefreshHomePage.isRegimenNamePresentAfterClickedOnRegimen(regimen), "regimen name i.e.: "+regimen+" not present");
+		//s_assert.assertTrue(storeFrontBrandRefreshHomePage.isRegimenNamePresentAfterClickedOnRegimen(regimen), "regimen name i.e.: "+regimen+" not present");
 		//For UNBLEMISH
-		storeFrontBrandRefreshHomePage.clickShopSkinCareBtn();
+
 		regimen = TestConstantsRFL.REGIMEN_NAME_UNBLEMISH;
-		storeFrontBrandRefreshHomePage.selectRegimen(regimen);
+		storeFrontBrandRefreshHomePage.mouseHoverShopSkinCareAndClickLink(regimen);
 		s_assert.assertTrue(storeFrontBrandRefreshHomePage.getCurrentURL().toLowerCase().contains(regimen.toLowerCase()), "Expected regimen name is "+regimen.toLowerCase()+" Actual on UI is "+storeFrontBrandRefreshHomePage.getCurrentURL().toLowerCase());
-		s_assert.assertTrue(storeFrontBrandRefreshHomePage.isRegimenNamePresentAfterClickedOnRegimen(regimen), "regimen name i.e.: "+regimen+" not present");
+		//s_assert.assertTrue(storeFrontBrandRefreshHomePage.isRegimenNamePresentAfterClickedOnRegimen(regimen), "regimen name i.e.: "+regimen+" not present");
 		//For SOOTHE
-		storeFrontBrandRefreshHomePage.clickShopSkinCareBtn();
+
 		regimen = TestConstantsRFL.REGIMEN_NAME_SOOTHE;
-		storeFrontBrandRefreshHomePage.selectRegimen(regimen);
+		storeFrontBrandRefreshHomePage.mouseHoverShopSkinCareAndClickLink(regimen);
 		s_assert.assertTrue(storeFrontBrandRefreshHomePage.getCurrentURL().toLowerCase().contains(regimen.toLowerCase()), "Expected regimen name is "+regimen.toLowerCase()+" Actual on UI is "+storeFrontBrandRefreshHomePage.getCurrentURL().toLowerCase());
-		s_assert.assertTrue(storeFrontBrandRefreshHomePage.isRegimenNamePresentAfterClickedOnRegimen(regimen), "regimen name i.e.: "+regimen+" not present");
+		//s_assert.assertTrue(storeFrontBrandRefreshHomePage.isRegimenNamePresentAfterClickedOnRegimen(regimen), "regimen name i.e.: "+regimen+" not present");
 		//For PROMOTIONS
-		storeFrontBrandRefreshHomePage.clickShopSkinCareBtn();
+
 		regimen = TestConstantsRFL.REGIMEN_NAME_PROMOTIONS;
-		storeFrontBrandRefreshHomePage.selectPromotionRegimen();
+		storeFrontBrandRefreshHomePage.mouseHoverShopSkinCareAndClickLink(regimen);
 		s_assert.assertTrue(storeFrontBrandRefreshHomePage.getCurrentURL().toLowerCase().contains(regimen.toLowerCase()), "Expected regimen name is "+regimen.toLowerCase()+" Actual on UI is "+storeFrontBrandRefreshHomePage.getCurrentURL().toLowerCase());
-		s_assert.assertTrue(storeFrontBrandRefreshHomePage.isRegimenNamePresentAfterClickedOnRegimen(regimen), "regimen name i.e.: "+regimen+" not present");
+		//s_assert.assertTrue(storeFrontBrandRefreshHomePage.isRegimenNamePresentAfterClickedOnRegimen(regimen), "regimen name i.e.: "+regimen+" not present");
 		//For ENHANCEMENTS
-		storeFrontBrandRefreshHomePage.clickShopSkinCareBtn();
+
 		regimen = TestConstantsRFL.REGIMEN_NAME_ENHANCEMENTS;
-		storeFrontBrandRefreshHomePage.selectRegimen(regimen);
+		storeFrontBrandRefreshHomePage.mouseHoverShopSkinCareAndClickLink(regimen);
 		s_assert.assertTrue(storeFrontBrandRefreshHomePage.getCurrentURL().toLowerCase().contains(regimen.toLowerCase()), "Expected regimen name is "+regimen.toLowerCase()+" Actual on UI is "+storeFrontBrandRefreshHomePage.getCurrentURL().toLowerCase());
-		s_assert.assertTrue(storeFrontBrandRefreshHomePage.isRegimenNamePresentAfterClickedOnRegimen(regimen), "regimen name i.e.: "+regimen+" not present");
+		//s_assert.assertTrue(storeFrontBrandRefreshHomePage.isRegimenNamePresentAfterClickedOnRegimen(regimen), "regimen name i.e.: "+regimen+" not present");
 		//For ESSENTIALS
-		storeFrontBrandRefreshHomePage.clickShopSkinCareBtn();
+
 		regimen = TestConstantsRFL.REGIMEN_NAME_ESSENTIALS;
-		storeFrontBrandRefreshHomePage.selectRegimen(regimen);
+		storeFrontBrandRefreshHomePage.mouseHoverShopSkinCareAndClickLink(regimen);
 		s_assert.assertTrue(storeFrontBrandRefreshHomePage.getCurrentURL().toLowerCase().contains(regimen.toLowerCase()), "Expected regimen name is "+regimen.toLowerCase()+" Actual on UI is "+storeFrontBrandRefreshHomePage.getCurrentURL().toLowerCase());
-		s_assert.assertTrue(storeFrontBrandRefreshHomePage.isRegimenNamePresentAfterClickedOnRegimen(regimen), "regimen name i.e.: "+regimen+" not present");
+		//s_assert.assertTrue(storeFrontBrandRefreshHomePage.isRegimenNamePresentAfterClickedOnRegimen(regimen), "regimen name i.e.: "+regimen+" not present");
 		s_assert.assertAll();
 	}
 
@@ -303,12 +302,12 @@ public class UINavigationTest extends RFLegacyStoreFrontWebsiteBaseTest{
 		//String subSectionGlossary = "Glossary";
 
 
-		storeFrontBrandRefreshHomePage.clickShopSkinCareBtn();
-		storeFrontBrandRefreshHomePage.selectRegimen(regimen);
-
+		//storeFrontBrandRefreshHomePage.clickShopSkinCareBtn();
+		//storeFrontBrandRefreshHomePage.selectRegimen(regimen);
+		storeFrontBrandRefreshHomePage.mouseHoverShopSkinCare();
 		//Verify visibility of redefine regimen Sections.
-		s_assert.assertTrue(storeFrontBrandRefreshHomePage.verifyRedefineRegimenSections(subSectionRegimen),"Redefine regimen section regimen is not displayed");
-		s_assert.assertTrue(storeFrontBrandRefreshHomePage.verifyRedefineRegimenSections(subSectionProducts),"Redefine regimen section Products is not displayed");
+		//s_assert.assertTrue(storeFrontBrandRefreshHomePage.verifyRedefineRegimenSections(subSectionRegimen),"Redefine regimen section regimen is not displayed");
+		//s_assert.assertTrue(storeFrontBrandRefreshHomePage.verifyRedefineRegimenSections(subSectionProducts),"Redefine regimen section Products is not displayed");
 		s_assert.assertTrue(storeFrontBrandRefreshHomePage.verifyRedefineRegimenSections(subSectionResults),"Redefine regimen section Results is not displayed");
 		//s_assert.assertTrue(storeFrontBrandRefreshHomePage.verifyRedefineRegimenSections(subSectionTestimonials),"Redefine regimen section testimonials is not displayed");
 		//s_assert.assertTrue(storeFrontBrandRefreshHomePage.verifyRedefineRegimenSections(subSectionInTheNews),"Redefine regimen section In the news is not displayed");
@@ -444,7 +443,7 @@ public class UINavigationTest extends RFLegacyStoreFrontWebsiteBaseTest{
 		String carAchieversHL = "CarAchieversHL";
 		String carAchieversMR = "CarAchieversMR";
 		String carAchieversSZ = "CarAchieversSZ";
-		storeFrontBrandRefreshHomePage =  new StoreFrontBrandRefreshHomePage(driver);
+
 		//storeFrontBrandRefreshHomePage.clickBeAConsultantBtn();
 		//storeFrontBrandRefreshHomePage.clickSublinkOfBusinessSystem(meetOurCommunity);
 		storeFrontBrandRefreshHomePage.mouseHoverBeAConsultantAndClickLink(meetOurCommunity);
@@ -494,7 +493,7 @@ public class UINavigationTest extends RFLegacyStoreFrontWebsiteBaseTest{
 		String secondSubSectionUnderProgramsAndIncentives = "COMPENSATION PLAN, PROGRAMS & INCENTIVES";
 		String thirdSubSectionUnderProgramsAndIncentives = "Enroll Now";
 
-		storeFrontBrandRefreshHomePage =  new StoreFrontBrandRefreshHomePage(driver);
+
 		storeFrontBrandRefreshHomePage.mouseHoverBeAConsultant();
 		//storeFrontBrandRefreshHomePage.clickBeAConsultantBtn();
 		//s_assert.assertTrue(storeFrontBrandRefreshHomePage.getCurrentURL().toLowerCase().contains("Business".toLowerCase()), "URL does not contain Business Actual on UI is "+storeFrontBrandRefreshHomePage.getCurrentURL().toLowerCase());
@@ -528,7 +527,7 @@ public class UINavigationTest extends RFLegacyStoreFrontWebsiteBaseTest{
 		String secondSubSectionUnderProgramsAndIncentives = "COMPENSATION PLAN, PROGRAMS & INCENTIVES";
 		String thirdSubSectionUnderProgramsAndIncentives = "Enroll Now";
 
-		storeFrontBrandRefreshHomePage =  new StoreFrontBrandRefreshHomePage(driver);
+
 		//storeFrontBrandRefreshHomePage.clickBeAConsultantBtn();
 		storeFrontBrandRefreshHomePage.mouseHoverBeAConsultant();
 		//s_assert.assertTrue(storeFrontBrandRefreshHomePage.getCurrentURL().toLowerCase().contains("Business".toLowerCase()), "URL does not contain Business Actual on UI is "+storeFrontBrandRefreshHomePage.getCurrentURL().toLowerCase());
@@ -906,7 +905,7 @@ public class UINavigationTest extends RFLegacyStoreFrontWebsiteBaseTest{
 	@Test(enabled=true)
 	public void testCorporateRFInTheNews(){
 		String expectedURL = "Company/PR";
-		storeFrontBrandRefreshHomePage =  new StoreFrontBrandRefreshHomePage(driver);
+
 		/*  storeFrontBrandRefreshHomePage.clickHomeTabBtn();
 	  storeFrontBrandRefreshHomePage.clickRFInTheNewsImageLink();*/
 		storeFrontBrandRefreshHomePage.mouseHoverAboutRFAndClickLink("Press Room");

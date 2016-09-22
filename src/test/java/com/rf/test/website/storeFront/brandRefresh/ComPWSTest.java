@@ -14,9 +14,9 @@ import com.rf.core.website.constants.dbQueries.DBQueries_RFL;
 import com.rf.pages.website.storeFrontBrandRefresh.StoreFrontBrandRefreshConsultantPage;
 import com.rf.pages.website.storeFrontBrandRefresh.StoreFrontBrandRefreshHomePage;
 import com.rf.pages.website.storeFrontBrandRefresh.StoreFrontBrandRefreshPCUserPage;
-import com.rf.test.website.RFLegacyStoreFrontWebsiteBaseTest;
+import com.rf.test.website.RFBrandRefreshWebsiteBaseTest;
 
-public class ComPWSTest extends RFLegacyStoreFrontWebsiteBaseTest{
+public class ComPWSTest extends RFBrandRefreshWebsiteBaseTest{
 	private static final Logger logger = LogManager
 			.getLogger(ComPWSTest.class.getName());
 

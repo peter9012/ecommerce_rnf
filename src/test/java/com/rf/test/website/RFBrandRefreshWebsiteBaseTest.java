@@ -9,11 +9,13 @@ import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.openqa.selenium.By;
 import org.openqa.selenium.NoSuchElementException;
+import org.openqa.selenium.interactions.Actions;
 import org.testng.Assert;
 import org.testng.annotations.AfterMethod;
 import org.testng.annotations.AfterSuite;
 import org.testng.annotations.BeforeMethod;
 import org.testng.annotations.BeforeSuite;
+
 import com.rf.core.driver.website.RFWebsiteDriver;
 import com.rf.core.utils.HtmlLogger;
 import com.rf.core.utils.SoftAssert;
@@ -24,14 +26,14 @@ import com.rf.test.base.RFBaseTest;
  *         Legacy desktop Test classes initializes the driver is used for execution.
  *
  */
-public class RFBrandRefreshStoreFrontWebsiteBaseTest extends RFBaseTest {
+public class RFBrandRefreshWebsiteBaseTest extends RFBaseTest {
 	StringBuilder verificationErrors = new StringBuilder();
 	protected String password = null;
 	protected String countryId = null;
 
 	protected RFWebsiteDriver driver = new RFWebsiteDriver(propertyFile);
 	private static final Logger logger = LogManager
-			.getLogger(RFBrandRefreshStoreFrontWebsiteBaseTest.class.getName());
+			.getLogger(RFBrandRefreshWebsiteBaseTest.class.getName());
 
 	/**
 	 * @throws Exception
@@ -56,16 +58,14 @@ public class RFBrandRefreshStoreFrontWebsiteBaseTest extends RFBaseTest {
 		try{
 			logger.info("Go for logout,if user is logged in");
 			logout();
-		}catch(NoSuchElementException e){
+		}catch(Exception e){
 			logger.info("User already logged out");
 		}	
 		if(country.equalsIgnoreCase("ca"))
 			countryId = "40";
 		else if(country.equalsIgnoreCase("us"))
 			countryId = "236";	
-		if(driver.getURL().contains("cscockpit")==false && (driver.getURL().contains("salesforce")==false && driver.getCurrentUrl().contains(country)==false)){
-			//			driver.selectCountry(country);
-		}
+	
 		setStoreFrontPassword(driver.getStoreFrontPassword());
 		logger.info("Out of Before method..");
 	}
@@ -92,7 +92,8 @@ public class RFBrandRefreshStoreFrontWebsiteBaseTest extends RFBaseTest {
 
 	public void logout(){
 		driver.quickWaitForElementPresent(By.xpath("//a[text()='Log-Out' or text()='Log Out']"));
-		driver.click(By.xpath("//a[text()='Log-Out' or text()='Log Out']"));
+		driver.pauseExecutionFor(3000);
+		driver.findElement(By.xpath("//a[text()='Log-Out' or text()='Log Out']")).click();
 		logger.info("Logout done");  
 		driver.pauseExecutionFor(3000);
 		driver.waitForPageLoad();		
@@ -236,5 +237,6 @@ public class RFBrandRefreshStoreFrontWebsiteBaseTest extends RFBaseTest {
 		}
 		return allReturnedValuesFromQuery;
 	}
+	
 
 }

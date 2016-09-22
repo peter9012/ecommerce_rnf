@@ -15,12 +15,10 @@ import com.rf.core.website.constants.dbQueries.DBQueries_RFO;
 import com.rf.pages.website.storeFrontBrandRefresh.StoreFrontBrandRefreshConsultantPage;
 import com.rf.pages.website.storeFrontBrandRefresh.StoreFrontBrandRefreshHomePage;
 import com.rf.pages.website.storeFrontBrandRefresh.StoreFrontBrandRefreshPCUserPage;
-import com.rf.pages.website.storeFrontLegacy.StoreFrontLegacyConsultantPage;
-import com.rf.pages.website.storeFrontLegacy.StoreFrontLegacyHomePage;
-import com.rf.pages.website.storeFrontLegacy.StoreFrontLegacyPCUserPage;
-import com.rf.test.website.RFLegacyStoreFrontWebsiteBaseTest;
+import com.rf.test.website.RFBrandRefreshWebsiteBaseTest;
 
-public class BizPWSTest extends RFLegacyStoreFrontWebsiteBaseTest{
+
+public class BizPWSTest extends RFBrandRefreshWebsiteBaseTest{
 	private static final Logger logger = LogManager
 			.getLogger(BizPWSTest.class.getName());
 	
@@ -300,8 +298,8 @@ public class BizPWSTest extends RFLegacyStoreFrontWebsiteBaseTest{
 		storeFrontBrandRefreshHomePage.clickEditOrderLink();
 		s_assert.assertTrue(storeFrontBrandRefreshHomePage.verifyConfirmationMessageInOrders(),"Confirmation msg not present at orders page as expected");
 		s_assert.assertAll();
-
 	}
+	
 	//PC Perks Delay - 60 days
 	@Test (enabled=true)
 	public void testPCPerksDelay60Days(){

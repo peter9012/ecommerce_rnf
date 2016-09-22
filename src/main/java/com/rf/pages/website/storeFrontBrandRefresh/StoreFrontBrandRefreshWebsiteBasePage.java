@@ -1,5 +1,4 @@
 package com.rf.pages.website.storeFrontBrandRefresh;
-
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.openqa.selenium.Alert;
@@ -472,6 +471,13 @@ public class StoreFrontBrandRefreshWebsiteBasePage extends RFBasePage{
 		driver.click(By.xpath(String.format(linkUnderShopSkinCareOrBeAConsultant, link)));
 		logger.info("Clicked "+link+" link is clicked after hovering About RF.");
 		driver.waitForPageLoad();
+	}
+	
+	public void mouseHoverShopSkinCare(){
+		driver.pauseExecutionFor(2000);
+		Actions actions =  new Actions(RFWebsiteDriver.driver);
+		actions.moveToElement(driver.findElement(SHOP_SKINCARE_LOC)).build().perform();
+		logger.info("hover on Products link now as shop skincare");
 	}
 
 }

@@ -1052,7 +1052,7 @@ public class StoreFrontRFWebsiteBasePage extends RFBasePage{
 
 		randomActiveSitePrefixList = DBUtil.performDatabaseQuery(DBQueries_RFO.callQueryWithArguement(DBQueries_RFO.GET_RANDOM_ACTIVE_SITE_PREFIX_RFO,countryID),RFO_DB);
 		activeSitePrefix = (String) getValueFromQueryResult(randomActiveSitePrefixList, "SitePrefix");   
-		PWS = "http://"+activeSitePrefix+".myrfo"+env+".biz/"+country.toLowerCase();
+		PWS = "http://"+activeSitePrefix+".qamyrandf"+".biz/"+country.toLowerCase();
 		logger.info("PWS is "+PWS);
 
 		return PWS;
@@ -1073,7 +1073,7 @@ public class StoreFrontRFWebsiteBasePage extends RFBasePage{
 		} 
 		randomActiveSitePrefixList = DBUtil.performDatabaseQuery(DBQueries_RFO.callQueryWithArguement(DBQueries_RFO.GET_RANDOM_ACTIVE_SITE_PREFIX_RFO,countryID),RFO_DB);
 		activeSitePrefix = (String) getValueFromQueryResult(randomActiveSitePrefixList, "SitePrefix");			
-		PWS = "http://"+activeSitePrefix+".myrfo"+env+".com/"+country.toLowerCase();
+		PWS = "http://"+activeSitePrefix+".qamyrandf"+".com/"+country.toLowerCase();
 		logger.info("PWS is "+PWS);
 		return PWS;
 	}

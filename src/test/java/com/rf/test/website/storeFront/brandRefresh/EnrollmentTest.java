@@ -15,9 +15,9 @@ import com.rf.pages.website.storeFrontBrandRefresh.StoreFrontBrandRefreshConsult
 /*import com.rf.pages.website.storeFrontBrandRefresh.StoreFrontBrandRefreshWebsiteBasePage;*/
 import com.rf.pages.website.storeFrontBrandRefresh.StoreFrontBrandRefreshHomePage;
 import com.rf.pages.website.storeFrontBrandRefresh.StoreFrontBrandRefreshPCUserPage;
-import com.rf.test.website.RFBrandRefreshStoreFrontWebsiteBaseTest;
+import com.rf.test.website.RFBrandRefreshWebsiteBaseTest;
 
-public class EnrollmentTest extends RFBrandRefreshStoreFrontWebsiteBaseTest{
+public class EnrollmentTest extends RFBrandRefreshWebsiteBaseTest{
 	private static final Logger logger = LogManager
 			.getLogger(EnrollmentTest.class.getName());
 
@@ -238,8 +238,6 @@ public class EnrollmentTest extends RFBrandRefreshStoreFrontWebsiteBaseTest{
 		RFL_DB = driver.getDBNameRFL();
 		List<Map<String, Object>> randomRCList =  null;
 		String rcEmailID = null;
-		
-
 		randomRCList = DBUtil.performDatabaseQuery(DBQueries_RFL.GET_RANDOM_ACTIVE_RC_HAVING_ORDERS,RFL_DB);
 		rcEmailID = (String) getValueFromQueryResult(randomRCList, "UserName");
 		storeFrontBrandRefreshHomePage.loginAsRCUser(rcEmailID, password);
@@ -304,7 +302,8 @@ public class EnrollmentTest extends RFBrandRefreshStoreFrontWebsiteBaseTest{
 		storeFrontBrandRefreshPCUserPage.navigateToBackPage();
 		storeFrontBrandRefreshPCUserPage.clickOrderManagementSublink("Edit Order");
 		s_assert.assertTrue(storeFrontBrandRefreshPCUserPage.isEditOrderPagePresent(),"Edit order page is not present");
-		storeFrontBrandRefreshPCUserPage.clickMyAccountLink();
+		storeFrontBrandRefreshPCUserPage.navigateToBackPage();
+//		storeFrontBrandRefreshPCUserPage.clickMyAccountLink();
 		storeFrontBrandRefreshPCUserPage.clickOrderManagementSublink("Change my PC Perks Status");
 		s_assert.assertTrue(storeFrontBrandRefreshPCUserPage.verifyCurrentPage("PcPerksStatus"),"URL does not contain pcPerksStatus");
 		s_assert.assertTrue(storeFrontBrandRefreshPCUserPage.isPcPerksStatusLinkPresent(),"Delay or Cancel PC Perks link is not present");

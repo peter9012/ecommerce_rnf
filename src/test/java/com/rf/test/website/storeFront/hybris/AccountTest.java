@@ -1627,7 +1627,19 @@ public class AccountTest extends RFWebsiteBaseTest{
 		// sponser search by Account Number
 		sponsorIdList = DBUtil.performDatabaseQuery(DBQueries_RFO.callQueryWithArguement(DBQueries_RFO.GET_ACCOUNT_NUMBER_FOR_PWS,accountID),RFO_DB);
 		//Open com pws of Sponser
-		storeFrontHomePage.openConsultantPWS(comPWSOfConsultant);
+		while(true){
+			storeFrontHomePage.openConsultantPWS(comPWSOfConsultant);
+			if(driver.getCurrentUrl().toLowerCase().contains("error")||driver.getCurrentUrl().toLowerCase().contains("sitenotfound")||driver.getCurrentUrl().toLowerCase().contains("sitenotactive")){
+				randomConsultantList = DBUtil.performDatabaseQuery(DBQueries_RFO.callQueryWithArguementPWS(DBQueries_RFO.GET_RANDOM_ACTIVE_CONSULTANT_WITH_PWS_RFO,driver.getEnvironment()+".com",driver.getCountry(),countryId),RFO_DB);
+				emailAddressOfConsultant= (String) getValueFromQueryResult(randomConsultantList, "Username"); 
+				comPWSOfConsultant=String.valueOf(getValueFromQueryResult(randomConsultantList, "URL"));
+				continue;
+			}
+			else{
+				break;
+			}
+		}
+
 		//Hover shop now and click all products link.
 		storeFrontHomePage.hoverOnShopLinkAndClickAllProductsLinks();
 
@@ -1675,7 +1687,7 @@ public class AccountTest extends RFWebsiteBaseTest{
 		storeFrontHomePage.enterSponsorNameAndClickOnSearchForPCAndRC(sponserId);
 		storeFrontHomePage.mouseHoverSponsorDataAndClickContinueForPCAndRC();
 		//verify the  sponser is selected.
-		s_assert.assertTrue(storeFrontHomePage.getSponserNameFromUIWhileEnrollingPCUser().contains(emailAddressOfSponser),"Cross Country Sponser is not selected");
+		s_assert.assertTrue(storeFrontHomePage.getSponserNameFromUIWhileEnrollingPCUser().contains(emailAddressOfSponser),"Sponser is not selected");
 		storeFrontHomePage.clickOnNextButtonAfterSelectingSponsor();
 		s_assert.assertTrue(storeFrontHomePage.isShippingAddressNextStepBtnIsPresent(),"Shipping Address Next Step Button Is not Present");
 		storeFrontHomePage.clickOnShippingAddressNextStepBtn();

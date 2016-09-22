@@ -214,14 +214,12 @@ public class StorefrontDSVTest extends RFDSVStoreFrontWebsiteBaseTest{
 	@Test(groups = { "consultant" },priority=8)
 	public void testAccessBizAndComWithNonSecureURL_5332(){
 		dsvStoreFrontHomePage = new DSVStoreFrontHomePage(driver);
-		String pws = dsvStoreFrontHomePage.convertHTTPS_To_HTTP();
-		//logout();
-		dsvStoreFrontHomePage.openURL(pws);
+		dsvStoreFrontHomePage.openURL(dsvStoreFrontHomePage.convertHTTPS_To_HTTP(getComPWS()));
+		//logout();		
 		s_assert.assertTrue(dsvStoreFrontHomePage.getWebdriver().getCurrentUrl().contains(TestConstants.DSV_PWS_SUFFIX), "Consultant is not on PWS after login,the url coming is "+dsvStoreFrontHomePage.getWebdriver().getCurrentUrl());
-		s_assert.assertTrue(dsvStoreFrontHomePage.isLoginLinkPresent(),"Login link has not appeared after hitting .com non-secure pws");
-		pws = dsvStoreFrontHomePage.convertHTTPS_To_HTTP();
-		dsvStoreFrontHomePage.openURL(dsvStoreFrontHomePage.convertComToBizOrBizToComURL(pws));
-		s_assert.assertTrue(dsvStoreFrontHomePage.isLoginLinkPresent(),"Login link has not appeared after hitting .biz non-secure pws");
+		s_assert.assertTrue(dsvStoreFrontHomePage.isLoginOrWelcomePresent(),"Login link or Welcome Text has not appeared after hitting .com non-secure pws");
+		dsvStoreFrontHomePage.openURL(dsvStoreFrontHomePage.convertComToBizOrBizToComURL(dsvStoreFrontHomePage.convertHTTPS_To_HTTP(getComPWS())));
+		s_assert.assertTrue(dsvStoreFrontHomePage.isLoginOrWelcomePresent(),"Login link or Welcome Text has not appeared after hitting .biz non-secure pws");
 		s_assert.assertAll();
 	}
 
@@ -229,15 +227,12 @@ public class StorefrontDSVTest extends RFDSVStoreFrontWebsiteBaseTest{
 	@Test(groups = { "consultant" },priority=9)
 	public void testAccessBizAndComWithSecureURL_5333(){
 		dsvStoreFrontHomePage = new DSVStoreFrontHomePage(driver);
-		String pws = driver.getCurrentUrl();
-		logout();
-		dsvStoreFrontHomePage.openURL(pws);
+		dsvStoreFrontHomePage.openURL(getComPWS());
+		//logout();		
 		s_assert.assertTrue(dsvStoreFrontHomePage.getWebdriver().getCurrentUrl().contains(TestConstants.DSV_PWS_SUFFIX), "Consultant is not on PWS after login,the url coming is "+dsvStoreFrontHomePage.getWebdriver().getCurrentUrl());
-		dsvStoreFrontHomePage.openURL(dsvStoreFrontHomePage.convertNonSecureURLToSecureURL(driver.getCurrentUrl()));
-		s_assert.assertTrue(dsvStoreFrontHomePage.isLoginLinkPresent(),"Login link has not appeared after hitting .biz secure pws");
-		dsvStoreFrontHomePage.openURL(dsvStoreFrontHomePage.convertComToBizOrBizToComURL(driver.getCurrentUrl()));
-		dsvStoreFrontHomePage.openURL(dsvStoreFrontHomePage.convertNonSecureURLToSecureURL(driver.getCurrentUrl()));
-		s_assert.assertTrue(dsvStoreFrontHomePage.isLoginOrWelcomePresent(),"Login link has not appeared after hitting .com secure pws");
+		s_assert.assertTrue(dsvStoreFrontHomePage.isLoginOrWelcomePresent(),"Login link or Welcome Text has not appeared after hitting .com secure pws");
+		dsvStoreFrontHomePage.openURL(dsvStoreFrontHomePage.convertComToBizOrBizToComURL(getComPWS()));
+		s_assert.assertTrue(dsvStoreFrontHomePage.isLoginOrWelcomePresent(),"Login link or Welcome Text has not appeared after hitting .biz secure pws");
 		s_assert.assertAll();
 	}
 

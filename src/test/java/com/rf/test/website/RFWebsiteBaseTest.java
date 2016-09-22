@@ -153,7 +153,8 @@ public class RFWebsiteBaseTest extends RFBaseTest {
 			logger.info("Your account info has been clicked");
 			driver.waitForElementPresent(By.linkText("Log out"));
 			driver.click(By.linkText("Log out"));
-			logger.info("Logout");                    
+			logger.info("Logout");
+			driver.waitForPageLoad();
 			driver.pauseExecutionFor(3000);
 		}
 		catch(Exception e)

@@ -19,7 +19,7 @@ public class StoreFrontBrandRefreshConsultantPage extends StoreFrontBrandRefresh
 	private static final Logger logger = LogManager
 			.getLogger(StoreFrontBrandRefreshConsultantPage.class.getName());
 
-	
+
 	public void hoverOnBeAConsultantAndClickLinkOnEnrollMe(){
 		driver.pauseExecutionFor(2000);
 		Actions actions = new Actions(RFWebsiteDriver.driver);
@@ -30,5 +30,6 @@ public class StoreFrontBrandRefreshConsultantPage extends StoreFrontBrandRefresh
 		// logger.info("Clicked "+link+" link is clicked after hovering shop skincare.");
 		driver.waitForPageLoad();
 	}
+
 
 }

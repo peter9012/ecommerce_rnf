@@ -65,6 +65,7 @@ public class StoreFrontHomePage extends StoreFrontRFWebsiteBasePage {
 		driver.waitForElementPresent(LOGIN_LINK_LOC);
 		driver.click(LOGIN_LINK_LOC);
 		logger.info("login link clicked");
+		driver.waitForElementPresent(USERNAME_TXTFLD_LOC);
 		driver.type(USERNAME_TXTFLD_LOC, username);
 		driver.type(PASSWORD_TXTFLD_LOC, password);		
 		logger.info("login username is "+username);
@@ -298,9 +299,10 @@ public class StoreFrontHomePage extends StoreFrontRFWebsiteBasePage {
 		driver.type(By.id("last-name"),lastName);
 	}
 
-	public void enterEmailAddress(String emailAddress){	
+	public void enterEmailAddress(String emailAddress){ 
 		driver.pauseExecutionFor(2000);
 		driver.type(By.id("email-account"), emailAddress+"\t");
+		driver.click(By.id("new-password-account"));
 		logger.info("email Address of the user is "+emailAddress);
 		driver.waitForSpinImageToDisappear();
 	}
@@ -2130,7 +2132,7 @@ public class StoreFrontHomePage extends StoreFrontRFWebsiteBasePage {
 	public void enterSponsorNameAndClickOnSearchForPCAndRC(String sponsor){
 		driver.pauseExecutionFor(2000);
 		try{
-			driver.quickWaitForElementPresent(By.xpath("//input[@id='sponsor-name-id']"));
+			driver.waitForElementPresent(By.xpath("//input[@id='sponsor-name-id']"));
 			driver.type(By.xpath("//input[@id='sponsor-name-id']"),sponsor);
 		}catch(Exception e){
 			driver.type(By.id("sponserparam"),sponsor);

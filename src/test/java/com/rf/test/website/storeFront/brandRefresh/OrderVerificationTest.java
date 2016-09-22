@@ -14,9 +14,9 @@ import com.rf.core.website.constants.dbQueries.DBQueries_RFL;
 import com.rf.pages.website.storeFrontBrandRefresh.StoreFrontBrandRefreshConsultantPage;
 import com.rf.pages.website.storeFrontBrandRefresh.StoreFrontBrandRefreshHomePage;
 import com.rf.pages.website.storeFrontBrandRefresh.StoreFrontBrandRefreshPCUserPage;
-import com.rf.test.website.RFLegacyStoreFrontWebsiteBaseTest;
+import com.rf.test.website.RFBrandRefreshWebsiteBaseTest;
 
-public class OrderVerificationTest extends RFLegacyStoreFrontWebsiteBaseTest{
+public class OrderVerificationTest extends RFBrandRefreshWebsiteBaseTest{
 	private static final Logger logger = LogManager
 			.getLogger(OrderVerificationTest.class.getName());
 
@@ -62,9 +62,9 @@ public class OrderVerificationTest extends RFLegacyStoreFrontWebsiteBaseTest{
 		storeFrontBrandRefreshHomePage.clickChangeBillingInformationBtn();
 		storeFrontBrandRefreshHomePage.enterBillingInfo(billingName, billingProfileFirstName, billingProfileLastName, nameOnCard, cardNumber, expMonth, expYear, addressLine1, postalCode, phnNumber);
 		storeFrontBrandRefreshHomePage.clickUseThisBillingInformationBtn();
-		storeFrontBrandRefreshHomePage.clickUseAsEnteredBtn();
+//		storeFrontBrandRefreshHomePage.clickUseAsEnteredBtn();
 		storeFrontBrandRefreshHomePage.clickCompleteOrderBtn();
-		storeFrontBrandRefreshHomePage.clickOKBtnOnPopup();
+//		storeFrontBrandRefreshHomePage.clickOKBtnOnPopup();
 		s_assert.assertTrue(storeFrontBrandRefreshHomePage.isThankYouTextPresentAfterOrderPlaced(), "Adhoc order not placed successfully from corp site.");
 		s_assert.assertAll();
 	}

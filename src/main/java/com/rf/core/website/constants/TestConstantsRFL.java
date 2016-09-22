@@ -43,7 +43,8 @@ public class TestConstantsRFL {
 	public static final String CONSULTANT_ONLY_PRODUCT_PROMOTION = "Consultant-Only Product Promotion";
 	public static final String CONSULTANT_ONLY_PRODUCT = "Consultant-Only Products";
 	public static final String CONSULTANT_RF_EXPRESS_BUSINESS_KIT = "$995";
-	public static final String PWS_SPCLCHARS = "ios%1";
+	public static final String CONSULTANT_RFX_EXPRESS_BUSINESS_KIT = "RF Express Business Kit";
+	public static final String PWS_SPCLCHARS = "!@$%^";
 }
 
 

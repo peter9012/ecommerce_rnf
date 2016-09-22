@@ -21,11 +21,11 @@ import com.rf.test.website.RFBrandRefreshWebsiteBaseTest;
 public class BizPWSTest extends RFBrandRefreshWebsiteBaseTest{
 	private static final Logger logger = LogManager
 			.getLogger(BizPWSTest.class.getName());
-	
+
 	private StoreFrontBrandRefreshHomePage storeFrontBrandRefreshHomePage;
 	private StoreFrontBrandRefreshConsultantPage storeFrontBrandRefreshConsultantPage;
 	private StoreFrontBrandRefreshPCUserPage storeFrontBrandRefreshPCUserPage;
-	
+
 	public BizPWSTest() {
 		storeFrontBrandRefreshHomePage = new StoreFrontBrandRefreshHomePage(driver);
 		storeFrontBrandRefreshConsultantPage = new StoreFrontBrandRefreshConsultantPage(driver);
@@ -93,40 +93,30 @@ public class BizPWSTest extends RFBrandRefreshWebsiteBaseTest{
 		List<Map<String, Object>> orderNumberList =  null;
 		String orderStatusID = null;
 		List<Map<String, Object>> randomPWSList =  null;
-		String PWS = null;
-		while(true){
-			randomPWSList = DBUtil.performDatabaseQuery(DBQueries_RFL.GET_RANDOM_PWS_SITE_URL_RFL, RFL_DB);
-			PWS = (String) getValueFromQueryResult(randomPWSList, "URL");
-			driver.get(PWS);
-			boolean isSiteNotFoundPresent = driver.getCurrentUrl().contains("SiteNotFound") || driver.getCurrentUrl().contains("SiteNotActive") || driver.getCurrentUrl().contains("Error");
-			if(isSiteNotFoundPresent){
-				continue;
-			}else{
-				break;
-			}
-		}
-		
+		String PWS = "https://rfqa"+driver.getBizPWSURL();
+		driver.get(PWS);
 		List<Map<String, Object>> randomConsultantList = DBUtil.performDatabaseQuery(DBQueries_RFL.GET_RANDOM_ACTIVE_CONSULTANT_EMAILID,RFL_DB);
 		String consultantEmailID = (String) getValueFromQueryResult(randomConsultantList, "EmailAddress");
 		storeFrontBrandRefreshHomePage.loginAsConsultant(consultantEmailID,password);
-//		storeFrontBrandRefreshHomePage.clickShopSkinCareBtnOnPWS();
-//		storeFrontBrandRefreshHomePage.clickRegimenOnPWS(regimen);
-//		storeFrontBrandRefreshHomePage.clickAddToCartButtonAfterLogin();
-		storeFrontBrandRefreshHomePage.mouseHoverShopSkinCareAndClickLink("CONSULTANT-ONLY PRODUCTS");
+		//  storeFrontBrandRefreshHomePage.clickShopSkinCareBtnOnPWS();
+		//  storeFrontBrandRefreshHomePage.clickRegimenOnPWS(regimen);
+		//  storeFrontBrandRefreshHomePage.clickAddToCartButtonAfterLogin();
+		storeFrontBrandRefreshHomePage.mouseHoverShopSkinCareAndClickLinkOnPWS("CONSULTANT-ONLY PRODUCTS");
 		storeFrontBrandRefreshHomePage.clickConsultantOnlyProduct(TestConstantsRFL.CONSULTANT_ONLY_BUSINESS_PROMOTION);
 		storeFrontBrandRefreshHomePage.clickAddToCartButtonForEssentialsAndEnhancementsAfterLogin();
 		//storeFrontBrandRefreshHomePage.mouseHoverOnMyShoppingBagLinkAndClickOnCheckoutBtn();
+		storeFrontBrandRefreshHomePage.clickMyShoppingBagLink();
 		storeFrontBrandRefreshHomePage.clickCheckoutBtn();
 		storeFrontBrandRefreshHomePage.clickContinueBtn();
 		storeFrontBrandRefreshHomePage.clickChangeBillingInformationBtn();
 		storeFrontBrandRefreshHomePage.enterBillingInfo(billingName, billingProfileFirstName, billingProfileLastName, nameOnCard, cardNumber, expMonth, expYear, addressLine1, postalCode, phnNumber);
 		storeFrontBrandRefreshHomePage.clickUseThisBillingInformationBtn();
-//		storeFrontBrandRefreshHomePage.clickUseAsEnteredBtn();
+		//  storeFrontBrandRefreshHomePage.clickUseAsEnteredBtn();
 		storeFrontBrandRefreshHomePage.clickCompleteOrderBtn();
 		s_assert.assertTrue(storeFrontBrandRefreshHomePage.isThankYouTextPresentAfterOrderPlaced(), "Adhoc order not placed successfully from biz site for Consultant user.");
 		s_assert.assertTrue(storeFrontBrandRefreshHomePage.getOrderConfirmationTextMsgAfterOrderPlaced().contains("You will receive an email confirmation shortly"), "Order confirmation message does not contains email confirmation");
-		String orderNumber = storeFrontBrandRefreshHomePage.getOrderNumebrAfterOrderPlaced();
-		System.out.println ("OrderNumber - "+ orderNumber);
+		//String orderNumber = storeFrontBrandRefreshHomePage.getOrderNumebrAfterOrderPlaced();
+		//System.out.println ("OrderNumber - "+ orderNumber);
 		//verify Account status
 		//orderNumberList =  DBUtil.performDatabaseQuery(DBQueries_RFL.callQueryWithArguement(DBQueries_RFL.GET_ORDER_DETAILS, orderNumber), RFL_DB);
 		//orderStatusID = String.valueOf(getValueFromQueryResult(orderNumberList, "OrderStatusID"));
@@ -242,8 +232,8 @@ public class BizPWSTest extends RFBrandRefreshWebsiteBaseTest{
 		String nameOnCard = firstName;
 		String expMonth = TestConstantsRFL.EXP_MONTH;
 		String expYear = TestConstantsRFL.EXP_YEAR;
-		String kitName = TestConstantsRFL.CONSULTANT_RF_EXPRESS_BUSINESS_KIT;
-		String regimen = TestConstantsRFL.REGIMEN_NAME_REDEFINE;
+		String kitName = TestConstantsRFL.CONSULTANT_RFX_EXPRESS_BUSINESS_KIT;
+		String regimen = TestConstantsRFL.REGIMEN_NAME_REVERSE;
 		String enrollemntType = "Express";
 		String phnNumber1 = "415";
 		String phnNumber2 = "780";
@@ -253,9 +243,8 @@ public class BizPWSTest extends RFBrandRefreshWebsiteBaseTest{
 		List<Map<String, Object>> accountStatusIDList =  null;
 		String statusID = null;
 		driver.get(PWS);
-		storeFrontBrandRefreshHomePage.clickEnrollNowBtnOnbizPWSPage();
-//		storeFrontLegacyHomePage.clickEnrollNowBtnAtWhyRFPage();
-		storeFrontBrandRefreshHomePage.selectConsultantEnrollmentKitByPrice(kitName);
+		storeFrontBrandRefreshHomePage.hoverOnBeAConsultantAndClickLinkOnEnrollMe();
+		storeFrontBrandRefreshHomePage.selectEnrollmentKit(kitName);
 		storeFrontBrandRefreshHomePage.selectRegimenForConsultant(regimen);
 		storeFrontBrandRefreshHomePage.clickNextBtnAfterSelectRegimen();
 		storeFrontBrandRefreshHomePage.selectEnrollmentType(enrollemntType);
@@ -268,14 +257,14 @@ public class BizPWSTest extends RFBrandRefreshWebsiteBaseTest{
 		storeFrontBrandRefreshHomePage.clickTermsAndConditions();
 		storeFrontBrandRefreshHomePage.chargeMyCardAndEnrollMe();
 		s_assert.assertTrue(storeFrontBrandRefreshHomePage.isCongratulationsMessageAppeared(),"Enrollment not completed successfully");
-		//		s_assert.assertTrue(driver.getCurrentUrl().contains(bizPWS.split("\\//")[1]), "Expected biz PWS is: "+bizPWS.split("\\//")[1]+" but Actual on UI is: "+driver.getCurrentUrl());
-		//		//verify Account status
-		//		accountStatusIDList =  DBUtil.performDatabaseQuery(DBQueries_RFL.callQueryWithArguement(DBQueries_RFL.GET_ACCOUNT_STATUS_ID, emailAddress), RFL_DB);
-		//		statusID = String.valueOf(getValueFromQueryResult(accountStatusIDList, "StatusID"));
-		//		s_assert.assertTrue(statusID.contains("1"), "Account status is not active");
+		s_assert.assertTrue(driver.getCurrentUrl().contains(bizPWS.split("\\//")[1]), "Expected biz PWS is: "+bizPWS.split("\\//")[1]+" but Actual on UI is: "+driver.getCurrentUrl());
+		//verify Account status
+		accountStatusIDList =  DBUtil.performDatabaseQuery(DBQueries_RFL.callQueryWithArguement(DBQueries_RFL.GET_ACCOUNT_STATUS_ID, emailAddress), RFL_DB);
+		statusID = String.valueOf(getValueFromQueryResult(accountStatusIDList, "StatusID"));
+		s_assert.assertTrue(statusID.contains("1"), "Account status is not active");
 		s_assert.assertAll();
 	}
-	
+
 	//PC Perks Delay - 30 days
 	@Test (enabled=true)
 	public void testPCPerksDelay30Days(){
@@ -284,7 +273,7 @@ public class BizPWSTest extends RFBrandRefreshWebsiteBaseTest{
 		List<Map<String, Object>> randomPCList = null;
 		String PWS = "https://rfqa"+driver.getBizPWSURL();
 		String pcEmailId = null;
-		
+		driver.get(PWS);
 		randomPCList = DBUtil.performDatabaseQuery(DBQueries_RFL.GET_RANDOM_ACTIVE_PC_WITH_ORDERS_AND_AUTOSHIPS_RFL, RFL_DB);
 		pcEmailId = (String) getValueFromQueryResult(randomPCList, "UserName");
 		storeFrontBrandRefreshHomePage.loginAsPCUser(pcEmailId, password);
@@ -299,7 +288,7 @@ public class BizPWSTest extends RFBrandRefreshWebsiteBaseTest{
 		s_assert.assertTrue(storeFrontBrandRefreshHomePage.verifyConfirmationMessageInOrders(),"Confirmation msg not present at orders page as expected");
 		s_assert.assertAll();
 	}
-	
+
 	//PC Perks Delay - 60 days
 	@Test (enabled=true)
 	public void testPCPerksDelay60Days(){
@@ -307,9 +296,8 @@ public class BizPWSTest extends RFBrandRefreshWebsiteBaseTest{
 		List<Map<String, Object>> randomPWSList =  null;
 		List<Map<String, Object>> randomPCList = null;
 		String PWS = "https://rfqa"+driver.getBizPWSURL();
-		String pcEmailId = null;
-		
-
+		String pcEmailId = null;		
+		driver.get(PWS);
 		randomPCList = DBUtil.performDatabaseQuery(DBQueries_RFL.GET_RANDOM_ACTIVE_PC_WITH_ORDERS_AND_AUTOSHIPS_RFL, RFL_DB);
 		pcEmailId = (String) getValueFromQueryResult(randomPCList, "UserName");
 		storeFrontBrandRefreshHomePage.loginAsPCUser(pcEmailId, password);
@@ -324,7 +312,6 @@ public class BizPWSTest extends RFBrandRefreshWebsiteBaseTest{
 		storeFrontBrandRefreshHomePage.clickEditOrderLink();
 		s_assert.assertTrue(storeFrontBrandRefreshHomePage.verifyConfirmationMessageInOrders(),"Confirmation msg not present at orders page as expected");
 		s_assert.assertAll();
-
 	}
 
 	//Enroll a consultant using existing Prefix  
@@ -354,21 +341,9 @@ public class BizPWSTest extends RFBrandRefreshWebsiteBaseTest{
 		List<Map<String, Object>> randomConsultant = null;
 		randomConsultant = DBUtil.performDatabaseQuery(DBQueries_RFL.GET_RANDOM_EXISTING_CONSULTANT_SITE_URL, RFL_DB);
 		String url = (String) getValueFromQueryResult(randomConsultant, "URL");
-		String PWS = null;
+		String PWS = "https://rfqa"+driver.getBizPWSURL();
 		String prefix = storeFrontBrandRefreshHomePage.getSplittedPrefixFromConsultantUrl(url);
-		while(true){
-			randomPWSList = DBUtil.performDatabaseQuery(DBQueries_RFL.GET_RANDOM_PWS_SITE_URL_RFL, RFL_DB);
-			PWS = (String) getValueFromQueryResult(randomPWSList, "URL");
-			driver.get(PWS);
-			boolean isSiteNotFoundPresent = driver.getCurrentUrl().contains("SiteNotFound") || driver.getCurrentUrl().contains("SiteNotActive") || driver.getCurrentUrl().contains("Error");
-			if(isSiteNotFoundPresent){
-				continue;
-			}else{
-				break;
-			}
-		}
-		//storeFrontLegacyHomePage.clickHeaderLinkAfterLogin("BECOME A CONSULTANT");
-		//storeFrontLegacyHomePage.clickEnrollNowBtnOnWhyRFPage();
+		driver.get(PWS);
 		storeFrontBrandRefreshHomePage.hoverOnBeAConsultantAndClickLinkOnEnrollMe();
 		storeFrontBrandRefreshHomePage.selectEnrollmentKit(kitName);
 		storeFrontBrandRefreshHomePage.selectRegimenAndClickNext(regimen);
@@ -378,7 +353,9 @@ public class BizPWSTest extends RFBrandRefreshWebsiteBaseTest{
 		storeFrontBrandRefreshHomePage.enterBillingInformation(cardNumber, nameOnCard, expMonth, expYear);
 		storeFrontBrandRefreshHomePage.enterAccountInformation(ssnRandomNum1, ssnRandomNum2, ssnRandomNum3, firstName);
 		storeFrontBrandRefreshHomePage.enterUserPrefixInPrefixField(prefix);
-		s_assert.assertTrue(storeFrontBrandRefreshHomePage.isExistingPrefixAvailable(),"Existing prefix available in suggestion list");
+		s_assert.assertTrue(storeFrontBrandRefreshHomePage.getPrefixMessageForBiz().contains("unavailable"),"Expected message is unavailable for .biz but actual on UI is: "+storeFrontBrandRefreshHomePage.getPrefixMessageForBiz());
+		s_assert.assertTrue(storeFrontBrandRefreshHomePage.getPrefixMessageForCom().contains("unavailable"),"Expected message is unavailable for .com but actual on UI is: "+storeFrontBrandRefreshHomePage.getPrefixMessageForCom());
+		s_assert.assertTrue(storeFrontBrandRefreshHomePage.getPrefixMessageForEmail().contains("unavailable"),"Expected message is unavailable for email but actual on UI is: "+storeFrontBrandRefreshHomePage.getPrefixMessageForEmail());
 		s_assert.assertAll();
 	}
 
@@ -403,7 +380,7 @@ public class BizPWSTest extends RFBrandRefreshWebsiteBaseTest{
 		}
 		randomPCList = DBUtil.performDatabaseQuery(DBQueries_RFL.GET_RANDOM_ACTIVE_PC_WITH_ORDERS_AND_AUTOSHIPS_RFL, RFL_DB);
 		pcEmailId = (String) getValueFromQueryResult(randomPCList, "UserName");
-		
+
 		storeFrontBrandRefreshHomePage.loginAsPCUser(pcEmailId, password);
 		storeFrontBrandRefreshHomePage.clickHeaderLinkAfterLogin("my account");
 		storeFrontBrandRefreshHomePage.clickEditOrderLink();
@@ -455,7 +432,7 @@ public class BizPWSTest extends RFBrandRefreshWebsiteBaseTest{
 		}
 		randomPCList = DBUtil.performDatabaseQuery(DBQueries_RFL.GET_RANDOM_ACTIVE_PC_WITH_ORDERS_AND_AUTOSHIPS_RFL, RFL_DB);
 		pcEmailId = (String) getValueFromQueryResult(randomPCList, "UserName");
-		
+
 		storeFrontBrandRefreshHomePage.loginAsPCUser(pcEmailId,password);
 		storeFrontBrandRefreshHomePage.clickHeaderLinkAfterLogin("my account");
 		storeFrontBrandRefreshHomePage.clickEditOrderLink();
@@ -496,27 +473,15 @@ public class BizPWSTest extends RFBrandRefreshWebsiteBaseTest{
 		List<Map<String, Object>> randomConsultantList =  null;
 		List<Map<String, Object>> randomPWSList =  null;
 		List<Map<String, Object>> randomPCList = null;
-		String PWS = null;
 		String consultantEmailID = null;
-		
+
 		randomConsultantList = DBUtil.performDatabaseQuery(DBQueries_RFL.GET_RANDOM_INACTIVE_CONSULTANT_EMAILID,RFL_DB);
 		consultantEmailID = (String) getValueFromQueryResult(randomConsultantList, "EmailAddress");
-		
+
 		storeFrontBrandRefreshHomePage.loginAsConsultant(consultantEmailID,password);
 		s_assert.assertTrue(storeFrontBrandRefreshHomePage.isInvalidLoginPresent(),"consultant is logged in successfully with terminated user");
-		while(true){
-			randomPWSList = DBUtil.performDatabaseQuery(DBQueries_RFL.GET_RANDOM_PWS_SITE_URL_RFL, RFL_DB);
-			PWS = (String) getValueFromQueryResult(randomPWSList, "URL");
-			driver.get(PWS);
-			boolean isSiteNotFoundPresent = driver.getCurrentUrl().contains("SiteNotFound") || driver.getCurrentUrl().contains("SiteNotActive") || driver.getCurrentUrl().contains("Error");
-			if(isSiteNotFoundPresent){
-				continue;
-			}else{
-				break;
-			}
-		}
-//		storeFrontBrandRefreshHomePage.clickHeaderLinkAfterLogin("BECOME A CONSULTANT");
-//		storeFrontBrandRefreshHomePage.clickEnrollNowBtnOnWhyRFPage();
+		String PWS = "https://rfqa"+driver.getBizPWSURL();
+		driver.get(PWS);
 		storeFrontBrandRefreshHomePage.hoverOnBeAConsultantAndClickLinkOnEnrollMe();
 		storeFrontBrandRefreshHomePage.selectEnrollmentKit(kitName);
 		storeFrontBrandRefreshHomePage.selectRegimenAndClickNext(regimen);
@@ -532,6 +497,12 @@ public class BizPWSTest extends RFBrandRefreshWebsiteBaseTest{
 		storeFrontBrandRefreshHomePage.clickTermsAndConditions();
 		storeFrontBrandRefreshHomePage.chargeMyCardAndEnrollMe();
 		s_assert.assertTrue(storeFrontBrandRefreshHomePage.isCongratulationsMessageAppeared(),"Enrollment is not successful using terminated consultant email id.");
+		//verify Account status
+		List<Map<String, Object>> accountStatusIDList =  null;
+		String statusID = null;
+		accountStatusIDList =  DBUtil.performDatabaseQuery(DBQueries_RFL.callQueryWithArguement(DBQueries_RFL.GET_ACCOUNT_STATUS_ID, consultantEmailID), RFL_DB);
+		statusID = String.valueOf(getValueFromQueryResult(accountStatusIDList, "StatusID"));
+		s_assert.assertTrue(statusID.contains("1"), "Account status is not active");
 		s_assert.assertAll();
 	}
 
@@ -567,29 +538,18 @@ public class BizPWSTest extends RFBrandRefreshWebsiteBaseTest{
 		String emailToAssert = null;
 		String availableText = " is unavailable";
 
-		
+
 		List<Map<String, Object>> randomPWSList =  null;
 		List<Map<String, Object>> randomConsultant = null;
 		//Fetch cross country site prefix from database.
 		randomConsultant = DBUtil.performDatabaseQuery(DBQueries_RFO.callQueryWithArguementPWS(DBQueries_RFO.GET_RANDOM_ACTIVE_CONSULTANT_WITH_PWS_RFO,driver.getEnvironment()+".biz",country,countryID), RFO_DB);
 		String url = (String) getValueFromQueryResult(randomConsultant, "URL");
-		String PWS = null;
 		String prefix = storeFrontBrandRefreshHomePage.getSplittedPrefixFromConsultantUrl(url);
 		bizPWSToAssert = storeFrontBrandRefreshHomePage.getModifiedPWSValue(url,availableText);
 		comPWSToAssert=storeFrontBrandRefreshHomePage.convertBizSiteToComSite(bizPWSToAssert);
 		emailToAssert =storeFrontBrandRefreshHomePage.getModifiedEmailValue(url);
-
-		while(true){
-			randomPWSList = DBUtil.performDatabaseQuery(DBQueries_RFL.GET_RANDOM_PWS_SITE_URL_RFL, RFL_DB);
-			PWS = (String) getValueFromQueryResult(randomPWSList, "URL");
-			driver.get(PWS);
-			boolean isSiteNotFoundPresent = driver.getCurrentUrl().contains("SiteNotFound") || driver.getCurrentUrl().contains("SiteNotActive") || driver.getCurrentUrl().contains("Error");
-			if(isSiteNotFoundPresent){
-				continue;
-			}else{
-				break;
-			}
-		}
+		String PWS = "https://rfqa"+driver.getBizPWSURL();
+		driver.get(PWS);
 		storeFrontBrandRefreshHomePage.clickHeaderLinkAfterLogin("BECOME A CONSULTANT");
 		storeFrontBrandRefreshHomePage.clickEnrollNowBtnOnWhyRFPage();
 		storeFrontBrandRefreshHomePage.selectEnrollmentKit(kitName);
@@ -614,27 +574,14 @@ public class BizPWSTest extends RFBrandRefreshWebsiteBaseTest{
 		String enrollemntType = "Express";
 		String firstName = TestConstantsRFL.FIRST_NAME;
 		List<Map<String, Object>> randomPWSList =  null;
-		String PWS = null;
-		
 		RFL_DB = driver.getDBNameRFL();
 		List<Map<String, Object>> randomConsultantList =  null;
 		String consultantEmailID = null;
 		randomConsultantList = DBUtil.performDatabaseQuery(DBQueries_RFL.GET_RANDOM_ACTIVE_CONSULTANT_EMAILID,RFL_DB);
 		consultantEmailID = (String) getValueFromQueryResult(randomConsultantList, "EmailAddress");
-		while(true){
-			randomPWSList = DBUtil.performDatabaseQuery(DBQueries_RFL.GET_RANDOM_PWS_SITE_URL_RFL, RFL_DB);
-			PWS = (String) getValueFromQueryResult(randomPWSList, "URL");
-			driver.get(PWS);
-			boolean isSiteNotFoundPresent = driver.getCurrentUrl().contains("SiteNotFound") || driver.getCurrentUrl().contains("SiteNotActive") || driver.getCurrentUrl().contains("Error");
-			if(isSiteNotFoundPresent){
-				continue;
-			}else{
-				break;
-			}
-		}
-		
-		storeFrontBrandRefreshHomePage.clickEnrollNowBtnOnbizPWSPage();
-		/*storeFrontLegacyHomePage.clickEnrollNowBtnOnWhyRFPage();*/
+		String PWS = "https://rfqa"+driver.getBizPWSURL();
+		driver.get(PWS);
+		storeFrontBrandRefreshHomePage.hoverOnBeAConsultantAndClickLinkOnEnrollMe();
 		storeFrontBrandRefreshHomePage.selectEnrollmentKit(kitName);
 		storeFrontBrandRefreshHomePage.selectRegimenAndClickNext(regimen);
 		storeFrontBrandRefreshHomePage.selectEnrollmentType(enrollemntType);
@@ -650,27 +597,15 @@ public class BizPWSTest extends RFBrandRefreshWebsiteBaseTest{
 		String regimen = "Redefine";
 		String enrollemntType = "Express";
 		List<Map<String, Object>> randomPWSList =  null;
-		String PWS = null;
-		
 		RFL_DB = driver.getDBNameRFL();
 		List<Map<String, Object>> randomPCList =  null;
 		String pcEmailID = null;
 		randomPCList = DBUtil.performDatabaseQuery(DBQueries_RFL.GET_RANDOM_ACTIVE_PC_EMAILID,RFL_DB);
 		pcEmailID = (String) getValueFromQueryResult(randomPCList, "EmailAddress");
-		while(true){
-			randomPWSList = DBUtil.performDatabaseQuery(DBQueries_RFL.GET_RANDOM_PWS_SITE_URL_RFL, RFL_DB);
-			PWS = (String) getValueFromQueryResult(randomPWSList, "URL");
-			driver.get(PWS);
-			boolean isSiteNotFoundPresent = driver.getCurrentUrl().contains("SiteNotFound") || driver.getCurrentUrl().contains("SiteNotActive") || driver.getCurrentUrl().contains("Error");
-			if(isSiteNotFoundPresent){
-				continue;
-			}else{
-				break;
-			}
-		}
-		
-		storeFrontBrandRefreshHomePage.clickEnrollNowBtnOnbizPWSPage();
-		/*storeFrontLegacyHomePage.clickEnrollNowBtnOnWhyRFPage();*/
+		String PWS = "https://rfqa"+driver.getBizPWSURL();
+		driver.get(PWS);
+
+		storeFrontBrandRefreshHomePage.hoverOnBeAConsultantAndClickLinkOnEnrollMe();
 		storeFrontBrandRefreshHomePage.selectEnrollmentKit(kitName);
 		storeFrontBrandRefreshHomePage.selectRegimenAndClickNext(regimen);
 		storeFrontBrandRefreshHomePage.selectEnrollmentType(enrollemntType);
@@ -703,23 +638,10 @@ public class BizPWSTest extends RFBrandRefreshWebsiteBaseTest{
 		String phnNumber2 = "780";
 		String phnNumber3 = "9099";
 		List<Map<String, Object>> randomPWSList =  null;
-		String PWS = null;
-		
 		RFL_DB = driver.getDBNameRFL();
-		while(true){
-			randomPWSList = DBUtil.performDatabaseQuery(DBQueries_RFL.GET_RANDOM_PWS_SITE_URL_RFL, RFL_DB);
-			PWS = (String) getValueFromQueryResult(randomPWSList, "URL");
-			driver.get(PWS);
-			boolean isSiteNotFoundPresent = driver.getCurrentUrl().contains("SiteNotFound") || driver.getCurrentUrl().contains("SiteNotActive") || driver.getCurrentUrl().contains("Error");
-			if(isSiteNotFoundPresent){
-				continue;
-			}else{
-				break;
-			}
-		}
-		
-		storeFrontBrandRefreshHomePage.clickEnrollNowBtnOnbizPWSPage();
-		/*storeFrontLegacyHomePage.clickEnrollNowBtnOnWhyRFPage();*/
+		String PWS = "https://rfqa"+driver.getBizPWSURL();
+		driver.get(PWS);
+		storeFrontBrandRefreshHomePage.hoverOnBeAConsultantAndClickLinkOnEnrollMe();
 		storeFrontBrandRefreshHomePage.selectEnrollmentKit(kitName);
 		storeFrontBrandRefreshHomePage.selectRegimenAndClickNext(regimen);
 		storeFrontBrandRefreshHomePage.selectEnrollmentType(enrollemntType);
@@ -729,8 +651,7 @@ public class BizPWSTest extends RFBrandRefreshWebsiteBaseTest{
 		storeFrontBrandRefreshHomePage.enterAccountInformation(ssnRandomNum1, ssnRandomNum2, ssnRandomNum3, firstName);
 		storeFrontBrandRefreshHomePage.enterSpecialCharacterInWebSitePrefixField(PWSSpclChars);
 		storeFrontBrandRefreshHomePage.clickCompleteAccountNextBtn();
-		storeFrontBrandRefreshHomePage.navigateToBackPage();
-		s_assert.assertFalse(storeFrontBrandRefreshHomePage.getWebSitePrefixFieldText().contains("%"),"WebSite Prefix Field accepts Special Character");
+		 s_assert.assertTrue(storeFrontBrandRefreshHomePage.isValidationMessagePresentForPrefixField(),"WebSite Prefix Field accepts Special Character");
 		s_assert.assertAll();
 	}
 
@@ -741,27 +662,14 @@ public class BizPWSTest extends RFBrandRefreshWebsiteBaseTest{
 		String regimen = "Redefine";
 		String enrollemntType = "Express";
 		List<Map<String, Object>> randomPWSList =  null;
-		String PWS = null;
-		
 		RFL_DB = driver.getDBNameRFL();
 		List<Map<String, Object>> randomRCList =  null;
 		String rcEmailID = null;
 		randomRCList = DBUtil.performDatabaseQuery(DBQueries_RFL.GET_RANDOM_ACTIVE_RC_EMAILID,RFL_DB);
 		rcEmailID = (String) getValueFromQueryResult(randomRCList, "EmailAddress");
-		while(true){
-			randomPWSList = DBUtil.performDatabaseQuery(DBQueries_RFL.GET_RANDOM_PWS_SITE_URL_RFL, RFL_DB);
-			PWS = (String) getValueFromQueryResult(randomPWSList, "URL");
-			driver.get(PWS);
-			boolean isSiteNotFoundPresent = driver.getCurrentUrl().contains("SiteNotFound") || driver.getCurrentUrl().contains("SiteNotActive") || driver.getCurrentUrl().contains("Error");
-			if(isSiteNotFoundPresent){
-				continue;
-			}else{
-				break;
-			}
-		}
-		
-		storeFrontBrandRefreshHomePage.clickEnrollNowBtnOnbizPWSPage();
-		/*storeFrontLegacyHomePage.clickEnrollNowBtnOnWhyRFPage();*/
+		String PWS = "https://rfqa"+driver.getBizPWSURL();
+		driver.get(PWS);
+		storeFrontBrandRefreshHomePage.hoverOnBeAConsultantAndClickLinkOnEnrollMe();
 		storeFrontBrandRefreshHomePage.selectEnrollmentKit(kitName);
 		storeFrontBrandRefreshHomePage.selectRegimenAndClickNext(regimen);
 		storeFrontBrandRefreshHomePage.selectEnrollmentType(enrollemntType);
@@ -804,20 +712,7 @@ public class BizPWSTest extends RFBrandRefreshWebsiteBaseTest{
 		String pwsBizBase = driver.getBizPWSURL();
 		String PWS = "https://rfqa"+pwsBizBase;
 		driver.get(PWS);
-//		while(true){
-//			randomPWSList = DBUtil.performDatabaseQuery(DBQueries_RFL.GET_RANDOM_PWS_SITE_URL_RFL, RFL_DB);
-//			PWS = (String) getValueFromQueryResult(randomPWSList, "URL");
-//			driver.get(PWS);
-//			boolean isSiteNotFoundPresent = driver.getCurrentUrl().contains("SiteNotFound") || driver.getCurrentUrl().contains("SiteNotActive") || driver.getCurrentUrl().contains("Error");
-//			if(isSiteNotFoundPresent){
-//				continue;
-//			}else{
-//				break;
-//			}
-//		}
-		
 		storeFrontBrandRefreshHomePage.clickEnrollNowBtnOnbizPWSPage();
-		/*storeFrontLegacyHomePage.clickEnrollNowBtnAtWhyRFPage();*/
 		storeFrontBrandRefreshHomePage.selectConsultantEnrollmentKitByPrice(kitName);
 		storeFrontBrandRefreshHomePage.selectRegimenForConsultant(regimen);
 		storeFrontBrandRefreshHomePage.clickNextBtnAfterSelectRegimen();
@@ -834,7 +729,6 @@ public class BizPWSTest extends RFBrandRefreshWebsiteBaseTest{
 		logout();
 		driver.get(PWS);
 		storeFrontBrandRefreshHomePage.clickEnrollNowBtnOnbizPWSPage();
-		/*storeFrontLegacyHomePage.clickEnrollNowBtnAtWhyRFPage();*/
 		storeFrontBrandRefreshHomePage.selectConsultantEnrollmentKitByPrice(kitName);
 		storeFrontBrandRefreshHomePage.selectRegimenForConsultant(regimen);
 		storeFrontBrandRefreshHomePage.clickNextBtnAfterSelectRegimen();
@@ -879,7 +773,7 @@ public class BizPWSTest extends RFBrandRefreshWebsiteBaseTest{
 		String nameOnCard = firstName;
 		String expMonth = TestConstantsRFL.EXP_MONTH;
 		String expYear = TestConstantsRFL.EXP_YEAR;
-		String kitName = TestConstantsRFL.CONSULTANT_RF_EXPRESS_BUSINESS_KIT;
+		String kitName = TestConstantsRFL.CONSULTANT_RFX_EXPRESS_BUSINESS_KIT;
 		String regimen = TestConstantsRFL.REGIMEN_NAME_REDEFINE;
 		String enrollemntType = "Express";
 		String phnNumber1 = "415";
@@ -887,22 +781,11 @@ public class BizPWSTest extends RFBrandRefreshWebsiteBaseTest{
 		String phnNumber3 = "9099";
 		String editMyPWS = "edit my pws";
 		List<Map<String, Object>> randomPWSList =  null;
-		String PWS = null;
-		while(true){
-			randomPWSList = DBUtil.performDatabaseQuery(DBQueries_RFL.GET_RANDOM_PWS_SITE_URL_RFL, RFL_DB);
-			PWS = (String) getValueFromQueryResult(randomPWSList, "URL");
-			driver.get(PWS);
-			boolean isSiteNotFoundPresent = driver.getCurrentUrl().contains("SiteNotFound") || driver.getCurrentUrl().contains("SiteNotActive") || driver.getCurrentUrl().contains("Error");
-			if(isSiteNotFoundPresent){
-				continue;
-			}else{
-				break;
-			}
-		}
-		
-		storeFrontBrandRefreshHomePage.clickEnrollNowBtnOnbizPWSPage();
-		/*storeFrontLegacyHomePage.clickEnrollNowBtnAtWhyRFPage();*/
-		storeFrontBrandRefreshHomePage.selectConsultantEnrollmentKitByPrice(kitName);
+		String PWS = "https://rfqa"+driver.getBizPWSURL();
+		driver.get(PWS);
+
+		storeFrontBrandRefreshHomePage.hoverOnBeAConsultantAndClickLinkOnEnrollMe();
+		storeFrontBrandRefreshHomePage.selectEnrollmentType(kitName);
 		storeFrontBrandRefreshHomePage.selectRegimenForConsultant(regimen);
 		storeFrontBrandRefreshHomePage.clickNextBtnAfterSelectRegimen();
 		storeFrontBrandRefreshHomePage.selectEnrollmentType(enrollemntType);
@@ -931,35 +814,21 @@ public class BizPWSTest extends RFBrandRefreshWebsiteBaseTest{
 		String enrollemntType = "Express";
 		String firstName = TestConstantsRFL.FIRST_NAME;
 		List<Map<String, Object>> randomPWSList =  null;
-		String PWS = null;
 		String countryID ="40";
 		String country = "ca";
 
 		List<Map<String, Object>> randomConsultantList =  null;
 		List<Map<String, Object>> randomEmailIdList =  null;
 		String consultantEmailID = null;
-		
-
 		//Fetch cross country Email address from database.
 		randomConsultantList = DBUtil.performDatabaseQuery(DBQueries_RFO.callQueryWithArguementPWS(DBQueries_RFO.GET_RANDOM_ACTIVE_CONSULTANT_WITH_PWS_RFO,driver.getEnvironment()+".biz",country,countryID), RFO_DB);
 		String accountID= String.valueOf(getValueFromQueryResult(randomConsultantList, "AccountID"));
 		//Get email id from account id
 		randomEmailIdList = DBUtil.performDatabaseQuery(DBQueries_RFO.callQueryWithArguement(DBQueries_RFO.GET_EMAIL_ID_FROM_ACCOUNT_ID,accountID), RFO_DB);
 		consultantEmailID = (String) getValueFromQueryResult(randomEmailIdList, "EmailAddress");
-		while(true){
-			randomPWSList = DBUtil.performDatabaseQuery(DBQueries_RFL.GET_RANDOM_PWS_SITE_URL_RFL, RFL_DB);
-			PWS = (String) getValueFromQueryResult(randomPWSList, "URL");
-			driver.get(PWS);
-			boolean isSiteNotFoundPresent = driver.getCurrentUrl().contains("SiteNotFound") || driver.getCurrentUrl().contains("SiteNotActive") || driver.getCurrentUrl().contains("Error");
-			if(isSiteNotFoundPresent){
-				continue;
-			}else{
-				break;
-			}
-		}
-		
-		storeFrontBrandRefreshHomePage.clickEnrollNowBtnOnbizPWSPage();
-		/*storeFrontLegacyHomePage.clickEnrollNowBtnOnWhyRFPage();*/
+		String PWS = "https://rfqa"+driver.getBizPWSURL();
+		driver.get(PWS);
+		storeFrontBrandRefreshHomePage.hoverOnBeAConsultantAndClickLinkOnEnrollMe();
 		storeFrontBrandRefreshHomePage.selectEnrollmentKit(kitName);
 		storeFrontBrandRefreshHomePage.selectRegimenAndClickNext(regimen);
 		storeFrontBrandRefreshHomePage.selectEnrollmentType(enrollemntType);

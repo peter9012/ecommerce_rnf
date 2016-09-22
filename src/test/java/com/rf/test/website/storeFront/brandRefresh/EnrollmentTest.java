@@ -302,7 +302,8 @@ public class EnrollmentTest extends RFBrandRefreshWebsiteBaseTest{
 		storeFrontBrandRefreshPCUserPage.navigateToBackPage();
 		storeFrontBrandRefreshPCUserPage.clickOrderManagementSublink("Edit Order");
 		s_assert.assertTrue(storeFrontBrandRefreshPCUserPage.isEditOrderPagePresent(),"Edit order page is not present");
-		storeFrontBrandRefreshPCUserPage.clickMyAccountLink();
+		storeFrontBrandRefreshPCUserPage.navigateToBackPage();
+//		storeFrontBrandRefreshPCUserPage.clickMyAccountLink();
 		storeFrontBrandRefreshPCUserPage.clickOrderManagementSublink("Change my PC Perks Status");
 		s_assert.assertTrue(storeFrontBrandRefreshPCUserPage.verifyCurrentPage("PcPerksStatus"),"URL does not contain pcPerksStatus");
 		s_assert.assertTrue(storeFrontBrandRefreshPCUserPage.isPcPerksStatusLinkPresent(),"Delay or Cancel PC Perks link is not present");

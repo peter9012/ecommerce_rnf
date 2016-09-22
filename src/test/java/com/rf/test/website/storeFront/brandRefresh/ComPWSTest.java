@@ -28,27 +28,13 @@ public class ComPWSTest extends RFBrandRefreshWebsiteBaseTest{
 		storeFrontBrandRefreshHomePage = new StoreFrontBrandRefreshHomePage(driver);
 		storeFrontBrandRefreshConsultantPage = new StoreFrontBrandRefreshConsultantPage(driver);		
 	}
-	
+
 	//Shop Skincare-menu navigation
 	@Test
 	public void testShopSkinCareMenuNavigation(){
 		RFL_DB = driver.getDBNameRFL();
-		int randomNumber = CommonUtils.getRandomNum(10000, 1000000);
-		List<Map<String, Object>> randomPWSList =  null;
-		String PWS = null;
-		
-		while(true){
-			randomPWSList = DBUtil.performDatabaseQuery(DBQueries_RFL.GET_RANDOM_COM_PWS_SITE_URL_RFL, RFL_DB);
-			PWS = (String) getValueFromQueryResult(randomPWSList, "URL");
-			driver.get(PWS);
-			boolean isSiteNotFoundPresent = driver.getCurrentUrl().contains("SiteNotFound") || driver.getCurrentUrl().contains("SiteNotActive") || driver.getCurrentUrl().contains("Error");
-			if(isSiteNotFoundPresent){
-				continue;
-			}else{
-				break;
-			}
-		}
-	//	storeFrontBrandRefreshHomePage.clickShopSkinCareBtnOnPWS();
+		String PWS = "https://rfqa"+driver.getBizPWSURL();
+		driver.get(PWS);
 		storeFrontBrandRefreshHomePage.mouseHoverShopSkinCareOnPWS();
 		s_assert.assertTrue(storeFrontBrandRefreshHomePage.isRegimenNamePresent(TestConstantsRFL.REGIMEN_NAME_REDEFINE),"Redefine regimen name is not present on pws site");
 		s_assert.assertTrue(storeFrontBrandRefreshHomePage.isRegimenNamePresent(TestConstantsRFL.REGIMEN_NAME_REVERSE),"Reverse regimen name is not present on pws site");
@@ -77,43 +63,35 @@ public class ComPWSTest extends RFBrandRefreshWebsiteBaseTest{
 		String regimen = "Promotions";
 		List<Map<String, Object>> randomConsultantList =  null;
 		List<Map<String, Object>> randomPWSList =  null;
-		String PWS = null;
 		String consultantEmailID = null;
-		while(true){
-			randomPWSList = DBUtil.performDatabaseQuery(DBQueries_RFL.GET_RANDOM_COM_PWS_SITE_URL_RFL, RFL_DB);
-			PWS = (String) getValueFromQueryResult(randomPWSList, "URL");
-			driver.get(PWS);
-			boolean isSiteNotFoundPresent = driver.getCurrentUrl().contains("SiteNotFound") || driver.getCurrentUrl().contains("SiteNotActive") || driver.getCurrentUrl().contains("Error");
-			if(isSiteNotFoundPresent){
-				continue;
-			}else{
-				break;
-			}
-		}
+		String PWS = "https://rfqa"+driver.getBizPWSURL();
+		driver.get(PWS);
 		randomConsultantList = DBUtil.performDatabaseQuery(DBQueries_RFL.GET_RANDOM_ACTIVE_CONSULTANT_EMAILID,RFL_DB);
 		consultantEmailID = (String) getValueFromQueryResult(randomConsultantList, "EmailAddress");
-		
+
 		storeFrontBrandRefreshConsultantPage = storeFrontBrandRefreshHomePage.loginAsConsultant(consultantEmailID,password);
 		s_assert.assertTrue(storeFrontBrandRefreshConsultantPage.verifyUserSuccessfullyLoggedIn(),"consultant is not logged in successfully");
 		storeFrontBrandRefreshConsultantPage.mouseHoverShopSkinCareAndClickLinkOnPWS(regimen);
-//		storeFrontBrandRefreshConsultantPage.clickShopSkinCareBtnOnPWS();
-//		storeFrontBrandRefreshHomePage.clickRegimenOnPWS(regimen);
+		//  storeFrontBrandRefreshConsultantPage.clickShopSkinCareBtnOnPWS();
+		//  storeFrontBrandRefreshHomePage.clickRegimenOnPWS(regimen);
 		s_assert.assertTrue(storeFrontBrandRefreshHomePage.getCurrentURL().toLowerCase().contains("promotions"), "Expected regimen name is: promotions Actual on UI is "+storeFrontBrandRefreshHomePage.getCurrentURL().toLowerCase());
 		storeFrontBrandRefreshHomePage.clickAddToCartButtonAfterLogin();
-		storeFrontBrandRefreshConsultantPage.mouseHoverOnMyShoppingBagLinkAndClickOnCheckoutBtn();
+		//storeFrontBrandRefreshConsultantPage.mouseHoverOnMyShoppingBagLinkAndClickOnCheckoutBtn();
+		storeFrontBrandRefreshConsultantPage.clickMyShoppingBagLink();
 		storeFrontBrandRefreshHomePage.clickCheckoutBtn();
 		storeFrontBrandRefreshHomePage.clickContinueBtn();
 		storeFrontBrandRefreshHomePage.clickChangeBillingInformationBtn();
 		storeFrontBrandRefreshHomePage.enterBillingInfo(billingName, billingProfileFirstName, billingProfileLastName, nameOnCard, cardNumber, expMonth, expYear, addressLine1, postalCode, phnNumber);
 		storeFrontBrandRefreshHomePage.clickUseThisBillingInformationBtn();
-		storeFrontBrandRefreshHomePage.clickUseAsEnteredBtn();
+		//storeFrontBrandRefreshHomePage.clickUseAsEnteredBtn();
 		storeFrontBrandRefreshHomePage.clickCompleteOrderBtn();
 		s_assert.assertTrue(storeFrontBrandRefreshHomePage.isThankYouTextPresentAfterOrderPlaced(), "Adhoc order not placed successfully from biz pws for consultant user.");
 		s_assert.assertTrue(storeFrontBrandRefreshConsultantPage.getOrderConfirmationTextMsgAfterOrderPlaced().contains("You will receive an email confirmation shortly"), "Order confirmation message does not contains email confirmation");
+		storeFrontBrandRefreshHomePage.clickOnRodanAndFieldsLogo();
 		logout();
 		s_assert.assertAll();
 	}
-	
+
 	//Shop Skincare-Consultants Only -buy only products (enhancements micro dermabrasion paste packets)
 	@Test
 	public void testShopSkinCareConsultantsOnlyBuyProductPromotion(){
@@ -131,22 +109,12 @@ public class ComPWSTest extends RFBrandRefreshWebsiteBaseTest{
 		String phnNumber = TestConstantsRFL.NEW_ADDRESS_PHONE_NUMBER_US;
 		List<Map<String, Object>> randomConsultantList =  null;
 		List<Map<String, Object>> randomPWSList =  null;
-		String PWS = null;
 		String consultantEmailID = null;
-		while(true){
-			randomPWSList = DBUtil.performDatabaseQuery(DBQueries_RFL.GET_RANDOM_COM_PWS_SITE_URL_RFL, RFL_DB);
-			PWS = (String) getValueFromQueryResult(randomPWSList, "URL");
-			driver.get(PWS);
-			boolean isSiteNotFoundPresent = driver.getCurrentUrl().contains("SiteNotFound") || driver.getCurrentUrl().contains("SiteNotActive") || driver.getCurrentUrl().contains("Error");
-			if(isSiteNotFoundPresent){
-				continue;
-			}else{
-				break;
-			}
-		}
+		String PWS = "https://rfqa"+driver.getBizPWSURL();
+		driver.get(PWS);
 		randomConsultantList = DBUtil.performDatabaseQuery(DBQueries_RFL.GET_RANDOM_ACTIVE_CONSULTANT_EMAILID,RFL_DB);
 		consultantEmailID = (String) getValueFromQueryResult(randomConsultantList, "EmailAddress");
-		
+
 		storeFrontBrandRefreshConsultantPage = storeFrontBrandRefreshHomePage.loginAsConsultant(consultantEmailID,password);
 		s_assert.assertTrue(storeFrontBrandRefreshConsultantPage.verifyUserSuccessfullyLoggedIn(),"consultant is not logged in successfully");
 		storeFrontBrandRefreshConsultantPage.mouseHoverOnShopSkinCareAndClickOnConsultantOnlyProductsLink();
@@ -154,16 +122,18 @@ public class ComPWSTest extends RFBrandRefreshWebsiteBaseTest{
 		storeFrontBrandRefreshConsultantPage.clickConsultantOnlyProductOnPWS(TestConstantsRFL.CONSULTANT_ONLY_PRODUCT);
 		s_assert.assertTrue(storeFrontBrandRefreshHomePage.getCurrentURL().toLowerCase().contains("consultant-only"), "Expected url contains is:Consultant-Only Products but Actual on UI is "+storeFrontBrandRefreshHomePage.getCurrentURL().toLowerCase());
 		storeFrontBrandRefreshHomePage.clickAddToCartButtonAfterLogin();
-		storeFrontBrandRefreshConsultantPage.mouseHoverOnShopSkinCareAndClickOnConsultantOnlyProductsLink();
+//		storeFrontBrandRefreshConsultantPage.mouseHoverOnShopSkinCareAndClickOnConsultantOnlyProductsLink();
+		storeFrontBrandRefreshHomePage.clickMyShoppingBagLink();
 		storeFrontBrandRefreshHomePage.clickCheckoutBtn();
 		storeFrontBrandRefreshHomePage.clickContinueBtn();
 		storeFrontBrandRefreshHomePage.clickChangeBillingInformationBtn();
 		storeFrontBrandRefreshHomePage.enterBillingInfo(billingName, billingProfileFirstName, billingProfileLastName, nameOnCard, cardNumber, expMonth, expYear, addressLine1, postalCode, phnNumber);
 		storeFrontBrandRefreshHomePage.clickUseThisBillingInformationBtn();
-		storeFrontBrandRefreshHomePage.clickUseAsEnteredBtn();
+//		storeFrontBrandRefreshHomePage.clickUseAsEnteredBtn();
 		storeFrontBrandRefreshHomePage.clickCompleteOrderBtn();
 		s_assert.assertTrue(storeFrontBrandRefreshConsultantPage.isThankYouTextPresentAfterOrderPlaced(), "Order is not placed successfully");
 		s_assert.assertTrue(storeFrontBrandRefreshConsultantPage.getOrderConfirmationTextMsgAfterOrderPlaced().contains("You will receive an email confirmation shortly"), "Order confirmation message does not contains email confirmation");
+		storeFrontBrandRefreshHomePage.clickOnRodanAndFieldsLogo();
 		logout();
 		s_assert.assertAll();
 	}
@@ -172,24 +142,13 @@ public class ComPWSTest extends RFBrandRefreshWebsiteBaseTest{
 	@Test
 	public void testForgotPasswordPWS(){
 		List<Map<String, Object>> randomPWSList =  null;
-		String PWS = null;
-		
 		RFL_DB = driver.getDBNameRFL();
 		List<Map<String, Object>> randomConsultantList =  null;
 		String consultantEmailID = null;
 		randomConsultantList = DBUtil.performDatabaseQuery(DBQueries_RFL.GET_RANDOM_ACTIVE_CONSULTANT_EMAILID,RFL_DB);
 		consultantEmailID = (String) getValueFromQueryResult(randomConsultantList, "EmailAddress");
-		while(true){
-			randomPWSList = DBUtil.performDatabaseQuery(DBQueries_RFL.GET_RANDOM_COM_PWS_SITE_URL_RFL, RFL_DB);
-			PWS = (String) getValueFromQueryResult(randomPWSList, "URL");
-			driver.get(PWS);
-			boolean isSiteNotFoundPresent = driver.getCurrentUrl().contains("SiteNotFound") || driver.getCurrentUrl().contains("SiteNotActive") || driver.getCurrentUrl().contains("Error");
-			if(isSiteNotFoundPresent){
-				continue;
-			}else{
-				break;
-			}
-		}
+		String PWS = "https://rfqa"+driver.getBizPWSURL();
+		driver.get(PWS);
 		//click 'forgot password' on biz home page
 		storeFrontBrandRefreshHomePage.clickForgotPasswordLinkOnBizHomePage();
 		//verify a message prompt to change the password displayed?
@@ -205,9 +164,6 @@ public class ComPWSTest extends RFBrandRefreshWebsiteBaseTest{
 	@Test
 	public void testShopSkinCarePWS(){
 		List<Map<String, Object>> randomPWSList =  null;
-		String PWS = null;
-		
-
 		RFL_DB = driver.getDBNameRFL();
 		int randomNumber = CommonUtils.getRandomNum(10000, 1000000);
 		String billingName =TestConstantsRFL.BILLING_PROFILE_NAME;
@@ -224,17 +180,8 @@ public class ComPWSTest extends RFBrandRefreshWebsiteBaseTest{
 		String consultantEmailID = null;
 		randomConsultantList = DBUtil.performDatabaseQuery(DBQueries_RFL.GET_RANDOM_ACTIVE_CONSULTANT_EMAILID,RFL_DB);
 		consultantEmailID = (String) getValueFromQueryResult(randomConsultantList, "EmailAddress");
-		while(true){
-			randomPWSList = DBUtil.performDatabaseQuery(DBQueries_RFL.GET_RANDOM_COM_PWS_SITE_URL_RFL, RFL_DB);
-			PWS = (String) getValueFromQueryResult(randomPWSList, "URL");
-			driver.get(PWS);
-			boolean isSiteNotFoundPresent = driver.getCurrentUrl().contains("SiteNotFound") || driver.getCurrentUrl().contains("SiteNotActive") || driver.getCurrentUrl().contains("Error");
-			if(isSiteNotFoundPresent){
-				continue;
-			}else{
-				break;
-			}
-		}
+		String PWS = "https://rfqa"+driver.getBizPWSURL();
+		driver.get(PWS);
 		storeFrontBrandRefreshHomePage.loginAsConsultant(consultantEmailID,password);
 		s_assert.assertTrue(storeFrontBrandRefreshHomePage.verifyUserSuccessfullyLoggedIn(),"consultant is not logged in successfully");
 		//click on 'our products' in tha nav menu
@@ -242,13 +189,14 @@ public class ComPWSTest extends RFBrandRefreshWebsiteBaseTest{
 		//select a product and add to cart
 		storeFrontBrandRefreshHomePage.clickConsultantOnlyProductOnPWS(TestConstantsRFL.CONSULTANT_ONLY_PRODUCT);
 		storeFrontBrandRefreshHomePage.clickAddToCartButtonAfterLogin();
-		storeFrontBrandRefreshHomePage.mouseHoverOnMyShoppingBagLinkAndClickOnCheckoutBtn();
+		storeFrontBrandRefreshHomePage.clickMyShoppingBagLink();
+//		storeFrontBrandRefreshHomePage.mouseHoverOnMyShoppingBagLinkAndClickOnCheckoutBtn();
 		storeFrontBrandRefreshHomePage.clickCheckoutBtn();
 		storeFrontBrandRefreshHomePage.clickContinueBtn();
 		storeFrontBrandRefreshHomePage.clickChangeBillingInformationBtn();
 		storeFrontBrandRefreshHomePage.enterBillingInfo(billingName, billingProfileFirstName, billingProfileLastName, nameOnCard, cardNumber, expMonth, expYear, addressLine1, postalCode, phnNumber);
 		storeFrontBrandRefreshHomePage.clickUseThisBillingInformationBtn();
-		storeFrontBrandRefreshHomePage.clickUseAsEnteredBtn();
+//		storeFrontBrandRefreshHomePage.clickUseAsEnteredBtn();
 		storeFrontBrandRefreshHomePage.clickCompleteOrderBtn();
 		s_assert.assertTrue(storeFrontBrandRefreshHomePage.isThankYouTextPresentAfterOrderPlaced(), "Order is not placed successfully");
 		s_assert.assertAll();

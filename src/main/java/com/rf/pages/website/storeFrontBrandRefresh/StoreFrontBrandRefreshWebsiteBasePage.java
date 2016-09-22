@@ -18,10 +18,10 @@ public class StoreFrontBrandRefreshWebsiteBasePage extends RFBasePage{
 	private static String regimenProductLoc = "//div[@id='ProductCategories']//span[text()='%s']/preceding::p[1]//img";
 	private static String businessSystemSubLink= "//div[@id='RFContent']//a[contains(@href,'%s')]";
 	private static String regimenImageOnPwsLoc = "//div[@id='ProductCategories']//p[@class='productInfo']//span[text()='%s']/../preceding-sibling::p/a";
-	private static String myAccountLinkAfterLoginLink = "//div[@class='topContents']//span[text()='%s']";
+	private static String myAccountLinkAfterLoginLink = "//nav[@id='Col1']//span[text()='%s']/..";
 	private static String orderManagementSublink = "//a[@class='IconLink']//span[contains(text(),'%s')]";
 	private static String linkUnderShopSkinCareOrBeAConsultant = "//div[@id='LeftNav']//a/span[text()='%s']";
-	private static String consultantOnlyProduct= "//p[contains(text(),'%s')]/preceding::a[1]/img";
+	private static String consultantOnlyProduct= "//span[contains(text(),'%s')]/preceding::a[1]/img";
 	private static String sublinkUnderShopSkinCareOrBeAConsultant = "//div[@id='LeftNav']//a/span[text()='%s']/../..//span[text()='%s']";
 	private static String consultantOnlyProductonPWSLoc= "//span[contains(text(),'%s')]/preceding::a[1]/img";
 
@@ -45,7 +45,7 @@ public class StoreFrontBrandRefreshWebsiteBasePage extends RFBasePage{
 	private static final By ORDER_CONFIRMATION_THANK_YOU_TXT = By.xpath("//h2[contains(text(),'Thank')]");
 	private static final By CONTINUE_BTN_BILLING_PAGE = By.xpath("//span[contains(text(),'Change Billing Information')]/following::a[contains(@id,'uxContinue')]");
 	private static final By CONTINUE_WITHOUT_CONSULTANT_LINK = By.xpath("//a[contains(@id,'uxSkipStep')]");
-	private static final By ADD_TO_CART_BTN_AS_PER_REGIMEN = By.xpath("//div[@id='FullPageItemList']/div[1]//a[@id='addToCartButton']");
+	private static final By ADD_TO_CART_BTN_AS_PER_REGIMEN = By.xpath("//a[@id='addToCartButton']");
 	private static final By HELLO_OR_WELCOME_TXT_ON_CORP = By.xpath("//*[contains(text(),'Hello') or contains(text(),'Welcome')]");
 	private static final By ORDER_PLACED_CONFIRMATION_TEXT = By.xpath("//div[@id='RFContent']//b");
 	private static final By CONSULTANTS_ONLY_PRODUCTS_REGIMEN = By.xpath("//cufontext[contains(text(),'Consultant-Only ')]/following::a[1]/img");
@@ -313,10 +313,17 @@ public class StoreFrontBrandRefreshWebsiteBasePage extends RFBasePage{
 	}
 
 	public void clickHeaderLinkAfterLogin(String linkName) {
-		linkName = linkName.toLowerCase();
-		driver.quickWaitForElementPresent(By.xpath(String.format(myAccountLinkAfterLoginLink, linkName)));
-		driver.click(By.xpath(String.format(myAccountLinkAfterLoginLink, linkName)));
-		logger.info("my account link is clicked");
+		try{
+			driver.quickWaitForElementPresent(By.xpath(String.format(myAccountLinkAfterLoginLink, linkName)));
+			Actions actions = new Actions(RFWebsiteDriver.driver);
+			actions.moveToElement(driver.findElement(By.xpath(String.format("//nav[@id='Col1']//span[text()='%s']/..", linkName)))).click().build().perform();
+			logger.info("my account link is clicked");
+		}
+		catch(NoSuchElementException e){
+			driver.quickWaitForElementPresent(By.xpath("//*[@id='ConsultantWelcome']/ul/li[1]/a"));
+			driver.click(By.xpath("//*[@id='ConsultantWelcome']/ul/li[1]/a"));
+			logger.info("my account link is clicked");
+		}
 	}
 
 	public void clickEditOrderLink(){
@@ -472,12 +479,20 @@ public class StoreFrontBrandRefreshWebsiteBasePage extends RFBasePage{
 		logger.info("Clicked "+link+" link is clicked after hovering About RF.");
 		driver.waitForPageLoad();
 	}
-	
+
 	public void mouseHoverShopSkinCare(){
 		driver.pauseExecutionFor(2000);
 		Actions actions =  new Actions(RFWebsiteDriver.driver);
 		actions.moveToElement(driver.findElement(SHOP_SKINCARE_LOC)).build().perform();
 		logger.info("hover on Products link now as shop skincare");
+	}
+
+
+	public void clickMyShoppingBagLink(){
+		driver.waitForElementPresent(MY_SHOPPING_BAG_LINK);
+		driver.click(MY_SHOPPING_BAG_LINK);
+		logger.info("Clicked on My shopping bag link.");
+		driver.waitForPageLoad();
 	}
 
 }

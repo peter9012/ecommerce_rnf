@@ -34,8 +34,6 @@ public class UINavigationTest extends RFBrandRefreshWebsiteBaseTest{
 		String subLinkProducts = "Products";
 		String subLinkResults = "Results";
 		String subLinkFAQ = "FAQs";
-
-
 		storeFrontBrandRefreshHomePage.mouseHoverShopSkinCareAndClickLink(subLinkRegimen);
 		s_assert.assertTrue(storeFrontBrandRefreshHomePage.getCurrentURL().toLowerCase().contains(subLinkRegimen.toLowerCase()), "Expected regimen name is "+subLinkRegimen.toLowerCase()+" Actual on UI is "+storeFrontBrandRefreshHomePage.getCurrentURL().toLowerCase());
 		s_assert.assertTrue(storeFrontBrandRefreshHomePage.getCurrentURL().toLowerCase().contains(subLinkProducts.toLowerCase()), "Expected sublink in url is "+subLinkProducts.toLowerCase()+" Actual on UI is "+storeFrontBrandRefreshHomePage.getCurrentURL().toLowerCase());
@@ -493,7 +491,6 @@ public class UINavigationTest extends RFBrandRefreshWebsiteBaseTest{
 		String secondSubSectionUnderProgramsAndIncentives = "COMPENSATION PLAN, PROGRAMS & INCENTIVES";
 		String thirdSubSectionUnderProgramsAndIncentives = "Enroll Now";
 
-
 		storeFrontBrandRefreshHomePage.mouseHoverBeAConsultant();
 		//storeFrontBrandRefreshHomePage.clickBeAConsultantBtn();
 		//s_assert.assertTrue(storeFrontBrandRefreshHomePage.getCurrentURL().toLowerCase().contains("Business".toLowerCase()), "URL does not contain Business Actual on UI is "+storeFrontBrandRefreshHomePage.getCurrentURL().toLowerCase());
@@ -594,8 +591,6 @@ public class UINavigationTest extends RFBrandRefreshWebsiteBaseTest{
 		String subSectionLinkPCPerks = "PC PERKS";
 		String subSectionSolutionTool = "Solution Tool";
 		String subSectionDigitalProductCatalogue = "Digital Product Catalog";
-
-
 		storeFrontBrandRefreshHomePage.clickShopSkinCareBtn();
 		storeFrontBrandRefreshHomePage.selectRegimen(regimen);
 

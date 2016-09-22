@@ -35,9 +35,8 @@ public class StoreFrontBrandRefreshHomePage extends StoreFrontBrandRefreshWebsit
 	private static String subTitleLoc = "//div[@id='HeaderCol']//span[text()='%s']";
 	private static String essentialsRegimenSubLinks= "//cufontext[text()='ESSENTIALS']/following::li//span[text()='%s']";
 	private static String enhancementsRegimenSubLinks= "//cufontext[text()='ENHANCEMENTS']/following::li//span[text()='%s']";
-	private static String regimenNameOnPwsLoc = "//div[@id='ProductCategories']//p[@class='productInfo']//span[text()='%s']";
+	private static String regimenNameOnPwsLoc = "//div[@id='LeftNav']//a/span[text()='%s']";
 	private static String regimenImageOnPwsLoc = "//div[@id='ProductCategories']//p[@class='productInfo']//span[text()='%s']/../preceding-sibling::p/a";
-	private static String myAccountLinkAfterLoginLink = "//nav[@id='Col1']//span[text()='%s']/..";
 	private static String consultantEnrollmentKit = "//span[@class='kitPrice']//cufontext[contains(text(),'%s')]/preceding::div[@class='imageWrap'][1]";
 	private static String consultantRegimenLoc = "//span[@class='catName']//cufontext[contains(text(),'%s')]/following::img[1]";
 	private static String retailPriceOfItem = "//div[@class='FloatCol']/div[%s]//tr[2]//div[1]/span[1]";
@@ -59,14 +58,15 @@ public class StoreFrontBrandRefreshHomePage extends StoreFrontBrandRefreshWebsit
 	private static final By INGREDIENTS_AND_USAGE_LINK_LOC = By.xpath("//a[text()='Ingredients and Usage']");
 	private static final By INGREDIENTS_CONTENT_LOC = By.xpath("//span[@id='ProductUsage']");
 	private static final By FOOTER_CONTACT_US_LINK_LOC = By.xpath("//footer[@id='FooterPane']//span[text()='Contact Us']");
-	private static final By CONTACT_US_PAGE_HEADER_LOC = By.xpath("//div[@id='RFContent']//h2[text()='Contact Us']");
+	private static final By CONTACT_US_PAGE_HEADER_LOC = By.xpath("//div[@id='RFContent']//h1[text()='Contact Us']");
 
 	private static final By BE_A_CONSULTANT_LOC = By.xpath("//span[text()='Be a Consultant']");
 	private static final By ENROLL_NOW_ON_BUSINESS_PAGE_LOC = By.xpath("//*[@id='LeftNav']//span[text()='Enroll Now']");
 	private static final By CID_LOC = By.id("NameOrId");
 	private static final By CID_SEARCH_LOC = By.id("BtnSearch");
 	private static final By SEARCH_RESULTS_LOC = By.xpath("//div[@id='searchResults']//a");
-	private static final By BIG_BUSINESS_LAUNCH_KIT_LOC = By.xpath("//cufontext[contains(text(),'Big')]/ancestor::div[@class='KitContent'][1]");
+	private static final By BIG_BUSINESS_LAUNCH_KIT_LOC = By.xpath("//cufontext[contains(text(),'Big')]/ancestor::div[contains(@class,'KitContent')][1]");
+	private static final By RF_EXPRESS_LAUNCH_KIT_LOC = By.xpath("//cufontext[contains(text(),'Express')]/ancestor::div[contains(@class,'KitContent')][1]");
 	private static final By BUSINESS_PORTFOLIO_KIT_LOC =By.xpath("//cufontext[contains(text(),'Portfolio')]/ancestor::div[@class='KitContent'][1]");
 	private static final By SELECT_ENROLLMENT_KIT_NEXT_BTN_LOC =By.xpath("//a[@id='BtnNext']//canvas");
 	private static final By ACCOUNT_INFORMATION_NEXT_BTN = By.xpath("//a[@id='btnNext']//cufon");
@@ -119,7 +119,7 @@ public class StoreFrontBrandRefreshHomePage extends StoreFrontBrandRefreshWebsit
 	private static final By ENTER_LOGIN_BTN_LOC = By.id("loginButton");
 	private static final By SUBSCRIBE_TO_PULSE_TOGGLE_BTN_LOC = By.xpath("//input[@id='Account_EnrollPulse']/following::div[1]//div[@class='ibutton-handle-middle']");
 	private static final By ENROLL_IN_CRP_TOGGLE_BTN_LOC = By.xpath("//input[@id='Account_EnrollCRP']/following::div[1]//div[@class='ibutton-handle-middle']");
-	private static final By RODAN_AND_FIELDS_IMG_LOC = By.xpath("//div[@id='logo']//img");
+	private static final By RODAN_AND_FIELDS_IMG_LOC = By.xpath("//div[@id='Logo']//img");
 	private static final By LOGOUT_LOC = By.xpath("//a[text()='Log Out']");
 	private static final By EXISTING_CONSULTANT_LOC = By.xpath("//div[@id='ExistentConsultant']/p[contains(text(),'already have a Consultant account')]");
 	private static final By BECOME_A_CONSULTANT_MENU = By.xpath("//a[@href='/Pages/BusinessSystem/WhyRF/GettingStarted']");
@@ -222,9 +222,9 @@ public class StoreFrontBrandRefreshHomePage extends StoreFrontBrandRefreshWebsit
 	private static final By SIGN_IN_BTN_CHECKOUT_PAGE_LOC = By.xpath("//a[contains(@id,'lnkLogin')]");
 	private static final By RENEW_LATER_LINK = By.xpath("//a[@id='renewLater']");
 	private static final By FORGOT_PASSWORD_PWS_LINK_LOC = By.xpath("//a[contains(text(),'Forgot password')]");
-	private static final By CHANGE_PASSWORD_TEXT_LOC = By.xpath("//div[@id='ContentWrapper']/p[contains(text(),'reset your password')]");
-	private static final By SEND_EMAIL_BTN_LOC = By.xpath("//input[@value='Send Email']");
-	private static final By EMAIL_ADDRESS_FIELD_LOC = By.xpath("//td[contains(text(),'Email Address')]/following-sibling::td/input");
+	private static final By CHANGE_PASSWORD_TEXT_LOC = By.xpath("//div[@id='ContentWrapper']//h3[contains(text(),'Recover Password')]");
+	private static final By SEND_EMAIL_BTN_LOC = By.xpath("//input[@value='Submit']");
+	private static final By EMAIL_ADDRESS_FIELD_LOC = By.xpath("//label[contains(text(),'Email Address')]/following-sibling::input[@class='textinput']");
 	private static final By EDIT_ORDER_UNDER_MY_ACCOUNT_LOC = By.xpath("//span[text()=' Edit Order']");
 	private static final By CHANGE_LINK_FOR_SHIPPING_INFO_ON_PWS = By.xpath("//a[contains(@id,'uxChangeShippingLink')]");
 	private static final By SHIPPING_ADDRESS_NAME_LOC = By.xpath("//b[text()='Shipping to:']/../following-sibling::p/span[1]");
@@ -314,10 +314,15 @@ public class StoreFrontBrandRefreshHomePage extends StoreFrontBrandRefreshWebsit
 	}
 
 	public void selectEnrollmentKit(String kit){
-		if(kit.equalsIgnoreCase("Big Business Launch Kit")){
+		if(kit.contains("Big Business")){
 			driver.quickWaitForElementPresent(BIG_BUSINESS_LAUNCH_KIT_LOC);
 			driver.click(BIG_BUSINESS_LAUNCH_KIT_LOC);
 			logger.info("Big Business Launch Kit is selected");
+		}
+		else if(kit.contains("Express")){
+			driver.quickWaitForElementPresent(RF_EXPRESS_LAUNCH_KIT_LOC);
+			driver.click(RF_EXPRESS_LAUNCH_KIT_LOC);
+			logger.info("RFx Express Business Kit is selected");
 		}
 	}
 
@@ -495,12 +500,9 @@ public class StoreFrontBrandRefreshHomePage extends StoreFrontBrandRefreshWebsit
 	}
 
 	public void clickEnrollNowBtnOnbizPWSPage(){
-		//driver.get(driver.getCurrentUrl()+"/Pages/BusinessSystem/WhyRF/GettingStarted");
-		//		driver.quickWaitForElementPresent(ENROLL_NOW_ON_BIZ_PWS_PAGE_LOC);
 		WebElement enrollnow = driver.findElement(ENROLL_NOW_ON_BIZ_PWS_PAGE_LOC);
 		JavascriptExecutor executor = (JavascriptExecutor)(RFWebsiteDriver.driver);
 		executor.executeScript("arguments[0].click();", enrollnow);
-		//		driver.get(driver.getCurrentUrl()+"/NewEnrollment/EnrollmentKit");
 		logger.info("Enroll Now button on biz PWS page is clicked");
 		driver.waitForPageLoad();
 	}
@@ -542,7 +544,9 @@ public class StoreFrontBrandRefreshHomePage extends StoreFrontBrandRefreshWebsit
 		driver.click(PASSWORD_TXTFLD_ONFOCUS_LOC);
 		driver.type(PASSWORD_TEXT_BOX_LOC, password);
 		logger.info("Entered Password is: "+password);
-		driver.click(ENTER_LOGIN_BTN_LOC);
+		Actions actions = new Actions(RFWebsiteDriver.driver);
+		actions.moveToElement(driver.findElement(ENTER_LOGIN_BTN_LOC)).click().build().perform();
+		//driver.click(ENTER_LOGIN_BTN_LOC);
 		logger.info("login  enter button clicked");
 		driver.waitForPageLoad();
 		clickRenewLater();
@@ -1159,7 +1163,7 @@ public class StoreFrontBrandRefreshHomePage extends StoreFrontBrandRefreshWebsit
 	public boolean verifySubSectionPresentAtProgramsAndIncentives(String firstSubSectionUnderProgramsAndIncentives) {
 		boolean flag=false;
 		try{
-			flag =  driver.findElement(By.xpath(String.format("//h2[text()='%s']", firstSubSectionUnderProgramsAndIncentives))).isDisplayed();
+			flag =  driver.findElement(By.xpath(String.format("//h1[text()='%s']", firstSubSectionUnderProgramsAndIncentives))).isDisplayed();
 		}catch(NoSuchElementException e){
 			flag =  driver.findElement(By.xpath(String.format("//a[text()='%s']", firstSubSectionUnderProgramsAndIncentives))).isDisplayed();
 		}
@@ -1537,20 +1541,6 @@ public class StoreFrontBrandRefreshHomePage extends StoreFrontBrandRefreshWebsit
 		return status;
 	}
 
-	public void clickHeaderLinkAfterLogin(String linkName) {
-		try{
-			driver.quickWaitForElementPresent(By.xpath(String.format(myAccountLinkAfterLoginLink, linkName)));
-			Actions actions = new Actions(RFWebsiteDriver.driver);
-			actions.moveToElement(driver.findElement(By.xpath(String.format("//nav[@id='Col1']//span[text()='%s']/..", linkName)))).click().build().perform();
-			logger.info("my account link is clicked");
-		}
-		catch(NoSuchElementException e){
-			driver.quickWaitForElementPresent(By.xpath("//*[@id='ConsultantWelcome']/ul/li[1]/a"));
-			driver.click(By.xpath("//*[@id='ConsultantWelcome']/ul/li[1]/a"));
-			logger.info("my account link is clicked");
-		}
-	}
-
 	public void clickEditOrderLink(){
 		driver.quickWaitForElementPresent(EDIT_ORDER_UNDER_MY_ACCOUNT_LOC);
 		driver.click(EDIT_ORDER_UNDER_MY_ACCOUNT_LOC);
@@ -1670,7 +1660,7 @@ public class StoreFrontBrandRefreshHomePage extends StoreFrontBrandRefreshWebsit
 		driver.quickWaitForElementPresent(BACK_TO_MY_ACCOUNT_BTN_LOC);
 		driver.click(BACK_TO_MY_ACCOUNT_BTN_LOC);
 		logger.info("back to my account button is clicked");
-
+		driver.waitForPageLoad();
 	}
 
 	public boolean verifyConfirmationMessageInOrders() {
@@ -1870,7 +1860,7 @@ public class StoreFrontBrandRefreshHomePage extends StoreFrontBrandRefreshWebsit
 		logger.info("email address entered as: "+emailAddress);
 		driver.type(ACCOUNT_PASSWORD_LOC, "");
 		logger.info("password entered as: "+"");
-		return driver.isElementPresent(EXISTING_PC_LOC);
+		return driver.findElement(EXISTING_PC_LOC).isDisplayed();
 	}
 
 	public boolean validateExistingRCPopUp(String emailAddress){
@@ -1884,7 +1874,6 @@ public class StoreFrontBrandRefreshHomePage extends StoreFrontBrandRefreshWebsit
 
 	public void enterSpecialCharacterInWebSitePrefixField(String prefixField){
 		driver.quickWaitForElementPresent(WEBSITE__PREFIX_LOC);
-		driver.clear(WEBSITE__PREFIX_LOC);
 		driver.type(WEBSITE__PREFIX_LOC, prefixField);
 		logger.info("PWS enterd as: "+prefixField);
 	}
@@ -2010,5 +1999,31 @@ public class StoreFrontBrandRefreshHomePage extends StoreFrontBrandRefreshWebsit
 		actions.moveToElement(driver.findElement(BE_A_CONSULTANT_LOC)).build().perform();
 		logger.info("hover performed on be a consultant link.");
 	}	
+
+	public String getPrefixMessageForBiz() {
+		driver.waitForElementPresent(By.id("Abailable0"));
+		String message =  driver.findElement(By.id("Abailable0")).getText();
+		logger.info("Message for biz prefix is "+message);
+		return message;
+	}
+
+	public String getPrefixMessageForCom() {
+		driver.waitForElementPresent(By.id("Abailable1"));
+		String message =  driver.findElement(By.id("Abailable1")).getText();
+		logger.info("Message for .com prefix is "+message);
+		return message;
+	}
+
+	public String getPrefixMessageForEmail() {
+		driver.waitForElementPresent(By.id("Abailable2"));
+		String message =  driver.findElement(By.id("Abailable2")).getText();
+		logger.info("Message for biz prefix is "+message);
+		return message;
+	}
+
+	public boolean isValidationMessagePresentForPrefixField() {
+		driver.waitForElementPresent(By.xpath("//div[@id='completeAccountForm']//label[contains(text(),'Please enter a name for you PWS site')]"));
+		return driver.isElementPresent(By.xpath("//div[@id='completeAccountForm']//label[contains(text(),'Please enter a name for you PWS site')]"));
+	}
 
 }

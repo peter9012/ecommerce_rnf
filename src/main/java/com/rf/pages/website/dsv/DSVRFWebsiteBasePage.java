@@ -29,10 +29,10 @@ public class DSVRFWebsiteBasePage extends RFBasePage{
 		driver.get(URL);
 		driver.waitForPageLoad();
 		driver.pauseExecutionFor(3000);
+		logger.info("URL opened is "+URL);
 	}
 	
-	public String convertHTTPS_To_HTTP(){
-		String URL = driver.getCurrentUrl();
+	public String convertHTTPS_To_HTTP(String URL){
 		if(URL.contains("https")){
 			URL=URL.replaceAll("https", "http");
 		}	

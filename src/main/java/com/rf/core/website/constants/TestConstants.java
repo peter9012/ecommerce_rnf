@@ -70,7 +70,7 @@ public class TestConstants {
 	public static final String FIRST_NAME_NEW_BILLING_ADDRESS = "rfTestUser3";
 	public static final String PROVINCECA = "Yukon Territory";
 	public static final String CIDCA = "989828";
-	public static final String INVALID_CARD_NUMBER_15DIGITS = "4747";
+	public static final String INVALID_CARD_NUMBER_15DIGITS = "474747474747474";
 	public static final String INVALID_CARD_NUMBER_17DIGITS = "47474747474747474";
 	public static final String SPONSOR_ID_US="1686295";
 	public static final String INVALID_CARD_NUMBER_15DIGITS_WITH_SPECIAL_CHAR = "474747474747474#";

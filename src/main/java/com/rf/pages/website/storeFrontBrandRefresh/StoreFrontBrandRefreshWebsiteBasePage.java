@@ -21,7 +21,7 @@ public class StoreFrontBrandRefreshWebsiteBasePage extends RFBasePage{
 	private static String myAccountLinkAfterLoginLink = "//nav[@id='Col1']//span[text()='%s']/..";
 	private static String orderManagementSublink = "//a[@class='IconLink']//span[contains(text(),'%s')]";
 	private static String linkUnderShopSkinCareOrBeAConsultant = "//div[@id='LeftNav']//a/span[text()='%s']";
-	private static String consultantOnlyProduct= "//span[contains(text(),'%s')]/preceding::a[1]/img";
+	private static String consultantOnlyProduct= "//p[contains(text(),'%s')]/preceding::a[1]/img";
 	private static String sublinkUnderShopSkinCareOrBeAConsultant = "//div[@id='LeftNav']//a/span[text()='%s']/../..//span[text()='%s']";
 	private static String consultantOnlyProductonPWSLoc= "//span[contains(text(),'%s')]/preceding::a[1]/img";
 
@@ -262,7 +262,7 @@ public class StoreFrontBrandRefreshWebsiteBasePage extends RFBasePage{
 	}
 
 	public void clickChangeBillingInformationBtn(){
-		driver.quickWaitForElementPresent(CHANGE_BILLING_INFO);
+		driver.waitForElementPresent(CHANGE_BILLING_INFO);
 		driver.click(CHANGE_BILLING_INFO);
 		logger.info("Change billing information button clicked");
 		driver.waitForPageLoad();

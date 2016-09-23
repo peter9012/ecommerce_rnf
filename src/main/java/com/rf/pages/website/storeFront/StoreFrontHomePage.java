@@ -10,11 +10,13 @@ import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.openqa.selenium.By;
 import org.openqa.selenium.JavascriptExecutor;
+import org.openqa.selenium.Keys;
 import org.openqa.selenium.NoSuchElementException;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.interactions.Actions;
 import org.openqa.selenium.support.ui.Select;
 
+import com.rf.core.driver.RFDriver;
 import com.rf.core.driver.website.RFWebsiteDriver;
 import com.rf.core.website.constants.TestConstants;
 
@@ -301,8 +303,10 @@ public class StoreFrontHomePage extends StoreFrontRFWebsiteBasePage {
 
 	public void enterEmailAddress(String emailAddress){ 
 		driver.pauseExecutionFor(2000);
-		driver.type(By.id("email-account"), emailAddress+"\t");
-		driver.click(By.id("new-password-account"));
+		driver.type(By.id("email-account"), emailAddress);
+		driver.pauseExecutionFor(2000);
+		driver.findElement(By.id("email-account")).sendKeys(Keys.TAB);
+//		driver.click(By.id("new-password-account"));
 		logger.info("email Address of the user is "+emailAddress);
 		driver.waitForSpinImageToDisappear();
 	}
@@ -499,7 +503,9 @@ public class StoreFrontHomePage extends StoreFrontRFWebsiteBasePage {
 
 	public void enterCardNumber(String cardNumber){
 		driver.waitForElementPresent(By.id("card-nr"));
-		driver.type(By.id("card-nr"),cardNumber+"\t");
+		driver.type(By.id("card-nr"),cardNumber);
+		driver.pauseExecutionFor(1000);
+		driver.findElement(By.id("card-nr")).sendKeys(Keys.TAB);
 		logger.info("card number entered as "+cardNumber);
 	}
 
@@ -545,8 +551,10 @@ public class StoreFrontHomePage extends StoreFrontRFWebsiteBasePage {
 	}
 
 	public void enterSocialInsuranceNumber(String sin) throws InterruptedException{
-		driver.type(By.id("S-S-N"),sin+"\t");
+		driver.type(By.id("S-S-N"),sin);
+		driver.findElement(By.id("name-on-card")).click();
 		logger.info("Social Insurance Number is "+sin);
+
 	}
 
 	public void enterNameAsItAppearsOnCard(String nameOnCard){
@@ -641,7 +649,7 @@ public class StoreFrontHomePage extends StoreFrontRFWebsiteBasePage {
 	}
 
 	public void clickOnConfirmAutomaticPayment() throws InterruptedException{
-		//		driver.waitForElementPresent(By.id("enroll"));
+		driver.waitForElementPresent(By.id("enroll"));
 		driver.click(By.id("enroll"));
 		logger.info("Automatic payment confirmation button clicked");
 		driver.waitForLoadingImageToDisappear();
@@ -817,6 +825,7 @@ public class StoreFrontHomePage extends StoreFrontRFWebsiteBasePage {
 	public void enterUserInformationForEnrollment(String firstName,String lastName,String password,String addressLine1,String city,String state,String postalCode,String phoneNumber){
 		enterFirstName(firstName);
 		enterLastName(lastName);
+		enterEmailAddress(firstName+TestConstants.EMAIL_ADDRESS_SUFFIX);
 		enterPassword(password);
 		enterConfirmPassword(password);
 		enterAddressLine1(addressLine1);
@@ -824,7 +833,7 @@ public class StoreFrontHomePage extends StoreFrontRFWebsiteBasePage {
 		selectProvince(state);
 		enterPostalCode(postalCode);
 		enterPhoneNumber(phoneNumber);
-		enterEmailAddress(firstName+TestConstants.EMAIL_ADDRESS_SUFFIX);
+		
 	}
 
 	//method overloaded,no need for enrollment type if kit is portfolio
@@ -1806,16 +1815,14 @@ public class StoreFrontHomePage extends StoreFrontRFWebsiteBasePage {
 
 	public void enterInvalidPassword(String password){
 		driver.waitForElementPresent(By.id("new-password-account"));
-		driver.clear(By.id("new-password-account"));
-		driver.type(By.id("new-password-account"),password+"\t");
-		driver.clear(By.id("new-password-account"));
+		driver.type(By.id("new-password-account"),password);
+		driver.findElement(By.id("address-1")).click();
 	}
 
 	public void enterInvalidConfirmPassword(String password){
 		driver.waitForElementPresent(By.id("new-password-account2"));
-		driver.clear(By.id("new-password-account2"));
-		driver.type(By.id("new-password-account2"),password+"\t");
-		driver.clear(By.id("new-password-account2"));
+		driver.type(By.id("new-password-account2"),password);
+		driver.findElement(By.id("address-1")).click();
 	}
 
 	public String getErrorMessageForInvalidSponser(){
@@ -4146,16 +4153,17 @@ public class StoreFrontHomePage extends StoreFrontRFWebsiteBasePage {
 
 	public void clickOnNotYourCountryLink(){
 		driver.quickWaitForElementPresent(By.id("notYourCountryId"));
-		driver.click(By.id("notYourCountryId"));
+		((JavascriptExecutor)RFWebsiteDriver.driver).executeScript("arguments[0].click();", driver.findElement(By.xpath("//a[@id='notYourCountryId']")));
 		driver.waitForLoadingImageToDisappear();
 		try{
 			driver.turnOffImplicitWaits();
-			driver.isElementPresent(By.xpath("//div[@id='notYourCountryPopupId']"));
+			driver.isElementPresent(By.xpath("//div[@id='notYourCountryPopupId'][contains(@style,'block')]"));
 			logger.info("Not Your Country Popup is Present");
 		}
 		catch(Exception e){
-			logger.info("Not Your Country Popup is not Present");
+			logger.info("Not Your Country Popup is not Present..try again");			
 		}
+		driver.turnOnImplicitWaits();
 	}
 
 	public String getCountryNameFromNotYourCountryPopUp(){

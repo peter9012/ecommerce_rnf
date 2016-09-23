@@ -225,20 +225,6 @@ public class UINavigationTest extends RFBrandRefreshWebsiteBaseTest{
 		s_assert.assertAll();
 	}
 
-	//Log in as an existen consultant
-	@Test
-	public void testLoginAsExistingConsultant(){
-		RFL_DB = driver.getDBNameRFL();
-		List<Map<String, Object>> randomConsultantList =  null;
-		String consultantEmailID = null;
-
-		randomConsultantList = DBUtil.performDatabaseQuery(DBQueries_RFL.GET_RANDOM_ACTIVE_CONSULTANT_EMAILID,RFL_DB);
-		consultantEmailID = (String) getValueFromQueryResult(randomConsultantList, "EmailAddress");
-		storeFrontBrandRefreshHomePage.loginAsConsultant(consultantEmailID,password);
-		s_assert.assertTrue(storeFrontBrandRefreshHomePage.verifyUserSuccessfullyLoggedIn(),"consultant is not logged in successfully");
-		s_assert.assertAll();
-	}
-
 	//Log in as valid PC customer
 	@Test
 	public void testLoginAsExistingPC(){
@@ -246,9 +232,19 @@ public class UINavigationTest extends RFBrandRefreshWebsiteBaseTest{
 		List<Map<String, Object>> randomPCList =  null;
 		String pcEmailID = null;
 
-		randomPCList = DBUtil.performDatabaseQuery(DBQueries_RFL.GET_RANDOM_ACTIVE_PC_EMAILID,RFL_DB);
-		pcEmailID = (String) getValueFromQueryResult(randomPCList, "EmailAddress");
-		storeFrontBrandRefreshHomePage.loginAsPCUser(pcEmailID,password);
+		while(true){
+			randomPCList = DBUtil.performDatabaseQuery(DBQueries_RFL.GET_RANDOM_ACTIVE_PC_EMAILID,RFL_DB);
+			pcEmailID = (String) getValueFromQueryResult(randomPCList, "EmailAddress");
+			storeFrontBrandRefreshHomePage.loginAsPCUser(pcEmailID,password);
+			boolean isLoginError = driver.getCurrentUrl().contains("error");
+			if(isLoginError){
+				logger.info("Login error for the user "+pcEmailID);
+				driver.get(driver.getURL()+"/"+driver.getCountry());
+			}
+			else
+				break;
+		}
+
 		s_assert.assertTrue(storeFrontBrandRefreshHomePage.verifyUserSuccessfullyLoggedIn(),"PC user is not logged in successfully");
 		s_assert.assertAll();
 	}
@@ -259,10 +255,18 @@ public class UINavigationTest extends RFBrandRefreshWebsiteBaseTest{
 		RFL_DB = driver.getDBNameRFL();
 		List<Map<String, Object>> randomRCList =  null;
 		String rcEmailID = null;
-
-		randomRCList = DBUtil.performDatabaseQuery(DBQueries_RFL.GET_RANDOM_ACTIVE_RC_EMAILID,RFL_DB);
-		rcEmailID = (String) getValueFromQueryResult(randomRCList, "EmailAddress");
-		storeFrontBrandRefreshHomePage.loginAsPCUser(rcEmailID,password);
+		while(true){
+			randomRCList = DBUtil.performDatabaseQuery(DBQueries_RFL.GET_RANDOM_ACTIVE_RC_EMAILID,RFL_DB);
+			rcEmailID = (String) getValueFromQueryResult(randomRCList, "EmailAddress");
+			storeFrontBrandRefreshHomePage.loginAsPCUser(rcEmailID,password);
+			boolean isLoginError = driver.getCurrentUrl().contains("error");
+			if(isLoginError){
+				logger.info("Login error for the user "+rcEmailID);
+				driver.get(driver.getURL()+"/"+driver.getCountry());
+			}
+			else
+				break;
+		}
 		s_assert.assertTrue(storeFrontBrandRefreshHomePage.verifyUserSuccessfullyLoggedIn(),"RC user is not logged in successfully");
 		s_assert.assertAll();
 	}
@@ -321,44 +325,52 @@ public class UINavigationTest extends RFBrandRefreshWebsiteBaseTest{
 	public void testLogoutWithAValidUser(){
 		RFL_DB = driver.getDBNameRFL();
 		String whyRF = "Why R+F";
-		//		String programsAndIncentives = "Programs and Incentives";
-		//		String incomeIllustrator = "Income Illustrator";
-		//		String events = "Events";
-		//		String meetOurCommunity = "Meet Our Community";
-		//		String enrollNow = "Enroll Now";
-		//		String gettingStarted = "Getting Started";
-		//		String businessKits = "Business Kits";
-		//		String redefineYourFuture = "Redefine Your Future";
+		//  String programsAndIncentives = "Programs and Incentives";
+		//  String incomeIllustrator = "Income Illustrator";
+		//  String events = "Events";
+		//  String meetOurCommunity = "Meet Our Community";
+		//  String enrollNow = "Enroll Now";
+		//  String gettingStarted = "Getting Started";
+		//  String businessKits = "Business Kits";
+		//  String redefineYourFuture = "Redefine Your Future";
 		String consultantEmailID = null;
 
 		List<Map<String, Object>> randomConsultantList =  null;
-
-		randomConsultantList = DBUtil.performDatabaseQuery(DBQueries_RFL.GET_RANDOM_ACTIVE_CONSULTANT_EMAILID,RFL_DB);
-		consultantEmailID = (String) getValueFromQueryResult(randomConsultantList, "EmailAddress");
-		storeFrontBrandRefreshHomePage.loginAsConsultant(consultantEmailID,password);
+		while(true){
+			randomConsultantList = DBUtil.performDatabaseQuery(DBQueries_RFL.GET_RANDOM_ACTIVE_CONSULTANT_EMAILID,RFL_DB);
+			consultantEmailID = (String) getValueFromQueryResult(randomConsultantList, "EmailAddress");
+			storeFrontBrandRefreshHomePage.loginAsConsultant(consultantEmailID,password);
+			boolean isLoginError = driver.getCurrentUrl().contains("error");
+			if(isLoginError){
+				logger.info("Login error for the user "+consultantEmailID);
+				driver.get(driver.getURL()+"/"+driver.getCountry());
+			}
+			else
+				break;
+		}
 		s_assert.assertTrue(storeFrontBrandRefreshHomePage.verifyUserSuccessfullyLoggedIn(),"consultant is not logged in successfully");
 		logout();
 		s_assert.assertTrue(storeFrontBrandRefreshHomePage.isForgotPasswordLinkPresent(),"User is not logout successfully");
-		//		driver.getURL();
-		//		storeFrontBrandRefreshHomePage.clickBeAConsultantBtn();
-		//		s_assert.assertTrue(storeFrontBrandRefreshHomePage.isSublinkOfBusinessSystemPresent(whyRF), "Why R+F link is not present under business system");
-		//		s_assert.assertTrue(storeFrontBrandRefreshHomePage.isSublinkOfBusinessSystemPresent(programsAndIncentives), "Programs And Incentives link is not present under business system");
-		//		s_assert.assertTrue(storeFrontBrandRefreshHomePage.isSublinkOfBusinessSystemPresent(incomeIllustrator), "Income Illustrator link is not present under business system");
-		//		s_assert.assertTrue(storeFrontBrandRefreshHomePage.isSublinkOfBusinessSystemPresent(events), "Events link is not present under business system");
-		//		s_assert.assertTrue(storeFrontBrandRefreshHomePage.isSublinkOfBusinessSystemPresent(meetOurCommunity), "Meet Our Community link is not present under business system");
-		//		s_assert.assertTrue(storeFrontBrandRefreshHomePage.isSublinkOfBusinessSystemPresent(enrollNow), "enroll Now link is not present under business system");
-		//		storeFrontBrandRefreshHomePage.clickSublinkOfBusinessSystem(whyRF);
-		//		s_assert.assertTrue(storeFrontBrandRefreshHomePage.isSublinkOfBusinessSystemPresent(gettingStarted), "Getting Started link is not present under Why R+F for business system");
-		//		s_assert.assertTrue(storeFrontBrandRefreshHomePage.isSublinkOfBusinessSystemPresent(businessKits), "Business Kits link is not present under Why R+F for business system");
-		//		s_assert.assertTrue(storeFrontBrandRefreshHomePage.isSublinkOfBusinessSystemPresent(redefineYourFuture), "Redefine Your Future link is not present under Why R+F for business system");
-		//		s_assert.assertTrue(storeFrontBrandRefreshHomePage.isSublinkOfBusinessSystemPresent(enrollNow), "Enroll Now link is not present under Why R+F for business system");
-		//		s_assert.assertTrue(storeFrontBrandRefreshHomePage.getSelectedHighlightLinkName().contains(gettingStarted), "Expected selected and highlight link name is: "+gettingStarted+" Actual on UI: "+storeFrontBrandRefreshHomePage.getSelectedHighlightLinkName());
-		//		storeFrontBrandRefreshHomePage.clickSublinkOfBusinessSystem(businessKits);
-		//		s_assert.assertTrue(storeFrontBrandRefreshHomePage.getSelectedHighlightLinkName().contains(businessKits), "Expected selected and highlight link name is: "+businessKits+" Actual on UI: "+storeFrontBrandRefreshHomePage.getSelectedHighlightLinkName());
-		//		s_assert.assertTrue(storeFrontBrandRefreshHomePage.getCurrentURL().toLowerCase().contains("business/kits"), "Expected url contains is: business/kits but Actual on UI is "+storeFrontBrandRefreshHomePage.getCurrentURL().toLowerCase());
-		//		storeFrontBrandRefreshHomePage.clickSublinkOfBusinessSystem(gettingStarted);
-		//		storeFrontBrandRefreshHomePage.clickClickhereLink();
-		//		s_assert.assertTrue(storeFrontBrandRefreshHomePage.isClickHereLinkRedirectinToAppropriatePage("PP_11th_Edition.pdf"), "Click here link of business system is not redirecting to PP_11th_Edition.pdf page");
+		//  driver.getURL();
+		//  storeFrontBrandRefreshHomePage.clickBeAConsultantBtn();
+		//  s_assert.assertTrue(storeFrontBrandRefreshHomePage.isSublinkOfBusinessSystemPresent(whyRF), "Why R+F link is not present under business system");
+		//  s_assert.assertTrue(storeFrontBrandRefreshHomePage.isSublinkOfBusinessSystemPresent(programsAndIncentives), "Programs And Incentives link is not present under business system");
+		//  s_assert.assertTrue(storeFrontBrandRefreshHomePage.isSublinkOfBusinessSystemPresent(incomeIllustrator), "Income Illustrator link is not present under business system");
+		//  s_assert.assertTrue(storeFrontBrandRefreshHomePage.isSublinkOfBusinessSystemPresent(events), "Events link is not present under business system");
+		//  s_assert.assertTrue(storeFrontBrandRefreshHomePage.isSublinkOfBusinessSystemPresent(meetOurCommunity), "Meet Our Community link is not present under business system");
+		//  s_assert.assertTrue(storeFrontBrandRefreshHomePage.isSublinkOfBusinessSystemPresent(enrollNow), "enroll Now link is not present under business system");
+		//  storeFrontBrandRefreshHomePage.clickSublinkOfBusinessSystem(whyRF);
+		//  s_assert.assertTrue(storeFrontBrandRefreshHomePage.isSublinkOfBusinessSystemPresent(gettingStarted), "Getting Started link is not present under Why R+F for business system");
+		//  s_assert.assertTrue(storeFrontBrandRefreshHomePage.isSublinkOfBusinessSystemPresent(businessKits), "Business Kits link is not present under Why R+F for business system");
+		//  s_assert.assertTrue(storeFrontBrandRefreshHomePage.isSublinkOfBusinessSystemPresent(redefineYourFuture), "Redefine Your Future link is not present under Why R+F for business system");
+		//  s_assert.assertTrue(storeFrontBrandRefreshHomePage.isSublinkOfBusinessSystemPresent(enrollNow), "Enroll Now link is not present under Why R+F for business system");
+		//  s_assert.assertTrue(storeFrontBrandRefreshHomePage.getSelectedHighlightLinkName().contains(gettingStarted), "Expected selected and highlight link name is: "+gettingStarted+" Actual on UI: "+storeFrontBrandRefreshHomePage.getSelectedHighlightLinkName());
+		//  storeFrontBrandRefreshHomePage.clickSublinkOfBusinessSystem(businessKits);
+		//  s_assert.assertTrue(storeFrontBrandRefreshHomePage.getSelectedHighlightLinkName().contains(businessKits), "Expected selected and highlight link name is: "+businessKits+" Actual on UI: "+storeFrontBrandRefreshHomePage.getSelectedHighlightLinkName());
+		//  s_assert.assertTrue(storeFrontBrandRefreshHomePage.getCurrentURL().toLowerCase().contains("business/kits"), "Expected url contains is: business/kits but Actual on UI is "+storeFrontBrandRefreshHomePage.getCurrentURL().toLowerCase());
+		//  storeFrontBrandRefreshHomePage.clickSublinkOfBusinessSystem(gettingStarted);
+		//  storeFrontBrandRefreshHomePage.clickClickhereLink();
+		//  s_assert.assertTrue(storeFrontBrandRefreshHomePage.isClickHereLinkRedirectinToAppropriatePage("PP_11th_Edition.pdf"), "Click here link of business system is not redirecting to PP_11th_Edition.pdf page");
 		s_assert.assertAll();
 	}
 

@@ -119,7 +119,7 @@ public class StoreFrontBrandRefreshHomePage extends StoreFrontBrandRefreshWebsit
 	private static final By ENTER_LOGIN_BTN_LOC = By.id("loginButton");
 	private static final By SUBSCRIBE_TO_PULSE_TOGGLE_BTN_LOC = By.xpath("//input[@id='Account_EnrollPulse']/following::div[1]//div[@class='ibutton-handle-middle']");
 	private static final By ENROLL_IN_CRP_TOGGLE_BTN_LOC = By.xpath("//input[@id='Account_EnrollCRP']/following::div[1]//div[@class='ibutton-handle-middle']");
-	private static final By RODAN_AND_FIELDS_IMG_LOC = By.xpath("//div[@id='Logo']//img");
+	private static final By RODAN_AND_FIELDS_IMG_LOC = By.xpath("//div[@id='logo']//img");
 	private static final By LOGOUT_LOC = By.xpath("//a[text()='Log Out']");
 	private static final By EXISTING_CONSULTANT_LOC = By.xpath("//div[@id='ExistentConsultant']/p[contains(text(),'already have a Consultant account')]");
 	private static final By BECOME_A_CONSULTANT_MENU = By.xpath("//a[@href='/Pages/BusinessSystem/WhyRF/GettingStarted']");
@@ -1536,7 +1536,7 @@ public class StoreFrontBrandRefreshHomePage extends StoreFrontBrandRefreshWebsit
 
 	public boolean validatePasswordChangeAndEmailSent(){
 		Alert alt=driver.switchTo().alert();
-		boolean status= alt.getText().contains("resetting your password");
+		boolean status= alt.getText().contains("An email has been sent to your email address with a link for resetting your password");
 		alt.accept();
 		return status;
 	}
@@ -1869,7 +1869,7 @@ public class StoreFrontBrandRefreshHomePage extends StoreFrontBrandRefreshWebsit
 		logger.info("email address entered as: "+emailAddress);
 		driver.type(ACCOUNT_PASSWORD_LOC, "");
 		logger.info("password entered as: "+"");
-		return driver.isElementPresent(EXISTING_RC_LOC);
+		return driver.findElement(EXISTING_RC_LOC).isDisplayed();
 	}
 
 	public void enterSpecialCharacterInWebSitePrefixField(String prefixField){
@@ -2024,6 +2024,16 @@ public class StoreFrontBrandRefreshHomePage extends StoreFrontBrandRefreshWebsit
 	public boolean isValidationMessagePresentForPrefixField() {
 		driver.waitForElementPresent(By.xpath("//div[@id='completeAccountForm']//label[contains(text(),'Please enter a name for you PWS site')]"));
 		return driver.isElementPresent(By.xpath("//div[@id='completeAccountForm']//label[contains(text(),'Please enter a name for you PWS site')]"));
+	}
+
+	public boolean isLoginButtonPresent(){
+		driver.waitForElementPresent(By.id("loginButton"));
+		return driver.isElementPresent(By.id("loginButton"));
+	}
+
+	public boolean isSignInButtonPresent(){
+		driver.waitForElementPresent(By.xpath("//a[contains(@id,'lnkLogin')]"));
+		return driver.isElementPresent(By.xpath("//a[contains(@id,'lnkLogin')]"));
 	}
 
 }

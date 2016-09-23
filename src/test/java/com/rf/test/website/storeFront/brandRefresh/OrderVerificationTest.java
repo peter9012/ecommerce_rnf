@@ -22,9 +22,9 @@ public class OrderVerificationTest extends RFBrandRefreshWebsiteBaseTest{
 
 	private StoreFrontBrandRefreshHomePage storeFrontBrandRefreshHomePage;
 	private StoreFrontBrandRefreshConsultantPage storeFrontBrandRefreshConsultantPage;
-	
+
 	String RFL_DB = null;
-	
+
 	public OrderVerificationTest() {
 		storeFrontBrandRefreshHomePage = new StoreFrontBrandRefreshHomePage(driver);
 		storeFrontBrandRefreshConsultantPage = new StoreFrontBrandRefreshConsultantPage(driver);	
@@ -48,7 +48,7 @@ public class OrderVerificationTest extends RFBrandRefreshWebsiteBaseTest{
 		String billingProfileLastName = TestConstantsRFL.SHIPPING_PROFILE_LAST_NAME+randomNumber;
 		List<Map<String, Object>> randomPCList =  null;
 		String pcEmailID = null;
-		
+
 		randomPCList = DBUtil.performDatabaseQuery(DBQueries_RFL.GET_RANDOM_ACTIVE_PC_EMAILID,RFL_DB);
 		pcEmailID = (String) getValueFromQueryResult(randomPCList, "EmailAddress");
 		String regimen = TestConstantsRFL.REGIMEN_NAME_REVERSE;
@@ -62,9 +62,9 @@ public class OrderVerificationTest extends RFBrandRefreshWebsiteBaseTest{
 		storeFrontBrandRefreshHomePage.clickChangeBillingInformationBtn();
 		storeFrontBrandRefreshHomePage.enterBillingInfo(billingName, billingProfileFirstName, billingProfileLastName, nameOnCard, cardNumber, expMonth, expYear, addressLine1, postalCode, phnNumber);
 		storeFrontBrandRefreshHomePage.clickUseThisBillingInformationBtn();
-//		storeFrontBrandRefreshHomePage.clickUseAsEnteredBtn();
+		//		storeFrontBrandRefreshHomePage.clickUseAsEnteredBtn();
 		storeFrontBrandRefreshHomePage.clickCompleteOrderBtn();
-//		storeFrontBrandRefreshHomePage.clickOKBtnOnPopup();
+		//		storeFrontBrandRefreshHomePage.clickOKBtnOnPopup();
 		s_assert.assertTrue(storeFrontBrandRefreshHomePage.isThankYouTextPresentAfterOrderPlaced(), "Adhoc order not placed successfully from corp site.");
 		s_assert.assertAll();
 	}
@@ -88,16 +88,17 @@ public class OrderVerificationTest extends RFBrandRefreshWebsiteBaseTest{
 		String billingProfileLastName = TestConstantsRFL.SHIPPING_PROFILE_LAST_NAME+randomNumber;
 		List<Map<String, Object>> randomRCList =  null;
 		String rcEmailID = null;
-		
+
 		randomRCList = DBUtil.performDatabaseQuery(DBQueries_RFL.GET_RANDOM_ACTIVE_RC_EMAILID,RFL_DB);
 		rcEmailID = (String) getValueFromQueryResult(randomRCList, "EmailAddress");
-//		storeFrontBrandRefreshHomePage.clickShopSkinCareHeader();
-//		storeFrontBrandRefreshHomePage.selectRegimen(regimen);
+		//  storeFrontBrandRefreshHomePage.clickShopSkinCareHeader();
+		//  storeFrontBrandRefreshHomePage.selectRegimen(regimen);
 		storeFrontBrandRefreshHomePage.mouseHoverShopSkinCareAndClickLink(regimen);
 		storeFrontBrandRefreshHomePage.clickAddToCartBtn();
 		storeFrontBrandRefreshHomePage.clickCheckoutBtn();
 		storeFrontBrandRefreshHomePage.loginAsUserOnCheckoutPage(rcEmailID, password);
-		s_assert.assertTrue(storeFrontBrandRefreshHomePage.verifyUserSuccessfullyLoggedInOnCorpSite(), "RC user not logged in successfully");
+		s_assert.assertFalse(storeFrontBrandRefreshHomePage.isSignInButtonPresent(), "RC user not logged in successfully");
+		s_assert.assertTrue(driver.getCurrentUrl().toLowerCase().contains("consultantlocator"), "RC user not redirected to consultant locator after login");
 		storeFrontBrandRefreshHomePage.clickContinueWithoutConsultantLink();
 		storeFrontBrandRefreshHomePage.clickContinueBtn();
 		storeFrontBrandRefreshHomePage.clickChangeBillingInformationBtn();
@@ -127,14 +128,14 @@ public class OrderVerificationTest extends RFBrandRefreshWebsiteBaseTest{
 		String billingProfileLastName = TestConstantsRFL.SHIPPING_PROFILE_LAST_NAME+randomNumber;
 		List<Map<String, Object>> randomConsultantList =  null;
 		String consultantEmailID = null;
-		
+
 		randomConsultantList = DBUtil.performDatabaseQuery(DBQueries_RFL.GET_RANDOM_ACTIVE_CONSULTANT_EMAILID,RFL_DB);
 		consultantEmailID = (String) getValueFromQueryResult(randomConsultantList, "EmailAddress");
-		
+
 		storeFrontBrandRefreshConsultantPage = storeFrontBrandRefreshHomePage.loginAsConsultant(consultantEmailID,password);
 		s_assert.assertTrue(storeFrontBrandRefreshConsultantPage.verifyUserSuccessfullyLoggedIn(),"consultant is not logged in successfully");
-//		storeFrontLegacyConsultantPage.clickShopSkinCareBtn();
-//		storeFrontLegacyConsultantPage.selectConsultantOnlyProductsRegimen();
+		//		storeFrontLegacyConsultantPage.clickShopSkinCareBtn();
+		//		storeFrontLegacyConsultantPage.selectConsultantOnlyProductsRegimen();
 		storeFrontBrandRefreshConsultantPage.mouseHoverShopSkinCareAndClickLink("CONSULTANT-ONLY PRODUCTS");
 		s_assert.assertTrue(storeFrontBrandRefreshConsultantPage.getCurrentURL().toLowerCase().contains("consultantsonly"), "Expected regimen name is: consultantsonly Actual on UI is "+storeFrontBrandRefreshHomePage.getCurrentURL().toLowerCase());
 		storeFrontBrandRefreshConsultantPage.clickConsultantOnlyProduct(TestConstantsRFL.CONSULTANT_ONLY_BUSINESS_PROMOTION);

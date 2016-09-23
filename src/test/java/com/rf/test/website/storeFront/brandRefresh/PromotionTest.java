@@ -68,6 +68,7 @@ public class PromotionTest extends RFBrandRefreshWebsiteBaseTest{
 		storeFrontBrandRefreshHomePage.clickCompleteOrderBtn();
 		s_assert.assertTrue(storeFrontBrandRefreshHomePage.isThankYouTextPresentAfterOrderPlaced(), "Order is not placed successfully");
 		s_assert.assertTrue(storeFrontBrandRefreshHomePage.getOrderConfirmationTextMsgAfterOrderPlaced().contains("You will receive an email confirmation shortly"), "Order confirmation message does not contains email confirmation");
+		storeFrontBrandRefreshHomePage.clickOnRodanAndFieldsLogo();
 		logout();
 		s_assert.assertAll();
 	}
@@ -110,6 +111,7 @@ public class PromotionTest extends RFBrandRefreshWebsiteBaseTest{
 		storeFrontBrandRefreshConsultantPage.clickCompleteOrderBtn();
 		s_assert.assertTrue(storeFrontBrandRefreshConsultantPage.isThankYouTextPresentAfterOrderPlaced(), "Order is not placed successfully");
 		s_assert.assertTrue(storeFrontBrandRefreshConsultantPage.getOrderConfirmationTextMsgAfterOrderPlaced().contains("You will receive an email confirmation shortly"), "Order confirmation message does not contains email confirmation");
+		storeFrontBrandRefreshHomePage.clickOnRodanAndFieldsLogo();
 		logout();
 		s_assert.assertAll();
 	}
@@ -152,14 +154,14 @@ public class PromotionTest extends RFBrandRefreshWebsiteBaseTest{
 		storeFrontBrandRefreshConsultantPage.clickCompleteOrderBtn();
 		s_assert.assertTrue(storeFrontBrandRefreshConsultantPage.isThankYouTextPresentAfterOrderPlaced(), "Order is not placed successfully");
 		s_assert.assertTrue(storeFrontBrandRefreshConsultantPage.getOrderConfirmationTextMsgAfterOrderPlaced().contains("You will receive an email confirmation shortly"), "Order confirmation message does not contains email confirmation");
+		storeFrontBrandRefreshHomePage.clickOnRodanAndFieldsLogo();
 		logout();
 		s_assert.assertAll();
 	}
 
 	//The Events section Upcoming events is displayed
 	@Test(enabled=false)
-	public void testEventsSectionUpcomingEventsIsDisplayed(){
-		
+	public void testEventsSectionUpcomingEventsIsDisplayed(){		
 		storeFrontBrandRefreshHomePage.clickBeAConsultantBtn();
 		//verify the sub-menu title under the title business system?
 		s_assert.assertTrue(storeFrontBrandRefreshHomePage.validateEnrollNowLinkPresent(),"Enroll Now Link is not present");

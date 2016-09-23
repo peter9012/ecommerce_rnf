@@ -568,7 +568,7 @@ public class ExpressEnrollmentValidationTest extends RFWebsiteBaseTest{
 		storeFrontHomePage.searchCID();
 		storeFrontHomePage.mouseHoverSponsorDataAndClickContinue();
 		storeFrontHomePage.enterUserInformationForEnrollment(kitName, regimenName, enrollmentType, TestConstants.FIRST_NAME+randomNum, TestConstants.LAST_NAME+randomNum, password, addressLine1, city,state, postalCode, phoneNumber);
-		
+
 		storeFrontHomePage.clickNextButton();
 		////storeFrontHomePage.acceptTheVerifyYourShippingAddressPop();  
 		storeFrontHomePage.enterCardNumber(TestConstants.CARD_NUMBER);
@@ -1503,6 +1503,7 @@ public class ExpressEnrollmentValidationTest extends RFWebsiteBaseTest{
 		RFO_DB = driver.getDBNameRFO();	
 		int randomNum = CommonUtils.getRandomNum(10000, 1000000);
 		List<Map<String, Object>> randomConsultantList =  null;
+		List<Map<String, Object>> randomConsultantEmailList =  null;
 		String consultantEmailID = null;
 		String accountID = null;
 		String lastName = "lN";
@@ -1513,9 +1514,12 @@ public class ExpressEnrollmentValidationTest extends RFWebsiteBaseTest{
 		String newBillingProfileName = TestConstants.NEW_BILLING_PROFILE_NAME_US+randomNum;
 		while(true){
 			randomConsultantList = DBUtil.performDatabaseQuery(DBQueries_RFO.callQueryWithArguement(DBQueries_RFO.GET_RANDOM_ACTIVE_CONSULTANT_WITH_ORDERS_AND_AUTOSHIPS_RFO,countryId),RFO_DB);
-			consultantEmailID = (String) getValueFromQueryResult(randomConsultantList, "UserName");		
+			//consultantEmailID = (String) getValueFromQueryResult(randomConsultantList, "UserName");		
 			accountID = String.valueOf(getValueFromQueryResult(randomConsultantList, "AccountID"));
+			randomConsultantEmailList = DBUtil.performDatabaseQuery(DBQueries_RFO.callQueryWithArguement(DBQueries_RFO.GET_EMAIL_ID_FROM_ACCOUNT_ID,accountID),RFO_DB);
+			consultantEmailID = String.valueOf(getValueFromQueryResult(randomConsultantEmailList, "EmailAddress"));
 			logger.info("Account Id of the user is "+accountID);
+			logger.info("consultantEmailID of the user is "+consultantEmailID);
 			storeFrontConsultantPage = storeFrontHomePage.loginAsConsultant(consultantEmailID, password);
 			boolean isLoginError = driver.getCurrentUrl().contains("error");
 			if(isLoginError){

@@ -162,12 +162,17 @@ public class StoreFrontRFWebsiteBasePage extends RFBasePage{
 	public void selectProductAndProceedToBuy() throws InterruptedException{
 		driver.pauseExecutionFor(2000);
 		applyPriceFilterHighToLow();
+		//highlightElement(driver.findElement(By.xpath("//div[@id='main-content']/descendant::button[contains(text(),'ADD TO BAG')][1]")));
 		driver.waitForElementPresent(By.xpath("//div[@id='main-content']/descendant::button[contains(text(),'ADD TO BAG')][1]"));
-		if(driver.findElement(By.xpath("//div[@id='main-content']/descendant::button[contains(text(),'ADD TO BAG')][1]")).isEnabled()==true)
-			driver.click(By.xpath("//div[@id='main-content']/descendant::button[contains(text(),'ADD TO BAG')][1]"));
-		else
-			driver.click(By.xpath("//div[@id='main-content']/descendant::button[contains(text(),'ADD TO BAG')][2]"));
+		if(driver.findElement(By.xpath("//div[@id='main-content']/descendant::button[contains(text(),'ADD TO BAG')][1]")).isEnabled()==true){
+			driver.clickByJS(RFWebsiteDriver.driver, driver.findElement(By.xpath("//div[@id='main-content']/descendant::button[contains(text(),'ADD TO BAG')][1]")));
+			//driver.click(By.xpath("//div[@id='main-content']/descendant::button[contains(text(),'ADD TO BAG')][1]"));
+		}
+		else{
+			driver.clickByJS(RFWebsiteDriver.driver, driver.findElement(By.xpath("//div[@id='main-content']/descendant::button[contains(text(),'ADD TO BAG')][2]")));
+		}
 		logger.info("Add To Bag button clicked");
+		System.out.println("Add To Bag button clicked");
 		driver.waitForLoadingImageToDisappear();
 		driver.waitForPageLoad();
 	}
@@ -357,7 +362,8 @@ public class StoreFrontRFWebsiteBasePage extends RFBasePage{
 		driver.click(By.xpath("//input[@id='become-pc']/.."));
 		logger.info("check box for PC user checked");
 		driver.click(By.xpath("//input[@id='next-button']"));		
-		logger.info("Create New Account button clicked");		
+		logger.info("Create New Account button clicked");
+		driver.waitForLoadingImageToDisappear();
 	}
 
 	public void enterNewPCDetails(String firstName,String lastName,String password, String emailID) throws InterruptedException{
@@ -1479,11 +1485,13 @@ public class StoreFrontRFWebsiteBasePage extends RFBasePage{
 
 	public void applyPriceFilterHighToLow() throws InterruptedException{
 		//driver.waitForElementPresent(By.xpath("//select[@id='sortOptions']"));
+		//highlightElement(driver.findElement(By.xpath("//select[@id='sortOptions']")));
 		driver.click(By.xpath("//select[@id='sortOptions']"));
 		driver.click(By.xpath("//select[@id='sortOptions']/option[2]"));
 		logger.info("filter done for high to low price");
 		driver.waitForPageLoad();
 		driver.waitForLoadingImageToDisappear();
+		driver.pauseExecutionFor(2000);
 	}
 
 	public void deselectPriceFilter() throws InterruptedException{
@@ -1508,8 +1516,8 @@ public class StoreFrontRFWebsiteBasePage extends RFBasePage{
 				driver.click(By.xpath("//div[@id='left-shopping']/div[2]//a[contains(text(),'Continue')]")); 
 			}
 			catch(NoSuchElementException e2){
-				driver.quickWaitForElementPresent(By.xpath("//input[@value='ADD MORE ITEMS']"));
-				driver.click(By.xpath("//input[@value='ADD MORE ITEMS']")); 
+				driver.quickWaitForElementPresent(By.xpath("//*[@value='ADD MORE ITEMS']"));
+				driver.click(By.xpath("//*[@value='ADD MORE ITEMS']")); 
 			}
 
 		}

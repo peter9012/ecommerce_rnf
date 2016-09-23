@@ -651,7 +651,7 @@ public class BizPWSTest extends RFBrandRefreshWebsiteBaseTest{
 		storeFrontBrandRefreshHomePage.enterAccountInformation(ssnRandomNum1, ssnRandomNum2, ssnRandomNum3, firstName);
 		storeFrontBrandRefreshHomePage.enterSpecialCharacterInWebSitePrefixField(PWSSpclChars);
 		storeFrontBrandRefreshHomePage.clickCompleteAccountNextBtn();
-		 s_assert.assertTrue(storeFrontBrandRefreshHomePage.isValidationMessagePresentForPrefixField(),"WebSite Prefix Field accepts Special Character");
+		s_assert.assertTrue(storeFrontBrandRefreshHomePage.isValidationMessagePresentForPrefixField(),"WebSite Prefix Field accepts Special Character");
 		s_assert.assertAll();
 	}
 
@@ -712,7 +712,7 @@ public class BizPWSTest extends RFBrandRefreshWebsiteBaseTest{
 		String pwsBizBase = driver.getBizPWSURL();
 		String PWS = "https://rfqa"+pwsBizBase;
 		driver.get(PWS);
-		storeFrontBrandRefreshHomePage.clickEnrollNowBtnOnbizPWSPage();
+		storeFrontBrandRefreshHomePage.hoverOnBeAConsultantAndClickLinkOnEnrollMe();
 		storeFrontBrandRefreshHomePage.selectConsultantEnrollmentKitByPrice(kitName);
 		storeFrontBrandRefreshHomePage.selectRegimenForConsultant(regimen);
 		storeFrontBrandRefreshHomePage.clickNextBtnAfterSelectRegimen();
@@ -739,6 +739,7 @@ public class BizPWSTest extends RFBrandRefreshWebsiteBaseTest{
 		storeFrontBrandRefreshHomePage.enterAccountInformation(ssnRandomNum1, ssnRandomNum2, ssnRandomNum3, firstName);
 		s_assert.assertTrue(storeFrontBrandRefreshHomePage.isExistingConsultantPopupPresent(), "Existing consultant popup is not present");
 		storeFrontBrandRefreshHomePage.clickCancelEnrollmentBtn();
+		s_assert.assertTrue(storeFrontBrandRefreshHomePage.isLoginButtonPresent(),"User is not redirected to home page after clicked on cancel enrollment button");
 		driver.get(PWS);
 		storeFrontBrandRefreshHomePage.clickEnrollNowBtnOnbizPWSPage();
 		/*storeFrontLegacyHomePage.clickEnrollNowBtnAtWhyRFPage();*/
@@ -785,7 +786,7 @@ public class BizPWSTest extends RFBrandRefreshWebsiteBaseTest{
 		driver.get(PWS);
 
 		storeFrontBrandRefreshHomePage.hoverOnBeAConsultantAndClickLinkOnEnrollMe();
-		storeFrontBrandRefreshHomePage.selectEnrollmentType(kitName);
+		storeFrontBrandRefreshHomePage.selectEnrollmentKit(kitName);
 		storeFrontBrandRefreshHomePage.selectRegimenForConsultant(regimen);
 		storeFrontBrandRefreshHomePage.clickNextBtnAfterSelectRegimen();
 		storeFrontBrandRefreshHomePage.selectEnrollmentType(enrollemntType);

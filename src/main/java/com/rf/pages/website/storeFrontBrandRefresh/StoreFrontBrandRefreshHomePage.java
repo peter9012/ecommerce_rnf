@@ -119,7 +119,6 @@ public class StoreFrontBrandRefreshHomePage extends StoreFrontBrandRefreshWebsit
 	private static final By ENTER_LOGIN_BTN_LOC = By.id("loginButton");
 	private static final By SUBSCRIBE_TO_PULSE_TOGGLE_BTN_LOC = By.xpath("//input[@id='Account_EnrollPulse']/following::div[1]//div[@class='ibutton-handle-middle']");
 	private static final By ENROLL_IN_CRP_TOGGLE_BTN_LOC = By.xpath("//input[@id='Account_EnrollCRP']/following::div[1]//div[@class='ibutton-handle-middle']");
-	private static final By RODAN_AND_FIELDS_IMG_LOC = By.xpath("//div[@id='logo']//img");
 	private static final By LOGOUT_LOC = By.xpath("//a[text()='Log Out']");
 	private static final By EXISTING_CONSULTANT_LOC = By.xpath("//div[@id='ExistentConsultant']/p[contains(text(),'already have a Consultant account')]");
 	private static final By BECOME_A_CONSULTANT_MENU = By.xpath("//a[@href='/Pages/BusinessSystem/WhyRF/GettingStarted']");
@@ -249,7 +248,7 @@ public class StoreFrontBrandRefreshHomePage extends StoreFrontBrandRefreshWebsit
 	private static final By ORDER_TOTAL_AT_OVERVIEW_LOC = By.xpath("//span[contains(@id,'uxSubTotal')]");
 	private static final By PREFIX_SUGGESTIONS_LIST = By.xpath("//div[@class='websitePrefix']//li[contains(text(),'unavailable')]");
 	private static final By EDIT_ORDER_BTN_LOC = By.xpath("//a[text()='Edit Order']");
-	private static final By CHANGE_BILLING_INFO_LINK_ON_PWS = By.xpath("//a[contains(@id,'uxChangeAddressLink')]");
+	private static final By CHANGE_BILLING_INFO_LINK_ON_PWS = By.xpath("//a[contains(@id,'uxChangeBillingLink')]");
 	private static final By EDIT_ORDER_BILLING_DETAILS_UPDATE_MESSAGE = By.xpath("//p[contains(@class,'success Pad10')]");
 	private static final By WEBSITE_PREFIX_LOC = By.xpath("//input[@id='Account_EnrollSubdomain']");
 	private static final By INVALID_LOGIN = By.xpath("//p[@id='loginError']");
@@ -511,13 +510,6 @@ public class StoreFrontBrandRefreshHomePage extends StoreFrontBrandRefreshWebsit
 		driver.quickWaitForElementPresent(ENROLL_NOW_ON_WHY_RF_PAGE_LOC);
 		driver.click(ENROLL_NOW_ON_WHY_RF_PAGE_LOC);
 		logger.info("Enroll Now button on Why RF page is clicked");
-		driver.waitForPageLoad();
-	}
-
-	public void clickOnRodanAndFieldsLogo(){
-		driver.quickWaitForElementPresent(RODAN_AND_FIELDS_IMG_LOC);
-		driver.click(RODAN_AND_FIELDS_IMG_LOC);
-		logger.info("Rodan and Fields logo clicked"); 
 		driver.waitForPageLoad();
 	}
 
@@ -1566,8 +1558,13 @@ public class StoreFrontBrandRefreshHomePage extends StoreFrontBrandRefreshWebsit
 		driver.type(ZIP_CODE, postalCode+"\t");
 		driver.waitForStorfrontLegacyLoadingImageToDisappear();
 		logger.info("Postal code entered as: "+postalCode);
-		driver.waitForElementPresent(CITY_DD);
-		driver.click(CITY_DD);
+		driver.click(By.xpath("//input[contains(@id,'uxCityDropDown_Input')]"));
+		driver.waitForLoadingImageToDisappear();
+		driver.pauseExecutionFor(2000);
+		Actions actions = new Actions(RFWebsiteDriver.driver);
+		actions.moveToElement(driver.findElement(CITY_DD)).click().build().perform();
+		logger.info("City dropdown clicked");
+		driver.waitForElementPresent(FIRST_VALUE_OF_CITY_DD);
 		driver.click(FIRST_VALUE_OF_CITY_DD);
 		logger.info("First value of City selected");
 		driver.waitForElementPresent(COUNTRY_DD);
@@ -2034,6 +2031,18 @@ public class StoreFrontBrandRefreshHomePage extends StoreFrontBrandRefreshWebsit
 	public boolean isSignInButtonPresent(){
 		driver.waitForElementPresent(By.xpath("//a[contains(@id,'lnkLogin')]"));
 		return driver.isElementPresent(By.xpath("//a[contains(@id,'lnkLogin')]"));
+	}
+
+	public String getBillingAddressName(){
+		driver.findElement(By.xpath("//span[contains(@id,'lblBillingAddrName')]"));
+		String name =  driver.findElement(By.xpath("//span[contains(@id,'lblBillingAddrName')]")).getText();
+		logger.info("Billing profile name is "+name);
+		return name;
+	}
+
+	public boolean isPCEnrollmentCompletedSuccessfully(){
+		driver.waitForElementPresent(By.xpath("//h2[contains(text(),'Welcome to PC Perks')]"));
+		return driver.isElementPresent(By.xpath("//h2[contains(text(),'Welcome to PC Perks')]"));
 	}
 
 }

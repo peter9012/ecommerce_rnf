@@ -31,14 +31,14 @@ public class StoreFrontBrandRefreshWebsiteBasePage extends RFBasePage{
 	private static final By CHANGE_SHIPPING_INFO_LINK_ON_PWS = By.xpath("//a[contains(@id,'uxChangeShippingLink')]");
 	private static final By EDIT_ORDER_BTN_LOC = By.xpath("//p[@class='FormButtons']//a[text()='Edit Order']");
 	private static final By ORDER_NUMBER_AT_ORDER_HISTORY = By.xpath("//table[@class='CartTable']//tr[2]/td[1]");
-	private static final By ADD_TO_CART_BTN_FOR_EDIT_ORDER = By.xpath("//div[@class='FloatCol']/div[1]//a[text()='Add to Cart']");
+	private static final By ADD_TO_CART_BTN_FOR_EDIT_ORDER = By.xpath("//div[@class='FloatCol']/div[1]//a[text()='Add to Bag']");
 	private static final By EDIT_ORDER_UPDATE_MESSAGE = By.xpath("//p[@class='success']");
 	private static final By LOGOUT_BTN_LOC = By.xpath("//a[text()='Log Out']");
 	private static final By SHOP_SKINCARE_HEADER_LOC = By.xpath("//span[text()='Shop Skincare']");
 	private static final By ADD_TO_CART_BTN_LOC = By.xpath("//a[@id='addToCartButton']");
 	private static final By MY_SHOPPING_BAG_LINK = By.xpath("//a[@class='BagLink']");
 	private static final By CHECKOUT_BTN_OF_MY_SHOPPING_BAG_LINK = By.xpath("//span[text()='Checkout Now']");
-	private static final By OK_BTN_OF_CONFIRMATION_POPUP_FOR_ADHOC_ORDER = By.xpath("//span[text()='OK']");
+	private static final By OK_BTN_OF_CONFIRMATION_POPUP_FOR_ADHOC_ORDER = By.xpath("//button[text()='OK']");
 	private static final By CHECKOUT_BTN = By.xpath("//span[text()='Checkout']");
 	private static final By CONTINUE_BTN_PREFERRED_AUTOSHIP_CART_PAGE_LOC = By.xpath("//a[contains(@id,'uxContinue')]");
 	private static final By COMPLETE_ORDER_BTN = By.xpath("//input[contains(@id,'uxSubmitOrder')]");
@@ -61,6 +61,7 @@ public class StoreFrontBrandRefreshWebsiteBasePage extends RFBasePage{
 	private static final By BIZ_PWS_CONSULTANT_ENROLLMENT = By.xpath("//div[@class='websitePrefix']/ul[@class='domainResults']/li[2]");
 	private static final By EMAIL_ADDRESS_CONSULTANT_ENROLLMENT = By.xpath("//div[@class='websitePrefix']/ul[@class='domainResults']/li[3]");
 	private static final By ABOUT_RF_LOC = By.xpath("//span[text()='About R+F']");
+	private static final By RODAN_AND_FIELDS_IMG_LOC = By.xpath("//div[@id='logo']//img");
 
 	protected RFWebsiteDriver driver;
 	private String RFL_DB = null;
@@ -492,6 +493,18 @@ public class StoreFrontBrandRefreshWebsiteBasePage extends RFBasePage{
 		driver.waitForElementPresent(MY_SHOPPING_BAG_LINK);
 		driver.click(MY_SHOPPING_BAG_LINK);
 		logger.info("Clicked on My shopping bag link.");
+		driver.waitForPageLoad();
+	}
+
+	public void clickOnRodanAndFieldsLogo(){
+		try{
+			driver.quickWaitForElementPresent(RODAN_AND_FIELDS_IMG_LOC);
+			driver.click(RODAN_AND_FIELDS_IMG_LOC);
+		}catch(Exception e){
+			driver.quickWaitForElementPresent(By.xpath("//div[@id='Logo']//img"));
+			driver.click(By.xpath("//div[@id='Logo']//img"));
+		}
+		logger.info("Rodan and Fields logo clicked"); 
 		driver.waitForPageLoad();
 	}
 

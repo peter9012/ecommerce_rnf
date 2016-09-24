@@ -54,10 +54,10 @@ public class EnrollmentTest extends RFBrandRefreshWebsiteBaseTest{
 		String billingName =TestConstantsRFL.BILLING_PROFILE_NAME;
 		String billingProfileFirstName = TestConstantsRFL.SHIPPING_PROFILE_FIRST_NAME;
 		String billingProfileLastName = TestConstantsRFL.SHIPPING_PROFILE_LAST_NAME+randomNumber;
-		
+
 		storeFrontBrandRefreshHomePage.mouseHoverShopSkinCareAndClickLink(regimen);
-		//		storeFrontBrandRefreshHomePage.clickShopSkinCareBtn();
-		//		storeFrontBrandRefreshHomePage.selectRegimen(regimen);
+		//  storeFrontBrandRefreshHomePage.clickShopSkinCareBtn();
+		//  storeFrontBrandRefreshHomePage.selectRegimen(regimen);
 		storeFrontBrandRefreshHomePage.clickAddToCartBtn();
 		storeFrontBrandRefreshHomePage.clickCheckoutBtn();
 		storeFrontBrandRefreshHomePage.clickClickHereLinkForPC();
@@ -80,7 +80,7 @@ public class EnrollmentTest extends RFBrandRefreshWebsiteBaseTest{
 		storeFrontBrandRefreshHomePage.clickUseAsEnteredBtn();
 		storeFrontBrandRefreshHomePage.clickCompleteEnrollmentBtn();
 		storeFrontBrandRefreshHomePage.clickOKBtnOfJavaScriptPopUp();
-		s_assert.assertTrue(storeFrontBrandRefreshHomePage.isEnrollmentCompletedSuccessfully(), "PC enrollment is not completed successfully");
+		s_assert.assertTrue(storeFrontBrandRefreshHomePage.isPCEnrollmentCompletedSuccessfully(), "PC enrollment is not completed successfully");
 		s_assert.assertAll();
 	}
 
@@ -111,7 +111,7 @@ public class EnrollmentTest extends RFBrandRefreshWebsiteBaseTest{
 		String sponsorID = TestConstantsRFL.CID_CONSULTANT;
 		String addressName = "Home";
 
-		
+
 		storeFrontBrandRefreshHomePage.mouseHoverShopSkinCareAndClickLink(regimen);
 		//		storeFrontBrandRefreshHomePage.clickShopSkinCareBtn();
 		//		storeFrontBrandRefreshHomePage.selectRegimen(regimen);
@@ -128,10 +128,10 @@ public class EnrollmentTest extends RFBrandRefreshWebsiteBaseTest{
 		storeFrontBrandRefreshHomePage.clickSelectAndContinueBtnForPCAndRC();
 		storeFrontBrandRefreshHomePage.enterShippingProfileDetails(addressName, shippingProfileFirstName,shippingProfileLastName, addressLine1, postalCode, phnNumber);
 		storeFrontBrandRefreshHomePage.clickContinueBtn();
-//		storeFrontBrandRefreshHomePage.clickUseAsEnteredBtn();
+		//		storeFrontBrandRefreshHomePage.clickUseAsEnteredBtn();
 		storeFrontBrandRefreshHomePage.enterBillingInfoDetails(billingName, billingProfileFirstName, billingProfileLastName, nameOnCard, cardNumber, expMonth, expYear, addressLine1, postalCode, phnNumber);
 		storeFrontBrandRefreshHomePage.clickContinueBtn();
-//		storeFrontBrandRefreshHomePage.clickUseAsEnteredBtn();
+		//		storeFrontBrandRefreshHomePage.clickUseAsEnteredBtn();
 		storeFrontBrandRefreshHomePage.clickCompleteOrderBtn();
 		s_assert.assertTrue(storeFrontBrandRefreshHomePage.isThankYouTextPresentAfterOrderPlaced(), "Enrollment is not completed successfully");
 		s_assert.assertAll();	
@@ -161,7 +161,7 @@ public class EnrollmentTest extends RFBrandRefreshWebsiteBaseTest{
 		String phnNumber2 = "780";
 		String phnNumber3 = "9099";
 
-		
+
 		//		storeFrontBrandRefreshHomePage.clickBeAConsultantBtn();
 		//		storeFrontBrandRefreshHomePage.clickEnrollNowBtnOnBusinessPage();
 		storeFrontBrandRefreshHomePage.mouseHoverBeAConsultantAndClickLink("Enroll Now");
@@ -206,7 +206,7 @@ public class EnrollmentTest extends RFBrandRefreshWebsiteBaseTest{
 		String phnNumber2 = "780";
 		String phnNumber3 = "9099";
 
-		
+
 		storeFrontBrandRefreshHomePage.mouseHoverBeAConsultantAndClickLink("Enroll Now");
 		//		storeFrontBrandRefreshHomePage.clickBeAConsultantBtn();
 		//		storeFrontBrandRefreshHomePage.clickEnrollNowBtnOnBusinessPage();
@@ -261,7 +261,7 @@ public class EnrollmentTest extends RFBrandRefreshWebsiteBaseTest{
 		String accountNumber = null;
 		//String CID = TestConstantsRFL.CID_CONSULTANT;
 		String PWS = null;
-		
+
 
 		randomConsultantList = DBUtil.performDatabaseQuery(DBQueries_RFL.GET_RANDOM_ACTIVE_CONSULTANT_WITH_ORDERS_AND_AUTOSHIPS_RFL,RFL_DB);
 		accountNumber = String.valueOf(getValueFromQueryResult(randomConsultantList, "AccountNumber"));
@@ -280,7 +280,7 @@ public class EnrollmentTest extends RFBrandRefreshWebsiteBaseTest{
 		RFL_DB = driver.getDBNameRFL();
 		List<Map<String, Object>> randomPCList = null;
 		String pcEmailId = null;
-		
+
 		while(true){
 			randomPCList = DBUtil.performDatabaseQuery(DBQueries_RFL.GET_RANDOM_ACTIVE_PC_WITH_ORDERS_AND_AUTOSHIPS_RFL, RFL_DB);
 			pcEmailId = (String) getValueFromQueryResult(randomPCList, "UserName");
@@ -303,7 +303,7 @@ public class EnrollmentTest extends RFBrandRefreshWebsiteBaseTest{
 		storeFrontBrandRefreshPCUserPage.clickOrderManagementSublink("Edit Order");
 		s_assert.assertTrue(storeFrontBrandRefreshPCUserPage.isEditOrderPagePresent(),"Edit order page is not present");
 		storeFrontBrandRefreshPCUserPage.navigateToBackPage();
-//		storeFrontBrandRefreshPCUserPage.clickMyAccountLink();
+		//		storeFrontBrandRefreshPCUserPage.clickMyAccountLink();
 		storeFrontBrandRefreshPCUserPage.clickOrderManagementSublink("Change my PC Perks Status");
 		s_assert.assertTrue(storeFrontBrandRefreshPCUserPage.verifyCurrentPage("PcPerksStatus"),"URL does not contain pcPerksStatus");
 		s_assert.assertTrue(storeFrontBrandRefreshPCUserPage.isPcPerksStatusLinkPresent(),"Delay or Cancel PC Perks link is not present");
@@ -319,7 +319,7 @@ public class EnrollmentTest extends RFBrandRefreshWebsiteBaseTest{
 		RFL_DB = driver.getDBNameRFL();
 		List<Map<String, Object>> randomPCList = null;
 		String pcEmailId = null;
-		
+
 		while(true){
 			randomPCList = DBUtil.performDatabaseQuery(DBQueries_RFL.GET_RANDOM_ACTIVE_PC_WITH_ORDERS_AND_AUTOSHIPS_RFL, RFL_DB);
 			pcEmailId = (String) getValueFromQueryResult(randomPCList, "UserName");

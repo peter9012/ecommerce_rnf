@@ -92,7 +92,7 @@ public class BizPWSTest extends RFBrandRefreshWebsiteBaseTest{
 		//  storeFrontBrandRefreshHomePage.clickRegimenOnPWS(regimen);
 		//  storeFrontBrandRefreshHomePage.clickAddToCartButtonAfterLogin();
 		storeFrontBrandRefreshHomePage.mouseHoverShopSkinCareAndClickLinkOnPWS("CONSULTANT-ONLY PRODUCTS");
-		storeFrontBrandRefreshHomePage.clickConsultantOnlyProduct(TestConstantsRFL.CONSULTANT_ONLY_BUSINESS_PROMOTION);
+		storeFrontBrandRefreshHomePage.clickConsultantOnlyProductOnPWS(TestConstantsRFL.CONSULTANT_ONLY_BUSINESS_PROMOTION);
 		storeFrontBrandRefreshHomePage.clickAddToCartButtonForEssentialsAndEnhancementsAfterLogin();
 		//storeFrontBrandRefreshHomePage.mouseHoverOnMyShoppingBagLinkAndClickOnCheckoutBtn();
 		storeFrontBrandRefreshHomePage.clickMyShoppingBagLink();
@@ -101,7 +101,7 @@ public class BizPWSTest extends RFBrandRefreshWebsiteBaseTest{
 		storeFrontBrandRefreshHomePage.clickChangeBillingInformationBtn();
 		storeFrontBrandRefreshHomePage.enterBillingInfo(billingName, billingProfileFirstName, billingProfileLastName, nameOnCard, cardNumber, expMonth, expYear, addressLine1, postalCode, phnNumber);
 		storeFrontBrandRefreshHomePage.clickUseThisBillingInformationBtn();
-		//  storeFrontBrandRefreshHomePage.clickUseAsEnteredBtn();
+		storeFrontBrandRefreshHomePage.clickUseAsEnteredBtn();
 		storeFrontBrandRefreshHomePage.clickCompleteOrderBtn();
 		s_assert.assertTrue(storeFrontBrandRefreshHomePage.isThankYouTextPresentAfterOrderPlaced(), "Adhoc order not placed successfully from biz site for Consultant user.");
 		s_assert.assertTrue(storeFrontBrandRefreshHomePage.getOrderConfirmationTextMsgAfterOrderPlaced().contains("You will receive an email confirmation shortly"), "Order confirmation message does not contains email confirmation");

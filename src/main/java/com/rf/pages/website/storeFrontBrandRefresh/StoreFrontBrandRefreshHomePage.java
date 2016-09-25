@@ -49,7 +49,7 @@ public class StoreFrontBrandRefreshHomePage extends StoreFrontBrandRefreshWebsit
 	private static String linkUnderShopSkinCareOrBeAConsultant = "//div[@id='LeftNav']//a/span[text()='%s']";
 
 	private static final By PRODUCTS_LIST_LOC = By.xpath("//div[@id='FullPageItemList']");
-	private static final By RESULTS_TEXT_LOC = By.xpath("//div[@id='RFContent']//h1[contains(text(),'REAL RESULTS')]");
+	private static final By RESULTS_TEXT_LOC = By.xpath("//div[@id='RFContent']//span[contains(text(),'REAL RESULTS')]");
 	private static final By TESTIMONIAL_PAGE_CONTENT_LOC = By.xpath("//div[@id='RFContent']/div/div/blockquote[1]/div[1]");
 	private static final By NEWS_TEXT_LOC = By.xpath("//div[@id='RFContent']");
 	private static final By FAQS_TEXT_LOC = By.xpath("//div[@id='RFContent']//h1[contains(text(),'Questions')]");

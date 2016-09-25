@@ -377,7 +377,6 @@ public class UINavigationTest extends RFBrandRefreshWebsiteBaseTest{
 	//Corporate_BUsinessSystem_ Direct Selling
 	@Test
 	public void testCorporateBusinessSystemDirectSelling(){
-
 		storeFrontBrandRefreshHomePage.clickAboutRFBtn();
 		/*storeFrontBrandRefreshHomePage.clickClickhereLink();*/
 		storeFrontBrandRefreshHomePage.clickClickhereLinkToLearnDirectSelling();
@@ -588,7 +587,6 @@ public class UINavigationTest extends RFBrandRefreshWebsiteBaseTest{
 	//Contact us-link should be redirecting properly
 	@Test
 	public void testContactUsLinkShouldBeRedirectingProperly(){
-
 		storeFrontBrandRefreshHomePage.clickContactUsAtFooter();
 		s_assert.assertTrue(storeFrontBrandRefreshHomePage.getCurrentURL().toLowerCase().contains("Contact".toLowerCase()), "URL does not contain Contact Actual on UI is "+storeFrontBrandRefreshHomePage.getCurrentURL().toLowerCase());
 		s_assert.assertTrue(storeFrontBrandRefreshHomePage.verifylinkIsRedirectedToContactUsPage(),"link is not redirected to contact us page");

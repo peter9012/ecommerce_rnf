@@ -89,17 +89,19 @@ public class DSVStoreFrontBillingInfoPage extends DSVRFWebsiteBasePage {
 	}
 
 	public boolean deleteBillingProfiles(){
+		driver.waitForLoadingImageToDisappear();
 		driver.click(By.xpath("//div[@id='multiple-billing-profiles']/descendant::a[contains(text(),'Delete')][1]"));
 		driver.pauseExecutionFor(2000);
 		boolean isAutoshipPopUpDisplayed = driver.findElement(USED_IN_AUTOSHIP_POPUP).isDisplayed();
+		logger.info("is Autoship PopUp Displayed = "+isAutoshipPopUpDisplayed);
 		if(isAutoshipPopUpDisplayed==false){
 			driver.quickWaitForElementPresent(CONFIRM_DELETE_POPUP);
 			//((JavascriptExecutor)RFWebsiteDriver.driver).executeScript("arguments[0].click()", driver.findElement(CONFIRM_DELETE_POPUP));
 			Actions actions = new Actions(RFWebsiteDriver.driver);
-			actions.doubleClick(driver.findElement(CONFIRM_DELETE_POPUP)).build().perform();
+			actions.click(driver.findElement(CONFIRM_DELETE_POPUP)).build().perform();
 			driver.pauseExecutionFor(2000);
 			driver.waitForLoadingImageToDisappear();
-			return driver.findElement(By.xpath("//div[@id='main-content']/div/div[2]//p[text()='Your Billing profile has been removed']")).isDisplayed();
+			return driver.isElementPresent(By.xpath("//div[@id='main-content']/div/div[2]//p[text()='Your Billing profile has been removed']"));
 		}
 		else{
 			driver.pauseExecutionFor(2000);
@@ -113,10 +115,16 @@ public class DSVStoreFrontBillingInfoPage extends DSVRFWebsiteBasePage {
 	}
 
 	public boolean areMoreBillingProfilesLeftForDeletion(){
-		if(driver.findElements(By.xpath("//div[@id='multiple-billing-profiles']/descendant::a[contains(text(),'Delete')][1]")).size()>0)
-			return true;
-		else
-			return false;
+		boolean areMoreBillingProfilesLeftForDeletion=false;
+		if(driver.findElements(By.xpath("//div[@id='multiple-billing-profiles']/descendant::a[contains(text(),'Delete')][1]")).size()>0){
+			areMoreBillingProfilesLeftForDeletion=true;
+		}
+			
+		else{
+			areMoreBillingProfilesLeftForDeletion=false;
+		}
+		System.out.println("areMoreBillingProfilesLeftForDeletion = "+areMoreBillingProfilesLeftForDeletion);
+			return areMoreBillingProfilesLeftForDeletion;
 
 	}
 

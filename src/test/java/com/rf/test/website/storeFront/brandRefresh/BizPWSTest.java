@@ -489,12 +489,12 @@ public class BizPWSTest extends RFBrandRefreshWebsiteBaseTest{
 		String comPWSToAssert = null;
 		String emailToAssert = null;
 		String availableText = " is unavailable";
-
+		String dbIP2 = driver.getDBIP2();
 
 		List<Map<String, Object>> randomPWSList =  null;
 		List<Map<String, Object>> randomConsultant = null;
 		//Fetch cross country site prefix from database.
-		randomConsultant = DBUtil.performDatabaseQuery(DBQueries_RFO.callQueryWithArguementPWS(DBQueries_RFO.GET_RANDOM_ACTIVE_CONSULTANT_WITH_PWS_RFO,driver.getEnvironment()+".biz",country,countryID), RFO_DB);
+		randomConsultant = DBUtil.performDatabaseQuery(DBQueries_RFO.callQueryWithArguementPWS(DBQueries_RFO.GET_RANDOM_ACTIVE_CONSULTANT_WITH_PWS_RFO,driver.getEnvironment()+".biz",country,countryID), RFO_DB, dbIP2);
 		String url = (String) getValueFromQueryResult(randomConsultant, "URL");
 		String prefix = storeFrontBrandRefreshHomePage.getSplittedPrefixFromConsultantUrl(url);
 		bizPWSToAssert = storeFrontBrandRefreshHomePage.getModifiedPWSValue(url,availableText);
@@ -503,7 +503,8 @@ public class BizPWSTest extends RFBrandRefreshWebsiteBaseTest{
 		String PWS = "https://rfqa"+driver.getBizPWSURL();
 		driver.get(PWS);
 		storeFrontBrandRefreshHomePage.clickHeaderLinkAfterLogin("BECOME A CONSULTANT");
-		storeFrontBrandRefreshHomePage.clickEnrollNowBtnOnWhyRFPage();
+
+		storeFrontBrandRefreshHomePage.hoverOnBeAConsultantAndClickLinkOnEnrollMe();
 		storeFrontBrandRefreshHomePage.selectEnrollmentKit(kitName);
 		storeFrontBrandRefreshHomePage.selectRegimenAndClickNext(regimen);
 		storeFrontBrandRefreshHomePage.selectEnrollmentType(enrollemntType);
@@ -762,6 +763,7 @@ public class BizPWSTest extends RFBrandRefreshWebsiteBaseTest{
 	public void RegisterConsultantUsingExistingCrossCountryConsultantEmailId(){
 		RFO_DB = driver.getDBNameRFO();
 		RFL_DB = driver.getDBNameRFL();
+		String dbIP2 = driver.getDBIP2();
 		String kitName = "Big Business Launch Kit";
 		String regimen = "Redefine";
 		String enrollemntType = "Express";
@@ -769,15 +771,14 @@ public class BizPWSTest extends RFBrandRefreshWebsiteBaseTest{
 		List<Map<String, Object>> randomPWSList =  null;
 		String countryID ="40";
 		String country = "ca";
-
 		List<Map<String, Object>> randomConsultantList =  null;
 		List<Map<String, Object>> randomEmailIdList =  null;
 		String consultantEmailID = null;
 		//Fetch cross country Email address from database.
-		randomConsultantList = DBUtil.performDatabaseQuery(DBQueries_RFO.callQueryWithArguementPWS(DBQueries_RFO.GET_RANDOM_ACTIVE_CONSULTANT_WITH_PWS_RFO,driver.getEnvironment()+".biz",country,countryID), RFO_DB);
+		randomConsultantList = DBUtil.performDatabaseQuery(DBQueries_RFO.callQueryWithArguementPWS(DBQueries_RFO.GET_RANDOM_ACTIVE_CONSULTANT_WITH_PWS_RFO,driver.getEnvironment()+".biz",country,countryID), RFO_DB, dbIP2);
 		String accountID= String.valueOf(getValueFromQueryResult(randomConsultantList, "AccountID"));
 		//Get email id from account id
-		randomEmailIdList = DBUtil.performDatabaseQuery(DBQueries_RFO.callQueryWithArguement(DBQueries_RFO.GET_EMAIL_ID_FROM_ACCOUNT_ID,accountID), RFO_DB);
+		randomEmailIdList = DBUtil.performDatabaseQuery(DBQueries_RFO.callQueryWithArguement(DBQueries_RFO.GET_EMAIL_ID_FROM_ACCOUNT_ID,accountID), RFO_DB,dbIP2);
 		consultantEmailID = (String) getValueFromQueryResult(randomEmailIdList, "EmailAddress");
 		String PWS = "https://rfqa"+driver.getBizPWSURL();
 		driver.get(PWS);

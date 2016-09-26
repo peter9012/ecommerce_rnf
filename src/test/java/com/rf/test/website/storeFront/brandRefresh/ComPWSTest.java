@@ -175,6 +175,7 @@ public class ComPWSTest extends RFBrandRefreshWebsiteBaseTest{
 		String expYear = TestConstantsRFL.EXP_YEAR;
 		String addressLine1 =  TestConstantsRFL.ADDRESS_LINE1;
 		String postalCode = TestConstantsRFL.POSTAL_CODE;
+		String regimen = "REVERSE";
 		String phnNumber = TestConstantsRFL.NEW_ADDRESS_PHONE_NUMBER_US;
 		List<Map<String, Object>> randomConsultantList =  null;
 		String consultantEmailID = null;
@@ -185,12 +186,10 @@ public class ComPWSTest extends RFBrandRefreshWebsiteBaseTest{
 		storeFrontBrandRefreshHomePage.loginAsConsultant(consultantEmailID,password);
 		s_assert.assertTrue(storeFrontBrandRefreshHomePage.verifyUserSuccessfullyLoggedIn(),"consultant is not logged in successfully");
 		//click on 'our products' in tha nav menu
-		storeFrontBrandRefreshHomePage.mouseHoverOnShopSkinCareAndClickOnConsultantOnlyProductsLink();
+		storeFrontBrandRefreshHomePage.mouseHoverShopSkinCareAndClickLinkOnPWS(regimen);
 		//select a product and add to cart
-		storeFrontBrandRefreshHomePage.clickConsultantOnlyProductOnPWS(TestConstantsRFL.CONSULTANT_ONLY_PRODUCT);
 		storeFrontBrandRefreshHomePage.clickAddToCartButtonAfterLogin();
 		storeFrontBrandRefreshHomePage.clickMyShoppingBagLink();
-		//  storeFrontBrandRefreshHomePage.mouseHoverOnMyShoppingBagLinkAndClickOnCheckoutBtn();
 		storeFrontBrandRefreshHomePage.clickCheckoutBtn();
 		storeFrontBrandRefreshHomePage.clickContinueBtn();
 		storeFrontBrandRefreshHomePage.clickChangeBillingInformationBtn();
@@ -201,5 +200,4 @@ public class ComPWSTest extends RFBrandRefreshWebsiteBaseTest{
 		s_assert.assertTrue(storeFrontBrandRefreshHomePage.isThankYouTextPresentAfterOrderPlaced(), "Order is not placed successfully");
 		s_assert.assertAll();
 	}
-
 }

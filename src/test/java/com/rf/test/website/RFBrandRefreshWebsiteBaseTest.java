@@ -45,7 +45,7 @@ public class RFBrandRefreshWebsiteBaseTest extends RFBaseTest {
 		logger.info("In the Before suite..");
 		driver.loadApplication();		
 		logger.info("Application loaded");				
-		driver.setDBConnectionString();		
+		driver.setDBConnectionString();
 		logger.info("out of Before suite..");
 	}
 

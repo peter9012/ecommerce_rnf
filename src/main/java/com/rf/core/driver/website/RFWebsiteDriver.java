@@ -126,6 +126,10 @@ public class RFWebsiteDriver implements RFDriver,WebDriver {
 		logger.info("DB connections are set");
 	}
 
+	public String getDBIP2(){
+		return propertyFile.getProperty("dbIP2");
+	}
+
 	public void selectCountry(String country){
 		driver.findElement(By.xpath("//div[@class='btn-group']")).click();
 		if(country.equalsIgnoreCase("ca")){
@@ -140,7 +144,7 @@ public class RFWebsiteDriver implements RFDriver,WebDriver {
 	public String getURL() {
 		return propertyFile.getProperty("baseUrl");
 	}
-	
+
 	public String getBrowser(){
 		return propertyFile.getProperty("browser");
 	}

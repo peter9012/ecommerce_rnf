@@ -225,6 +225,20 @@ public class UINavigationTest extends RFBrandRefreshWebsiteBaseTest{
 		s_assert.assertAll();
 	}
 
+	//Log in as an existen consultant
+	@Test
+	public void testLoginAsExistingConsultant(){
+		RFL_DB = driver.getDBNameRFL();
+		List<Map<String, Object>> randomConsultantList =  null;
+		String consultantEmailID = null;
+
+		randomConsultantList = DBUtil.performDatabaseQuery(DBQueries_RFL.GET_RANDOM_ACTIVE_CONSULTANT_EMAILID,RFL_DB);
+		consultantEmailID = (String) getValueFromQueryResult(randomConsultantList, "EmailAddress");
+		storeFrontBrandRefreshHomePage.loginAsConsultant(consultantEmailID,password);
+		s_assert.assertTrue(storeFrontBrandRefreshHomePage.verifyUserSuccessfullyLoggedIn(),"consultant is not logged in successfully");
+		s_assert.assertAll();
+	}
+
 	//Log in as valid PC customer
 	@Test
 	public void testLoginAsExistingPC(){
@@ -918,4 +932,6 @@ public class UINavigationTest extends RFBrandRefreshWebsiteBaseTest{
 		s_assert.assertTrue(storeFrontBrandRefreshHomePage.getCurrentURL().contains(expectedURL), "Current url expected is: "+expectedURL+" while actual on UI is "+storeFrontBrandRefreshHomePage.getCurrentURL());
 		s_assert.assertAll();
 	}
+
+
 }

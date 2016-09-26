@@ -1,6 +1,5 @@
 package com.rf.test.website.storeFront.dsv;
 
-import org.testng.Assert;
 import org.testng.annotations.Test;
 
 import com.rf.core.website.constants.TestConstants;
@@ -11,7 +10,6 @@ import com.rf.test.website.RFWebsiteBaseTest;
 public class StoreFrontDSVTestsCleanProfiles extends RFWebsiteBaseTest{
 	private DSVStoreFrontHomePage dsvStoreFrontHomePage;
 	private DSVStoreFrontBillingInfoPage dsvStoreFrontBillingInfoPage;
-
 
 	@Test
 	public void cleanAllBillingProfilesConsultant() throws Exception{
@@ -24,11 +22,15 @@ public class StoreFrontDSVTestsCleanProfiles extends RFWebsiteBaseTest{
 		dsvStoreFrontBillingInfoPage = dsvStoreFrontHomePage.clickBillingInfoLinkFromWelcomeDropDown();
 		int totalBillingProfiles = dsvStoreFrontBillingInfoPage.getTotalBillingProfiles();
 		for(int i=1;i<=totalBillingProfiles;i++){
-			if(dsvStoreFrontBillingInfoPage.areMoreBillingProfilesLeftForDeletion())
-				Assert.assertTrue(dsvStoreFrontBillingInfoPage.deleteBillingProfiles(),"'Your Billing profile has been removed' message has not displayed");
-			else
+			if(dsvStoreFrontBillingInfoPage.areMoreBillingProfilesLeftForDeletion()==true){
+				s_assert.assertTrue(dsvStoreFrontBillingInfoPage.deleteBillingProfiles(),"'Your Billing profile has been removed' message has not displayed");
+			}
+			else{
 				break;
+			}
+
 		}
+		s_assert.assertAll();
 	}
 
 	@Test
@@ -43,11 +45,11 @@ public class StoreFrontDSVTestsCleanProfiles extends RFWebsiteBaseTest{
 		int totalBillingProfiles = dsvStoreFrontBillingInfoPage.getTotalBillingProfiles();
 		for(int i=1;i<=totalBillingProfiles;i++){
 			if(dsvStoreFrontBillingInfoPage.areMoreBillingProfilesLeftForDeletion())
-				Assert.assertTrue(dsvStoreFrontBillingInfoPage.deleteBillingProfiles(),"'Your Billing profile has been removed' message has not displayed");
+				s_assert.assertTrue(dsvStoreFrontBillingInfoPage.deleteBillingProfiles(),"'Your Billing profile has been removed' message has not displayed");
 			else
 				break;
 		}
-
+		s_assert.assertAll();
 	}
 
 	@Test
@@ -62,9 +64,10 @@ public class StoreFrontDSVTestsCleanProfiles extends RFWebsiteBaseTest{
 		int totalBillingProfiles = dsvStoreFrontBillingInfoPage.getTotalBillingProfiles();
 		for(int i=1;i<=totalBillingProfiles;i++){
 			if(dsvStoreFrontBillingInfoPage.areMoreBillingProfilesLeftForDeletion())
-				Assert.assertTrue(dsvStoreFrontBillingInfoPage.deleteBillingProfiles(),"'Your Billing profile has been removed' message has not displayed");
+				s_assert.assertTrue(dsvStoreFrontBillingInfoPage.deleteBillingProfiles(),"'Your Billing profile has been removed' message has not displayed");
 			else
 				break;
 		}
+		s_assert.assertAll();
 	}
 }

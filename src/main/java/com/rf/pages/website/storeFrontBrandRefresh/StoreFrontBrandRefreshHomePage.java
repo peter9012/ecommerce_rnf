@@ -223,7 +223,7 @@ public class StoreFrontBrandRefreshHomePage extends StoreFrontBrandRefreshWebsit
 	private static final By FORGOT_PASSWORD_PWS_LINK_LOC = By.xpath("//a[contains(text(),'Forgot password')]");
 	private static final By CHANGE_PASSWORD_TEXT_LOC = By.xpath("//div[@id='ContentWrapper']//h3[contains(text(),'Recover Password')]");
 	private static final By SEND_EMAIL_BTN_LOC = By.xpath("//input[@value='Submit']");
-	private static final By EMAIL_ADDRESS_FIELD_LOC = By.xpath("//label[contains(text(),'Email Address')]/following-sibling::input[@class='textinput']");
+	private static final By EMAIL_ADDRESS_FIELD_LOC = By.xpath("//label[contains(text(),'Email Address')]/following-sibling::input[@type='text']");
 	private static final By EDIT_ORDER_UNDER_MY_ACCOUNT_LOC = By.xpath("//span[text()=' Edit Order']");
 	private static final By CHANGE_LINK_FOR_SHIPPING_INFO_ON_PWS = By.xpath("//a[contains(@id,'uxChangeShippingLink')]");
 	private static final By SHIPPING_ADDRESS_NAME_LOC = By.xpath("//b[text()='Shipping to:']/../following-sibling::p/span[1]");
@@ -513,13 +513,6 @@ public class StoreFrontBrandRefreshHomePage extends StoreFrontBrandRefreshWebsit
 		driver.waitForPageLoad();
 	}
 
-	public void logOut(){
-		driver.quickWaitForElementPresent(LOGOUT_LOC);
-		driver.click(LOGOUT_LOC);
-		logger.info("Log Out Link clicked"); 
-		driver.waitForPageLoad();
-	}
-
 	public boolean validateExistingConsultantPopUp(String emailAddress){
 		driver.quickWaitForElementPresent(EXISTING_CONSULTANT_LOC);
 		driver.type(ACCOUNT_EMAIL_ADDRESS_LOC, emailAddress);
@@ -554,36 +547,19 @@ public class StoreFrontBrandRefreshHomePage extends StoreFrontBrandRefreshWebsit
 		logger.info("Regimen selected is: "+regimen);
 	}
 
-	public void clickAddToCartBtn(){
-		//		driver.quickWaitForElementPresent(ADD_TO_CART_BTN);
-		//		driver.click(ADD_TO_CART_BTN);
-		//		logger.info("Add to cart button clicked");
-		//		driver.waitForPageLoad();
-		try{
-			driver.findElement(By.xpath("//a[text()='Add to Cart']"));
-			driver.click(By.xpath("//a[text()='Add to Cart']"));
-			System.out.println("Add to cart button on ProdDetailPage is clicked");
-			driver.waitForPageLoad();
-
-		} catch (NoSuchElementException e1) {
-			try{
-				driver.findElement(ADD_TO_CART_BTN_LOC);
-				driver.quickWaitForElementPresent(ADD_TO_CART_BTN_LOC);
-				driver.click(ADD_TO_CART_BTN_LOC);
-				logger.info("Add to cart button is clicked");
-				driver.waitForPageLoad();
-			}
-			catch(NoSuchElementException e2)
-			{
-				driver.quickWaitForElementPresent(By.xpath("//*[@id='FullPageItemList']/div[1]//a[@id='addToCartButton']"));
-				driver.click(By.xpath("//*[@id='FullPageItemList']/div[1]//a[@id='addToCartButton']"));
-				logger.info("Add to cart button is clicked");
-				driver.waitForPageLoad();
-
-			}
-
-
+	public void clickAddToCartBtn(){		
+		driver.quickWaitForElementPresent(By.xpath("//*[@id='FullPageItemList']/div[1]//a[@id='addToCartButton']"));
+		if(driver.isElementPresent(By.xpath("//*[@id='FullPageItemList']/div[1]//a[@id='addToCartButton']"))){
+			driver.click(By.xpath("//*[@id='FullPageItemList']/div[1]//a[@id='addToCartButton']"));	
 		}
+		else if(driver.isElementPresent(ADD_TO_CART_BTN_LOC)){
+			driver.click(ADD_TO_CART_BTN_LOC);	
+		}
+		else{
+			driver.click(By.xpath("//a[text()='Add to Cart']"));
+		}		
+		logger.info("Add to cart button is clicked");
+		driver.waitForPageLoad();		
 	}
 
 	public void clickClickHereLinkForPC(){
@@ -679,21 +655,10 @@ public class StoreFrontBrandRefreshHomePage extends StoreFrontBrandRefreshWebsit
 		driver.waitForStorfrontLegacyLoadingImageToDisappear();
 		Actions actions = new Actions(RFWebsiteDriver.driver);
 		actions.moveToElement(driver.findElement(CITY_DD)).click().build().perform();
-		//driver.click(CITY_DD);
 		logger.info("City dropdown clicked");
 		driver.waitForElementPresent(FIRST_VALUE_OF_CITY_DD);
 		driver.click(FIRST_VALUE_OF_CITY_DD);
 		logger.info("City selected");
-
-		//driver.type(CITY_DD, "Fremont");
-		//logger.info("City Selected");
-		//  driver.click(FIRST_VALUE_OF_CITY_DD);
-		//  logger.info("City selected");
-		//  driver.waitForElementPresent(COUNTRY_DD);
-		//  driver.click(COUNTRY_DD);
-		//  logger.info("Country dropdown clicked");
-		/*  driver.click(FIRST_VALUE_OF_COUNTRY_DD);
-		  logger.info("Country selected");*/
 		actions.moveToElement(driver.findElement(COUNTRY_DD)).click().build().perform();
 		//driver.click(CITY_DD);
 		logger.info("Country dropdown clicked");
@@ -701,8 +666,6 @@ public class StoreFrontBrandRefreshHomePage extends StoreFrontBrandRefreshWebsit
 		driver.waitForElementPresent(FIRST_VALUE_OF_COUNTRY_DD);
 		driver.click(FIRST_VALUE_OF_COUNTRY_DD);
 		logger.info("Country selected");
-		//driver.type(COUNTRY_DD, "ALAMEDA");
-		//logger.info("Country selected");
 		driver.type(PHONE_NUMBER_SHIPPING_PROFILE_PAGE,phnNumber);
 		logger.info("Phone number entered as: "+phnNumber);
 	}
@@ -773,6 +736,7 @@ public class StoreFrontBrandRefreshHomePage extends StoreFrontBrandRefreshWebsit
 	}
 
 	public StoreFrontBrandRefreshPCUserPage loginAsPCUser(String username,String password){
+		logout();
 		driver.waitForElementPresent(USERNAME_TXTFLD_LOC);
 		driver.type(USERNAME_TXTFLD_LOC, username);
 		driver.click(PASSWORD_TXTFLD_ONFOCUS_LOC);

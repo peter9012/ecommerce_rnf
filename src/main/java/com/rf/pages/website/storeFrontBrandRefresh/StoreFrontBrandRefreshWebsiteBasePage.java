@@ -175,10 +175,14 @@ public class StoreFrontBrandRefreshWebsiteBasePage extends RFBasePage{
 
 	public void logout(){
 		driver.quickWaitForElementPresent(By.xpath("//a[text()='Log-Out' or text()='Log Out']"));
-		driver.click(By.xpath("//a[text()='Log-Out' or text()='Log Out']"));
-		logger.info("Logout");  
-		driver.pauseExecutionFor(3000);
-		driver.waitForPageLoad();
+		if(driver.findElements(By.xpath("//a[text()='Log-Out' or text()='Log Out']")).size()>0){
+			driver.click(By.xpath("//a[text()='Log-Out' or text()='Log Out']"));
+			logger.info("Log Out Link clicked"); 
+			driver.waitForPageLoad();
+		}
+		else{
+			logger.info("User already logged out");
+		}
 	}
 
 	public void clickContinueWithoutConsultantLink(){

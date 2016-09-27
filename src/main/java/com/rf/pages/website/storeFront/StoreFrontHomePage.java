@@ -305,8 +305,8 @@ public class StoreFrontHomePage extends StoreFrontRFWebsiteBasePage {
 		driver.pauseExecutionFor(2000);
 		driver.type(By.id("email-account"), emailAddress);
 		driver.pauseExecutionFor(2000);
-		driver.findElement(By.id("email-account")).sendKeys(Keys.TAB);
-//		driver.click(By.id("new-password-account"));
+		//driver.findElement(By.id("email-account")).sendKeys(Keys.TAB);
+		driver.click(By.id("new-password-account"));
 		logger.info("email Address of the user is "+emailAddress);
 		driver.waitForSpinImageToDisappear();
 	}
@@ -833,7 +833,7 @@ public class StoreFrontHomePage extends StoreFrontRFWebsiteBasePage {
 		selectProvince(state);
 		enterPostalCode(postalCode);
 		enterPhoneNumber(phoneNumber);
-		
+
 	}
 
 	//method overloaded,no need for enrollment type if kit is portfolio

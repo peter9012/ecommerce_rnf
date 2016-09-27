@@ -131,7 +131,7 @@ public class StoreFrontBrandRefreshHomePage extends StoreFrontBrandRefreshWebsit
 	private static final By FIRST_NAME_FOR_PC_AND_RC = By.xpath("//input[contains(@id,'uxFirstName')]");
 	private static final By LAST_NAME_FOR_PC_AND_RC = By.xpath("//input[contains(@id,'uxLastName')]");
 	private static final By EMAIL_ADDRESS_FOR_PC_AND_RC = By.xpath("//input[contains(@id,'uxEmailAddress')]");
-	private static final By CREATE_PASSWORD_FOR_PC_AND_RC = By.xpath("//table[@class='FormTable']//input[contains(@id,'uxPassword')]");
+	private static final By CREATE_PASSWORD_FOR_PC_AND_RC = By.xpath("//div[@class='form-group']//input[contains(@id,'uxPassword')]");
 	private static final By CONFIRM_PASSWORD_FOR_PC_AND_RC = By.xpath("//input[contains(@id,'uxConfirmPassword')]");
 	private static final By PHONE_NUMBER_FOR_PC_AND_RC = By.xpath("//input[contains(@id,'uxPhoneNumber')]");
 	private static final By CONTINUE_BTN_PREFERRED_PROFILE_PAGE_LOC = By.xpath("//input[contains(@id,'uxContinue')]");
@@ -142,8 +142,8 @@ public class StoreFrontBrandRefreshHomePage extends StoreFrontBrandRefreshWebsit
 	private static final By CONTINUE_BTN_PREFERRED_AUTOSHIP_SETUP_PAGE_LOC = By.xpath("//div[@id='MyAutoshipItems']/following::input[contains(@id,'uxContinue')]");
 
 	private static final By ADDRESS_NAME_FOR_SHIPPING_PROFILE = By.xpath("//input[contains(@id,'uxAddressName')]");
-	private static final By ATTENTION_FIRST_NAME = By.xpath("//td[@class='tdinput']//input[contains(@id,'uxAttentionFirstName')][1]");
-	private static final By ATTENTION_LAST_NAME = By.xpath("//td[@class='tdinput']//input[contains(@id,'uxAttentionLastName')][1]");
+	private static final By ATTENTION_FIRST_NAME = By.xpath("//div[@class='form-group']//input[contains(@id,'uxAttentionFirstName')][1]");
+	private static final By ATTENTION_LAST_NAME = By.xpath("//div[@class='form-group']//input[contains(@id,'uxAttentionLastName')][1]");
 	private static final By ADDRESS_LINE_1 = By.xpath("//input[contains(@id,'uxAddressLine1')]");
 	private static final By ZIP_CODE = By.xpath("//input[contains(@id,'uxZipCode')]");
 	private static final By CITY_DD = By.xpath("//input[contains(@id,'uxCityDropDown_Input')]/following::a[text()='select']");
@@ -266,6 +266,8 @@ public class StoreFrontBrandRefreshHomePage extends StoreFrontBrandRefreshWebsit
 	private static final By CONNECT_WITH_A_CONSULTANT = By.cssSelector("a[href*='LocatePWS']");
 	private static final By CLICK_HERE_TO_LEARN_MORE_ABOUT_DIRECT_SELLING = By.cssSelector("a[href*='directselling']");
 	private static final By PRESS_ROOM = By.xpath("//span[contains(text(),'Press Room')]");
+	private static final By ERROR_MESSAGE_FOR_TERMS_AND_CANDITIONS_FOR_PC_RC = By.xpath("//li[text()='You must agree to the Terms and Conditions to continue.']");
+
 
 	public StoreFrontBrandRefreshHomePage(RFWebsiteDriver driver) {
 		super(driver);
@@ -594,7 +596,7 @@ public class StoreFrontBrandRefreshHomePage extends StoreFrontBrandRefreshWebsit
 	}
 
 	public void clickContinueBtnForPCAndRC(){
-		driver.quickWaitForElementPresent(CONTINUE_BTN_PREFERRED_PROFILE_PAGE_LOC);
+		driver.waitForElementPresent(CONTINUE_BTN_PREFERRED_PROFILE_PAGE_LOC);
 		driver.click(CONTINUE_BTN_PREFERRED_PROFILE_PAGE_LOC);
 		logger.info("Continue button clicked");
 		driver.waitForPageLoad();
@@ -638,7 +640,6 @@ public class StoreFrontBrandRefreshHomePage extends StoreFrontBrandRefreshWebsit
 		driver.waitForPageLoad();
 	}
 
-
 	public void enterShippingProfileDetails(String addressName, String firstName,String lastName,String addressLine1,String postalCode,String phnNumber){
 		driver.type(ADDRESS_NAME_FOR_SHIPPING_PROFILE, addressName);
 		logger.info("Address name entered as: "+addressName);
@@ -650,7 +651,7 @@ public class StoreFrontBrandRefreshHomePage extends StoreFrontBrandRefreshWebsit
 		logger.info("Address line 1 entered as: "+addressLine1);
 		driver.type(ZIP_CODE, postalCode+"\t");
 		logger.info("Postal code entered as: "+postalCode);
-		driver.findElement(By.xpath("//td[text()='* City']")).click();
+		driver.findElement(By.xpath("//input[contains(@id,'uxCityDropDown_Input')]")).click();
 		driver.pauseExecutionFor(5000);
 		driver.waitForStorfrontLegacyLoadingImageToDisappear();
 		Actions actions = new Actions(RFWebsiteDriver.driver);
@@ -670,16 +671,17 @@ public class StoreFrontBrandRefreshHomePage extends StoreFrontBrandRefreshWebsit
 		logger.info("Phone number entered as: "+phnNumber);
 	}
 
-
 	public void enterBillingInfoDetails(String billingName, String firstName,String lastName,String cardName,String cardNumer,String month,String year,String addressLine1,String postalCode,String phnNumber){
 		driver.pauseExecutionFor(2000);
 		driver.type(BILLING_NAME_FOR_BILLING_PROFILE, billingName);
 		logger.info("Billing profile name entered as: "+billingName);
 		//driver.type(ATTENTION_FIRST_NAME, firstName);
-		driver.type(BILLING_FIRST_NAME, firstName);
+		//driver.type(BILLING_FIRST_NAME, firstName);
+		driver.type(ATTENTION_FIRST_NAME, firstName);
 		logger.info("Attention first name entered as: "+firstName);
 		//driver.type(ATTENTION_LAST_NAME, lastName);
-		driver.type(BILLING_LAST_NAME, lastName);
+		//driver.type(BILLING_LAST_NAME, lastName);
+		driver.type(ATTENTION_LAST_NAME, lastName);
 		logger.info("Attention last name entered as: "+lastName);
 		driver.type(NAME_ON_CARD, cardName);
 		logger.info("Card Name entered as: "+cardName);
@@ -697,7 +699,7 @@ public class StoreFrontBrandRefreshHomePage extends StoreFrontBrandRefreshWebsit
 		logger.info("Billing street address entered as: "+addressLine1);
 		driver.type(ZIP_CODE, postalCode+"\t");
 		logger.info("Postal code entered as: "+postalCode);
-		driver.findElement(By.xpath("//td[text()='* City']")).click();
+		driver.findElement(By.xpath("//input[contains(@id,'uxCityDropDown_Input')]")).click();
 		driver.waitForStorfrontLegacyLoadingImageToDisappear();
 		//driver.pauseExecutionFor(5000);
 		Actions actions = new Actions(RFWebsiteDriver.driver);
@@ -708,14 +710,15 @@ public class StoreFrontBrandRefreshHomePage extends StoreFrontBrandRefreshWebsit
 		driver.click(FIRST_VALUE_OF_CITY_DD);
 		logger.info("City selected");
 		/*driver.click(CITY_DD);
-		      logger.info("City dropdown clicked");
-		      driver.click(FIRST_VALUE_OF_CITY_DD);
-		      logger.info("City selected");*/
+		        logger.info("City dropdown clicked");
+		        driver.click(FIRST_VALUE_OF_CITY_DD);
+		        logger.info("City selected");*/
 		//driver.type(CITY_DD, "Fremont");
 		//logger.info("City Selected");
 		driver.type(PHONE_NUMBER_BILLING_PROFILE_PAGE,phnNumber);
 		logger.info("Phone number entered as: "+phnNumber);
 	}
+
 	public void clickCompleteEnrollmentBtn(){
 		driver.quickWaitForElementPresent(COMPLETE_ENROLLMENT_BTN);
 		driver.click(COMPLETE_ENROLLMENT_BTN);
@@ -1114,6 +1117,7 @@ public class StoreFrontBrandRefreshHomePage extends StoreFrontBrandRefreshWebsit
 		driver.quickWaitForElementPresent(By.xpath(String.format(linkUnderShopSkinCareOrBeAConsultant, secondSubSectionUnderBusinessSystem)));
 		driver.click(By.xpath(String.format(linkUnderShopSkinCareOrBeAConsultant, secondSubSectionUnderBusinessSystem)));
 		logger.info("business System SubTitle selected is: "+secondSubSectionUnderBusinessSystem);
+		driver.waitForPageLoad();
 	}
 
 	public boolean verifySubSectionPresentAtProgramsAndIncentives(String firstSubSectionUnderProgramsAndIncentives) {
@@ -1405,10 +1409,10 @@ public class StoreFrontBrandRefreshHomePage extends StoreFrontBrandRefreshWebsit
 		driver.type(BILLING_NAME_FOR_BILLING_PROFILE, billingName);
 		logger.info("Billing profile name entered as: "+billingName);
 		driver.type(ATTENTION_FIRST_NAME, firstName);
-		driver.type(BILLING_FIRST_NAME, firstName);
+		//driver.type(BILLING_FIRST_NAME, firstName);
 		logger.info("Attention first name entered as: "+firstName);
 		driver.type(ATTENTION_LAST_NAME, lastName);
-		driver.type(BILLING_LAST_NAME, lastName);
+		//driver.type(BILLING_LAST_NAME, lastName);
 		logger.info("Attention last name entered as: "+lastName);
 		driver.type(NAME_ON_CARD, cardName);
 		logger.info("Card Name entered as: "+cardName);
@@ -1426,7 +1430,7 @@ public class StoreFrontBrandRefreshHomePage extends StoreFrontBrandRefreshWebsit
 		logger.info("Billing street address entered as: "+addressLine1);
 		driver.type(ZIP_CODE, postalCode+"\t");
 		logger.info("Postal code entered as: "+postalCode);
-		driver.findElement(By.xpath("//td[text()='* City']")).click();
+		driver.findElement(By.xpath("//input[contains(@id,'uxCityDropDown_Input')]")).click();
 		driver.waitForStorfrontLegacyLoadingImageToDisappear();
 		//driver.pauseExecutionFor(5000);
 		Actions actions = new Actions(RFWebsiteDriver.driver);
@@ -1436,8 +1440,8 @@ public class StoreFrontBrandRefreshHomePage extends StoreFrontBrandRefreshWebsit
 		driver.waitForElementPresent(FIRST_VALUE_OF_CITY_DD);
 		driver.click(FIRST_VALUE_OF_CITY_DD);
 		logger.info("City selected");
-		//		driver.type(CITY_DD, "Fremont");
-		//		logger.info("City Selected");
+		//  driver.type(CITY_DD, "Fremont");
+		//  logger.info("City Selected");
 		driver.type(PHONE_NUMBER_BILLING_PROFILE_PAGE,phnNumber);
 		logger.info("Phone number entered as: "+phnNumber);
 	}
@@ -1739,14 +1743,15 @@ public class StoreFrontBrandRefreshHomePage extends StoreFrontBrandRefreshWebsit
 		logger.info("Change Billing info link clicked");
 		driver.waitForPageLoad();
 	}
+
 	public void enterBillingInfoForPWS(String billingName, String firstName,String lastName,String cardName,String cardNumer,String month,String year,String addressLine1,String postalCode,String phnNumber){
 		driver.type(BILLING_NAME_FOR_BILLING_PROFILE, billingName);
 		logger.info("Billing profile name entered as: "+billingName);
 		driver.type(ATTENTION_FIRST_NAME, firstName);
-		driver.type(BILLING_FIRST_NAME, firstName);
+		//driver.type(BILLING_FIRST_NAME, firstName);
 		logger.info("Attention first name entered as: "+firstName);
 		driver.type(ATTENTION_LAST_NAME, lastName);
-		driver.type(BILLING_LAST_NAME, lastName);
+		//driver.type(BILLING_LAST_NAME, lastName);
 		logger.info("Attention last name entered as: "+lastName);
 		driver.type(NAME_ON_CARD, cardName);
 		logger.info("Card Name entered as: "+cardName);
@@ -1764,14 +1769,25 @@ public class StoreFrontBrandRefreshHomePage extends StoreFrontBrandRefreshWebsit
 		logger.info("Billing street address entered as: "+addressLine1);
 		driver.type(ZIP_CODE, postalCode+"\t");
 		logger.info("Postal code entered as: "+postalCode);
+		driver.findElement(By.xpath("//input[contains(@id,'uxCityDropDown_Input')]")).click();
 		driver.waitForStorfrontLegacyLoadingImageToDisappear();
-		driver.click(CITY_DD);
+		//driver.pauseExecutionFor(5000);
+		Actions actions = new Actions(RFWebsiteDriver.driver);
+		actions.moveToElement(driver.findElement(CITY_DD)).click().build().perform();
+		//driver.click(CITY_DD);
 		logger.info("City dropdown clicked");
+		driver.waitForElementPresent(FIRST_VALUE_OF_CITY_DD);
 		driver.click(FIRST_VALUE_OF_CITY_DD);
 		logger.info("City selected");
+		driver.waitForStorfrontLegacyLoadingImageToDisappear();
+		/*driver.click(CITY_DD);
+		  logger.info("City dropdown clicked");*/
+		/*driver.click(FIRST_VALUE_OF_CITY_DD);
+		  logger.info("City selected");*/
 		driver.type(PHONE_NUMBER_BILLING_PROFILE_PAGE,phnNumber);
 		logger.info("Phone number entered as: "+phnNumber);
 	}
+
 	public String getOrderBillingDetailsUpdateMessage(){
 		driver.waitForElementPresent(EDIT_ORDER_BILLING_DETAILS_UPDATE_MESSAGE);
 		String messgae = driver.findElement(EDIT_ORDER_BILLING_DETAILS_UPDATE_MESSAGE).getText();
@@ -2007,6 +2023,16 @@ public class StoreFrontBrandRefreshHomePage extends StoreFrontBrandRefreshWebsit
 	public boolean isPCEnrollmentCompletedSuccessfully(){
 		driver.waitForElementPresent(By.xpath("//h2[contains(text(),'Welcome to PC Perks')]"));
 		return driver.isElementPresent(By.xpath("//h2[contains(text(),'Welcome to PC Perks')]"));
+	}
+
+	public boolean verifyErrorMessageForTermsAndConditionsForConsultant(){
+		driver.waitForElementPresent(By.xpath("//label[@class='fieldError']"));
+		return driver.isElementPresent(By.xpath("//label[@class='fieldError']"));
+	}
+
+	public boolean verifyErrorMessageForTermsAndConditionsForPCAndRC(){
+		driver.waitForElementPresent(ERROR_MESSAGE_FOR_TERMS_AND_CANDITIONS_FOR_PC_RC);
+		return driver.isElementPresent(ERROR_MESSAGE_FOR_TERMS_AND_CANDITIONS_FOR_PC_RC);
 	}
 
 }

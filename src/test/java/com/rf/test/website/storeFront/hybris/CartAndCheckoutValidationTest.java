@@ -660,7 +660,7 @@ public class CartAndCheckoutValidationTest extends RFWebsiteBaseTest{
 
 	//Hybris Project-2120:Increase the Quantity
 	@Test
-	public void testIncreseTheQuantity_2120() throws InterruptedException{
+	public void testIncreaseTheQuantity_2120() throws InterruptedException{
 		String qtyIncrease = "2";
 		storeFrontHomePage = new StoreFrontHomePage(driver);
 		storeFrontHomePage.hoverOnShopLinkAndClickAllProductsLinks();
@@ -668,7 +668,7 @@ public class CartAndCheckoutValidationTest extends RFWebsiteBaseTest{
 		storeFrontHomePage.clickAddToBagButtonWithoutFilter();
 		double subTotalOfAddedProduct = storeFrontHomePage.getSubTotalOnShoppingCartPage();
 		storeFrontHomePage.addQuantityOfProduct(qtyIncrease);
-		s_assert.assertTrue(storeFrontHomePage.validateAutoshipTemplateUpdatedMsgAfterIncreasingQtyOfProducts(),"update message not coming as expected");
+		//s_assert.assertTrue(storeFrontHomePage.validateAutoshipTemplateUpdatedMsgAfterIncreasingQtyOfProducts(),"update message not coming as expected");
 		s_assert.assertTrue(storeFrontHomePage.getAutoshipTemplateUpdatedMsg().contains("Product quantity has been updated."),"update message not coming as expected");
 		double subTotalOfAfterUpdate = storeFrontHomePage.getSubTotalOnShoppingCartPage();
 		s_assert.assertTrue(storeFrontHomePage.verifySubTotalAccordingToQuantity(qtyIncrease,subTotalOfAddedProduct,subTotalOfAfterUpdate),"subTotal is not updated with increased quantity");

@@ -33,6 +33,7 @@ public class EnrollmentTest extends RFBrandRefreshWebsiteBaseTest{
 	//PC Enrollment From Corp site
 	@Test(enabled=true)//smoke
 	public void testPCEnrollment(){
+		RFL_DB = driver.getDBNameRFL();
 		int randomNum = CommonUtils.getRandomNum(10000, 1000000);
 		int randomNumber = CommonUtils.getRandomNum(10000, 1000000);
 		String firstName = TestConstantsRFL.FIRST_NAME;
@@ -49,15 +50,22 @@ public class EnrollmentTest extends RFBrandRefreshWebsiteBaseTest{
 		String regimen = TestConstantsRFL.REGIMEN_NAME_REVERSE;
 		String phnNumber = TestConstantsRFL.NEW_ADDRESS_PHONE_NUMBER_US;
 		String gender = TestConstantsRFL.GENDER_MALE;
-		String sponsorID = TestConstantsRFL.CID_CONSULTANT;
+		//String sponsorID = TestConstantsRFL.CID_CONSULTANT;
+		String sponsorID = null;
 		String addressName = "Home";
 		String billingName =TestConstantsRFL.BILLING_PROFILE_NAME;
 		String billingProfileFirstName = TestConstantsRFL.SHIPPING_PROFILE_FIRST_NAME;
 		String billingProfileLastName = TestConstantsRFL.SHIPPING_PROFILE_LAST_NAME+randomNumber;
+
+		//Get PC Sponser from database
+		List<Map<String, Object>> randomConsultantList = DBUtil.performDatabaseQuery(DBQueries_RFL.GET_RANDOM_ACTIVE_CONSULTANT_EMAILID,RFL_DB);
+		sponsorID = String.valueOf(getValueFromQueryResult(randomConsultantList, "AccountNumber"));
+
 		storeFrontBrandRefreshHomePage.mouseHoverShopSkinCareAndClickLink(regimen);
 		storeFrontBrandRefreshHomePage.clickAddToCartBtn();
 		storeFrontBrandRefreshHomePage.clickCheckoutBtn();
 		storeFrontBrandRefreshHomePage.clickClickHereLinkForPC();
+		s_assert.assertTrue(driver.getCurrentUrl().contains("PCPerks"), "After clicking click here link for PC not navigated to PC Enrollment page.");
 		storeFrontBrandRefreshHomePage.clickEnrollNowBtnForPCAndRC();
 		storeFrontBrandRefreshHomePage.enterProfileDetailsForPCAndRC(firstName,lastName,emailAddress,password,phnNumber,gender);
 		storeFrontBrandRefreshHomePage.clickContinueBtnForPCAndRC();
@@ -65,6 +73,8 @@ public class EnrollmentTest extends RFBrandRefreshWebsiteBaseTest{
 		storeFrontBrandRefreshHomePage.clickBeginSearchBtn();
 		storeFrontBrandRefreshHomePage.selectSponsorRadioBtn();
 		storeFrontBrandRefreshHomePage.clickSelectAndContinueBtnForPCAndRC();
+		storeFrontBrandRefreshHomePage.clickContinueBtnForPCAndRC();
+		s_assert.assertTrue(storeFrontBrandRefreshHomePage.verifyErrorMessageForTermsAndConditionsForPCAndRC(), "Terms and candition error message not present for PC User.");
 		storeFrontBrandRefreshHomePage.checkTermsAndConditionChkBoxForPCAndRC();
 		storeFrontBrandRefreshHomePage.clickContinueBtnForPCAndRC();
 		storeFrontBrandRefreshHomePage.clickContinueBtnOnAutoshipSetupPageForPC();
@@ -84,6 +94,7 @@ public class EnrollmentTest extends RFBrandRefreshWebsiteBaseTest{
 	//RC Enrollment from corp site.
 	@Test(enabled=true)//smoke
 	public void testRCEnrollment(){
+		RFL_DB = driver.getDBNameRFL();
 		int randomNum = CommonUtils.getRandomNum(10000, 1000000);
 		int randomNumber = CommonUtils.getRandomNum(10000, 1000000);
 		int randomNumbers = CommonUtils.getRandomNum(10000, 1000000);
@@ -105,12 +116,19 @@ public class EnrollmentTest extends RFBrandRefreshWebsiteBaseTest{
 		String phnNumber = TestConstantsRFL.NEW_ADDRESS_PHONE_NUMBER_US;
 		String gender = TestConstantsRFL.GENDER_MALE;
 		String javaScriptPopupTxt = TestConstantsRFL.RC_ACCOUNT_CONFIRMATION_POPUP_TXT;
-		String sponsorID = TestConstantsRFL.CID_CONSULTANT;
+		//String sponsorID = TestConstantsRFL.CID_CONSULTANT;
+		String sponsorID = null;
 		String addressName = "Home";
+
+		//Get RC Sponser from database
+		List<Map<String, Object>> randomConsultantList = DBUtil.performDatabaseQuery(DBQueries_RFL.GET_RANDOM_ACTIVE_CONSULTANT_EMAILID,RFL_DB);
+		sponsorID = String.valueOf(getValueFromQueryResult(randomConsultantList, "AccountNumber"));
+
 		storeFrontBrandRefreshHomePage.mouseHoverShopSkinCareAndClickLink(regimen);
 		storeFrontBrandRefreshHomePage.clickAddToCartBtn();
 		storeFrontBrandRefreshHomePage.clickCheckoutBtn();
 		storeFrontBrandRefreshHomePage.clickClickHereLinkForRC();
+		s_assert.assertTrue(driver.getCurrentUrl().contains("Retail"), "After clicking click here link for RC not navigated to RC Enrollment page.");
 		storeFrontBrandRefreshHomePage.enterProfileDetailsForPCAndRC(firstName,lastName,emailAddress,password,phnNumber,gender);
 		storeFrontBrandRefreshHomePage.clickCreateMyAccountBtnOnCreateRetailAccountPage();
 		storeFrontBrandRefreshHomePage.enterIDNumberAsSponsorForPCAndRC(sponsorID);
@@ -131,6 +149,7 @@ public class EnrollmentTest extends RFBrandRefreshWebsiteBaseTest{
 	//Consultant Express Enrollment from Corp
 	@Test(enabled=true)//smoke
 	public void testConsultantExpressEnrollment(){
+		RFL_DB = driver.getDBNameRFL();
 		int randomNum = CommonUtils.getRandomNum(10000, 1000000);
 		int ssnRandomNum1 = CommonUtils.getRandomNum(100, 999);
 		int ssnRandomNum2 = CommonUtils.getRandomNum(10, 99);
@@ -144,15 +163,21 @@ public class EnrollmentTest extends RFBrandRefreshWebsiteBaseTest{
 		String nameOnCard = firstName;
 		String expMonth = TestConstantsRFL.EXP_MONTH;
 		String expYear = TestConstantsRFL.EXP_YEAR;
-		String CID = TestConstantsRFL.CID_CONSULTANT;
 		String kitName = "Big Business Launch Kit";
 		String regimen = "Redefine";
 		String enrollemntType = "Express";
 		String phnNumber1 = "415";
 		String phnNumber2 = "780";
 		String phnNumber3 = "9099";
+
+
+		//  storeFrontBrandRefreshHomePage.clickBeAConsultantBtn();
+		//  storeFrontBrandRefreshHomePage.clickEnrollNowBtnOnBusinessPage();
+		//Get Sponser details for Consultant enrollment.
+		List<Map<String, Object>> randomConsultantList = DBUtil.performDatabaseQuery(DBQueries_RFL.GET_RANDOM_ACTIVE_CONSULTANT_EMAILID,RFL_DB);
+		String sponsorID = String.valueOf(getValueFromQueryResult(randomConsultantList, "AccountNumber"));
 		storeFrontBrandRefreshHomePage.mouseHoverBeAConsultantAndClickLink("Enroll Now");
-		storeFrontBrandRefreshHomePage.enterCID(CID);
+		storeFrontBrandRefreshHomePage.enterCID(sponsorID);
 		storeFrontBrandRefreshHomePage.clickSearchResults();
 		storeFrontBrandRefreshHomePage.selectEnrollmentKit(kitName);
 		storeFrontBrandRefreshHomePage.selectRegimenAndClickNext(regimen);
@@ -163,6 +188,8 @@ public class EnrollmentTest extends RFBrandRefreshWebsiteBaseTest{
 		storeFrontBrandRefreshHomePage.enterAccountInformation(ssnRandomNum1, ssnRandomNum2, ssnRandomNum3, firstName);
 		//storeFrontBrandRefreshHomePage.enterPWS(firstName+lastName+randomNum);
 		storeFrontBrandRefreshHomePage.clickCompleteAccountNextBtn();
+		storeFrontBrandRefreshHomePage.clickChargeMyCardAndEnrollMeWithOutConfirmAutoship();
+		s_assert.assertTrue(storeFrontBrandRefreshHomePage.verifyErrorMessageForTermsAndConditionsForConsultant(), "Error message is not present for consultant for terms & conditions");
 		storeFrontBrandRefreshHomePage.clickTermsAndConditions();
 		storeFrontBrandRefreshHomePage.chargeMyCardAndEnrollMe();
 		s_assert.assertTrue(storeFrontBrandRefreshHomePage.isCongratulationsMessageAppeared(),"");
@@ -172,6 +199,7 @@ public class EnrollmentTest extends RFBrandRefreshWebsiteBaseTest{
 	//Consultant Standard Enrollment
 	@Test(enabled=true)//smoke
 	public void testConsultantStandardEnrollment(){
+		RFL_DB = driver.getDBNameRFL();
 		int randomNum = CommonUtils.getRandomNum(10000, 1000000);
 		int ssnRandomNum1 = CommonUtils.getRandomNum(100, 999);
 		int ssnRandomNum2 = CommonUtils.getRandomNum(00, 99);
@@ -185,7 +213,6 @@ public class EnrollmentTest extends RFBrandRefreshWebsiteBaseTest{
 		String nameOnCard = firstName;
 		String expMonth = TestConstantsRFL.EXP_MONTH;
 		String expYear = TestConstantsRFL.EXP_YEAR;
-		String CID = TestConstantsRFL.CID_CONSULTANT;
 		String kitName = "Big Business Launch Kit";
 		String regimen = "Redefine";
 		String enrollemntType = "Standard";
@@ -193,7 +220,11 @@ public class EnrollmentTest extends RFBrandRefreshWebsiteBaseTest{
 		String phnNumber2 = "780";
 		String phnNumber3 = "9099";
 		storeFrontBrandRefreshHomePage.mouseHoverBeAConsultantAndClickLink("Enroll Now");
-		storeFrontBrandRefreshHomePage.enterCID(CID);
+		//  storeFrontBrandRefreshHomePage.clickBeAConsultantBtn();
+		//  storeFrontBrandRefreshHomePage.clickEnrollNowBtnOnBusinessPage();
+		List<Map<String, Object>> randomConsultantList = DBUtil.performDatabaseQuery(DBQueries_RFL.GET_RANDOM_ACTIVE_CONSULTANT_EMAILID,RFL_DB);
+		String sponsorID = String.valueOf(getValueFromQueryResult(randomConsultantList, "AccountNumber"));
+		storeFrontBrandRefreshHomePage.enterCID(sponsorID);
 		storeFrontBrandRefreshHomePage.clickSearchResults();
 		storeFrontBrandRefreshHomePage.selectEnrollmentKit(kitName);
 		storeFrontBrandRefreshHomePage.selectRegimenAndClickNext(regimen);
@@ -201,6 +232,7 @@ public class EnrollmentTest extends RFBrandRefreshWebsiteBaseTest{
 		storeFrontBrandRefreshHomePage.enterSetUpAccountInformation(firstName, lastName, emailAddress, password, addressLine1, postalCode, phnNumber1, phnNumber2, phnNumber3);
 		storeFrontBrandRefreshHomePage.clickSetUpAccountNextBtn();
 		storeFrontBrandRefreshHomePage.enterBillingInformation(cardNumber, nameOnCard, expMonth, expYear);
+
 		storeFrontBrandRefreshHomePage.enterAccountInformation(ssnRandomNum1, ssnRandomNum2, ssnRandomNum3, firstName);
 		storeFrontBrandRefreshHomePage.clickBillingInfoNextBtn();
 		storeFrontBrandRefreshHomePage.clickYesSubscribeToPulseNow();
@@ -208,6 +240,8 @@ public class EnrollmentTest extends RFBrandRefreshWebsiteBaseTest{
 		storeFrontBrandRefreshHomePage.clickAutoShipOptionsNextBtn();
 		storeFrontBrandRefreshHomePage.selectProductToAddToCart();
 		storeFrontBrandRefreshHomePage.clickYourCRPOrderPopUpNextBtn();
+		storeFrontBrandRefreshHomePage.clickChargeMyCardAndEnrollMeWithOutConfirmAutoship();
+		s_assert.assertTrue(storeFrontBrandRefreshHomePage.verifyErrorMessageForTermsAndConditionsForConsultant(), "Error message is not present for consultant for terms & conditions");
 		storeFrontBrandRefreshHomePage.clickTermsAndConditions();
 		storeFrontBrandRefreshHomePage.chargeMyCardAndEnrollMe();
 		s_assert.assertTrue(storeFrontBrandRefreshHomePage.isCongratulationsMessageAppeared(),"Congratulations Message not appeared");

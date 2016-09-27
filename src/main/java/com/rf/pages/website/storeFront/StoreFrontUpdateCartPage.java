@@ -900,8 +900,8 @@ public class StoreFrontUpdateCartPage extends StoreFrontRFWebsiteBasePage{
 	public void addAshippingProfile(String city,String state,String addressLine,String profileName,String phoneNumber,String postalCode) throws InterruptedException{
 		List<WebElement> totalShipingAddress = driver.findElements(By.xpath("//div[@id='multiple-addresses-summary']/div"));
 		if(totalShipingAddress.size() <= 1){
-			driver.waitForElementPresent(By.xpath("//a[@class='add-new-shipping-address font-sizer spacer-mobile']"));
-			driver.click(By.xpath("//a[@class='add-new-shipping-address font-sizer spacer-mobile']"));
+			driver.waitForElementPresent(By.xpath("//a[contains(text(),'Add new shipping address')]"));
+			driver.click(By.xpath("//a[contains(text(),'Add new shipping address')]"));
 			logger.info("add a new shipping address clicked");
 			enterNewShippingAddressName(profileName);
 			enterNewShippingAddressLine1(addressLine);
@@ -915,6 +915,8 @@ public class StoreFrontUpdateCartPage extends StoreFrontRFWebsiteBasePage{
 			logger.info("It is having more than one shipping address");
 			//List<WebElement> totalRadioButton = driver.findElements(By.xpath("//div[@id='multiple-addresses-summary']//span"));
 		}
+		
+		driver.waitForLoadingImageToDisappear();
 	}
 
 	public void clickOnEditOnNonDefaultAddress(){

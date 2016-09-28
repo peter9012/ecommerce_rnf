@@ -753,26 +753,28 @@ public class AccountTest extends RFWebsiteBaseTest{
 	public void testCheckCartFromMiniCartAfterAddingProduct_2304() throws InterruptedException {
 		//Navigate to the website
 		storeFrontHomePage = new StoreFrontHomePage(driver);
-
 		//Add a item to the cart and validate the mini cart in the header section
 		storeFrontHomePage.hoverOnShopLinkAndClickAllProductsLinks();
-
 		// Products are displayed?
 		s_assert.assertTrue(storeFrontHomePage.areProductsDisplayed(), "quickshop products not displayed");
 		logger.info("Quick shop products are displayed");
-		storeFrontHomePage.selectProductAndProceedToBuy();
-
+		String productName = storeFrontHomePage.selectProductAndProceedToBuy();
+		logger.info("product name is "+productName.toLowerCase().trim());
 		//Cart page is displayed?
 		s_assert.assertTrue(storeFrontHomePage.isCartPageDisplayed(), "Cart page is not displayed");
 		logger.info("Cart page is displayed");
-
+		s_assert.assertTrue(storeFrontHomePage.getNameOfTheOnlyAddedProductOnCart().toLowerCase().trim().contains(productName.toLowerCase().trim()),"Added product name is "+productName.toLowerCase().trim()+" while on cart is "+storeFrontHomePage.getNameOfTheOnlyAddedProductOnCart().toLowerCase().trim());
 		s_assert.assertTrue(storeFrontHomePage.validateMiniCart(), "mini cart is not being displayed");
-
+		s_assert.assertTrue(storeFrontHomePage.getNumberOfProductsDisplayedOnMiniCart().contains("1"), "number of products displayed in the mini cart expected is 1 but getting "+storeFrontHomePage.getNumberOfProductsDisplayedOnMiniCart());
+		storeFrontHomePage.mouseHoverOnMiniCart();
+		s_assert.assertTrue(storeFrontHomePage.getNameOfOnlyProductAddedOnMiniCart().toLowerCase().trim().contains(productName.toLowerCase().trim()),"Added product name is "+productName.toLowerCase().trim()+" while on mini cart is "+storeFrontHomePage.getNameOfOnlyProductAddedOnMiniCart().toLowerCase().trim());
+		storeFrontHomePage.clickOnViewShippingCartBtnOnMiniCart();
+		s_assert.assertTrue(storeFrontHomePage.isCartPageDisplayed(),"cart page is not displayed after clicking view shipping cart button on mini cart");
 		//click on mini cart and validate the cart page with pre-added products
 		s_assert.assertTrue(storeFrontHomePage.clickMiniCartAndValidatePreaddedProductsOnCartPage(), "preadded products on cart page is not displayed");  
 		s_assert.assertAll();
 	}
-
+	
 	//Hybris Project-4281 :: Version : 1 :: Terminate User and Login with User Name
 	@Test 
 	public void terminateUserAndLoginWithSameUsername_4281() throws InterruptedException{
@@ -1020,6 +1022,7 @@ public class AccountTest extends RFWebsiteBaseTest{
 		storeFrontAccountInfoPage.updateDateOfBirthAndGender();
 		storeFrontAccountInfoPage.uncheckSpouseCheckBox();
 		storeFrontAccountInfoPage.clickSaveAccountBtn();
+		s_assert.assertTrue(storeFrontAccountInfoPage.isProfileHasUpdatedMessagePresent(), "'Your profile has been updated' message has not appeared after saving the account info");
 		//assert First Name with RFO
 		s_assert.assertTrue(storeFrontAccountInfoPage.verifyFirstNameFromUIForAccountInfo(firstName), "First Name on UI is not updated");
 
@@ -1590,6 +1593,7 @@ public class AccountTest extends RFWebsiteBaseTest{
 		storeFrontRCUserPage.clickOnWelcomeDropDown();
 		storeFrontRCUserPage.clickAccountInfoLinkPresentOnWelcomeDropDown();
 		storeFrontRCUserPage.enterNewUserNameAndClickSaveButton(newUserName);
+		s_assert.assertTrue(storeFrontRCUserPage.isProfileHasUpdatedMessagePresent(), "'Your profile has been updated' message has not appeared after saving the account info");		
 		logout();
 		storeFrontHomePage.loginAsRCUser(newUserName, password);
 		s_assert.assertTrue(storeFrontHomePage.verifyWelcomeDropdownToCheckUserRegistered(), "User NOT registered successfully");

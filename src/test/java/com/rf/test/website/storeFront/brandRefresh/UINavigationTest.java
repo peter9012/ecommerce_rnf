@@ -53,8 +53,6 @@ public class UINavigationTest extends RFBrandRefreshWebsiteBaseTest{
 		String subLinkProducts = "Products";
 		String subLinkFAQ = "FAQs";
 		String subLinkResults = "Results";
-
-
 		storeFrontBrandRefreshHomePage.mouseHoverShopSkinCareAndClickLink(subLinkRegimen);
 		s_assert.assertTrue(storeFrontBrandRefreshHomePage.getCurrentURL().toLowerCase().contains(subLinkRegimen.toLowerCase()), "Expected regimen name is "+subLinkRegimen.toLowerCase()+" Actual on UI is "+storeFrontBrandRefreshHomePage.getCurrentURL().toLowerCase());
 		s_assert.assertTrue(storeFrontBrandRefreshHomePage.getCurrentURL().toLowerCase().contains(subLinkProducts.toLowerCase()), "Expected sublink in url is "+subLinkProducts.toLowerCase()+" Actual on UI is "+storeFrontBrandRefreshHomePage.getCurrentURL().toLowerCase());
@@ -74,8 +72,6 @@ public class UINavigationTest extends RFBrandRefreshWebsiteBaseTest{
 		String subLinkProducts = "Products";
 		String subLinkFAQ = "FAQs";
 		String subLinkResults = "Results";
-
-
 		storeFrontBrandRefreshHomePage.mouseHoverShopSkinCareAndClickLink(subLinkRegimen);
 		s_assert.assertTrue(storeFrontBrandRefreshHomePage.getCurrentURL().toLowerCase().contains(subLinkRegimen.toLowerCase()), "Expected regimen name is "+subLinkRegimen.toLowerCase()+" Actual on UI is "+storeFrontBrandRefreshHomePage.getCurrentURL().toLowerCase());
 		s_assert.assertTrue(storeFrontBrandRefreshHomePage.getCurrentURL().toLowerCase().contains(subLinkProducts.toLowerCase()), "Expected sublink in url is "+subLinkProducts.toLowerCase()+" Actual on UI is "+storeFrontBrandRefreshHomePage.getCurrentURL().toLowerCase());
@@ -112,7 +108,6 @@ public class UINavigationTest extends RFBrandRefreshWebsiteBaseTest{
 	//product philosophy link should be working
 	@Test(enabled=false)//needs updation
 	public void testProductsPhilosophyLinkShouldWorkingProper(){
-
 		storeFrontBrandRefreshHomePage.clickShopSkinCareBtn();
 		//verify Product Philosophy link working?
 		storeFrontBrandRefreshHomePage.clickProductPhilosophyLink();
@@ -123,7 +118,6 @@ public class UINavigationTest extends RFBrandRefreshWebsiteBaseTest{
 	//Digital Product Catalog- Links should be displayed the information properly
 	@Test(enabled=false)//needs updation
 	public void testDigitalProductCatalogLinkShouldDisplayInformationProperly(){
-
 		storeFrontBrandRefreshHomePage.clickShopSkinCareBtn();
 		//verify Digital Product Catalog- Link should be displayed the information properly?
 		storeFrontBrandRefreshHomePage.clickDigitalProductCatalogLink();
@@ -137,7 +131,6 @@ public class UINavigationTest extends RFBrandRefreshWebsiteBaseTest{
 	//Company Links Should be Present
 	@Test(enabled=false)//needs updation
 	public void testCompanyLinksShouldBePresent(){
-
 		storeFrontBrandRefreshHomePage.clickAboutRFBtn();
 		//verify company links is present?
 		s_assert.assertTrue(storeFrontBrandRefreshHomePage.validateExecutiveTeamLinkPresent(),"Executive Team Link is not present");
@@ -151,7 +144,6 @@ public class UINavigationTest extends RFBrandRefreshWebsiteBaseTest{
 	//Footer- Privacy Policy link should be redirecting to the appropriate page
 	@Test
 	public void testFooterPrivacyPolicyLinkShouldRedirectionToAppropriatePage(){
-
 		storeFrontBrandRefreshHomePage.clickPrivacyPolicyLink();
 		/*s_assert.assertTrue(storeFrontBrandRefreshHomePage.isPrivacyPolicyPagePresent(), "Privacy policy page is not present after clicked on privacy policy link");*/
 		s_assert.assertTrue(storeFrontBrandRefreshHomePage.getCurrentURL().toLowerCase().contains("privacy"), "Expected url having privacy but actual on UI is "+storeFrontBrandRefreshHomePage.getCurrentURL().toLowerCase());
@@ -161,7 +153,6 @@ public class UINavigationTest extends RFBrandRefreshWebsiteBaseTest{
 	//Footer-Terms & Conditions link should redirecting to the appropriate page
 	@Test
 	public void testFooterTermsAndConditionLinkShouldRedirectionToAppropriatePage(){
-
 		storeFrontBrandRefreshHomePage.clickTermsAndConditionsLink();
 		s_assert.assertTrue(storeFrontBrandRefreshHomePage.getCurrentURL().toLowerCase().contains("terms"), "Expected url having terms but actual on UI is "+storeFrontBrandRefreshHomePage.getCurrentURL().toLowerCase());
 		s_assert.assertAll();
@@ -170,7 +161,6 @@ public class UINavigationTest extends RFBrandRefreshWebsiteBaseTest{
 	//Satisfaction Guarantee-link should be redirecting properly 
 	@Test
 	public void testSatisfactionGuaranteeLinkShouldBeRedirectionProperly(){
-
 		storeFrontBrandRefreshHomePage.clickSatisfactionGuaranteeLink();
 		s_assert.assertTrue(storeFrontBrandRefreshHomePage.isSatisfactionGuaranteePagePresent(), "Satisfaction guarantee page is not present after clicked on privacy policy link");
 		s_assert.assertTrue(storeFrontBrandRefreshHomePage.getCurrentURL().toLowerCase().contains("guarantee"), "Expected url having guarantee but actual on UI is "+storeFrontBrandRefreshHomePage.getCurrentURL().toLowerCase());
@@ -180,9 +170,7 @@ public class UINavigationTest extends RFBrandRefreshWebsiteBaseTest{
 	//Real results products- links should be redirecting to the appropriate page
 	@Test
 	public void testProductsLinkShouldBeRedirectionToAppropriatePage(){
-
 		//For REDEFINE
-
 		String regimen = TestConstantsRFL.REGIMEN_NAME_REDEFINE;
 		storeFrontBrandRefreshHomePage.mouseHoverShopSkinCareAndClickLink(regimen);
 		s_assert.assertTrue(storeFrontBrandRefreshHomePage.getCurrentURL().toLowerCase().contains(regimen.toLowerCase()), "Expected regimen name is "+regimen.toLowerCase()+" Actual on UI is "+storeFrontBrandRefreshHomePage.getCurrentURL().toLowerCase());
@@ -513,7 +501,7 @@ public class UINavigationTest extends RFBrandRefreshWebsiteBaseTest{
 		String sixthSubSectionUnderBusinessSystem = "Enroll Now";
 
 		String firstSubSectionUnderProgramsAndIncentives = "Compensation Plan";
-		String secondSubSectionUnderProgramsAndIncentives = "COMPENSATION PLAN, PROGRAMS & INCENTIVES";
+		String secondSubSectionUnderProgramsAndIncentives = "Compensation Plan, Programs & Incentives";
 		String thirdSubSectionUnderProgramsAndIncentives = "Enroll Now";
 
 		storeFrontBrandRefreshHomePage.mouseHoverBeAConsultant();
@@ -546,7 +534,7 @@ public class UINavigationTest extends RFBrandRefreshWebsiteBaseTest{
 		String sixthSubSectionUnderBusinessSystem = "Enroll Now";
 
 		//String firstSubSectionUnderProgramsAndIncentives = "Compensation Plan";
-		String secondSubSectionUnderProgramsAndIncentives = "COMPENSATION PLAN, PROGRAMS & INCENTIVES";
+		String secondSubSectionUnderProgramsAndIncentives = "Compensation Plan, Programs & Incentives";
 		String thirdSubSectionUnderProgramsAndIncentives = "Enroll Now";
 
 

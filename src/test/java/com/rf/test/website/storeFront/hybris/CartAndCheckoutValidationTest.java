@@ -508,10 +508,18 @@ public class CartAndCheckoutValidationTest extends RFWebsiteBaseTest{
 	public void testCheckShippingAndHandlingFee_2144() throws SQLException, InterruptedException{
 		RFO_DB = driver.getDBNameRFO();
 		List<Map<String, Object>> randomConsultantList =  null;
+		List<Map<String, Object>> randomPCUserList =  null;
+		List<Map<String, Object>> randomRCUserList =  null;
 		String consultantEmailID = null;
+		String pcUserEmailID = null;
+		String rcUserEmailID = null;
 		String accountId = null;
+		String accountIdForPCUser = null;
+		String accountIdForRCUser = null;
 		storeFrontHomePage = new StoreFrontHomePage(driver);
 		storeFrontUpdateCartPage = new StoreFrontUpdateCartPage(driver);
+		double orderTotal = 0.00;
+		String deliveryCharges = null;
 		while(true){
 			randomConsultantList = DBUtil.performDatabaseQuery(DBQueries_RFO.callQueryWithArguement(DBQueries_RFO.GET_RANDOM_ACTIVE_CONSULTANT_WITH_ORDERS_AND_AUTOSHIPS_RFO,countryId),RFO_DB);
 			consultantEmailID = (String) getValueFromQueryResult(randomConsultantList, "UserName");  
@@ -532,12 +540,95 @@ public class CartAndCheckoutValidationTest extends RFWebsiteBaseTest{
 		storeFrontConsultantPage.clickAddToBagButton(driver.getCountry());
 		storeFrontUpdateCartPage.clickOnCheckoutButton();
 		storeFrontUpdateCartPage.selectShippingMethod2DayForAdhocOrder();
-		double orderTotal = storeFrontUpdateCartPage.getOrderTotal();
+		orderTotal = storeFrontUpdateCartPage.getOrderTotal();
 		logger.info("subtotal ="+orderTotal);
-		String deliveryCharges = String.valueOf(storeFrontUpdateCartPage.getDeliveryCharges());
+		deliveryCharges = String.valueOf(storeFrontUpdateCartPage.getDeliveryCharges());
 		logger.info("deliveryCharges ="+deliveryCharges);
 		/*  String handlingCharges = String.valueOf(storeFrontUpdateCartPage.getHandlingCharges());
-		  logger.info("handlingCharges ="+handlingCharges);*/
+	    logger.info("handlingCharges ="+handlingCharges);*/
+		if(orderTotal<=999999){
+			if(driver.getCountry().equalsIgnoreCase("CA")){
+				System.out.println("Inside");
+				//Assert of shipping cost from UI
+				s_assert.assertTrue(storeFrontUpdateCartPage.isDeliveryChargesPresent(),"Shipping charges is not present on UI");
+			}else if(driver.getCountry().equalsIgnoreCase("US")){
+				s_assert.assertTrue(deliveryCharges.equalsIgnoreCase("$23.00"),"Shipping charges on UI is not As per shipping method selected");
+			}
+
+		}else{
+			logger.info("Order total is not in required range");
+		}
+		logout();
+		driver.get(driver.getURL()+"/"+driver.getCountry());
+		//Check shipping and handling for PC User.
+		while(true){
+			randomPCUserList = DBUtil.performDatabaseQuery(DBQueries_RFO.callQueryWithArguement(DBQueries_RFO.GET_RANDOM_ACTIVE_PC_WITH_ORDERS_AND_AUTOSHIPS_RFO,countryId),RFO_DB);
+			pcUserEmailID = (String) getValueFromQueryResult(randomPCUserList, "UserName");  
+			accountIdForPCUser = String.valueOf(getValueFromQueryResult(randomPCUserList, "AccountID"));
+			logger.info("Account Id of the user is "+accountIdForPCUser);
+
+			storeFrontPCUserPage = storeFrontHomePage.loginAsPCUser(pcUserEmailID, password);
+			boolean isError = driver.getCurrentUrl().contains("error");
+			if(isError){
+				logger.info("login error for the user "+pcUserEmailID);
+				driver.get(driver.getURL()+"/"+driver.getCountry());
+			}
+			else
+				break;
+		}
+		logger.info("login is successful");
+		storeFrontConsultantPage.hoverOnShopLinkAndClickAllProductsLinksAfterLogin();
+		storeFrontConsultantPage.clickAddToBagButton(driver.getCountry());
+		storeFrontUpdateCartPage.clickOnCheckoutButton();
+		storeFrontUpdateCartPage.selectShippingMethod2DayForAdhocOrder();
+		orderTotal = storeFrontUpdateCartPage.getOrderTotal();
+		logger.info("subtotal ="+orderTotal);
+		deliveryCharges = String.valueOf(storeFrontUpdateCartPage.getDeliveryCharges());
+		logger.info("deliveryCharges ="+deliveryCharges);
+		/*  String handlingCharges = String.valueOf(storeFrontUpdateCartPage.getHandlingCharges());
+	    logger.info("handlingCharges ="+handlingCharges);*/
+		if(orderTotal<=999999){
+			if(driver.getCountry().equalsIgnoreCase("CA")){
+				System.out.println("Inside");
+				//Assert of shipping cost from UI
+				s_assert.assertTrue(storeFrontUpdateCartPage.isDeliveryChargesPresent(),"Shipping charges is not present on UI");
+			}else if(driver.getCountry().equalsIgnoreCase("US")){
+				s_assert.assertTrue(deliveryCharges.equalsIgnoreCase("$23.00"),"Shipping charges on UI is not As per shipping method selected");
+			}
+
+		}else{
+			logger.info("Order total is not in required range");
+		}
+		logout();
+		driver.get(driver.getURL()+"/"+driver.getCountry());
+		//Check shipping and handling for RC User.
+		while(true){
+			randomRCUserList = DBUtil.performDatabaseQuery(DBQueries_RFO.callQueryWithArguement(DBQueries_RFO.GET_RANDOM_ACTIVE_RC_HAVING_ORDERS_RFO,countryId),RFO_DB);
+			rcUserEmailID = (String) getValueFromQueryResult(randomRCUserList, "UserName");  
+			accountIdForRCUser = String.valueOf(getValueFromQueryResult(randomRCUserList, "AccountID"));
+			logger.info("Account Id of the user is "+accountIdForRCUser);
+
+			storeFrontRCUserPage = storeFrontHomePage.loginAsRCUser(rcUserEmailID, password);
+			boolean isError = driver.getCurrentUrl().contains("error");
+			if(isError){
+				logger.info("login error for the user "+pcUserEmailID);
+				driver.get(driver.getURL()+"/"+driver.getCountry());
+			}
+			else
+				break;
+		}
+		logger.info("login is successful");
+		storeFrontConsultantPage.hoverOnShopLinkAndClickAllProductsLinksAfterLogin();
+		storeFrontConsultantPage.clickAddToBagButton(driver.getCountry());
+		storeFrontUpdateCartPage.clickOnCheckoutButton();
+		storeFrontUpdateCartPage.clickOnEditShipping();
+		storeFrontUpdateCartPage.selectShippingMethod2DayForAdhocOrder();
+		orderTotal = storeFrontUpdateCartPage.getOrderTotal();
+		logger.info("subtotal ="+orderTotal);
+		deliveryCharges = String.valueOf(storeFrontUpdateCartPage.getDeliveryCharges());
+		logger.info("deliveryCharges ="+deliveryCharges);
+		/*  String handlingCharges = String.valueOf(storeFrontUpdateCartPage.getHandlingCharges());
+	    logger.info("handlingCharges ="+handlingCharges);*/
 		if(orderTotal<=999999){
 			if(driver.getCountry().equalsIgnoreCase("CA")){
 				System.out.println("Inside");
@@ -1614,7 +1705,7 @@ public class CartAndCheckoutValidationTest extends RFWebsiteBaseTest{
 		storeFrontHomePage.enterMainAccountInfo();
 		logger.info("Main account details entered");
 
-//		String accountID;// = String.valueOf(getValueFromQueryResult(randomConsultantList, "AccountID"));
+		//		String accountID;// = String.valueOf(getValueFromQueryResult(randomConsultantList, "AccountID"));
 		storeFrontHomePage.clickOnNextButtonAfterSelectingSponsor();
 
 		storeFrontHomePage.clickOnShippingAddressNextStepBtn();
@@ -2597,7 +2688,7 @@ public class CartAndCheckoutValidationTest extends RFWebsiteBaseTest{
 		String orderHistoryNumber = storeFrontOrdersPage.getFirstOrderNumberFromOrderHistory();
 		storeFrontOrdersPage.clickOrderNumber(orderHistoryNumber);
 		s_assert.assertTrue(storeFrontOrdersPage.getSubTotalFromAutoshipTemplate().contains(subtotal),"Adhoc Order template subtotal "+subtotal+" and on UI is "+storeFrontOrdersPage.getSubTotalFromAutoshipTemplate());
-//		s_assert.assertTrue(storeFrontOrdersPage.getTaxAmountFromAutoshipTemplate().contains(tax),"Adhoc Order template tax "+tax+" and on UI is "+storeFrontOrdersPage.getTaxAmountFromAdhocOrderTemplate());
+		//		s_assert.assertTrue(storeFrontOrdersPage.getTaxAmountFromAutoshipTemplate().contains(tax),"Adhoc Order template tax "+tax+" and on UI is "+storeFrontOrdersPage.getTaxAmountFromAdhocOrderTemplate());
 		s_assert.assertTrue(storeFrontOrdersPage.getGrandTotalFromAutoshipTemplate().contains(total),"Adhoc Order template grand total "+total+" and on UI is "+storeFrontOrdersPage.getGrandTotalFromAutoshipTemplate());
 		/*		s_assert.assertTrue(storeFrontOrdersPage.getHandlingAmountFromAutoshipTemplate().contains(handlingCharges),"Adhoc Order template handling amount "+handlingCharges+" and on UI is "+storeFrontOrdersPage.getHandlingAmountFromAutoshipTemplate());
 		 */		s_assert.assertTrue(shippingMethod.contains(storeFrontOrdersPage.getShippingMethodFromAutoshipTemplate()),"Adhoc Order template shipping method "+shippingMethod+" and on UI is "+storeFrontOrdersPage.getShippingMethodFromAutoshipTemplate());

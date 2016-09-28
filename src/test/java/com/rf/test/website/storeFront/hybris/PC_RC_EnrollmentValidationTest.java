@@ -1893,6 +1893,7 @@ public class PC_RC_EnrollmentValidationTest extends RFWebsiteBaseTest{
 		storeFrontHomePage.clickPlaceOrderBtn();
 		storeFrontHomePage.clickOnRodanAndFieldsLogo();
 		s_assert.assertTrue(storeFrontHomePage.verifyWelcomeDropdownToCheckUserRegistered(), "User NOT registered successfully");
+		s_assert.assertTrue(driver.getCurrentUrl().contains("myrfo"+driver.getEnvironment()+".com"), "After successful pc Enrollment navigation not to .com pws of sponser. ");
 		s_assert.assertAll(); 
 	}
 

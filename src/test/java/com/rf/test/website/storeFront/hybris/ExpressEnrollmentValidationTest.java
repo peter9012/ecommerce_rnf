@@ -13,26 +13,14 @@ import com.rf.core.utils.CommonUtils;
 import com.rf.core.utils.DBUtil;
 import com.rf.core.website.constants.TestConstants;
 import com.rf.core.website.constants.dbQueries.DBQueries_RFO;
-import com.rf.pages.website.cscockpit.CSCockpitAutoshipSearchTabPage;
-import com.rf.pages.website.cscockpit.CSCockpitAutoshipTemplateTabPage;
-import com.rf.pages.website.cscockpit.CSCockpitCartTabPage;
-import com.rf.pages.website.cscockpit.CSCockpitCheckoutTabPage;
-import com.rf.pages.website.cscockpit.CSCockpitCustomerSearchTabPage;
-import com.rf.pages.website.cscockpit.CSCockpitCustomerTabPage;
-import com.rf.pages.website.cscockpit.CSCockpitLoginPage;
-import com.rf.pages.website.cscockpit.CSCockpitOrderSearchTabPage;
-import com.rf.pages.website.cscockpit.CSCockpitOrderTabPage;
 import com.rf.pages.website.storeFront.StoreFrontAccountInfoPage;
 import com.rf.pages.website.storeFront.StoreFrontAccountTerminationPage;
-import com.rf.pages.website.storeFront.StoreFrontCartAutoShipPage;
 import com.rf.pages.website.storeFront.StoreFrontConsultantPage;
 import com.rf.pages.website.storeFront.StoreFrontHomePage;
 import com.rf.pages.website.storeFront.StoreFrontOrdersPage;
 import com.rf.pages.website.storeFront.StoreFrontPCUserPage;
-import com.rf.pages.website.storeFront.StoreFrontRCUserPage;
 import com.rf.pages.website.storeFront.StoreFrontShippingInfoPage;
 import com.rf.pages.website.storeFront.StoreFrontUpdateCartPage;
-import com.rf.test.website.RFStoreFrontWebsiteBaseTest;
 import com.rf.test.website.RFWebsiteBaseTest;
 
 public class ExpressEnrollmentValidationTest extends RFWebsiteBaseTest{
@@ -43,17 +31,9 @@ public class ExpressEnrollmentValidationTest extends RFWebsiteBaseTest{
 	private StoreFrontConsultantPage storeFrontConsultantPage;
 	private StoreFrontAccountInfoPage storeFrontAccountInfoPage;
 	private StoreFrontAccountTerminationPage storeFrontAccountTerminationPage;
-	private StoreFrontPCUserPage storeFrontPCUserPage;
 	private StoreFrontOrdersPage storeFrontOrdersPage;
-	private StoreFrontRCUserPage storeFrontRCUserPage;
-	private StoreFrontUpdateCartPage storeFrontUpdateCartPage;
-	private StoreFrontCartAutoShipPage storeFrontCartAutoShipPage;
 	private StoreFrontShippingInfoPage storeFrontShippingInfoPage;
-	private CSCockpitLoginPage cscockpitLoginPage;	
-	private CSCockpitCustomerSearchTabPage cscockpitCustomerSearchTabPage;
-	private CSCockpitOrderTabPage cscockpitOrderTabPage;
-	private CSCockpitCustomerTabPage cscockpitCustomerTabPage;
-
+	
 	private String kitName = null;
 	private String regimenName = null;
 	private String enrollmentType = null;
@@ -71,12 +51,8 @@ public class ExpressEnrollmentValidationTest extends RFWebsiteBaseTest{
 	public void setupDataForExpressEnrollmentValidationTest() throws InterruptedException{	
 		storeFrontHomePage = new StoreFrontHomePage(driver);
 		storeFrontOrdersPage = new StoreFrontOrdersPage(driver);
-		storeFrontCartAutoShipPage = new StoreFrontCartAutoShipPage(driver);
-		storeFrontUpdateCartPage = new StoreFrontUpdateCartPage(driver);
-		storeFrontPCUserPage = new StoreFrontPCUserPage(driver);
 		storeFrontAccountInfoPage = new StoreFrontAccountInfoPage(driver);
 		storeFrontConsultantPage = new StoreFrontConsultantPage(driver);
-
 		randomNum = CommonUtils.getRandomNum(10000, 1000000);
 		RFO_DB = driver.getDBNameRFO(); 
 		env = driver.getEnvironment();
@@ -180,6 +156,11 @@ public class ExpressEnrollmentValidationTest extends RFWebsiteBaseTest{
 		storeFrontHomePage.clickOnChargeMyCardAndEnrollMeBtn();
 		storeFrontHomePage.clickOnConfirmAutomaticPayment();
 		s_assert.assertTrue(storeFrontHomePage.verifyCongratsMessage(), "Congrats Message is not visible");
+		storeFrontHomePage.clickOnRodanAndFieldsLogo();
+		storeFrontHomePage.clickOnWelcomeDropDown();
+		storeFrontAccountInfoPage = storeFrontHomePage.clickAccountInfoLinkPresentOnWelcomeDropDown();
+		s_assert.assertTrue(storeFrontAccountInfoPage.getSpouseFirstName().contains(TestConstants.SPOUSE_FIRST_NAME), "Spouse First name is not as provided during Enrollment.");
+		s_assert.assertTrue(storeFrontAccountInfoPage.getSpouseLastName().contains(TestConstants.SPOUSE_LAST_NAME), "Spouse Last name is not as provided during Enrollment.");
 		s_assert.assertAll(); 
 	}
 

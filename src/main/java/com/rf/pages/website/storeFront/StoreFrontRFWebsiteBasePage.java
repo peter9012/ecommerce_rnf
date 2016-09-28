@@ -159,22 +159,31 @@ public class StoreFrontRFWebsiteBasePage extends RFBasePage{
 		return driver.isElementPresent(By.xpath("//div[contains(@class,'quickshop-section')]"));
 	}
 
-	public void selectProductAndProceedToBuy() throws InterruptedException{
+	public String selectProductAndProceedToBuy() throws InterruptedException{
 		driver.pauseExecutionFor(2000);
 		applyPriceFilterHighToLow();
-		//highlightElement(driver.findElement(By.xpath("//div[@id='main-content']/descendant::button[contains(text(),'ADD TO BAG')][1]")));
+		String productName = null;
 		driver.waitForElementPresent(By.xpath("//div[@id='main-content']/descendant::button[contains(text(),'ADD TO BAG')][1]"));
 		if(driver.findElement(By.xpath("//div[@id='main-content']/descendant::button[contains(text(),'ADD TO BAG')][1]")).isEnabled()==true){
+			productName = driver.findElement(By.xpath("//div[@id='main-content']/descendant::button[contains(text(),'ADD TO BAG')][1]/preceding::a[1]")).getText();
 			driver.clickByJS(RFWebsiteDriver.driver, driver.findElement(By.xpath("//div[@id='main-content']/descendant::button[contains(text(),'ADD TO BAG')][1]")));
 			//driver.click(By.xpath("//div[@id='main-content']/descendant::button[contains(text(),'ADD TO BAG')][1]"));
 		}
 		else{
+			productName = driver.findElement(By.xpath("//div[@id='main-content']/descendant::button[contains(text(),'ADD TO BAG')][2]/preceding::a[1]")).getText();
 			driver.clickByJS(RFWebsiteDriver.driver, driver.findElement(By.xpath("//div[@id='main-content']/descendant::button[contains(text(),'ADD TO BAG')][2]")));
 		}
 		logger.info("Add To Bag button clicked");
-		System.out.println("Add To Bag button clicked");
 		driver.waitForLoadingImageToDisappear();
 		driver.waitForPageLoad();
+		return productName;
+	}
+
+	public String getNameOfTheOnlyAddedProductOnCart(){
+		String productNameFromCart = null;
+		productNameFromCart=driver.findElement(By.xpath("//div[@id='left-shopping']/div[@class='cartItems']//h3")).getText();
+		logger.info("product name from cart is "+productNameFromCart);
+		return productNameFromCart;
 	}
 
 	public void selectProductAndProceedToBuyWithoutFilter() throws InterruptedException{
@@ -267,11 +276,11 @@ public class StoreFrontRFWebsiteBasePage extends RFBasePage{
 			//driver.pauseExecutionFor(2000);
 			driver.waitForPageLoad();
 		}
-
+		driver.waitForLoadingImageToDisappear();
 		applyPriceFilterHighToLow();
 		driver.waitForPageLoad();
 		driver.waitForElementPresent(By.xpath("//div[@id='main-content']/descendant::button[contains(text(),'ADD TO BAG')][2]"));
-		driver.click(By.xpath("//div[@id='main-content']/descendant::button[contains(text(),'ADD TO BAG')][2]"));		
+		driver.click(By.xpath("//div[@id='main-content']/descendant::button[contains(text(),'ADD TO BAG')][2]"));  
 		logger.info("Add To Bag button clicked");
 		driver.waitForLoadingImageToDisappear();
 		driver.waitForPageLoad();
@@ -901,27 +910,42 @@ public class StoreFrontRFWebsiteBasePage extends RFBasePage{
 		List<Map<String, Object>> randomPCUserEmailIdList =  null;
 		List<Map<String, Object>> randomRCUserEmailIdList =  null;
 		List<Map<String, Object>> randomConsultantEmailIdList =  null;
-		//		driver.type(By.id("first-Name"),firstName);
-		//		logger.info("first name entered as "+firstName);
-		//		driver.type(By.id("last-name"),lastName);
-		//		logger.info("last name entered as "+lastName);
+		//  driver.type(By.id("first-Name"),firstName);
+		//  logger.info("first name entered as "+firstName);
+		//  driver.type(By.id("last-name"),lastName);
+		//  logger.info("last name entered as "+lastName);
 		if(userid.equalsIgnoreCase("pc")){
 			randomPCUserEmailIdList = DBUtil.performDatabaseQuery(DBQueries_RFO.callQueryWithArguement(DBQueries_RFO.GET_RANDOM_ACTIVE_PC_WITH_ORDERS_AND_AUTOSHIPS_RFO,countryId),RFO_DB);
 			pcmailid = String.valueOf(getValueFromQueryResult(randomPCUserEmailIdList, "Username"));
 
-			driver.findElement(By.id("email-account")).sendKeys(pcmailid+"\t");
+			driver.findElement(By.id("email-account")).sendKeys(pcmailid);
 			logger.info("email entered as "+pcmailid);
+			try{
+				driver.click(By.id("new-password-account"));
+			}catch(NoSuchElementException e){
+				driver.click(By.id("password"));
+			}
 		}else if(userid.equalsIgnoreCase("rc")){
 			randomRCUserEmailIdList = DBUtil.performDatabaseQuery(DBQueries_RFO.callQueryWithArguement(DBQueries_RFO.GET_RANDOM_ACTIVE_RC_HAVING_ORDERS_RFO,countryId),RFO_DB);
 			rcmailid = String.valueOf(getValueFromQueryResult(randomRCUserEmailIdList, "Username"));
 
-			driver.findElement(By.id("email-account")).sendKeys(rcmailid+"\t");
+			driver.findElement(By.id("email-account")).sendKeys(rcmailid);
 			logger.info("email entered as "+rcmailid);
+			try{
+				driver.click(By.id("new-password-account"));
+			}catch(NoSuchElementException e){
+				driver.click(By.id("password"));
+			}
 		}else{
 			randomConsultantEmailIdList = DBUtil.performDatabaseQuery(DBQueries_RFO.callQueryWithArguement(DBQueries_RFO.GET_RANDOM_ACTIVE_CONSULTANT_WITH_ORDERS_AND_AUTOSHIPS_RFO,countryId),RFO_DB);
 			consultantmailid = String.valueOf(getValueFromQueryResult(randomConsultantEmailIdList, "Username"));
-			driver.findElement(By.id("email-account")).sendKeys(consultantmailid+"\t");
+			driver.findElement(By.id("email-account")).sendKeys(consultantmailid);
 			logger.info("email entered as "+consultantmailid);
+			try{
+				driver.click(By.id("new-password-account"));
+			}catch(NoSuchElementException e){
+				driver.click(By.id("password"));
+			}
 		}
 		//driver.pauseExecutionFor(2000);
 		driver.waitForLoadingImageToDisappear();
@@ -1772,6 +1796,7 @@ public class StoreFrontRFWebsiteBasePage extends RFBasePage{
 		driver.waitForElementPresent(By.xpath("//p[contains(text(),'LOG IN TO TERMINATE MY RETAIL ACCOUNT')]/following::a[@class='confirm']/input"));
 		driver.click(By.xpath("//p[contains(text(),'LOG IN TO TERMINATE MY RETAIL ACCOUNT')]/following::a[@class='confirm']/input"));
 		driver.waitForPageLoad();
+		driver.waitForLoadingImageToDisappear();
 		driver.pauseExecutionFor(3000);
 	}
 
@@ -2070,5 +2095,30 @@ public class StoreFrontRFWebsiteBasePage extends RFBasePage{
 		logger.info("Checkout button clicked");
 	}
 
+	public boolean isProfileHasUpdatedMessagePresent(){
+		return driver.isElementPresent(By.xpath("//div[@id='globalMessages']//p[text()='Your profile has been updated']"));
+	}
+
+	public void mouseHoverOnMiniCart(){
+		Actions actions = new Actions(RFWebsiteDriver.driver);
+		actions.moveToElement(driver.findElement(By.xpath("//a[@id='shopping-cart']"))).build().perform();
+		driver.waitForLoadingImageToDisappear();
+	}
+
+	public String getNameOfOnlyProductAddedOnMiniCart(){
+		String productNameOnMiniCart = null;
+		driver.waitForElementPresent(By.xpath("//div[@id='mini-shopping']//a"));
+		productNameOnMiniCart = driver.findElement(By.xpath("//div[@id='mini-shopping']//a")).getText().trim();
+		logger.info("Product Name On Mini Cart is "+productNameOnMiniCart);
+		return productNameOnMiniCart;
+	}
+
+	public void clickOnViewShippingCartBtnOnMiniCart(){
+		driver.waitForElementToBeVisible(By.xpath("//input[@value='VIEW SHOPPING CART']"), 30);
+		driver.click(By.xpath("//input[@value='VIEW SHOPPING CART']"));
+		logger.info("'VIEW SHOPPING CART' button clicked on mini cart");
+		driver.waitForPageLoad();
+		driver.waitForLoadingImageToDisappear();
+	}
 
 }

@@ -247,7 +247,7 @@ public class StorefrontDSVTest extends RFDSVStoreFrontWebsiteBaseTest{
 		s_assert.assertAll();		
 	}
 
-	//Hybris Project_XXXX:Edit PC Perks Autoship Template
+	//Hybris Project_5322:Edit PC Perks Autoship Template
 	@Test(groups = { "pc" },priority=11)
 	public void testEditPcPerksAutoshipTemplate_5322(){
 		String quantityOfProduct = "10";

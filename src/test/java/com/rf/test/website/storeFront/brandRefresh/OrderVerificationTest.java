@@ -31,7 +31,7 @@ public class OrderVerificationTest extends RFBrandRefreshWebsiteBaseTest{
 	}
 
 	//Add Product to the Cart - Checkout as PC
-	@Test(enabled=true)//smoke
+	@Test(priority=1)
 	public void testPCAdhocOrderFromCorp(){
 		RFL_DB = driver.getDBNameRFL();
 		int randomNumber = CommonUtils.getRandomNum(10000, 1000000);
@@ -58,7 +58,7 @@ public class OrderVerificationTest extends RFBrandRefreshWebsiteBaseTest{
 		storeFrontBrandRefreshHomePage.clickCheckoutBtn();
 		storeFrontBrandRefreshHomePage.loginAsUserOnCheckoutPage(pcEmailID, password);
 		//s_assert.assertTrue(storeFrontBrandRefreshHomePage.verifyUserSuccessfullyLoggedInOnCorpSite(), "PC user not logged in successfully");
-		s_assert.assertFalse(storeFrontBrandRefreshHomePage.isSignInButtonPresent(), "RC user not logged in successfully");
+		s_assert.assertFalse(storeFrontBrandRefreshHomePage.isSignInButtonPresent(), "PC user not logged in successfully");
 		storeFrontBrandRefreshHomePage.clickContinueBtn();
 		storeFrontBrandRefreshHomePage.clickChangeBillingInformationBtn();
 		storeFrontBrandRefreshHomePage.enterBillingInfo(billingName, billingProfileFirstName, billingProfileLastName, nameOnCard, cardNumber, expMonth, expYear, addressLine1, postalCode, phnNumber);
@@ -67,11 +67,13 @@ public class OrderVerificationTest extends RFBrandRefreshWebsiteBaseTest{
 		storeFrontBrandRefreshHomePage.clickCompleteOrderBtn();
 		storeFrontBrandRefreshHomePage.clickOKBtnOnPopup();
 		s_assert.assertTrue(storeFrontBrandRefreshHomePage.isThankYouTextPresentAfterOrderPlaced(), "Adhoc order not placed successfully from corp site.");
+		storeFrontBrandRefreshHomePage.clickOnRodanAndFieldsLogo();
+		logout();
 		s_assert.assertAll();
 	}
 
 	//Adhoc order - RC corp
-	@Test(enabled=true)//mini
+	@Test(priority=2)
 	public void placedAdhocOrderFromComSiteForRC(){
 		RFL_DB = driver.getDBNameRFL();
 		int randomNumber = CommonUtils.getRandomNum(10000, 1000000);
@@ -108,11 +110,13 @@ public class OrderVerificationTest extends RFBrandRefreshWebsiteBaseTest{
 		storeFrontBrandRefreshHomePage.clickUseAsEnteredBtn();
 		storeFrontBrandRefreshHomePage.clickCompleteOrderBtn();
 		s_assert.assertTrue(storeFrontBrandRefreshHomePage.isThankYouTextPresentAfterOrderPlaced(), "Adhoc order not placed successfully from com site for RC user.");
+		storeFrontBrandRefreshHomePage.clickOnRodanAndFieldsLogo();
+		logout();
 		s_assert.assertAll();
 	}
 
 	//Adhoc Order - Consultant Only Products
-	@Test(enabled=true)//smoke
+	@Test(priority=3)
 	public void AdhocOrderConsultantsOnlyProducts(){
 		RFL_DB = driver.getDBNameRFL();
 		int randomNumber = CommonUtils.getRandomNum(10000, 1000000);
@@ -150,6 +154,8 @@ public class OrderVerificationTest extends RFBrandRefreshWebsiteBaseTest{
 		storeFrontBrandRefreshConsultantPage.clickCompleteOrderBtn();
 		s_assert.assertTrue(storeFrontBrandRefreshConsultantPage.isThankYouTextPresentAfterOrderPlaced(), "Order is not placed successfully");
 		s_assert.assertTrue(storeFrontBrandRefreshConsultantPage.getOrderConfirmationTextMsgAfterOrderPlaced().contains("You will receive an email confirmation shortly"), "Order confirmation message does not contains email confirmation");
+		storeFrontBrandRefreshHomePage.clickOnRodanAndFieldsLogo();
+		logout();
 		s_assert.assertAll();
 	}
 

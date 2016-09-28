@@ -306,7 +306,13 @@ public class StoreFrontHomePage extends StoreFrontRFWebsiteBasePage {
 		driver.type(By.id("email-account"), emailAddress);
 		driver.pauseExecutionFor(2000);
 		//driver.findElement(By.id("email-account")).sendKeys(Keys.TAB);
-		driver.click(By.id("new-password-account"));
+		try{
+			driver.click(By.id("new-password-account"));
+			logger.info("Clicked new password inside try");
+		}catch(NoSuchElementException e){
+			driver.click(By.id("password"));
+			logger.info("Clicked new password inside CATCH");
+		}
 		logger.info("email Address of the user is "+emailAddress);
 		driver.waitForSpinImageToDisappear();
 	}
@@ -505,7 +511,7 @@ public class StoreFrontHomePage extends StoreFrontRFWebsiteBasePage {
 		driver.waitForElementPresent(By.id("card-nr"));
 		driver.type(By.id("card-nr"),cardNumber);
 		driver.pauseExecutionFor(1000);
-		driver.findElement(By.id("card-nr")).sendKeys(Keys.TAB);
+		driver.findElement(By.id("expiryMonth")).click();
 		logger.info("card number entered as "+cardNumber);
 	}
 
@@ -974,6 +980,10 @@ public class StoreFrontHomePage extends StoreFrontRFWebsiteBasePage {
 	public boolean validateMiniCart() {
 		actions=new Actions(RFWebsiteDriver.driver);
 		return driver.findElement(By.xpath("//a[@id='shopping-cart']")).isDisplayed();
+	}	
+
+	public String getNumberOfProductsDisplayedOnMiniCart(){
+		return driver.findElement(By.xpath("//div[@id='shopping-bag']//span[@class='cart-count']")).getText();
 	}
 
 	public boolean clickMiniCartAndValidatePreaddedProductsOnCartPage(){
@@ -981,6 +991,10 @@ public class StoreFrontHomePage extends StoreFrontRFWebsiteBasePage {
 		driver.click(By.xpath("//a[@id='shopping-cart']"));
 		driver.waitForPageLoad();
 		return driver.findElement(By.xpath("//div[@id='left-shopping']")).isDisplayed();
+	}
+
+	public boolean isCartPageDisplayed(){
+		return driver.getCurrentUrl().contains("/cart") && driver.findElement(By.xpath("//div[@id='left-shopping']")).isDisplayed();
 	}
 
 	public void clickOnReviewAndConfirmShippingEditBtn(){

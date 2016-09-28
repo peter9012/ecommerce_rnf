@@ -39,8 +39,8 @@ public class StoreFrontBrandRefreshHomePage extends StoreFrontBrandRefreshWebsit
 	private static String regimenImageOnPwsLoc = "//div[@id='ProductCategories']//p[@class='productInfo']//span[text()='%s']/../preceding-sibling::p/a";
 	private static String consultantEnrollmentKit = "//span[@class='kitPrice']//cufontext[contains(text(),'%s')]/preceding::div[@class='imageWrap'][1]";
 	private static String consultantRegimenLoc = "//span[@class='catName']//cufontext[contains(text(),'%s')]/following::img[1]";
-	private static String retailPriceOfItem = "//div[@class='FloatCol']/div[%s]//tr[2]//div[1]/span[1]";
-	private static String addToCartBtnLoc = "//div[@class='FloatCol']/div[1]//a[text()='Add to Bag']";
+	private static String retailPriceOfItem = "//div[contains(@id,'uxStatusPanel')]//div[@class='FloatCol'][1]/div[%s]//span[contains(text(),'Retail')]";
+	private static String addToCartBtnLoc = "//div[contains(@id,'uxStatusPanel')]//div[@class='FloatCol'][1]/div[%s]//a[text()='Add to Bag']";
 	private static String sectionUnderReplenishmentOrderManagementLoc = "//a[text()='%s']";
 	private static String linkUnderMyAccount = "//div[@id='RFContent']//span[contains(text(),'%s')]";
 	private static String viewDetailsOnOrderHistoryPage = "//div[@id='RFContent']//tr[@class='tdhead']/following-sibling::tr[%s]//a[contains(text(),'View Details')]";
@@ -525,6 +525,7 @@ public class StoreFrontBrandRefreshHomePage extends StoreFrontBrandRefreshWebsit
 	}
 
 	public StoreFrontBrandRefreshConsultantPage loginAsConsultant(String userName, String password) {
+		logout();
 		driver.waitForElementPresent(USERNAME_TEXT_BOX_LOC);
 		driver.type(USERNAME_TEXT_BOX_LOC, userName);
 		logger.info("Entered Username is: "+userName);
@@ -1133,11 +1134,11 @@ public class StoreFrontBrandRefreshHomePage extends StoreFrontBrandRefreshWebsit
 	public void clickToReadIncomeDisclosure() {
 		driver.quickWaitForElementPresent(CLICK_HERE_LOC);
 		driver.click(CLICK_HERE_LOC);
-
+		driver.waitForPageLoad();
 	}
 
 	public String getCurrentUrlOpenedWindow() {
-		//  driver.pauseExecutionFor(5000);
+		driver.pauseExecutionFor(5000);
 		String parentWindowID=driver.getWindowHandle();
 		Set<String> set=driver.getWindowHandles();
 		Iterator<String> it=set.iterator();
@@ -1400,7 +1401,10 @@ public class StoreFrontBrandRefreshHomePage extends StoreFrontBrandRefreshWebsit
 		driver.type(PASSWORD_TXTFLD_CHECKOUT_PAGE_LOC,password);  
 		logger.info("login username is "+username);
 		logger.info("login password is "+password);
-		driver.click(SIGN_IN_BTN_CHECKOUT_PAGE_LOC);
+		Actions actions = new Actions(RFWebsiteDriver.driver);
+		actions.moveToElement(driver.findElement(SIGN_IN_BTN_CHECKOUT_PAGE_LOC)).click().build().perform();  
+		// driver.click(SIGN_IN_BTN_CHECKOUT_PAGE_LOC);
+		driver.pauseExecutionFor(10000);
 		logger.info("Sign In button clicked");
 		driver.waitForPageLoad();
 	}
@@ -1675,7 +1679,11 @@ public class StoreFrontBrandRefreshHomePage extends StoreFrontBrandRefreshWebsit
 			String []split = highPrice.split("\\$")[1].split("\\.");
 			int value = Integer.parseInt(split[0]);
 			if(value>80){
-				driver.click(By.xpath(String.format(addToCartBtnLoc,i)));
+				driver.pauseExecutionFor(3000);
+				driver.waitForElementPresent(By.xpath(String.format(addToCartBtnLoc,i)));
+				JavascriptExecutor executor = (JavascriptExecutor)(RFWebsiteDriver.driver);
+				executor.executeScript("arguments[0].click();", driver.findElement(By.xpath(String.format(addToCartBtnLoc,i))));
+				//driver.click(By.xpath(String.format(addToCartBtnLoc,i)));
 				driver.waitForStorfrontLegacyLoadingImageToDisappear();
 				break;
 			}else
@@ -1688,7 +1696,10 @@ public class StoreFrontBrandRefreshHomePage extends StoreFrontBrandRefreshWebsit
 	}
 
 	public void clickOnUpdateOrderBtn() {
-		driver.click(UPDATE_ORDER_BTN_LOC);
+		driver.waitForElementPresent(UPDATE_ORDER_BTN_LOC);
+		JavascriptExecutor executor = (JavascriptExecutor)(RFWebsiteDriver.driver);
+		executor.executeScript("arguments[0].click();",driver.findElement(UPDATE_ORDER_BTN_LOC));
+		//driver.click(UPDATE_ORDER_BTN_LOC);
 		logger.info("update order button is clicked");
 	}
 

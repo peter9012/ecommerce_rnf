@@ -161,6 +161,10 @@ public class RFWebsiteDriver implements RFDriver,WebDriver {
 	public String getCountry(){
 		return propertyFile.getProperty("country");
 	}
+	
+	public String getDBIP2(){
+		return propertyFile.getProperty("dbIP2");
+	}
 
 	public String getEnvironment(){
 		return propertyFile.getProperty("environment");

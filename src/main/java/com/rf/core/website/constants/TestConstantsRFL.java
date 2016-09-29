@@ -7,8 +7,8 @@ public class TestConstantsRFL {
 	public static final String FIRST_NAME = "testRF";
 	public static final String LAST_NAME = "ln";
 	public static final String ADDRESS_LINE1 = "60 Spear St";
-	public static final String POSTAL_CODE = "94112";
-	public static final String CARD_NUMBER = "4111111111111111";
+	public static final String POSTAL_CODE = "94536";
+	public static final String CARD_NUMBER = "5424000000000015";
 	public static final String EXP_MONTH = "4";
 	public static final String EXP_YEAR = "2018";
 	public static final String CID_CONSULTANT = "069905";
@@ -37,13 +37,14 @@ public class TestConstantsRFL {
 	public static final String REGIMEN_NAME_ESSENTIALS = "ESSENTIALS";
 	public static final String REGIMEN_NAME_ENHANCEMENTS = "ENHANCEMENTS";
 
-	public static final String REGIMEN_NAME_PROMOTIONS = "PROMOTIONS";
-	public static final String CONSULTANT_ONLY_BUSINESS_PROMOTION = "Consultant-Only Business Promotion";
+	public static final String REGIMEN_NAME_PROMOTIONS = "Promotions";
+	public static final String CONSULTANT_ONLY_BUSINESS_PROMOTION = "Consultant-Only Product Promotion";
 	public static final String CONSULTANT_ONLY_EVENT_SUPPORT = "Consultant-Only Event Support";
 	public static final String CONSULTANT_ONLY_PRODUCT_PROMOTION = "Consultant-Only Product Promotion";
 	public static final String CONSULTANT_ONLY_PRODUCT = "Consultant-Only Products";
 	public static final String CONSULTANT_RF_EXPRESS_BUSINESS_KIT = "$995";
-	public static final String PWS_SPCLCHARS = "ios%1";
+	public static final String CONSULTANT_RFX_EXPRESS_BUSINESS_KIT = "RF Express Business Kit";
+	public static final String PWS_SPCLCHARS = "!@$%^";
 }
 
 

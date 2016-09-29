@@ -40,7 +40,7 @@ public class StoreFrontBrandRefreshWebsiteBasePage extends RFBasePage{
 	private static final By CHECKOUT_BTN_OF_MY_SHOPPING_BAG_LINK = By.xpath("//span[text()='Checkout Now']");
 	private static final By OK_BTN_OF_CONFIRMATION_POPUP_FOR_ADHOC_ORDER = By.xpath("//button[text()='OK']");
 	private static final By CHECKOUT_BTN = By.xpath("//span[text()='Checkout']");
-	private static final By CONTINUE_BTN_PREFERRED_AUTOSHIP_CART_PAGE_LOC = By.xpath("//a[contains(@id,'uxContinue')]");
+	private static final By CONTINUE_BTN_PREFERRED_AUTOSHIP_CART_PAGE_LOC = By.xpath("//input[contains(@id,'uxContinue')]");
 	private static final By COMPLETE_ORDER_BTN = By.xpath("//input[contains(@id,'uxSubmitOrder')]");
 	private static final By ORDER_CONFIRMATION_THANK_YOU_TXT = By.xpath("//h2[contains(text(),'Thank')]");
 	private static final By CONTINUE_BTN_BILLING_PAGE = By.xpath("//span[contains(text(),'Change Billing Information')]/following::a[contains(@id,'uxContinue')]");

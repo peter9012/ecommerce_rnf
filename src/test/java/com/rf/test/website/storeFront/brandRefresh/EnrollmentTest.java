@@ -11,8 +11,6 @@ import com.rf.core.utils.CommonUtils;
 import com.rf.core.utils.DBUtil;
 import com.rf.core.website.constants.TestConstantsRFL;
 import com.rf.core.website.constants.dbQueries.DBQueries_RFL;
-import com.rf.pages.website.storeFrontBrandRefresh.StoreFrontBrandRefreshConsultantPage;
-/*import com.rf.pages.website.storeFrontBrandRefresh.StoreFrontBrandRefreshWebsiteBasePage;*/
 import com.rf.pages.website.storeFrontBrandRefresh.StoreFrontBrandRefreshHomePage;
 import com.rf.pages.website.storeFrontBrandRefresh.StoreFrontBrandRefreshPCUserPage;
 import com.rf.test.website.RFBrandRefreshWebsiteBaseTest;
@@ -170,9 +168,6 @@ public class EnrollmentTest extends RFBrandRefreshWebsiteBaseTest{
 		String phnNumber2 = "780";
 		String phnNumber3 = "9099";
 
-
-		//  storeFrontBrandRefreshHomePage.clickBeAConsultantBtn();
-		//  storeFrontBrandRefreshHomePage.clickEnrollNowBtnOnBusinessPage();
 		//Get Sponser details for Consultant enrollment.
 		List<Map<String, Object>> randomConsultantList = DBUtil.performDatabaseQuery(DBQueries_RFL.GET_RANDOM_ACTIVE_CONSULTANT_EMAILID,RFL_DB);
 		String sponsorID = String.valueOf(getValueFromQueryResult(randomConsultantList, "AccountNumber"));
@@ -220,8 +215,6 @@ public class EnrollmentTest extends RFBrandRefreshWebsiteBaseTest{
 		String phnNumber2 = "780";
 		String phnNumber3 = "9099";
 		storeFrontBrandRefreshHomePage.mouseHoverBeAConsultantAndClickLink("Enroll Now");
-		//  storeFrontBrandRefreshHomePage.clickBeAConsultantBtn();
-		//  storeFrontBrandRefreshHomePage.clickEnrollNowBtnOnBusinessPage();
 		List<Map<String, Object>> randomConsultantList = DBUtil.performDatabaseQuery(DBQueries_RFL.GET_RANDOM_ACTIVE_CONSULTANT_EMAILID,RFL_DB);
 		String sponsorID = String.valueOf(getValueFromQueryResult(randomConsultantList, "AccountNumber"));
 		storeFrontBrandRefreshHomePage.enterCID(sponsorID);
@@ -270,7 +263,7 @@ public class EnrollmentTest extends RFBrandRefreshWebsiteBaseTest{
 	}
 
 	//Search for a Sponsor
-	@Test
+	@Test(enabled=false)//NOT A PART OF BRAND REFRESH DESIGN
 	public void testSearchForASponser(){
 		RFL_DB = driver.getDBNameRFL();
 		List<Map<String, Object>> randomConsultantList =  null;

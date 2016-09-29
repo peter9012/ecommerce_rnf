@@ -59,13 +59,13 @@ public class OrderVerificationTest extends RFBrandRefreshWebsiteBaseTest{
 		storeFrontBrandRefreshHomePage.loginAsUserOnCheckoutPage(pcEmailID, password);
 		//s_assert.assertTrue(storeFrontBrandRefreshHomePage.verifyUserSuccessfullyLoggedInOnCorpSite(), "PC user not logged in successfully");
 		s_assert.assertFalse(storeFrontBrandRefreshHomePage.isSignInButtonPresent(), "PC user not logged in successfully");
-		storeFrontBrandRefreshHomePage.clickContinueBtn();
+		storeFrontBrandRefreshHomePage.clickContinueBtnForPCAndRC();
 		storeFrontBrandRefreshHomePage.clickChangeBillingInformationBtn();
 		storeFrontBrandRefreshHomePage.enterBillingInfo(billingName, billingProfileFirstName, billingProfileLastName, nameOnCard, cardNumber, expMonth, expYear, addressLine1, postalCode, phnNumber);
 		storeFrontBrandRefreshHomePage.clickUseThisBillingInformationBtn();
 		storeFrontBrandRefreshHomePage.clickUseAsEnteredBtn();
 		storeFrontBrandRefreshHomePage.clickCompleteOrderBtn();
-		storeFrontBrandRefreshHomePage.clickOKBtnOnPopup();
+		//storeFrontBrandRefreshHomePage.clickOKBtnOnPopup();
 		s_assert.assertTrue(storeFrontBrandRefreshHomePage.isThankYouTextPresentAfterOrderPlaced(), "Adhoc order not placed successfully from corp site.");
 		storeFrontBrandRefreshHomePage.clickOnRodanAndFieldsLogo();
 		logout();
@@ -103,7 +103,7 @@ public class OrderVerificationTest extends RFBrandRefreshWebsiteBaseTest{
 		s_assert.assertFalse(storeFrontBrandRefreshHomePage.isSignInButtonPresent(), "RC user not logged in successfully");
 		s_assert.assertTrue(driver.getCurrentUrl().toLowerCase().contains("consultantlocator"), "RC user not redirected to consultant locator after login");
 		storeFrontBrandRefreshHomePage.clickContinueWithoutConsultantLink();
-		storeFrontBrandRefreshHomePage.clickContinueBtn();
+		storeFrontBrandRefreshHomePage.clickContinueBtnForPCAndRC();
 		storeFrontBrandRefreshHomePage.clickChangeBillingInformationBtn();
 		storeFrontBrandRefreshHomePage.enterBillingInfo(billingName, billingProfileFirstName, billingProfileLastName, nameOnCard, cardNumber, expMonth, expYear, addressLine1, postalCode, phnNumber);
 		storeFrontBrandRefreshHomePage.clickUseThisBillingInformationBtn();
@@ -146,7 +146,7 @@ public class OrderVerificationTest extends RFBrandRefreshWebsiteBaseTest{
 		storeFrontBrandRefreshConsultantPage.clickConsultantOnlyProduct(TestConstantsRFL.CONSULTANT_ONLY_BUSINESS_PROMOTION);
 		storeFrontBrandRefreshConsultantPage.clickAddToCartButtonForEssentialsAndEnhancementsAfterLogin();
 		storeFrontBrandRefreshConsultantPage.clickCheckoutBtn();
-		storeFrontBrandRefreshConsultantPage.clickContinueBtn();
+		storeFrontBrandRefreshConsultantPage.clickContinueBtnForPCAndRC();
 		storeFrontBrandRefreshHomePage.clickChangeBillingInformationBtn();
 		storeFrontBrandRefreshHomePage.enterBillingInfo(billingName, billingProfileFirstName, billingProfileLastName, nameOnCard, cardNumber, expMonth, expYear, addressLine1, postalCode, phnNumber);
 		storeFrontBrandRefreshHomePage.clickUseThisBillingInformationBtn();

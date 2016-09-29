@@ -17,7 +17,6 @@ import com.rf.pages.website.storeFrontBrandRefresh.StoreFrontBrandRefreshHomePag
 import com.rf.pages.website.storeFrontBrandRefresh.StoreFrontBrandRefreshPCUserPage;
 import com.rf.test.website.RFBrandRefreshWebsiteBaseTest;
 
-
 public class BizPWSTest extends RFBrandRefreshWebsiteBaseTest{
 	private static final Logger logger = LogManager
 			.getLogger(BizPWSTest.class.getName());
@@ -97,7 +96,7 @@ public class BizPWSTest extends RFBrandRefreshWebsiteBaseTest{
 		//storeFrontBrandRefreshHomePage.mouseHoverOnMyShoppingBagLinkAndClickOnCheckoutBtn();
 		storeFrontBrandRefreshHomePage.clickMyShoppingBagLink();
 		storeFrontBrandRefreshHomePage.clickCheckoutBtn();
-		storeFrontBrandRefreshHomePage.clickContinueBtn();
+		storeFrontBrandRefreshHomePage.clickContinueBtnForPCAndRC();
 		storeFrontBrandRefreshHomePage.clickChangeBillingInformationBtn();
 		storeFrontBrandRefreshHomePage.enterBillingInfo(billingName, billingProfileFirstName, billingProfileLastName, nameOnCard, cardNumber, expMonth, expYear, addressLine1, postalCode, phnNumber);
 		storeFrontBrandRefreshHomePage.clickUseThisBillingInformationBtn();

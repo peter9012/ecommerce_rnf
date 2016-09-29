@@ -49,16 +49,16 @@ public class StoreFrontBrandRefreshHomePage extends StoreFrontBrandRefreshWebsit
 	private static String linkUnderShopSkinCareOrBeAConsultant = "//div[@id='LeftNav']//a/span[text()='%s']";
 
 	private static final By PRODUCTS_LIST_LOC = By.xpath("//div[@id='FullPageItemList']");
-	private static final By RESULTS_TEXT_LOC = By.xpath("//div[@id='RFContent']//span[contains(text(),'REAL RESULTS')]");
+	private static final By RESULTS_TEXT_LOC = By.xpath("//div[@id='RFContent']//h1[contains(text(),'REAL RESULTS')]");
 	private static final By TESTIMONIAL_PAGE_CONTENT_LOC = By.xpath("//div[@id='RFContent']/div/div/blockquote[1]/div[1]");
 	private static final By NEWS_TEXT_LOC = By.xpath("//div[@id='RFContent']");
-	private static final By FAQS_TEXT_LOC = By.xpath("//div[@id='RFContent']//h1[contains(text(),'Questions')]");
+	private static final By FAQS_TEXT_LOC = By.xpath("//div[@id='RFContent']//h1[contains(text(),'FAQs')]");
 	private static final By ADVICE_PAGE_CONTENT_LOC = By.xpath("//div[@id='RFContent']//td[1]");
 	private static final By GLOSSARY_PAGE_CONTENT_LOC = By.xpath("//div[@id='GlossaryAF']");
 	private static final By INGREDIENTS_AND_USAGE_LINK_LOC = By.xpath("//a[text()='Ingredients and Usage']");
 	private static final By INGREDIENTS_CONTENT_LOC = By.xpath("//span[@id='ProductUsage']");
 	private static final By FOOTER_CONTACT_US_LINK_LOC = By.xpath("//footer[@id='FooterPane']//span[text()='Contact Us']");
-	private static final By CONTACT_US_PAGE_HEADER_LOC = By.xpath("//div[@id='RFContent']//h1[text()='Contact Us']");
+	private static final By CONTACT_US_PAGE_HEADER_LOC = By.xpath("//div[@id='RFContent']//h1[text()='CONTACT US' or text()='Contact Us']");
 
 	private static final By BE_A_CONSULTANT_LOC = By.xpath("//span[text()='Be a Consultant']");
 	private static final By ENROLL_NOW_ON_BUSINESS_PAGE_LOC = By.xpath("//*[@id='LeftNav']//span[text()='Enroll Now']");
@@ -596,13 +596,6 @@ public class StoreFrontBrandRefreshHomePage extends StoreFrontBrandRefreshWebsit
 		logger.info("Gender selected is: "+gender);
 	}
 
-	public void clickContinueBtnForPCAndRC(){
-		driver.waitForElementPresent(CONTINUE_BTN_PREFERRED_PROFILE_PAGE_LOC);
-		driver.click(CONTINUE_BTN_PREFERRED_PROFILE_PAGE_LOC);
-		logger.info("Continue button clicked");
-		driver.waitForPageLoad();
-	}
-
 	public void enterIDNumberAsSponsorForPCAndRC(String sponsorID){
 		driver.quickWaitForElementPresent(ID_NUMBER_AS_SPONSOR);
 		driver.type(ID_NUMBER_AS_SPONSOR, sponsorID);
@@ -839,8 +832,13 @@ public class StoreFrontBrandRefreshHomePage extends StoreFrontBrandRefreshWebsit
 	}
 
 	public boolean verifyUserIsRedirectedToResultsPage(String regimenType) {
-		driver.waitForElementPresent(RESULTS_TEXT_LOC);
-		return driver.isElementPresent(RESULTS_TEXT_LOC); 
+		try{
+			driver.waitForElementPresent(RESULTS_TEXT_LOC);
+			driver.click(RESULTS_TEXT_LOC);
+			return driver.isElementPresent(RESULTS_TEXT_LOC);
+		}catch(Exception e){
+			return driver.isElementPresent(By.xpath("//div[@id='RFContent']//span[contains(text(),'REAL RESULTS')]"));
+		}
 	}
 
 	public boolean verifyUserIsRedirectedToTestimonialsPage() {

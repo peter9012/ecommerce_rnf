@@ -501,7 +501,7 @@ public class UINavigationTest extends RFBrandRefreshWebsiteBaseTest{
 		String sixthSubSectionUnderBusinessSystem = "Enroll Now";
 
 		String firstSubSectionUnderProgramsAndIncentives = "Compensation Plan";
-		String secondSubSectionUnderProgramsAndIncentives = "Compensation Plan, Programs & Incentives";
+		String secondSubSectionUnderProgramsAndIncentives = "Programs & Incentives";
 		String thirdSubSectionUnderProgramsAndIncentives = "Enroll Now";
 
 		storeFrontBrandRefreshHomePage.mouseHoverBeAConsultant();
@@ -534,9 +534,8 @@ public class UINavigationTest extends RFBrandRefreshWebsiteBaseTest{
 		String sixthSubSectionUnderBusinessSystem = "Enroll Now";
 
 		//String firstSubSectionUnderProgramsAndIncentives = "Compensation Plan";
-		String secondSubSectionUnderProgramsAndIncentives = "Compensation Plan, Programs & Incentives";
+		String secondSubSectionUnderProgramsAndIncentives = "Programs & Incentives";
 		String thirdSubSectionUnderProgramsAndIncentives = "Enroll Now";
-
 
 		//storeFrontBrandRefreshHomePage.clickBeAConsultantBtn();
 		storeFrontBrandRefreshHomePage.mouseHoverBeAConsultant();
@@ -563,12 +562,9 @@ public class UINavigationTest extends RFBrandRefreshWebsiteBaseTest{
 		String fourthSubSectionUnderBusinessSystem = "Events";
 		String fifthSubSectionUnderBusinessSystem = "Meet Our Community";
 		String sixthSubSectionUnderBusinessSystem = "Enroll Now";
-
 		String firstSubSectionUnderProgramsAndIncentives = "Compensation Plan";
 		String secondSubSectionUnderProgramsAndIncentives = "Programs and Incentives";
 		String thirdSubSectionUnderProgramsAndIncentives = "Enroll Now";
-
-
 		storeFrontBrandRefreshHomePage.clickBeAConsultantBtn();
 		s_assert.assertTrue(storeFrontBrandRefreshHomePage.getCurrentURL().toLowerCase().contains("Business".toLowerCase()), "URL does not contain Business Actual on UI is "+storeFrontBrandRefreshHomePage.getCurrentURL().toLowerCase());
 		s_assert.assertTrue(storeFrontBrandRefreshHomePage.verifySubSectionPresentAtBusinessSystemPage(firstSubSectionUnderBusinessSystem),""+firstSubSectionUnderBusinessSystem+" subTitle not present under business system page");
@@ -687,9 +683,6 @@ public class UINavigationTest extends RFBrandRefreshWebsiteBaseTest{
 	@Test(enabled=true)
 	public void testCorporateFindAConsultant(){
 		String expectedURL = "LocatePWS.aspx?fromHome=1";
-
-		/*storeFrontBrandRefreshHomePage.clickHomeTabBtn();*/
-		/*storeFrontBrandRefreshHomePage.clickFindAConsultantImageLink();*/
 		storeFrontBrandRefreshHomePage.clickConnectWithAConsultant();
 		s_assert.assertTrue(storeFrontBrandRefreshHomePage.getCurrentURL().contains(expectedURL), "Current url expected is: "+expectedURL+" while actual on UI is "+storeFrontBrandRefreshHomePage.getCurrentURL());
 		s_assert.assertAll();
@@ -912,9 +905,6 @@ public class UINavigationTest extends RFBrandRefreshWebsiteBaseTest{
 	@Test(enabled=true)
 	public void testCorporateRFInTheNews(){
 		String expectedURL = "Company/PR";
-
-		/*  storeFrontBrandRefreshHomePage.clickHomeTabBtn();
-	  storeFrontBrandRefreshHomePage.clickRFInTheNewsImageLink();*/
 		storeFrontBrandRefreshHomePage.mouseHoverAboutRFAndClickLink("Press Room");
 		//storeFrontBrandRefreshHomePage.clickCompanyPressRoomLink();
 		s_assert.assertTrue(storeFrontBrandRefreshHomePage.getCurrentURL().contains(expectedURL), "Current url expected is: "+expectedURL+" while actual on UI is "+storeFrontBrandRefreshHomePage.getCurrentURL());

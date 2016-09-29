@@ -79,7 +79,7 @@ public class ComPWSTest extends RFBrandRefreshWebsiteBaseTest{
 		//storeFrontBrandRefreshConsultantPage.mouseHoverOnMyShoppingBagLinkAndClickOnCheckoutBtn();
 		storeFrontBrandRefreshConsultantPage.clickMyShoppingBagLink();
 		storeFrontBrandRefreshHomePage.clickCheckoutBtn();
-		storeFrontBrandRefreshHomePage.clickContinueBtn();
+		storeFrontBrandRefreshHomePage.clickContinueBtnForPCAndRC();
 		storeFrontBrandRefreshHomePage.clickChangeBillingInformationBtn();
 		storeFrontBrandRefreshHomePage.enterBillingInfo(billingName, billingProfileFirstName, billingProfileLastName, nameOnCard, cardNumber, expMonth, expYear, addressLine1, postalCode, phnNumber);
 		storeFrontBrandRefreshHomePage.clickUseThisBillingInformationBtn();
@@ -125,7 +125,7 @@ public class ComPWSTest extends RFBrandRefreshWebsiteBaseTest{
 		//  storeFrontBrandRefreshConsultantPage.mouseHoverOnShopSkinCareAndClickOnConsultantOnlyProductsLink();
 		storeFrontBrandRefreshHomePage.clickMyShoppingBagLink();
 		storeFrontBrandRefreshHomePage.clickCheckoutBtn();
-		storeFrontBrandRefreshHomePage.clickContinueBtn();
+		storeFrontBrandRefreshHomePage.clickContinueBtnForPCAndRC();
 		storeFrontBrandRefreshHomePage.clickChangeBillingInformationBtn();
 		storeFrontBrandRefreshHomePage.enterBillingInfo(billingName, billingProfileFirstName, billingProfileLastName, nameOnCard, cardNumber, expMonth, expYear, addressLine1, postalCode, phnNumber);
 		storeFrontBrandRefreshHomePage.clickUseThisBillingInformationBtn();
@@ -191,7 +191,7 @@ public class ComPWSTest extends RFBrandRefreshWebsiteBaseTest{
 		storeFrontBrandRefreshHomePage.clickAddToCartButtonAfterLogin();
 		storeFrontBrandRefreshHomePage.clickMyShoppingBagLink();
 		storeFrontBrandRefreshHomePage.clickCheckoutBtn();
-		storeFrontBrandRefreshHomePage.clickContinueBtn();
+		storeFrontBrandRefreshHomePage.clickContinueBtnForPCAndRC();
 		storeFrontBrandRefreshHomePage.clickChangeBillingInformationBtn();
 		storeFrontBrandRefreshHomePage.enterBillingInfo(billingName, billingProfileFirstName, billingProfileLastName, nameOnCard, cardNumber, expMonth, expYear, addressLine1, postalCode, phnNumber);
 		storeFrontBrandRefreshHomePage.clickUseThisBillingInformationBtn();

@@ -2,11 +2,9 @@ package com.rf.test.website.storeFront.brandRefresh;
 
 import java.util.List;
 import java.util.Map;
-
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.testng.annotations.Test;
-
 import com.rf.core.utils.CommonUtils;
 import com.rf.core.utils.DBUtil;
 import com.rf.core.website.constants.TestConstantsRFL;
@@ -78,7 +76,7 @@ public class EnrollmentTest extends RFBrandRefreshWebsiteBaseTest{
 		storeFrontBrandRefreshHomePage.clickContinueBtnOnAutoshipSetupPageForPC();
 		storeFrontBrandRefreshHomePage.clickContinueBtn();
 		storeFrontBrandRefreshHomePage.enterShippingProfileDetails(addressName, shippingProfileFirstName,shippingProfileLastName, addressLine1, postalCode, phnNumber);
-		storeFrontBrandRefreshHomePage.clickContinueBtn();
+		storeFrontBrandRefreshHomePage.clickContinueBtnForPCAndRC();
 		storeFrontBrandRefreshHomePage.clickUseAsEnteredBtn();
 		storeFrontBrandRefreshHomePage.enterBillingInfoDetails(billingName, billingProfileFirstName, billingProfileLastName, nameOnCard, cardNumber, expMonth, expYear, addressLine1, postalCode, phnNumber);
 		storeFrontBrandRefreshHomePage.clickContinueBtn();
@@ -134,11 +132,11 @@ public class EnrollmentTest extends RFBrandRefreshWebsiteBaseTest{
 		storeFrontBrandRefreshHomePage.selectSponsorRadioBtn();
 		storeFrontBrandRefreshHomePage.clickSelectAndContinueBtnForPCAndRC();
 		storeFrontBrandRefreshHomePage.enterShippingProfileDetails(addressName, shippingProfileFirstName,shippingProfileLastName, addressLine1, postalCode, phnNumber);
-		storeFrontBrandRefreshHomePage.clickContinueBtn();
-		storeFrontBrandRefreshHomePage.clickUseAsEnteredBtn();
+		storeFrontBrandRefreshHomePage.clickContinueBtnForPCAndRC();
+		//storeFrontBrandRefreshHomePage.clickUseAsEnteredBtn();
 		storeFrontBrandRefreshHomePage.enterBillingInfoDetails(billingName, billingProfileFirstName, billingProfileLastName, nameOnCard, cardNumber, expMonth, expYear, addressLine1, postalCode, phnNumber);
 		storeFrontBrandRefreshHomePage.clickContinueBtn();
-		storeFrontBrandRefreshHomePage.clickUseAsEnteredBtn();
+		//storeFrontBrandRefreshHomePage.clickUseAsEnteredBtn();
 		storeFrontBrandRefreshHomePage.clickCompleteOrderBtn();
 		s_assert.assertTrue(storeFrontBrandRefreshHomePage.isThankYouTextPresentAfterOrderPlaced(), "Enrollment is not completed successfully");
 		s_assert.assertAll(); 
@@ -168,6 +166,9 @@ public class EnrollmentTest extends RFBrandRefreshWebsiteBaseTest{
 		String phnNumber2 = "780";
 		String phnNumber3 = "9099";
 
+
+		//  storeFrontBrandRefreshHomePage.clickBeAConsultantBtn();
+		//  storeFrontBrandRefreshHomePage.clickEnrollNowBtnOnBusinessPage();
 		//Get Sponser details for Consultant enrollment.
 		List<Map<String, Object>> randomConsultantList = DBUtil.performDatabaseQuery(DBQueries_RFL.GET_RANDOM_ACTIVE_CONSULTANT_EMAILID,RFL_DB);
 		String sponsorID = String.valueOf(getValueFromQueryResult(randomConsultantList, "AccountNumber"));
@@ -215,6 +216,8 @@ public class EnrollmentTest extends RFBrandRefreshWebsiteBaseTest{
 		String phnNumber2 = "780";
 		String phnNumber3 = "9099";
 		storeFrontBrandRefreshHomePage.mouseHoverBeAConsultantAndClickLink("Enroll Now");
+		//  storeFrontBrandRefreshHomePage.clickBeAConsultantBtn();
+		//  storeFrontBrandRefreshHomePage.clickEnrollNowBtnOnBusinessPage();
 		List<Map<String, Object>> randomConsultantList = DBUtil.performDatabaseQuery(DBQueries_RFL.GET_RANDOM_ACTIVE_CONSULTANT_EMAILID,RFL_DB);
 		String sponsorID = String.valueOf(getValueFromQueryResult(randomConsultantList, "AccountNumber"));
 		storeFrontBrandRefreshHomePage.enterCID(sponsorID);
@@ -263,7 +266,7 @@ public class EnrollmentTest extends RFBrandRefreshWebsiteBaseTest{
 	}
 
 	//Search for a Sponsor
-	@Test(enabled=false)//NOT A PART OF BRAND REFRESH DESIGN
+	@Test(enabled=false)
 	public void testSearchForASponser(){
 		RFL_DB = driver.getDBNameRFL();
 		List<Map<String, Object>> randomConsultantList =  null;

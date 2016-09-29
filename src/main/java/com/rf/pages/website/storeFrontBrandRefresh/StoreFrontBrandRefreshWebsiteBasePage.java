@@ -40,7 +40,7 @@ public class StoreFrontBrandRefreshWebsiteBasePage extends RFBasePage{
 	private static final By CHECKOUT_BTN_OF_MY_SHOPPING_BAG_LINK = By.xpath("//span[text()='Checkout Now']");
 	private static final By OK_BTN_OF_CONFIRMATION_POPUP_FOR_ADHOC_ORDER = By.xpath("//button[text()='OK']");
 	private static final By CHECKOUT_BTN = By.xpath("//span[text()='Checkout']");
-	private static final By CONTINUE_BTN_PREFERRED_AUTOSHIP_CART_PAGE_LOC = By.xpath("//input[contains(@id,'uxContinue')]");
+	private static final By CONTINUE_BTN_PREFERRED_AUTOSHIP_CART_PAGE_LOC = By.xpath("//a[contains(@id,'uxContinue')]");
 	private static final By COMPLETE_ORDER_BTN = By.xpath("//input[contains(@id,'uxSubmitOrder')]");
 	private static final By ORDER_CONFIRMATION_THANK_YOU_TXT = By.xpath("//h2[contains(text(),'Thank')]");
 	private static final By CONTINUE_BTN_BILLING_PAGE = By.xpath("//span[contains(text(),'Change Billing Information')]/following::a[contains(@id,'uxContinue')]");
@@ -62,7 +62,8 @@ public class StoreFrontBrandRefreshWebsiteBasePage extends RFBasePage{
 	private static final By EMAIL_ADDRESS_CONSULTANT_ENROLLMENT = By.xpath("//div[@class='websitePrefix']/ul[@class='domainResults']/li[3]");
 	private static final By ABOUT_RF_LOC = By.xpath("//span[text()='About R+F']");
 	private static final By RODAN_AND_FIELDS_IMG_LOC = By.xpath("//div[@id='logo']//img");
-
+	private static final By CONTINUE_BTN_PREFERRED_PROFILE_PAGE_LOC = By.xpath("//input[contains(@id,'uxContinue')]");
+	
 	protected RFWebsiteDriver driver;
 	private String RFL_DB = null;
 	private Actions actions;
@@ -509,6 +510,13 @@ public class StoreFrontBrandRefreshWebsiteBasePage extends RFBasePage{
 			driver.click(By.xpath("//div[@id='Logo']//img"));
 		}
 		logger.info("Rodan and Fields logo clicked"); 
+		driver.waitForPageLoad();
+	}
+
+	public void clickContinueBtnForPCAndRC(){
+		driver.waitForElementPresent(CONTINUE_BTN_PREFERRED_PROFILE_PAGE_LOC);
+		driver.click(CONTINUE_BTN_PREFERRED_PROFILE_PAGE_LOC);
+		logger.info("Continue button clicked");
 		driver.waitForPageLoad();
 	}
 

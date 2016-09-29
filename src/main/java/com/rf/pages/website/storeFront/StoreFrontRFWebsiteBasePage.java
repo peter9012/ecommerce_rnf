@@ -670,6 +670,11 @@ public class StoreFrontRFWebsiteBasePage extends RFBasePage{
 		return driver.isElementPresent(By.id("account-info-button"));
 		//driver.findElement(By.xpath("//div[@id='account-info-button']/a")).getText().contains("Welcome");
 	}
+	
+	public boolean isPCEnrolledCongratsMessagePresent(){
+		driver.waitForElementPresent(By.xpath("//div[@id='Congrats']//span[contains(text(),'Welcome to Rodan + Fields')]/parent::h1[contains(text(),'PC Perks')]"));
+		return driver.isElementPresent(By.xpath("//div[@id='Congrats']//span[contains(text(),'Welcome to Rodan + Fields')]/parent::h1[contains(text(),'PC Perks')]"));
+	}
 
 	public void applyPriceFilterLowToHigh() throws InterruptedException{
 		driver.waitForElementPresent(By.xpath("//select[@id='sortOptions']"));

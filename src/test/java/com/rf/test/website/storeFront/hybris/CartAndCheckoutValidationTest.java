@@ -784,6 +784,9 @@ public class CartAndCheckoutValidationTest extends RFWebsiteBaseTest{
 		s_assert.assertTrue(storeFrontHomePage.validateAutoshipTemplateUpdatedMsgAfterIncreasingQtyOfProducts(),"update message not coming as expected");
 		double subTotalAfterReduce = storeFrontHomePage.getSubTotalOnShoppingCartPage();
 		s_assert.assertTrue(storeFrontHomePage.verifySubTotalAccordingToQuantity(qtyReduce,subTotalOfAddedProduct,subTotalAfterReduce),"subTotal is not updated with reduced quantity");
+		storeFrontHomePage.deleteTheOnlyAddedProductInTheCart();
+		s_assert.assertTrue(storeFrontHomePage.getMessageFromTheCart().contains(TestConstants.PRODUCT_HAS_BEEN_REMOVED_FROM_CART_MSG.toLowerCase().trim()),"expected message after removing the product is "+TestConstants.PRODUCT_HAS_BEEN_REMOVED_FROM_CART_MSG.toLowerCase().trim()+" but getting "+storeFrontHomePage.getMessageFromTheCart());
+		s_assert.assertTrue(storeFrontHomePage.isCartEmpty(), "cart is not empty after removing all the products");
 		s_assert.assertAll();
 	}
 
@@ -1771,7 +1774,7 @@ public class CartAndCheckoutValidationTest extends RFWebsiteBaseTest{
 		logger.info("Quick shop products are displayed");
 
 		//Verify enrollment kit option are not present for pc User.
-		s_assert.assertFalse(storeFrontHomePage.isKitPresentDuringPCEnrollment(), "Kit Options are present during pc enrollment");
+		s_assert.assertFalse(storeFrontHomePage.isKitProductPresent(), "Kit product is present");
 
 		//verify all prices are in respective currency.
 		s_assert.assertTrue(storeFrontHomePage.verifyProductPriceAsPerCountry(driver.getCountry()), "Product Prices are not as per country selected");

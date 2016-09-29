@@ -4,6 +4,7 @@ import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.Iterator;
+import java.util.List;
 import java.util.Set;
 
 import org.apache.logging.log4j.LogManager;
@@ -1251,6 +1252,21 @@ public class StoreFrontHomePage extends StoreFrontRFWebsiteBasePage {
 	public boolean validateAutoshipTemplateUpdatedMsgAfterIncreasingQtyOfProducts(){
 		driver.waitForElementPresent(By.xpath(".//div[@id='globalMessages']//p"));
 		return driver.findElement(By.xpath(".//div[@id='globalMessages']//p")).getText().contains(TestConstants.AUTOSHIP_TEMPLATE_UPDATE_CART_MSG_AFTER_UPDATING_PRODUCT_QTY);
+	}
+	
+	public void deleteTheOnlyAddedProductInTheCart(){
+		driver.click(By.linkText("Delete"));
+		driver.waitForPageLoad();
+		driver.waitForLoadingImageToDisappear();
+	}
+	
+	public String getMessageFromTheCart(){
+		driver.waitForElementPresent(By.xpath(".//div[@id='globalMessages']//p"));
+		return driver.findElement(By.xpath(".//div[@id='globalMessages']//p")).getText().toLowerCase().trim();
+	}
+	
+	public boolean isCartEmpty(){
+		return driver.findElement(By.xpath("//div[@id='left-shopping']/h1")).getText().contains("0 item");
 	}
 
 	public void clickOnUserName(){
@@ -3545,16 +3561,23 @@ public class StoreFrontHomePage extends StoreFrontRFWebsiteBasePage {
 		driver.clear(By.id("email-account"));
 	}
 
-	public boolean isKitPresentDuringPCEnrollment(){
-		if(driver.isElementPresent(By.xpath("//div[@id='main-content']//div[contains(@class,'enrollment-kits')]/div"))){
-			return true;
-		}else
-			return false;
+	public boolean isKitProductPresent(){
+		boolean isKitProductPresent = false;
+		List<WebElement> allProducts = driver.findElements(By.xpath("//div[@class='product-picture']/following::h3"));
+		for(WebElement e:allProducts){
+			if(e.getText().toLowerCase().contains("kit")){
+				isKitProductPresent=true;
+				break;
+			}
+		}
+		
+		return isKitProductPresent;
+		
 	}
 
 	public boolean verifyProductPriceAsPerCountry(String country){
 		if(country.equalsIgnoreCase("us")){
-			return getProductPrice().toLowerCase().contains("$".toLowerCase());
+			return getProductPrice().toLowerCase().contains("$".toLowerCase()) && !getProductPrice().toLowerCase().contains("CAD$".toLowerCase());
 		}else if(country.equalsIgnoreCase("ca")){
 			return getProductPrice().toLowerCase().contains("CAD$".toLowerCase());
 		}

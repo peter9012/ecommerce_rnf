@@ -181,19 +181,11 @@ public class EnrollmentsTest extends RFStoreFrontWebsiteBaseTest{
 		logger.info("PC Perks terms and conditions popup is visible when checkboxes for t&c not selected and place order button clicked");
 		storeFrontHomePage.clickOnPCPerksTermsAndConditionsCheckBoxes();
 		storeFrontHomePage.clickPlaceOrderBtn();
+		s_assert.assertTrue(storeFrontHomePage.isPCEnrolledCongratsMessagePresent(), "'Welcome to Rodan + Fields PC Perks' message has not appeared");
 		storeFrontHomePage.clickOnRodanAndFieldsLogo();
+		s_assert.assertTrue(driver.getCurrentUrl().contains("corprfo"), "PC is not registered to corporate site");
 		s_assert.assertTrue(storeFrontHomePage.verifyWelcomeDropdownToCheckUserRegistered(), "User NOT registered successfully");
-		//s_assert.assertTrue(storeFrontHomePage.getUserNameAForVerifyLogin(firstName).contains(firstName),"Profile Name After Login"+firstName+" and on UI is "+storeFrontHomePage.getUserNameAForVerifyLogin(firstName));
-		if(driver.getCurrentUrl().contains("qa"))
-		{
-			s_assert.assertAll();
-		}
-		else
-		{
-			s_assert.assertTrue(driver.getCurrentUrl().contains("corprfo"), "RC is not registered to corporate site");
-			s_assert.assertAll(); 
-		}
-
+		s_assert.assertAll();
 	}
 
 	// Hybris Project-2188:Terms and Conditions - RC enrollment
@@ -231,6 +223,7 @@ public class EnrollmentsTest extends RFStoreFrontWebsiteBaseTest{
 		s_assert.assertTrue(storeFrontHomePage.isOrderPlacedSuccessfully(), "Order Not placed successfully");
 		storeFrontHomePage.clickOnRodanAndFieldsLogo();
 		s_assert.assertTrue(driver.getCurrentUrl().contains("corprfo"), "RC is not registered to corporate site");
+		s_assert.assertTrue(storeFrontHomePage.verifyWelcomeDropdownToCheckUserRegistered(), "User NOT registered successfully");
 		s_assert.assertAll(); 
 
 	}

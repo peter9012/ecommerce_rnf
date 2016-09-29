@@ -118,7 +118,7 @@ public class TestConstants {
 	public static final String PC_PERKS_TERMS_CONDITION_POPUP_HEADER_TEXT = "PC PERKS TERMS & CONDITIONS";
 	public static final String AUTOSHIP_TEMPLATE_THRESHOLD_MSG= "greater than the threshold $80";
 	public static final String AUTOSHIP_TEMPLATE_PRODUCT_ADDED = "Product quantity has been updated.";
-
+	public static final String PRODUCT_HAS_BEEN_REMOVED_FROM_CART_MSG="Product has been removed from your cart";
 
 	//public static final String CONSULTANT_PASSWORD_STG2 = "test1234";
 	//public static final String CONSULTANT_NEW_PASSWORD_STG2 = "test12345";

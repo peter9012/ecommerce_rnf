@@ -93,10 +93,13 @@ public class RFBrandRefreshWebsiteBaseTest extends RFBaseTest {
 	public void logout(){
 		driver.quickWaitForElementPresent(By.xpath("//a[text()='Log-Out' or text()='Log Out']"));
 		driver.pauseExecutionFor(3000);
-		driver.findElement(By.xpath("//a[text()='Log-Out' or text()='Log Out']")).click();
-		logger.info("Logout done");  
-		driver.pauseExecutionFor(3000);
-		driver.waitForPageLoad();		
+		if(driver.isElementPresent(By.xpath("//a[text()='Log-Out' or text()='Log Out']"))){
+			driver.findElement(By.xpath("//a[text()='Log-Out' or text()='Log Out']")).click();
+			logger.info("Logout done");  
+			driver.pauseExecutionFor(3000);
+			driver.waitForPageLoad();	
+		}
+				
 	}
 
 	// This assertion for the UI Texts

@@ -1,4 +1,7 @@
 package com.rf.pages.website.storeFrontBrandRefresh;
+import java.util.Iterator;
+import java.util.Set;
+
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.openqa.selenium.Alert;
@@ -63,7 +66,7 @@ public class StoreFrontBrandRefreshWebsiteBasePage extends RFBasePage{
 	private static final By ABOUT_RF_LOC = By.xpath("//span[text()='About R+F']");
 	private static final By RODAN_AND_FIELDS_IMG_LOC = By.xpath("//div[@id='logo']//img");
 	private static final By CONTINUE_BTN_PREFERRED_PROFILE_PAGE_LOC = By.xpath("//input[contains(@id,'uxContinue')]");
-	
+
 	protected RFWebsiteDriver driver;
 	private String RFL_DB = null;
 	private Actions actions;
@@ -518,6 +521,20 @@ public class StoreFrontBrandRefreshWebsiteBasePage extends RFBasePage{
 		driver.click(CONTINUE_BTN_PREFERRED_PROFILE_PAGE_LOC);
 		logger.info("Continue button clicked");
 		driver.waitForPageLoad();
+	}
+
+	public void closeTheChildWindow() {
+		String parentWindowID=driver.getWindowHandle();
+		Set<String> set=driver.getWindowHandles();
+		Iterator<String> it=set.iterator();
+		while(it.hasNext()){
+			String childWindowID=it.next();
+			if(!parentWindowID.equalsIgnoreCase(childWindowID)){
+				driver.switchTo().window(childWindowID);
+				driver.close();
+				driver.switchTo().window(parentWindowID);
+			}
+		}
 	}
 
 }

@@ -60,7 +60,7 @@ public class StoreFrontBrandRefreshHomePage extends StoreFrontBrandRefreshWebsit
 	private static final By FOOTER_CONTACT_US_LINK_LOC = By.xpath("//footer[@id='FooterPane']//span[text()='Contact Us']");
 	private static final By CONTACT_US_PAGE_HEADER_LOC = By.xpath("//div[@id='RFContent']//h1[text()='CONTACT US' or text()='Contact Us']");
 
-	private static final By BE_A_CONSULTANT_LOC = By.xpath("//span[text()='Be a Consultant']");
+	private static final By BE_A_CONSULTANT_LOC = By.xpath("//span[text()='Become a Consultant']");
 	private static final By ENROLL_NOW_ON_BUSINESS_PAGE_LOC = By.xpath("//*[@id='LeftNav']//span[text()='Enroll Now']");
 	private static final By CID_LOC = By.id("NameOrId");
 	private static final By CID_SEARCH_LOC = By.id("BtnSearch");
@@ -179,7 +179,7 @@ public class StoreFrontBrandRefreshHomePage extends StoreFrontBrandRefreshWebsit
 	private static final By PRIVACY_POLICY_LINK = By.xpath("//span[text()='Privacy Policy']");
 	private static final By PRIVACY_POLICY_TEXT = By.xpath("//u[text()='PRIVACY POLICY']");
 	private static final By SATISFACTION_GUARANTEE_LINK = By.xpath("//span[text()='Satisfaction Guarantee']");
-	private static final By SATISFACTION_GUARANTEE_TEXT = By.xpath("//h1[contains(text(),'Guarantee')]");
+	private static final By SATISFACTION_GUARANTEE_TEXT = By.xpath("//h1[contains(text(),'Guarantee') or contains(text(),'GUARANTEE')]");
 	private static final By TERMS_AND_CONDITIONS_LINK = By.xpath("//span[text()='Terms & Conditions']");
 	private static final By SOLUTION_TOOL_LOC = By.xpath("//span[text()='Products']/following::li/a/span[text()='Solution Tool']");
 	private static final By SOLUTION_TOOL_PAGE_LOC = By.xpath("//div[@id='RFContent']");

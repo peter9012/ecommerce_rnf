@@ -27,7 +27,7 @@ public class EnrollmentTest extends RFBrandRefreshWebsiteBaseTest{
 	}
 
 	//PC Enrollment From Corp site
-	@Test(priority=1)//smoke
+	@Test(priority=2)//smoke
 	public void testPCEnrollment(){
 		RFL_DB = driver.getDBNameRFL();
 		int randomNum = CommonUtils.getRandomNum(10000, 1000000);
@@ -88,7 +88,7 @@ public class EnrollmentTest extends RFBrandRefreshWebsiteBaseTest{
 	}
 
 	//RC Enrollment from corp site.
-	@Test(enabled=true)//smoke
+	@Test(priority=1)//smoke
 	public void testRCEnrollment(){
 		RFL_DB = driver.getDBNameRFL();
 		int randomNum = CommonUtils.getRandomNum(10000, 1000000);
@@ -119,7 +119,6 @@ public class EnrollmentTest extends RFBrandRefreshWebsiteBaseTest{
 		//Get RC Sponser from database
 		List<Map<String, Object>> randomConsultantList = DBUtil.performDatabaseQuery(DBQueries_RFL.GET_RANDOM_ACTIVE_CONSULTANT_EMAILID,RFL_DB);
 		sponsorID = String.valueOf(getValueFromQueryResult(randomConsultantList, "AccountNumber"));
-
 		storeFrontBrandRefreshHomePage.mouseHoverShopSkinCareAndClickLink(regimen);
 		storeFrontBrandRefreshHomePage.clickAddToCartBtn();
 		storeFrontBrandRefreshHomePage.clickCheckoutBtn();
@@ -143,7 +142,7 @@ public class EnrollmentTest extends RFBrandRefreshWebsiteBaseTest{
 	}
 
 	//Consultant Express Enrollment from Corp
-	@Test(enabled=true)//smoke
+	@Test(priority=3)//smoke
 	public void testConsultantExpressEnrollment(){
 		RFL_DB = driver.getDBNameRFL();
 		int randomNum = CommonUtils.getRandomNum(10000, 1000000);
@@ -165,11 +164,11 @@ public class EnrollmentTest extends RFBrandRefreshWebsiteBaseTest{
 		String phnNumber1 = "415";
 		String phnNumber2 = "780";
 		String phnNumber3 = "9099";
-
-
+		storeFrontBrandRefreshHomePage.closeTheChildWindow();
 		//  storeFrontBrandRefreshHomePage.clickBeAConsultantBtn();
 		//  storeFrontBrandRefreshHomePage.clickEnrollNowBtnOnBusinessPage();
 		//Get Sponser details for Consultant enrollment.
+		
 		List<Map<String, Object>> randomConsultantList = DBUtil.performDatabaseQuery(DBQueries_RFL.GET_RANDOM_ACTIVE_CONSULTANT_EMAILID,RFL_DB);
 		String sponsorID = String.valueOf(getValueFromQueryResult(randomConsultantList, "AccountNumber"));
 		storeFrontBrandRefreshHomePage.mouseHoverBeAConsultantAndClickLink("Enroll Now");
@@ -193,7 +192,7 @@ public class EnrollmentTest extends RFBrandRefreshWebsiteBaseTest{
 	}
 
 	//Consultant Standard Enrollment
-	@Test(enabled=true)//smoke
+	@Test(priority=4)//smoke
 	public void testConsultantStandardEnrollment(){
 		RFL_DB = driver.getDBNameRFL();
 		int randomNum = CommonUtils.getRandomNum(10000, 1000000);
@@ -245,7 +244,7 @@ public class EnrollmentTest extends RFBrandRefreshWebsiteBaseTest{
 	}
 
 	//My account options as RC customer
-	@Test
+	@Test(priority=5)
 	public void testMyAccountOptionAsRCCustomer(){
 		RFL_DB = driver.getDBNameRFL();
 		List<Map<String, Object>> randomRCList =  null;
@@ -284,7 +283,7 @@ public class EnrollmentTest extends RFBrandRefreshWebsiteBaseTest{
 	}
 
 	// My account options as PC customer
-	@Test
+	@Test(priority=6)
 	public void testMyAccountOptionsAs_PC_Customer(){
 		RFL_DB = driver.getDBNameRFL();
 		List<Map<String, Object>> randomPCList = null;
@@ -322,7 +321,7 @@ public class EnrollmentTest extends RFBrandRefreshWebsiteBaseTest{
 	}
 
 	//PC Edit order as a PC User
-	@Test(enabled=true)
+	@Test(priority=7)
 	public void testPCEditOrderAsAPCUser(){
 		RFL_DB = driver.getDBNameRFL();
 		List<Map<String, Object>> randomPCList = null;
@@ -351,5 +350,4 @@ public class EnrollmentTest extends RFBrandRefreshWebsiteBaseTest{
 		s_assert.assertTrue(storeFrontBrandRefreshHomePage.getConfirmationMessage().contains("Replenishment Order items successfully updated!"),"No Message appearing after order update");
 		s_assert.assertAll();
 	}
-
 }

@@ -898,7 +898,7 @@ public class RFWebsiteDriver implements RFDriver,WebDriver {
 		return sDateTime;
 	}
 
-	public void switchToSecondWindow(){
+	public String switchToSecondWindow(){
 		//		Set<String> allWindows = driver.getWindowHandles();
 		//		Iterator itr = allWindows.iterator();
 		//		while(itr.hasNext()){
@@ -916,7 +916,8 @@ public class RFWebsiteDriver implements RFDriver,WebDriver {
 			}
 
 		}
-		logger.info("Switched to second window whose title is "+driver.getTitle());		
+		logger.info("Switched to second window whose title is "+driver.getTitle());	
+		return parentWindow;
 	}
 
 	public String getCrmURL(){

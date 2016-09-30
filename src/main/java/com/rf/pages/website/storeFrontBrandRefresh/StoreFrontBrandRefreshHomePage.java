@@ -123,11 +123,11 @@ public class StoreFrontBrandRefreshHomePage extends StoreFrontBrandRefreshWebsit
 	private static final By EXISTING_CONSULTANT_LOC = By.xpath("//div[@id='ExistentConsultant']/p[contains(text(),'already have a Consultant account')]");
 	private static final By BECOME_A_CONSULTANT_MENU = By.xpath("//a[@href='/Pages/BusinessSystem/WhyRF/GettingStarted']");
 	private static final By ENROLL_NOW_ON_BIZ_PWS_PAGE_LOC = By.xpath("//*[@id='nav']/div/ul/li[2]/ul/li[2]/a/span");
-	private static final By ENROLL_NOW_ON_WHY_RF_PAGE_LOC = By.xpath("//ul[@class='SubNav']//span[contains(text(),'Enroll Now')]");
+	private static final By ENROLL_NOW_ON_WHY_RF_PAGE_LOC = By.xpath("//ul[@class='SubNav']//span[contains(text(),'Enroll Now') or contains(text(),'ENROLL NOW')]");
 
 	private static final By ADD_TO_CART_BTN = By.id("addToCartButton");//"//a[text()='Add to Cart']");
 	private static final By CLICK_HERE_LINK_FOR_PC = By.xpath("//a[contains(@id,'PreferredLink')]");
-	private static final By ENROLL_NOW_FOR_PC_AND_RC = By.xpath("//a[contains(text(),'Enroll Now')]");
+	private static final By ENROLL_NOW_FOR_PC_AND_RC = By.xpath("//a[contains(text(),'Enroll Now') or contains(text(),'ENROLL NOW')]");
 	private static final By FIRST_NAME_FOR_PC_AND_RC = By.xpath("//input[contains(@id,'uxFirstName')]");
 	private static final By LAST_NAME_FOR_PC_AND_RC = By.xpath("//input[contains(@id,'uxLastName')]");
 	private static final By EMAIL_ADDRESS_FOR_PC_AND_RC = By.xpath("//input[contains(@id,'uxEmailAddress')]");
@@ -268,6 +268,7 @@ public class StoreFrontBrandRefreshHomePage extends StoreFrontBrandRefreshWebsit
 	private static final By PRESS_ROOM = By.xpath("//span[contains(text(),'Press Room')]");
 	private static final By ERROR_MESSAGE_FOR_TERMS_AND_CANDITIONS_FOR_PC_RC = By.xpath("//li[text()='You must agree to the Terms and Conditions to continue.']");
 
+	String parentWindow = null;
 
 	public StoreFrontBrandRefreshHomePage(RFWebsiteDriver driver) {
 		super(driver);
@@ -576,8 +577,13 @@ public class StoreFrontBrandRefreshHomePage extends StoreFrontBrandRefreshWebsit
 		driver.quickWaitForElementPresent(ENROLL_NOW_FOR_PC_AND_RC);
 		driver.click(ENROLL_NOW_FOR_PC_AND_RC);
 		logger.info("Enroll now button clicked");
+		driver.pauseExecutionFor(2000);
+		if(driver.getWindowHandles().size()>1){
+			parentWindow = driver.switchToSecondWindow();
+		}
 		driver.waitForPageLoad();
 	}
+		
 
 	public void enterProfileDetailsForPCAndRC(String firstName,String lastName,String emailAddress,String password,String phnNumber,String gender){
 		driver.type(FIRST_NAME_FOR_PC_AND_RC, firstName);
@@ -2030,8 +2036,11 @@ public class StoreFrontBrandRefreshHomePage extends StoreFrontBrandRefreshWebsit
 	}
 
 	public boolean isPCEnrollmentCompletedSuccessfully(){
+		boolean isPCEnrollmentCompletedSuccessfully = false;
 		driver.waitForElementPresent(By.xpath("//h2[contains(text(),'Welcome to PC Perks')]"));
-		return driver.isElementPresent(By.xpath("//h2[contains(text(),'Welcome to PC Perks')]"));
+		isPCEnrollmentCompletedSuccessfully =  driver.isElementPresent(By.xpath("//h2[contains(text(),'Welcome to PC Perks')]"));
+		driver.switchTo().window(parentWindow);
+		return isPCEnrollmentCompletedSuccessfully;
 	}
 
 	public boolean verifyErrorMessageForTermsAndConditionsForConsultant(){

@@ -27,7 +27,7 @@ public class EnrollmentTest extends RFBrandRefreshWebsiteBaseTest{
 	}
 
 	//PC Enrollment From Corp site
-	@Test(enabled=true)//smoke
+	@Test(priority=1)//smoke
 	public void testPCEnrollment(){
 		RFL_DB = driver.getDBNameRFL();
 		int randomNum = CommonUtils.getRandomNum(10000, 1000000);

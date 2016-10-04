@@ -52,15 +52,14 @@ public class StoreFrontBrandRefreshHomePage extends StoreFrontBrandRefreshWebsit
 	private static final By RESULTS_TEXT_LOC = By.xpath("//div[@id='RFContent']//h1[contains(text(),'REAL RESULTS')]");
 	private static final By TESTIMONIAL_PAGE_CONTENT_LOC = By.xpath("//div[@id='RFContent']/div/div/blockquote[1]/div[1]");
 	private static final By NEWS_TEXT_LOC = By.xpath("//div[@id='RFContent']");
-	private static final By FAQS_TEXT_LOC = By.xpath("//div[@id='RFContent']//h1[contains(text(),'FAQs')]");
+	private static final By FAQS_TEXT_LOC = By.xpath("//div[@id='RFContent']//h1[contains(text(),'FAQs') or contains(text(),'Questions')]");
 	private static final By ADVICE_PAGE_CONTENT_LOC = By.xpath("//div[@id='RFContent']//td[1]");
 	private static final By GLOSSARY_PAGE_CONTENT_LOC = By.xpath("//div[@id='GlossaryAF']");
 	private static final By INGREDIENTS_AND_USAGE_LINK_LOC = By.xpath("//a[text()='Ingredients and Usage']");
 	private static final By INGREDIENTS_CONTENT_LOC = By.xpath("//span[@id='ProductUsage']");
 	private static final By FOOTER_CONTACT_US_LINK_LOC = By.xpath("//footer[@id='FooterPane']//span[text()='Contact Us']");
 	private static final By CONTACT_US_PAGE_HEADER_LOC = By.xpath("//div[@id='RFContent']//h1[text()='CONTACT US' or text()='Contact Us']");
-
-	private static final By BE_A_CONSULTANT_LOC = By.xpath("//span[text()='Become a Consultant']");
+	private static final By CONTACT_US_PAGE_LOC = By.xpath("//*[text()='HOW MAY WE HELP YOU?']");
 	private static final By ENROLL_NOW_ON_BUSINESS_PAGE_LOC = By.xpath("//*[@id='LeftNav']//span[text()='Enroll Now']");
 	private static final By CID_LOC = By.id("NameOrId");
 	private static final By CID_SEARCH_LOC = By.id("BtnSearch");
@@ -133,8 +132,7 @@ public class StoreFrontBrandRefreshHomePage extends StoreFrontBrandRefreshWebsit
 	private static final By EMAIL_ADDRESS_FOR_PC_AND_RC = By.xpath("//input[contains(@id,'uxEmailAddress')]");
 	private static final By CREATE_PASSWORD_FOR_PC_AND_RC = By.xpath("//div[@class='form-group']//input[contains(@id,'uxPassword')]");
 	private static final By CONFIRM_PASSWORD_FOR_PC_AND_RC = By.xpath("//input[contains(@id,'uxConfirmPassword')]");
-	private static final By PHONE_NUMBER_FOR_PC_AND_RC = By.xpath("//input[contains(@id,'uxPhoneNumber')]");
-	private static final By CONTINUE_BTN_PREFERRED_PROFILE_PAGE_LOC = By.xpath("//input[contains(@id,'uxContinue')]");
+	private static final By PHONE_NUMBER_FOR_PC_AND_RC = By.xpath("//input[contains(@id,'uxPhoneNumber')]");	
 	private static final By ID_NUMBER_AS_SPONSOR = By.xpath("//input[contains(@id,'uxSponsorID')]");
 	private static final By BEGIN_SEARCH_BTN = By.xpath("//a[contains(@id,'uxSearchByName')]");
 	private static final By SPONSOR_RADIO_BTN = By.xpath("//div[@class='DashRow']/input");
@@ -226,7 +224,7 @@ public class StoreFrontBrandRefreshHomePage extends StoreFrontBrandRefreshWebsit
 	private static final By EMAIL_ADDRESS_FIELD_LOC = By.xpath("//label[contains(text(),'Email Address')]/following-sibling::input[@type='text']");
 	private static final By EDIT_ORDER_UNDER_MY_ACCOUNT_LOC = By.xpath("//span[text()=' Edit Order']");
 	private static final By CHANGE_LINK_FOR_SHIPPING_INFO_ON_PWS = By.xpath("//a[contains(@id,'uxChangeShippingLink')]");
-	private static final By SHIPPING_ADDRESS_NAME_LOC = By.xpath("//b[text()='Shipping to:']/../following-sibling::p/span[1]");
+	private static final By SHIPPING_ADDRESS_NAME_LOC = By.xpath("//*[text()='Shipping to:']/../span[1]");
 	private static final By USE_THIS_ADDRESS_SHIPPING_INFORMATION = By.xpath("//a[contains(@id,'uxUseNewAddress')]");
 	private static final By ENROLL_NOW_LINK = By.xpath("//span[text()='Enroll Now']");
 	private static final By WEBSITE_PREFIX_BIZ_PWS = By.xpath("//li[@id='Abailable1']");
@@ -397,8 +395,10 @@ public class StoreFrontBrandRefreshHomePage extends StoreFrontBrandRefreshWebsit
 		logger.info("card number entered is: "+cardNumber);
 		driver.findElement(NAME_ON_CARD_LOC).sendKeys(nameOnCard);
 		logger.info("name on card entered is: "+nameOnCard);
-		Select dropdown1 = new Select(driver.findElement(EXP_MONTH_LOC));
-		dropdown1.selectByVisibleText(expMonth);
+		/*Select dropdown1 = new Select(driver.findElement(EXP_MONTH_LOC));
+		  dropdown1.selectByVisibleText(expMonth);*/
+		driver.click(By.xpath("//select[@id='ExpMonth']"));
+		driver.click(By.xpath("//select[contains(@id,'ExpMonth')]//option[@value='"+expMonth+"']"));
 		logger.info("Exp Month selected as: "+expMonth);
 		Select dropdown2 = new Select(driver.findElement(EXP_YEAR_LOC));
 		dropdown2.selectByVisibleText(expYear);
@@ -583,7 +583,7 @@ public class StoreFrontBrandRefreshHomePage extends StoreFrontBrandRefreshWebsit
 		}
 		driver.waitForPageLoad();
 	}
-		
+
 
 	public void enterProfileDetailsForPCAndRC(String firstName,String lastName,String emailAddress,String password,String phnNumber,String gender){
 		driver.type(FIRST_NAME_FOR_PC_AND_RC, firstName);
@@ -615,8 +615,10 @@ public class StoreFrontBrandRefreshHomePage extends StoreFrontBrandRefreshWebsit
 	}
 
 	public void selectSponsorRadioBtn(){
+		driver.pauseExecutionFor(5000);
 		driver.quickWaitForElementPresent(SPONSOR_RADIO_BTN);
-		driver.click(SPONSOR_RADIO_BTN);
+		JavascriptExecutor executor = (JavascriptExecutor)(RFWebsiteDriver.driver);
+		executor.executeScript("arguments[0].click();", driver.findElement(SPONSOR_RADIO_BTN)); 
 		logger.info("Radio button of sponsor is selected");
 	}
 
@@ -728,9 +730,11 @@ public class StoreFrontBrandRefreshHomePage extends StoreFrontBrandRefreshWebsit
 
 	public void clickUseAsEnteredBtn(){
 		driver.quickWaitForElementPresent(USE_AS_ENTERED_BTN_LOC);
-		driver.findElement(USE_AS_ENTERED_BTN_LOC).click();
-		logger.info("use as entered button clicked");
-		driver.waitForPageLoad();
+		if(driver.isElementPresent(USE_AS_ENTERED_BTN_LOC)==true){			
+			driver.findElement(USE_AS_ENTERED_BTN_LOC).click();
+			logger.info("use as entered button clicked");
+			driver.waitForPageLoad();
+		}
 	}
 
 	public boolean isEnrollmentCompletedSuccessfully(){
@@ -893,8 +897,12 @@ public class StoreFrontBrandRefreshHomePage extends StoreFrontBrandRefreshWebsit
 	}
 
 	public boolean verifylinkIsRedirectedToContactUsPage() {
-		driver.waitForElementPresent(CONTACT_US_PAGE_HEADER_LOC);
-		return driver.isElementPresent(CONTACT_US_PAGE_HEADER_LOC);
+		try{
+			driver.waitForElementPresent(CONTACT_US_PAGE_HEADER_LOC);
+			return driver.findElement(CONTACT_US_PAGE_HEADER_LOC).isDisplayed();
+		}catch(Exception e){
+			return driver.findElement(CONTACT_US_PAGE_LOC).isDisplayed();
+		}
 	}
 
 	public void clickProductPhilosophyLink(){
@@ -1126,13 +1134,9 @@ public class StoreFrontBrandRefreshHomePage extends StoreFrontBrandRefreshWebsit
 	}
 
 	public boolean verifySubSectionPresentAtProgramsAndIncentives(String firstSubSectionUnderProgramsAndIncentives) {
-		boolean flag=false;
-		try{
-			flag =  driver.findElement(By.xpath(String.format("//h1[text()='%s']", firstSubSectionUnderProgramsAndIncentives))).isDisplayed();
-		}catch(NoSuchElementException e){
-			flag =  driver.findElement(By.xpath(String.format("//a[text()='%s']", firstSubSectionUnderProgramsAndIncentives))).isDisplayed();
-		}
-		return flag;
+		String firstSubsectionInUpperCase = firstSubSectionUnderProgramsAndIncentives.toUpperCase();
+		driver.waitForElementPresent(By.xpath(String.format("//*[contains(text(),'%s') or contains(text(),'"+firstSubsectionInUpperCase+"')]", firstSubSectionUnderProgramsAndIncentives)));
+		return driver.isElementPresent(By.xpath(String.format("//*[contains(text(),'%s') or contains(text(),'"+firstSubsectionInUpperCase+"')]", firstSubSectionUnderProgramsAndIncentives))); 
 	}
 
 	public void clickToReadIncomeDisclosure() {
@@ -2039,7 +2043,7 @@ public class StoreFrontBrandRefreshHomePage extends StoreFrontBrandRefreshWebsit
 		boolean isPCEnrollmentCompletedSuccessfully = false;
 		driver.waitForElementPresent(By.xpath("//h2[contains(text(),'Welcome to PC Perks')]"));
 		isPCEnrollmentCompletedSuccessfully =  driver.isElementPresent(By.xpath("//h2[contains(text(),'Welcome to PC Perks')]"));
-		driver.switchTo().window(parentWindow);
+		//driver.switchTo().window(parentWindow);
 		return isPCEnrollmentCompletedSuccessfully;
 	}
 

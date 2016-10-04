@@ -28,12 +28,12 @@ public class StoreFrontBrandRefreshWebsiteBasePage extends RFBasePage{
 	private static String sublinkUnderShopSkinCareOrBeAConsultant = "//div[@id='LeftNav']//a/span[text()='%s']/../..//span[text()='%s']";
 	private static String consultantOnlyProductonPWSLoc= "//span[contains(text(),'%s')]/preceding::a[1]/img";
 
-	private static final By BE_A_CONSULTANT_LOC = By.xpath("//span[text()='Become a Consultant']");
+	protected static final By BE_A_CONSULTANT_LOC = By.xpath("//span[text()='Be a Consultant']");
 	private static final By ORDER_NUMBER_AFTER_PLACED = By.xpath("//span[contains(@id,'uxOrderNumber')]//cufon");
 	private static final By EDIT_ORDER_UNDER_MY_ACCOUNT_LOC = By.xpath("//span[text()=' Edit Order']");
 	private static final By CHANGE_SHIPPING_INFO_LINK_ON_PWS = By.xpath("//a[contains(@id,'uxChangeShippingLink')]");
 	private static final By EDIT_ORDER_BTN_LOC = By.xpath("//p[@class='FormButtons']//a[text()='Edit Order']");
-	private static final By ORDER_NUMBER_AT_ORDER_HISTORY = By.xpath("//table[@class='CartTable']//tr[2]/td[1]");
+	private static final By ORDER_NUMBER_AT_ORDER_HISTORY = By.xpath("//*[contains(@class,'CartTable')]/div[2]/div[1]");
 	private static final By ADD_TO_CART_BTN_FOR_EDIT_ORDER = By.xpath("//div[@class='FloatCol']/div[1]//a[text()='Add to Bag']");
 	private static final By EDIT_ORDER_UPDATE_MESSAGE = By.xpath("//p[@class='success']");
 	private static final By LOGOUT_BTN_LOC = By.xpath("//a[text()='Log Out']");
@@ -65,7 +65,7 @@ public class StoreFrontBrandRefreshWebsiteBasePage extends RFBasePage{
 	private static final By EMAIL_ADDRESS_CONSULTANT_ENROLLMENT = By.xpath("//div[@class='websitePrefix']/ul[@class='domainResults']/li[3]");
 	private static final By ABOUT_RF_LOC = By.xpath("//span[text()='About R+F']");
 	private static final By RODAN_AND_FIELDS_IMG_LOC = By.xpath("//div[@id='logo']//img");
-	private static final By CONTINUE_BTN_PREFERRED_PROFILE_PAGE_LOC = By.xpath("//input[contains(@id,'uxContinue')]");
+	protected static final By CONTINUE_BTN_PREFERRED_PROFILE_PAGE_LOC = By.xpath("//*[contains(@id,'uxContinue')]");
 
 	protected RFWebsiteDriver driver;
 	private String RFL_DB = null;
@@ -122,9 +122,13 @@ public class StoreFrontBrandRefreshWebsiteBasePage extends RFBasePage{
 
 
 	public void clickOKBtnOnPopup(){
-		driver.quickWaitForElementPresent(OK_BTN_OF_CONFIRMATION_POPUP_FOR_ADHOC_ORDER);
-		driver.click(OK_BTN_OF_CONFIRMATION_POPUP_FOR_ADHOC_ORDER);
-		logger.info("Ok button clicked on popup");
+		try{
+			driver.quickWaitForElementPresent(OK_BTN_OF_CONFIRMATION_POPUP_FOR_ADHOC_ORDER);
+			driver.click(OK_BTN_OF_CONFIRMATION_POPUP_FOR_ADHOC_ORDER);
+			logger.info("Ok button clicked on popup");
+		}catch(Exception e){
+
+		}
 	}
 
 	public boolean isThankYouTextPresentAfterOrderPlaced(){
@@ -297,6 +301,7 @@ public class StoreFrontBrandRefreshWebsiteBasePage extends RFBasePage{
 		driver.waitForElementPresent(SHOP_SKINCARE_ON_PWS_LOC);
 		actions =  new Actions(RFWebsiteDriver.driver);
 		actions.moveToElement(driver.findElement(SHOP_SKINCARE_ON_PWS_LOC)).build().perform();
+		driver.waitForElementPresent(PRODUCT_LINK_UNDER_SHOP_SKIN_CARE);
 		driver.click(PRODUCT_LINK_UNDER_SHOP_SKIN_CARE);
 		logger.info("Mouse hover on shop skincare link and clicked on product link on pws");
 	}
@@ -438,6 +443,7 @@ public class StoreFrontBrandRefreshWebsiteBasePage extends RFBasePage{
 		actions =  new Actions(RFWebsiteDriver.driver);
 		actions.moveToElement(driver.findElement(SHOP_SKINCARE_ON_PWS_LOC)).build().perform();
 		logger.info("hover on Products link now as shop skincare");
+		driver.waitForElementPresent(By.xpath(String.format(linkUnderShopSkinCareOrBeAConsultant, link)));
 		driver.click(By.xpath(String.format(linkUnderShopSkinCareOrBeAConsultant, link)));
 		logger.info("Clicked "+link+" link is clicked after hovering shop skincare.");
 		driver.waitForPageLoad();

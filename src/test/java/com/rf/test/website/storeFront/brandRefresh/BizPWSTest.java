@@ -653,7 +653,7 @@ public class BizPWSTest extends RFBrandRefreshWebsiteBaseTest{
 		String nameOnCard = firstName;
 		String expMonth = TestConstantsRFL.EXP_MONTH;
 		String expYear = TestConstantsRFL.EXP_YEAR;
-		String kitName = TestConstantsRFL.CONSULTANT_RF_EXPRESS_BUSINESS_KIT;
+		String kitName = TestConstantsRFL.CONSULTANT_RFX_EXPRESS_BUSINESS_KIT;
 		String regimen = TestConstantsRFL.REGIMEN_NAME_REDEFINE;
 		String enrollemntType = "Express";
 		String phnNumber1 = "415";
@@ -665,7 +665,7 @@ public class BizPWSTest extends RFBrandRefreshWebsiteBaseTest{
 		String PWS = "https://rfqa"+pwsBizBase;
 		driver.get(PWS);
 		storeFrontBrandRefreshHomePage.hoverOnBeAConsultantAndClickLinkOnEnrollMe();
-		storeFrontBrandRefreshHomePage.selectConsultantEnrollmentKitByPrice(kitName);
+		storeFrontBrandRefreshHomePage.selectEnrollmentKit(kitName);
 		storeFrontBrandRefreshHomePage.selectRegimenForConsultant(regimen);
 		storeFrontBrandRefreshHomePage.clickNextBtnAfterSelectRegimen();
 		storeFrontBrandRefreshHomePage.selectEnrollmentType(enrollemntType);
@@ -681,7 +681,7 @@ public class BizPWSTest extends RFBrandRefreshWebsiteBaseTest{
 		logout();
 		driver.get(PWS);
 		storeFrontBrandRefreshHomePage.clickEnrollNowBtnOnbizPWSPage();
-		storeFrontBrandRefreshHomePage.selectConsultantEnrollmentKitByPrice(kitName);
+		storeFrontBrandRefreshHomePage.selectEnrollmentKit(kitName);
 		storeFrontBrandRefreshHomePage.selectRegimenForConsultant(regimen);
 		storeFrontBrandRefreshHomePage.clickNextBtnAfterSelectRegimen();
 		storeFrontBrandRefreshHomePage.selectEnrollmentType(enrollemntType);
@@ -695,7 +695,7 @@ public class BizPWSTest extends RFBrandRefreshWebsiteBaseTest{
 		driver.get(PWS);
 		storeFrontBrandRefreshHomePage.clickEnrollNowBtnOnbizPWSPage();
 		/*storeFrontLegacyHomePage.clickEnrollNowBtnAtWhyRFPage();*/
-		storeFrontBrandRefreshHomePage.selectConsultantEnrollmentKitByPrice(kitName);
+		storeFrontBrandRefreshHomePage.selectEnrollmentKit(kitName);
 		storeFrontBrandRefreshHomePage.selectRegimenForConsultant(regimen);
 		storeFrontBrandRefreshHomePage.clickNextBtnAfterSelectRegimen();
 		storeFrontBrandRefreshHomePage.selectEnrollmentType(enrollemntType);

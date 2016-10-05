@@ -191,7 +191,7 @@ public class StoreFrontConsultantPage extends StoreFrontRFWebsiteBasePage{
 
 	public void clickResetToDefaultCopyLink() {
 		driver.waitForElementPresent(By.xpath("//a[@id='aboutMeBizReset']"));
-		driver.click(By.xpath("//a[@id='aboutMeBizReset']"));
+		driver.clickByJS(RFWebsiteDriver.driver, driver.findElement(By.xpath("//a[@id='aboutMeBizReset']")));
 	}
 
 	public void addNewContentOfYourOwnCopyInComPWS() {

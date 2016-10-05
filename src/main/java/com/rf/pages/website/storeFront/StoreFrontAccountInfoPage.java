@@ -562,10 +562,11 @@ public class StoreFrontAccountInfoPage extends StoreFrontRFWebsiteBasePage{
 		driver.clear(By.xpath("//input[@id='spouse-last']"));
 		driver.type(By.xpath("//input[@id='spouse-last']"),spouseLastName);
 		actions.sendKeys(Keys.TAB).build().perform();
-		driver.pauseExecutionFor(1000);
-		driver.quickWaitForElementPresent(By.xpath("//input[@id='acceptSpouse']"));
-		driver.click(By.xpath("//input[@id='acceptSpouse']"));
+		/*  driver.pauseExecutionFor(1000);
+		  driver.quickWaitForElementPresent(By.xpath("//input[@id='acceptSpouse']"));*/
 		driver.pauseExecutionFor(1500);
+		WebElement accept_btn = driver.findElement(By.xpath("//input[@id='acceptSpouse']"));
+		driver.clickByJS(RFWebsiteDriver.driver, accept_btn);
 		return driver.findElement(By.xpath("//input[@id='spouse-first']")).getAttribute("value").contains(spouseFirstName);
 		//return driver.findElement(By.xpath("//input[@id='spouse-first']")).isDisplayed();
 	}
@@ -1024,7 +1025,7 @@ public class StoreFrontAccountInfoPage extends StoreFrontRFWebsiteBasePage{
 		logger.info("Spouse first name from UI is "+spouseFirstName);
 		return spouseFirstName;
 	}
-	
+
 	public String getSpouseLastName(){
 		driver.waitForElementPresent(By.xpath("//input[@id='spouse-last']"));
 		String spouseLastName=driver.findElement(By.xpath("//input[@id='spouse-last']")).getAttribute("value");

@@ -562,7 +562,7 @@ public class HomePageFunctionalityTest extends RFWebsiteBaseTest{
 	}	
 
 	//Hybris Project-3822:Verify Footer Links on .COM home Page
-	@Test 
+	@Test(enabled=false)//same as 3847
 	public void testVerifyFooterLinksOnHomePage_3822(){
 		//Navgate to app home page
 		storeFrontHomePage = new StoreFrontHomePage(driver);
@@ -893,13 +893,11 @@ public class HomePageFunctionalityTest extends RFWebsiteBaseTest{
 		country = driver.getCountry();
 		env = driver.getEnvironment();  
 		storeFrontHomePage = new StoreFrontHomePage(driver);
-		String sitePrefix = "bhopkins"; // standard active consultant site
-		String comPWS = driver.getComPWSURL();
-		String PWS = "https://"+sitePrefix+comPWS+"/"+country;
-		storeFrontHomePage.openPWS(PWS);
-		WebElement eLink = driver.findElement(By.xpath("//a[@href='/ca/dynamic/url/solutionTool']"));
-		eLink.click();
-		
+		//String sitePrefix = "bhopkins"; // standard active consultant site
+		//String comPWS = driver.getComPWSURL();
+		//String PWS = "https://"+sitePrefix+comPWS+"/"+country;
+		storeFrontHomePage.openComPWSSite(country, env);
+		storeFrontHomePage.clickLearnMoreLinkUnderSolutionToolAndSwitchControl();
 		//validate consultant info on top right corner..
 		s_assert.assertTrue(storeFrontHomePage.validateConsultantNameOnTopRightCorner(),"Consultant Info is not present on right top Corner");
 		s_assert.assertAll();

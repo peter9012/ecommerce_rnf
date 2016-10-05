@@ -6,10 +6,12 @@ import org.apache.commons.lang3.StringUtils;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.openqa.selenium.By;
+import org.openqa.selenium.JavascriptExecutor;
 import org.openqa.selenium.NoSuchElementException;
 import org.openqa.selenium.WebDriverException;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.interactions.Actions;
+
 import com.rf.core.driver.website.RFWebsiteDriver;
 import com.rf.core.website.constants.TestConstants;
 
@@ -100,8 +102,9 @@ public class StoreFrontShippingInfoPage extends StoreFrontRFWebsiteBasePage{
 
 	public void selectNewShippingAddressState(String state){
 		//		driver.waitForElementPresent(By.id("state"));
-		driver.click(By.id("state"));
-		//		driver.pauseExecutionFor(1000);
+		driver.clickByJS(RFWebsiteDriver.driver, driver.findElement(By.id("state")));		
+		//		driver.click(By.id("state"));
+		driver.pauseExecutionFor(1000);
 		//		driver.waitForElementPresent(By.xpath("//select[@id='state']/option[contains(text(),'"+state+"')]"));
 		driver.click(By.xpath("//select[@id='state']/option[contains(text(),'"+state+"')]"));
 		logger.info("State/Province selected");

@@ -1295,7 +1295,7 @@ public class StoreFrontHomePage extends StoreFrontRFWebsiteBasePage {
 		while(true){
 			if(driver.getCurrentUrl().contains("sitenotfound")){
 				String bizPWS = getBizPWS(driver.getCountry(), driver.getEnvironment());
-				bizPWS = convertBizSiteToComSite(bizPWS);
+				//bizPWS = convertBizSiteToComSite(bizPWS);
 				driver.get(bizPWS);
 				driver.waitForPageLoad();
 			}else{
@@ -1303,7 +1303,7 @@ public class StoreFrontHomePage extends StoreFrontRFWebsiteBasePage {
 			}
 		}
 	}
-
+	
 	public void clickOnPersonalizeMyProfileLink(){
 		driver.waitForElementPresent(By.xpath("//a[contains(text(),'Personalize my Profile')]"));
 		driver.click(By.xpath("//a[contains(text(),'Personalize my Profile')]"));
@@ -3367,13 +3367,9 @@ public class StoreFrontHomePage extends StoreFrontRFWebsiteBasePage {
 	}
 
 	public void clickEnrollNowFromBizHomePage(){
-		try{
-			driver.waitForElementPresent(By.xpath("//div[@id='corp_content']/div/div[1]/div[1]//a[contains(text(),'Enroll Now')]"));
-			driver.click(By.xpath("//div[@id='corp_content']/div/div[1]/div[1]//a[contains(text(),'Enroll Now')]"));
-		}catch(NoSuchElementException e){
-			driver.waitForElementPresent(By.xpath("//div[@id='corp_content']/div/div[1]/div[1]//a[contains(text(),'ENROLL NOW')]"));
-			driver.click(By.xpath("//div[@id='corp_content']/div/div[1]/div[1]//a[contains(text(),'ENROLL NOW')]"));
-		}driver.waitForPageLoad();
+		driver.waitForElementPresent(By.xpath("//div[@id='corp_content']/div/div[1]/div[1]//a[contains(text(),'Learn More') or contains(text(),'LEARN MORE')]"));
+		  driver.click(By.xpath("//div[@id='corp_content']/div/div[1]/div[1]//a[contains(text(),'Learn More') or contains(text(),'LEARN MORE')]"));
+		driver.waitForPageLoad();
 	}
 
 	public void clickEnrollNowFromWhyRFPage(){

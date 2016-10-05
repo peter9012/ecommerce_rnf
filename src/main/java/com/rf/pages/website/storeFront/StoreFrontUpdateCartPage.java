@@ -375,9 +375,10 @@ public class StoreFrontUpdateCartPage extends StoreFrontRFWebsiteBasePage{
 
 	public void clickOnBillingNextStepBtn() throws InterruptedException{
 		//driver.pauseExecutionFor(2000);
-		//driver.waitForElementPresent(By.xpath("//div[@id='payment-next-button']/input"));
-		driver.click(By.xpath("//div[@id='payment-next-button']/input"));
-		logger.info("Next button on billing profile clicked");	
+		driver.waitForElementPresent(By.xpath("//div[@id='payment-next-button']/input"));
+		driver.clickByJS(RFWebsiteDriver.driver, driver.findElement(By.xpath("//div[@id='payment-next-button']/input")));
+		//driver.click(By.xpath("//div[@id='payment-next-button']/input"));
+		logger.info("Next button on billing profile clicked"); 
 		driver.waitForLoadingImageToDisappear();
 	}
 
@@ -405,16 +406,18 @@ public class StoreFrontUpdateCartPage extends StoreFrontRFWebsiteBasePage{
 	public void clickBillingEditAfterSave(){
 		driver.waitForElementPresent(By.id("editBillingInfo"));
 		driver.waitForElementToBeClickable(driver.findElement(By.id("editBillingInfo")), 30);
-		driver.click(By.id("editBillingInfo"));
+		driver.clickByJS(RFWebsiteDriver.driver, driver.findElement(By.id("editBillingInfo")));
+		//driver.click(By.id("editBillingInfo"));
 		logger.info("Clicked on edit Billing link");
 	}
 
 	public void clickPlaceOrderBtn()throws InterruptedException{
-		//		driver.waitForElementPresent(By.id("placeOrderButton"));
-		driver.click(By.id("placeOrderButton"));
+		driver.waitForElementPresent(By.id("placeOrderButton"));
+		driver.clickByJS(RFWebsiteDriver.driver, driver.findElement(By.id("placeOrderButton")));
+		//driver.click(By.id("placeOrderButton"));
 		logger.info("Place order button clicked");
 		driver.waitForLoadingImageToDisappear();
-		driver.waitForPageLoad();		
+		driver.waitForPageLoad();  
 	}
 
 	public String getOrderNumberAfterPlaceOrder(){
@@ -915,7 +918,7 @@ public class StoreFrontUpdateCartPage extends StoreFrontRFWebsiteBasePage{
 			logger.info("It is having more than one shipping address");
 			//List<WebElement> totalRadioButton = driver.findElements(By.xpath("//div[@id='multiple-addresses-summary']//span"));
 		}
-		
+
 		driver.waitForLoadingImageToDisappear();
 	}
 
@@ -1090,16 +1093,20 @@ public class StoreFrontUpdateCartPage extends StoreFrontRFWebsiteBasePage{
 
 	public void clickOnEditOnNotDefaultAddressOfBilling(){
 		if(driver.isElementPresent(By.xpath("//div[@id='multiple-billing-profiles']/div[1]//input[@checked='checked']"))==false){
-			driver.click(By.xpath("//div[@id='multiple-billing-profiles']/div[1]//a[contains(text(),'Edit')]"));
+			driver.clickByJS(RFWebsiteDriver.driver, driver.findElement(By.xpath("//div[@id='multiple-billing-profiles']/div[1]//a[contains(text(),'Edit')]")));
+			//driver.click(By.xpath("//div[@id='multiple-billing-profiles']/div[1]//a[contains(text(),'Edit')]"));
 		}else{
 			try{
-				driver.click(By.xpath("//div[@id='multiple-billing-profiles']/div[2]//a[contains(text(),'Edit')]"));
+				driver.clickByJS(RFWebsiteDriver.driver, driver.findElement(By.xpath("//div[@id='multiple-billing-profiles']/div[2]//a[contains(text(),'Edit')]")));
+				//driver.click(By.xpath("//div[@id='multiple-billing-profiles']/div[2]//a[contains(text(),'Edit')]"));
 			}catch(NoSuchElementException e){
-				driver.click(By.xpath("//div[@id='multiple-billing-profiles']/div/div[2]//a[contains(text(),'Edit')]"));
+				driver.clickByJS(RFWebsiteDriver.driver, driver.findElement(By.xpath("//div[@id='multiple-billing-profiles']/div/div[2]//a[contains(text(),'Edit')]")));
+				//driver.click(By.xpath("//div[@id='multiple-billing-profiles']/div/div[2]//a[contains(text(),'Edit')]"));
 			}
 		}
 		driver.pauseExecutionFor(5000);
 	}
+
 	public boolean isNewEditedBillingProfileIsPresentOnOrderConfirmationPage(String profileName){
 		driver.waitForElementPresent(By.xpath("//div[@id='confirm-left-shopping']//h3[contains(text(),'Billing to')]/following::span[contains(text(),'"+profileName+"')]"));
 		return driver.isElementPresent(By.xpath("//div[@id='confirm-left-shopping']//h3[contains(text(),'Billing to')]/following::span[contains(text(),'"+profileName+"')]"));

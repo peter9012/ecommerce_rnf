@@ -570,8 +570,9 @@ public class StoreFrontHomePage extends StoreFrontRFWebsiteBasePage {
 	}
 
 	public void checkThePoliciesAndProceduresCheckBox() throws InterruptedException{
-		//		driver.waitForElementPresent(By.xpath("//input[@id='policies-check']/.."));
-		driver.click(By.xpath("//input[@id='policies-check']/.."));
+		driver.waitForElementPresent(By.xpath("//input[@id='policies-check']/.."));
+		driver.clickByJS(RFWebsiteDriver.driver, driver.findElement(By.xpath("//input[@id='policies-check']/..")));
+		//driver.click(By.xpath("//input[@id='policies-check']/.."));
 		logger.info("The Policies And Procedures CheckBox is checked");
 	}
 
@@ -1253,18 +1254,18 @@ public class StoreFrontHomePage extends StoreFrontRFWebsiteBasePage {
 		driver.waitForElementPresent(By.xpath(".//div[@id='globalMessages']//p"));
 		return driver.findElement(By.xpath(".//div[@id='globalMessages']//p")).getText().contains(TestConstants.AUTOSHIP_TEMPLATE_UPDATE_CART_MSG_AFTER_UPDATING_PRODUCT_QTY);
 	}
-	
+
 	public void deleteTheOnlyAddedProductInTheCart(){
 		driver.click(By.linkText("Delete"));
 		driver.waitForPageLoad();
 		driver.waitForLoadingImageToDisappear();
 	}
-	
+
 	public String getMessageFromTheCart(){
 		driver.waitForElementPresent(By.xpath(".//div[@id='globalMessages']//p"));
 		return driver.findElement(By.xpath(".//div[@id='globalMessages']//p")).getText().toLowerCase().trim();
 	}
-	
+
 	public boolean isCartEmpty(){
 		return driver.findElement(By.xpath("//div[@id='left-shopping']/h1")).getText().contains("0 item");
 	}
@@ -1303,7 +1304,7 @@ public class StoreFrontHomePage extends StoreFrontRFWebsiteBasePage {
 			}
 		}
 	}
-	
+
 	public void clickOnPersonalizeMyProfileLink(){
 		driver.waitForElementPresent(By.xpath("//a[contains(text(),'Personalize my Profile')]"));
 		driver.click(By.xpath("//a[contains(text(),'Personalize my Profile')]"));
@@ -3368,7 +3369,7 @@ public class StoreFrontHomePage extends StoreFrontRFWebsiteBasePage {
 
 	public void clickEnrollNowFromBizHomePage(){
 		driver.waitForElementPresent(By.xpath("//div[@id='corp_content']/div/div[1]/div[1]//a[contains(text(),'Learn More') or contains(text(),'LEARN MORE')]"));
-		  driver.click(By.xpath("//div[@id='corp_content']/div/div[1]/div[1]//a[contains(text(),'Learn More') or contains(text(),'LEARN MORE')]"));
+		driver.click(By.xpath("//div[@id='corp_content']/div/div[1]/div[1]//a[contains(text(),'Learn More') or contains(text(),'LEARN MORE')]"));
 		driver.waitForPageLoad();
 	}
 
@@ -3566,9 +3567,9 @@ public class StoreFrontHomePage extends StoreFrontRFWebsiteBasePage {
 				break;
 			}
 		}
-		
+
 		return isKitProductPresent;
-		
+
 	}
 
 	public boolean verifyProductPriceAsPerCountry(String country){

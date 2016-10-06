@@ -392,7 +392,8 @@ public class StoreFrontHomePage extends StoreFrontRFWebsiteBasePage {
 
 	public void clickNextButton(){
 		driver.waitForElementPresent(By.id("enrollment-next-button"));
-		driver.click(By.id("enrollment-next-button"));
+		//driver.click(By.id("enrollment-next-button"));
+		driver.clickByJS(RFWebsiteDriver.driver, driver.findElement(By.id("enrollment-next-button")));
 		logger.info("EnrollmentTest Next Button clicked");
 		driver.waitForLoadingImageToDisappear();
 		try{
@@ -408,7 +409,6 @@ public class StoreFrontHomePage extends StoreFrontRFWebsiteBasePage {
 		finally{
 			driver.turnOnImplicitWaits();
 		}
-		driver.waitForLoadingImageToDisappear();
 	}
 
 	public boolean verifySubsribeToPulseCheckBoxIsSelected() throws InterruptedException{		

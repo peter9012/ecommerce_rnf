@@ -77,10 +77,12 @@ public class StoreFrontUpdateCartPage extends StoreFrontRFWebsiteBasePage{
 	}
 
 	public void selectNewBillingCardExpirationDate(String month,String year){
-		driver.click(By.id("expiryMonth"));
+		//driver.click(By.id("expiryMonth"));
+		driver.clickByJS(RFWebsiteDriver.driver,driver.findElement(By.id("expiryMonth")));
 		driver.waitForElementPresent(By.xpath("//select[@id='expiryMonth']/option[text()='"+month.toUpperCase()+"']"));
 		driver.click(By.xpath("//select[@id='expiryMonth']/option[text()='"+month.toUpperCase()+"']"));
-		driver.click(By.id("expiryYear"));
+		//driver.click(By.id("expiryYear"));
+		driver.clickByJS(RFWebsiteDriver.driver,driver.findElement(By.id("expiryYear")));
 		driver.waitForElementPresent(By.xpath("//select[@id='expiryYear']/option[text()='"+year+"']"));
 		driver.click(By.xpath("//select[@id='expiryYear']/option[text()='"+year+"']"));
 	}
@@ -141,7 +143,8 @@ public class StoreFrontUpdateCartPage extends StoreFrontRFWebsiteBasePage{
 
 	public void clickOnUpdateCartShippingNextStepBtnDuringEnrollment() throws InterruptedException{
 		driver.isElementPresent(By.xpath("//div[@id='start-shipping-method']//input[@value='Next step']"));
-		driver.click(By.xpath("//div[@id='start-shipping-method']//input[@value='Next step']"));
+		//driver.click(By.xpath("//div[@id='start-shipping-method']//input[@value='Next step']"));
+		driver.clickByJS(RFWebsiteDriver.driver, driver.findElement(By.xpath("//div[@id='start-shipping-method']//input[@value='Next step']")));
 		logger.info("Next button on shipping update cart clicked");
 		driver.waitForLoadingImageToDisappear();
 	}
@@ -862,7 +865,7 @@ public class StoreFrontUpdateCartPage extends StoreFrontRFWebsiteBasePage{
 			driver.click(By.xpath("//form[@id='deliveryAddressForm']//option[2]"));
 		}catch(Exception e){
 			driver.quickWaitForElementPresent(By.xpath("//form[@id='deliveryaddressForm']//select[@id='state']"));
-			driver.click(By.xpath("//form[@id='deliveryaddressForm']//select[@id='state']"));
+			driver.clickByJS(RFWebsiteDriver.driver, driver.findElement(By.xpath("//form[@id='deliveryaddressForm']//select[@id='state']")));
 			driver.quickWaitForElementPresent(By.xpath("//form[@id='deliveryaddressForm']//option[2]"));
 			driver.click(By.xpath("//form[@id='deliveryaddressForm']//option[2]"));
 		}

@@ -369,9 +369,11 @@ public class StoreFrontRFWebsiteBasePage extends RFBasePage{
 		logger.info("password entered as "+password);
 		driver.type(By.id("the-password-again"),password);
 		logger.info("confirm password entered as "+password);
-		driver.click(By.xpath("//input[@id='become-pc']/.."));
+		//driver.click(By.xpath("//input[@id='become-pc']/.."));
+		driver.clickByJS(RFWebsiteDriver.driver, driver.findElement(By.xpath("//input[@id='become-pc']/..")));
 		logger.info("check box for PC user checked");
-		driver.click(By.xpath("//input[@id='next-button']"));		
+		//driver.click(By.xpath("//input[@id='next-button']"));  
+		driver.clickByJS(RFWebsiteDriver.driver, driver.findElement(By.xpath("//input[@id='next-button']")));
 		logger.info("Create New Account button clicked");
 		driver.waitForLoadingImageToDisappear();
 	}
@@ -1896,7 +1898,7 @@ public class StoreFrontRFWebsiteBasePage extends RFBasePage{
 	}
 
 	public void selectNewShippingAddressState(String state){
-		driver.click(By.xpath("//div[@id='start-new-shipping-address']//select[@id='state']"));
+		driver.clickByJS(RFWebsiteDriver.driver, driver.findElement(By.xpath("//div[@id='start-new-shipping-address']//select[@id='state']")));
 		//driver.pauseExecutionFor(2000);
 		driver.waitForElementPresent(By.xpath("//div[@id='start-new-shipping-address']//select[@id='state']/option[contains(text(),'"+state+"')]"));
 		driver.click(By.xpath("//div[@id='start-new-shipping-address']//select[@id='state']/option[contains(text(),'"+state+"')]"));
@@ -2057,6 +2059,7 @@ public class StoreFrontRFWebsiteBasePage extends RFBasePage{
 		//driver.waitForElementPresent(By.xpath("//div[@id='checkout_summary_deliverymode_div']//a/ancestor::div[@style='display: block;']"));		
 		JavascriptExecutor js = (JavascriptExecutor)(RFWebsiteDriver.driver);
 		js.executeScript("arguments[0].click();", driver.findElement(By.xpath("//div[@id='checkout_summary_deliverymode_div']//a")));
+		driver.waitForLoadingImageToDisappear();
 		logger.info("Edit Shipping link clicked");			
 	}
 
@@ -2081,7 +2084,8 @@ public class StoreFrontRFWebsiteBasePage extends RFBasePage{
 
 	public void clickOnEditOfShippingProfile(String profileName){
 		driver.waitForElementPresent(By.xpath("//span[contains(text(),'"+profileName+"')]/ancestor::div[1]//a[text()='Edit']"));
-		driver.click(By.xpath("//span[contains(text(),'"+profileName+"')]/ancestor::div[1]//a[text()='Edit']"));
+		//driver.click(By.xpath("//span[contains(text(),'"+profileName+"')]/ancestor::div[1]//a[text()='Edit']"));
+		driver.clickByJS(RFWebsiteDriver.driver, driver.findElement(By.xpath("//span[contains(text(),'"+profileName+"')]/ancestor::div[1]//a[text()='Edit']")));
 		driver.waitForPageLoad();
 		logger.info("Shipping profile"+profileName+" 's edit link clicked");
 		driver.waitForLoadingImageToDisappear();
@@ -2129,6 +2133,19 @@ public class StoreFrontRFWebsiteBasePage extends RFBasePage{
 		driver.waitForElementToBeVisible(By.xpath("//input[@value='VIEW SHOPPING CART']"), 30);
 		driver.click(By.xpath("//input[@value='VIEW SHOPPING CART']"));
 		logger.info("'VIEW SHOPPING CART' button clicked on mini cart");
+		driver.waitForPageLoad();
+		driver.waitForLoadingImageToDisappear();
+	}
+
+	public boolean isBillingAddressPresentOnPage(String firstName){
+		driver.waitForElementPresent(By.xpath("//div[@id='multiple-billing-profiles']/div"));
+		return driver.isElementPresent(By.xpath("//div[@id='multiple-billing-profiles']//span[contains(text(),'"+firstName+"')]"));
+	}
+
+	public void clickEditPCPerksLinkPresentOnWelcomeDropDown() throws InterruptedException{
+		//driver.waitForElementPresent(WELCOME_DD_EDIT_CRP_LINK_LOC);
+		driver.click(By.xpath("//a[text()='Edit PC Perks']"));
+		logger.info("User has clicked on edit Crp link from welcome drop down");
 		driver.waitForPageLoad();
 		driver.waitForLoadingImageToDisappear();
 	}

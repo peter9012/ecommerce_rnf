@@ -543,11 +543,11 @@ public class StoreFrontAccountInfoPage extends StoreFrontRFWebsiteBasePage{
 			driver.pauseExecutionFor(1000);
 		}
 		catch(Exception e){
-
+			
 		}
-
 		driver.click(By.xpath("//input[@id='enrollAllowSpouse1']/.."));
 		driver.pauseExecutionFor(1000);
+		
 	}
 
 	public boolean validateEnterSpouseDetailsAndAccept(){
@@ -561,12 +561,16 @@ public class StoreFrontAccountInfoPage extends StoreFrontRFWebsiteBasePage{
 		driver.type(By.xpath("//input[@id='spouse-first']"),spouseFirstName);
 		driver.clear(By.xpath("//input[@id='spouse-last']"));
 		driver.type(By.xpath("//input[@id='spouse-last']"),spouseLastName);
-		actions.sendKeys(Keys.TAB).build().perform();
-		/*  driver.pauseExecutionFor(1000);
-		  driver.quickWaitForElementPresent(By.xpath("//input[@id='acceptSpouse']"));*/
-		driver.pauseExecutionFor(1500);
+		//actions.sendKeys(Keys.TAB).build().perform();
+		driver.click(By.xpath("//input[@id='old-password-account']"));
+		driver.pauseExecutionFor(2000);
+		driver.quickWaitForElementPresent(By.xpath("//input[@id='acceptSpouse']"));
+		driver.pauseExecutionFor(2000);
 		WebElement accept_btn = driver.findElement(By.xpath("//input[@id='acceptSpouse']"));
-		driver.clickByJS(RFWebsiteDriver.driver, accept_btn);
+		driver.click(By.xpath("//input[@id='acceptSpouse']"));
+//		actions = new Actions(RFWebsiteDriver.driver);
+//		actions.moveToElement(accept_btn).click(accept_btn).build().perform();
+		driver.pauseExecutionFor(2000);
 		return driver.findElement(By.xpath("//input[@id='spouse-first']")).getAttribute("value").contains(spouseFirstName);
 		//return driver.findElement(By.xpath("//input[@id='spouse-first']")).isDisplayed();
 	}
@@ -579,11 +583,12 @@ public class StoreFrontAccountInfoPage extends StoreFrontRFWebsiteBasePage{
 		driver.waitForElementTobeEnabled(By.xpath("//input[@id='spouse-first']"));
 		driver.pauseExecutionFor(5000);
 		driver.clear(By.xpath("//input[@id='spouse-first']"));
-		driver.clear(By.xpath("//input[@id='spouse-last']"));
 		driver.type(By.xpath("//input[@id='spouse-first']"),spouseFirstName);
+		driver.clear(By.xpath("//input[@id='spouse-last']"));
 		driver.type(By.xpath("//input[@id='spouse-last']"),spouseLastName);
-		actions.sendKeys(Keys.TAB).build().perform();
-		driver.pauseExecutionFor(1000);
+		//actions.sendKeys(Keys.TAB).build().perform();
+		driver.click(By.xpath("//input[@id='old-password-account']"));
+		driver.pauseExecutionFor(2000);
 		driver.quickWaitForElementPresent(By.xpath("//input[@id='cancelSpouse']"));
 		driver.click(By.xpath("//input[@id='cancelSpouse']"));
 		driver.pauseExecutionFor(1500);
@@ -1007,11 +1012,12 @@ public class StoreFrontAccountInfoPage extends StoreFrontRFWebsiteBasePage{
 		driver.waitForElementTobeEnabled(By.xpath("//input[@id='spouse-first']"));
 		driver.pauseExecutionFor(5000);
 		driver.clear(By.xpath("//input[@id='spouse-first']"));
-		driver.clear(By.xpath("//input[@id='spouse-last']"));
 		driver.type(By.xpath("//input[@id='spouse-first']"),spouseFirstName);
+		driver.clear(By.xpath("//input[@id='spouse-last']"));
 		driver.type(By.xpath("//input[@id='spouse-last']"),spouseLastName);
-		actions.sendKeys(Keys.TAB).build().perform();
-		driver.pauseExecutionFor(1000);
+		//actions.sendKeys(Keys.TAB).build().perform();
+		driver.click(By.xpath("//input[@id='old-password-account']"));
+		driver.pauseExecutionFor(2000);
 		driver.quickWaitForElementPresent(By.xpath("//span[@class='icon-close']"));
 		driver.click(By.xpath("//span[@class='icon-close']"));
 		driver.pauseExecutionFor(1500);

@@ -249,8 +249,9 @@ public class StoreFrontRFWebsiteBasePage extends RFBasePage{
 	}
 
 	public void clickOnNextBtnAfterAddingProductAndQty() throws InterruptedException{
-		//		driver.waitForElementPresent(By.id("submitForm"));
-		driver.click(By.id("submitForm"));
+		//  driver.waitForElementPresent(By.id("submitForm"));
+		driver.clickByJS(RFWebsiteDriver.driver, driver.findElement(By.id("submitForm")));
+		//driver.click(By.id("submitForm"));
 		logger.info("Next button after adding quantity clicked");
 		driver.waitForLoadingImageToDisappear();
 	}
@@ -716,6 +717,7 @@ public class StoreFrontRFWebsiteBasePage extends RFBasePage{
 		}
 		return false;
 	}
+	
 	public void clickOnPCPerksTermsAndConditionsCheckBoxes(){
 		//driver.waitForElementToBeClickable(By.xpath("//form[@id='placeOrderForm1']/ul/div[@class='content'][1]/li[1]//input"), 15);
 		//driver.pauseExecutionFor(3000);
@@ -725,10 +727,13 @@ public class StoreFrontRFWebsiteBasePage extends RFBasePage{
 			driver.click(By.xpath("//div[@class='content']/li[2]//input/.."));
 		}catch(NoSuchElementException e){
 			driver.waitForElementPresent(By.xpath("//input[@id='Terms2']/.."));
-			driver.click(By.xpath("//input[@id='Terms2']/.."));
-			driver.click(By.xpath("//input[@id='Terms3']/.."));
+			//driver.click(By.xpath("//input[@id='Terms2']/.."));
+			driver.clickByJS(RFWebsiteDriver.driver, driver.findElement(By.xpath("//input[@id='Terms2']/..")));
+			//driver.click(By.xpath("//input[@id='Terms3']/.."));
+			driver.clickByJS(RFWebsiteDriver.driver, driver.findElement(By.xpath("//input[@id='Terms3']/..")));
 		}
 	}
+
 	public void selectNewBillingCardExpirationDateAsExpiredDate(){
 		driver.click(By.id("expiryMonth"));
 		driver.waitForElementPresent(By.xpath("//select[@id='expiryMonth']/option[@value='02']"));
@@ -1351,7 +1356,6 @@ public class StoreFrontRFWebsiteBasePage extends RFBasePage{
 		driver.waitForLoadingImageToDisappear();
 		driver.waitForPageLoad();
 	}
-
 
 	public void clickOnEditAtAutoshipTemplate(){
 		try{

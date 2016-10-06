@@ -94,8 +94,10 @@ public class StoreFrontAccountTerminationPage extends StoreFrontRFWebsiteBasePag
 		driver.click(By.xpath("//select[@id='reason']/option[contains(text(),'Other')]"));
 		driver.type(By.id("terminationComments"), "I want to terminate my account");
 		driver.waitForElementPresent(By.xpath("//div[@class='repaired-checkbox']"));
-		driver.click(By.xpath("//div[@class='repaired-checkbox']"));
-		driver.click(By.xpath("//form[@id='accountTerminationInfo']//div/input[contains(@class,'btn btn-primary')]"));
+		driver.clickByJS(RFWebsiteDriver.driver, driver.findElement(By.xpath("//div[@class='repaired-checkbox']")));
+		//driver.click(By.xpath("//div[@class='repaired-checkbox']"));
+		driver.clickByJS(RFWebsiteDriver.driver, driver.findElement(By.xpath("//form[@id='accountTerminationInfo']//div/input[contains(@class,'btn btn-primary')]")));
+		//  driver.click(By.xpath("//form[@id='accountTerminationInfo']//div/input[contains(@class,'btn btn-primary')]"));
 		driver.waitForLoadingImageToDisappear();  
 	}
 

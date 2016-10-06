@@ -64,7 +64,8 @@ public class AddEditBillingTest extends RFWebsiteBaseTest{
 		storeFrontUpdateCartPage = new StoreFrontUpdateCartPage(driver);
 		storeFrontPCUserPage = new StoreFrontPCUserPage(driver);
 		storeFrontAccountInfoPage = new StoreFrontAccountInfoPage(driver);
-
+		storeFrontConsultantPage = new StoreFrontConsultantPage(driver);
+		
 		randomNum = CommonUtils.getRandomNum(10000, 1000000);
 		RFO_DB = driver.getDBNameRFO(); 
 		env = driver.getEnvironment();
@@ -161,7 +162,7 @@ public class AddEditBillingTest extends RFWebsiteBaseTest{
 		storeFrontBillingInfoPage.clickOnEditOfBillingProfile(newBillingProfileName+" "+lastName);
 		storeFrontBillingInfoPage.enterNewBillingNameOnCard(editedBillingProfileName+" "+lastName);
 		storeFrontBillingInfoPage.enterNewBillingCardNumber(TestConstants.CARD_NUMBER);
-		storeFrontBillingInfoPage.selectNewBillingCardExpirationDate();
+		storeFrontUpdateCartPage.selectNewBillingCardExpirationDate("OCT","2025");
 		storeFrontBillingInfoPage.enterNewBillingSecurityCode(TestConstants.SECURITY_CODE);
 		storeFrontBillingInfoPage.selectNewBillingCardAddress();
 		storeFrontBillingInfoPage.selectUseThisBillingProfileFutureAutoshipChkbox();
@@ -244,7 +245,7 @@ public class AddEditBillingTest extends RFWebsiteBaseTest{
 
 		storeFrontBillingInfoPage.enterNewBillingNameOnCard(editedBillingProfileName+" "+lastName);
 		storeFrontBillingInfoPage.enterNewBillingCardNumber(TestConstants.CARD_NUMBER);
-		storeFrontBillingInfoPage.selectNewBillingCardExpirationDate();
+		storeFrontUpdateCartPage.selectNewBillingCardExpirationDate("OCT","2025");
 		storeFrontBillingInfoPage.enterNewBillingSecurityCode(TestConstants.SECURITY_CODE);
 		storeFrontBillingInfoPage.selectNewBillingCardAddress();
 		storeFrontBillingInfoPage.clickOnSaveBillingProfile();
@@ -312,7 +313,7 @@ public class AddEditBillingTest extends RFWebsiteBaseTest{
 		storeFrontUpdateCartPage.clickAddNewBillingProfileLink();
 		storeFrontUpdateCartPage.enterNewBillingCardNumber(TestConstants.CARD_NUMBER);
 		storeFrontUpdateCartPage.enterNewBillingNameOnCard(newBillingProfileName+" "+lastName);
-		storeFrontUpdateCartPage.selectNewBillingCardExpirationDate();
+		storeFrontUpdateCartPage.selectNewBillingCardExpirationDate("OCT","2025");
 		storeFrontUpdateCartPage.enterNewBillingSecurityCode(TestConstants.SECURITY_CODE);
 		storeFrontUpdateCartPage.selectNewBillingCardAddress();
 		storeFrontUpdateCartPage.clickOnSaveBillingProfile();
@@ -324,7 +325,7 @@ public class AddEditBillingTest extends RFWebsiteBaseTest{
 		storeFrontUpdateCartPage.clickOnEditOnNotDefaultAddressOfBilling();
 		storeFrontUpdateCartPage.enterNewBillingCardNumber(TestConstants.CARD_NUMBER);
 		storeFrontUpdateCartPage.enterNewBillingNameOnCard(editedBillingProfileName+" "+lastName);
-		storeFrontUpdateCartPage.selectNewBillingCardExpirationDate();
+		storeFrontUpdateCartPage.selectNewBillingCardExpirationDate("OCT","2025");
 		storeFrontUpdateCartPage.enterNewBillingSecurityCode(TestConstants.SECURITY_CODE);
 		storeFrontUpdateCartPage.selectNewBillingCardAddress();
 		storeFrontUpdateCartPage.selectUseThisBillingProfileFutureAutoshipChkbox();
@@ -344,7 +345,7 @@ public class AddEditBillingTest extends RFWebsiteBaseTest{
 
 		//--------------- Verify that Newly added Billing profile is listed in the Billing profiles section-----------------------------------------------------------------------------------------------------
 
-		s_assert.assertTrue(storeFrontBillingInfoPage.isTheBillingAddressPresentOnPage(newBillingProfileName),"Newly added Billing profile is NOT listed on the page");
+		s_assert.assertTrue(storeFrontBillingInfoPage.isBillingAddressPresentOnPage(newBillingProfileName),"Newly added Billing profile is NOT listed on the page");
 
 		//------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 
@@ -441,7 +442,7 @@ public class AddEditBillingTest extends RFWebsiteBaseTest{
 		storeFrontUpdateCartPage.clickOnEditOfBillingProfile(newBillingProfileName+" "+lastName);
 		storeFrontUpdateCartPage.enterNewBillingCardNumber(TestConstants.CARD_NUMBER);
 		storeFrontUpdateCartPage.enterNewBillingNameOnCard(editedBillingProfileName+" "+lastName);
-		storeFrontUpdateCartPage.selectNewBillingCardExpirationDate();
+		storeFrontUpdateCartPage.selectNewBillingCardExpirationDate("OCT","2025");
 		storeFrontUpdateCartPage.enterNewBillingSecurityCode(TestConstants.SECURITY_CODE);
 		storeFrontUpdateCartPage.selectNewBillingCardAddress();
 		storeFrontUpdateCartPage.clickOnSaveBillingProfile();
@@ -484,7 +485,7 @@ public class AddEditBillingTest extends RFWebsiteBaseTest{
 		storeFrontUpdateCartPage.clickOnEditDefaultBillingProfile();
 		storeFrontUpdateCartPage.enterNewBillingCardNumber(TestConstants.CARD_NUMBER);
 		storeFrontUpdateCartPage.enterNewBillingNameOnCard(newBillingProfileName+" "+lastName);
-		storeFrontUpdateCartPage.selectNewBillingCardExpirationDate();
+		storeFrontUpdateCartPage.selectNewBillingCardExpirationDate("OCT","2025");
 		storeFrontUpdateCartPage.enterNewBillingSecurityCode(TestConstants.SECURITY_CODE);
 		storeFrontUpdateCartPage.selectNewBillingCardAddress();
 		storeFrontUpdateCartPage.clickOnSaveBillingProfile();
@@ -519,7 +520,7 @@ public class AddEditBillingTest extends RFWebsiteBaseTest{
 		storeFrontUpdateCartPage.clickAddNewBillingProfileLink();
 		storeFrontUpdateCartPage.enterNewBillingCardNumber(TestConstants.CARD_NUMBER);
 		storeFrontUpdateCartPage.enterNewBillingNameOnCard(newBillingProfileName+" "+lastName);
-		storeFrontUpdateCartPage.selectNewBillingCardExpirationDate();
+		storeFrontUpdateCartPage.selectNewBillingCardExpirationDate("OCT","2025");
 		storeFrontUpdateCartPage.enterNewBillingSecurityCode(TestConstants.SECURITY_CODE);
 		storeFrontUpdateCartPage.selectNewBillingCardAddress();
 		storeFrontUpdateCartPage.clickOnSaveBillingProfile();
@@ -564,7 +565,7 @@ public class AddEditBillingTest extends RFWebsiteBaseTest{
 		String editedBillingProfileName = TestConstants.NEW_BILLING_PROFILE_NAME+randomNum2;
 		storeFrontHomePage.enterEditedCardNumber(TestConstants.CARD_NUMBER);
 		storeFrontHomePage.enterNewBillingNameOnCard(editedBillingProfileName+" "+lastName);
-		storeFrontHomePage.selectNewBillingCardExpirationDate();
+		storeFrontUpdateCartPage.selectNewBillingCardExpirationDate("OCT","2025");
 		storeFrontHomePage.enterNewBillingSecurityCode(TestConstants.SECURITY_CODE);
 		storeFrontHomePage.selectNewBillingCardAddress();
 		storeFrontHomePage.clickOnSaveBillingProfile();
@@ -622,7 +623,7 @@ public class AddEditBillingTest extends RFWebsiteBaseTest{
 		//Enter Billing Profile
 		storeFrontHomePage.enterNewBillingCardNumber(TestConstants.CARD_NUMBER);
 		storeFrontHomePage.enterNewBillingNameOnCard(newBillingProfileName+" "+lastName);
-		storeFrontHomePage.selectNewBillingCardExpirationDate();
+		storeFrontUpdateCartPage.selectNewBillingCardExpirationDate("OCT","2025");
 		storeFrontHomePage.enterNewBillingSecurityCode(TestConstants.SECURITY_CODE);
 		storeFrontHomePage.selectNewBillingCardAddress();
 		storeFrontHomePage.clickOnSaveBillingProfile();
@@ -635,7 +636,7 @@ public class AddEditBillingTest extends RFWebsiteBaseTest{
 		String editedBillingProfileName = TestConstants.NEW_BILLING_PROFILE_NAME+randomNum1;
 		storeFrontHomePage.enterEditedCardNumber(TestConstants.CARD_NUMBER);
 		storeFrontHomePage.enterNewBillingNameOnCard(editedBillingProfileName+" "+lastName);
-		storeFrontHomePage.selectNewBillingCardExpirationDate();
+		storeFrontUpdateCartPage.selectNewBillingCardExpirationDate("OCT","2025");
 		storeFrontHomePage.enterNewBillingSecurityCode(TestConstants.SECURITY_CODE);
 		storeFrontHomePage.selectNewBillingCardAddress();
 		storeFrontHomePage.clickOnSaveBillingProfile();
@@ -654,7 +655,7 @@ public class AddEditBillingTest extends RFWebsiteBaseTest{
 		//--------------- Verify that Newly added Billing profile is listed in the Billing profiles section-----------------------------------------------------------------------------------------------------
 
 		s_assert.assertTrue(storeFrontBillingInfoPage.isTheBillingAddressPresentOnPage(editedBillingProfileName),"Newly added/Edited Billing profile is NOT listed on the page");
-		storeFrontConsultantPage.clickOnWelcomeDropDown();
+		storeFrontPCUserPage.clickOnWelcomeDropDown();
 		storeFrontPCUserPage.clickEditPCPerksLinkPresentOnWelcomeDropDown();
 		storeFrontCartAutoShipPage.clickUpdateMoreInfoLink();
 		storeFrontUpdateCartPage.clickOnEditPaymentBillingProfile();
@@ -683,7 +684,7 @@ public class AddEditBillingTest extends RFWebsiteBaseTest{
 		//storeFrontHomePage.acceptTheVerifyYourShippingAddressPop();		
 		storeFrontHomePage.enterCardNumber(TestConstants.CARD_NUMBER);
 		storeFrontHomePage.enterNameOnCard(newBillingProfileName+" "+lastName);
-		storeFrontHomePage.selectNewBillingCardExpirationDate();
+		storeFrontUpdateCartPage.selectNewBillingCardExpirationDate("OCT","2025");
 		storeFrontHomePage.enterSecurityCode(TestConstants.SECURITY_CODE);
 		storeFrontHomePage.enterSocialInsuranceNumber(socialInsuranceNumber);
 		storeFrontHomePage.enterNameAsItAppearsOnCard(TestConstants.FIRST_NAME);

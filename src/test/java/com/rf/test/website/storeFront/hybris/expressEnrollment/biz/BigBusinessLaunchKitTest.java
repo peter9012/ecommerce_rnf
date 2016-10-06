@@ -81,7 +81,7 @@ public class BigBusinessLaunchKitTest extends RFWebsiteBaseTest{
 		storeFrontHomePage.enterEditedCardNumber(TestConstants.CARD_NUMBER);
 		String editedBillingProfileName = TestConstants.FIRST_NAME+randomNum2;
 		storeFrontHomePage.enterNameOnCard(editedBillingProfileName+" "+TestConstants.LAST_NAME);
-		storeFrontHomePage.selectNewBillingCardExpirationDate();
+		storeFrontHomePage.selectNewBillingCardExpirationDate("OCT","2025");
 		storeFrontHomePage.enterSecurityCode(TestConstants.SECURITY_CODE);;
 		storeFrontHomePage.enterSocialInsuranceNumber(socialInsuranceNumber);
 		storeFrontHomePage.clickNextButton();

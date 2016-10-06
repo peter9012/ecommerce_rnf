@@ -76,18 +76,6 @@ public class StoreFrontUpdateCartPage extends StoreFrontRFWebsiteBasePage{
 		driver.clickByJS(RFWebsiteDriver.driver,driver.findElement(By.xpath("//select[@id='expiryYear']/option[10]")));		
 	}
 
-	public void selectNewBillingCardExpirationDate(String month,String year){
-		//driver.click(By.id("expiryMonth"));
-		driver.clickByJS(RFWebsiteDriver.driver,driver.findElement(By.id("expiryMonth")));
-		driver.waitForElementPresent(By.xpath("//select[@id='expiryMonth']/option[text()='"+month.toUpperCase()+"']"));
-		driver.click(By.xpath("//select[@id='expiryMonth']/option[text()='"+month.toUpperCase()+"']"));
-		//driver.click(By.id("expiryYear"));
-		driver.clickByJS(RFWebsiteDriver.driver,driver.findElement(By.id("expiryYear")));
-		driver.waitForElementPresent(By.xpath("//select[@id='expiryYear']/option[text()='"+year+"']"));
-		driver.click(By.xpath("//select[@id='expiryYear']/option[text()='"+year+"']"));
-	}
-
-
 	public void enterNewBillingSecurityCode(String securityCode){
 		driver.type(By.id("security-code"), securityCode);
 	}

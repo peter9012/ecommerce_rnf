@@ -229,7 +229,7 @@ public class EnrollmentsTest extends RFStoreFrontWebsiteBaseTest{
 	}
 
 	//Hybris Project-2251 :: Version : 1 :: Global Sponsorship: Cross Country Sponsor(Standard)
-	@Test
+	@Test(priority=5)
 	public void testGlobalSponsorshipCrossCountrySponsorStandardEnrollment_2251() throws InterruptedException	{
 		int randomNum = CommonUtils.getRandomNum(10000, 1000000);
 		String socialInsuranceNumber = String.valueOf(CommonUtils.getRandomNum(100000000, 999999999));

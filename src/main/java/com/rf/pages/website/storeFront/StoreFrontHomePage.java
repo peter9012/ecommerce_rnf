@@ -115,10 +115,9 @@ public class StoreFrontHomePage extends StoreFrontRFWebsiteBasePage {
 	public void searchCID() throws InterruptedException{
 		//driver.pauseExecutionFor(2000);
 		try{
-			driver.type(By.id("sponserparam"),"mary");
-
+			driver.type(By.id("sponserparam"),"mary");			
 		}catch(NoSuchElementException e){
-			driver.type(By.id("sponsor-name-id"),"test");
+			driver.type(By.id("sponsor-name-id"),"mary");
 		}
 		try{
 			driver.click(By.id("search-sponsor-button"));
@@ -127,7 +126,7 @@ public class StoreFrontHomePage extends StoreFrontRFWebsiteBasePage {
 			driver.click(By.xpath("//input[@value='Search']"));
 		}
 
-		logger.info("Sponsor entered as 'test' and search button clicked");
+		logger.info("Sponsor entered as 'mary' and search button clicked");
 		driver.waitForLoadingImageToDisappear();
 	}
 
@@ -657,8 +656,8 @@ public class StoreFrontHomePage extends StoreFrontRFWebsiteBasePage {
 	}
 
 	public void clickOnConfirmAutomaticPayment() throws InterruptedException{
-		driver.waitForElementPresent(By.id("enroll"));
-		driver.click(By.id("enroll"));
+		driver.waitForElementPresent(By.xpath("//input[@id='enroll']"));
+		driver.click(By.xpath("//input[@id='enroll']"));
 		logger.info("Automatic payment confirmation button clicked");
 		driver.waitForLoadingImageToDisappear();
 	}

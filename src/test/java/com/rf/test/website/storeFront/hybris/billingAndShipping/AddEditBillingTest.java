@@ -91,29 +91,29 @@ public class AddEditBillingTest extends RFWebsiteBaseTest{
 		}				
 		navigateToStoreFrontBaseURL();
 		setStoreFrontPassword(driver.getStoreFrontPassword());
-		while(true){
-			randomConsultantList = DBUtil.performDatabaseQuery(DBQueries_RFO.callQueryWithArguement(DBQueries_RFO.GET_RANDOM_ACTIVE_CONSULTANT_WITH_ORDERS_AND_AUTOSHIPS_RFO,countryId),RFO_DB);
-			consultantEmailID = (String) getValueFromQueryResult(randomConsultantList, "UserName");  
-			accountID = String.valueOf(getValueFromQueryResult(randomConsultantList, "AccountID"));
-			logger.info("Account Id of the user is "+accountID);
-			//storeFrontHomePage = new StoreFrontHomePage(driver);
-			storeFrontConsultantPage = storeFrontHomePage.loginAsConsultant(consultantEmailID, password);
-			boolean isError = driver.getCurrentUrl().contains("error");
-			if(isError){
-				logger.info("Login error for the user "+consultantEmailID);
-				driver.get(driver.getURL()+"/"+driver.getCountry());				
-			}
-			else{
-				storeFrontConsultantPage.clickOnWelcomeDropDown();
-				if(storeFrontHomePage.isEditCRPLinkPresent()==true){
-					break;
-				}
-				else{
-					driver.get(driver.getURL()+"/"+driver.getCountry());					
-				}
-			}
-
-		}
+//		while(true){
+//			randomConsultantList = DBUtil.performDatabaseQuery(DBQueries_RFO.callQueryWithArguement(DBQueries_RFO.GET_RANDOM_ACTIVE_CONSULTANT_WITH_ORDERS_AND_AUTOSHIPS_RFO,countryId),RFO_DB);
+//			consultantEmailID = (String) getValueFromQueryResult(randomConsultantList, "UserName");  
+//			accountID = String.valueOf(getValueFromQueryResult(randomConsultantList, "AccountID"));
+//			logger.info("Account Id of the user is "+accountID);
+//			//storeFrontHomePage = new StoreFrontHomePage(driver);
+//			storeFrontConsultantPage = storeFrontHomePage.loginAsConsultant(consultantEmailID, password);
+//			boolean isError = driver.getCurrentUrl().contains("error");
+//			if(isError){
+//				logger.info("Login error for the user "+consultantEmailID);
+//				driver.get(driver.getURL()+"/"+driver.getCountry());				
+//			}
+//			else{
+//				storeFrontConsultantPage.clickOnWelcomeDropDown();
+//				if(storeFrontHomePage.isEditCRPLinkPresent()==true){
+//					break;
+//				}
+//				else{
+//					driver.get(driver.getURL()+"/"+driver.getCountry());					
+//				}
+//			}
+//
+//		}
 		logger.info("login is successful");
 	}
 
@@ -362,6 +362,7 @@ public class AddEditBillingTest extends RFWebsiteBaseTest{
 	//Hybris Phase 2-2049 :: Version : 1 :: Edit billing profile in autoship template
 	@Test(priority=5)
 	public void testAddAndEditBillingAutoshipCartFutureCheckboxSelected_2043_2049() throws InterruptedException{ 
+		consultantEmailID="RFAutoCS541335@xyz.com";
 		randomNum = CommonUtils.getRandomNum(10000, 1000000);
 		String newBillingProfileName = TestConstants.NEW_BILLING_PROFILE_NAME_US+randomNum;
 		String lastName = "lN";
@@ -373,7 +374,7 @@ public class AddEditBillingTest extends RFWebsiteBaseTest{
 		storeFrontUpdateCartPage.clickAddNewBillingProfileLink();
 		storeFrontUpdateCartPage.enterNewBillingCardNumber(TestConstants.CARD_NUMBER);
 		storeFrontUpdateCartPage.enterNewBillingNameOnCard(newBillingProfileName+" "+lastName);
-		storeFrontUpdateCartPage.selectNewBillingCardExpirationDate();
+		storeFrontUpdateCartPage.selectNewBillingCardExpirationDate("OCT","2025");
 		storeFrontUpdateCartPage.enterNewBillingSecurityCode(TestConstants.SECURITY_CODE);
 		storeFrontUpdateCartPage.selectNewBillingCardAddress();
 		storeFrontUpdateCartPage.selectUseThisBillingProfileFutureAutoshipChkbox();
@@ -386,7 +387,7 @@ public class AddEditBillingTest extends RFWebsiteBaseTest{
 		storeFrontUpdateCartPage.clickOnEditOfBillingProfile(newBillingProfileName+" "+lastName);
 		storeFrontUpdateCartPage.enterNewBillingCardNumber(TestConstants.CARD_NUMBER);
 		storeFrontUpdateCartPage.enterNewBillingNameOnCard(editedBillingProfileName+" "+lastName);
-		storeFrontUpdateCartPage.selectNewBillingCardExpirationDate();
+		storeFrontUpdateCartPage.selectNewBillingCardExpirationDate("OCT","2025");
 		storeFrontUpdateCartPage.enterNewBillingSecurityCode(TestConstants.SECURITY_CODE);
 		storeFrontUpdateCartPage.selectNewBillingCardAddress();
 		storeFrontUpdateCartPage.selectUseThisBillingProfileFutureAutoshipChkbox();

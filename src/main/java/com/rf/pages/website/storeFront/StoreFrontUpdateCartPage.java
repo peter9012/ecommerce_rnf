@@ -29,7 +29,7 @@ public class StoreFrontUpdateCartPage extends StoreFrontRFWebsiteBasePage{
 
 	public void clickOnEditPaymentBillingProfile(){
 		driver.waitForElementPresent(PAYMENT_BILLING_EDIT_BTN_LOC);
-		driver.click(PAYMENT_BILLING_EDIT_BTN_LOC);
+		driver.clickByJS(RFWebsiteDriver.driver,driver.findElement(PAYMENT_BILLING_EDIT_BTN_LOC));
 		driver.pauseExecutionFor(2000);
 		driver.waitForLoadingImageToDisappear();
 	}
@@ -65,21 +65,24 @@ public class StoreFrontUpdateCartPage extends StoreFrontRFWebsiteBasePage{
 	}
 
 	public void selectNewBillingCardExpirationDate(){
-		driver.click(By.id("expiryMonth"));
+		driver.clickByJS(RFWebsiteDriver.driver, driver.findElement(By.xpath("//select[@id='expiryMonth']")));
+		driver.pauseExecutionFor(2000);
 		driver.waitForElementPresent(By.xpath("//select[@id='expiryMonth']/option[10]"));
-		driver.click(By.xpath("//select[@id='expiryMonth']/option[10]"));
-		driver.click(By.id("expiryYear"));
+		driver.clickByJS(RFWebsiteDriver.driver, driver.findElement(By.xpath("//select[@id='expiryMonth']/option[10]")));
+		driver.pauseExecutionFor(2000);
+		driver.clickByJS(RFWebsiteDriver.driver,driver.findElement(By.xpath("//select[@id='expiryYear']")));
+		driver.pauseExecutionFor(2000);
 		driver.waitForElementPresent(By.xpath("//select[@id='expiryYear']/option[10]"));
-		driver.click(By.xpath("//select[@id='expiryYear']/option[10]"));
+		driver.clickByJS(RFWebsiteDriver.driver,driver.findElement(By.xpath("//select[@id='expiryYear']/option[10]")));		
 	}
 
 	public void selectNewBillingCardExpirationDate(String month,String year){
 		driver.click(By.id("expiryMonth"));
-		driver.waitForElementPresent(By.xpath("//select[@id='expiryMonth']/option["+month+"]"));
-		driver.click(By.xpath("//select[@id='expiryMonth']/option[10]"));
+		driver.waitForElementPresent(By.xpath("//select[@id='expiryMonth']/option[text()='"+month.toUpperCase()+"']"));
+		driver.click(By.xpath("//select[@id='expiryMonth']/option[text()='"+month.toUpperCase()+"']"));
 		driver.click(By.id("expiryYear"));
-		driver.waitForElementPresent(By.xpath("//select[@id='expiryYear']/option["+year+"]"));
-		driver.click(By.xpath("//select[@id='expiryYear']/option[10]"));
+		driver.waitForElementPresent(By.xpath("//select[@id='expiryYear']/option[text()='"+year+"']"));
+		driver.click(By.xpath("//select[@id='expiryYear']/option[text()='"+year+"']"));
 	}
 
 

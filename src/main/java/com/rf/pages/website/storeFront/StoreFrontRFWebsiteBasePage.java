@@ -34,7 +34,7 @@ public class StoreFrontRFWebsiteBasePage extends RFBasePage{
 
 	private final By RODAN_AND_FIELDS_IMG_LOC = By.xpath("//div[@id='header-logo']//a");
 	private final By RODAN_AND_FIELDS_LOGO_IMG_LOC = By.xpath("//img[@title='Rodan+Fields']");
-	private final By WELCOME_DD_EDIT_CRP_LINK_LOC = By.xpath("//a[contains(text(),'Edit')]");
+	private final By WELCOME_DD_EDIT_CRP_LINK_LOC = By.xpath("//div[@id='account-info-dropdown']/ul[1]//*[contains(text(),'Edit CRP')]");
 	//private final By WELCOME_USER_DD_LOC = By.id("account-info-button");
 	private final By WELCOME_USER_DD_LOC = By.xpath("//div[@id='account-info-button']/a");
 	private final By WELCOME_DD_ORDERS_LINK_LOC = By.xpath("//a[text()='Orders']");
@@ -1585,21 +1585,18 @@ public class StoreFrontRFWebsiteBasePage extends RFBasePage{
 		boolean isFirstNamePresent = false;
 		driver.waitForElementPresent(By.xpath("//div[@id='multiple-billing-profiles']/div"));
 		List<WebElement> allBillingProfiles = driver.findElements(By.xpath("//div[@id='multiple-billing-profiles']/div"));  
-		for(int i=1;i<=allBillingProfiles.size();i++){   
-			try{
+		for(int i=1;i<=allBillingProfiles.size();i++){ 
+			if(driver.isElementPresent(By.xpath("//div[@id='multiple-billing-profiles']/div[contains(@class,'sel-profile')]["+i+"]/p[1]/span[@class='font-bold']"))==true){
 				isFirstNamePresent = driver.findElement(By.xpath("//div[@id='multiple-billing-profiles']/div[contains(@class,'sel-profile')]["+i+"]/p[1]/span[@class='font-bold']")).getText().toLowerCase().contains(firstName.toLowerCase());
-			}catch(Exception e){
-				try{					
-					isFirstNamePresent = driver.findElement(By.xpath("//div[@id='multiple-billing-profiles']/div["+i+"]/p[1]/span[1]")).getText().toLowerCase().contains(firstName.toLowerCase());
-				}catch(Exception e2){
-					isFirstNamePresent = driver.findElement(By.xpath("//div[@id='multiple-billing-profiles']/div/div["+i+"]/p[1]/span[1]")).getText().toLowerCase().contains(firstName.toLowerCase());
-				}
 			}
-			if(isFirstNamePresent == true){ 
-				return true;
+			else if(driver.isElementPresent(By.xpath("//div[@id='multiple-billing-profiles']/div["+i+"]/p[1]/span[1]"))){
+				isFirstNamePresent = driver.findElement(By.xpath("//div[@id='multiple-billing-profiles']/div["+i+"]/p[1]/span[1]")).getText().toLowerCase().contains(firstName.toLowerCase());				
+			}
+			else{
+				isFirstNamePresent = driver.findElement(By.xpath("//div[@id='multiple-billing-profiles']/div/div["+i+"]/p[1]/span[1]")).getText().toLowerCase().contains(firstName.toLowerCase());
 			}
 		}
-		return false;
+		return isFirstNamePresent;
 	}
 
 	public String getDotComPWS(String country){
@@ -1933,7 +1930,7 @@ public class StoreFrontRFWebsiteBasePage extends RFBasePage{
 
 	public void clickUpdateCartBtn() throws InterruptedException{
 		driver.waitForElementPresent(UPDATE_CART_BTN_LOC);
-		driver.click(UPDATE_CART_BTN_LOC);		
+		driver.clickByJS(RFWebsiteDriver.driver, driver.findElement(UPDATE_CART_BTN_LOC));		
 		logger.info("Update cart button clicked "+UPDATE_CART_BTN_LOC);
 		driver.waitForLoadingImageToDisappear();
 		driver.waitForPageLoad();
@@ -2077,7 +2074,7 @@ public class StoreFrontRFWebsiteBasePage extends RFBasePage{
 	public void clickOnEditOfBillingProfile(String profileName){
 		driver.waitForLoadingImageToDisappear();
 		driver.waitForElementPresent(By.xpath("//span[contains(text(),'"+profileName+"')]/ancestor::div[1]//a[text()='Edit']"));
-		driver.click(By.xpath("//span[contains(text(),'"+profileName+"')]/ancestor::div[1]//a[text()='Edit']"));
+		driver.clickByJS(RFWebsiteDriver.driver,driver.findElement(By.xpath("//span[contains(text(),'"+profileName+"')]/ancestor::div[1]//a[text()='Edit']")));
 		driver.waitForPageLoad();
 		logger.info("billing profile"+profileName+" 's edit link clicked");
 	}

@@ -65,7 +65,7 @@ public class AddEditBillingTest extends RFWebsiteBaseTest{
 		storeFrontPCUserPage = new StoreFrontPCUserPage(driver);
 		storeFrontAccountInfoPage = new StoreFrontAccountInfoPage(driver);
 		storeFrontConsultantPage = new StoreFrontConsultantPage(driver);
-		
+
 		randomNum = CommonUtils.getRandomNum(10000, 1000000);
 		RFO_DB = driver.getDBNameRFO(); 
 		env = driver.getEnvironment();
@@ -142,7 +142,7 @@ public class AddEditBillingTest extends RFWebsiteBaseTest{
 		storeFrontBillingInfoPage.clickAddNewBillingProfileLink();
 		storeFrontBillingInfoPage.enterNewBillingCardNumber(TestConstants.CARD_NUMBER);
 		storeFrontBillingInfoPage.enterNewBillingNameOnCard(newBillingProfileName+" "+lastName);
-		storeFrontBillingInfoPage.selectNewBillingCardExpirationDate(TestConstants.CARD_EXP_MONTH, TestConstants.CARD_EXP_YEAR);
+		storeFrontUpdateCartPage.selectNewBillingCardExpirationDate("OCT","2025");
 		storeFrontBillingInfoPage.enterNewBillingSecurityCode(TestConstants.SECURITY_CODE);
 		storeFrontBillingInfoPage.selectNewBillingCardAddress();
 		storeFrontBillingInfoPage.selectUseThisBillingProfileFutureAutoshipChkbox();
@@ -150,7 +150,7 @@ public class AddEditBillingTest extends RFWebsiteBaseTest{
 
 		//--------------- Verify that Newly added Billing profile is listed in the Billing profiles section-----------------------------------------------------------------------------------------------------
 
-		s_assert.assertTrue(storeFrontBillingInfoPage.isTheBillingAddressPresentOnPage(newBillingProfileName),"Newly added Billing profile is NOT listed on the billing info page");
+		s_assert.assertTrue(storeFrontBillingInfoPage.isBillingAddressPresentOnPage(newBillingProfileName),"Newly added Billing profile is NOT listed on the billing info page");
 
 		//------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 
@@ -169,7 +169,7 @@ public class AddEditBillingTest extends RFWebsiteBaseTest{
 		storeFrontBillingInfoPage.clickOnSaveBillingProfile();
 		//--------------- Verify that Newly edited Billing profile is listed in the Billing profiles section-----------------------------------------------------------------------------------------------------
 
-		s_assert.assertTrue(storeFrontBillingInfoPage.isTheBillingAddressPresentOnPage(editedBillingProfileName),"Newly edited Billing profile is NOT listed on the billing info page when we edit the billing info");
+		s_assert.assertTrue(storeFrontBillingInfoPage.isBillingAddressPresentOnPage(editedBillingProfileName),"Newly edited Billing profile is NOT listed on the billing info page when we edit the billing info");
 
 		s_assert.assertTrue(storeFrontBillingInfoPage.isDefaultBillingAddressSelected(defaultBillingProfileName),"Already Default billing profile is not DEFAULT selected on billing info page when we edit the billing info");
 
@@ -183,7 +183,7 @@ public class AddEditBillingTest extends RFWebsiteBaseTest{
 		logger.info("Cart page is displayed");
 		storeFrontHomePage.clickOnCheckoutButton();
 		storeFrontHomePage.clickOnShippingAddressNextStepBtn();
-		s_assert.assertTrue(storeFrontHomePage.isTheBillingAddressPresentOnPage(editedBillingProfileName),"Newly/Edited Billing profile is NOT listed on the Adhoc cart");
+		s_assert.assertTrue(storeFrontHomePage.isBillingAddressPresentOnPage(editedBillingProfileName),"Newly/Edited Billing profile is NOT listed on the Adhoc cart");
 		s_assert.assertTrue(storeFrontHomePage.isBillingProfileIsSelectedByDefault(defaultBillingProfileName),"Old Default billing profile is not DEFAULT selected on the Adhoc cart");
 		storeFrontHomePage.clickOnRodanAndFieldsLogo();
 
@@ -224,14 +224,15 @@ public class AddEditBillingTest extends RFWebsiteBaseTest{
 		storeFrontBillingInfoPage.clickAddNewBillingProfileLink();
 		storeFrontBillingInfoPage.enterNewBillingCardNumber(TestConstants.CARD_NUMBER);
 		storeFrontBillingInfoPage.enterNewBillingNameOnCard(newBillingProfileName+" "+lastName);
-		storeFrontBillingInfoPage.selectNewBillingCardExpirationDate(TestConstants.CARD_EXP_MONTH, TestConstants.CARD_EXP_YEAR);
+		storeFrontUpdateCartPage.selectNewBillingCardExpirationDate("OCT","2025");
+
 		storeFrontBillingInfoPage.enterNewBillingSecurityCode(TestConstants.SECURITY_CODE);
 		storeFrontBillingInfoPage.selectNewBillingCardAddress();
 		storeFrontBillingInfoPage.clickOnSaveBillingProfile();
 
 		//--------------- Verify that Newly added Billing profile is listed in the Billing profiles section-----------------------------------------------------------------------------------------------------
 
-		s_assert.assertTrue(storeFrontBillingInfoPage.isTheBillingAddressPresentOnPage(newBillingProfileName),"Newly added Billing profile is NOT listed on the billing info page");
+		s_assert.assertTrue(storeFrontBillingInfoPage.isBillingAddressPresentOnPage(newBillingProfileName),"Newly added Billing profile is NOT listed on the billing info page");
 
 		//------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 
@@ -251,7 +252,7 @@ public class AddEditBillingTest extends RFWebsiteBaseTest{
 		storeFrontBillingInfoPage.clickOnSaveBillingProfile();
 		//--------------- Verify that Newly edited Billing profile is listed in the Billing profiles section-----------------------------------------------------------------------------------------------------
 
-		s_assert.assertTrue(storeFrontBillingInfoPage.isTheBillingAddressPresentOnPage(editedBillingProfileName),"Newly edited Billing profile is NOT listed on the billing info pagewhen we edit the billing info ");
+		s_assert.assertTrue(storeFrontBillingInfoPage.isBillingAddressPresentOnPage(editedBillingProfileName),"Newly edited Billing profile is NOT listed on the billing info pagewhen we edit the billing info ");
 
 		s_assert.assertTrue(storeFrontBillingInfoPage.isDefaultBillingAddressSelected(defaultBillingProfileName),"Already Default billing profile is not DEFAULT selected on billing info page when we edit the billing info");
 
@@ -264,7 +265,7 @@ public class AddEditBillingTest extends RFWebsiteBaseTest{
 		logger.info("Cart page is displayed");
 		storeFrontHomePage.clickOnCheckoutButton();
 		storeFrontHomePage.clickOnShippingAddressNextStepBtn();
-		s_assert.assertTrue(storeFrontHomePage.isTheBillingAddressPresentOnPage(editedBillingProfileName),"Newly/Edited Billing profile is NOT listed on the Adhoc cart");
+		s_assert.assertTrue(storeFrontHomePage.isBillingAddressPresentOnPage(editedBillingProfileName),"Newly/Edited Billing profile is NOT listed on the Adhoc cart");
 		s_assert.assertTrue(storeFrontHomePage.isBillingProfileIsSelectedByDefault(defaultBillingProfileName),"Old Default billing profile is not DEFAULT selected on the Adhoc cart");
 		storeFrontHomePage.clickOnRodanAndFieldsLogo();
 		storeFrontConsultantPage.clickOnWelcomeDropDown();
@@ -274,7 +275,7 @@ public class AddEditBillingTest extends RFWebsiteBaseTest{
 
 		//------------------ Verify that CRP/PC cart contains the newly/Edited created billing profile address as selected ------------------------------------------------------------
 
-		s_assert.assertTrue(storeFrontHomePage.isTheBillingAddressPresentOnPage(editedBillingProfileName),"Newly/Edit created Billing profile is NOT listed on the autoship cart");
+		s_assert.assertTrue(storeFrontHomePage.isBillingAddressPresentOnPage(editedBillingProfileName),"Newly/Edit created Billing profile is NOT listed on the autoship cart");
 		s_assert.assertFalse(storeFrontHomePage.isBillingProfileIsSelectedByDefault(newBillingProfileName),"Old Default billing profile is not DEFAULT selected on the Autoship cart");
 
 		//-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
@@ -498,11 +499,10 @@ public class AddEditBillingTest extends RFWebsiteBaseTest{
 		storeFrontConsultantPage.clickOnWelcomeDropDown();
 		storeFrontBillingInfoPage = storeFrontConsultantPage.clickBillingInfoLinkPresentOnWelcomeDropDown();
 		//--------------- Verify that Newly added Billing profile is listed in the Billing profiles section-----------------------------------------------------------------------------------------------------
-		s_assert.assertTrue(storeFrontBillingInfoPage.isTheBillingAddressPresentOnPage(newBillingProfileName),"Newly edited default Billing profile is NOT listed on the page");
+		s_assert.assertTrue(storeFrontBillingInfoPage.isBillingAddressPresentOnPage(newBillingProfileName),"Newly edited default Billing profile is NOT listed on the page");
 		s_assert.assertTrue(storeFrontBillingInfoPage.isBillingProfileIsSelectedByDefault(newBillingProfileName),"Newly edited default Billing profile is not selected as default profile");
 		s_assert.assertAll();
 	}
-
 
 	//Hybris Project-2389:Verify that QAS validation DO NOT get perform anytime user adds a billing address.
 	@Test(priority=8)

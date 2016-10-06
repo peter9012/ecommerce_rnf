@@ -584,12 +584,16 @@ public class StoreFrontRFWebsiteBasePage extends RFBasePage{
 
 	public void clickOnSetupCRPAccountBtn() throws InterruptedException{
 		driver.waitForElementPresent(By.xpath("//input[@value='Setup CRP Account']"));
-		driver.click(By.xpath("//ul[@style='cursor: pointer;']/li[1]/div"));
-		driver.click(By.xpath("//form[@id='placeOrderForm1']//a[contains(text(),'I agree that this agreement shall be accepted electronically.')]/ancestor::strong[1]/preceding::div[1]"));
-		driver.click(By.xpath("//input[@value='Setup CRP Account']"));
+		//driver.click(By.xpath("//ul[@style='cursor: pointer;']/li[1]/div"));
+		driver.clickByJS(RFWebsiteDriver.driver, driver.findElement(By.xpath("//ul[@style='cursor: pointer;']/li[1]/div")));
+		//driver.click(By.xpath("//form[@id='placeOrderForm1']//a[contains(text(),'I agree that this agreement shall be accepted electronically.')]/ancestor::strong[1]/preceding::div[1]"));
+		driver.clickByJS(RFWebsiteDriver.driver, driver.findElement(By.xpath("//form[@id='placeOrderForm1']//a[contains(text(),'I agree that this agreement shall be accepted electronically.')]/ancestor::strong[1]/preceding::div[1]")));
+		//driver.click(By.xpath("//input[@value='Setup CRP Account']"));
+		driver.clickByJS(RFWebsiteDriver.driver, driver.findElement(By.xpath("//input[@value='Setup CRP Account']")));
 		logger.info("Next button on billing profile clicked");
 		driver.waitForLoadingImageToDisappear();
-	}
+	}	
+
 
 	public void clickPlaceOrderBtn()throws InterruptedException{
 		//driver.waitForElementPresent(By.id("placeOrderButton"));
@@ -717,7 +721,7 @@ public class StoreFrontRFWebsiteBasePage extends RFBasePage{
 		}
 		return false;
 	}
-	
+
 	public void clickOnPCPerksTermsAndConditionsCheckBoxes(){
 		//driver.waitForElementToBeClickable(By.xpath("//form[@id='placeOrderForm1']/ul/div[@class='content'][1]/li[1]//input"), 15);
 		//driver.pauseExecutionFor(3000);

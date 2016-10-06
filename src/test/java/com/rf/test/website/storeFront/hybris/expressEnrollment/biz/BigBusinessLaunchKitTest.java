@@ -9,7 +9,7 @@ import com.rf.pages.website.storeFront.StoreFrontHomePage;
 import com.rf.test.website.RFStoreFrontWebsiteBaseTest;
 import com.rf.test.website.RFWebsiteBaseTest;
 
-public class BigBusinessLaunchKitTest extends RFStoreFrontWebsiteBaseTest{
+public class BigBusinessLaunchKitTest extends RFWebsiteBaseTest{
 
 	private StoreFrontHomePage storeFrontHomePage;
 	private String kitName = null;

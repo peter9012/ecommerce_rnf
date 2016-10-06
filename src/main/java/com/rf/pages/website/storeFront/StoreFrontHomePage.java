@@ -576,7 +576,7 @@ public class StoreFrontHomePage extends StoreFrontRFWebsiteBasePage {
 	}
 
 	public void checkTheIAcknowledgeCheckBox(){
-		//		driver.waitForElementPresent(By.xpath("//input[@id='acknowledge-check']/.."));
+		driver.waitForElementPresent(By.xpath("//input[@id='acknowledge-check']/.."));
 		driver.click(By.xpath("//input[@id='acknowledge-check']/.."));
 		logger.info("The I Acknowledge CheckBox is checked");
 	}

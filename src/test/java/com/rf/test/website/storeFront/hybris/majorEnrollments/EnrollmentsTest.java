@@ -1,10 +1,8 @@
 package com.rf.test.website.storeFront.hybris.majorEnrollments;
 
-import com.rf.test.website.RFStoreFrontWebsiteBaseTest;
-
+import com.rf.test.website.RFWebsiteBaseTest;
 import java.util.List;
 import java.util.Map;
-
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.testng.annotations.BeforeTest;
@@ -20,7 +18,7 @@ import com.rf.core.website.constants.dbQueries.DBQueries_RFO;
 //import com.rf.pages.website.storeFront.StoreFrontConsultantPage;
 import com.rf.pages.website.storeFront.StoreFrontHomePage;
 
-public class EnrollmentsTest extends RFStoreFrontWebsiteBaseTest{
+public class EnrollmentsTest extends RFWebsiteBaseTest{
 	private static final Logger logger = LogManager
 			.getLogger(EnrollmentsTest.class.getName());
 	public String emailID=null;

@@ -1353,7 +1353,7 @@ public class StoreFrontRFWebsiteBasePage extends RFBasePage{
 		applyPriceFilterHighToLow();
 		driver.waitForElementPresent(By.xpath("//div[@id='main-content']/descendant::button[contains(text(),'ADD TO BAG')][1]"));
 		if(driver.findElement(By.xpath("//div[@id='main-content']/descendant::button[contains(text(),'ADD TO BAG')][1]")).isEnabled()==true)
-			driver.click(By.xpath("//div[@id='main-content']/descendant::button[contains(text(),'ADD TO BAG')][1]"));
+			driver.clickByJS(RFWebsiteDriver.driver, driver.findElement(By.xpath("//div[@id='main-content']/descendant::button[contains(text(),'ADD TO BAG')][1]")));
 		else
 			driver.click(By.xpath("//div[@id='main-content']/descendant::button[contains(text(),'ADD TO BAG')][2]"));
 		logger.info("Add To Bag button clicked");

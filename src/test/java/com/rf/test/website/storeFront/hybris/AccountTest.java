@@ -3262,7 +3262,7 @@ public class AccountTest extends RFWebsiteBaseTest{
 		storeFrontAccountInfoPage.clickOnCancelMyPulseSubscription();
 		storeFrontAccountInfoPage.clickOnOnlySubscribeToPulseBtn();
 		int randomNum = CommonUtils.getRandomNum(1000, 100000);
-		String websitePrefixName = TestConstants.FIRST_NAME+randomNum;
+		String websitePrefixName = TestConstants.FIRST_NAME+randomNum+"rf";
 		storeFrontHomePage.enterWebsitePrefixName(websitePrefixName);
 		//storeFrontAccountInfoPage.clickOnNextDuringPulseSubscribtion();
 		s_assert.assertTrue(storeFrontAccountInfoPage.verifyWebsitePrefixSuggestionIsPresent(), "There are no suggestions for website prefix");

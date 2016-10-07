@@ -288,7 +288,7 @@ public class StoreFrontUpdateCartPage extends StoreFrontRFWebsiteBasePage{
 
 	public void clickOnCheckoutButton(){
 		driver.waitForElementPresent(By.xpath("//input[@value='CHECKOUT']"));
-		driver.click(By.xpath("//input[@value='CHECKOUT']"));
+		driver.clickByJS(RFWebsiteDriver.driver, driver.findElement(By.xpath("//input[@value='CHECKOUT']")));
 		logger.info("checkout button clicked");
 		try{
 			driver.quickWaitForElementPresent(By.xpath("//input[@value='OK']"));
@@ -842,7 +842,7 @@ public class StoreFrontUpdateCartPage extends StoreFrontRFWebsiteBasePage{
 
 	public void clickOnAddANewShippingAddress(){
 		driver.waitForElementPresent(By.xpath("//a[contains(text(),'Add new shipping address')]"));
-		driver.click(By.xpath("//a[contains(text(),'Add new shipping address')]"));
+		driver.clickByJS(RFWebsiteDriver.driver,driver.findElement(By.xpath("//a[contains(text(),'Add new shipping address')]")));
 	}
 
 	public void selectNewShippingAddressStateOnCartPage(){

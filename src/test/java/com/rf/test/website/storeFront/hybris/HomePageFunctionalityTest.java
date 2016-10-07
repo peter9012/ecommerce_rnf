@@ -1533,10 +1533,9 @@ public class HomePageFunctionalityTest extends RFWebsiteBaseTest{
 		storeFrontHomePage = new StoreFrontHomePage(driver);
 		String sitePrefix = "bhopkins"; // standard active consultant site
 		String comPWS = driver.getComPWSURL();
-		String PWS = "http://"+sitePrefix+comPWS+"/"+country;
-		storeFrontHomePage.openPWS(PWS);
-		
-		
+		 /*"http://"+sitePrefix+comPWS+"/"+country;*/
+		String PWS = storeFrontHomePage.getComPWS(country, env) ;     
+		storeFrontHomePage.openPWS(storeFrontHomePage.convertBizSiteToComSite(PWS));		
 		s_assert.assertTrue(storeFrontHomePage.isSolutionToolContentBlockPresent(),"Solution Tool content block is not present");
 		//removed content block as we don't access the tool
 		s_assert.assertAll();
@@ -1872,9 +1871,13 @@ public class HomePageFunctionalityTest extends RFWebsiteBaseTest{
 	public void testLookUpActiveCAConsultantFullName_4003() throws InterruptedException{
 		String consultantFirstName = null;
 		String consultantLastName = null;
+		storeFrontHomePage = new StoreFrontHomePage(driver);		
+		RFO_DB = driver.getDBNameRFO(); 
+		List<Map<String, Object>> randomConsultantDetailList =  null;
 		storeFrontHomePage = new StoreFrontHomePage(driver);
-		consultantFirstName = "Elizabeth";//(String) getValueFromQueryResult(randomConsultantDetailList, "FirstName");
-		consultantLastName = "Hopkins";//(String) getValueFromQueryResult(randomConsultantDetailList, "LastName");
+		randomConsultantDetailList = DBUtil.performDatabaseQuery(DBQueries_RFO.callQueryWithArguement(DBQueries_RFO.GET_CONSULTANT_DETAILS_RFO,countryId),RFO_DB);		
+		consultantFirstName =(String) getValueFromQueryResult(randomConsultantDetailList, "FirstName");
+		consultantLastName = (String) getValueFromQueryResult(randomConsultantDetailList, "LastName");
 		storeFrontHomePage.clickOnSponsorName();
 		storeFrontHomePage.enterSponsorNameAndClickOnSearchForPCAndRC(consultantFirstName+" "+consultantLastName);
 		//s_assert.assertTrue(storeFrontHomePage.verifySponsorDetailsPresent(),"Sponsor Detail not present on page");

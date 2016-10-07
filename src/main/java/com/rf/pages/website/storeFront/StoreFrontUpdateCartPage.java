@@ -554,7 +554,8 @@ public class StoreFrontUpdateCartPage extends StoreFrontRFWebsiteBasePage{
 	public void clickOnNextButtonAfterSelectingSponsor() throws InterruptedException{
 		driver.waitForLoadingImageToDisappear();
 		driver.waitForElementPresent(By.id("saveAccountAddress"));
-		driver.click(By.id("saveAccountAddress"));
+		//driver.click(By.id("saveAccountAddress"));
+		driver.clickByJS(RFWebsiteDriver.driver, driver.findElement(By.id("saveAccountAddress")));
 		driver.waitForLoadingImageToDisappear();
 		driver.waitForPageLoad();
 	}

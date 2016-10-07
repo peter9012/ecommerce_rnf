@@ -640,7 +640,8 @@ public class StoreFrontAccountInfoPage extends StoreFrontRFWebsiteBasePage{
 
 	public StoreFrontAccountTerminationPage clickOnCancelPCPerks(){
 		driver.waitForElementPresent(By.id("cancel-pc-perks-button"));
-		driver.click(By.id("cancel-pc-perks-button"));
+		driver.clickByJS(RFWebsiteDriver.driver, driver.findElement(By.id("cancel-pc-perks-button")));
+		//driver.click(By.id("cancel-pc-perks-button"));
 		return new StoreFrontAccountTerminationPage(driver);
 	}
 

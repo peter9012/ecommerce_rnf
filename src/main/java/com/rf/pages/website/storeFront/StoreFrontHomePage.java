@@ -305,16 +305,21 @@ public class StoreFrontHomePage extends StoreFrontRFWebsiteBasePage {
 
 	public void enterEmailAddress(String emailAddress){ 
 		driver.pauseExecutionFor(2000);
-		driver.type(By.id("email-account"), emailAddress);
+		driver.type(By.id("email-account"), emailAddress+"\t");
 		driver.pauseExecutionFor(2000);
-		//driver.findElement(By.id("email-account")).sendKeys(Keys.TAB);
+		driver.findElement(By.id("email-account")).sendKeys(Keys.TAB);
 		try{
-			driver.clickByJS(RFWebsiteDriver.driver, driver.findElement(By.id("new-password-account")));
+			driver.findElement(By.xpath("//*[@id='new-password-account']")).sendKeys("111Maiden$");
+			//			driver.clickByJS(RFWebsiteDriver.driver, driver.findElement(By.xpath("//*[@id='new-password-account']")));
 			//driver.click(By.id("new-password-account"));
 			logger.info("Clicked new password inside try");
 		}catch(NoSuchElementException e){
-			driver.click(By.id("password"));
-			logger.info("Clicked new password inside CATCH");
+			try{
+				driver.click(By.id("password"));
+			}catch(Exception e1){
+				driver.click(By.id("new-password-account2"));
+				logger.info("Clicked new password inside CATCH");
+			}
 		}
 		logger.info("email Address of the user is "+emailAddress);
 		driver.waitForSpinImageToDisappear();
@@ -363,7 +368,11 @@ public class StoreFrontHomePage extends StoreFrontRFWebsiteBasePage {
 	}
 
 	public boolean verifyQuebecProvinceIsDisabled(){
-		driver.click(By.id("state"));
+		// driver.click(By.id("state"));
+		driver.quickWaitForElementPresent(By.id("state"));
+		WebElement element = driver.findElement(By.id("state"));
+		JavascriptExecutor executor = (JavascriptExecutor)RFWebsiteDriver.driver;
+		executor.executeScript("arguments[0].click();", element);
 		driver.waitForElementPresent(By.xpath("//select[@id='state']/option[contains(text(),'"+TestConstants.PROVINCE_QUEBEC+"')]"));
 		return !(driver.findElement(By.xpath("//select[@id='state']/option[contains(text(),'"+TestConstants.PROVINCE_QUEBEC+"')]")).isEnabled());
 	}
@@ -833,7 +842,7 @@ public class StoreFrontHomePage extends StoreFrontRFWebsiteBasePage {
 		selectProvince(province);
 		enterPostalCode(postalCode);
 		enterPhoneNumber(phoneNumber);
-		enterEmailAddress(emailaddress);
+		//enterEmailAddress(emailaddress);
 	}
 
 	public void enterUserInformationForEnrollmentWithEmail(String kitName,String regimenName,String enrollmentType,String firstName,String lastName,String emailaddress,String password,String addressLine1,String city,String state,String postalCode,String phoneNumber){
@@ -1112,7 +1121,7 @@ public class StoreFrontHomePage extends StoreFrontRFWebsiteBasePage {
 	public void clickSearchAgain(){
 		driver.waitForLoadingImageToDisappear();
 		driver.waitForElementPresent(By.xpath("//a[@id='sponsor_search_again']"));
-		driver.click(By.xpath("//a[@id='sponsor_search_again']"));
+		driver.clickByJS(RFWebsiteDriver.driver,driver.findElement(By.xpath("//a[@id='sponsor_search_again']")));
 		driver.findElement(By.id("sponsor-name-id")).clear();
 	}
 
@@ -1318,9 +1327,10 @@ public class StoreFrontHomePage extends StoreFrontRFWebsiteBasePage {
 		driver.waitForPageLoad();
 		while(true){
 			if(driver.getCurrentUrl().contains("sitenotfound")){
-				String bizPWS = getBizPWS(driver.getCountry(), driver.getEnvironment());
+				pws = getBizPWS(driver.getCountry(), driver.getEnvironment());
 				//bizPWS = convertBizSiteToComSite(bizPWS);
-				driver.get(bizPWS);
+				driver.get(pws);
+				logger.info("Opened pws is "+pws);
 				driver.waitForPageLoad();
 			}else{
 				break;
@@ -2064,13 +2074,20 @@ public class StoreFrontHomePage extends StoreFrontRFWebsiteBasePage {
 		else{
 			driver.waitForElementPresent(By.xpath("//div[@id='main-content']/div[5]/div[1]/div[1]/a[1]/img")); 
 			WebElement allProducts = driver.findElement(By.xpath("//div[@id='main-content']/div[5]/div[1]/div[1]/a[1]/img"));
-			actions.moveToElement(allProducts).build().perform();
+			//actions.moveToElement(allProducts).build().perform();
+			JavascriptExecutor js = (JavascriptExecutor)(RFWebsiteDriver.driver); 
+			String strJavaScript = "var element = arguments[0];"
+					+ "var mouseEventObj = document.createEvent('MouseEvents');"
+					+ "mouseEventObj.initEvent( 'mouseover', true, true );"
+					+ "element.dispatchEvent(mouseEventObj);";
+			js.executeScript(strJavaScript, allProducts);
+			logger.info("mouse hover operation performed");
 			driver.quickWaitForElementPresent(By.xpath("//div[@id='main-content']/div[5]/div[1]/div[1]/a[2]/input"));
-			driver.click(By.xpath("//div[@id='main-content']/div[5]/div[1]/div[1]/a[2]/input"));
+			//driver.click(By.xpath("//div[@id='main-content']/div[5]/div[1]/div[1]/a[2]/input"));
+			driver.clickByJS(RFWebsiteDriver.driver, driver.findElement(By.xpath("//div[@id='main-content']/div[5]/div[1]/div[1]/a[2]/input")));
 			driver.pauseExecutionFor(5000);
 		}
 	}
-
 
 	public boolean isModalWindowExists(){
 		driver.quickWaitForElementPresent(By.id("popup-quickinfo"));
@@ -2481,15 +2498,22 @@ public class StoreFrontHomePage extends StoreFrontRFWebsiteBasePage {
 
 	}
 
-	public void mouseHoverProductAndClickQuickInfo(int num){		
+	public void mouseHoverProductAndClickQuickInfo(int num){  
 		Actions actions = new Actions(RFWebsiteDriver.driver);
 		driver.waitForElementPresent(By.xpath("//div[@id='main-content']/descendant::span[contains(@class,'price')]["+num+"]/preceding::img[1]")); 
 		WebElement allProducts = driver.findElement(By.xpath("//div[@id='main-content']/descendant::span[contains(@class,'price')]["+num+"]/preceding::img[1]"));
-		actions.moveToElement(allProducts).build().perform();
+		//actions.moveToElement(allProducts).build().perform();
+		JavascriptExecutor js = (JavascriptExecutor)(RFWebsiteDriver.driver); 
+		String strJavaScript = "var element = arguments[0];"
+				+ "var mouseEventObj = document.createEvent('MouseEvents');"
+				+ "mouseEventObj.initEvent( 'mouseover', true, true );"
+				+ "element.dispatchEvent(mouseEventObj);";
+		js.executeScript(strJavaScript, allProducts);
+		logger.info("mouse hover operation performed");
 		driver.quickWaitForElementPresent(By.xpath("//div[@id='main-content']/descendant::span[contains(@class,'price')]["+num+"]/preceding::input[contains(@value,'Quick View')][1]"));
-		driver.click(By.xpath("//div[@id='main-content']/descendant::span[contains(@class,'price')]["+num+"]/preceding::input[contains(@value,'Quick View')][1]"));
+		//driver.click(By.xpath("//div[@id='main-content']/descendant::span[contains(@class,'price')]["+num+"]/preceding::input[contains(@value,'Quick View')][1]"));
+		driver.clickByJS(RFWebsiteDriver.driver, driver.findElement(By.xpath("//div[@id='main-content']/descendant::span[contains(@class,'price')]["+num+"]/preceding::input[contains(@value,'Quick View')][1]")));
 		driver.pauseExecutionFor(5000);
-
 	}
 
 	public boolean verifyAddToPCPerksButtonOnQuickInfoPopup(){
@@ -2800,7 +2824,7 @@ public class StoreFrontHomePage extends StoreFrontRFWebsiteBasePage {
 
 	public void clickSaveBtnOnEditConsultantInfoPage(){
 		driver.quickWaitForElementPresent(By.xpath("//div[contains(@class,'top-save')]//input[@class='edit-meet-your-consultant btn btn-primary']"));
-		driver.click(By.xpath("//div[contains(@class,'top-save')]//input[@class='edit-meet-your-consultant btn btn-primary']"));
+		driver.clickByJS(RFWebsiteDriver.driver,driver.findElement(By.xpath("//div[contains(@class,'top-save')]//input[@class='edit-meet-your-consultant btn btn-primary']")));
 		driver.pauseExecutionFor(1000);
 		driver.waitForLoadingImageToDisappear();
 	}

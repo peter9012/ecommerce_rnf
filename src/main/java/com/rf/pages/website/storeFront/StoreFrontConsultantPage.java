@@ -179,9 +179,8 @@ public class StoreFrontConsultantPage extends StoreFrontRFWebsiteBasePage{
 	}
 	public void clickSaveButton() {
 		driver.waitForElementPresent(By.xpath("//div[@id='consultant-container']//input[1]"));
-		driver.click(By.xpath("//div[@id='consultant-container']//input[1]"));
+		driver.clickByJS(RFWebsiteDriver.driver,driver.findElement(By.xpath("//div[@id='consultant-container']//input[1]")));
 		driver.waitForLoadingImageToDisappear();
-
 	}
 
 	public boolean verifyNewlyAddedContentSaved() {

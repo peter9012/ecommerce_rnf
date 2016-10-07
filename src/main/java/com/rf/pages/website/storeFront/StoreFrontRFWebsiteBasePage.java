@@ -1730,7 +1730,7 @@ public class StoreFrontRFWebsiteBasePage extends RFBasePage{
 	}
 
 	public boolean verifyCheckoutConfirmationPopUpMessagePC(){
-		if(driver.findElement(By.xpath("//div[@id='popup-review']/div/p")).getText().contains("This is not a PC Perks order. Shipping charges will be applied to this order. Please click OK to continue.")){
+		if(driver.findElement(By.xpath("//div[@id='popup-review']/div/p")).getText().contains("This is not a PC Perks order.")){
 			return true;
 		}
 		else{

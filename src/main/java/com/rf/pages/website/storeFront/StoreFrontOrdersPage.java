@@ -336,8 +336,9 @@ public class StoreFrontOrdersPage extends StoreFrontRFWebsiteBasePage{
 
 	public void clickOnFirstAdHocOrder(){
 		driver.waitForElementPresent(ORDER_NUM_OF_ORDER_HISTORY);
-		driver.click(ORDER_NUM_OF_ORDER_HISTORY);	
-		logger.info("First order from the order history clicked");		
+		//driver.click(ORDER_NUM_OF_ORDER_HISTORY); 
+		driver.clickByJS(RFWebsiteDriver.driver, driver.findElement(ORDER_NUM_OF_ORDER_HISTORY));
+		logger.info("First order from the order history clicked");  
 	}
 
 	public String getFirstOrderNumberFromOrderHistory(){

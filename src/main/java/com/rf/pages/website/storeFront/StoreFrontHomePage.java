@@ -612,7 +612,7 @@ public class StoreFrontHomePage extends StoreFrontRFWebsiteBasePage {
 	}
 
 	public void checkTheTermsAndConditionsCheckBox(){
-		//  driver.waitForElementPresent(By.xpath("//input[@id='terms-check']/.."));
+		driver.waitForElementPresent(By.xpath("//input[@id='terms-check']/.."));
 		driver.clickByJS(RFWebsiteDriver.driver, driver.findElement(By.xpath("//input[@id='terms-check']/..")));
 		//driver.click(By.xpath("//input[@id='terms-check']/.."));  
 		logger.info("The Terms And Conditions CheckBox selected");
@@ -742,8 +742,14 @@ public class StoreFrontHomePage extends StoreFrontRFWebsiteBasePage {
 	}
 
 	public void selectProductAndProceedToAddToCRP() throws InterruptedException{
-		driver.quickWaitForElementPresent(By.xpath("//div[@id='quick-refine']"));
-		if(driver.isElementPresent(By.xpath("//div[@id='quick-refine']/following::div[3]/div[2]//input[@value='Add to crp']")))
+		driver.quickWaitForElementPresent(By.xpath("//div[@id='main-content']/descendant::*[@value='Add to crp' or @value='ADD TO CRP'][1]"));
+		if(driver.isElementPresent(By.xpath("//div[@id='main-content']/descendant::*[@value='Add to crp' or @value='ADD TO CRP'][1]")))
+		{
+			driver.clickByJS(RFWebsiteDriver.driver, driver.findElement(By.xpath("//div[@id='main-content']/descendant::*[@value='Add to crp' or @value='ADD TO CRP'][1]")));
+			driver.waitForLoadingImageToDisappear();
+			logger.info("Add to CRP button clicked");
+		}		
+		else if(driver.isElementPresent(By.xpath("//div[@id='quick-refine']/following::div[3]/div[2]//input[@value='Add to crp']")))
 		{
 			driver.clickByJS(RFWebsiteDriver.driver, driver.findElement(By.xpath("//div[@id='quick-refine']/following::div[3]/div[2]//input[@value='Add to crp']")));
 			//driver.click(By.xpath("//div[@id='quick-refine']/following::div[3]/div[2]//input[@value='Add to crp']"));

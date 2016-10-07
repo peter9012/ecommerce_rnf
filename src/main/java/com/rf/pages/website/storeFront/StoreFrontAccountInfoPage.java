@@ -540,12 +540,12 @@ public class StoreFrontAccountInfoPage extends StoreFrontRFWebsiteBasePage{
 			driver.findElement(By.xpath("//input[@id='enrollAllowSpouse1']/ancestor::div[1][@class='repaired-checkbox checked']"));
 			System.out.println("checkbox already checked");
 			driver.click(By.xpath("//input[@id='enrollAllowSpouse1']/.."));
-			driver.pauseExecutionFor(1000);
+			driver.pauseExecutionFor(2000);
 		}
 		catch(Exception e){
 			
 		}
-		driver.click(By.xpath("//input[@id='enrollAllowSpouse1']/.."));
+		driver.clickByJS(RFWebsiteDriver.driver, driver.findElement(By.xpath("//input[@id='enrollAllowSpouse1']/..")));
 		driver.pauseExecutionFor(1000);
 		
 	}

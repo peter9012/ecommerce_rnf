@@ -231,7 +231,7 @@ public class CartAndCheckoutValidationTest extends RFWebsiteBaseTest{
 			storeFrontUpdateCartPage.clickAddNewBillingProfileLink();
 			storeFrontUpdateCartPage.enterNewBillingCardNumber(TestConstants.CARD_NUMBER);
 			storeFrontUpdateCartPage.enterNewBillingNameOnCard(newBillingProfileName+i+" "+lastName);
-			storeFrontUpdateCartPage.selectNewBillingCardExpirationDate();
+			storeFrontUpdateCartPage.selectNewBillingCardExpirationDate("OCT","2025");
 			storeFrontUpdateCartPage.enterNewBillingSecurityCode(TestConstants.SECURITY_CODE);
 			storeFrontUpdateCartPage.selectNewBillingCardAddress();
 			storeFrontUpdateCartPage.clickOnSaveBillingProfile();
@@ -256,7 +256,7 @@ public class CartAndCheckoutValidationTest extends RFWebsiteBaseTest{
 		storeFrontConsultantPage.clickOnWelcomeDropDown();
 		storeFrontBillingInfoPage = storeFrontConsultantPage.clickBillingInfoLinkPresentOnWelcomeDropDown();
 		s_assert.assertTrue(storeFrontBillingInfoPage.verifyBillingInfoPageIsDisplayed(),"Billing Info page has not been displayed");
-		s_assert.assertTrue(storeFrontBillingInfoPage.isTheBillingAddressPresentOnPage(newBillingProfileName+i),"Newly added Billing profile is NOT listed on the billing page");
+		s_assert.assertTrue(storeFrontBillingInfoPage.isBillingAddressPresentOnPage(newBillingProfileName+i),"Newly added Billing profile is NOT listed on the billing page");
 		s_assert.assertAll();
 	}
 
@@ -1935,7 +1935,7 @@ public class CartAndCheckoutValidationTest extends RFWebsiteBaseTest{
 		storeFrontUpdateCartPage.clickAddNewBillingProfileLink();
 		storeFrontUpdateCartPage.enterNewBillingCardNumber(TestConstants.CARD_NUMBER);
 		storeFrontUpdateCartPage.enterNewBillingNameOnCard(newBillingProfileName);
-		storeFrontUpdateCartPage.selectNewBillingCardExpirationDate();
+		storeFrontUpdateCartPage.selectNewBillingCardExpirationDate("OCT","2025");
 		storeFrontUpdateCartPage.enterNewBillingSecurityCode(TestConstants.SECURITY_CODE);
 		storeFrontUpdateCartPage.selectNewBillingCardAddress();
 		storeFrontUpdateCartPage.clickOnSaveBillingProfile();
@@ -2062,10 +2062,9 @@ public class CartAndCheckoutValidationTest extends RFWebsiteBaseTest{
 		storeFrontUpdateCartPage = new StoreFrontUpdateCartPage(driver);
 		storeFrontUpdateCartPage.clickOnShippingAddressNextStepBtn();
 		storeFrontUpdateCartPage.clickAddNewBillingProfileLink();
-
 		storeFrontUpdateCartPage.enterNewBillingCardNumber(TestConstants.CARD_NUMBER);
 		storeFrontUpdateCartPage.enterNewBillingNameOnCard(newBillingProfileName+" "+lastName);
-		storeFrontUpdateCartPage.selectNewBillingCardExpirationDate();
+		storeFrontUpdateCartPage.selectNewBillingCardExpirationDate("OCT","2025");
 		storeFrontUpdateCartPage.enterNewBillingSecurityCode(TestConstants.SECURITY_CODE);
 		storeFrontUpdateCartPage.selectNewBillingCardAddress();
 		storeFrontUpdateCartPage.clickAddANewAddressLink();
@@ -2077,9 +2076,9 @@ public class CartAndCheckoutValidationTest extends RFWebsiteBaseTest{
 		storeFrontUpdateCartPage.enterNewBillingAddressPhoneNumber(phoneNumber);
 		storeFrontUpdateCartPage.clickOnSaveBillingProfile();
 		storeFrontUpdateCartPage.clickOnEditDefaultBillingProfile();
-		storeFrontUpdateCartPage.selectNewBillingCardExpirationDate(TestConstants.CARD_EXP_MONTH,TestConstants.CARD_EXP_YEAR);
+		storeFrontUpdateCartPage.selectNewBillingCardExpirationDate("OCT","2024");
 		storeFrontUpdateCartPage.enterNewBillingSecurityCode(TestConstants.SECURITY_CODE);
-		storeFrontUpdateCartPage.clickAddANewAddressLink();
+		//storeFrontUpdateCartPage.clickAddANewAddressLink();
 		storeFrontUpdateCartPage.selectNewlyAddedBillingAddressName(newBillingProfileName);
 		storeFrontUpdateCartPage.clickOnSaveBillingProfile();
 		storeFrontUpdateCartPage.clickOnBillingNextStepBtn(); 
@@ -3071,9 +3070,10 @@ public class CartAndCheckoutValidationTest extends RFWebsiteBaseTest{
 		//click the edit link in the payment section
 		storeFrontUpdateCartPage.clickOnEditPaymentBillingProfile();
 		//click the edit link in the billing section
+
 		storeFrontUpdateCartPage.clickOnDefaultBillingProfileEdit();
 		//update the CC Expiration date and re-enter the CC security code..
-		storeFrontUpdateCartPage.selectNewBillingCardExpirationDateAsExpiredDate();
+		storeFrontUpdateCartPage.selectNewBillingCardExpirationDate("OCT","2025");
 		storeFrontUpdateCartPage.enterNewBillingSecurityCode(TestConstants.SECURITY_CODE);
 		storeFrontUpdateCartPage.clickOnSaveBillingProfile();
 		//click the edit link in the shipping section

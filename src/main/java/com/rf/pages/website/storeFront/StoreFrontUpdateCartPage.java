@@ -349,9 +349,10 @@ public class StoreFrontUpdateCartPage extends StoreFrontRFWebsiteBasePage{
 	public void clickOnShippingAddressNextStepBtn() throws InterruptedException{
 		driver.pauseExecutionFor(3000);
 		driver.waitForElementPresent(By.id("saveShippingInfo"));
-		driver.click(By.id("saveShippingInfo"));
-		logger.info("Next button on shipping address clicked");	
-		driver.waitForLoadingImageToDisappear();		
+		//driver.click(By.id("saveShippingInfo"));
+		driver.clickByJS(RFWebsiteDriver.driver, driver.findElement(By.id("saveShippingInfo")));
+		logger.info("Next button on shipping address clicked"); 
+		driver.waitForLoadingImageToDisappear();  
 	}
 
 	public void clickOnNextStepBtnShippingAddress(){
@@ -537,7 +538,8 @@ public class StoreFrontUpdateCartPage extends StoreFrontRFWebsiteBasePage{
 	public void clickOnEditDefaultBillingProfile(){
 		driver.waitForElementPresent(By.xpath("//input[@name='bill-card'][@checked='checked']/preceding::p[1]//a[text()='Edit']"));
 		driver.waitForElementToBeClickable(driver.findElement(By.xpath("//input[@name='bill-card'][@checked='checked']/preceding::p[1]//a[text()='Edit']")), 30);
-		driver.click(By.xpath("//input[@name='bill-card'][@checked='checked']/preceding::p[1]//a[text()='Edit']"));
+		driver.clickByJS(RFWebsiteDriver.driver, driver.findElement(By.xpath("//input[@name='bill-card'][@checked='checked']/preceding::p[1]//a[text()='Edit']")));
+		//driver.click(By.xpath("//input[@name='bill-card'][@checked='checked']/preceding::p[1]//a[text()='Edit']"));
 		driver.waitForLoadingImageToDisappear();
 		driver.pauseExecutionFor(2000);
 	}
@@ -1223,7 +1225,8 @@ public class StoreFrontUpdateCartPage extends StoreFrontRFWebsiteBasePage{
 
 	public void clickOnEditOnNotDefaultAddressOfShipping(){
 		if(driver.isElementPresent(By.xpath("//div[@id='multiple-addresses-summary']/div[1]/div[1]//input[@checked='checked']"))==false){
-			driver.click(By.xpath("//div[@id='multiple-addresses-summary']/div[1]/div[1]//a[text()='Edit']"));
+			//driver.click(By.xpath("//div[@id='multiple-addresses-summary']/div[1]/div[1]//a[text()='Edit']"));
+			driver.clickByJS(RFWebsiteDriver.driver, driver.findElement(By.xpath("//div[@id='multiple-addresses-summary']/div[1]/div[1]//a[text()='Edit']")));
 		}else{
 			try{
 				driver.click(By.xpath("//div[@id='multiple-addresses-summary']/div[1]/div[2]//a[text()='Edit']"));
@@ -1368,18 +1371,19 @@ public class StoreFrontUpdateCartPage extends StoreFrontRFWebsiteBasePage{
 			return driver.findElement(By.xpath("//div[@id='multiple-billing-profiles']/div/div[1]//div[@class='billing-address-radio']//input/preceding::p[3]//span")).getText(); 
 		}
 		else if(driver.findElement(By.xpath("//div[@id='multiple-billing-profiles']/div/div[2]//div[@class='billing-address-radio']//input")).isSelected()==false){
-			driver.click(By.xpath("//div[@id='multiple-billing-profiles']/div/div[2]//div[@class='billing-address-radio']//input/.."));
+			driver.clickByJS(RFWebsiteDriver.driver, driver.findElement(By.xpath("//div[@id='multiple-billing-profiles']/div/div[2]//div[@class='billing-address-radio']//input/..")));
+			//driver.click(By.xpath("//div[@id='multiple-billing-profiles']/div/div[2]//div[@class='billing-address-radio']//input/.."));
 			driver.waitForLoadingImageToDisappear();
 			logger.info("Shipping method selected is "+driver.findElement(By.xpath("//div[@id='multiple-billing-profiles']/div/div[2]//div[@class='billing-address-radio']//input")).getText().split("-")[0]);
 			return driver.findElement(By.xpath("//div[@id='multiple-billing-profiles']/div/div[2]//div[@class='billing-address-radio']//input/preceding::p[3]//span")).getText();  
 		}
-		else if(driver.findElement(By.xpath("//div[@id='multiple-billing-profiles']/div/div[3]//div[@class='billing-address-radio']//input")).isSelected()==false){
+		else {
 			driver.click(By.xpath("//div[@id='multiple-billing-profiles']/div/div[3]//div[@class='billing-address-radio']//input/.."));
 			driver.waitForLoadingImageToDisappear();
 			logger.info("Shipping method selected is "+driver.findElement(By.xpath("//div[@id='multiple-billing-profiles']/div/div[3]//div[@class='billing-address-radio']//input")).getText().split("-")[0]);
 			return driver.findElement(By.xpath("//div[@id='multiple-billing-profiles']/div/div[3]//div[@class='billing-address-radio']//input/preceding::p[3]//span")).getText();  
 		}
-		return null;
+
 	}
 
 	public boolean verifyIsOnlyOneRadioButtonSelected(String country){

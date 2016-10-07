@@ -1050,22 +1050,6 @@ public class StoreFrontHomePage extends StoreFrontRFWebsiteBasePage {
 		return driver.getCurrentUrl().contains("biz");
 	}
 
-	public void cancelPulseSubscription(){
-		driver.waitForElementPresent(By.xpath("//a[text()='Cancel my Pulse subscription »']"));
-		driver.click(By.xpath("//a[text()='Cancel my Pulse subscription »']"));
-		driver.pauseExecutionFor(2000);
-		driver.click(By.xpath("//a[@id='cancelPulse']"));
-		driver.waitForLoadingImageToDisappear();
-		try{
-			driver.quickWaitForElementPresent(By.id("cancel-pulse-button"));
-			driver.click(By.id("cancel-pulse-button"));
-			driver.waitForLoadingImageToDisappear();
-		}catch(Exception e){
-
-		}
-		driver.waitForPageLoad();
-	}
-
 	public boolean validatePWS(){
 		driver.waitForElementPresent(By.xpath("//div[@id='header-logo']"));
 		return driver.findElement(By.xpath("//div[@id='header-logo']")).isDisplayed();
@@ -1121,10 +1105,10 @@ public class StoreFrontHomePage extends StoreFrontRFWebsiteBasePage {
 	public void clickSearchAgain(){
 		driver.waitForLoadingImageToDisappear();
 		driver.waitForElementPresent(By.xpath("//a[@id='sponsor_search_again']"));
-		driver.clickByJS(RFWebsiteDriver.driver,driver.findElement(By.xpath("//a[@id='sponsor_search_again']")));
+		driver.clickByJS(RFWebsiteDriver.driver, driver.findElement(By.xpath("//a[@id='sponsor_search_again']")));
+		//driver.click(By.xpath("//a[@id='sponsor_search_again']"));
 		driver.findElement(By.id("sponsor-name-id")).clear();
 	}
-
 	public void checkPCPerksCheckBox(){
 		driver.waitForPageLoad();
 		driver.waitForElementPresent(By.xpath("//input[@id='pc-customer2']/.."));

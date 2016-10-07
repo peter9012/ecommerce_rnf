@@ -1020,10 +1020,8 @@ public class HomePageFunctionalityTest extends RFWebsiteBaseTest{
 	public void testToVerifyTheMoreAboutMeSectionForPWSBiz_1900() throws InterruptedException{
 		RFO_DB = driver.getDBNameRFO();
 		List<Map<String, Object>> randomConsultantList =  null;
-
 		String consultantEmailId =null;
 		String accountId = null;
-
 		country = driver.getCountry();
 		env = driver.getEnvironment();
 		storeFrontHomePage = new StoreFrontHomePage(driver);
@@ -2484,7 +2482,6 @@ public class HomePageFunctionalityTest extends RFWebsiteBaseTest{
 		s_assert.assertTrue(storeFrontHomePage.verifySponsorPWSComSitePresent(), "Sponsor's PWS com site not present in Sponsor Detail page");
 		s_assert.assertAll();
 	}	
-
 
 	//Hybris Project-1907:To verify JOIN MY TEAM functionality in edit meet the consultant page from biz site
 	@Test

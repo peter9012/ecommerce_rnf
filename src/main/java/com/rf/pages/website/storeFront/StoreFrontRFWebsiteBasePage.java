@@ -501,13 +501,13 @@ public class StoreFrontRFWebsiteBasePage extends RFBasePage{
 	}
 
 	public void clickOnShippingAddressNextStepBtn() throws InterruptedException{
-		Actions action = new Actions(RFWebsiteDriver.driver);
 		try{
 			driver.waitForElementPresent(By.xpath("//input[contains(@class,'use_address')]"));
 			driver.click(By.xpath("//input[contains(@class,'use_address')]"));
 			logger.info("save shipping info clicked");
 		}catch(Exception e){
-			action.moveToElement(driver.findElement(By.id("saveShippingInfo"))).click(driver.findElement(By.id("saveShippingInfo"))).build().perform();
+			driver.clickByJS(RFWebsiteDriver.driver, driver.findElement(By.id("saveShippingInfo")));
+			//action.moveToElement(driver.findElement(By.id("saveShippingInfo"))).click(driver.findElement(By.id("saveShippingInfo"))).build().perform();
 		}  
 		logger.info("Next button on shipping address clicked");  
 		driver.waitForLoadingImageToDisappear();
@@ -1449,7 +1449,8 @@ public class StoreFrontRFWebsiteBasePage extends RFBasePage{
 	public void clickAddNewShippingProfileLink() throws InterruptedException{
 		try{
 			driver.quickWaitForElementPresent(By.xpath("//a[text()='Add new shipping address »']"));
-			driver.click(By.xpath("//a[text()='Add new shipping address »']"));
+			//driver.click(By.xpath("//a[text()='Add new shipping address »']"));
+			driver.clickByJS(RFWebsiteDriver.driver, driver.findElement(By.xpath("//a[text()='Add new shipping address »']")));
 			logger.info("Ads new shipping profile link clicked");
 		}
 		catch(NoSuchElementException e){
@@ -1641,8 +1642,9 @@ public class StoreFrontRFWebsiteBasePage extends RFBasePage{
 	public void enterWebsitePrefixName(String name){
 		driver.waitForElementPresent(By.id("webSitePrefix"));
 		driver.type(By.id("webSitePrefix"), name);
-		driver.click(By.xpath("//span[@class='icon-search']"));
-		//driver.pauseExecutionFor(2000);
+		driver.click(By.xpath("//form[@id='crpEnrollment']//img[contains(@src,'pulse-blue')]"));
+		//span[@class='icon-search']
+		driver.pauseExecutionFor(2000);
 	}
 
 	public boolean verifySpecialCharNotAcceptInPrefixName(){
@@ -1974,7 +1976,8 @@ public class StoreFrontRFWebsiteBasePage extends RFBasePage{
 	public void clickAddNewBillingProfileLink() throws InterruptedException{
 		driver.waitForElementPresent(By.xpath("//a[contains(text(),'Add new billing profile')]"));
 		driver.pauseExecutionFor(2000);
-		driver.click(By.xpath("//a[contains(text(),'Add new billing profile')]"));
+		driver.clickByJS(RFWebsiteDriver.driver, driver.findElement(By.xpath("//a[contains(text(),'Add new billing profile')]")));
+		//driver.click(By.xpath("//a[contains(text(),'Add new billing profile')]"));
 		logger.info("Add New Billing Profile link clicked");
 	}
 
@@ -2085,7 +2088,8 @@ public class StoreFrontRFWebsiteBasePage extends RFBasePage{
 
 	public void clickOnDefaultBillingProfileEdit() throws InterruptedException{
 		driver.waitForElementPresent(By.xpath("//input[@checked='checked' and @name='bill-card']/preceding::p[1]/a"));
-		driver.click(By.xpath("//input[@checked='checked' and @name='bill-card']/preceding::p[1]/a"));
+		//driver.click(By.xpath("//input[@checked='checked' and @name='bill-card']/preceding::p[1]/a"));
+		driver.clickByJS(RFWebsiteDriver.driver, driver.findElement(By.xpath("//input[@checked='checked' and @name='bill-card']/preceding::p[1]/a")));
 		driver.waitForLoadingImageToDisappear();
 	}
 
@@ -2169,5 +2173,23 @@ public class StoreFrontRFWebsiteBasePage extends RFBasePage{
 		driver.waitForPageLoad();
 		driver.waitForLoadingImageToDisappear();
 	}
+
+	public void cancelPulseSubscription(){
+		driver.waitForElementPresent(By.xpath("//a[text()='Cancel my Pulse subscription »']"));
+		driver.clickByJS(RFWebsiteDriver.driver, driver.findElement(By.xpath("//a[text()='Cancel my Pulse subscription »']")));
+		//driver.click(By.xpath("//a[text()='Cancel my Pulse subscription »']"));
+		driver.pauseExecutionFor(2000);
+		driver.click(By.xpath("//a[@id='cancelPulse']"));
+		driver.waitForLoadingImageToDisappear();
+		try{
+			driver.quickWaitForElementPresent(By.id("cancel-pulse-button"));
+			driver.click(By.id("cancel-pulse-button"));
+			driver.waitForLoadingImageToDisappear();
+		}catch(Exception e){
+
+		}
+		driver.waitForPageLoad();
+	}
+
 
 }

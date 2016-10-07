@@ -645,23 +645,6 @@ public class StoreFrontAccountInfoPage extends StoreFrontRFWebsiteBasePage{
 		return new StoreFrontAccountTerminationPage(driver);
 	}
 
-	public void cancelPulseSubscription(){
-		driver.waitForElementPresent(By.xpath("//a[contains(text(),'Cancel my Pulse subscription')]"));
-		driver.click(By.xpath("//a[contains(text(),'Cancel my Pulse subscription')]"));
-		driver.pauseExecutionFor(2000);
-		driver.click(By.xpath("//a[@id='cancelPulse']"));
-		driver.waitForLoadingImageToDisappear();
-		try{
-			driver.quickWaitForElementPresent(By.id("cancel-pulse-button"));
-			driver.click(By.id("cancel-pulse-button"));
-			driver.waitForLoadingImageToDisappear();
-		}catch(Exception e){
-
-		}
-
-		driver.waitForPageLoad();
-	}
-
 	public boolean validatePulseCancelled(){
 		driver.waitForElementPresent(By.id("subscribe_pulse_button_new"));
 		return driver.isElementPresent(By.id("subscribe_pulse_button_new"));

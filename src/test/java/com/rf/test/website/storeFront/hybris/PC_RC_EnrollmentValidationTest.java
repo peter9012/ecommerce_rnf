@@ -3060,17 +3060,17 @@ public class PC_RC_EnrollmentValidationTest extends RFWebsiteBaseTest{
 		s_assert.assertTrue(storeFrontHomePage.isOrderPlacedSuccessfully(), "Order Not placed successfully");
 		String orderNumber = storeFrontHomePage.getOrderNumberAfterPlacingOrder();
 		s_assert.assertTrue(storeFrontHomePage.verifyWelcomeDropdownToCheckUserRegistered(), "User NOT registered successfully");
-		cscockpitLoginPage = new CSCockpitLoginPage(driver);
-		cscockpitCustomerSearchTabPage = new CSCockpitCustomerSearchTabPage(driver);
-		cscockpitOrderTabPage = new CSCockpitOrderTabPage(driver);
-		driver.get(driver.getCSCockpitURL());
-		cscockpitCustomerSearchTabPage = cscockpitLoginPage.clickLoginBtn();
-		cscockpitCustomerSearchTabPage.clickOrderSearchTab();
-		cscockpitOrderTabPage.enterOrderNumber(orderNumber);
-		String randomCustomerSequenceNumber = String.valueOf(cscockpitCustomerSearchTabPage.getRandomCustomerFromSearchResult());
-		cscockpitCustomerSearchTabPage.clickCIDNumberInCustomerSearchTab(randomCustomerSequenceNumber);
-		String originationName = cscockpitOrderTabPage.getOriginationNameFromOrderInfo();
-		s_assert.assertTrue(caConsultantPWS.contains(originationName),"origination name is "+originationName+" while ca consultant pws is "+caConsultantPWS+"");
+//		cscockpitLoginPage = new CSCockpitLoginPage(driver);
+//		cscockpitCustomerSearchTabPage = new CSCockpitCustomerSearchTabPage(driver);
+//		cscockpitOrderTabPage = new CSCockpitOrderTabPage(driver);
+//		driver.get(driver.getCSCockpitURL());
+//		cscockpitCustomerSearchTabPage = cscockpitLoginPage.clickLoginBtn();
+//		cscockpitCustomerSearchTabPage.clickOrderSearchTab();
+//		cscockpitOrderTabPage.enterOrderNumber(orderNumber);
+//		String randomCustomerSequenceNumber = String.valueOf(cscockpitCustomerSearchTabPage.getRandomCustomerFromSearchResult());
+//		cscockpitCustomerSearchTabPage.clickCIDNumberInCustomerSearchTab(randomCustomerSequenceNumber);
+//		String originationName = cscockpitOrderTabPage.getOriginationNameFromOrderInfo();
+//		s_assert.assertTrue(caConsultantPWS.contains(originationName),"origination name is "+originationName+" while ca consultant pws is "+caConsultantPWS+"");
 		s_assert.assertAll();
 	}
 

@@ -649,14 +649,16 @@ public class StoreFrontHomePage extends StoreFrontRFWebsiteBasePage {
 	}
 
 	public void checkTheIAgreeCheckBox(){
-		driver.click(By.xpath("//input[@id='electronically-check']/.."));
+		driver.clickByJS(RFWebsiteDriver.driver, driver.findElement(By.xpath("//input[@id='electronically-check']/..")));
+		//driver.click(By.xpath("//input[@id='electronically-check']/.."));
 		logger.info("I Agree checkbox clicked");
 		driver.pauseExecutionFor(1000);
 	}
 
 	public void clickOnChargeMyCardAndEnrollMeBtn() throws InterruptedException{
 		//		driver.waitForElementPresent(By.id("enroll-button"));
-		driver.click(By.id("enroll-button"));
+		driver.clickByJS(RFWebsiteDriver.driver, driver.findElement(By.id("enroll-button")));
+		//driver.click(By.id("enroll-button"));
 		logger.info("Charge my card button clicked");
 		driver.waitForLoadingImageToDisappear();
 	}

@@ -1640,7 +1640,8 @@ public class StoreFrontRFWebsiteBasePage extends RFBasePage{
 
 	public void enterWebsitePrefixName(String name){
 		driver.waitForElementPresent(By.id("webSitePrefix"));
-		driver.type(By.id("webSitePrefix"), name+"\t");
+		driver.type(By.id("webSitePrefix"), name);
+		driver.click(By.xpath("//span[@class='icon-search']"));
 		//driver.pauseExecutionFor(2000);
 	}
 

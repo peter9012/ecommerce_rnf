@@ -543,11 +543,11 @@ public class StoreFrontAccountInfoPage extends StoreFrontRFWebsiteBasePage{
 			driver.pauseExecutionFor(2000);
 		}
 		catch(Exception e){
-			
+
 		}
 		driver.clickByJS(RFWebsiteDriver.driver, driver.findElement(By.xpath("//input[@id='enrollAllowSpouse1']/..")));
 		driver.pauseExecutionFor(1000);
-		
+
 	}
 
 	public boolean validateEnterSpouseDetailsAndAccept(){
@@ -568,8 +568,8 @@ public class StoreFrontAccountInfoPage extends StoreFrontRFWebsiteBasePage{
 		driver.pauseExecutionFor(2000);
 		WebElement accept_btn = driver.findElement(By.xpath("//input[@id='acceptSpouse']"));
 		driver.click(By.xpath("//input[@id='acceptSpouse']"));
-//		actions = new Actions(RFWebsiteDriver.driver);
-//		actions.moveToElement(accept_btn).click(accept_btn).build().perform();
+		//		actions = new Actions(RFWebsiteDriver.driver);
+		//		actions.moveToElement(accept_btn).click(accept_btn).build().perform();
 		driver.pauseExecutionFor(2000);
 		return driver.findElement(By.xpath("//input[@id='spouse-first']")).getAttribute("value").contains(spouseFirstName);
 		//return driver.findElement(By.xpath("//input[@id='spouse-first']")).isDisplayed();
@@ -795,7 +795,8 @@ public class StoreFrontAccountInfoPage extends StoreFrontRFWebsiteBasePage{
 
 	public void clickOnOnlySubscribeToPulseBtn(){
 		driver.waitForElementPresent(By.id("subscribe_pulse_button_new"));
-		driver.click(By.id("subscribe_pulse_button_new"));
+		driver.clickByJS(RFWebsiteDriver.driver, driver.findElement(By.id("subscribe_pulse_button_new")));
+		//driver.click(By.id("subscribe_pulse_button_new"));
 		driver.waitForLoadingImageToDisappear();
 		driver.pauseExecutionFor(1000);
 	}

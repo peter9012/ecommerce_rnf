@@ -1,11 +1,15 @@
 package com.rf.core.utils;
 
+import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
 import java.io.IOException;
 
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
+import org.apache.poi.ss.usermodel.Cell;
+import org.apache.poi.ss.usermodel.Row;
 import org.apache.poi.xssf.usermodel.XSSFCell;
 import org.apache.poi.xssf.usermodel.XSSFSheet;
 import org.apache.poi.xssf.usermodel.XSSFWorkbook;
@@ -118,4 +122,42 @@ public class ExcelReader {
 		}
 	}
 
+	public static void ExcelWriter(String firstname,String lastname, String accountNumber, String FilePath) throws IOException{
+		//XSSFWorkbook workbook = new XSSFWorkbook();
+        //XSSFSheet sheet = workbook.createSheet("Java Books");
+		//FileInputStream fsIP= new FileInputStream(new File("C:\\Users\\plu\\heirloom\\rf-automation\\JavaBooks.xlsx"));
+		FileInputStream fsIP= new FileInputStream(new File(FilePath));
+		XSSFWorkbook wb = new XSSFWorkbook(fsIP); //Access the workbook
+        
+		XSSFSheet worksheet = wb.getSheetAt(0);
+		
+        Object[][] bookData = {
+                {firstname, lastname,accountNumber},
+        };
+ 
+       /* int rowCount = n;*/
+        int rows=worksheet.getLastRowNum(); 			
+        for (Object[] aBook : bookData) {
+        	
+            Row row = worksheet.createRow(++rows);
+             
+            int columnCount = 0;
+             
+            for (Object field : aBook) {
+                Cell cell = row.createCell(++columnCount);
+                if (field instanceof String) {
+                    cell.setCellValue((String) field);
+                } else if (field instanceof Integer) {
+                    cell.setCellValue((Integer) field);
+                }
+            }
+             
+        }
+         
+         
+        try (FileOutputStream outputStream = new FileOutputStream("JavaBooks.xlsx")) {
+        	wb.write(outputStream);
+            outputStream.close();
+        }
+	}
 }

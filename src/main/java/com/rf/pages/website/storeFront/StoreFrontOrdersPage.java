@@ -358,6 +358,7 @@ public class StoreFrontOrdersPage extends StoreFrontRFWebsiteBasePage{
 		driver.waitForElementPresent(By.linkText(orderNumber));
 		driver.click(By.linkText(orderNumber));
 		logger.info("Order number clicked "+orderNumber);
+		driver.waitForPageLoad();
 	}
 
 	public boolean verifyAutoShipTemplateSubtotal(String subTotalDB){

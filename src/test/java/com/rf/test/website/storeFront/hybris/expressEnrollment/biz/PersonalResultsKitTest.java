@@ -7,7 +7,7 @@ import com.rf.pages.website.storeFront.StoreFrontHomePage;
 import com.rf.test.website.RFStoreFrontWebsiteBaseTest;
 import com.rf.test.website.RFWebsiteBaseTest;
 
-public class PersonalResultsKitTest extends RFStoreFrontWebsiteBaseTest{
+public class PersonalResultsKitTest extends RFWebsiteBaseTest{
 
 	private StoreFrontHomePage storeFrontHomePage;
 	private String kitName = null;

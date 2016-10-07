@@ -1,0 +1,78 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<suite name="CscockpitRegressionTestSuite.xml">
+	<listeners>
+		<listener class-name="org.uncommons.reportng.HTMLReporter" />
+		<listener class-name="org.uncommons.reportng.JUnitXMLReporter" />
+		<listener class-name="com.rf.core.listeners.RetryListener" />
+		<listener class-name="com.rf.core.listeners.TestListner" />
+	</listeners>
+	<test name="CscockpitRegressionTestSuite.xml">
+		<classes>
+			<class name="com.rf.test.website.cscockpit.AddEditBillingVerificationTest">
+			    <methods>
+			        <include name="testVerifyAddCardFunctionalityFromCustomerDetailPageForConsultant_1727" />
+			        <include name="testVerifyEditCardFunctionalityFromCustomerDetailPageForConsultant_1730" />			        
+			    </methods>
+			</class>
+			<class name="com.rf.test.website.cscockpit.AddEditShippingVerificationTest">
+			    <methods>
+			        <include name="testVerifyEditAddressFunctionalityInCustomerDetailPageForConsultant_1754" />	
+			    </methods>
+			</class>
+			<class name="com.rf.test.website.cscockpit.CheckoutVerificationTest">
+			    <methods>
+			        <exclude name="CheckoutVerificationTest" />
+			    </methods>
+			</class>
+			<class name="com.rf.test.website.cscockpit.CreditCardVerificationTest">
+			    <methods>
+					<include name="testVerifyAddAddressFunctionalityInCustomerDetailPageForPC_1750" />	
+			    </methods>
+			</class>
+			<class name="com.rf.test.website.cscockpit.CRPAutoshipVerificationTest">
+			    <methods>
+					<include name="testAddNewShippingAddressFunctionalityOnPCPerksAutoshipCheckoutPage_4790" />
+					<include name="testDelayPCPerksAutoshipTemplateBy30Days_4783" />
+					<include name="testToVerifyAddNewPaymentProfileFunctionalityInTheCheckoutPage_1735" />
+					<include name="testVerifyCancelPCPerks_1714" />
+					<include name="testVerifyChangeShippingMethodOnAutoshipPC_130" />
+					<include name="testVerifyDelayPCPerks_1709" />
+					<include name="testVerifyUpdateCRPAutoshipTemplate_1703" />
+			    </methods>			    
+			</class>
+			<class name="com.rf.test.website.cscockpit.CustomerVerificationTest">
+			    <methods>
+			        <include name="testVerifyConsultantCustomerDetailPageUI_1929" ></include>
+			    </methods>
+			</class>
+			<class name="com.rf.test.website.cscockpit.OrdersVerificationTest">
+			    <methods>
+			        <include name="testToVerifyAdhocPCOrder_1941"></include>
+			        <include name="testToVerifyForCreatedNewUserTheOrderStatusShouldBeSubmitted_1937"></include>
+			        <include name="testVerifyAdhocConsultantOrder_1934"></include>
+			        <include name="testVerifyCVAndQVValuesUpdateFunctionalityInOrderDetailPage_1964"></include>
+			        <include name="testVerifyOrderDetailPageUI_1950"></include>
+			        <include name="testVerifyTheAbilityToMarkTestOrderFunctionalityForAllUsers_1924"></include>
+			        <include name="testVerifyTheSalesOverrideFromOrderDetailPage_1952"></include>
+			        <include name="testVerifyUserPermissionsForOrderStatus_1779"></include>
+			    </methods>
+			</class>
+			<class name="com.rf.test.website.cscockpit.PermissionsVerificationTest">
+			    <methods>
+			        <include name="testToVerifyCSCommissionAdminCanCancelAutoshipForConsultantAndPC_1795"></include>
+			        <include name="testVerifyCscommissionadminCanCreateCRP_1790"></include>
+			    </methods>
+			</class>
+			<class name="com.rf.test.website.cscockpit.PulseVerificationTest">
+			    <methods>
+			        <include name="testCreateAPulseAutoship_1716"></include>
+			    </methods>			    
+			</class>
+			<class name="com.rf.test.website.cscockpit.ReturnVerificationTest">
+			    <methods>
+			        <include name="testVerifyCscockpitRefundOrderFunctionality_4073"></include>
+			    </methods>				    
+			</class>
+		</classes>
+	</test>
+</suite>

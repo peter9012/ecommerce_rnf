@@ -2815,3 +2815,4 @@ public class UpgradeDowngradeTest extends RFWebsiteBaseTest{
 		}
 	}
 }
+//testForgotPasswordForRetailCustomer_5006

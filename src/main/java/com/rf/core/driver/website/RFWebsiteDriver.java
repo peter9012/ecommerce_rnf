@@ -22,7 +22,9 @@ import org.openqa.selenium.TakesScreenshot;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.chrome.ChromeDriver;
+import org.openqa.selenium.chrome.ChromeOptions;
 import org.openqa.selenium.firefox.FirefoxDriver;
+import org.openqa.selenium.firefox.FirefoxProfile;
 import org.openqa.selenium.htmlunit.HtmlUnitDriver;
 import org.openqa.selenium.ie.InternetExplorerDriver;
 import org.openqa.selenium.interactions.Actions;
@@ -63,12 +65,20 @@ public class RFWebsiteDriver implements RFDriver,WebDriver {
 	 *             Prepares the environment that tests to be run on
 	 */
 	public void loadApplication() throws MalformedURLException {
-
+		FirefoxProfile prof = new FirefoxProfile();
+		prof.setPreference("brower.startup.homepage", "about:blank");
+		prof.setPreference("startup.homepage_welcome_url", "about:blank");
+		prof.setPreference("startup.homepage_welcome_url.additional",  "about:blank");
 		if (propertyFile.getProperty("browser").equalsIgnoreCase("firefox"))
-			driver = new FirefoxDriver();
+			driver = new FirefoxDriver(prof);
 		else if (propertyFile.getProperty("browser").equalsIgnoreCase("chrome")){
 			System.setProperty("webdriver.chrome.driver", "src//test//resources//chromedriver");
+			ChromeOptions options = new ChromeOptions();
+			options.addArguments("no-sandbox");
+			options.addArguments("chrome.switches","--disable-extensions");
+			options.addArguments("disable-popup-blocking");
 			DesiredCapabilities capabilities = new DesiredCapabilities();
+			capabilities.setCapability(ChromeOptions.CAPABILITY, options);
 			// for clearing cache
 			capabilities.setCapability(CapabilityType.ForSeleniumServer.ENSURING_CLEAN_SESSION, true);
 			driver = new ChromeDriver(capabilities);
@@ -77,7 +87,7 @@ public class RFWebsiteDriver implements RFDriver,WebDriver {
 			driver = new HtmlUnitDriver(true);
 		}
 		else if(propertyFile.getProperty("browser").equalsIgnoreCase("ie")){
-			System.setProperty("webdriver.ie.driver", "src//test//resources//IEDriverServer.exe");
+			System.setProperty("webdriver.ie.driver", "src/test/resources/IEDriverServer.exe");
 			DesiredCapabilities capabilities = new DesiredCapabilities();
 			// for clearing cache
 			capabilities.setCapability(CapabilityType.ForSeleniumServer.ENSURING_CLEAN_SESSION, true);
@@ -129,7 +139,11 @@ public class RFWebsiteDriver implements RFDriver,WebDriver {
 		DBUtil.setDBDetails(dbIP, dbUsername, dbPassword, dbDomain, authentication);
 		logger.info("DB connections are set");
 	}
-
+	
+	public String getDBIP2(){
+		return propertyFile.getProperty("dbIP2");
+	}
+	
 	public void selectCountry(String country){
 		driver.findElement(By.xpath("//div[@class='btn-group']")).click();
 		if(country.equalsIgnoreCase("ca")){
@@ -144,6 +158,11 @@ public class RFWebsiteDriver implements RFDriver,WebDriver {
 	public String getURL() {
 		return propertyFile.getProperty("baseUrl");
 	}
+	
+	public String getBrowser(){
+		return propertyFile.getProperty("browser");
+	}
+	
 	public String getBizPWSURL() {
 		return propertyFile.getProperty("pwsBizBase");
 	}
@@ -254,7 +273,7 @@ public class RFWebsiteDriver implements RFDriver,WebDriver {
 	}
 
 	public void waitForLoadingImageToDisappear(){
-		int DEFAULT_TIMEOUT = 60;
+		int DEFAULT_TIMEOUT = 50;
 		turnOffImplicitWaits();
 		By locator = By.xpath("//div[@id='blockUIBody']");
 		logger.info("Waiting for loading image to get disappear");
@@ -513,10 +532,9 @@ public class RFWebsiteDriver implements RFDriver,WebDriver {
 	}
 
 	public void get(String Url) {
-		logger.info("URL hit is "+Url);
+		logger.info("URL opened is "+Url);
 		driver.get(Url);
 		waitForPageLoad();
-		pauseExecutionFor(5000);
 	}
 
 	public void click(By locator) {		
@@ -534,7 +552,12 @@ public class RFWebsiteDriver implements RFDriver,WebDriver {
 		/*		driver.manage().timeouts().implicitlyWait(5, TimeUnit.SECONDS);
 		 */		
 		// quickWaitForElementPresent(locator);
+		try{
 		findElement(locator).clear();
+		}catch(Exception e){
+			pauseExecutionFor(2000);
+			findElement(locator).clear();	
+		}
 		findElement(locator).sendKeys(input);
 	}
 
@@ -893,7 +916,7 @@ public class RFWebsiteDriver implements RFDriver,WebDriver {
 		return sDateTime;
 	}
 
-	public void switchToSecondWindow(){
+	public String switchToSecondWindow(){
 		//		Set<String> allWindows = driver.getWindowHandles();
 		//		Iterator itr = allWindows.iterator();
 		//		while(itr.hasNext()){
@@ -911,7 +934,8 @@ public class RFWebsiteDriver implements RFDriver,WebDriver {
 			}
 
 		}
-		logger.info("Switched to second window whose title is "+driver.getTitle());		
+		logger.info("Switched to second window whose title is "+driver.getTitle());	
+		return parentWindow;
 	}
 
 	public String getCrmURL(){

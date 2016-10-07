@@ -10,9 +10,10 @@ public class DSVStoreFrontAutoshipCartPage extends DSVRFWebsiteBasePage{
 	private static final Logger logger = LogManager
 			.getLogger(DSVStoreFrontAutoshipCartPage.class.getName());
 
-	private static final By CONTINUE_SHOPPING_LINK = By.xpath("//div[@id='left-shopping']/a[contains(text(),'Continue shopping')]");
+	private static final By CONTINUE_SHOPPING_LINK = By.xpath("//input[@value='ADD MORE ITEMS']");
 	private static String RetailPrice =  "//p[@id='cart-retail-price']/span[contains(@class,'old-price')][contains(text(),'%s')]"; 	
-
+	private static String allItemsNameInCart = "//div[@class='shopping-item row']//h3";
+	
 	public DSVStoreFrontAutoshipCartPage(RFWebsiteDriver driver) {
 		super(driver);
 		// TODO Auto-generated constructor stub
@@ -29,21 +30,21 @@ public class DSVStoreFrontAutoshipCartPage extends DSVRFWebsiteBasePage{
 	}
 
 	public void addQuantityOfProduct(String retailPrice,String quantity){
-		driver.type(By.xpath(String.format(RetailPrice, retailPrice)+"/following::div[1]//input[@name='quantity']"), quantity);		
+		driver.type(By.xpath(String.format(RetailPrice, retailPrice)+"/preceding::div[1]//input[@name='quantity']"), quantity);		
 	}
 
 	public void clickUpdateQuantityBtnOfProduct(String retailPrice){
-		driver.click(By.xpath(String.format(RetailPrice, retailPrice)+"/following::div[1]//a[text()='Update']"));
+		driver.click(By.xpath(String.format(RetailPrice, retailPrice)+"/preceding::div[1]//a[text()='Update']"));
 		driver.pauseExecutionFor(2000);
 		driver.waitForPageLoad();
 	}
 
 	public String getQuantityOfProduct(String retailPrice){
-		return driver.findElement(By.xpath(String.format(RetailPrice, retailPrice)+"/following::div[1]//input[@name='quantity']")).getAttribute("value");
+		return driver.findElement(By.xpath(String.format(RetailPrice, retailPrice)+"/preceding::div[1]//input[@name='quantity']")).getAttribute("value");
 	}
 
 	public void clickRemoveProduct(String retailPrice){
-		driver.click(By.xpath(String.format(RetailPrice, retailPrice)+"/preceding::a[1][text()='Remove']"));
+		driver.click(By.xpath(String.format(RetailPrice, retailPrice)+"/following::a[1][text()='Remove']"));
 		driver.pauseExecutionFor(2000);
 		driver.waitForPageLoad();
 	}

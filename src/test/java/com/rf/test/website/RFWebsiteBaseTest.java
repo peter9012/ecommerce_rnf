@@ -70,11 +70,13 @@ public class RFWebsiteBaseTest extends RFBaseTest {
 		if(driver.getURL().contains("cscockpit")==true||driver.getURL().contains("salesforce")==true){  
 
 		}else{
-			try{
-				logout();		
-			}catch(NoSuchElementException e){
-
-			}   
+//			try{
+//				logout();		
+//			}catch(NoSuchElementException e){
+//
+//			} 
+			if(isLogoutBtnPresent())
+				logout();
 		}		           
 		if(country.equalsIgnoreCase("ca"))
 			countryId = "40";
@@ -150,19 +152,25 @@ public class RFWebsiteBaseTest extends RFBaseTest {
 			driver.waitForElementPresent(By.id("account-info-button"));
 			driver.click(By.id("account-info-button"));
 			logger.info("Your account info has been clicked");
-			//driver.waitForElementPresent(By.linkText("Log out"));
-			//String sCurrent = driver.getCurrentUrl();
-			//driver.get(sCurrent+"/logout");*
-			JavascriptExecutor js = (JavascriptExecutor)(RFWebsiteDriver.driver);
-			js.executeScript("arguments[0].click();", driver.findElement(By.xpath("//*[@id='account-info-button']//a[text()='Log out']")));		
-			//driver.click(By.linkText("Log out"));
-			logger.info("Logout");                    
+			driver.waitForElementPresent(By.linkText("Log out"));
+			driver.click(By.linkText("Log out"));
+			logger.info("Logout");
+			driver.waitForPageLoad();
 			driver.pauseExecutionFor(3000);
 		}
 		catch(Exception e)
 		{
-			
+
 		}
+
+	}
+
+	public boolean isLogoutBtnPresent(){
+		int listSize = driver.findElements(By.id("account-info-button")).size();
+		if(listSize>0)
+			return true;
+		else
+			return false;
 	}
 
 	// This assertion for the UI Texts

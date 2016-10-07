@@ -549,9 +549,9 @@ public class StoreFrontAccountInfoPage extends StoreFrontRFWebsiteBasePage{
 		catch(Exception e){
 
 		}
-
 		driver.click(By.xpath("//input[@id='enrollAllowSpouse1']/.."));
 		driver.pauseExecutionFor(1000);
+		
 	}
 
 	public boolean validateEnterSpouseDetailsAndAccept(){
@@ -1040,6 +1040,20 @@ public class StoreFrontAccountInfoPage extends StoreFrontRFWebsiteBasePage{
 		System.out.println(spouseFirstName);
 		return !driver.findElement(By.xpath("//input[@id='spouse-first']")).getAttribute("value").contains(spouseFirstName);
 		//return driver.findElement(By.xpath("//input[@id='cancelSpouse']")).isDisplayed() || driver.findElement(By.xpath("//input[@id='spouse-first']")).isDisplayed();
+	}
+
+	public String getSpouseFirstName(){
+		driver.waitForElementPresent(By.xpath("//input[@id='spouse-first']"));
+		String spouseFirstName=driver.findElement(By.xpath("//input[@id='spouse-first']")).getAttribute("value");
+		logger.info("Spouse first name from UI is "+spouseFirstName);
+		return spouseFirstName;
+	}
+
+	public String getSpouseLastName(){
+		driver.waitForElementPresent(By.xpath("//input[@id='spouse-last']"));
+		String spouseLastName=driver.findElement(By.xpath("//input[@id='spouse-last']")).getAttribute("value");
+		logger.info("Spouse last name from UI is "+spouseLastName);
+		return spouseLastName;
 	}
 
 }

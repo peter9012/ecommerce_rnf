@@ -1350,7 +1350,8 @@ public class StoreFrontUpdateCartPage extends StoreFrontRFWebsiteBasePage{
 
 	public boolean selectFirstAddressAndValidateSecondIsUnSelected(){
 		driver.waitForElementPresent(By.xpath("//div[@id='multiple-addresses-summary']/div[1]/div[3]/span"));
-		driver.click(By.xpath("//div[@id='multiple-addresses-summary']/div[1]/div[3]/span"));
+		//driver.click(By.xpath("//div[@id='multiple-addresses-summary']/div[1]/div[3]/span"));
+		driver.clickByJS(RFWebsiteDriver.driver, driver.findElement(By.xpath("//div[@id='multiple-addresses-summary']/div[2]/div[3]/span")));
 		driver.pauseExecutionFor(2000);
 		return driver.findElement(By.xpath("//div[@id='multiple-addresses-summary']/div[2]/div[3]/span")).isSelected();
 	}

@@ -1566,8 +1566,8 @@ public class StoreFrontHomePage extends StoreFrontRFWebsiteBasePage {
 	}
 
 	public void clickOnAddMoreItemsBtn(){
-		driver.waitForElementPresent(By.xpath("//input[@value='ADD MORE ITEMS']"));
-		driver.click(By.xpath("//input[@value='ADD MORE ITEMS']"));
+		driver.waitForElementPresent(By.xpath("//*[@value='ADD MORE ITEMS']"));
+		driver.click(By.xpath("//*[@value='ADD MORE ITEMS']"));
 		driver.waitForPageLoad();
 	}
 

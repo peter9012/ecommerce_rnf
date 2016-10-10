@@ -64,18 +64,6 @@ public class StoreFrontUpdateCartPage extends StoreFrontRFWebsiteBasePage{
 		driver.type(By.id("card-name"),nameOnCard);
 	}
 
-	public void selectNewBillingCardExpirationDate(){
-		driver.clickByJS(RFWebsiteDriver.driver, driver.findElement(By.xpath("//select[@id='expiryMonth']")));
-		driver.pauseExecutionFor(2000);
-		driver.waitForElementPresent(By.xpath("//select[@id='expiryMonth']/option[10]"));
-		driver.clickByJS(RFWebsiteDriver.driver, driver.findElement(By.xpath("//select[@id='expiryMonth']/option[10]")));
-		driver.pauseExecutionFor(2000);
-		driver.clickByJS(RFWebsiteDriver.driver,driver.findElement(By.xpath("//select[@id='expiryYear']")));
-		driver.pauseExecutionFor(2000);
-		driver.waitForElementPresent(By.xpath("//select[@id='expiryYear']/option[10]"));
-		driver.clickByJS(RFWebsiteDriver.driver,driver.findElement(By.xpath("//select[@id='expiryYear']/option[10]")));		
-	}
-
 	public void enterNewBillingSecurityCode(String securityCode){
 		driver.type(By.id("security-code"), securityCode);
 	}
@@ -1349,10 +1337,11 @@ public class StoreFrontUpdateCartPage extends StoreFrontRFWebsiteBasePage{
 	}
 
 	public boolean selectFirstAddressAndValidateSecondIsUnSelected(){
+		driver.navigate().refresh();
+		driver.waitForPageLoad();
+		//((JavascriptExecutor) RFWebsiteDriver.driver).executeScript("arguments[0].scrollIntoView(true);", driver.findElement(By.xpath("//div[@id='multiple-addresses-summary']/div[1]/div[3]/span")));
 		driver.waitForElementPresent(By.xpath("//div[@id='multiple-addresses-summary']/div[1]/div[3]/span"));
-		//driver.click(By.xpath("//div[@id='multiple-addresses-summary']/div[1]/div[3]/span"));
-		driver.clickByJS(RFWebsiteDriver.driver, driver.findElement(By.xpath("//div[@id='multiple-addresses-summary']/div[2]/div[3]/span")));
-		driver.pauseExecutionFor(2000);
+		driver.clickByJS(RFWebsiteDriver.driver, driver.findElement(By.xpath("//div[@id='multiple-addresses-summary']/div[1]/div[3]/span")));
 		return driver.findElement(By.xpath("//div[@id='multiple-addresses-summary']/div[2]/div[3]/span")).isSelected();
 	}
 

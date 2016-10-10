@@ -149,10 +149,11 @@ public class RFWebsiteDriver implements RFDriver,WebDriver {
 		return propertyFile.getProperty("browser");
 	}
 	public String getBizPWSURL() {
-		return propertyFile.getProperty("pwsBizBase");
+		return propertyFile.getProperty("pwsBase")+getEnvironment()+".biz";
 	}
 	public String getComPWSURL() {
-		return propertyFile.getProperty("pwsComBase");
+//		return propertyFile.getProperty("pwsComBase");
+		return propertyFile.getProperty("pwsBase")+getEnvironment()+".com";
 	}
 	public String getDBNameRFL(){
 		return propertyFile.getProperty("databaseNameRFL");

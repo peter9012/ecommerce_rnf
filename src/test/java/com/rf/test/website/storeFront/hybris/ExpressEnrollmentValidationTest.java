@@ -33,7 +33,7 @@ public class ExpressEnrollmentValidationTest extends RFWebsiteBaseTest{
 	private StoreFrontAccountTerminationPage storeFrontAccountTerminationPage;
 	private StoreFrontOrdersPage storeFrontOrdersPage;
 	private StoreFrontShippingInfoPage storeFrontShippingInfoPage;
-	
+
 	private String kitName = null;
 	private String regimenName = null;
 	private String enrollmentType = null;
@@ -143,7 +143,7 @@ public class ExpressEnrollmentValidationTest extends RFWebsiteBaseTest{
 		storeFrontHomePage.enterSpouseLastName(TestConstants.SPOUSE_LAST_NAME);
 		storeFrontHomePage.clickNextButton();
 		storeFrontHomePage.acceptTheProvideAccessToSpousePopup();
-		storeFrontHomePage.clickNextButton();
+		//storeFrontHomePage.clickNextButton();
 		s_assert.assertTrue(storeFrontHomePage.isTheTermsAndConditionsCheckBoxDisplayed(), "Terms and Conditions checkbox is not visible");
 		storeFrontHomePage.checkThePoliciesAndProceduresCheckBox();
 		storeFrontHomePage.clickOnChargeMyCardAndEnrollMeBtn();

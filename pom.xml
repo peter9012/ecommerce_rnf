@@ -150,6 +150,11 @@
 					</properties>
 					<systemPropertyVariables>
 						<testprops>${envproperties}</testprops>
+						<testprops>${browser}</testprops>
+						<testprops>${baseURL}</testprops>
+						<testprops>${country}</testprops>
+						<testprops>${env}</testprops>
+						<testprops>${dbIP}</testprops>
 					</systemPropertyVariables>
 					<useFile>true</useFile>
 					<testFailureIgnore>true</testFailureIgnore>

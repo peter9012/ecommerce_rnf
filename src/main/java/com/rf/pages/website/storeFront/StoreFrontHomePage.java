@@ -525,7 +525,7 @@ public class StoreFrontHomePage extends StoreFrontRFWebsiteBasePage {
 		driver.waitForElementPresent(By.id("card-nr"));
 		driver.type(By.id("card-nr"),cardNumber);
 		driver.pauseExecutionFor(1000);
-		driver.findElement(By.id("expiryMonth")).click();
+		driver.clickByJS(RFWebsiteDriver.driver, driver.findElement(By.xpath("//*[@id='expiryMonth']")));		
 		logger.info("card number entered as "+cardNumber);
 	}
 

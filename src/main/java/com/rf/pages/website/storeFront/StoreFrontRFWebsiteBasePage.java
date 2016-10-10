@@ -535,14 +535,6 @@ public class StoreFrontRFWebsiteBasePage extends RFBasePage{
 		logger.info("card name entered is "+nameOnCard);
 	}
 
-	public void selectNewBillingCardExpirationDate(){
-		driver.click(By.id("expiryMonth"));
-		driver.click(By.xpath("//select[@id='expiryMonth']/option[10]"));
-		driver.click(By.id("expiryYear"));
-		driver.click(By.xpath("//select[@id='expiryYear']/option[10]"));
-		logger.info("expiration date is selected");
-	}
-
 	public void selectNewBillingCardExpirationDate(String month,String year){
 		//driver.click(By.id("expiryMonth"));
 		driver.clickByJS(RFWebsiteDriver.driver,driver.findElement(By.id("expiryMonth")));
@@ -739,15 +731,21 @@ public class StoreFrontRFWebsiteBasePage extends RFBasePage{
 		}
 	}
 
-	public void selectNewBillingCardExpirationDateAsExpiredDate(){
-		driver.click(By.id("expiryMonth"));
-		driver.waitForElementPresent(By.xpath("//select[@id='expiryMonth']/option[@value='02']"));
-		driver.click(By.xpath("//select[@id='expiryMonth']/option[@value='02']"));
-		driver.click(By.id("expiryYear"));
-		driver.waitForElementPresent(By.xpath("//select[@id='expiryYear']/option[2]"));
-		driver.click(By.xpath("//select[@id='expiryYear']/option[1]"));
+	public void selectNewBillingCardExpirationDate(){
+		//driver.clickByJS(RFWebsiteDriver.driver, driver.findElement(By.xpath("//select[@id='expiryMonth']")));
+		driver.click(By.xpath("//select[@id='expiryMonth']"));
+		driver.pauseExecutionFor(2000);
+		driver.waitForElementPresent(By.xpath("//select[@id='expiryMonth']/option[10]"));
+		driver.click(By.xpath("//select[@id='expiryMonth']/option[10]"));
+		//driver.clickByJS(RFWebsiteDriver.driver, driver.findElement(By.xpath("//select[@id='expiryMonth']/option[10]")));
+		driver.pauseExecutionFor(2000);
+		driver.click(By.xpath("//select[@id='expiryYear']"));
+		//driver.clickByJS(RFWebsiteDriver.driver,driver.findElement(By.xpath("//select[@id='expiryYear']")));
+		driver.pauseExecutionFor(2000);
+		driver.waitForElementPresent(By.xpath("//select[@id='expiryYear']/option[10]"));
+		driver.click(By.xpath("//select[@id='expiryYear']/option[10]"));
+		//driver.clickByJS(RFWebsiteDriver.driver,driver.findElement(By.xpath("//select[@id='expiryYear']/option[10]")));  
 	}
-
 	public boolean validatePasswordFieldMessage(){
 		if(driver.findElement(By.xpath("//div[contains(text(),'Please enter 6')]")).isDisplayed()){
 			return true;
@@ -1607,16 +1605,11 @@ public class StoreFrontRFWebsiteBasePage extends RFBasePage{
 	public boolean isTheBillingAddressPresentOnPage(String firstName){
 		boolean isFirstNamePresent = false;
 		driver.waitForElementPresent(By.xpath("//div[@id='multiple-billing-profiles']/div"));
-		List<WebElement> allBillingProfiles = driver.findElements(By.xpath("//div[@id='multiple-billing-profiles']/div"));  
-		for(int i=1;i<=allBillingProfiles.size();i++){ 
-			if(driver.isElementPresent(By.xpath("//div[@id='multiple-billing-profiles']/div[contains(@class,'sel-profile')]["+i+"]/p[1]/span[@class='font-bold']"))==true){
-				isFirstNamePresent = driver.findElement(By.xpath("//div[@id='multiple-billing-profiles']/div[contains(@class,'sel-profile')]["+i+"]/p[1]/span[@class='font-bold']")).getText().toLowerCase().contains(firstName.toLowerCase());
-			}
-			else if(driver.isElementPresent(By.xpath("//div[@id='multiple-billing-profiles']/div["+i+"]/p[1]/span[1]"))){
-				isFirstNamePresent = driver.findElement(By.xpath("//div[@id='multiple-billing-profiles']/div["+i+"]/p[1]/span[1]")).getText().toLowerCase().contains(firstName.toLowerCase());				
-			}
-			else{
-				isFirstNamePresent = driver.findElement(By.xpath("//div[@id='multiple-billing-profiles']/div/div["+i+"]/p[1]/span[1]")).getText().toLowerCase().contains(firstName.toLowerCase());
+		List<WebElement> allBillingProfiles = driver.findElements(By.xpath("//div[@id='multiple-billing-profiles']/div[contains(@class,'sel-profile')]/p[1]/span[@class='font-bold']"));
+		for(WebElement e:allBillingProfiles){
+			if(e.getText().contains(firstName)==true){
+				isFirstNamePresent=true;
+				break;
 			}
 		}
 		return isFirstNamePresent;

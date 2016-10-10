@@ -725,9 +725,9 @@ public class StoreFrontRFWebsiteBasePage extends RFBasePage{
 
 	public void clickOnPCPerksTermsAndConditionsCheckBoxes(){
 		driver.waitForElementPresent(By.xpath("//input[@id='Terms3']/.."));
-		driver.pauseExecutionFor(2000);
+		driver.pauseExecutionFor(5000);
 		try{
-			driver.quickWaitForElementPresent(By.xpath("//div[@class='content']/li[2]//input/.."));
+			driver.waitForElementPresent(By.xpath("//div[@class='content']/li[2]//input/.."));
 			driver.click(By.xpath("//div[@class='content']/li[1]//input/.."));
 			driver.click(By.xpath("//div[@class='content']/li[2]//input/.."));
 		}catch(NoSuchElementException e){

@@ -519,7 +519,7 @@ public class StorefrontDSVTest extends RFDSVStoreFrontWebsiteBaseTest{
 		dsvStoreFrontHomePage.openURL(driver.getURL()+"/ca");
 		dsvStoreFrontHomePage.hoverOnOurBusinessAndClickEnrollNow();
 		dsvStoreFrontHomePage.enterSponsorAndSearch(TestConstants.DSV_CANADIAN_SPONSOR_WITH_PWS);
-		dsvStoreFrontHomePage.mouseHoverOnSponsorAndClickSelectAndContinue();
+		dsvStoreFrontHomePage.mouseHoverOnSponsorAndClickSelectAndContinue(2);
 		s_assert.assertTrue(dsvStoreFrontHomePage.validateCurrentURLContainsBiz(),"url does not contain biz");
 		s_assert.assertAll();
 	}

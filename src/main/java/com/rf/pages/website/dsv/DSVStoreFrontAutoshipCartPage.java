@@ -10,7 +10,7 @@ public class DSVStoreFrontAutoshipCartPage extends DSVRFWebsiteBasePage{
 	private static final Logger logger = LogManager
 			.getLogger(DSVStoreFrontAutoshipCartPage.class.getName());
 
-	private static final By CONTINUE_SHOPPING_LINK = By.xpath("//input[@value='ADD MORE ITEMS']");
+	private static final By CONTINUE_SHOPPING_LINK = By.xpath("//*[@value='ADD MORE ITEMS']");
 	private static String RetailPrice =  "//p[@id='cart-retail-price']/span[contains(@class,'old-price')][contains(text(),'%s')]"; 	
 	private static String allItemsNameInCart = "//div[@class='shopping-item row']//h3";
 	
@@ -30,6 +30,7 @@ public class DSVStoreFrontAutoshipCartPage extends DSVRFWebsiteBasePage{
 	}
 
 	public void addQuantityOfProduct(String retailPrice,String quantity){
+		driver.waitForElementPresent(By.xpath(String.format(RetailPrice, retailPrice)+"/preceding::div[1]//input[@name='quantity']"));
 		driver.type(By.xpath(String.format(RetailPrice, retailPrice)+"/preceding::div[1]//input[@name='quantity']"), quantity);		
 	}
 

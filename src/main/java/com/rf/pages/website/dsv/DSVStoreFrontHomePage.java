@@ -6,6 +6,7 @@ import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.openqa.selenium.By;
 import org.openqa.selenium.JavascriptExecutor;
+import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.interactions.Actions;
 
@@ -190,7 +191,7 @@ public class DSVStoreFrontHomePage extends DSVRFWebsiteBasePage{
 		driver.quickWaitForElementPresent(SPONSOR_SEARCH_FIELD_LOC);
 		driver.type(SPONSOR_SEARCH_FIELD_LOC, dsvCanadianSponsorWithPwssponsor);
 		logger.info("sponsor name entered");
-		driver.click(SEARCH_BUTTON_LOC);
+		driver.clickByJS(RFWebsiteDriver.driver,driver.findElement(SEARCH_BUTTON_LOC));
 		logger.info("Search Button Clicked");
 		driver.waitForPageLoad();
 	}
@@ -199,6 +200,20 @@ public class DSVStoreFrontHomePage extends DSVRFWebsiteBasePage{
 		JavascriptExecutor js = (JavascriptExecutor)(RFWebsiteDriver.driver);
 		js.executeScript("arguments[0].click();", driver.findElement(By.xpath("//div[@id='search-results']//input[contains(@value,'Select')]")));
 		logger.info("sponsor's Select & Continue has been clicked");
+		driver.waitForLoadingImageToDisappear();
+		driver.waitForPageLoad();
+	}
+
+	public void mouseHoverOnSponsorAndClickSelectAndContinue(int resultNumber) {
+		JavascriptExecutor js = (JavascriptExecutor)(RFWebsiteDriver.driver);
+		if(resultNumber==1)
+			js.executeScript("arguments[0].click();", driver.findElement(By.xpath("//div[@id='search-results']//input[contains(@value,'Select')]")));
+		if(resultNumber==2){
+			List<WebElement> allSearchResults = driver.findElements(By.xpath("//div[@id='search-results']//input[contains(@value,'Select')]"));
+			js.executeScript("arguments[0].click();", allSearchResults.get(1));
+		}
+
+			logger.info("sponsor's Select & Continue has been clicked");
 		driver.waitForLoadingImageToDisappear();
 		driver.waitForPageLoad();
 

@@ -2352,6 +2352,9 @@ public class UpgradeDowngradeTest extends RFWebsiteBaseTest{
 	@Test
 	public void testSwitchFronRCToPC_2091() throws InterruptedException{
 		RFO_DB = driver.getDBNameRFO();
+		int randomNum = CommonUtils.getRandomNum(10000, 1000000);  
+		String newBillingProfileName = TestConstants.NEW_BILLING_PROFILE_NAME+randomNum;
+		String lastName = "lN";
 		List<Map<String, Object>> randomRCList =  null;
 		String rcEmailID = null;
 		String qty = "10";
@@ -2393,6 +2396,13 @@ public class UpgradeDowngradeTest extends RFWebsiteBaseTest{
 		storeFrontHomePage.clickOnContinueWithoutSponsorLink();
 		storeFrontHomePage.clickOnNextButtonAfterSelectingSponsor();
 		storeFrontHomePage.clickOnShippingAddressNextStepBtn();
+		storeFrontHomePage.clickAddNewBillingProfileLink();
+		storeFrontHomePage.enterNewBillingCardNumber(TestConstants.CARD_NUMBER);
+		storeFrontHomePage.enterNewBillingNameOnCard(newBillingProfileName+" "+lastName);
+		storeFrontHomePage.selectNewBillingCardExpirationDate();
+		storeFrontHomePage.enterNewBillingSecurityCode(TestConstants.SECURITY_CODE);
+		storeFrontHomePage.selectNewBillingCardAddress();
+		storeFrontHomePage.clickOnSaveBillingProfile();
 		storeFrontHomePage.clickOnBillingNextStepBtn();
 		storeFrontHomePage.clickOnPCPerksTermsAndConditionsCheckBoxes();
 		storeFrontHomePage.clickPlaceOrderBtn();

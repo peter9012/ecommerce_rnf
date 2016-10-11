@@ -1605,7 +1605,9 @@ public class StoreFrontRFWebsiteBasePage extends RFBasePage{
 	public boolean isTheBillingAddressPresentOnPage(String firstName){
 		boolean isFirstNamePresent = false;
 		driver.waitForElementPresent(By.xpath("//div[@id='multiple-billing-profiles']/div"));
-		List<WebElement> allBillingProfiles = driver.findElements(By.xpath("//div[@id='multiple-billing-profiles']/div[contains(@class,'sel-profile')]/p[1]/span[@class='font-bold']"));
+		
+		//List<WebElement> allBillingProfiles = driver.findElements(By.xpath("//div[@id='multiple-billing-profiles']/div[contains(@class,'sel-profile')]/p[1]/span[@class='font-bold']"));
+		List<WebElement> allBillingProfiles = driver.findElements(By.xpath("//div[@id='multiple-billing-profiles']//p[1]/span[@class='font-bold']"));
 		for(WebElement e:allBillingProfiles){
 			if(e.getText().contains(firstName)==true){
 				isFirstNamePresent=true;
@@ -2082,6 +2084,7 @@ public class StoreFrontRFWebsiteBasePage extends RFBasePage{
 
 	public void clickOnDefaultBillingProfileEdit() throws InterruptedException{
 		driver.waitForElementPresent(By.xpath("//input[@checked='checked' and @name='bill-card']/preceding::p[1]/a"));
+		((JavascriptExecutor) RFWebsiteDriver.driver).executeScript("arguments[0].scrollIntoView(true);", driver.findElement(By.xpath("//input[@checked='checked' and @name='bill-card']/preceding::p[1]/a")));
 		//driver.click(By.xpath("//input[@checked='checked' and @name='bill-card']/preceding::p[1]/a"));
 		driver.clickByJS(RFWebsiteDriver.driver, driver.findElement(By.xpath("//input[@checked='checked' and @name='bill-card']/preceding::p[1]/a")));
 		driver.waitForLoadingImageToDisappear();

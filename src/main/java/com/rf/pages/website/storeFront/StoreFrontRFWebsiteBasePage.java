@@ -179,6 +179,13 @@ public class StoreFrontRFWebsiteBasePage extends RFBasePage{
 		driver.waitForPageLoad();
 		return productName;
 	}
+	
+	public String getNameOfTheOnlyAddedProductOnCart(){
+		String productNameFromCart = null;
+		productNameFromCart=driver.findElement(By.xpath("//div[@id='left-shopping']/div[@class='cartItems']//h3")).getText();
+		logger.info("product name from cart is "+productNameFromCart);
+		return productNameFromCart;
+	}
 
 	public void selectProductAndProceedToBuyWithoutFilter() throws InterruptedException{
 		driver.waitForPageLoad();

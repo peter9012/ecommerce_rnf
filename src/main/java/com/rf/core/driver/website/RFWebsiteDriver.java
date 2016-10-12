@@ -93,8 +93,8 @@ public class RFWebsiteDriver implements RFDriver,WebDriver {
 			capabilities.setCapability(ChromeOptions.CAPABILITY, options);
 			// for clearing cache
 			capabilities.setCapability(CapabilityType.ForSeleniumServer.ENSURING_CLEAN_SESSION, true);
-//			driver = new ChromeDriver(capabilities);			
-			driver = new RemoteWebDriver(DesiredCapabilities.chrome());
+			driver = new ChromeDriver(capabilities);		
+			
 		}
 		else if(browser.equalsIgnoreCase("headless")){
 			driver = new HtmlUnitDriver(true);

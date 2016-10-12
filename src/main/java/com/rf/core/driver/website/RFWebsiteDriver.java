@@ -13,7 +13,6 @@ import java.util.List;
 import java.util.Set;
 import java.util.concurrent.TimeUnit;
 
-import org.apache.commons.lang3.StringUtils;
 import org.apache.commons.io.FileUtils;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
@@ -33,7 +32,6 @@ import org.openqa.selenium.ie.InternetExplorerDriver;
 import org.openqa.selenium.interactions.Actions;
 import org.openqa.selenium.remote.CapabilityType;
 import org.openqa.selenium.remote.DesiredCapabilities;
-import org.openqa.selenium.remote.RemoteWebDriver;
 import org.openqa.selenium.support.ui.ExpectedCondition;
 import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.openqa.selenium.support.ui.Select;
@@ -53,11 +51,6 @@ public class RFWebsiteDriver implements RFDriver,WebDriver {
 	private PropertyFile propertyFile;
 	private static int DEFAULT_TIMEOUT = 50;
 	private static int DEFAULT_TIMEOUT_CSCOCKPIT = 60;
-	String browser = null;
-	String baseURL = null;
-	String env = null;
-	String country = null;
-	String dbIP = null;
 
 	public RFWebsiteDriver(PropertyFile propertyFile) {
 		//super();
@@ -77,13 +70,9 @@ public class RFWebsiteDriver implements RFDriver,WebDriver {
 		prof.setPreference("brower.startup.homepage", "about:blank");
 		prof.setPreference("startup.homepage_welcome_url", "about:blank");
 		prof.setPreference("startup.homepage_welcome_url.additional",  "about:blank");
-		browser = System.getProperty("browser");
-		if(StringUtils.isEmpty(browser)){
-			browser = propertyFile.getProperty("browser");
-		}
-		if (browser.equalsIgnoreCase("firefox"))
+		if (propertyFile.getProperty("browser").equalsIgnoreCase("firefox"))
 			driver = new FirefoxDriver(prof);
-		else if (browser.equalsIgnoreCase("chrome")){
+		else if (propertyFile.getProperty("browser").equalsIgnoreCase("chrome")){
 			System.setProperty("webdriver.chrome.driver", "src\\test\\resources\\chromedriver.exe");
 			ChromeOptions options = new ChromeOptions();
 			options.addArguments("no-sandbox");
@@ -93,13 +82,12 @@ public class RFWebsiteDriver implements RFDriver,WebDriver {
 			capabilities.setCapability(ChromeOptions.CAPABILITY, options);
 			// for clearing cache
 			capabilities.setCapability(CapabilityType.ForSeleniumServer.ENSURING_CLEAN_SESSION, true);
-			driver = new ChromeDriver(capabilities);		
-			
+			driver = new ChromeDriver(capabilities);
 		}
-		else if(browser.equalsIgnoreCase("headless")){
+		else if(propertyFile.getProperty("browser").equalsIgnoreCase("headless")){
 			driver = new HtmlUnitDriver(true);
 		}
-		else if(browser.equalsIgnoreCase("ie")){
+		else if(propertyFile.getProperty("browser").equalsIgnoreCase("ie")){
 			System.setProperty("webdriver.ie.driver", "src/test/resources/IEDriverServer.exe");
 			DesiredCapabilities capabilities = new DesiredCapabilities();
 			// for clearing cache
@@ -108,7 +96,7 @@ public class RFWebsiteDriver implements RFDriver,WebDriver {
 		}
 		driver.manage().timeouts().implicitlyWait(15, TimeUnit.SECONDS);
 		driver.manage().window().maximize();
-		if (browser.equalsIgnoreCase("firefox")){
+		if (propertyFile.getProperty("browser").equalsIgnoreCase("firefox")){
 			System.out.println(driver.manage().window().getSize());
 			Dimension d = new Dimension(1936, 1056);
 			driver.manage().window().setSize(d);
@@ -127,11 +115,9 @@ public class RFWebsiteDriver implements RFDriver,WebDriver {
 		String dbUsername = null;
 		String dbPassword = null;
 		String dbDomain = null;
+
 		String authentication = null;
-		dbIP = System.getProperty("dbIP");
-		if(StringUtils.isEmpty(dbIP)){
-			dbIP = propertyFile.getProperty("dbIP");
-		}		
+		dbIP = propertyFile.getProperty("dbIP");
 		dbUsername = propertyFile.getProperty("dbUsername");
 		dbPassword = propertyFile.getProperty("dbPassword");
 		dbDomain = propertyFile.getProperty("dbDomain");		 
@@ -156,22 +142,17 @@ public class RFWebsiteDriver implements RFDriver,WebDriver {
 	}
 
 	public String getURL() {
-		baseURL = System.getProperty("baseUrl");
-		if(StringUtils.isEmpty(baseURL)){
-			baseURL = propertyFile.getProperty("baseUrl");
-		}
-		System.out.println("baseURL =="+baseURL);
-		return baseURL;
+		return propertyFile.getProperty("baseUrl");
 	}
 
 	public String getBrowser(){
-		return browser;
+		return propertyFile.getProperty("browser");
 	}
 	public String getBizPWSURL() {
 		return propertyFile.getProperty("pwsBase")+getEnvironment()+".biz";
 	}
 	public String getComPWSURL() {
-		//		return propertyFile.getProperty("pwsComBase");
+//		return propertyFile.getProperty("pwsComBase");
 		return propertyFile.getProperty("pwsBase")+getEnvironment()+".com";
 	}
 	public String getDBNameRFL(){
@@ -183,20 +164,11 @@ public class RFWebsiteDriver implements RFDriver,WebDriver {
 	}
 
 	public String getCountry(){
-		country = System.getProperty("country");
-		System.out.println("Country "+country);
-		if(StringUtils.isEmpty(country)){
-			country = propertyFile.getProperty("country");			
-		}
-		return country;
+		return propertyFile.getProperty("country");
 	}
 
 	public String getEnvironment(){
-		env = System.getProperty("env");
-		if(StringUtils.isEmpty(env)){
-			env = propertyFile.getProperty("env");
-		}
-		return env;
+		return propertyFile.getProperty("environment");
 	}
 
 	public String getStoreFrontPassword(){
@@ -568,7 +540,7 @@ public class RFWebsiteDriver implements RFDriver,WebDriver {
 		 */		
 		// quickWaitForElementPresent(locator);
 		try{
-			findElement(locator).clear();
+		findElement(locator).clear();
 		}catch(Exception e){
 			pauseExecutionFor(2000);
 			findElement(locator).clear();	

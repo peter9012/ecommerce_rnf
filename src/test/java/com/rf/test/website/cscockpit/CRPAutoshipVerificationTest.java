@@ -255,7 +255,7 @@ public class CRPAutoshipVerificationTest extends RFWebsiteBaseTest{
 	@Test
 	public void testVerifyEditCRPAutoshipTemplate_1702() throws InterruptedException{
 		RFO_DB = driver.getDBNameRFO();
-		String countryCode= propertyFile.getProperty("country");
+		String countryCode= driver.getCountry();
 		String randomCustomerSequenceNumber = null;
 		int randomNum = CommonUtils.getRandomNum(10000, 1000000);
 		String cid=null;
@@ -481,7 +481,7 @@ public class CRPAutoshipVerificationTest extends RFWebsiteBaseTest{
 	@Test
 	public void testVerifyChangeCRPDate_1705() throws InterruptedException{
 		RFO_DB = driver.getDBNameRFO();
-		String countryCode= propertyFile.getProperty("country");
+		String countryCode= driver.getCountry();
 		String randomCustomerSequenceNumber = null;
 		String consultantEmailID=null;
 		String country = null;
@@ -945,7 +945,7 @@ public class CRPAutoshipVerificationTest extends RFWebsiteBaseTest{
 	@Test
 	public void testVerifyCancelAutoshipButtonNotDisplayedInCRPCheckoutPage_1704(){
 		RFO_DB = driver.getDBNameRFO();
-		String countryCode= propertyFile.getProperty("country");
+		String countryCode= driver.getCountry();
 		String randomCustomerSequenceNumber = null;
 		List<Map<String, Object>> randomConsultantList =  null;
 		String consultantEmailID;

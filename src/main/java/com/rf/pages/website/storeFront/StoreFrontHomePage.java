@@ -678,7 +678,8 @@ public class StoreFrontHomePage extends StoreFrontRFWebsiteBasePage {
 
 	public void clickOnConfirmAutomaticPayment() throws InterruptedException{
 		driver.waitForElementPresent(By.xpath("//input[@id='enroll']"));
-		driver.click(By.xpath("//input[@id='enroll']"));
+		driver.clickByJS(RFWebsiteDriver.driver,driver.findElement(By.xpath("//input[@id='enroll']")));
+		//driver.click(By.xpath("//input[@id='enroll']"));
 		logger.info("Automatic payment confirmation button clicked");
 		driver.waitForLoadingImageToDisappear();
 	}

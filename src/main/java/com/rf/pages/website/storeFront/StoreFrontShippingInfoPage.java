@@ -74,7 +74,8 @@ public class StoreFrontShippingInfoPage extends StoreFrontRFWebsiteBasePage{
 
 	public void clickOnEditForFirstAddress(){
 		driver.waitForElementPresent(By.xpath("//div[@id='multiple-billing-profiles']/div[1]//a[text()='Edit']"));
-		driver.click(By.xpath("//div[@id='multiple-billing-profiles']/div[1]//a[text()='Edit']"));
+		driver.clickByJS(RFWebsiteDriver.driver, driver.findElement(By.xpath("//div[@id='multiple-billing-profiles']/div[1]//a[text()='Edit']")));
+		// driver.click(By.xpath("//div[@id='multiple-billing-profiles']/div[1]//a[text()='Edit']"));
 		logger.info("First Address Edit link clicked");
 		driver.waitForLoadingImageToDisappear();
 

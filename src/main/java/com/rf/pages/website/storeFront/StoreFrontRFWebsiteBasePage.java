@@ -203,6 +203,9 @@ public class StoreFrontRFWebsiteBasePage extends RFBasePage{
 		logger.info("Add To Bag button clicked");
 		driver.waitForLoadingImageToDisappear();
 		driver.waitForPageLoad();
+		if(driver.isElementPresent(By.xpath("//*[@id='productDetailForm']/input[@value='ADD TO BAG']"))){
+			driver.click(By.xpath("//*[@id='productDetailForm']/input[@value='ADD TO BAG']"));
+		}
 	}
 
 
@@ -216,8 +219,8 @@ public class StoreFrontRFWebsiteBasePage extends RFBasePage{
 	public void clickOnAddToPcPerksButton(){
 		driver.waitForPageLoad();
 		driver.quickWaitForElementPresent(By.xpath("//div[@id='main-content']/descendant::input[contains(@value,'ADD to PC Perks')][1]"));
-		driver.click(By.xpath("//div[@id='main-content']/descendant::input[contains(@value,'ADD to PC Perks')][1]"));
-
+		//driver.click(By.xpath("//div[@id='main-content']/descendant::input[contains(@value,'ADD to PC Perks')][1]"));
+		driver.clickByJS(RFWebsiteDriver.driver, driver.findElement(By.xpath("//div[@id='main-content']/descendant::input[contains(@value,'ADD to PC Perks')][1]")));
 		try{
 			driver.quickWaitForElementPresent(By.xpath("//input[@value='OK']"));
 			driver.click(By.xpath("//input[@value='OK']"));
@@ -327,7 +330,8 @@ public class StoreFrontRFWebsiteBasePage extends RFBasePage{
 		driver.type(By.id("the-password-again"),password);
 		logger.info("confirm password entered as "+password);
 		driver.pauseExecutionFor(2000);
-		driver.click(By.xpath("//*[@id='next-button']"));		
+		driver.clickByJS(RFWebsiteDriver.driver, driver.findElement(By.xpath("//*[@id='next-button']")));
+		//driver.click(By.xpath("//*[@id='next-button']"));  
 		logger.info("Create New Account button clicked");
 		driver.waitForLoadingImageToDisappear();
 		driver.waitForPageLoad();
@@ -394,9 +398,11 @@ public class StoreFrontRFWebsiteBasePage extends RFBasePage{
 		logger.info("password entered as "+password);
 		driver.type(By.id("the-password-again"),password);
 		logger.info("confirm password entered as "+password);
-		driver.click(By.xpath("//input[@id='become-pc']/.."));
+		//driver.click(By.xpath("//input[@id='become-pc']/.."));
+		driver.clickByJS(RFWebsiteDriver.driver, driver.findElement(By.xpath("//input[@id='become-pc']/..")));  
 		logger.info("check box for PC user checked");
-		driver.click(By.xpath("//input[@id='next-button']"));  
+		//driver.click(By.xpath("//input[@id='next-button']"));  
+		driver.clickByJS(RFWebsiteDriver.driver, driver.findElement(By.xpath("//input[@id='next-button']")));
 		logger.info("Create New Account button clicked"); 
 		driver.waitForLoadingImageToDisappear();
 	}
@@ -432,7 +438,8 @@ public class StoreFrontRFWebsiteBasePage extends RFBasePage{
 				driver.waitForElementPresent(By.xpath("//form[@id='addressForm']/div[@class='row'][1]//select[@id='state']/option[contains(text(),'"+TestConstants.PROVINCE_CA+"')]"));
 				driver.click(By.xpath("//form[@id='addressForm']/div[@class='row'][1]//select[@id='state']/option[contains(text(),'"+TestConstants.PROVINCE_CA+"')]"));
 			}catch(Exception e){
-				driver.click(By.id("state"));
+				driver.clickByJS(RFWebsiteDriver.driver, driver.findElement(By.id("state")));
+				// driver.click(By.id("state"));
 				driver.waitForElementPresent(By.xpath("//select[@id='state']/option[contains(text(),'"+TestConstants.PROVINCE_CA+"')]"));
 				driver.click(By.xpath("//select[@id='state']/option[contains(text(),'"+TestConstants.PROVINCE_CA+"')]")); 
 			} 
@@ -456,7 +463,6 @@ public class StoreFrontRFWebsiteBasePage extends RFBasePage{
 			driver.type(By.id("address.phonenumber"),TestConstants.PHONE_NUMBER_US);
 			logger.info("phone number entered is "+TestConstants.PHONE_NUMBER_US);
 		}
-
 	}
 
 	public void enterMainAccountInfo(String address1,String city,String province,String postalCode,String phoneNumber){
@@ -732,6 +738,7 @@ public class StoreFrontRFWebsiteBasePage extends RFBasePage{
 	}
 
 	public void selectNewBillingCardExpirationDate(){
+		driver.waitForElementPresent(By.xpath("//select[@id='expiryMonth']"));
 		//driver.clickByJS(RFWebsiteDriver.driver, driver.findElement(By.xpath("//select[@id='expiryMonth']")));
 		driver.click(By.xpath("//select[@id='expiryMonth']"));
 		driver.pauseExecutionFor(2000);
@@ -746,6 +753,7 @@ public class StoreFrontRFWebsiteBasePage extends RFBasePage{
 		driver.click(By.xpath("//select[@id='expiryYear']/option[10]"));
 		//driver.clickByJS(RFWebsiteDriver.driver,driver.findElement(By.xpath("//select[@id='expiryYear']/option[10]")));  
 	}
+
 	public boolean validatePasswordFieldMessage(){
 		if(driver.findElement(By.xpath("//div[contains(text(),'Please enter 6')]")).isDisplayed()){
 			return true;
@@ -1152,7 +1160,7 @@ public class StoreFrontRFWebsiteBasePage extends RFBasePage{
 		else if(country.equalsIgnoreCase("us")){
 			countryID="236";
 		}
-		
+
 		if(driver.getURL().contains("qa"))
 		{
 			randomActiveSitePrefixList = DBUtil.performDatabaseQuery(DBQueries_RFO.callQueryWithArguement(DBQueries_RFO.GET_RANDOM_ACTIVE_SITE_PREFIX_RFO,countryID),RFO_DB);
@@ -1637,7 +1645,7 @@ public class StoreFrontRFWebsiteBasePage extends RFBasePage{
 	public boolean isTheBillingAddressPresentOnPage(String firstName){
 		boolean isFirstNamePresent = false;
 		driver.waitForElementPresent(By.xpath("//div[@id='multiple-billing-profiles']/div"));
-		
+
 		//List<WebElement> allBillingProfiles = driver.findElements(By.xpath("//div[@id='multiple-billing-profiles']/div[contains(@class,'sel-profile')]/p[1]/span[@class='font-bold']"));
 		List<WebElement> allBillingProfiles = driver.findElements(By.xpath("//div[@id='multiple-billing-profiles']//p[1]/span[@class='font-bold']"));
 		for(WebElement e:allBillingProfiles){
@@ -1994,10 +2002,11 @@ public class StoreFrontRFWebsiteBasePage extends RFBasePage{
 	}
 
 	public String clickAddToBagAndGetProductName(String productNumber){
-		String productName = null;		
+		String productName = null;  
 		driver.waitForElementPresent(By.xpath("//div[@id='main-content']/descendant::button[contains(text(),'ADD TO BAG')]["+productNumber+"]"));
 		productName = driver.findElement(By.xpath("//div[@id='main-content']/descendant::button[contains(text(),'ADD TO BAG')]["+productNumber+"]/preceding::a[1]")).getText();
-		driver.click(By.xpath("//div[@id='main-content']/descendant::button[contains(text(),'ADD TO BAG')]["+productNumber+"]"));
+		// driver.click(By.xpath("//div[@id='main-content']/descendant::button[contains(text(),'ADD TO BAG')]["+productNumber+"]"));
+		driver.clickByJS(RFWebsiteDriver.driver, driver.findElement(By.xpath("//div[@id='main-content']/descendant::button[contains(text(),'ADD TO BAG')]["+productNumber+"]")));
 		return productName.trim();
 	}
 

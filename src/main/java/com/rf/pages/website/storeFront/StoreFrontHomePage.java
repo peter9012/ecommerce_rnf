@@ -524,8 +524,10 @@ public class StoreFrontHomePage extends StoreFrontRFWebsiteBasePage {
 	public void enterCardNumber(String cardNumber){
 		driver.waitForElementPresent(By.id("card-nr"));
 		driver.type(By.id("card-nr"),cardNumber);
-		driver.pauseExecutionFor(1000);
-		driver.clickByJS(RFWebsiteDriver.driver, driver.findElement(By.xpath("//*[@id='expiryMonth']")));		
+		driver.pauseExecutionFor(2000);
+		driver.clickByJS(RFWebsiteDriver.driver, driver.findElement(By.xpath("//*[@id='expiryYear']")));
+		driver.type(By.id("security-code"),"123");
+		driver.clear(By.id("security-code"));
 		logger.info("card number entered as "+cardNumber);
 	}
 
@@ -2272,7 +2274,7 @@ public class StoreFrontHomePage extends StoreFrontRFWebsiteBasePage {
 	public boolean validateSatisfactionGuaranteeLink(){
 		driver.waitForElementPresent(By.xpath("//div[@class='footer-sections']//a[contains(text(),'Satisfaction Guarantee')]"));
 		driver.click(By.xpath("//div[@class='footer-sections']//a[contains(text(),'Satisfaction Guarantee')]"));
-		driver.pauseExecutionFor(5000);
+		driver.waitForPageLoad();
 		return driver.getCurrentUrl().contains("satisfaction-guarantee");
 	}
 

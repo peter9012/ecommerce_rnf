@@ -469,12 +469,16 @@ public class StoreFrontAccountInfoPage extends StoreFrontRFWebsiteBasePage{
 	}
 
 	public StoreFrontAccountInfoPage clickOnCancelMyCRP() throws InterruptedException{
-		driver.waitForElementPresent(CANCEL_MY_CRP_LOC);
-		driver.click(CANCEL_MY_CRP_LOC);
-		driver.waitForElementPresent(CANCEL_MY_CRP_NOW_LOC);
-		driver.click(CANCEL_MY_CRP_NOW_LOC);
-		driver.waitForLoadingImageToDisappear();
-		driver.pauseExecutionFor(2000);
+		if(driver.isElementPresent(CANCEL_MY_CRP_LOC)){
+			driver.waitForElementPresent(CANCEL_MY_CRP_LOC);
+			driver.click(CANCEL_MY_CRP_LOC);
+			driver.waitForElementPresent(CANCEL_MY_CRP_NOW_LOC);
+			driver.click(CANCEL_MY_CRP_NOW_LOC);
+			driver.waitForLoadingImageToDisappear();
+			driver.pauseExecutionFor(2000);
+		}else{
+			logger.info("No crp present for this user");
+		}
 		return new StoreFrontAccountInfoPage(driver);
 	}
 
@@ -782,7 +786,7 @@ public class StoreFrontAccountInfoPage extends StoreFrontRFWebsiteBasePage{
 		driver.clickByJS(RFWebsiteDriver.driver, driver.findElement(By.id("subscribe_pulse_button_new")));
 		//driver.click(By.id("subscribe_pulse_button_new"));
 		driver.waitForLoadingImageToDisappear();
-		driver.pauseExecutionFor(1000);
+		driver.pauseExecutionFor(4000);
 	}
 
 	public String getWebsitePrefixName(){

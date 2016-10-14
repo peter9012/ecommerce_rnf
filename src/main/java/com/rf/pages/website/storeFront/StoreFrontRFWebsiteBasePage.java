@@ -1116,34 +1116,38 @@ public class StoreFrontRFWebsiteBasePage extends RFBasePage{
 		}
 		else if(country.equalsIgnoreCase("us")){
 			countryID="236";
-		} 
-
-		////		randomActiveSitePrefixList = DBUtil.performDatabaseQuery(DBQueries_RFO.callQueryWithArguement(DBQueries_RFO.GET_RANDOM_ACTIVE_SITE_PREFIX_RFO,countryID),RFO_DB);
-		////		activeSitePrefix = (String) getValueFromQueryResult(randomActiveSitePrefixList, "SitePrefix");			
-		//		PWS = "http://bhopkins"+driver.getBizPWSURL()+"/"+country.toLowerCase();
-		//		System.out.println(PWS);
-		//		logger.info("PWS is "+PWS);
-		if(driver.getURL().contains("qa"))
-		{
-			randomActiveSitePrefixList = DBUtil.performDatabaseQuery(DBQueries_RFO.callQueryWithArguement(DBQueries_RFO.GET_RANDOM_ACTIVE_SITE_PREFIX_RFO,countryID),RFO_DB);
-			activeSitePrefix = (String) getValueFromQueryResult(randomActiveSitePrefixList, "SitePrefix");   
-			PWS = "http://"+activeSitePrefix+".qamyrandf"+".biz/"+country.toLowerCase();
-			logger.info("PWS is "+PWS);	
 		}
-		else if(driver.getURL().contains("tst")){
-			randomActiveSitePrefixList = DBUtil.performDatabaseQuery(DBQueries_RFO.callQueryWithArguement(DBQueries_RFO.GET_RANDOM_ACTIVE_SITE_PREFIX_RFO,countryID),RFO_DB);
-			activeSitePrefix = (String) getValueFromQueryResult(randomActiveSitePrefixList, "SitePrefix");   
-			PWS = "http://"+activeSitePrefix+".tstrflmyrandf"+".biz/"+country.toLowerCase();
-			logger.info("PWS is "+PWS);			
-		}
-		else{
-			randomActiveSitePrefixList = DBUtil.performDatabaseQuery(DBQueries_RFO.callQueryWithArguement(DBQueries_RFO.GET_RANDOM_ACTIVE_SITE_PREFIX_RFO,countryID),RFO_DB);
-			activeSitePrefix = (String) getValueFromQueryResult(randomActiveSitePrefixList, "SitePrefix");   
-			PWS = "http://"+activeSitePrefix+".myrfo"+env+".biz/"+country.toLowerCase();
-			logger.info("PWS is "+PWS);				
-		}
-
-
+		//The below code is yielding false output,so commenting it
+		/*
+		//		randomActiveSitePrefixList = DBUtil.performDatabaseQuery(DBQueries_RFO.callQueryWithArguement(DBQueries_RFO.GET_RANDOM_ACTIVE_SITE_PREFIX_RFO,countryID),RFO_DB);
+		//		activeSitePrefix = (String) getValueFromQueryResult(randomActiveSitePrefixList, "SitePrefix");			
+				PWS = "http://bhopkins"+driver.getBizPWSURL()+"/"+country.toLowerCase();
+				System.out.println(PWS);
+				logger.info("PWS is "+PWS);
+				if(driver.getURL().contains("qa"))
+				{
+					randomActiveSitePrefixList = DBUtil.performDatabaseQuery(DBQueries_RFO.callQueryWithArguement(DBQueries_RFO.GET_RANDOM_ACTIVE_SITE_PREFIX_RFO,countryID),RFO_DB);
+					activeSitePrefix = (String) getValueFromQueryResult(randomActiveSitePrefixList, "SitePrefix");   
+					PWS = "http://"+activeSitePrefix+".qamyrandf"+".biz/"+country.toLowerCase();
+					logger.info("PWS is "+PWS);	
+				}
+				else if(driver.getURL().contains("tst")){
+					randomActiveSitePrefixList = DBUtil.performDatabaseQuery(DBQueries_RFO.callQueryWithArguement(DBQueries_RFO.GET_RANDOM_ACTIVE_SITE_PREFIX_RFO,countryID),RFO_DB);
+					activeSitePrefix = (String) getValueFromQueryResult(randomActiveSitePrefixList, "SitePrefix");   
+					PWS = "http://"+activeSitePrefix+".tstrflmyrandf"+".biz/"+country.toLowerCase();
+					logger.info("PWS is "+PWS);			
+				}
+				else{
+		randomActiveSitePrefixList = DBUtil.performDatabaseQuery(DBQueries_RFO.callQueryWithArguement(DBQueries_RFO.GET_RANDOM_ACTIVE_SITE_PREFIX_RFO,countryID),RFO_DB);
+		activeSitePrefix = (String) getValueFromQueryResult(randomActiveSitePrefixList, "SitePrefix");   
+		PWS = "http://"+activeSitePrefix+".myrfo"+env+".biz/"+country.toLowerCase();
+		logger.info("PWS is "+PWS);				
+				}
+		 */		
+		randomActiveSitePrefixList = DBUtil.performDatabaseQuery(DBQueries_RFO.callQueryWithArguement(DBQueries_RFO.GET_RANDOM_ACTIVE_SITE_PREFIX_RFO,countryID),RFO_DB);
+		activeSitePrefix = (String) getValueFromQueryResult(randomActiveSitePrefixList, "SitePrefix");   
+		PWS = "http://"+activeSitePrefix+".myrfo"+env+".biz/"+country.toLowerCase();
+		logger.info("PWS is "+PWS);
 		return PWS;
 	} 	
 
@@ -1161,7 +1165,8 @@ public class StoreFrontRFWebsiteBasePage extends RFBasePage{
 			countryID="236";
 		}
 
-		if(driver.getURL().contains("qa"))
+		// The below code is yielding false output,so commenting it
+		/*		if(driver.getURL().contains("qa"))
 		{
 			randomActiveSitePrefixList = DBUtil.performDatabaseQuery(DBQueries_RFO.callQueryWithArguement(DBQueries_RFO.GET_RANDOM_ACTIVE_SITE_PREFIX_RFO,countryID),RFO_DB);
 			activeSitePrefix = (String) getValueFromQueryResult(randomActiveSitePrefixList, "SitePrefix");   
@@ -1180,7 +1185,12 @@ public class StoreFrontRFWebsiteBasePage extends RFBasePage{
 			PWS = "http://"+activeSitePrefix+".myrfo"+env+".com/"+country.toLowerCase();
 			logger.info("PWS is "+PWS);			
 		}
+		 */
 
+		randomActiveSitePrefixList = DBUtil.performDatabaseQuery(DBQueries_RFO.callQueryWithArguement(DBQueries_RFO.GET_RANDOM_ACTIVE_SITE_PREFIX_RFO,countryID),RFO_DB);
+		activeSitePrefix = (String) getValueFromQueryResult(randomActiveSitePrefixList, "SitePrefix");			
+		PWS = "http://"+activeSitePrefix+".myrfo"+env+".com/"+country.toLowerCase();
+		logger.info("PWS is "+PWS);
 		return PWS;
 	}
 

@@ -156,12 +156,16 @@ public class StoreFrontBillingInfoPage extends StoreFrontRFWebsiteBasePage{
 		driver.waitForPageLoad();
 		logger.info("Edit billing profile link clicked");
 	}
-		
+
 	public void clickOnEditOfFirstBillingProfile(){
 		driver.waitForElementPresent(By.xpath("//div[@id='multiple-billing-profiles']/div[1]//a[contains(text(),'Edit')]"));
 		driver.click(By.xpath("//div[@id='multiple-billing-profiles']/div[1]//a[contains(text(),'Edit')]"));
 		driver.waitForPageLoad();
 		logger.info("First billing profile's edit link clicked");
+	}
+
+	public boolean isFirstBillingProfileIsDefault(){
+		return driver.findElement(By.xpath("//div[@id='multiple-billing-profiles']/div[1]//input[@name='bill-card']")).isSelected();
 	}
 
 	public String getBillingProfileName(){
@@ -184,4 +188,5 @@ public class StoreFrontBillingInfoPage extends StoreFrontRFWebsiteBasePage{
 		driver.waitForElementPresent(By.xpath("//div[@class='successMessage']/span"));
 		return driver.isElementPresent(By.xpath("//div[@class='successMessage']/span"));
 	}
+	
 }

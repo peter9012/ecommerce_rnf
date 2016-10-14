@@ -15,9 +15,10 @@ import com.rf.core.website.constants.dbQueries.DBQueries_RFO;
 import com.rf.pages.website.storeFrontLegacy.StoreFrontLegacyConsultantPage;
 import com.rf.pages.website.storeFrontLegacy.StoreFrontLegacyHomePage;
 import com.rf.pages.website.storeFrontLegacy.StoreFrontLegacyPCUserPage;
+import com.rf.test.website.RFBrandRefreshWebsiteBaseTest;
 import com.rf.test.website.RFLegacyStoreFrontWebsiteBaseTest;
 
-public class BizPWSTest extends RFLegacyStoreFrontWebsiteBaseTest{
+public class BizPWSTest extends RFBrandRefreshWebsiteBaseTest{
 	private static final Logger logger = LogManager
 			.getLogger(BizPWSTest.class.getName());
 
@@ -243,23 +244,13 @@ public class BizPWSTest extends RFLegacyStoreFrontWebsiteBaseTest{
 		String phnNumber2 = "780";
 		String phnNumber3 = "9099";
 		List<Map<String, Object>> randomPWSList =  null;
-		String PWS = null;
+		String PWS = "https://rfqa"+driver.getBizPWSURL();
 		List<Map<String, Object>> accountStatusIDList =  null;
 		String statusID = null;
-		while(true){
-			randomPWSList = DBUtil.performDatabaseQuery(DBQueries_RFL.GET_RANDOM_PWS_SITE_URL_RFL, RFL_DB);
-			PWS = (String) getValueFromQueryResult(randomPWSList, "URL");
-			driver.get(PWS);
-			boolean isSiteNotFoundPresent = driver.getCurrentUrl().contains("SiteNotFound") || driver.getCurrentUrl().contains("SiteNotActive") || driver.getCurrentUrl().contains("Error");
-			if(isSiteNotFoundPresent){
-				continue;
-			}else{
-				break;
-			}
-		}
+		driver.get(PWS);
 		storeFrontLegacyHomePage =  new StoreFrontLegacyHomePage(driver);
 		storeFrontLegacyHomePage.clickEnrollNowBtnOnbizPWSPage();
-		storeFrontLegacyHomePage.clickEnrollNowBtnAtWhyRFPage();
+//		storeFrontLegacyHomePage.clickEnrollNowBtnAtWhyRFPage();
 		storeFrontLegacyHomePage.selectConsultantEnrollmentKitByPrice(kitName);
 		storeFrontLegacyHomePage.selectRegimenForConsultant(regimen);
 		storeFrontLegacyHomePage.clickNextBtnAfterSelectRegimen();
@@ -287,20 +278,9 @@ public class BizPWSTest extends RFLegacyStoreFrontWebsiteBaseTest{
 		RFL_DB = driver.getDBNameRFL();
 		List<Map<String, Object>> randomPWSList =  null;
 		List<Map<String, Object>> randomPCList = null;
-		String PWS = null;
+		String PWS = "https://rfqa"+driver.getBizPWSURL();
 		String pcEmailId = null;
-		while(true){
-			randomPWSList = DBUtil.performDatabaseQuery(DBQueries_RFL.GET_RANDOM_PWS_SITE_URL_RFL, RFL_DB);
-			PWS = (String) getValueFromQueryResult(randomPWSList, "URL");
-			driver.get(PWS);
-			boolean isSiteNotFoundPresent = driver.getCurrentUrl().contains("SiteNotFound") || driver.getCurrentUrl().contains("SiteNotActive") || driver.getCurrentUrl().contains("Error");
-			if(isSiteNotFoundPresent){
-				continue;
-			}else{
-				break;
-			}
-		}
-
+		
 		randomPCList = DBUtil.performDatabaseQuery(DBQueries_RFL.GET_RANDOM_ACTIVE_PC_WITH_ORDERS_AND_AUTOSHIPS_RFL, RFL_DB);
 		pcEmailId = (String) getValueFromQueryResult(randomPCList, "UserName");
 		storeFrontLegacyHomePage =  new StoreFrontLegacyHomePage(driver);
@@ -323,19 +303,9 @@ public class BizPWSTest extends RFLegacyStoreFrontWebsiteBaseTest{
 		RFL_DB = driver.getDBNameRFL();
 		List<Map<String, Object>> randomPWSList =  null;
 		List<Map<String, Object>> randomPCList = null;
-		String PWS = null;
+		String PWS = "https://rfqa"+driver.getBizPWSURL();
 		String pcEmailId = null;
-		while(true){
-			randomPWSList = DBUtil.performDatabaseQuery(DBQueries_RFL.GET_RANDOM_PWS_SITE_URL_RFL, RFL_DB);
-			PWS = (String) getValueFromQueryResult(randomPWSList, "URL");
-			driver.get(PWS);
-			boolean isSiteNotFoundPresent = driver.getCurrentUrl().contains("SiteNotFound") || driver.getCurrentUrl().contains("SiteNotActive") || driver.getCurrentUrl().contains("Error");
-			if(isSiteNotFoundPresent){
-				continue;
-			}else{
-				break;
-			}
-		}
+		
 
 		randomPCList = DBUtil.performDatabaseQuery(DBQueries_RFL.GET_RANDOM_ACTIVE_PC_WITH_ORDERS_AND_AUTOSHIPS_RFL, RFL_DB);
 		pcEmailId = (String) getValueFromQueryResult(randomPCList, "UserName");
@@ -661,7 +631,7 @@ public class BizPWSTest extends RFLegacyStoreFrontWebsiteBaseTest{
 		}
 		storeFrontLegacyHomePage =  new StoreFrontLegacyHomePage(driver);
 		storeFrontLegacyHomePage.clickEnrollNowBtnOnbizPWSPage();
-		storeFrontLegacyHomePage.clickEnrollNowBtnOnWhyRFPage();
+		/*storeFrontLegacyHomePage.clickEnrollNowBtnOnWhyRFPage();*/
 		storeFrontLegacyHomePage.selectEnrollmentKit(kitName);
 		storeFrontLegacyHomePage.selectRegimenAndClickNext(regimen);
 		storeFrontLegacyHomePage.selectEnrollmentType(enrollemntType);
@@ -697,7 +667,7 @@ public class BizPWSTest extends RFLegacyStoreFrontWebsiteBaseTest{
 		}
 		storeFrontLegacyHomePage =  new StoreFrontLegacyHomePage(driver);
 		storeFrontLegacyHomePage.clickEnrollNowBtnOnbizPWSPage();
-		storeFrontLegacyHomePage.clickEnrollNowBtnOnWhyRFPage();
+		/*storeFrontLegacyHomePage.clickEnrollNowBtnOnWhyRFPage();*/
 		storeFrontLegacyHomePage.selectEnrollmentKit(kitName);
 		storeFrontLegacyHomePage.selectRegimenAndClickNext(regimen);
 		storeFrontLegacyHomePage.selectEnrollmentType(enrollemntType);
@@ -746,7 +716,7 @@ public class BizPWSTest extends RFLegacyStoreFrontWebsiteBaseTest{
 		}
 		storeFrontLegacyHomePage =  new StoreFrontLegacyHomePage(driver);
 		storeFrontLegacyHomePage.clickEnrollNowBtnOnbizPWSPage();
-		storeFrontLegacyHomePage.clickEnrollNowBtnOnWhyRFPage();
+		/*storeFrontLegacyHomePage.clickEnrollNowBtnOnWhyRFPage();*/
 		storeFrontLegacyHomePage.selectEnrollmentKit(kitName);
 		storeFrontLegacyHomePage.selectRegimenAndClickNext(regimen);
 		storeFrontLegacyHomePage.selectEnrollmentType(enrollemntType);
@@ -788,7 +758,7 @@ public class BizPWSTest extends RFLegacyStoreFrontWebsiteBaseTest{
 		}
 		storeFrontLegacyHomePage =  new StoreFrontLegacyHomePage(driver);
 		storeFrontLegacyHomePage.clickEnrollNowBtnOnbizPWSPage();
-		storeFrontLegacyHomePage.clickEnrollNowBtnOnWhyRFPage();
+		/*storeFrontLegacyHomePage.clickEnrollNowBtnOnWhyRFPage();*/
 		storeFrontLegacyHomePage.selectEnrollmentKit(kitName);
 		storeFrontLegacyHomePage.selectRegimenAndClickNext(regimen);
 		storeFrontLegacyHomePage.selectEnrollmentType(enrollemntType);
@@ -828,21 +798,23 @@ public class BizPWSTest extends RFLegacyStoreFrontWebsiteBaseTest{
 		String phnNumber3 = "9099";
 		String editMyPWS = "edit my pws";
 		List<Map<String, Object>> randomPWSList =  null;
-		String PWS = null;
-		while(true){
-			randomPWSList = DBUtil.performDatabaseQuery(DBQueries_RFL.GET_RANDOM_PWS_SITE_URL_RFL, RFL_DB);
-			PWS = (String) getValueFromQueryResult(randomPWSList, "URL");
-			driver.get(PWS);
-			boolean isSiteNotFoundPresent = driver.getCurrentUrl().contains("SiteNotFound") || driver.getCurrentUrl().contains("SiteNotActive") || driver.getCurrentUrl().contains("Error");
-			if(isSiteNotFoundPresent){
-				continue;
-			}else{
-				break;
-			}
-		}
+		String pwsBizBase = driver.getBizPWSURL();
+		String PWS = "https://rfqa"+pwsBizBase;
+		driver.get(PWS);
+//		while(true){
+//			randomPWSList = DBUtil.performDatabaseQuery(DBQueries_RFL.GET_RANDOM_PWS_SITE_URL_RFL, RFL_DB);
+//			PWS = (String) getValueFromQueryResult(randomPWSList, "URL");
+//			driver.get(PWS);
+//			boolean isSiteNotFoundPresent = driver.getCurrentUrl().contains("SiteNotFound") || driver.getCurrentUrl().contains("SiteNotActive") || driver.getCurrentUrl().contains("Error");
+//			if(isSiteNotFoundPresent){
+//				continue;
+//			}else{
+//				break;
+//			}
+//		}
 		storeFrontLegacyHomePage =  new StoreFrontLegacyHomePage(driver);
 		storeFrontLegacyHomePage.clickEnrollNowBtnOnbizPWSPage();
-		storeFrontLegacyHomePage.clickEnrollNowBtnAtWhyRFPage();
+		/*storeFrontLegacyHomePage.clickEnrollNowBtnAtWhyRFPage();*/
 		storeFrontLegacyHomePage.selectConsultantEnrollmentKitByPrice(kitName);
 		storeFrontLegacyHomePage.selectRegimenForConsultant(regimen);
 		storeFrontLegacyHomePage.clickNextBtnAfterSelectRegimen();
@@ -859,7 +831,7 @@ public class BizPWSTest extends RFLegacyStoreFrontWebsiteBaseTest{
 		logout();
 		driver.get(PWS);
 		storeFrontLegacyHomePage.clickEnrollNowBtnOnbizPWSPage();
-		storeFrontLegacyHomePage.clickEnrollNowBtnAtWhyRFPage();
+		/*storeFrontLegacyHomePage.clickEnrollNowBtnAtWhyRFPage();*/
 		storeFrontLegacyHomePage.selectConsultantEnrollmentKitByPrice(kitName);
 		storeFrontLegacyHomePage.selectRegimenForConsultant(regimen);
 		storeFrontLegacyHomePage.clickNextBtnAfterSelectRegimen();
@@ -872,7 +844,7 @@ public class BizPWSTest extends RFLegacyStoreFrontWebsiteBaseTest{
 		storeFrontLegacyHomePage.clickCancelEnrollmentBtn();
 		driver.get(PWS);
 		storeFrontLegacyHomePage.clickEnrollNowBtnOnbizPWSPage();
-		storeFrontLegacyHomePage.clickEnrollNowBtnAtWhyRFPage();
+		/*storeFrontLegacyHomePage.clickEnrollNowBtnAtWhyRFPage();*/
 		storeFrontLegacyHomePage.selectConsultantEnrollmentKitByPrice(kitName);
 		storeFrontLegacyHomePage.selectRegimenForConsultant(regimen);
 		storeFrontLegacyHomePage.clickNextBtnAfterSelectRegimen();
@@ -926,7 +898,7 @@ public class BizPWSTest extends RFLegacyStoreFrontWebsiteBaseTest{
 		}
 		storeFrontLegacyHomePage =  new StoreFrontLegacyHomePage(driver);
 		storeFrontLegacyHomePage.clickEnrollNowBtnOnbizPWSPage();
-		storeFrontLegacyHomePage.clickEnrollNowBtnAtWhyRFPage();
+		/*storeFrontLegacyHomePage.clickEnrollNowBtnAtWhyRFPage();*/
 		storeFrontLegacyHomePage.selectConsultantEnrollmentKitByPrice(kitName);
 		storeFrontLegacyHomePage.selectRegimenForConsultant(regimen);
 		storeFrontLegacyHomePage.clickNextBtnAfterSelectRegimen();
@@ -984,7 +956,7 @@ public class BizPWSTest extends RFLegacyStoreFrontWebsiteBaseTest{
 		}
 		storeFrontLegacyHomePage =  new StoreFrontLegacyHomePage(driver);
 		storeFrontLegacyHomePage.clickEnrollNowBtnOnbizPWSPage();
-		storeFrontLegacyHomePage.clickEnrollNowBtnOnWhyRFPage();
+		/*storeFrontLegacyHomePage.clickEnrollNowBtnOnWhyRFPage();*/
 		storeFrontLegacyHomePage.selectEnrollmentKit(kitName);
 		storeFrontLegacyHomePage.selectRegimenAndClickNext(regimen);
 		storeFrontLegacyHomePage.selectEnrollmentType(enrollemntType);

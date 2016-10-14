@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<suite name="EnrollmentValidationTest_ca">
+	<listeners>
+		<listener class-name="org.uncommons.reportng.HTMLReporter" />
+		<listener class-name="org.uncommons.reportng.JUnitXMLReporter" />
+		<listener class-name="com.rf.core.listeners.TestListner" />
+		<listener class-name="com.rf.core.listeners.RetryListener" />
+	</listeners>
+	<test name="EnrollmentValidationTest">
+		<classes>
+
+			<class name="com.rf.test.website.storeFront.hybris.PC_RC_EnrollmentValidationTest" />
+			<methods>
+				<exclude name="testRegisterAsRCWithDifferentCASponsorWithoutPulse_3775"/>
+			</methods>
+
+		</classes>
+	</test>
+</suite>

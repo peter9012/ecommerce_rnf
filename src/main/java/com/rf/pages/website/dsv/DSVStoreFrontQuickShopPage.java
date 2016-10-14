@@ -6,8 +6,10 @@ import java.util.List;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.openqa.selenium.By;
+import org.openqa.selenium.JavascriptExecutor;
 import org.openqa.selenium.WebElement;
 
+import com.rf.core.driver.RFDriver;
 import com.rf.core.driver.website.RFWebsiteDriver;
 import com.rf.core.utils.CommonUtils;
 
@@ -16,22 +18,22 @@ public class DSVStoreFrontQuickShopPage extends DSVRFWebsiteBasePage {
 	private static final Logger logger = LogManager
 			.getLogger(DSVStoreFrontQuickShopPage.class.getName());
 
-	private static final By FIRST_PRODUCT_ADD_TO_CRP_BTN = By.xpath("//div[@id='main-content']/div[@class='quick-product-wrapper'][1]/div[1]//input[@value='Add to crp']");
-	private static final By SECOND_PRODUCT_ADD_TO_CRP_BTN = By.xpath("//div[@id='main-content']/div[@class='quick-product-wrapper'][1]/div[2]//input[@value='Add to crp']");
-	private static final By FIRST_PRODUCT_NAME = By.xpath("//div[@id='main-content']/div[@class='quick-product-wrapper'][1]/div[1]/h3"); 
-	private static final By FIRST_PRODUCT_RETAIL_PRICE = By.xpath("//div[@id='main-content']/div[@class='quick-product-wrapper'][1]/div[1]//span[@class='old-price']");
+	private static final By FIRST_PRODUCT_ADD_TO_CRP_BTN = By.xpath("//div[@id='quick-refine']/following-sibling::div[3]/div[1]//button[contains(text(),'ADD TO CRP')]");
+	private static final By SECOND_PRODUCT_ADD_TO_CRP_BTN = By.xpath("//div[@id='quick-refine']/following-sibling::div[3]/div[2]//button[contains(text(),'ADD TO CRP')]");
+	private static final By FIRST_PRODUCT_NAME = By.xpath("//div[@id='quick-refine']/following-sibling::div[3]/div[1]//h3/a"); 
+	private static final By FIRST_PRODUCT_RETAIL_PRICE = By.xpath("//div[@id='quick-refine']/following-sibling::div[3]/div[1]//span[@class='old-price'][1]");
 	private static final By SECOND_PRODUCT_RETAIL_PRICE = By.xpath("//div[@id='main-content']/div[@class='quick-product-wrapper'][1]/div[2]//span[@class='old-price']");
 	private static final By PRODUCT_FILTER_DROP_DOWN = By.xpath("//input[@class='refine-products-button'][contains(@value,'Product(s)')]");
 	private static final By PRICE_FILTER_DROP_DOWN = By.xpath("//input[@class='refine-products-button'][contains(@value,'Price')]");
 	private static final By ALL_PRODUCTS_FROM_PRODUCT_FILTER_DROP_DOWN = By.xpath("//input[@class='refine-products-button'][contains(@value,'Product(s)')]/following::ul[1]/li");
 	private static final By ALL_PRICE_FROM_PRICE_FILTER_DROP_DOWN = By.xpath("//input[@class='refine-products-button'][contains(@value,'Price')]/following::ul[1]/li");
-	private static final By ALL_PRODUCTS_DISPLAYED_ON_PAGE = By.xpath("//div[@id='main-content']//div[@class='quick-shop-section-header']/following::div[@class='quick-product-wrapper'][1]/div");
+	private static final By ALL_PRODUCTS_DISPLAYED_ON_PAGE = By.xpath("//div[@id='main-content']/div[5]/div");
 	private static final By ALL_SORT_FROM_PRICE_FILTER_DROP_DOWN = By.xpath("//select[@id='sortOptions']/option[@value]");
 
 	private static final By CLEAR_ALL_LINK = By.xpath("//a[contains(text(),'Clear All')]");
 	private static final By SORT_DROP_DOWN = By.id("sortOptions");
-	private static final By FIRST_PRODUCT_ADD_TO_PC_PERKS_BTN = By.xpath("//div[@id='main-content']/div[@class='quick-product-wrapper'][1]/div[1]//input[@value='Add to PC Perks']");
-	private static final By SECOND_PRODUCT_ADD_TO_PC_PERKS_BTN = By.xpath("//div[@id='main-content']/div[@class='quick-product-wrapper'][1]/div[2]//input[@value='Add to PC Perks']");
+	private static final By FIRST_PRODUCT_ADD_TO_PC_PERKS_BTN = By.xpath("//div[@id='main-content']/div[5]/div[1]//input[@value='ADD to PC Perks']");
+	private static final By SECOND_PRODUCT_ADD_TO_PC_PERKS_BTN = By.xpath("//div[@id='main-content']/div[5]/div[2]//input[@value='ADD to PC Perks']");
 
 	private static String RandomProductFromProductFilterDropDown = "//input[@class='refine-products-button'][contains(@value,'Product(s)')]/following::ul[1]/li[%s]//div[contains(@class,'repaired-checkbox')]/input";
 	private static String RandomProductCheckboxFromProductFilterDropDown = "//input[@class='refine-products-button'][contains(@value,'Product(s)')]/following::ul[1]/li[%s]//div[contains(@class,'repaired-checkbox')]";
@@ -40,7 +42,7 @@ public class DSVStoreFrontQuickShopPage extends DSVRFWebsiteBasePage {
 	private static String RandomOrderFromSortFilterDropDown = "//select[@id='sortOptions']/option[@value][%s]";
 	private static String SelectedProductCheckbox = "//div[@id='quick-filtered']//div[@class='repaired-checkbox checked']/input[@id='%s'][@class='checked']";
 	private static String SelectedProductAsHeadingOnProductPage = "//div[@class='quick-shop-section-header']/h2[text()='%s']";
-	private static String RandomProductPrice = "//div[@id='main-content']//div[@class='quick-shop-section-header']/following::div[@class='quick-product-wrapper'][1]/div[%s]//span[contains(@class,'your-price')]";
+	private static String RandomProductPrice = "//div[@id='main-content']/div[5]//div[%s]//p[@class='prices']//span[contains(@class,'your-price')]";
 
 	public DSVStoreFrontQuickShopPage(RFWebsiteDriver driver) {
 		super(driver);
@@ -105,13 +107,18 @@ public class DSVStoreFrontQuickShopPage extends DSVRFWebsiteBasePage {
 
 	public boolean isProductFilterApplied(String selectedProduct){
 		//driver.quickWaitForElementPresent(By.xpath(String.format(SelectedProductCheckbox, selectedProduct)));
-		return driver.isElementPresent(By.xpath(String.format(SelectedProductCheckbox, selectedProduct)))
+		driver.turnOffImplicitWaits();
+		boolean isProductFilterApplied = driver.isElementPresent(By.xpath(String.format(SelectedProductCheckbox, selectedProduct)))
 				&& driver.isElementPresent(By.xpath(String.format(SelectedProductAsHeadingOnProductPage, selectedProduct)));
+		driver.turnOnImplicitWaits();
+		return isProductFilterApplied;
 	}
 
 	public void clickClearAllLink(){
-		driver.click(CLEAR_ALL_LINK);
 		driver.pauseExecutionFor(2000);
+		((JavascriptExecutor)RFWebsiteDriver.driver).executeScript("arguments[0].click();", driver.findElement(CLEAR_ALL_LINK));
+		driver.pauseExecutionFor(2000);
+		System.out.println("clear link clicked");
 		driver.waitForPageLoad();
 	}
 

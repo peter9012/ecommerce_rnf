@@ -20,16 +20,16 @@ public class CRMHomePage extends CRMRFWebsiteBasePage {
 	public boolean verifyHomePage() throws InterruptedException{
 		driver.switchTo().defaultContent();
 		driver.waitForCRMLoadingImageToDisappear();
-		driver.waitForElementPresent(USER_NAVIGATION_LABEL_LOC);		
+		driver.quickWaitForElementPresent(USER_NAVIGATION_LABEL_LOC);		
 		closeAllOpenedTabs();
 		return driver.isElementPresent(USER_NAVIGATION_LABEL_LOC);	
 	}
 
 	public void clickOnAccountNameForAccountDetailPageInAccountSection(){
 		driver.switchTo().defaultContent();
-		driver.waitForElementPresent(By.xpath("//div[@id='navigatortab']//iframe[contains(@class,'x-border-panel')]"));
+		driver.quickWaitForElementPresent(By.xpath("//div[@id='navigatortab']//iframe[contains(@class,'x-border-panel')]"));
 		driver.switchTo().frame(driver.findElement(By.xpath("//div[@id='navigatortab']//iframe[contains(@class,'x-border-panel')]")));
-		driver.waitForElementPresent(By.xpath("//div[@id='Account_body']//tr[@class='headerRow']//a[contains(text(),'Account Name')]/following::tr[1]/th/a"));
+		driver.quickWaitForElementPresent(By.xpath("//div[@id='Account_body']//tr[@class='headerRow']//a[contains(text(),'Account Name')]/following::tr[1]/th/a"));
 		driver.click(By.xpath("//div[@id='Account_body']//tr[@class='headerRow']//a[contains(text(),'Account Name')]/following::tr[1]/th/a"));
 		driver.switchTo().defaultContent();	
 	}	
@@ -38,6 +38,7 @@ public class CRMHomePage extends CRMRFWebsiteBasePage {
 		driver.type(SEARCH_TEXT_BOX_LOC,text);
 		driver.findElement(SEARCH_TEXT_BOX_LOC).sendKeys(Keys.ENTER);
 		driver.waitForPageLoad();
+		driver.waitForCRMLoadingImageToDisappear();
 	}
 
 	public String getNameOnFirstRowInSearchResults(){
@@ -52,7 +53,7 @@ public class CRMHomePage extends CRMRFWebsiteBasePage {
 	public String getEmailOnFirstRowInSearchResults(){
 		String emailOnfirstRow = null;
 		driver.switchTo().defaultContent();
-		driver.waitForElementPresent(By.xpath("//div[@id='navigatortab']/div[3]/div/div[2]/descendant::iframe[1]"));
+		driver.quickWaitForElementPresent(By.xpath("//div[@id='navigatortab']/div[3]/div/div[2]/descendant::iframe[1]"));
 		driver.switchTo().frame(driver.findElement(By.xpath("//div[@id='navigatortab']/div[3]/div/div[2]/descendant::iframe[1]")));
 		emailOnfirstRow = driver.findElement(By.xpath("//div[@id='Account_body']//tr[@class='headerRow']//a[contains(text(),'Email Address')]/following::tr[1]/td[10]/a")).getText();		
 		return emailOnfirstRow;
@@ -60,7 +61,7 @@ public class CRMHomePage extends CRMRFWebsiteBasePage {
 
 	public void clickNameOnFirstRowInSearchResults(){
 		driver.switchTo().defaultContent();
-		driver.waitForElementPresent(By.xpath("//div[@id='navigatortab']/div[3]/div/div[2]/descendant::iframe[1]"));
+		driver.quickWaitForElementPresent(By.xpath("//div[@id='navigatortab']/div[3]/div/div[2]/descendant::iframe[1]"));
 		driver.switchTo().frame(driver.findElement(By.xpath("//div[@id='navigatortab']/div[3]/div/div[2]/descendant::iframe[1]")));
 		driver.click(By.xpath("//div[@id='Account_body']//tr[@class='headerRow']//a[contains(text(),'Account Name')]/following::tr[1]/th/a"));
 		driver.switchTo().defaultContent();
@@ -69,7 +70,7 @@ public class CRMHomePage extends CRMRFWebsiteBasePage {
 
 	public void clickNameWithActiveStatusInSearchResults(){
 		driver.switchTo().defaultContent();
-		driver.waitForElementPresent(By.xpath("//div[@id='navigatortab']/div[3]/div/div[2]/descendant::iframe[1]"));
+		driver.quickWaitForElementPresent(By.xpath("//div[@id='navigatortab']/div[3]/div/div[2]/descendant::iframe[1]"));
 		driver.switchTo().frame(driver.findElement(By.xpath("//div[@id='navigatortab']/div[3]/div/div[2]/descendant::iframe[1]")));
 		driver.click(By.xpath("//img[@class='checkImg'][@title='Checked']/ancestor::tr[1]/th/a"));
 		driver.switchTo().defaultContent();
@@ -78,17 +79,24 @@ public class CRMHomePage extends CRMRFWebsiteBasePage {
 
 	public boolean isSearchResultHasActiveUser(){
 		driver.switchTo().defaultContent();
-		driver.waitForElementPresent(By.xpath("//div[@id='navigatortab']/div[3]/div/div[2]/descendant::iframe[1]"));
+		driver.quickWaitForElementPresent(By.xpath("//div[@id='navigatortab']/div[3]/div/div[2]/descendant::iframe[1]"));
 		driver.switchTo().frame(driver.findElement(By.xpath("//div[@id='navigatortab']/div[3]/div/div[2]/descendant::iframe[1]")));
 		return driver.isElementPresent(By.xpath("//img[@class='checkImg'][@title='Checked']/ancestor::tr[1]/th/a"));
 	}
 
 	public boolean isSearchResultHasActiveUser(String customer){
 		driver.switchTo().defaultContent();
-		driver.waitForElementPresent(By.xpath("//div[@id='navigatortab']/div[3]/div/div[2]/descendant::iframe[1]"));
+		driver.quickWaitForElementPresent(By.xpath("//div[@id='navigatortab']/div[3]/div/div[2]/descendant::iframe[1]"));
 		driver.switchTo().frame(driver.findElement(By.xpath("//div[@id='navigatortab']/div[3]/div/div[2]/descendant::iframe[1]")));
-		driver.waitForElementPresent(By.xpath("//div[@id='Account_body']//td[text()='"+customer+"']/following::td[text()='Active']/..//th//a"));
-		return driver.isElementPresent(By.xpath("//div[@id='Account_body']//td[text()='"+customer+"']/following::td[text()='Active']/..//th//a"));
+		driver.quickWaitForElementPresent(By.xpath("//div[@id='Account_body']//td[text()='"+customer+"']/following::td[text()='Active']/..//th//a"));
+		return driver.isElementPresent(By.xpath("//div[@id='Account_body']//td[text()='"+customer+"']/following::td[text()='Active']/..//th//a"));		
+	}
+
+	public boolean isAccountSectionPresent(){
+		driver.switchTo().defaultContent();
+		driver.quickWaitForElementPresent(By.xpath("//div[@id='navigatortab']/div[3]/div/div[2]/descendant::iframe[1]"));
+		driver.switchTo().frame(driver.findElement(By.xpath("//div[@id='navigatortab']/div[3]/div/div[2]/descendant::iframe[1]")));
+		return driver.isElementPresent(By.xpath("//div[@id='Account_body']"));
 	}
 
 	public boolean isAccountLinkPresentInLeftNaviagation(){
@@ -111,7 +119,7 @@ public class CRMHomePage extends CRMRFWebsiteBasePage {
 
 	public void clickContactOnFirstRowInSearchResults(){
 		driver.switchTo().defaultContent();
-		driver.waitForElementPresent(By.xpath("//div[@id='navigatortab']/div[3]/div/div[2]/descendant::iframe[1]"));
+		driver.quickWaitForElementPresent(By.xpath("//div[@id='navigatortab']/div[3]/div/div[2]/descendant::iframe[1]"));
 		driver.switchTo().frame(driver.findElement(By.xpath("//div[@id='navigatortab']/div[3]/div/div[2]/descendant::iframe[1]")));
 		driver.click(By.xpath("//div[@id='Contact_body']//tr[@class='headerRow']//a[contains(text(),'Account Name')]/following::tr[1]/th/a"));
 		driver.switchTo().defaultContent();
@@ -120,14 +128,14 @@ public class CRMHomePage extends CRMRFWebsiteBasePage {
 
 	public boolean isOrderOfDetailsPresentInListView(){
 		driver.switchTo().defaultContent();
-		driver.waitForElementPresent(By.xpath("//div[@id='navigatortab']//iframe[contains(@class,'x-border-panel')]"));
+		driver.quickWaitForElementPresent(By.xpath("//div[@id='navigatortab']//iframe[contains(@class,'x-border-panel')]"));
 		driver.switchTo().frame(driver.findElement(By.xpath("//div[@id='navigatortab']//iframe[contains(@class,'x-border-panel')]")));
 		return driver.isElementPresent(By.xpath(".//*[@id='Account']/div[2]/div"));
 	}
 
 	public void clickConsultantCustomerNameInSearchResult(){
 		driver.switchTo().defaultContent();
-		driver.waitForElementPresent(By.xpath("//div[@id='navigatortab']/div[3]/div/div[2]/descendant::iframe[1]"));
+		driver.quickWaitForElementPresent(By.xpath("//div[@id='navigatortab']/div[3]/div/div[2]/descendant::iframe[1]"));
 		driver.switchTo().frame(driver.findElement(By.xpath("//div[@id='navigatortab']/div[3]/div/div[2]/descendant::iframe[1]")));
 		driver.click(By.xpath("//div[@id='Account_body']//tr[@class='headerRow']/following::tr/td[contains(text(),'Active')]/preceding-sibling::th/a"));
 		driver.switchTo().defaultContent();
@@ -136,19 +144,18 @@ public class CRMHomePage extends CRMRFWebsiteBasePage {
 
 	public void clickPreferredCustomerNameInSearchResult(){
 		driver.switchTo().defaultContent();
-		driver.waitForElementPresent(By.xpath("//div[@id='navigatortab']/div[3]/div/div[2]/descendant::iframe[1]"));
+		driver.quickWaitForElementPresent(By.xpath("//div[@id='navigatortab']/div[3]/div/div[2]/descendant::iframe[1]"));
 		driver.switchTo().frame(driver.findElement(By.xpath("//div[@id='navigatortab']/div[3]/div/div[2]/descendant::iframe[1]")));
 		driver.click(By.xpath("//div[@id='Account_body']//tr[@class='headerRow']/following::tr//td[Text()='Preferred Customer']/preceding-sibling::th"));
 		driver.switchTo().defaultContent();
 		driver.waitForCRMLoadingImageToDisappear();
 	}
 
-
 	public void clickAnyTypeOfActiveCustomerInSearchResult(String customer){
 		driver.switchTo().defaultContent();
-		driver.waitForElementPresent(By.xpath("//div[@id='navigatortab']/div[3]/div/div[2]/descendant::iframe[1]"));
+		driver.quickWaitForElementPresent(By.xpath("//div[@id='navigatortab']/div[3]/div/div[2]/descendant::iframe[1]"));
 		driver.switchTo().frame(driver.findElement(By.xpath("//div[@id='navigatortab']/div[3]/div/div[2]/descendant::iframe[1]")));
-		driver.waitForElementPresent(By.xpath("//div[@id='Account_body']//td[text()='"+customer+"']/following::td[text()='Active']/..//th//a"));
+		driver.quickWaitForElementPresent(By.xpath("//div[@id='Account_body']//td[text()='"+customer+"']/following::td[text()='Active']/..//th//a"));
 		driver.click(By.xpath("//div[@id='Account_body']//td[text()='"+customer+"']/following::td[text()='Active']/..//th//a"));
 		driver.switchTo().defaultContent();
 		driver.waitForCRMLoadingImageToDisappear();
@@ -157,9 +164,9 @@ public class CRMHomePage extends CRMRFWebsiteBasePage {
 	public int getCountOfShippingProfile(){
 		//refreshPage();
 		driver.switchTo().defaultContent();
-		driver.waitForElementPresent(By.xpath("//div[@id='navigatortab']/div[3]/div/div[3]/descendant::iframe[1]"));
+		driver.quickWaitForElementPresent(By.xpath("//div[@id='navigatortab']/div[3]/div/div[3]/descendant::iframe[1]"));
 		driver.switchTo().frame(driver.findElement(By.xpath("//div[@id='navigatortab']/div[3]/div/div[3]/descendant::iframe[1]")));
-		driver.waitForElementPresent(By.xpath("//span[contains(text(),'Shipping Profiles')]/span[contains(text(),'[1]')]"));
+		driver.quickWaitForElementPresent(By.xpath("//span[contains(text(),'Shipping Profiles')]/span[contains(text(),'[1]')]"));
 		String count = driver.findElement(By.xpath("//span[contains(text(),'Shipping Profiles')]/span")).getText().split("\\[")[1].split("\\]")[0];
 		logger.info("Count of Shipping Profile "+count);
 		driver.switchTo().defaultContent();
@@ -169,7 +176,7 @@ public class CRMHomePage extends CRMRFWebsiteBasePage {
 	public String getEmailOnFirstRowInSearchResultsOfMainPhoneNumber(){
 		String emailOnfirstRow = null;
 		driver.switchTo().defaultContent();
-		driver.waitForElementPresent(By.xpath("//div[@id='navigatortab']/div[3]/div/div[2]/descendant::iframe[1]"));
+		driver.quickWaitForElementPresent(By.xpath("//div[@id='navigatortab']/div[3]/div/div[2]/descendant::iframe[1]"));
 		driver.switchTo().frame(driver.findElement(By.xpath("//div[@id='navigatortab']/div[3]/div/div[2]/descendant::iframe[1]")));
 		emailOnfirstRow = driver.findElement(By.xpath("//div[@id='Contact_body']//tr[@class='headerRow']/following::tr[1]/td[4]/a")).getText();  
 		return emailOnfirstRow;
@@ -178,7 +185,7 @@ public class CRMHomePage extends CRMRFWebsiteBasePage {
 	public String getAccountNameOnFirstRowInSearchResultsOfMainPhoneNumber(){
 		String nameOnfirstRow = null;
 		driver.switchTo().defaultContent();
-		driver.waitForElementPresent(By.xpath("//div[@id='navigatortab']/div[3]/div/div[2]/descendant::iframe[1]"));
+		driver.quickWaitForElementPresent(By.xpath("//div[@id='navigatortab']/div[3]/div/div[2]/descendant::iframe[1]"));
 		driver.switchTo().frame(driver.findElement(By.xpath("//div[@id='navigatortab']/div[3]/div/div[2]/descendant::iframe[1]")));
 		nameOnfirstRow = driver.findElement(By.xpath("//div[@id='Contact_body']//tr[@class='headerRow']/following::tr[1]/td[2]/a")).getText();  
 		return nameOnfirstRow;
@@ -187,7 +194,7 @@ public class CRMHomePage extends CRMRFWebsiteBasePage {
 	public String getNameOnFirstRowInSearchResultsOfMainPhoneNumber(){
 		String nameOnfirstRow = null;
 		driver.switchTo().defaultContent();
-		driver.waitForElementPresent(By.xpath("//div[@id='navigatortab']/div[3]/div/div[2]/descendant::iframe[1]"));
+		driver.quickWaitForElementPresent(By.xpath("//div[@id='navigatortab']/div[3]/div/div[2]/descendant::iframe[1]"));
 		driver.switchTo().frame(driver.findElement(By.xpath("//div[@id='navigatortab']/div[3]/div/div[2]/descendant::iframe[1]")));
 		nameOnfirstRow = driver.findElement(By.xpath("//div[@id='Contact_body']//tr[@class='headerRow']/following::tr[1]/th/a")).getText();  
 		return nameOnfirstRow;

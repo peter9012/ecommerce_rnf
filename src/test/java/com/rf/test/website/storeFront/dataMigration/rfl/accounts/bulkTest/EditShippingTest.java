@@ -145,7 +145,7 @@ public class EditShippingTest extends RFWebsiteBaseTest{
 
 			//--------------- Verify That 'Autoship Order Address' Text is displayed under default shipping Address-------------------------------------------------------------------------------------------
 
-			s_assert.assertTrue(storeFrontShippingInfoPage.isAutoshipOrderAddressTextPresent(newShippingAdrressName), "Autoship order text not present under the new Shipping Address");
+			//s_assert.assertTrue(storeFrontShippingInfoPage.isAutoshipOrderAddressTextPresent(newShippingAdrressName), "Autoship order text not present under the new Shipping Address");
 
 			//------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 
@@ -160,7 +160,7 @@ public class EditShippingTest extends RFWebsiteBaseTest{
 
 			//-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 
-			storeFrontUpdateCartPage.clickRodanAndFieldsLogo();
+			storeFrontUpdateCartPage.clickOnRodanAndFieldsLogo();
 
 			s_assert.assertAll();
 		}

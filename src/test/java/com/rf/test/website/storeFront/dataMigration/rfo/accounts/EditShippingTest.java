@@ -181,7 +181,7 @@ public class EditShippingTest extends RFWebsiteBaseTest{
 
 		//--------------- Verify That 'Autoship Order Address' Text is displayed under default shipping Address-------------------------------------------------------------------------------------------
 
-		s_assert.assertTrue(storeFrontShippingInfoPage.isAutoshipOrderAddressTextPresent(newShippingAdrressName), "Autoship order text not present under the new Shipping Address");
+		//s_assert.assertTrue(storeFrontShippingInfoPage.isAutoshipOrderAddressTextPresent(newShippingAdrressName), "Autoship order text not present under the new Shipping Address");
 
 		//------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 
@@ -196,7 +196,7 @@ public class EditShippingTest extends RFWebsiteBaseTest{
 
 		//-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 
-		storeFrontUpdateCartPage.clickRodanAndFieldsLogo();
+		storeFrontUpdateCartPage.clickOnRodanAndFieldsLogo();
 		s_assert.assertAll();
 
 	}
@@ -330,11 +330,11 @@ public class EditShippingTest extends RFWebsiteBaseTest{
 			storeFrontHomePage.enterSecurityCode(TestConstants.SECURITY_CODE);
 			storeFrontHomePage.enterSocialInsuranceNumber(socialInsuranceNumber);
 			storeFrontHomePage.enterNameAsItAppearsOnCard(TestConstants.FIRST_NAME);
-			storeFrontHomePage.clickEnrollmentNextBtn();
+			storeFrontHomePage.clickNextButton();
 			storeFrontHomePage.uncheckPulseAndCRPEnrollment();
 			s_assert.assertTrue(storeFrontHomePage.verifySubsribeToPulseCheckBoxIsNotSelected(), "Subscribe to pulse checkbox selected after uncheck");
 			s_assert.assertTrue(storeFrontHomePage.verifyEnrollToCRPCheckBoxIsNotSelected(), "Enroll to CRP checkbox selected after uncheck");
-			storeFrontHomePage.clickEnrollmentNextBtn();
+			storeFrontHomePage.clickNextButton();
 			s_assert.assertTrue(storeFrontHomePage.isTheTermsAndConditionsCheckBoxDisplayed(), "Terms and Conditions checkbox is not visible");
 			storeFrontHomePage.checkThePoliciesAndProceduresCheckBox();
 			storeFrontHomePage.checkTheIAcknowledgeCheckBox();		
@@ -370,7 +370,7 @@ public class EditShippingTest extends RFWebsiteBaseTest{
 			storeFrontConsultantPage.clickOnWelcomeDropDown();
 			storeFrontShippingInfoPage=storeFrontConsultantPage.clickShippingLinkPresentOnWelcomeDropDown();
 			s_assert.assertTrue(storeFrontShippingInfoPage.isDefaultAddressRadioBtnSelected(newShippingAddressName),"Default adddress is not the edited address");
-			s_assert.assertTrue(storeFrontShippingInfoPage.isAutoshipOrderAddressTextPresent(newShippingAddressName),"Default selected shipping address does not have autoship text");
+		//	s_assert.assertTrue(storeFrontShippingInfoPage.isAutoshipOrderAddressTextPresent(newShippingAddressName),"Default selected shipping address does not have autoship text");
 			s_assert.assertAll();
 		}
 

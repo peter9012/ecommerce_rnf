@@ -1,9 +1,12 @@
 package com.rf.pages.website.dsv;
 
+import java.util.List;
+
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.openqa.selenium.By;
 import org.openqa.selenium.JavascriptExecutor;
+import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.interactions.Actions;
 
@@ -16,19 +19,20 @@ public class DSVStoreFrontHomePage extends DSVRFWebsiteBasePage{
 	private static final By LOGIN_LINK = By.xpath("//li[@id='log-in-button']/a");
 	private static final By USERNAME_TXTFIELD = By.id("username");
 	private static final By PASSWORD_TXTFIELD = By.id("password");
-	private static final By LOGIN_BTN = By.xpath("//input[@value='Log in']");
-	private static final By WELCOME_TXT = By.xpath("//li[@id='account-info-button']/a");
+	private static final By LOGIN_BTN = By.xpath("//input[@value='SIGN IN']");
+	private static final By WELCOME_TXT = By.xpath("//a[@class='dropdown-toggle']/span[2]");
+	private static final By USERNAME_DROPDOWN = By.xpath("//a[@class='dropdown-toggle']/span[2]");
 	private static final By CART_IMG = By.id("bag-special");
 	private static final By NXT_CRP_TXT = By.xpath("//div[@id='bag-special']/following-sibling::div[1]");
-	private static final By WELCOME_DROP_DOWN = By.xpath("//li[@id='account-info-button']/a"); 
-	private static final By SHIPPING_INFO_LINK_WELCOME_DROP_DOWN = By.xpath("//div[@id='account-info']//a[text()='Shipping Info']");
-	private static final By BILLING_INFO_LINK_WELCOME_DROP_DOWN = By.xpath("//div[@id='account-info']//a[text()='Billing Info']");
-	private static final By ACCOUNT_INFO_LINK_WELCOME_DROP_DOWN = By.xpath("//div[@id='account-info']//a[text()='Account Info']");
+	private static final By WELCOME_DROP_DOWN = By.xpath("//div[contains(@id,'account-info')]/a/span[3]"); 
+	private static final By SHIPPING_INFO_LINK_WELCOME_DROP_DOWN = By.xpath("//div[contains(@id,'account-info')]//a[text()='Shipping Info']");
+	private static final By BILLING_INFO_LINK_WELCOME_DROP_DOWN = By.xpath("//div[contains(@id,'account-info')]//a[text()='Billing Info']");
+	private static final By ACCOUNT_INFO_LINK_WELCOME_DROP_DOWN = By.xpath("//div[contains(@id,'account-info')]//a[text()='Account Info']");
 	private static final By OUR_BUSINESS_LINK_LOC = By.xpath("//a[@id='corp-opp']");
-	private static final By ENROLL_NOW_LINK_LOC = By.xpath("//div[@id='dropdown-menu']//a[@title='Enroll Now']"); 
+	private static final By ENROLL_NOW_LINK_LOC = By.xpath("//ul[@id='dropdown-menu']//a[@title='Enroll Now']"); 
 	private static final By SPONSOR_SEARCH_FIELD_LOC = By.id("sponserparam");
 	private static final By SEARCH_BUTTON_LOC = By.id("search-sponsor-button");
-	
+
 
 	public DSVStoreFrontHomePage(RFWebsiteDriver driver) {
 		super(driver);		
@@ -41,36 +45,33 @@ public class DSVStoreFrontHomePage extends DSVRFWebsiteBasePage{
 
 	public boolean isLoginLinkPresent(){
 		boolean isLoginPresent = false;
-		try{
-			driver.waitForElementPresent(LOGIN_LINK);
-			driver.findElement(LOGIN_LINK);	
-			isLoginPresent = true;			
-		}catch(Exception e){				
-		}		
-		return isLoginPresent;
+		driver.quickWaitForElementPresent(LOGIN_LINK);
+		List<WebElement> loginBtnList = driver.findElements(LOGIN_LINK);
+		if(loginBtnList.size()>0)
+			isLoginPresent = true;
+		return isLoginPresent;		
 	}
 
 	public boolean isWelcomeTxtPresent(){
 		boolean isWelcomePresent = false;
-		try{
-			driver.waitForElementPresent(WELCOME_TXT);
-			driver.findElement(WELCOME_TXT);	
-			isWelcomePresent = true;			
-		}catch(Exception e){				
-		}		
-		return isWelcomePresent;
+		driver.quickWaitForElementPresent(WELCOME_TXT);
+		List<WebElement> welcomeTxtList = driver.findElements(WELCOME_TXT);
+		if(welcomeTxtList.size()>0)
+			isWelcomePresent = true;
+		return isWelcomePresent;		
 	}
 
 	public boolean isLoginOrWelcomePresent(){
 		boolean isLoginOrWelcomePresent = false;
-		try{
-			driver.waitForElementPresent(LOGIN_LINK);
-			driver.findElement(LOGIN_LINK);	
-			isLoginOrWelcomePresent = true;			
-		}catch(Exception e){
-			System.out.println("Login Link not found");
-			driver.findElement(WELCOME_TXT);
-			isLoginOrWelcomePresent = true;			
+
+		driver.quickWaitForElementPresent(LOGIN_LINK);
+		List<WebElement> loginBtnList = driver.findElements(LOGIN_LINK);
+		if(loginBtnList.size()>0)
+			isLoginOrWelcomePresent = true;
+		else{
+			List<WebElement> welcomeTxtList = driver.findElements(WELCOME_TXT);
+			if(welcomeTxtList.size()>0)
+				isLoginOrWelcomePresent = true;
 		}		
 		return isLoginOrWelcomePresent;
 	}
@@ -93,6 +94,10 @@ public class DSVStoreFrontHomePage extends DSVRFWebsiteBasePage{
 
 	public String getWelcomeText(){
 		return driver.findElement(WELCOME_TXT).getText();
+	}
+
+	public Boolean isUserNameDropDownPresent(){
+		return driver.isElementPresent(USERNAME_DROPDOWN);
 	}
 
 	public boolean isCRPCartImagePresent(){
@@ -119,8 +124,11 @@ public class DSVStoreFrontHomePage extends DSVRFWebsiteBasePage{
 	}
 
 	public void clickWelcomeDropDown(){
+		driver.waitForLoadingImageToDisappear();
 		driver.quickWaitForElementPresent(WELCOME_DROP_DOWN);
-		driver.click(WELCOME_DROP_DOWN);		
+		driver.pauseExecutionFor(2000);
+		driver.click(WELCOME_DROP_DOWN);
+		driver.pauseExecutionFor(2000);
 	}
 
 	public DSVStoreFrontShippingInfoPage clickShippingInfoLinkFromWelcomeDropDown(){
@@ -153,7 +161,7 @@ public class DSVStoreFrontHomePage extends DSVRFWebsiteBasePage{
 
 	public DSVStoreFrontAccountInfoPage clickAccountInfoLinkFromWelcomeDropDown(){
 		driver.quickWaitForElementPresent(ACCOUNT_INFO_LINK_WELCOME_DROP_DOWN);
-		driver.click(ACCOUNT_INFO_LINK_WELCOME_DROP_DOWN);
+		driver.click(ACCOUNT_INFO_LINK_WELCOME_DROP_DOWN);		
 		return new DSVStoreFrontAccountInfoPage(driver);
 	}
 
@@ -183,15 +191,29 @@ public class DSVStoreFrontHomePage extends DSVRFWebsiteBasePage{
 		driver.quickWaitForElementPresent(SPONSOR_SEARCH_FIELD_LOC);
 		driver.type(SPONSOR_SEARCH_FIELD_LOC, dsvCanadianSponsorWithPwssponsor);
 		logger.info("sponsor name entered");
-		driver.click(SEARCH_BUTTON_LOC);
+		driver.clickByJS(RFWebsiteDriver.driver,driver.findElement(SEARCH_BUTTON_LOC));
 		logger.info("Search Button Clicked");
 		driver.waitForPageLoad();
 	}
 
 	public void mouseHoverOnSponsorAndClickSelectAndContinue() {
 		JavascriptExecutor js = (JavascriptExecutor)(RFWebsiteDriver.driver);
-		js.executeScript("arguments[0].click();", driver.findElement(By.xpath("//div[@id='search-results']//input[@value='Select & Continue']")));
+		js.executeScript("arguments[0].click();", driver.findElement(By.xpath("//div[@id='search-results']//input[contains(@value,'Select')]")));
 		logger.info("sponsor's Select & Continue has been clicked");
+		driver.waitForLoadingImageToDisappear();
+		driver.waitForPageLoad();
+	}
+
+	public void mouseHoverOnSponsorAndClickSelectAndContinue(int resultNumber) {
+		JavascriptExecutor js = (JavascriptExecutor)(RFWebsiteDriver.driver);
+		if(resultNumber==1)
+			js.executeScript("arguments[0].click();", driver.findElement(By.xpath("//div[@id='search-results']//input[contains(@value,'Select')]")));
+		if(resultNumber==2){
+			List<WebElement> allSearchResults = driver.findElements(By.xpath("//div[@id='search-results']//input[contains(@value,'Select')]"));
+			js.executeScript("arguments[0].click();", allSearchResults.get(1));
+		}
+
+			logger.info("sponsor's Select & Continue has been clicked");
 		driver.waitForLoadingImageToDisappear();
 		driver.waitForPageLoad();
 
@@ -213,4 +235,33 @@ public class DSVStoreFrontHomePage extends DSVRFWebsiteBasePage{
 		driver.waitForPageLoad();
 		return new DSVStoreFrontAutoshipCartPage(driver);
 	}	
+
+	public void hoverOnShopLinkAndClickAllProductsLinks(){
+		Actions actions = new Actions(RFWebsiteDriver.driver);
+		driver.waitForElementPresent(By.id("our-products")); 
+		WebElement shopSkinCare = driver.findElement(By.id("our-products"));
+		actions.moveToElement(shopSkinCare).pause(1000).click().build().perform();
+		driver.pauseExecutionFor(2000);
+		if(driver.isElementPresent(By.xpath("//ul[@id='dropdown-menu' and @style='display: block;']//a[text()='All Products']"))==false){
+			logger.warn("HEADER LINKS ARE NOT PRESENT..loading the shop URL");
+			driver.get(driver.getCurrentUrl()+"/quick-shop/quickShop");
+		}else{
+			WebElement allProducts = driver.findElement(By.xpath("//ul[@id='dropdown-menu' and @style='display: block;']//a[text()='All Products']"));
+			actions.moveToElement(allProducts).pause(1000).build().perform();
+			while(true){
+				try{
+					driver.clickByJS(RFWebsiteDriver.driver, driver.findElement(By.xpath(" //ul[@id='dropdown-menu' and @style='display: block;']//a[text()='All Products']")));
+					break;
+				}catch(Exception e){
+					System.out.println("element not clicked..trying again");
+					actions.moveToElement(shopSkinCare).pause(1000).click().build().perform();
+
+				}
+			}
+			logger.info("All products link clicked "); 
+
+		}
+		driver.waitForPageLoad();
+		driver.waitForLoadingImageToDisappear();
+	}
 }

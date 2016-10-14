@@ -16,6 +16,7 @@ public class CSCockpitCustomerSearchTabPage extends CSCockpitRFWebsiteBasePage{
 	private static String customerEmailIdInSearchResultsLoc = "//div[@class='csListboxContainer']/descendant::table[2]/tbody[2]/tr[%s]/td[4]//span";
 	private static String emailIDInSearchResultsLoc = "//div[@class='csListboxContainer']/descendant::table[2]/tbody[2]/tr[%s]/td[4]//span";
 	private static String customeraccountStatusInSearchResultsLoc = "//div[@class='csListboxContainer']/descendant::table[2]/tbody[2]/tr[%s]/td[6]//span";
+	private static String getcustomerTypeInSearchResultLoc = "//div[@class='z-listbox-header']/following::div[@class='z-listbox-body'][1]//tbody[2]/tr[%s]/td[5]//span";
 
 	private static String customerFirstNameInSearchResultsLoc = "//div[@class='csListboxContainer']/descendant::table[2]/tbody[2]/tr[%s]/td[2]//span";
 	private static final By SEARCH_BTN = By.xpath("//td[text()='SEARCH']");
@@ -51,13 +52,13 @@ public class CSCockpitCustomerSearchTabPage extends CSCockpitRFWebsiteBasePage{
 	public void selectCustomerTypeFromDropDownInCustomerSearchTab(String customerType){
 		driver.waitForElementPresent(By.xpath(String.format(customerTypeDDLoc, customerType)));
 		driver.click(By.xpath(String.format(customerTypeDDLoc, customerType.toUpperCase())));
-//		driver.waitForCSCockpitLoadingImageToDisappear();
+		//		driver.waitForCSCockpitLoadingImageToDisappear();
 	}
 
 	public void selectCountryFromDropDownInCustomerSearchTab(String country){
 		driver.waitForElementPresent(By.xpath(String.format(countryDDLoc, country)));
 		driver.click(By.xpath(String.format(countryDDLoc, country)));
-//		driver.waitForCSCockpitLoadingImageToDisappear();
+		//		driver.waitForCSCockpitLoadingImageToDisappear();
 		logger.info("************************************************************************************************************");
 		logger.info("COUNTRY SELECTED = "+country);
 		logger.info("************************************************************************************************************");
@@ -66,7 +67,7 @@ public class CSCockpitCustomerSearchTabPage extends CSCockpitRFWebsiteBasePage{
 	public void selectAccountStatusFromDropDownInCustomerSearchTab(String accountStatus){
 		driver.waitForElementPresent(By.xpath(String.format(accountStatusDDLoc, accountStatus)));
 		driver.click(By.xpath(String.format(accountStatusDDLoc, accountStatus)));
-//		driver.waitForCSCockpitLoadingImageToDisappear();
+		//		driver.waitForCSCockpitLoadingImageToDisappear();
 	}
 
 	public void clickSearchBtn(){
@@ -103,6 +104,7 @@ public class CSCockpitCustomerSearchTabPage extends CSCockpitRFWebsiteBasePage{
 	public void enterEmailIdInSearchFieldInCustomerSearchTab(String emailId){
 		driver.waitForElementPresent(ENTER_EMAIL_ID);
 		driver.type(ENTER_EMAIL_ID, emailId);
+		driver.waitForCSCockpitLoadingImageToDisappear();
 	}
 
 	public String getfirstNameOfTheCustomerInCustomerSearchTab(String customerSequenceNumber){
@@ -233,5 +235,12 @@ public class CSCockpitCustomerSearchTabPage extends CSCockpitRFWebsiteBasePage{
 		status = driver.findElement(By.xpath(String.format(customeraccountStatusInSearchResultsLoc,custmerSequenceNumber))).getText();
 		logger.info("Selected Customer status is = "+status);
 		return status.trim();
+	}
+
+	public String getCustomerTypeFromSearchResult(String rowNumber){
+		driver.waitForElementPresent(By.xpath(String.format(getcustomerTypeInSearchResultLoc, rowNumber)));
+		String customerType = driver.findElement(By.xpath(String.format(getcustomerTypeInSearchResultLoc, rowNumber))).getText();
+		logger.info("Customer type in search result is :"+customerType);
+		return customerType;
 	}
 }

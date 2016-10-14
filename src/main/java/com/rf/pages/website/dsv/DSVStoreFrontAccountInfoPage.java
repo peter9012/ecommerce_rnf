@@ -67,7 +67,7 @@ public class DSVStoreFrontAccountInfoPage extends DSVRFWebsiteBasePage{
 
 	public void clickOnSaveButton(){
 		driver.quickWaitForElementPresent(SAVE_BUTTON);
-		driver.findElement(SAVE_BUTTON).click();
+		driver.clickByJS(RFWebsiteDriver.driver, driver.findElement(SAVE_BUTTON));
 		try{
 			driver.waitForElementPresent(QAS_USE_AS_ENTERED);
 			driver.findElement(QAS_USE_AS_ENTERED).click();

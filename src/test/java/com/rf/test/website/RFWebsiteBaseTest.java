@@ -32,6 +32,7 @@ public class RFWebsiteBaseTest extends RFBaseTest {
 	StringBuilder verificationErrors = new StringBuilder();
 	protected String password = null;
 	protected String countryId = null;
+	protected boolean runBaseURLOrLogoutExecutionCode = true;
 	private Actions actions;
 
 	protected RFWebsiteDriver driver = new RFWebsiteDriver(propertyFile);
@@ -45,30 +46,39 @@ public class RFWebsiteBaseTest extends RFBaseTest {
 	 */
 	@BeforeSuite(alwaysRun=true)
 	public void setUp() throws Exception {
-		driver.loadApplication();                               
+		driver.loadApplication();
 		logger.info("Application loaded");                                                            
-		driver.setDBConnectionString();                
+		driver.setDBConnectionString();
+	}
+
+	public void navigateToStoreFrontBaseURL(){
+		String country = driver.getCountry();
+		driver.get(driver.getURL()+"/"+country);
 	}
 
 	@BeforeMethod(alwaysRun=true)
 	public void beforeMethod(){
 		s_assert = new SoftAssert();
 		String country = driver.getCountry();
+		System.out.println("Country="+country);
+		System.out.println("driver="+driver.getURL());
 		if(driver.getURL().contains("cscockpit")||driver.getURL().contains("salesforce")==true){                 
 			driver.get(driver.getURL());
 		}
 		else{
-			driver.get(driver.getURL()+"/"+country);
+			driver.get(driver.getURL()+"/"+country);			
 		}
 		if(driver.getURL().contains("cscockpit")==true||driver.getURL().contains("salesforce")==true){  
 
 		}else{
-			try{
+//			try{
+//				logout();		
+//			}catch(NoSuchElementException e){
+//
+//			} 
+			if(isLogoutBtnPresent())
 				logout();
-			}catch(NoSuchElementException e){
-
-			}   
-		}		           
+		}	
 		if(country.equalsIgnoreCase("ca"))
 			countryId = "40";
 		else if(country.equalsIgnoreCase("us"))
@@ -91,15 +101,15 @@ public class RFWebsiteBaseTest extends RFBaseTest {
 	public void tearDownAfterMethod(){
 		driver.manage().deleteAllCookies();
 		if(driver.getURL().contains("salesforce")==true){
-		      try{
-		          crmLogout();
-		          Alert alert = driver.switchTo().alert();
-		          System.out.println(alert.getText());
-		          alert.dismiss();
+			try{
+				crmLogout();
+				Alert alert = driver.switchTo().alert();
+				System.out.println(alert.getText());
+				alert.dismiss();
 
-		        }catch(NoAlertPresentException Ex){
-		                  
-		        }
+			}catch(NoAlertPresentException Ex){
+
+			}
 		}
 	}
 
@@ -138,12 +148,30 @@ public class RFWebsiteBaseTest extends RFBaseTest {
 	public void logout(){
 		StoreFrontHomePage storeFrontHomePage = new StoreFrontHomePage(driver);
 		storeFrontHomePage.clickOnRodanAndFieldsLogo();
-		driver.click(By.id("account-info-button"));
-		logger.info("Your account info has been clicked");
-		driver.waitForElementPresent(By.linkText("Log out"));
-		driver.click(By.linkText("Log out"));
-		logger.info("Logout");                    
-		driver.pauseExecutionFor(3000);
+		try
+		{
+			driver.waitForElementPresent(By.id("account-info-button"));
+			driver.click(By.id("account-info-button"));
+			logger.info("Your account info has been clicked");
+			driver.waitForElementPresent(By.linkText("Log out"));
+			driver.click(By.linkText("Log out"));
+			logger.info("Logout");
+			driver.waitForPageLoad();
+			driver.pauseExecutionFor(3000);
+		}
+		catch(Exception e)
+		{
+
+		}
+
+	}
+
+	public boolean isLogoutBtnPresent(){
+		int listSize = driver.findElements(By.id("account-info-button")).size();
+		if(listSize>0)
+			return true;
+		else
+			return false;
 	}
 
 	// This assertion for the UI Texts

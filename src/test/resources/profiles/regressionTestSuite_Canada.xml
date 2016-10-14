@@ -1,50 +1,36 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<suite name="regressionTestSuite_CA">
-	<listeners>
+<!DOCTYPE suite SYSTEM "http://testng.org/testng-1.0.dtd">
+<suite name="FullRegCanadaSuite">
+<listeners>
 		<listener class-name="org.uncommons.reportng.HTMLReporter" />
 		<listener class-name="org.uncommons.reportng.JUnitXMLReporter" />
-		<listener class-name="com.rf.core.listeners.RetryListener" />
 		<listener class-name="com.rf.core.listeners.TestListner" />
 	</listeners>
-	<test name="regressionTestSuite_CA">
-		<classes>
 
-			<class name="com.rf.test.website.storeFront.hybris.AccountTest" />
-			<class
-				name="com.rf.test.website.storeFront.hybris.CartAndCheckoutValidationTest" />
-			<class
-				name="com.rf.test.website.storeFront.hybris.EnrollmentValidationTest" />
-			<class
-				name="com.rf.test.website.storeFront.hybris.HomePageFunctionalityTest" />
-			<class name="com.rf.test.website.storeFront.hybris.OrderValidationTest" />
-			<class name="com.rf.test.website.storeFront.hybris.UpgradeDowngradeTest" />
-
-			<class
-				name="com.rf.test.website.storeFront.hybris.billingAndShipping.AddBillingTest" />
-			<class
-				name="com.rf.test.website.storeFront.hybris.billingAndShipping.AddShippingTest" />
-			<class
-				name="com.rf.test.website.storeFront.hybris.billingAndShipping.EditBillingTest" />
-			<class
-				name="com.rf.test.website.storeFront.hybris.billingAndShipping.EditShippingTest" />
-
-			<class
-				name="com.rf.test.website.storeFront.hybris.expressEnrollment.biz.PersonalResultsKitTest" />
-			<class
-				name="com.rf.test.website.storeFront.hybris.expressEnrollment.biz.BigBusinessLaunchKitTest" />
-			<!-- <class name="com.rf.test.website.storeFront.hybris.expressEnrollment.biz.RFExpressBusinessKitTest"/> -->
-			<class
-				name="com.rf.test.website.storeFront.hybris.expressEnrollment.canadaProvince.EnrollmentTest" />
-			<class
-				name="com.rf.test.website.storeFront.hybris.expressEnrollment.corp.RFExpressBusinessKitTest" />
-
-			<class
-				name="com.rf.test.website.storeFront.hybris.standardEnrollment.corp.RFExpressBusinessKitTest" />
-			<class
-				name="com.rf.test.website.storeFront.hybris.standardEnrollment.corp.PersonalResultsKitTest" />
-			<class
-				name="com.rf.test.website.storeFront.hybris.standardEnrollment.corp.BigBusinessLaunchKitTest" />
-
-		</classes>
-	</test>
-</suite>
+  <test name="FullRegCanadaTestSuite">
+    <classes>
+     
+      <class name="com.rf.test.website.storeFront.hybris.majorEnrollments.EnrollmentsTest"/>
+      <class name="com.rf.test.website.storeFront.hybris.UpgradeDowngradeTest"/>
+      <class name="com.rf.test.website.storeFront.hybris.standardEnrollment.corp.RFExpressBusinessKitTest"/>
+      <class name="com.rf.test.website.storeFront.hybris.standardEnrollment.corp.PersonalResultsKitTest"/>
+      <class name="com.rf.test.website.storeFront.hybris.HomePageFunctionalityTest"/>
+      <class name="com.rf.test.website.storeFront.hybris.standardEnrollment.corp.BigBusinessLaunchKitTest"/>
+      <class name="com.rf.test.website.storeFront.hybris.billingAndShipping.AddEditBillingTest"/>
+      <class name="com.rf.test.website.storeFront.hybris.AccountTest"/>
+      <class name="com.rf.test.website.storeFront.hybris.OrderValidationTest"/>
+      <class name="com.rf.test.website.storeFront.hybris.CartAndCheckoutValidationTest"/>
+      <class name="com.rf.test.website.storeFront.hybris.expressEnrollment.corp.RFExpressBusinessKitTest"/>
+      <class name="com.rf.test.website.storeFront.hybris.StandardEnrollmentValidationTest"/>
+      <class name="com.rf.test.website.storeFront.hybris.PC_CartAndCheckoutValidationTest"/>
+      <class name="com.rf.test.website.storeFront.hybris.EnrollmentValidationTest"/>
+      <class name="com.rf.test.website.storeFront.hybris.billingAndShipping.AddEditShippingTest"/>
+      <class name="com.rf.test.website.storeFront.hybris.expressEnrollment.canadaProvince.EnrollmentTest"/>
+      <class name="com.rf.test.website.storeFront.hybris.PC_RC_EnrollmentValidationTest"/>
+      <class name="com.rf.test.website.storeFront.hybris.ExpressEnrollmentValidationTest"/>
+      <class name="com.rf.test.website.storeFront.hybris.expressEnrollment.biz.PersonalResultsKitTest"/>
+      <class name="com.rf.test.website.storeFront.hybris.expressEnrollment.biz.BigBusinessLaunchKitTest"/>
+      
+    </classes>
+  </test> <!-- Test -->
+</suite> <!-- Suite -->

@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<suite name="AccountTest_CA_1">
+	<listeners>
+		<listener class-name="org.uncommons.reportng.HTMLReporter" />
+		<listener class-name="org.uncommons.reportng.JUnitXMLReporter" />
+		<listener class-name="com.rf.core.listeners.TestListner" />
+		<listener class-name="com.rf.core.listeners.RetryListener" />
+	</listeners>
+	<test name="Account_Test_1">
+		<classes>
+
+			<class name="com.rf.test.website.storeFront.hybris.AccountTest" />
+				<methods>
+				<include name="testAccountTerminationPageForConsultant_3720" />
+				<include name="testAccountTerminationPageForPCUser_3719" />
+				<include name="testPhoneNumberFieldValidationForConsultant_2241" />
+				<include name="testVerifyLogoutwithValidCredentials_1977" />
+				<include name="testUsernameValidations_2512" />
+				<include name="testAccountTerminationPageForRCUser_2228" />
+				<include name="testRetailUserTermination_1975" />
+				<include name="testEmailValidationsDuringEnroll_1276" />
+				<include name="testAutoshipModuleCheckMyPulseUI_1976" />
+				<include name="testResetPasswordFromStorefrontAndRecheckLogin_3009" />
+				<include name="testUserNameFieldEditAndLogin_4260" />
+				<include name="testEditAllowMySpouseInMyAccount_86" />
+				<include name="testCheckCartFromMiniCartAfterAddingProduct_2304" />
+				<include name="terminateUserAndLoginWithSameUsername_4281" />
+				<include name="testVerifyUserCanCancelPulseSubscriptionThroughMyAccount_2233" />
+				<include name="testVerifySubscribeToPulse_2134" />
+				<include name="testPCUserCancelPcPerks_2234" />
+				</methods>
+
+		</classes>
+	</test>
+</suite>

@@ -185,7 +185,8 @@ public class DBQueries_RFL {
 			"BEGIN TRANSACTION "+
 			"SELECT TOP 1 "+
 			"a.AccountID , "+
-			"[as].UserName "+
+			"[as].UserName , "+
+			"a.AccountNumber "+
 			"FROM    dbo.Accounts AS a "+
 			"JOIN    dbo.AccountSecurity AS [as] ON [as].AccountID = a.AccountID "+
 			"WHERE   a.AccountTypeID = 3 "+/*Retail Customer*/

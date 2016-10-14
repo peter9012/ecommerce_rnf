@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<suite name="StandardEnrollmentValidationTest_ca">
+	<listeners>
+		<listener class-name="org.uncommons.reportng.HTMLReporter" />
+		<listener class-name="org.uncommons.reportng.JUnitXMLReporter" />
+		<listener class-name="com.rf.core.listeners.TestListner" />
+		<listener class-name="com.rf.core.listeners.RetryListener" />
+	</listeners>
+	<test name="StandardEnrollmentValidationTest">
+		<classes>
+
+			<class name="com.rf.test.website.storeFront.hybris.StandardEnrollmentValidationTest" />
+			<methods>
+				<exclude name="testEnrollInCRPFromMyAccountShipImmediately_132" /> <!-- cscockpit test -->
+			</methods>
+			
+
+		</classes>
+	</test>
+</suite>

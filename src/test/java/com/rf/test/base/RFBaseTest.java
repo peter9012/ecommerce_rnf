@@ -54,7 +54,12 @@ public class RFBaseTest{
 			propertyFile.loadProps(envproperties);
 			logger.debug("Environment properties recieved and preparing the environment for "
 					+ envproperties); 
-			logger.info("EXECUTION ENVIRONMENT ------ "+propertyFile.getProperty("browser"));
+//			logger.info("EXECUTION ENVIRONMENT ------ "+propertyFile.getProperty("browser"));
+//			logger.info("EXECUTION ENVIRONMENT ------ "+System.getProperty("browser"));
+//			logger.info("EXECUTION ENVIRONMENT ------ "+System.getProperty("baseURL"));
+//			logger.info("EXECUTION ENVIRONMENT ------ "+System.getProperty("country"));
+//			logger.info("EXECUTION ENVIRONMENT ------ "+System.getProperty("env"));
+//			logger.info("EXECUTION ENVIRONMENT ------ "+System.getProperty("dbIP"));
 
 		} else {
 			propertyFile.loadProps(defaultProps);

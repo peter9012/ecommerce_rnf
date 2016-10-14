@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<suite name="HomePageFunctionalityTestSearches_ca">
+	<listeners>
+		<listener class-name="org.uncommons.reportng.HTMLReporter" />
+		<listener class-name="org.uncommons.reportng.JUnitXMLReporter" />
+		<listener class-name="com.rf.core.listeners.TestListner" />
+		<listener class-name="com.rf.core.listeners.RetryListener" />
+	</listeners>
+	<test name="HomePageFunctionalityTestSearches">
+		<classes>
+
+				<class name="com.rf.test.website.storeFront.hybris.HomePageFunctionalityTest" />
+					<methods>
+						<include name="testSponsorSearchAndDetailsByNameOrID_2247" />
+						<include name="testSearchWithUSTerminatedConsultantFullName_3993" />
+						<include name="testSearchWithCATerminatedConsultantFullName_3989" />
+						<include name="testSearchWithUSConsultantFirstNameOnFindAConsultantPage_3991" />
+						<include name="testSearchWithCAConsultantLastName_3979" />
+						<include name="testSearchWithCAConsultantWithCID_3981" />
+						<include name="testSearchWithCAConsultantFirstName_3982" />
+						<include name="testSearchWithPWSPrefixCOMSite_3983" />
+						<include name="testSearchWithCAConsultantAccountNumber_3984" />
+						<include name="testSearchWithActiveRetailCustomersFullName_3985" />
+						<include name="testSearchWithActiveRetailCustomersAccountID_3986" />
+						<include name="testSearchWithActivePrefferedCustomerFullName_3987" />
+						<include name="testSearchWithActivePreferredCustomerAccountId_3988" />
+						<include name="testSearchFunctionalityAsConsultantOnFindAConsultantPage_3996" />
+						<include name="testSearchWithFirstAndLastNameOfConsultantOnFindAConsultantPage_3992" />
+						<include name="testSearchWithCAPendingConsultantFullNameOrAccountID_3990" />
+						<include name="testSearchWithUSPendingConsultantFullNameOrAccountID_3994" />
+						<include name="testSearchAgainFunctionalityOnSponsorSearchSection_3850" />
+						<include name="testLookUpActiveCAConsultantFullName_4003" />
+						<include name="testLookUpWithActiveCAConsultantAccountID_4004" />
+						<include name="testLookUpWithActiveCAConsultantWithNoPulseOrPWS_4007" />
+						<include name="testLookUpWithTerminatedCAConsultantFullNameOrActID_4005" />
+						<include name="testLookUpWithActiveRCFullNameOrAccountID_4011" />
+						<include name="testLookUpWithActivePCFullNameOrAccountID_4009" />
+						<include name="testLookUpWithPendingCAConsultantAccountID_4006" />
+						<include name="testGoToFindAConsultantPageAndSearchWithCAConsultantFullName_3980" />
+						<include name="testGoToFindAConsultantPageAndSearchWithCAConsultantUserWhoUpgradedFromPcToConsultant_3999" />
+						<include name="testToFindAConsultantPageAndSearchWithCAConsultantFullName_3978"/>
+						<include name="testSelectSponsorFromConnectWithConsultantPageShoulDirectToSponsorComSite_3751" />
+					</methods>
+		
+		</classes>
+	</test>
+</suite>

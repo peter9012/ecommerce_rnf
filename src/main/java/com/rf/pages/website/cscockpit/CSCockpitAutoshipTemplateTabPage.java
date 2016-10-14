@@ -1141,7 +1141,7 @@ public class CSCockpitAutoshipTemplateTabPage extends CSCockpitRFWebsiteBasePage
 	public void clickAddNewAddressButtonUnderShippingAddress() {
 		driver.waitForElementPresent(ADD_NEW_ADDRESS_BTN_UNDER_SHIPPING_ADDRESS);
 		driver.click(ADD_NEW_ADDRESS_BTN_UNDER_SHIPPING_ADDRESS);
-		driver.waitForLoadingImageToDisappear();
+		driver.waitForCSCockpitLoadingImageToDisappear();
 	}
 
 	public String getShippingAddressLine1UnderShippingAddress(){
@@ -1217,5 +1217,7 @@ public class CSCockpitAutoshipTemplateTabPage extends CSCockpitRFWebsiteBasePage
 			}
 		}while(autoshipProductList);
 	}
+
+	
 
 }

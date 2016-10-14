@@ -12,10 +12,6 @@ import java.util.Map;
 
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
-import org.openqa.selenium.Alert;
-import org.openqa.selenium.By;
-import org.openqa.selenium.NoAlertPresentException;
-import org.openqa.selenium.NoSuchElementException;
 import org.openqa.selenium.interactions.Actions;
 import org.testng.Assert;
 import org.testng.annotations.AfterMethod;
@@ -32,8 +28,6 @@ import com.rf.pages.website.LSD.LSDFeedbackPage;
 import com.rf.pages.website.LSD.LSDHomePage;
 import com.rf.pages.website.LSD.LSDLoginPage;
 import com.rf.pages.website.LSD.LSDOrderPage;
-import com.rf.pages.website.storeFront.StoreFrontHomePage;
-import com.rf.pages.website.storeFront.StoreFrontRFWebsiteBasePage;
 import com.rf.test.base.RFBaseTest;
 
 /**
@@ -51,7 +45,7 @@ public class RFLSDWebsiteBaseTest extends RFBaseTest {
 	protected LSDCustomerPage lsdCustomerPage;
 	protected LSDFeedbackPage lsdFeedbackPage;
 
-	public String whiteListedUserName = "Kohollaren3@gmail.com";
+	public String whiteListedUserName = "Mary@rf.com";
 	public String nonwhiteListedUserName = "renee.corker@gmail.com";
 	protected Actions actions;
 

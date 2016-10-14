@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<suite name="CRMRegressionTestSuite.xml">
+	<listeners>
+		<listener class-name="org.uncommons.reportng.HTMLReporter" />
+		<listener class-name="org.uncommons.reportng.JUnitXMLReporter" />
+		<listener class-name="com.rf.core.listeners.RetryListener" />
+		<listener class-name="com.rf.core.listeners.TestListner" />
+	</listeners>
+	<test name="CRMRegressionTestSuite.xml">
+		<classes>
+			<class name="com.rf.test.website.crm.CRMRegressionTest">
+			    <methods>
+			        <include name="testAddAccountNoteForConsultant_4479" />
+			        <include name="testAddAccountNoteForUnknown_4482" />
+			        <include name="testAddNewContactSpouseToConsultant_4483" />
+			        <include name="testAddShippingProfileForConsultant_4491" />
+			        <include name="testViewAccountPoliciesForConsultant_4494" />
+					<include name="testViewAccountStatusHistoryForConsultant_4495" />
+			        <include name="testVerifyProxyToMyAccountForConsultant_4498" />
+			        <include name="testVerifyProxyToPulseForConsultant_4499" />
+			        <include name="testDeleteShippingProfileForConsultant_4500" />
+			        <include name="testEditConsultantAccountDetails_4503" />
+					<include name="testEditConsultantContactDetails_4504" />
+			        <include name="testViewAndEditPWSDomainForConsultant_4505" />
+			        <include name="testEditSpouseContactDetailsForConsultant_4506" />
+			        <include name="testEditShippingProfileForConsultant_4513" />
+			        <include name="testSearchForAccountByAccountNumber_4526" />
+					<include name="testSearchForAccountByEmail_4527" />
+			        <include name="testVerifyDisplayAutoshipDetailsForConsultant_4535" />
+			        <include name="testViewBillingProfileForConsultant_4537" />
+			        <include name="testViewShippingProfileForConsultant_4542" />
+			        <include name="testViewConsultantAccountDetailsTest_4545" />
+					<include name="testForgotPasswordForConsultant_5004" />
+			        <include name="testChangeDefaultConsultantShippingAddress_5007" />
+			        <include name="testSaveMainAddressAsShippingForConsultant_5159" />
+			    </methods>
+			</class>
+			<class name="com.rf.test.website.crm.LogisticTeamTest"></class>
+			  
+		</classes>
+	</test>
+</suite>

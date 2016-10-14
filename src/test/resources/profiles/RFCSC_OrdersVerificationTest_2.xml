@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<suite name="CSC_OrdersVerificationSuite2">
+	<listeners>
+		<listener class-name="org.uncommons.reportng.HTMLReporter" />
+		<listener class-name="org.uncommons.reportng.JUnitXMLReporter" />
+		<listener class-name="com.rf.core.listeners.TestListner" />
+		<listener class-name="com.rf.core.listeners.RetryListener" />
+	</listeners>
+	<test name="CSC_OrdersVerificationTest">
+		<classes>
+			<class name="com.rf.test.website.cscockpit.OrdersVerificationTest">
+				<methods>
+					<include name="testVerifyFindOrderPageUI_1946"></include>
+					<include name="testToVerifyForCreatedNewUserTheAccountStatusShouldBeActive_1940"></include>
+					<include name="testVerifyOrderDetailPageUI_1950"></include>
+					<include name="testVerifyCVAndQVValuesUpdateFunctionalityInOrderDetailPage_1964"></include>
+					<include name="testVerifyOrderSearchCriteriaFunctionality_1947"></include>
+					<include name="testToVerifyTheOrderTypeInTheOrderDetailPage_1949"></include>
+					<include name="testToVerifySalesOverrideFromCustomerDetailPage_1953"></include>
+					<include name="testVerifyCommissionDateChangeFunctionalityInOrderDetailPage_1839"></include>
+					<include name="testVerifyCscockpitRefundOrderFunctionality_4073"></include>
+					<include name="testVerifyTheSalesOverrideFromOrderDetailPage_1952"></include>
+					<include name="testVerifyTheSalesOverrideFunctionality_1954"></include>					
+				</methods>
+			</class>
+		</classes>
+	</test>
+</suite>

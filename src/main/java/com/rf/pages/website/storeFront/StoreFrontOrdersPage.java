@@ -75,9 +75,13 @@ public class StoreFrontOrdersPage extends StoreFrontRFWebsiteBasePage{
 		}
 		else{
 			grandTotal = "$"+grandTotal;
-		}		
-		logger.info("Order Grand total from UI is "+driver.findElement(ORDER_GRAND_TOTAL_LOC).getText());
-		return grandTotal.contains(driver.findElement(ORDER_GRAND_TOTAL_LOC).getText());
+		}
+		String grandTotalFromUI = driver.findElement(ORDER_GRAND_TOTAL_LOC).getText();
+		if(grandTotalFromUI.contains(",")){
+			grandTotalFromUI = grandTotalFromUI.replaceAll(",","");
+		}
+		logger.info("Order Grand total from UI is "+grandTotalFromUI);
+		return grandTotal.contains(grandTotalFromUI);
 	}
 
 	public boolean verifyOrderStatus(String status){
@@ -332,8 +336,9 @@ public class StoreFrontOrdersPage extends StoreFrontRFWebsiteBasePage{
 
 	public void clickOnFirstAdHocOrder(){
 		driver.waitForElementPresent(ORDER_NUM_OF_ORDER_HISTORY);
-		driver.click(ORDER_NUM_OF_ORDER_HISTORY);	
-		logger.info("First order from the order history clicked");		
+		//driver.click(ORDER_NUM_OF_ORDER_HISTORY); 
+		driver.clickByJS(RFWebsiteDriver.driver, driver.findElement(ORDER_NUM_OF_ORDER_HISTORY));
+		logger.info("First order from the order history clicked");  
 	}
 
 	public String getFirstOrderNumberFromOrderHistory(){
@@ -351,6 +356,7 @@ public class StoreFrontOrdersPage extends StoreFrontRFWebsiteBasePage{
 		driver.waitForElementPresent(By.linkText(orderNumber));
 		driver.click(By.linkText(orderNumber));
 		logger.info("Order number clicked "+orderNumber);
+		driver.waitForPageLoad();
 	}
 
 	public boolean verifyAutoShipTemplateSubtotal(String subTotalDB){
@@ -798,6 +804,9 @@ public class StoreFrontOrdersPage extends StoreFrontRFWebsiteBasePage{
 		if(driver.getCountry().equalsIgnoreCase("CA")){
 			driver.waitForElementPresent(ORDER_GRAND_TOTAL_BOTTOM_LOC);
 			String value = driver.findElement(ORDER_GRAND_TOTAL_BOTTOM_LOC).getText().trim();
+			if(value.contains(",")){
+				value.replace(",","");
+			}
 			String[] totalValue= value.split("\\s");
 			double  orderTotal = Double.parseDouble(totalValue[1]);
 			logger.info("Subtotal Value fetched is "+orderTotal);
@@ -1044,21 +1053,40 @@ public class StoreFrontOrdersPage extends StoreFrontRFWebsiteBasePage{
 
 	public boolean validateSameDatePresentForAutoship(String autoshipDate) {
 		String currentDate = getPSTDate();
-		String currentDay = currentDate.split("\\ ")[0];
-		logger.info("Current day is: "+currentDay);
-		String autoshipDay = autoshipDate.split("\\ ")[1];
-		logger.info("Current autoship day is: "+autoshipDay);
-		if(Integer.parseInt(currentDay)<=17){
-			if(autoshipDay.contains(currentDay)){
-				return true;
+		try{
+			String currentDay = currentDate.split("\\ ")[0].split("\\,")[0];
+			logger.info("Current day is: "+currentDay);
+			String autoshipDay = autoshipDate.split("\\ ")[1].split("\\,")[0];
+			logger.info("Current autoship day is: "+autoshipDay);
+			if(Integer.parseInt(currentDay)<=17){
+				if(autoshipDay.contains(currentDay)){
+					return true;
+				}
+				return false;
+			}else{
+				if(autoshipDay.contains("17")){
+					return true;
+				}
+				return false;
 			}
-			return false;
-		}else{
-			if(autoshipDay.contains("17")){
-				return true;
+		}catch(NumberFormatException nfe){
+			String currentDay = currentDate.split("\\ ")[1].split("\\,")[0];
+			logger.info("Current day is: "+currentDay);
+			String autoshipDay = autoshipDate.split("\\ ")[1].split("\\,")[0];
+			logger.info("Current autoship day is: "+autoshipDay);
+			if(Integer.parseInt(currentDay)<=17){
+				if(autoshipDay.contains(currentDay)){
+					return true;
+				}
+				return false;
+			}else{
+				if(autoshipDay.contains("17")){
+					return true;
+				}
+				return false;
 			}
-			return false;
 		}
+
 	}
 
 	public void clickReportProblemsUnderActionsForFirstOrderUnderOrderHistory() {
@@ -1124,5 +1152,23 @@ public class StoreFrontOrdersPage extends StoreFrontRFWebsiteBasePage{
 		autoShipOrderNumber = driver.findElement(By.xpath("//div[@id='pending-autoship-orders-table']/div[@class='row']/div[2]//div[@class='row']/div[5][not(input)]/ancestor::div[1]//a")).getText();
 		logger.info("Pulse autoship order number is "+autoShipOrderNumber);
 		return  autoShipOrderNumber;
+	}
+
+	public String getFirstOrderNumberWithNonZeroSubtotalFromOrderHistory(){
+		driver.waitForElementPresent(By.xpath("//div[@id='history-orders-table']/descendant::div[contains(@class,'-m grand-total')][not(contains(text(),'0.0'))][1]/../div[1]/a"));
+		String firstOrderNumber = driver.findElement(By.xpath("//div[@id='history-orders-table']/descendant::div[contains(@class,'-m grand-total')][not(contains(text(),'0.0'))][1]/../div[1]/a")).getText(); 
+		return  firstOrderNumber;
+	}
+
+	public void clickDetailsUnderActionsForOrderUnderOrderHistory(String orderNumber){
+		driver.waitForElementPresent(By.xpath("//a[text()="+orderNumber+"]/following::span[1]"));
+		driver.click(By.xpath("//a[text()="+orderNumber+"]/following::span[1]"));
+		driver.click(By.linkText("Details"));
+		driver.waitForPageLoad();
+	}
+
+	public boolean isShippingAmountFromAutoshipTemplatePresent(){
+		String shippingAmount = driver.findElement(By.xpath("//div[@id='main-content']//div[contains(text(),'Shipping')]/following::div[1]")).getText();
+		return !(shippingAmount.substring(1)==null);
 	}
 }

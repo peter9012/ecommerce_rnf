@@ -1,5 +1,6 @@
 package com.rf.pages.website.nscore;
 
+
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Set;
@@ -156,6 +157,7 @@ public class NSCore4HomePage extends NSCore4RFWebsiteBasePage{
 	private static final By APPLY_PAYMENT_BTN  = By.id("btnApplyPayment");
 	private static final By PLACED_ORDER_NUMBER  = By.xpath("//div[@class='Content']//a[contains(text(),'Order #')]");
 	private static final By OPEN_BULK_ADD_LOC  = By.id("btnOpenBulkAdd");
+	private static final By SKU_FIELD_SEARCH  = By.xpath("//*[@id='txtQuickAddSearch']");
 	private static final By PRODUCT_QUANTITY_LOC  = By.xpath("//table[@id='bulkProductCatalog']//tr[1]//input[@class='quantity']");
 	private static final By PRODUCT_SKU_VALUE  = By.xpath("//table[@id='bulkProductCatalog']/tbody//tr[1]/td[1]");
 	private static final By ADD_TO_ORDER_BTN  = By.id("btnBulkAdd");
@@ -1127,6 +1129,26 @@ public class NSCore4HomePage extends NSCore4RFWebsiteBasePage{
 		logger.info("Close link clicked on bulk add popup");
 		return SKU;
 	}
+	
+	public void addAndGetSpecficProductSKU(String quantity){
+		driver.waitForElementPresent(SKU_FIELD_SEARCH);
+		driver.click(SKU_FIELD_SEARCH);
+		//driver.waitForNSCore4LoadingImageToDisappear();
+		//logger.info("Open bulk add link clicked");
+		driver.type(SKU_FIELD_SEARCH, "AARG001");
+		driver.waitForElementPresent(By.xpath("//*[@id='ContentWrap']/table/tbody/tr/td[2]/table[2]/tbody/tr/td[2]/p[1]/div/div/p"));
+		driver.click(By.xpath("//*[@id='ContentWrap']/table/tbody/tr/td[2]/table[2]/tbody/tr/td[2]/p[1]/div/div/p"));
+		//String SKU = driver.findElement(PRODUCT_SKU_VALUE).getText();
+		
+		driver.type(By.xpath("//*[@id='txtQuickAddQuantity']"), quantity);
+		logger.info("quantity added is: "+quantity);
+		driver.click(By.xpath("//*[@id='btnQuickAdd']"));
+		logger.info("Add to order button clicked");
+/*		driver.click(CLOSE_LINK_LOC);
+		logger.info("Close link clicked on bulk add popup");*/
+		//return SKU;
+	}
+	
 
 	public int getTotalNoOfShippingProfiles(){
 		driver.waitForElementPresent(SHIPPING_PROFILES_LOC);
@@ -1185,4 +1207,44 @@ public class NSCore4HomePage extends NSCore4RFWebsiteBasePage{
 		driver.waitForElementPresent(PULSE_MONTHLY_SUBSCRIPTION_EDIT);
 		return driver.isElementPresent(PULSE_MONTHLY_SUBSCRIPTION_EDIT);
 	}
+	
+	
+/*	public void ExcelWriter(String firstname,String lastname, String accountNumber) throws IOException{
+		//XSSFWorkbook workbook = new XSSFWorkbook();
+        //XSSFSheet sheet = workbook.createSheet("Java Books");
+		FileInputStream fsIP= new FileInputStream(new File("C:\\Users\\plu\\heirloom\\rf-automation\\JavaBooks.xlsx"));
+		XSSFWorkbook wb = new XSSFWorkbook(fsIP); //Access the workbook
+        
+		XSSFSheet worksheet = wb.getSheetAt(0);
+		
+        Object[][] bookData = {
+                {firstname, lastname,accountNumber},
+        };
+ 
+        int rowCount = n;
+        int rows=worksheet.getLastRowNum(); 			
+        for (Object[] aBook : bookData) {
+        	
+            Row row = worksheet.createRow(++rows);
+             
+            int columnCount = 0;
+             
+            for (Object field : aBook) {
+                Cell cell = row.createCell(++columnCount);
+                if (field instanceof String) {
+                    cell.setCellValue((String) field);
+                } else if (field instanceof Integer) {
+                    cell.setCellValue((Integer) field);
+                }
+            }
+             
+        }
+         
+         
+        try (FileOutputStream outputStream = new FileOutputStream("JavaBooks.xlsx")) {
+        	wb.write(outputStream);
+            outputStream.close();
+        }
+	}*/
+		
 }

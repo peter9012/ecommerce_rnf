@@ -353,7 +353,8 @@ public class StoreFrontRFWebsiteBasePage extends RFBasePage{
 		driver.type(By.id("the-password-again"),password);
 		logger.info("confirm password entered as "+password);
 		driver.pauseExecutionFor(2000);
-		driver.click(By.id("next-button"));  
+		driver.clickByJS(RFWebsiteDriver.driver, driver.findElement(By.id("next-button")));
+		// driver.click(By.id("next-button"));  
 		logger.info("Create New Account button clicked");
 		driver.waitForLoadingImageToDisappear();
 		driver.waitForPageLoad();

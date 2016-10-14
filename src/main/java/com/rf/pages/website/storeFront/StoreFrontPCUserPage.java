@@ -67,7 +67,8 @@ public class StoreFrontPCUserPage extends StoreFrontRFWebsiteBasePage{
 
 	public void clickDelayOrCancelPCPerks(){
 		driver.waitForElementPresent(By.xpath("//a[text()='Delay or Cancel PC Perks']"));
-		driver.click(By.xpath("//a[text()='Delay or Cancel PC Perks']"));
+		driver.clickByJS(RFWebsiteDriver.driver, driver.findElement(By.xpath("//a[text()='Delay or Cancel PC Perks']")));
+		//driver.click(By.xpath("//a[text()='Delay or Cancel PC Perks']"));
 	}
 
 	public void clickPleaseCancelMyPcPerksActBtn(){

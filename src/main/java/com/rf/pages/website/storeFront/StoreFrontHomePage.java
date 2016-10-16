@@ -680,6 +680,7 @@ public class StoreFrontHomePage extends StoreFrontRFWebsiteBasePage {
 
 	public void clickOnConfirmAutomaticPayment() throws InterruptedException{
 		driver.waitForElementPresent(By.xpath("//input[@id='enroll']"));
+		driver.pauseExecutionFor(2000);
 		driver.clickByJS(RFWebsiteDriver.driver,driver.findElement(By.xpath("//input[@id='enroll']")));
 		//driver.click(By.xpath("//input[@id='enroll']"));
 		logger.info("Automatic payment confirmation button clicked");
@@ -1818,6 +1819,7 @@ public class StoreFrontHomePage extends StoreFrontRFWebsiteBasePage {
 
 	public String getDotBizPWS(){
 		driver.waitForElementPresent(By.xpath("//p[@id='prefix-validation']/span[2]"));
+		driver.pauseExecutionFor(2000);
 		String pwsUnderPulse = driver.findElement(By.xpath("//p[@id='prefix-validation']/span[2]")).getText();
 		String[] pws = pwsUnderPulse.split("/");
 		String bizPwsString = pws[0]+"/"+pws[1]+"/"+pws[2]+"/"+pws[3];

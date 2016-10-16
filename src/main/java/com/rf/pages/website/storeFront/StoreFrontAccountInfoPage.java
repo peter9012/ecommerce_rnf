@@ -797,7 +797,7 @@ public class StoreFrontAccountInfoPage extends StoreFrontRFWebsiteBasePage{
 
 	public void clickOnNextDuringPulseSubscribtion(){
 		driver.waitForElementPresent(By.id("pulse-enroll"));
-		driver.click(By.id("pulse-enroll"));
+		driver.clickByJS(RFWebsiteDriver.driver,driver.findElement(By.id("pulse-enroll")));
 		driver.waitForPageLoad();
 	}
 
@@ -805,6 +805,7 @@ public class StoreFrontAccountInfoPage extends StoreFrontRFWebsiteBasePage{
 		driver.waitForElementPresent(By.id("webSitePrefix"));
 		driver.type(By.id("webSitePrefix"), name);
 		clickOnNextDuringPulseSubscribtion();
+		driver.waitForLoadingImageToDisappear();
 	}
 
 	public boolean verifyWebsitePrefixSuggestionIsPresent(){

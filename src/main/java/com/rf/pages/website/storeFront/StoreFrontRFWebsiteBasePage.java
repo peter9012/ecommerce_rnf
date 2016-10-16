@@ -1691,8 +1691,12 @@ public class StoreFrontRFWebsiteBasePage extends RFBasePage{
 	public void enterWebsitePrefixName(String name){
 		driver.waitForElementPresent(By.id("webSitePrefix"));
 		driver.type(By.id("webSitePrefix"), name);
-		driver.click(By.xpath("//form[@id='crpEnrollment']//img[contains(@src,'pulse-blue')]"));
-		//span[@class='icon-search']
+		if(driver.isElementPresent(By.xpath("//span[@class='icon-search']"))==true){
+			driver.click(By.xpath("//span[@class='icon-search']"));
+		}else{
+			driver.click(By.xpath("//form[@id='crpEnrollment']//img[contains(@src,'pulse-blue')]"));	
+		}		
+		driver.waitForLoadingImageToDisappear();
 		driver.pauseExecutionFor(2000);
 	}
 

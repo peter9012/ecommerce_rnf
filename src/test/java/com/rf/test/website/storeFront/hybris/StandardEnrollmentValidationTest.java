@@ -274,8 +274,6 @@ public class StandardEnrollmentValidationTest extends RFWebsiteBaseTest{
 		storeFrontAccountInfoPage.subscribeToPulse();
 		storeFrontAccountInfoPage.enterWebsitePrefixName(prefixNameWithSpecialChar);
 		s_assert.assertTrue(storeFrontAccountInfoPage.verifySpecialCharNotAcceptInPrefixName(), "Special Char is accepcted by prefix name 2");
-		storeFrontHomePage.enterWebsitePrefixName(prefixName);
-		s_assert.assertFalse(storeFrontAccountInfoPage.verifySpecialCharNotAcceptInPrefixName(), "Special Char is accepcted by prefix name 3");
 		s_assert.assertAll(); 
 	}
 

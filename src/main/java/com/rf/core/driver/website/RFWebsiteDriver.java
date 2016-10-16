@@ -550,12 +550,13 @@ public class RFWebsiteDriver implements RFDriver,WebDriver {
 		//waitForElementToBeClickable(locator, DEFAULT_TIMEOUT);
 		//quickWaitForElementPresent(locator);
 		//movetToElementJavascript(locator);
+		turnOffImplicitWaits();
 		try{
 			findElement(locator).click();			
 		}catch(Exception e){
 			retryingFindClick(locator);
 		}
-		//		waitForLoadingImageToDisappear();
+		turnOnImplicitWaits();
 	}
 
 	public void type(By locator, String input) {

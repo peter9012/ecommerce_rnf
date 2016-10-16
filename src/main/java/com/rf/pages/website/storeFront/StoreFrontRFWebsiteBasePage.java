@@ -1313,6 +1313,8 @@ public class StoreFrontRFWebsiteBasePage extends RFBasePage{
 		driver.waitForElementPresent(WELCOME_DD_ORDERS_LINK_LOC);
 		actions.moveToElement(driver.findElement(WELCOME_DD_ORDERS_LINK_LOC)).click().perform();
 		logger.info("User has clicked on orders link from welcome drop down");
+		driver.waitForPageLoad();
+		driver.waitForLoadingImageToDisappear();
 		return new StoreFrontOrdersPage(driver);
 	}
 

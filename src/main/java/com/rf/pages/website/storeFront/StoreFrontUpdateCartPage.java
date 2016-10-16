@@ -1505,7 +1505,7 @@ public class StoreFrontUpdateCartPage extends StoreFrontRFWebsiteBasePage{
 	public void selectShippingMethod2DayForAdhocOrder(){
 		if(driver.getCountry().equalsIgnoreCase("CA")){
 			driver.waitForElementPresent(By.xpath("//span[contains(text(),'UPS 2Day')]/..//span[contains(@class,'radio')]"));
-			driver.click(By.xpath("//span[contains(text(),'UPS 2Day')]/..//span[contains(@class,'radio')]"));
+			driver.clickByJS(RFWebsiteDriver.driver, driver.findElement(By.xpath("//span[contains(text(),'UPS 2Day')]/..//span[contains(@class,'radio')]")));
 			logger.info("UPS 2Day shipping method is selected");
 		}else if(driver.getCountry().equalsIgnoreCase("US")){
 			driver.waitForElementPresent(By.xpath("//div[@id='delivery_modes_dl']//label[contains(text(),'FedEx 2Day')]/preceding-sibling::span"));

@@ -134,7 +134,7 @@ public class PC_RC_EnrollmentValidationTest extends RFWebsiteBaseTest{
 		//Enter Billing Profile
 		storeFrontHomePage.enterNewBillingCardNumber(TestConstants.CARD_NUMBER);
 		storeFrontHomePage.enterNewBillingNameOnCard(newBillingProfileName+" "+lastName);
-		storeFrontHomePage.selectNewBillingCardExpirationDate();
+		storeFrontHomePage.selectNewBillingCardExpirationDate("OCT","2025");
 		storeFrontHomePage.enterNewBillingSecurityCode(TestConstants.SECURITY_CODE);
 		storeFrontHomePage.selectNewBillingCardAddress();
 		storeFrontHomePage.clickOnSaveBillingProfile();
@@ -184,7 +184,7 @@ public class PC_RC_EnrollmentValidationTest extends RFWebsiteBaseTest{
 		//Enter Billing Profile
 		storeFrontHomePage.enterNewBillingCardNumber(TestConstants.CARD_NUMBER);
 		storeFrontHomePage.enterNewBillingNameOnCard(newBillingProfileName+" "+lastName);
-		storeFrontHomePage.selectNewBillingCardExpirationDate();
+		storeFrontHomePage.selectNewBillingCardExpirationDate("OCT","2025");
 		storeFrontHomePage.enterNewBillingSecurityCode(TestConstants.SECURITY_CODE);
 		storeFrontHomePage.selectNewBillingCardAddress();
 		storeFrontHomePage.clickOnSaveBillingProfile();
@@ -252,7 +252,7 @@ public class PC_RC_EnrollmentValidationTest extends RFWebsiteBaseTest{
 		//Enter Billing Profile
 		storeFrontHomePage.enterNewBillingCardNumber(TestConstants.CARD_NUMBER);
 		storeFrontHomePage.enterNewBillingNameOnCard(newBillingProfileName+" "+lastName);
-		storeFrontHomePage.selectNewBillingCardExpirationDate();
+		storeFrontHomePage.selectNewBillingCardExpirationDate("OCT","2025");
 		storeFrontHomePage.enterNewBillingSecurityCode(TestConstants.SECURITY_CODE);
 		storeFrontHomePage.selectNewBillingCardAddress();
 		storeFrontHomePage.clickOnSaveBillingProfile();
@@ -293,7 +293,7 @@ public class PC_RC_EnrollmentValidationTest extends RFWebsiteBaseTest{
 		//Enter Billing Profile
 		storeFrontHomePage.enterNewBillingCardNumber(TestConstants.CARD_NUMBER);
 		storeFrontHomePage.enterNewBillingNameOnCard(newBillingProfileName+" "+lastName);
-		storeFrontHomePage.selectNewBillingCardExpirationDate();
+		storeFrontHomePage.selectNewBillingCardExpirationDate("OCT","2025");
 		storeFrontHomePage.enterNewBillingSecurityCode(TestConstants.SECURITY_CODE);
 		storeFrontHomePage.selectNewBillingCardAddress();
 		storeFrontHomePage.clickOnSaveBillingProfile();
@@ -327,7 +327,7 @@ public class PC_RC_EnrollmentValidationTest extends RFWebsiteBaseTest{
 		//Enter Billing Profile
 		storeFrontHomePage.enterNewBillingCardNumber(TestConstants.CARD_NUMBER);
 		storeFrontHomePage.enterNewBillingNameOnCard(newBillingProfileName+" "+lastName);
-		storeFrontHomePage.selectNewBillingCardExpirationDate();
+		storeFrontHomePage.selectNewBillingCardExpirationDate("OCT","2025");
 		storeFrontHomePage.enterNewBillingSecurityCode(TestConstants.SECURITY_CODE);
 		storeFrontHomePage.selectNewBillingCardAddress();
 		storeFrontHomePage.clickOnSaveBillingProfile();
@@ -405,7 +405,7 @@ public class PC_RC_EnrollmentValidationTest extends RFWebsiteBaseTest{
 		//Enter Billing Profile
 		storeFrontHomePage.enterNewBillingCardNumber(TestConstants.CARD_NUMBER);
 		storeFrontHomePage.enterNewBillingNameOnCard(newBillingProfileName+" "+lastName);
-		storeFrontHomePage.selectNewBillingCardExpirationDate();
+		storeFrontHomePage.selectNewBillingCardExpirationDate("OCT","2025");
 		storeFrontHomePage.enterNewBillingSecurityCode(TestConstants.SECURITY_CODE);
 		storeFrontHomePage.selectNewBillingCardAddress();
 		storeFrontHomePage.clickOnSaveBillingProfile();
@@ -449,7 +449,7 @@ public class PC_RC_EnrollmentValidationTest extends RFWebsiteBaseTest{
 		//Enter Billing Profile
 		storeFrontHomePage.enterNewBillingCardNumber(TestConstants.CARD_NUMBER);
 		storeFrontHomePage.enterNewBillingNameOnCard(newBillingProfileName+" "+lastName);
-		storeFrontHomePage.selectNewBillingCardExpirationDate();
+		storeFrontHomePage.selectNewBillingCardExpirationDate("OCT","2025");
 		storeFrontHomePage.enterNewBillingSecurityCode(TestConstants.SECURITY_CODE);
 		storeFrontHomePage.selectNewBillingCardAddress();
 		storeFrontHomePage.clickOnSaveBillingProfile();
@@ -513,7 +513,7 @@ public class PC_RC_EnrollmentValidationTest extends RFWebsiteBaseTest{
 		}
 		storeFrontHomePage.enterNewBillingCardNumber(TestConstants.CARD_NUMBER);
 		storeFrontHomePage.enterNewBillingNameOnCard(newBillingProfileName+" "+lastName);
-		storeFrontHomePage.selectNewBillingCardExpirationDate();
+		storeFrontHomePage.selectNewBillingCardExpirationDate("OCT","2025");
 		storeFrontHomePage.enterNewBillingSecurityCode(TestConstants.SECURITY_CODE);
 		storeFrontHomePage.selectNewBillingCardAddress();
 		storeFrontHomePage.clickOnSaveBillingProfile();
@@ -557,7 +557,7 @@ public class PC_RC_EnrollmentValidationTest extends RFWebsiteBaseTest{
 		storeFrontHomePage.clickOnShippingAddressNextStepBtn();
 		storeFrontHomePage.enterNewBillingCardNumber(TestConstants.CARD_NUMBER);
 		storeFrontHomePage.enterNewBillingNameOnCard(newBillingProfileName+" "+lastName);
-		storeFrontHomePage.selectNewBillingCardExpirationDate();
+		storeFrontHomePage.selectNewBillingCardExpirationDate("OCT","2025");
 		storeFrontHomePage.enterNewBillingSecurityCode(TestConstants.SECURITY_CODE);
 		storeFrontHomePage.selectNewBillingCardAddress();
 		storeFrontHomePage.clickOnSaveBillingProfile();
@@ -594,7 +594,7 @@ public class PC_RC_EnrollmentValidationTest extends RFWebsiteBaseTest{
 		storeFrontHomePage.clickOnShippingAddressNextStepBtn();
 		storeFrontHomePage.enterNewBillingCardNumber(TestConstants.CARD_NUMBER);
 		storeFrontHomePage.enterNewBillingNameOnCard(newBillingProfileName+" "+lastName);
-		storeFrontHomePage.selectNewBillingCardExpirationDate();
+		storeFrontHomePage.selectNewBillingCardExpirationDate("OCT","2025");
 		storeFrontHomePage.enterNewBillingSecurityCode(TestConstants.SECURITY_CODE);
 		storeFrontHomePage.selectNewBillingCardAddress();
 		storeFrontHomePage.clickOnSaveBillingProfile();
@@ -763,7 +763,7 @@ public class PC_RC_EnrollmentValidationTest extends RFWebsiteBaseTest{
 		storeFrontUpdateCartPage.clickOnDefaultBillingProfileEdit();
 		storeFrontUpdateCartPage.enterNewBillingNameOnCard(newBillingProfileName+" "+lastName);
 		storeFrontUpdateCartPage.enterNewBillingCardNumber(TestConstants.CARD_NUMBER);
-		storeFrontUpdateCartPage.selectNewBillingCardExpirationDate();
+		storeFrontUpdateCartPage.selectNewBillingCardExpirationDate("OCT","2025");
 		storeFrontUpdateCartPage.enterNewBillingSecurityCode(TestConstants.SECURITY_CODE);
 		storeFrontUpdateCartPage.selectNewBillingCardAddress();
 		storeFrontUpdateCartPage.clickOnSaveBillingProfile();
@@ -940,7 +940,7 @@ public class PC_RC_EnrollmentValidationTest extends RFWebsiteBaseTest{
 		//Enter Billing Profile
 		storeFrontHomePage.enterNewBillingCardNumber(TestConstants.CARD_NUMBER);
 		storeFrontHomePage.enterNewBillingNameOnCard(newBillingProfileName+" "+lastName);
-		storeFrontHomePage.selectNewBillingCardExpirationDate();
+		storeFrontHomePage.selectNewBillingCardExpirationDate("OCT","2025");
 		storeFrontHomePage.enterNewBillingSecurityCode(TestConstants.SECURITY_CODE);
 		storeFrontHomePage.selectNewBillingCardAddress();
 		storeFrontHomePage.clickOnSaveBillingProfile();
@@ -1012,7 +1012,7 @@ public class PC_RC_EnrollmentValidationTest extends RFWebsiteBaseTest{
 		//Enter Billing Profile
 		storeFrontHomePage.enterNewBillingCardNumber(TestConstants.CARD_NUMBER);
 		storeFrontHomePage.enterNewBillingNameOnCard(newBillingProfileName+" "+lastName);
-		storeFrontHomePage.selectNewBillingCardExpirationDate();
+		storeFrontHomePage.selectNewBillingCardExpirationDate("OCT","2025");
 		storeFrontHomePage.enterNewBillingSecurityCode(TestConstants.SECURITY_CODE);
 		storeFrontHomePage.selectNewBillingCardAddress();
 		storeFrontHomePage.clickOnSaveBillingProfile();
@@ -1083,7 +1083,7 @@ public class PC_RC_EnrollmentValidationTest extends RFWebsiteBaseTest{
 		//Enter Billing Profile
 		storeFrontHomePage.enterNewBillingCardNumber(TestConstants.CARD_NUMBER);
 		storeFrontHomePage.enterNewBillingNameOnCard(newBillingProfileName+" "+lastName);
-		storeFrontHomePage.selectNewBillingCardExpirationDate();
+		storeFrontHomePage.selectNewBillingCardExpirationDate("OCT","2025");
 		storeFrontHomePage.enterNewBillingSecurityCode(TestConstants.SECURITY_CODE);
 		storeFrontHomePage.selectNewBillingCardAddress();
 		storeFrontHomePage.clickOnSaveBillingProfile();
@@ -1156,7 +1156,7 @@ public class PC_RC_EnrollmentValidationTest extends RFWebsiteBaseTest{
 		//Enter Billing Profile
 		storeFrontHomePage.enterNewBillingCardNumber(TestConstants.CARD_NUMBER);
 		storeFrontHomePage.enterNewBillingNameOnCard(newBillingProfileName+" "+lastName);
-		storeFrontHomePage.selectNewBillingCardExpirationDate();
+		storeFrontHomePage.selectNewBillingCardExpirationDate("OCT","2025");
 		storeFrontHomePage.enterNewBillingSecurityCode(TestConstants.SECURITY_CODE);
 		storeFrontHomePage.selectNewBillingCardAddress();
 		storeFrontHomePage.clickOnSaveBillingProfile();
@@ -1255,7 +1255,7 @@ public class PC_RC_EnrollmentValidationTest extends RFWebsiteBaseTest{
 		//Enter Billing Profile
 		storeFrontHomePage.enterNewBillingCardNumber(TestConstants.CARD_NUMBER);
 		storeFrontHomePage.enterNewBillingNameOnCard(newBillingProfileName+" "+lastName);
-		storeFrontHomePage.selectNewBillingCardExpirationDate();
+		storeFrontHomePage.selectNewBillingCardExpirationDate("OCT","2025");
 		storeFrontHomePage.enterNewBillingSecurityCode(TestConstants.SECURITY_CODE);
 		storeFrontHomePage.selectNewBillingCardAddress();
 		storeFrontHomePage.clickOnSaveBillingProfile();
@@ -1319,7 +1319,7 @@ public class PC_RC_EnrollmentValidationTest extends RFWebsiteBaseTest{
 		//Enter Billing Profile
 		storeFrontHomePage.enterNewBillingCardNumber(TestConstants.CARD_NUMBER);
 		storeFrontHomePage.enterNewBillingNameOnCard(newBillingProfileName+" "+lastName);
-		storeFrontHomePage.selectNewBillingCardExpirationDate();
+		storeFrontHomePage.selectNewBillingCardExpirationDate("OCT","2025");
 		storeFrontHomePage.enterNewBillingSecurityCode(TestConstants.SECURITY_CODE);
 		storeFrontHomePage.selectNewBillingCardAddress();
 		storeFrontHomePage.clickOnSaveBillingProfile();
@@ -1397,7 +1397,7 @@ public class PC_RC_EnrollmentValidationTest extends RFWebsiteBaseTest{
 		//Enter Billing Profile
 		storeFrontHomePage.enterNewBillingCardNumber(TestConstants.CARD_NUMBER);
 		storeFrontHomePage.enterNewBillingNameOnCard(newBillingProfileName+" "+lastName);
-		storeFrontHomePage.selectNewBillingCardExpirationDate();
+		storeFrontHomePage.selectNewBillingCardExpirationDate("OCT","2025");
 		storeFrontHomePage.enterNewBillingSecurityCode(TestConstants.SECURITY_CODE);
 		storeFrontHomePage.selectNewBillingCardAddress();
 		storeFrontHomePage.clickOnSaveBillingProfile();
@@ -1446,7 +1446,7 @@ public class PC_RC_EnrollmentValidationTest extends RFWebsiteBaseTest{
 			storeFrontHomePage.clickNextButton();
 			storeFrontHomePage.enterCardNumber(TestConstants.CARD_NUMBER);
 			storeFrontHomePage.enterNameOnCard(TestConstants.FIRST_NAME+randomNum);
-			storeFrontHomePage.selectNewBillingCardExpirationDate();
+			storeFrontHomePage.selectNewBillingCardExpirationDate("OCT","2025");
 			storeFrontHomePage.enterSecurityCode(TestConstants.SECURITY_CODE);
 			storeFrontHomePage.enterSocialInsuranceNumber(socialInsuranceNumber);
 			storeFrontHomePage.enterNameAsItAppearsOnCard(TestConstants.FIRST_NAME);
@@ -1502,7 +1502,7 @@ public class PC_RC_EnrollmentValidationTest extends RFWebsiteBaseTest{
 			//Enter Billing Profile
 			storeFrontHomePage.enterNewBillingCardNumber(TestConstants.CARD_NUMBER);
 			storeFrontHomePage.enterNewBillingNameOnCard(newBillingProfileName+" "+lastName);
-			storeFrontHomePage.selectNewBillingCardExpirationDate();
+			storeFrontHomePage.selectNewBillingCardExpirationDate("OCT","2025");
 			storeFrontHomePage.enterNewBillingSecurityCode(TestConstants.SECURITY_CODE);
 			storeFrontHomePage.selectNewBillingCardAddress();
 			storeFrontHomePage.clickOnSaveBillingProfile();
@@ -1690,7 +1690,7 @@ public class PC_RC_EnrollmentValidationTest extends RFWebsiteBaseTest{
 		//Enter Billing Profile
 		storeFrontHomePage.enterNewBillingCardNumber(TestConstants.CARD_NUMBER);
 		storeFrontHomePage.enterNewBillingNameOnCard(newBillingProfileName+" "+lastName);
-		storeFrontHomePage.selectNewBillingCardExpirationDate();
+		storeFrontHomePage.selectNewBillingCardExpirationDate("OCT","2025");
 		storeFrontHomePage.enterNewBillingSecurityCode(TestConstants.SECURITY_CODE);
 		storeFrontHomePage.selectNewBillingCardAddress();
 		storeFrontHomePage.clickOnSaveBillingProfile();
@@ -1747,7 +1747,7 @@ public class PC_RC_EnrollmentValidationTest extends RFWebsiteBaseTest{
 		//Enter Billing Profile
 		storeFrontHomePage.enterNewBillingCardNumber(TestConstants.CARD_NUMBER);
 		storeFrontHomePage.enterNewBillingNameOnCard(newBillingProfileName+" "+lastName);
-		storeFrontHomePage.selectNewBillingCardExpirationDate();
+		storeFrontHomePage.selectNewBillingCardExpirationDate("OCT","2025");
 		storeFrontHomePage.enterNewBillingSecurityCode(TestConstants.SECURITY_CODE);
 		storeFrontHomePage.selectNewBillingCardAddress();
 		storeFrontHomePage.clickOnSaveBillingProfile();
@@ -1795,7 +1795,7 @@ public class PC_RC_EnrollmentValidationTest extends RFWebsiteBaseTest{
 		storeFrontHomePage.clickOnShippingAddressNextStepBtn();
 		storeFrontHomePage.enterNewBillingCardNumber(TestConstants.CARD_NUMBER);
 		storeFrontHomePage.enterNewBillingNameOnCard(firstName+" "+lastName);
-		storeFrontHomePage.selectNewBillingCardExpirationDate();
+		storeFrontHomePage.selectNewBillingCardExpirationDate("OCT","2025");
 		storeFrontHomePage.enterNewBillingSecurityCode(TestConstants.SECURITY_CODE);
 		storeFrontHomePage.selectNewBillingCardAddress();
 		storeFrontHomePage.clickOnSaveBillingProfile();
@@ -1881,7 +1881,7 @@ public class PC_RC_EnrollmentValidationTest extends RFWebsiteBaseTest{
 		//Enter Billing Profile
 		storeFrontHomePage.enterNewBillingCardNumber(TestConstants.CARD_NUMBER);
 		storeFrontHomePage.enterNewBillingNameOnCard(newBillingProfileName+" "+lastName);
-		storeFrontHomePage.selectNewBillingCardExpirationDate();
+		storeFrontHomePage.selectNewBillingCardExpirationDate("OCT","2025");
 		storeFrontHomePage.enterNewBillingSecurityCode(TestConstants.SECURITY_CODE);
 		storeFrontHomePage.selectNewBillingCardAddress();
 		storeFrontHomePage.clickOnSaveBillingProfile();
@@ -1941,7 +1941,7 @@ public class PC_RC_EnrollmentValidationTest extends RFWebsiteBaseTest{
 		//Enter Billing Profile
 		storeFrontHomePage.enterNewBillingCardNumber(TestConstants.CARD_NUMBER);
 		storeFrontHomePage.enterNewBillingNameOnCard(newBillingProfileName+" "+lastName);
-		storeFrontHomePage.selectNewBillingCardExpirationDate();
+		storeFrontHomePage.selectNewBillingCardExpirationDate("OCT","2025");
 		storeFrontHomePage.enterNewBillingSecurityCode(TestConstants.SECURITY_CODE);
 		storeFrontHomePage.selectNewBillingCardAddress();
 		storeFrontHomePage.clickOnSaveBillingProfile();
@@ -2009,7 +2009,7 @@ public class PC_RC_EnrollmentValidationTest extends RFWebsiteBaseTest{
 		//Enter Billing Profile
 		storeFrontHomePage.enterNewBillingCardNumber(TestConstants.CARD_NUMBER);
 		storeFrontHomePage.enterNewBillingNameOnCard(newBillingProfileName+" "+lastName);
-		storeFrontHomePage.selectNewBillingCardExpirationDate();
+		storeFrontHomePage.selectNewBillingCardExpirationDate("OCT","2025");
 		storeFrontHomePage.enterNewBillingSecurityCode(TestConstants.SECURITY_CODE);
 		storeFrontHomePage.selectNewBillingCardAddress();
 		storeFrontHomePage.clickOnSaveBillingProfile();
@@ -2152,7 +2152,7 @@ public class PC_RC_EnrollmentValidationTest extends RFWebsiteBaseTest{
 		//Enter Billing Profile
 		storeFrontHomePage.enterNewBillingCardNumber(TestConstants.CARD_NUMBER);
 		storeFrontHomePage.enterNewBillingNameOnCard(newBillingProfileName+" "+lastName);
-		storeFrontHomePage.selectNewBillingCardExpirationDate();
+		storeFrontHomePage.selectNewBillingCardExpirationDate("OCT","2025");
 		storeFrontHomePage.enterNewBillingSecurityCode(TestConstants.SECURITY_CODE);
 		storeFrontHomePage.selectNewBillingCardAddress();
 		storeFrontHomePage.clickOnSaveBillingProfile();
@@ -2197,7 +2197,7 @@ public class PC_RC_EnrollmentValidationTest extends RFWebsiteBaseTest{
 			storeFrontHomePage.clickNextButton();
 			storeFrontHomePage.enterCardNumber(TestConstants.CARD_NUMBER);
 			storeFrontHomePage.enterNameOnCard(TestConstants.FIRST_NAME+randomNum);
-			storeFrontHomePage.selectNewBillingCardExpirationDate();
+			storeFrontHomePage.selectNewBillingCardExpirationDate("OCT","2025");
 			storeFrontHomePage.enterSecurityCode(TestConstants.SECURITY_CODE);
 			storeFrontHomePage.enterSocialInsuranceNumber(socialInsuranceNumber);
 			storeFrontHomePage.enterNameAsItAppearsOnCard(TestConstants.FIRST_NAME);
@@ -2269,7 +2269,7 @@ public class PC_RC_EnrollmentValidationTest extends RFWebsiteBaseTest{
 			//Enter Billing Profile
 			storeFrontHomePage.enterNewBillingCardNumber(TestConstants.CARD_NUMBER);
 			storeFrontHomePage.enterNewBillingNameOnCard(newBillingProfileName+" "+lastName);
-			storeFrontHomePage.selectNewBillingCardExpirationDate();
+			storeFrontHomePage.selectNewBillingCardExpirationDate("OCT","2025");
 			storeFrontHomePage.enterNewBillingSecurityCode(TestConstants.SECURITY_CODE);
 			storeFrontHomePage.selectNewBillingCardAddress();
 			storeFrontHomePage.clickOnSaveBillingProfile();
@@ -2349,7 +2349,7 @@ public class PC_RC_EnrollmentValidationTest extends RFWebsiteBaseTest{
 			storeFrontHomePage.clickNextButton();
 			storeFrontHomePage.enterCardNumber(TestConstants.CARD_NUMBER);
 			storeFrontHomePage.enterNameOnCard(TestConstants.FIRST_NAME+randomNum);
-			storeFrontHomePage.selectNewBillingCardExpirationDate();
+			storeFrontHomePage.selectNewBillingCardExpirationDate("OCT","2025");
 			storeFrontHomePage.enterSecurityCode(TestConstants.SECURITY_CODE);
 			storeFrontHomePage.enterSocialInsuranceNumber(socialInsuranceNumber);
 			storeFrontHomePage.enterNameAsItAppearsOnCard(TestConstants.FIRST_NAME);
@@ -2365,7 +2365,7 @@ public class PC_RC_EnrollmentValidationTest extends RFWebsiteBaseTest{
 			storeFrontHomePage.clickNextButton();
 			storeFrontHomePage.enterCardNumber(TestConstants.CARD_NUMBER);
 			storeFrontHomePage.enterNameOnCard(TestConstants.FIRST_NAME+randomNum);
-			storeFrontHomePage.selectNewBillingCardExpirationDate();
+			storeFrontHomePage.selectNewBillingCardExpirationDate("OCT","2025");
 			storeFrontHomePage.enterSecurityCode(TestConstants.SECURITY_CODE);
 			storeFrontHomePage.enterSocialInsuranceNumber(socialInsuranceNumber);
 			storeFrontHomePage.enterNameAsItAppearsOnCard(TestConstants.FIRST_NAME);
@@ -2489,7 +2489,7 @@ public class PC_RC_EnrollmentValidationTest extends RFWebsiteBaseTest{
 		//Enter Billing Profile
 		storeFrontHomePage.enterNewBillingCardNumber(TestConstants.CARD_NUMBER);
 		storeFrontHomePage.enterNewBillingNameOnCard(newBillingProfileName+" "+lastName);
-		storeFrontHomePage.selectNewBillingCardExpirationDate();
+		storeFrontHomePage.selectNewBillingCardExpirationDate("OCT","2025");
 		storeFrontHomePage.enterNewBillingSecurityCode(TestConstants.SECURITY_CODE);
 		storeFrontHomePage.selectNewBillingCardAddress();
 		storeFrontHomePage.clickOnSaveBillingProfile();
@@ -2594,7 +2594,7 @@ public class PC_RC_EnrollmentValidationTest extends RFWebsiteBaseTest{
 		//Enter Billing Profile
 		storeFrontHomePage.enterNewBillingCardNumber(TestConstants.CARD_NUMBER);
 		storeFrontHomePage.enterNewBillingNameOnCard(newBillingProfileName+" "+lastName);
-		storeFrontHomePage.selectNewBillingCardExpirationDate();
+		storeFrontHomePage.selectNewBillingCardExpirationDate("OCT","2025");
 		storeFrontHomePage.enterNewBillingSecurityCode(TestConstants.SECURITY_CODE);
 		storeFrontHomePage.selectNewBillingCardAddress();
 		storeFrontHomePage.clickOnSaveBillingProfile();
@@ -2668,7 +2668,7 @@ public class PC_RC_EnrollmentValidationTest extends RFWebsiteBaseTest{
 		//Enter Billing Profile
 		storeFrontHomePage.enterNewBillingCardNumber(TestConstants.CARD_NUMBER);
 		storeFrontHomePage.enterNewBillingNameOnCard(newBillingProfileName+" "+lastName);
-		storeFrontHomePage.selectNewBillingCardExpirationDate();
+		storeFrontHomePage.selectNewBillingCardExpirationDate("OCT","2025");
 		storeFrontHomePage.enterNewBillingSecurityCode(TestConstants.SECURITY_CODE);
 		storeFrontHomePage.selectNewBillingCardAddress();
 		storeFrontHomePage.clickOnSaveBillingProfile();
@@ -2781,7 +2781,7 @@ public class PC_RC_EnrollmentValidationTest extends RFWebsiteBaseTest{
 		//Enter Billing Profile
 		storeFrontHomePage.enterNewBillingCardNumber(TestConstants.CARD_NUMBER);
 		storeFrontHomePage.enterNewBillingNameOnCard(newBillingProfileName+" "+lastName);
-		storeFrontHomePage.selectNewBillingCardExpirationDate();
+		storeFrontHomePage.selectNewBillingCardExpirationDate("OCT","2025");
 		storeFrontHomePage.enterNewBillingSecurityCode(TestConstants.SECURITY_CODE);
 		storeFrontHomePage.selectNewBillingCardAddress();
 		storeFrontHomePage.clickOnSaveBillingProfile();
@@ -2878,7 +2878,7 @@ public class PC_RC_EnrollmentValidationTest extends RFWebsiteBaseTest{
 		//Enter Billing Profile
 		storeFrontHomePage.enterNewBillingCardNumber(TestConstants.CARD_NUMBER);
 		storeFrontHomePage.enterNewBillingNameOnCard(newBillingProfileName+" "+lastName);
-		storeFrontHomePage.selectNewBillingCardExpirationDate();
+		storeFrontHomePage.selectNewBillingCardExpirationDate("OCT","2025");
 		storeFrontHomePage.enterNewBillingSecurityCode(TestConstants.SECURITY_CODE);
 		storeFrontHomePage.selectNewBillingCardAddress();
 		storeFrontHomePage.clickOnSaveBillingProfile();
@@ -2936,7 +2936,7 @@ public class PC_RC_EnrollmentValidationTest extends RFWebsiteBaseTest{
 			//Enter Billing Profile
 			storeFrontHomePage.enterNewBillingCardNumber(TestConstants.CARD_NUMBER);
 			storeFrontHomePage.enterNewBillingNameOnCard(newBillingProfileName+" "+lastName);
-			storeFrontHomePage.selectNewBillingCardExpirationDate();
+			storeFrontHomePage.selectNewBillingCardExpirationDate("OCT","2025");
 			storeFrontHomePage.enterNewBillingSecurityCode(TestConstants.SECURITY_CODE);
 			storeFrontHomePage.selectNewBillingCardAddress();
 			storeFrontHomePage.clickOnSaveBillingProfile();
@@ -2996,7 +2996,7 @@ public class PC_RC_EnrollmentValidationTest extends RFWebsiteBaseTest{
 			//Enter Billing Profile
 			storeFrontHomePage.enterNewBillingCardNumber(TestConstants.CARD_NUMBER);
 			storeFrontHomePage.enterNewBillingNameOnCard(newBillingProfileName+" "+lastName);
-			storeFrontHomePage.selectNewBillingCardExpirationDate();
+			storeFrontHomePage.selectNewBillingCardExpirationDate("OCT","2025");
 			storeFrontHomePage.enterNewBillingSecurityCode(TestConstants.SECURITY_CODE);
 			storeFrontHomePage.selectNewBillingCardAddress();
 			storeFrontHomePage.clickOnSaveBillingProfile();
@@ -3051,7 +3051,7 @@ public class PC_RC_EnrollmentValidationTest extends RFWebsiteBaseTest{
 		storeFrontHomePage.clickOnShippingAddressNextStepBtn();
 		storeFrontHomePage.enterNewBillingCardNumber(TestConstants.CARD_NUMBER);
 		storeFrontHomePage.enterNewBillingNameOnCard(newBillingProfileName+" "+billinglastName);
-		storeFrontHomePage.selectNewBillingCardExpirationDate();
+		storeFrontHomePage.selectNewBillingCardExpirationDate("OCT","2025");
 		storeFrontHomePage.enterNewBillingSecurityCode(TestConstants.SECURITY_CODE);
 		storeFrontHomePage.selectNewBillingCardAddress();
 		storeFrontHomePage.clickOnSaveBillingProfile();
@@ -3121,7 +3121,7 @@ public class PC_RC_EnrollmentValidationTest extends RFWebsiteBaseTest{
 			//Enter Billing Profile
 			storeFrontHomePage.enterNewBillingCardNumber(TestConstants.CARD_NUMBER);
 			storeFrontHomePage.enterNewBillingNameOnCard(newBillingProfileName+" "+lastName);
-			storeFrontHomePage.selectNewBillingCardExpirationDate();
+			storeFrontHomePage.selectNewBillingCardExpirationDate("OCT","2025");
 			storeFrontHomePage.enterNewBillingSecurityCode(TestConstants.SECURITY_CODE);
 			storeFrontHomePage.selectNewBillingCardAddress();
 			storeFrontHomePage.clickOnSaveBillingProfile();
@@ -3163,7 +3163,7 @@ public class PC_RC_EnrollmentValidationTest extends RFWebsiteBaseTest{
 			storeFrontHomePage.clickNextButton();		
 			storeFrontHomePage.enterCardNumber(TestConstants.CARD_NUMBER);
 			storeFrontHomePage.enterNameOnCard(TestConstants.FIRST_NAME+randomNum);
-			storeFrontHomePage.selectNewBillingCardExpirationDate();
+			storeFrontHomePage.selectNewBillingCardExpirationDate("OCT","2025");
 			storeFrontHomePage.enterSecurityCode(TestConstants.SECURITY_CODE);
 			storeFrontHomePage.enterSocialInsuranceNumber(socialInsuranceNumber);
 			storeFrontHomePage.enterNameAsItAppearsOnCard(TestConstants.FIRST_NAME);

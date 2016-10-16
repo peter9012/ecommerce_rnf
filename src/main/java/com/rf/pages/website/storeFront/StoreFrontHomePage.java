@@ -3708,7 +3708,7 @@ public class StoreFrontHomePage extends StoreFrontRFWebsiteBasePage {
 
 	public String selectShippingMethodUPS2DayUnderShippingSectionAndGetName(){
 		driver.waitForElementPresent(By.xpath("//div[@id='start-shipping-method1']/div[2]//input/.."));
-		driver.click(By.xpath("//div[@id='start-shipping-method1']/div[2]//input/.."));
+		driver.clickByJS(RFWebsiteDriver.driver, driver.findElement(By.xpath("//div[@id='start-shipping-method1']/div[2]//input/..")));
 		driver.pauseExecutionFor(1500);
 		logger.info("UPS Standard Overnight shipping method is selected"); 
 		return driver.findElement(By.xpath("//div[@id='start-shipping-method1']/div[2]//span[2]")).getText();

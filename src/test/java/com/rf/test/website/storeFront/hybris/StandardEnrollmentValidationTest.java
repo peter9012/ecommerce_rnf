@@ -448,8 +448,6 @@ public class StandardEnrollmentValidationTest extends RFWebsiteBaseTest{
 		s_assert.assertAll();
 	}
 
-
-
 	//Hybris Project-1289:3. Terms and Conditions - Standard Enrollment only Pulse
 	@Test
 	public void testTermsAndConditionsForConsultantStandardEnrollmentForPulse_1289() throws InterruptedException {

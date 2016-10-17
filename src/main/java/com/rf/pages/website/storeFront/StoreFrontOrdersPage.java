@@ -1012,7 +1012,8 @@ public class StoreFrontOrdersPage extends StoreFrontRFWebsiteBasePage{
 
 	public void clickReturnOrderNumber(String orderNumber){
 		driver.waitForElementPresent(By.xpath("//h3[contains(text(),'Return Order')]/following::a[contains(text(),'"+orderNumber+"')]"));
-		driver.click(By.xpath("//h3[contains(text(),'Return Order')]/following::a[contains(text(),'"+orderNumber+"')]"));
+		//driver.click(By.xpath("//h3[contains(text(),'Return Order')]/following::a[contains(text(),'"+orderNumber+"')]"));
+		driver.clickByJS(RFWebsiteDriver.driver, driver.findElement(By.xpath("//h3[contains(text(),'Return Order')]/following::a[contains(text(),'"+orderNumber+"')]")));
 		driver.waitForLoadingImageToDisappear();
 		driver.pauseExecutionFor(2000);
 		logger.info("Return order clicked " +By.xpath("//h3[contains(text(),'Return Order')]/following::a[contains(text(),'"+orderNumber+"')]"));

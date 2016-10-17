@@ -655,7 +655,7 @@ public class StoreFrontAccountInfoPage extends StoreFrontRFWebsiteBasePage{
 	}
 
 	public boolean validateSubscribeToPulse(){
-		driver.quickWaitForElementPresent(By.xpath("//a[contains(text(),'Cancel my Pulse subscription')]"));
+		driver.waitForElementPresent(By.xpath("//a[contains(text(),'Cancel my Pulse subscription')]"));
 		return driver.isElementPresent(By.xpath("//a[contains(text(),'Cancel my Pulse subscription')]"));
 	}
 

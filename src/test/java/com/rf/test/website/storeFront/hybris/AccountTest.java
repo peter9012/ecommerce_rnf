@@ -1752,7 +1752,7 @@ public class AccountTest extends RFWebsiteBaseTest{
 			storeFrontBillingInfoPage.clickAddNewBillingProfileLink();
 			storeFrontBillingInfoPage.enterNewBillingCardNumber(TestConstants.CARD_NUMBER);
 			storeFrontBillingInfoPage.enterNewBillingNameOnCard(newBillingProfileName+i);
-			storeFrontBillingInfoPage.selectNewBillingCardExpirationDate("OCT","2025");
+			storeFrontBillingInfoPage.selectNewBillingCardExpirationDate();
 			storeFrontBillingInfoPage.enterNewBillingSecurityCode(TestConstants.SECURITY_CODE);
 			storeFrontBillingInfoPage.selectNewBillingCardAddress();
 			storeFrontBillingInfoPage.clickOnSaveBillingProfile();

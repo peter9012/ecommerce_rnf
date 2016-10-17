@@ -63,6 +63,8 @@ public class StoreFrontPCUserPage extends StoreFrontRFWebsiteBasePage{
 	public void clickOnPCPerksStatus(){
 		driver.waitForElementPresent(By.xpath("//a[contains(text(),'PC Perks Status')]"));
 		driver.click(By.xpath("//a[contains(text(),'PC Perks Status')]"));
+		driver.waitForPageLoad();
+		driver.pauseExecutionFor(3000);
 	}
 
 	public void clickDelayOrCancelPCPerks(){

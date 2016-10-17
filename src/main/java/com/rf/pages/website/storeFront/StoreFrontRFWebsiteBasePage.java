@@ -1691,11 +1691,16 @@ public class StoreFrontRFWebsiteBasePage extends RFBasePage{
 	public void enterWebsitePrefixName(String name){
 		driver.waitForElementPresent(By.id("webSitePrefix"));
 		driver.type(By.id("webSitePrefix"), name);
-		if(driver.isElementPresent(By.xpath("//span[@class='icon-search']"))==true){
-			driver.click(By.xpath("//span[@class='icon-search']"));
-		}else{
-			driver.click(By.xpath("//form[@id='crpEnrollment']//img[contains(@src,'pulse-blue')]"));	
-		}		
+		try{
+			if(driver.isElementPresent(By.xpath("//span[@class='icon-search']"))==true){
+				driver.click(By.xpath("//span[@class='icon-search']"));
+			}}catch(Exception e){
+				try{
+					driver.waitForElementNotPresent(By.xpath("//h3[text()='DECIDE TODAY HOW TOMORROW LOOKS']"));
+					driver.click(By.xpath("//h3[text()='DECIDE TODAY HOW TOMORROW LOOKS']"));
+				}catch(Exception e1){
+					driver.click(By.xpath("//form[@id='crpEnrollment']//img[contains(@src,'pulse-blue')]")); 
+				} } 
 		driver.waitForLoadingImageToDisappear();
 		driver.pauseExecutionFor(2000);
 	}
@@ -2230,8 +2235,8 @@ public class StoreFrontRFWebsiteBasePage extends RFBasePage{
 	}
 
 	public void cancelPulseSubscription(){
-		driver.waitForElementPresent(By.xpath("//a[text()='Cancel my Pulse subscription »']"));
-		driver.clickByJS(RFWebsiteDriver.driver, driver.findElement(By.xpath("//a[text()='Cancel my Pulse subscription »']")));
+		driver.waitForElementPresent(By.xpath("//a[contains(text(),'Cancel my Pulse subscription')]"));
+		driver.clickByJS(RFWebsiteDriver.driver, driver.findElement(By.xpath("//a[contains(text(),'Cancel my Pulse subscription')]")));
 		//driver.click(By.xpath("//a[text()='Cancel my Pulse subscription »']"));
 		driver.pauseExecutionFor(2000);
 		driver.click(By.xpath("//a[@id='cancelPulse']"));
@@ -2245,6 +2250,5 @@ public class StoreFrontRFWebsiteBasePage extends RFBasePage{
 		}
 		driver.waitForPageLoad();
 	}
-
 
 }

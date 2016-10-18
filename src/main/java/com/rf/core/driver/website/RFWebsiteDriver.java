@@ -165,12 +165,28 @@ public class RFWebsiteDriver implements RFDriver,WebDriver {
 		return browser;
 	}
 	public String getBizPWSURL() {
-		return propertyFile.getProperty("pwsBase")+getEnvironment()+".biz";
+		if (propertyFile.getProperty("environment").equalsIgnoreCase("tst1"))
+		{
+			return propertyFile.getProperty("pwsBase")+".biz";
+			}
+		else
+		{
+			return propertyFile.getProperty("pwsBase")+getEnvironment()+".biz";
+		}
 	}
+	
 	public String getComPWSURL() {
 		//		return propertyFile.getProperty("pwsComBase");
-		return propertyFile.getProperty("pwsBase")+getEnvironment()+".com";
+		if (propertyFile.getProperty("environment").equalsIgnoreCase("tst1"))
+		{
+			return propertyFile.getProperty("pwsBase")+".com";
+			}
+		else
+		{
+			return propertyFile.getProperty("pwsBase")+getEnvironment()+".com";
+		}
 	}
+	
 	public String getDBNameRFL(){
 		return propertyFile.getProperty("databaseNameRFL");
 	}

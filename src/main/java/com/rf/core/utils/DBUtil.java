@@ -27,7 +27,6 @@ public class DBUtil {
 	private static String databaseAuthentication = null;
 
 
-
 	public static void setDBDetails(String dbIP,String dbUser,String dbPass,String dbDomain,String authentication){
 		databaseIP = dbIP;
 		databaseUserName = dbUser;
@@ -45,6 +44,16 @@ public class DBUtil {
 		}
 		return ConnectionString;
 	}
+	
+	public static String getConnectionString(String databaseName, String dbIP){
+		if(databaseAuthentication.equalsIgnoreCase("SQL Server Authentication")){
+			ConnectionString = "jdbc:sqlserver://"+dbIP+";databaseName="+databaseName+";instance=MSSQLSERVER;"+"domain="+databaseDomain;
+		}
+		else if(databaseAuthentication.equalsIgnoreCase("Windows Authentication")){
+			ConnectionString = "jdbc:jtds:sqlserver://"+dbIP+";instance=MSSQLSERVER;domain="+databaseDomain+";integratedSecurity=true;DatabaseName="+databaseName;
+		}
+		return ConnectionString;
+	}
 
 	@SuppressWarnings("unchecked")
 	public static List<Map<String, Object>> performDatabaseQuery(String sQuery,String databaseName){
@@ -53,6 +62,21 @@ public class DBUtil {
 		logger.info("QUERY TRIGGERED IS "+sQuery+"\n");
 		ColumnMapRowMapper rowMapper = new ColumnMapRowMapper();		
 		List<Map<String, Object>> userDataList = jdbcTemplate.query(sQuery,rowMapper);		
+		return userDataList;
+	}
+
+	@SuppressWarnings("unchecked")
+	public static List<Map<String, Object>> performDatabaseQuery(String sQuery,String databaseName, String dbIP2){
+		JdbcTemplate jdbcTemplate;
+		if(databaseName.trim().equalsIgnoreCase("RodanFieldsLive")){
+			jdbcTemplate = new JdbcTemplate(getDataSource("RodanFieldsLive", dbIP2));
+		}
+		else{
+			jdbcTemplate = new JdbcTemplate(getDataSource("RFOperations", dbIP2));
+		}
+		logger.info("QUERY TRIGGERED IS "+sQuery+"\n");
+		ColumnMapRowMapper rowMapper = new ColumnMapRowMapper();  
+		List<Map<String, Object>> userDataList = jdbcTemplate.query(sQuery,rowMapper);  
 		return userDataList;
 	}
 
@@ -65,11 +89,21 @@ public class DBUtil {
 		return dataSource;
 	}
 
+	public static DataSource getDataSource(String databaseName, String dbIP) {
+		DriverManagerDataSource dataSource = new DriverManagerDataSource();
+		dataSource.setDriverClassName(Driver);
+		System.out.println("DB Name "+databaseName);
+		dataSource.setUrl(getConnectionString(databaseName, dbIP));
+		dataSource.setUsername(databaseUserName);
+		dataSource.setPassword(databasePassword);
+		return dataSource;
+	}
+
 	@SuppressWarnings("unchecked")
 	public static void performDatabaseQueryForUpdate(String sQuery,String databaseName){
 		JdbcTemplate jdbcTemplate;
 		jdbcTemplate = new JdbcTemplate(getDataSource(databaseName));
 		logger.info("QUERY TRIGGERED IS "+sQuery+"\n");
 		jdbcTemplate.execute(sQuery);
-	}
+	}	
 }

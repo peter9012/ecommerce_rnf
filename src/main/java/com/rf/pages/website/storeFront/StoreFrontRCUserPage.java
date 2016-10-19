@@ -46,6 +46,8 @@ public class StoreFrontRCUserPage extends StoreFrontRFWebsiteBasePage{
 		driver.waitForElementPresent(WELCOME_DD_ACCOUNT_INFO_LOC);
 		driver.click(WELCOME_DD_ACCOUNT_INFO_LOC);
 		logger.info("Account info link from welcome drop down clicked");
+		driver.waitForPageLoad();
+		driver.waitForLoadingImageToDisappear();
 		return new StoreFrontAccountInfoPage(driver);
 	}
 

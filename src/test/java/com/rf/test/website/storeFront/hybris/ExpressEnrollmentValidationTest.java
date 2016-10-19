@@ -13,26 +13,14 @@ import com.rf.core.utils.CommonUtils;
 import com.rf.core.utils.DBUtil;
 import com.rf.core.website.constants.TestConstants;
 import com.rf.core.website.constants.dbQueries.DBQueries_RFO;
-import com.rf.pages.website.cscockpit.CSCockpitAutoshipSearchTabPage;
-import com.rf.pages.website.cscockpit.CSCockpitAutoshipTemplateTabPage;
-import com.rf.pages.website.cscockpit.CSCockpitCartTabPage;
-import com.rf.pages.website.cscockpit.CSCockpitCheckoutTabPage;
-import com.rf.pages.website.cscockpit.CSCockpitCustomerSearchTabPage;
-import com.rf.pages.website.cscockpit.CSCockpitCustomerTabPage;
-import com.rf.pages.website.cscockpit.CSCockpitLoginPage;
-import com.rf.pages.website.cscockpit.CSCockpitOrderSearchTabPage;
-import com.rf.pages.website.cscockpit.CSCockpitOrderTabPage;
 import com.rf.pages.website.storeFront.StoreFrontAccountInfoPage;
 import com.rf.pages.website.storeFront.StoreFrontAccountTerminationPage;
-import com.rf.pages.website.storeFront.StoreFrontCartAutoShipPage;
 import com.rf.pages.website.storeFront.StoreFrontConsultantPage;
 import com.rf.pages.website.storeFront.StoreFrontHomePage;
 import com.rf.pages.website.storeFront.StoreFrontOrdersPage;
 import com.rf.pages.website.storeFront.StoreFrontPCUserPage;
-import com.rf.pages.website.storeFront.StoreFrontRCUserPage;
 import com.rf.pages.website.storeFront.StoreFrontShippingInfoPage;
 import com.rf.pages.website.storeFront.StoreFrontUpdateCartPage;
-import com.rf.test.website.RFStoreFrontWebsiteBaseTest;
 import com.rf.test.website.RFWebsiteBaseTest;
 
 public class ExpressEnrollmentValidationTest extends RFWebsiteBaseTest{
@@ -43,16 +31,8 @@ public class ExpressEnrollmentValidationTest extends RFWebsiteBaseTest{
 	private StoreFrontConsultantPage storeFrontConsultantPage;
 	private StoreFrontAccountInfoPage storeFrontAccountInfoPage;
 	private StoreFrontAccountTerminationPage storeFrontAccountTerminationPage;
-	private StoreFrontPCUserPage storeFrontPCUserPage;
 	private StoreFrontOrdersPage storeFrontOrdersPage;
-	private StoreFrontRCUserPage storeFrontRCUserPage;
-	private StoreFrontUpdateCartPage storeFrontUpdateCartPage;
-	private StoreFrontCartAutoShipPage storeFrontCartAutoShipPage;
 	private StoreFrontShippingInfoPage storeFrontShippingInfoPage;
-	private CSCockpitLoginPage cscockpitLoginPage;	
-	private CSCockpitCustomerSearchTabPage cscockpitCustomerSearchTabPage;
-	private CSCockpitOrderTabPage cscockpitOrderTabPage;
-	private CSCockpitCustomerTabPage cscockpitCustomerTabPage;
 
 	private String kitName = null;
 	private String regimenName = null;
@@ -71,12 +51,8 @@ public class ExpressEnrollmentValidationTest extends RFWebsiteBaseTest{
 	public void setupDataForExpressEnrollmentValidationTest() throws InterruptedException{	
 		storeFrontHomePage = new StoreFrontHomePage(driver);
 		storeFrontOrdersPage = new StoreFrontOrdersPage(driver);
-		storeFrontCartAutoShipPage = new StoreFrontCartAutoShipPage(driver);
-		storeFrontUpdateCartPage = new StoreFrontUpdateCartPage(driver);
-		storeFrontPCUserPage = new StoreFrontPCUserPage(driver);
 		storeFrontAccountInfoPage = new StoreFrontAccountInfoPage(driver);
 		storeFrontConsultantPage = new StoreFrontConsultantPage(driver);
-
 		randomNum = CommonUtils.getRandomNum(10000, 1000000);
 		RFO_DB = driver.getDBNameRFO(); 
 		env = driver.getEnvironment();
@@ -157,7 +133,7 @@ public class ExpressEnrollmentValidationTest extends RFWebsiteBaseTest{
 		storeFrontHomePage.clearCreditCardNumber();
 		storeFrontHomePage.enterNewBillingCardNumber(TestConstants.CARD_NUMBER);
 		storeFrontHomePage.enterNewBillingNameOnCard(newBillingProfileName+" "+lastName);
-		storeFrontHomePage.selectNewBillingCardExpirationDate();
+		storeFrontHomePage.selectNewBillingCardExpirationDate("OCT","2025");
 		storeFrontHomePage.enterNewBillingSecurityCode(TestConstants.SECURITY_CODE);
 		storeFrontHomePage.selectNewBillingCardAddress();
 		storeFrontHomePage.enterSocialInsuranceNumber(socialInsuranceNumber);
@@ -167,7 +143,7 @@ public class ExpressEnrollmentValidationTest extends RFWebsiteBaseTest{
 		storeFrontHomePage.enterSpouseLastName(TestConstants.SPOUSE_LAST_NAME);
 		storeFrontHomePage.clickNextButton();
 		storeFrontHomePage.acceptTheProvideAccessToSpousePopup();
-		storeFrontHomePage.clickNextButton();
+		//storeFrontHomePage.clickNextButton();
 		s_assert.assertTrue(storeFrontHomePage.isTheTermsAndConditionsCheckBoxDisplayed(), "Terms and Conditions checkbox is not visible");
 		storeFrontHomePage.checkThePoliciesAndProceduresCheckBox();
 		storeFrontHomePage.clickOnChargeMyCardAndEnrollMeBtn();
@@ -180,6 +156,11 @@ public class ExpressEnrollmentValidationTest extends RFWebsiteBaseTest{
 		storeFrontHomePage.clickOnChargeMyCardAndEnrollMeBtn();
 		storeFrontHomePage.clickOnConfirmAutomaticPayment();
 		s_assert.assertTrue(storeFrontHomePage.verifyCongratsMessage(), "Congrats Message is not visible");
+		storeFrontHomePage.clickOnRodanAndFieldsLogo();
+		storeFrontHomePage.clickOnWelcomeDropDown();
+		storeFrontAccountInfoPage = storeFrontHomePage.clickAccountInfoLinkPresentOnWelcomeDropDown();
+		s_assert.assertTrue(storeFrontAccountInfoPage.getSpouseFirstName().contains(TestConstants.SPOUSE_FIRST_NAME), "Spouse First name is not as provided during Enrollment.");
+		s_assert.assertTrue(storeFrontAccountInfoPage.getSpouseLastName().contains(TestConstants.SPOUSE_LAST_NAME), "Spouse Last name is not as provided during Enrollment.");
 		s_assert.assertAll(); 
 	}
 
@@ -197,7 +178,7 @@ public class ExpressEnrollmentValidationTest extends RFWebsiteBaseTest{
 		////storeFrontHomePage.acceptTheVerifyYourShippingAddressPop();  
 		storeFrontHomePage.enterCardNumber(TestConstants.CARD_NUMBER);
 		storeFrontHomePage.enterNameOnCard(TestConstants.FIRST_NAME+randomNum);
-		storeFrontHomePage.selectNewBillingCardExpirationDate();
+		storeFrontHomePage.selectNewBillingCardExpirationDate("OCT","2025");
 		storeFrontHomePage.enterSecurityCode(TestConstants.SECURITY_CODE);
 		storeFrontHomePage.enterSocialInsuranceNumber(socialInsuranceNumber);
 		storeFrontHomePage.enterNameAsItAppearsOnCard(TestConstants.FIRST_NAME);
@@ -230,7 +211,7 @@ public class ExpressEnrollmentValidationTest extends RFWebsiteBaseTest{
 		storeFrontHomePage.clickNextButton();
 		storeFrontHomePage.enterCardNumber(TestConstants.CARD_NUMBER);
 		storeFrontHomePage.enterNameOnCard(TestConstants.FIRST_NAME+randomNum);
-		storeFrontHomePage.selectNewBillingCardExpirationDate();
+		storeFrontHomePage.selectNewBillingCardExpirationDate("OCT","2025");
 		storeFrontHomePage.enterSecurityCode(TestConstants.SECURITY_CODE);
 		storeFrontHomePage.enterSocialInsuranceNumber(socialInsuranceNumber);
 		storeFrontHomePage.enterNameAsItAppearsOnCard(TestConstants.FIRST_NAME);
@@ -251,7 +232,7 @@ public class ExpressEnrollmentValidationTest extends RFWebsiteBaseTest{
 		storeFrontHomePage.clickNextButton();
 		storeFrontHomePage.enterCardNumber(TestConstants.CARD_NUMBER);
 		storeFrontHomePage.enterNameOnCard(TestConstants.FIRST_NAME+randomNum);
-		storeFrontHomePage.selectNewBillingCardExpirationDate();
+		storeFrontHomePage.selectNewBillingCardExpirationDate("OCT","2025");
 		storeFrontHomePage.enterSecurityCode(TestConstants.SECURITY_CODE);
 		storeFrontHomePage.enterSocialInsuranceNumber(socialInsuranceNumber);
 		storeFrontHomePage.enterNameAsItAppearsOnCard(TestConstants.FIRST_NAME);
@@ -287,7 +268,7 @@ public class ExpressEnrollmentValidationTest extends RFWebsiteBaseTest{
 		storeFrontHomePage.clickNextButton();
 		storeFrontHomePage.enterCardNumber(TestConstants.CARD_NUMBER);
 		storeFrontHomePage.enterNameOnCard(TestConstants.FIRST_NAME+randomNum);
-		storeFrontHomePage.selectNewBillingCardExpirationDate();
+		storeFrontHomePage.selectNewBillingCardExpirationDate("OCT","2025");
 		storeFrontHomePage.enterSecurityCode(TestConstants.SECURITY_CODE);
 		storeFrontHomePage.enterSocialInsuranceNumber(socialInsuranceNumber);
 		storeFrontHomePage.enterNameAsItAppearsOnCard(TestConstants.FIRST_NAME);
@@ -355,7 +336,7 @@ public class ExpressEnrollmentValidationTest extends RFWebsiteBaseTest{
 			//storeFrontHomePage.acceptTheVerifyYourShippingAddressPop();		
 			storeFrontHomePage.enterCardNumber(TestConstants.CARD_NUMBER);
 			storeFrontHomePage.enterNameOnCard(TestConstants.FIRST_NAME+randomNum);
-			storeFrontHomePage.selectNewBillingCardExpirationDate();
+			storeFrontHomePage.selectNewBillingCardExpirationDate("OCT","2025");
 			storeFrontHomePage.enterSecurityCode(TestConstants.SECURITY_CODE);
 			storeFrontHomePage.enterSocialInsuranceNumber(socialInsuranceNumber);
 			storeFrontHomePage.enterNameAsItAppearsOnCard(TestConstants.FIRST_NAME);
@@ -425,7 +406,7 @@ public class ExpressEnrollmentValidationTest extends RFWebsiteBaseTest{
 		storeFrontHomePage.clickNextButton();
 		storeFrontHomePage.enterCardNumber(TestConstants.CARD_NUMBER);
 		storeFrontHomePage.enterNameOnCard(TestConstants.FIRST_NAME+randomNum);
-		storeFrontHomePage.selectNewBillingCardExpirationDate();
+		storeFrontHomePage.selectNewBillingCardExpirationDate("OCT","2025");
 		storeFrontHomePage.enterSecurityCode(TestConstants.SECURITY_CODE);
 		storeFrontHomePage.enterSocialInsuranceNumber(socialInsuranceNumber);
 		storeFrontHomePage.enterNameAsItAppearsOnCard(TestConstants.FIRST_NAME);
@@ -454,7 +435,7 @@ public class ExpressEnrollmentValidationTest extends RFWebsiteBaseTest{
 		storeFrontHomePage.clickNextButton();
 		storeFrontHomePage.enterCardNumber(TestConstants.CARD_NUMBER);
 		storeFrontHomePage.enterNameOnCard(TestConstants.FIRST_NAME+randomNumber);
-		storeFrontHomePage.selectNewBillingCardExpirationDate();
+		storeFrontHomePage.selectNewBillingCardExpirationDate("OCT","2025");
 		storeFrontHomePage.enterSecurityCode(TestConstants.SECURITY_CODE);
 		storeFrontHomePage.enterSocialInsuranceNumber(socialInsuranceNumbers);
 		storeFrontHomePage.enterNameAsItAppearsOnCard(TestConstants.FIRST_NAME);
@@ -546,7 +527,7 @@ public class ExpressEnrollmentValidationTest extends RFWebsiteBaseTest{
 		//Enter Billing Profile
 		storeFrontHomePage.enterNewBillingCardNumber(TestConstants.CARD_NUMBER);
 		storeFrontHomePage.enterNewBillingNameOnCard(newBillingProfileName+" "+lastName);
-		storeFrontHomePage.selectNewBillingCardExpirationDate();
+		storeFrontHomePage.selectNewBillingCardExpirationDate("OCT","2025");
 		storeFrontHomePage.enterNewBillingSecurityCode(TestConstants.SECURITY_CODE);
 		storeFrontHomePage.selectNewBillingCardAddress();
 		storeFrontHomePage.clickOnSaveBillingProfile();
@@ -568,12 +549,12 @@ public class ExpressEnrollmentValidationTest extends RFWebsiteBaseTest{
 		storeFrontHomePage.searchCID();
 		storeFrontHomePage.mouseHoverSponsorDataAndClickContinue();
 		storeFrontHomePage.enterUserInformationForEnrollment(kitName, regimenName, enrollmentType, TestConstants.FIRST_NAME+randomNum, TestConstants.LAST_NAME+randomNum, password, addressLine1, city,state, postalCode, phoneNumber);
-		
+
 		storeFrontHomePage.clickNextButton();
 		////storeFrontHomePage.acceptTheVerifyYourShippingAddressPop();  
 		storeFrontHomePage.enterCardNumber(TestConstants.CARD_NUMBER);
 		storeFrontHomePage.enterNameOnCard(TestConstants.FIRST_NAME+randomNum);
-		storeFrontHomePage.selectNewBillingCardExpirationDate();
+		storeFrontHomePage.selectNewBillingCardExpirationDate("OCT","2025");
 		storeFrontHomePage.enterSecurityCode(TestConstants.SECURITY_CODE);
 		storeFrontHomePage.enterSocialInsuranceNumber(socialInsuranceNumber);
 		storeFrontHomePage.enterNameAsItAppearsOnCard(TestConstants.FIRST_NAME);
@@ -630,7 +611,7 @@ public class ExpressEnrollmentValidationTest extends RFWebsiteBaseTest{
 		storeFrontHomePage.clickNextButton();
 		storeFrontHomePage.enterCardNumber(TestConstants.CARD_NUMBER);
 		storeFrontHomePage.enterNameOnCard(TestConstants.FIRST_NAME+randomNum);
-		storeFrontHomePage.selectNewBillingCardExpirationDate();
+		storeFrontHomePage.selectNewBillingCardExpirationDate("OCT","2025");
 		storeFrontHomePage.enterSecurityCode(TestConstants.SECURITY_CODE);
 		storeFrontHomePage.enterSocialInsuranceNumber(socialInsuranceNumber);
 		storeFrontHomePage.enterNameAsItAppearsOnCard(TestConstants.FIRST_NAME);
@@ -695,7 +676,7 @@ public class ExpressEnrollmentValidationTest extends RFWebsiteBaseTest{
 		storeFrontHomePage.clickNextButton();
 		storeFrontHomePage.enterCardNumber(TestConstants.CARD_NUMBER);
 		storeFrontHomePage.enterNameOnCard(TestConstants.FIRST_NAME+randomNum);
-		storeFrontHomePage.selectNewBillingCardExpirationDate();
+		storeFrontHomePage.selectNewBillingCardExpirationDate("OCT","2025");
 		storeFrontHomePage.enterSecurityCode(TestConstants.SECURITY_CODE);
 		storeFrontHomePage.enterSocialInsuranceNumber(socialInsuranceNumber);
 		storeFrontHomePage.enterNameAsItAppearsOnCard(TestConstants.FIRST_NAME);
@@ -787,7 +768,7 @@ public class ExpressEnrollmentValidationTest extends RFWebsiteBaseTest{
 		//Enter Billing Profile
 		storeFrontHomePage.enterNewBillingCardNumber(TestConstants.CARD_NUMBER);
 		storeFrontHomePage.enterNewBillingNameOnCard(newBillingProfileName+" "+lastName);
-		storeFrontHomePage.selectNewBillingCardExpirationDate();
+		storeFrontHomePage.selectNewBillingCardExpirationDate("OCT","2025");
 		storeFrontHomePage.enterNewBillingSecurityCode(TestConstants.SECURITY_CODE);
 		storeFrontHomePage.selectNewBillingCardAddress();
 		storeFrontHomePage.enterSocialInsuranceNumber(socialInsuranceNumber);
@@ -870,7 +851,7 @@ public class ExpressEnrollmentValidationTest extends RFWebsiteBaseTest{
 		storeFrontHomePage.clickNextButton();
 		storeFrontHomePage.enterCardNumber(TestConstants.CARD_NUMBER);
 		storeFrontHomePage.enterNameOnCard(TestConstants.FIRST_NAME+randomNum);
-		storeFrontHomePage.selectNewBillingCardExpirationDate();
+		storeFrontHomePage.selectNewBillingCardExpirationDate("OCT","2025");
 		storeFrontHomePage.enterSecurityCode(TestConstants.SECURITY_CODE);
 		storeFrontHomePage.enterSocialInsuranceNumber(socialInsuranceNumber);
 		storeFrontHomePage.enterNameAsItAppearsOnCard(TestConstants.FIRST_NAME);
@@ -937,7 +918,7 @@ public class ExpressEnrollmentValidationTest extends RFWebsiteBaseTest{
 		//Enter Billing Profile
 		storeFrontHomePage.enterNewBillingCardNumber(TestConstants.CARD_NUMBER);
 		storeFrontHomePage.enterNewBillingNameOnCard(newBillingProfileName+" "+lastName);
-		storeFrontHomePage.selectNewBillingCardExpirationDate();
+		storeFrontHomePage.selectNewBillingCardExpirationDate("OCT","2025");
 		storeFrontHomePage.enterNewBillingSecurityCode(TestConstants.SECURITY_CODE);
 		storeFrontHomePage.selectNewBillingCardAddress();
 		storeFrontHomePage.enterSocialInsuranceNumber(socialInsuranceNumber);
@@ -1017,7 +998,7 @@ public class ExpressEnrollmentValidationTest extends RFWebsiteBaseTest{
 		//Continue enrollment flow.
 		storeFrontHomePage.enterCardNumber(TestConstants.CARD_NUMBER);
 		storeFrontHomePage.enterNameOnCard(newBillingProfileName);
-		storeFrontHomePage.selectNewBillingCardExpirationDate();
+		storeFrontHomePage.selectNewBillingCardExpirationDate("OCT","2025");
 		storeFrontHomePage.enterSecurityCode(TestConstants.SECURITY_CODE);
 		storeFrontHomePage.enterSocialInsuranceNumber(socialInsuranceNumber);
 		storeFrontHomePage.enterNameAsItAppearsOnCard(TestConstants.FIRST_NAME);
@@ -1065,14 +1046,14 @@ public class ExpressEnrollmentValidationTest extends RFWebsiteBaseTest{
 		storeFrontHomePage.clickNextButton();
 		storeFrontHomePage.enterCardNumber(TestConstants.CARD_NUMBER);
 		storeFrontHomePage.enterNameOnCard(TestConstants.FIRST_NAME+randomNum);
-		storeFrontHomePage.selectNewBillingCardExpirationDate();
+		storeFrontHomePage.selectNewBillingCardExpirationDate("OCT","2025");
 		storeFrontHomePage.enterSecurityCode(TestConstants.SECURITY_CODE);
 		storeFrontHomePage.enterSocialInsuranceNumber(socialInsuranceNumber);
 		storeFrontHomePage.enterNameAsItAppearsOnCard(TestConstants.FIRST_NAME);
 		storeFrontHomePage.clickNextButton();
 		storeFrontHomePage.clickOnReviewAndConfirmBillingEditBtn();
 		storeFrontHomePage.enterEditedCardNumber(TestConstants.CARD_NUMBER_SECOND);
-		storeFrontHomePage.selectNewBillingCardExpirationDate();
+		storeFrontHomePage.selectNewBillingCardExpirationDate("OCT","2025");
 		String expirationMonth = storeFrontHomePage.getExpirationMonth();
 		String expirationYear = storeFrontHomePage.getExpirationYear();
 		storeFrontHomePage.enterSecurityCode(TestConstants.SECURITY_CODE);
@@ -1130,7 +1111,7 @@ public class ExpressEnrollmentValidationTest extends RFWebsiteBaseTest{
 			storeFrontHomePage.clickNextButton();
 			storeFrontHomePage.enterCardNumber(TestConstants.CARD_NUMBER);
 			storeFrontHomePage.enterNameOnCard(TestConstants.FIRST_NAME+randomNum);
-			storeFrontHomePage.selectNewBillingCardExpirationDate();
+			storeFrontHomePage.selectNewBillingCardExpirationDate("OCT","2025");
 			storeFrontHomePage.enterSecurityCode(TestConstants.SECURITY_CODE);
 			storeFrontHomePage.enterSocialInsuranceNumber(socialInsuranceNumber);
 			storeFrontHomePage.enterNameAsItAppearsOnCard(TestConstants.FIRST_NAME);
@@ -1187,7 +1168,7 @@ public class ExpressEnrollmentValidationTest extends RFWebsiteBaseTest{
 		storeFrontHomePage.clickNextButton();
 		storeFrontHomePage.enterCardNumber(TestConstants.CARD_NUMBER);
 		storeFrontHomePage.enterNameOnCard(TestConstants.FIRST_NAME+randomNum);
-		storeFrontHomePage.selectNewBillingCardExpirationDate();
+		storeFrontHomePage.selectNewBillingCardExpirationDate("OCT","2025");
 		storeFrontHomePage.enterSecurityCode(TestConstants.SECURITY_CODE);
 		storeFrontHomePage.enterSocialInsuranceNumber(socialInsuranceNumber);
 		storeFrontHomePage.enterNameAsItAppearsOnCard(TestConstants.FIRST_NAME);
@@ -1350,7 +1331,7 @@ public class ExpressEnrollmentValidationTest extends RFWebsiteBaseTest{
 		storeFrontHomePage.clickNextButton();
 		storeFrontHomePage.enterCardNumber(TestConstants.CARD_NUMBER);
 		storeFrontHomePage.enterNameOnCard(TestConstants.FIRST_NAME+randomNum);
-		storeFrontHomePage.selectNewBillingCardExpirationDate();
+		storeFrontHomePage.selectNewBillingCardExpirationDate("OCT","2025");
 		storeFrontHomePage.enterSecurityCode(TestConstants.SECURITY_CODE);
 		storeFrontHomePage.enterSocialInsuranceNumber(socialInsuranceNumber);
 		storeFrontHomePage.enterNameAsItAppearsOnCard(TestConstants.FIRST_NAME);
@@ -1407,7 +1388,7 @@ public class ExpressEnrollmentValidationTest extends RFWebsiteBaseTest{
 
 		storeFrontHomePage.enterCardNumber(TestConstants.CARD_NUMBER);
 		storeFrontHomePage.enterNameOnCard(TestConstants.FIRST_NAME+randomNum);
-		storeFrontHomePage.selectNewBillingCardExpirationDate();
+		storeFrontHomePage.selectNewBillingCardExpirationDate("OCT","2025");
 		storeFrontHomePage.enterSecurityCode(TestConstants.SECURITY_CODE);
 		storeFrontHomePage.enterSocialInsuranceNumber(socialInsuranceNumber);
 		storeFrontHomePage.enterNameAsItAppearsOnCard(TestConstants.FIRST_NAME);
@@ -1503,6 +1484,7 @@ public class ExpressEnrollmentValidationTest extends RFWebsiteBaseTest{
 		RFO_DB = driver.getDBNameRFO();	
 		int randomNum = CommonUtils.getRandomNum(10000, 1000000);
 		List<Map<String, Object>> randomConsultantList =  null;
+		List<Map<String, Object>> randomConsultantEmailList =  null;
 		String consultantEmailID = null;
 		String accountID = null;
 		String lastName = "lN";
@@ -1513,9 +1495,12 @@ public class ExpressEnrollmentValidationTest extends RFWebsiteBaseTest{
 		String newBillingProfileName = TestConstants.NEW_BILLING_PROFILE_NAME_US+randomNum;
 		while(true){
 			randomConsultantList = DBUtil.performDatabaseQuery(DBQueries_RFO.callQueryWithArguement(DBQueries_RFO.GET_RANDOM_ACTIVE_CONSULTANT_WITH_ORDERS_AND_AUTOSHIPS_RFO,countryId),RFO_DB);
-			consultantEmailID = (String) getValueFromQueryResult(randomConsultantList, "UserName");		
+			//consultantEmailID = (String) getValueFromQueryResult(randomConsultantList, "UserName");		
 			accountID = String.valueOf(getValueFromQueryResult(randomConsultantList, "AccountID"));
+			randomConsultantEmailList = DBUtil.performDatabaseQuery(DBQueries_RFO.callQueryWithArguement(DBQueries_RFO.GET_EMAIL_ID_FROM_ACCOUNT_ID,accountID),RFO_DB);
+			consultantEmailID = String.valueOf(getValueFromQueryResult(randomConsultantEmailList, "EmailAddress"));
 			logger.info("Account Id of the user is "+accountID);
+			logger.info("consultantEmailID of the user is "+consultantEmailID);
 			storeFrontConsultantPage = storeFrontHomePage.loginAsConsultant(consultantEmailID, password);
 			boolean isLoginError = driver.getCurrentUrl().contains("error");
 			if(isLoginError){
@@ -1612,7 +1597,7 @@ public class ExpressEnrollmentValidationTest extends RFWebsiteBaseTest{
 		storeFrontUpdateCartPage.clickOnDefaultBillingProfileEdit();
 		storeFrontUpdateCartPage.enterNewBillingNameOnCard(newBillingProfileName+" "+lastName);
 		storeFrontUpdateCartPage.enterNewBillingCardNumber(TestConstants.CARD_NUMBER);
-		storeFrontUpdateCartPage.selectNewBillingCardExpirationDate();
+		storeFrontUpdateCartPage.selectNewBillingCardExpirationDate("OCT","2025");
 		storeFrontUpdateCartPage.enterNewBillingSecurityCode(TestConstants.SECURITY_CODE);
 		storeFrontUpdateCartPage.selectNewBillingCardAddress();
 		storeFrontUpdateCartPage.clickOnSaveBillingProfile();
@@ -1807,7 +1792,7 @@ public class ExpressEnrollmentValidationTest extends RFWebsiteBaseTest{
 			//storeFrontHomePage.acceptTheVerifyYourShippingAddressPop();  
 			storeFrontHomePage.enterCardNumber(TestConstants.CARD_NUMBER);
 			storeFrontHomePage.enterNameOnCard(TestConstants.FIRST_NAME+randomNum);
-			storeFrontHomePage.selectNewBillingCardExpirationDate();
+			storeFrontHomePage.selectNewBillingCardExpirationDate("OCT","2025");
 			storeFrontHomePage.enterSecurityCode(TestConstants.SECURITY_CODE);
 			storeFrontHomePage.enterSocialInsuranceNumber(socialInsuranceNumber);
 			storeFrontHomePage.enterNameAsItAppearsOnCard(TestConstants.FIRST_NAME);
@@ -1872,7 +1857,7 @@ public class ExpressEnrollmentValidationTest extends RFWebsiteBaseTest{
 			//storeFrontHomePage.acceptTheVerifyYourShippingAddressPop();  
 			storeFrontHomePage.enterCardNumber(TestConstants.CARD_NUMBER);
 			storeFrontHomePage.enterNameOnCard(TestConstants.FIRST_NAME+randomNum);
-			storeFrontHomePage.selectNewBillingCardExpirationDate();
+			storeFrontHomePage.selectNewBillingCardExpirationDate("OCT","2025");
 			storeFrontHomePage.enterSecurityCode(TestConstants.SECURITY_CODE);
 			storeFrontHomePage.enterSocialInsuranceNumber(socialInsuranceNumber);
 			storeFrontHomePage.enterNameAsItAppearsOnCard(TestConstants.FIRST_NAME);
@@ -1993,7 +1978,7 @@ public class ExpressEnrollmentValidationTest extends RFWebsiteBaseTest{
 			//Enter Billing Profile
 			storeFrontHomePage.enterNewBillingCardNumber(TestConstants.CARD_NUMBER);
 			storeFrontHomePage.enterNewBillingNameOnCard(newBillingProfileName+" "+lastName);
-			storeFrontHomePage.selectNewBillingCardExpirationDate();
+			storeFrontHomePage.selectNewBillingCardExpirationDate("OCT","2025");
 			storeFrontHomePage.enterNewBillingSecurityCode(TestConstants.SECURITY_CODE);
 			storeFrontHomePage.selectNewBillingCardAddress();
 			storeFrontHomePage.clickOnSaveBillingProfile();
@@ -2053,7 +2038,7 @@ public class ExpressEnrollmentValidationTest extends RFWebsiteBaseTest{
 			//Enter Billing Profile
 			storeFrontHomePage.enterNewBillingCardNumber(TestConstants.CARD_NUMBER);
 			storeFrontHomePage.enterNewBillingNameOnCard(newBillingProfileName+" "+lastName);
-			storeFrontHomePage.selectNewBillingCardExpirationDate();
+			storeFrontHomePage.selectNewBillingCardExpirationDate("OCT","2025");
 			storeFrontHomePage.enterNewBillingSecurityCode(TestConstants.SECURITY_CODE);
 			storeFrontHomePage.selectNewBillingCardAddress();
 			storeFrontHomePage.clickOnSaveBillingProfile();

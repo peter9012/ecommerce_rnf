@@ -471,6 +471,8 @@ public class StoreFrontLegacyHomePage extends StoreFrontLegacyRFWebsiteBasePage{
 	public void clickBillingInfoNextBtn(){
 		driver.findElement(COMPLETE_ACCOUNT_NEXT_BTN_LOC).click();
 		logger.info("standard enrollment complete account next button clicked");
+		driver.waitForPageLoad();
+		driver.pauseExecutionFor(2000);
 	}
 
 	public void openBizPWS(String pws){
@@ -1927,6 +1929,7 @@ public class StoreFrontLegacyHomePage extends StoreFrontLegacyRFWebsiteBasePage{
 		logger.info("Click here link clicked");
 		logger.info("Redirect to direct selling page");
 		driver.waitForPageLoad();
+		driver.pauseExecutionFor(3000);
 	}
 
 	public void clickCompanyPressRoomLink(){

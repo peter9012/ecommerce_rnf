@@ -8,6 +8,7 @@ import org.openqa.selenium.By;
 import org.openqa.selenium.JavascriptExecutor;
 import org.openqa.selenium.NoSuchElementException;
 import org.openqa.selenium.WebElement;
+import org.openqa.selenium.interactions.Actions;
 import org.openqa.selenium.support.ui.Select;
 
 import com.rf.core.driver.RFDriver;
@@ -87,31 +88,49 @@ public class DSVStoreFrontBillingInfoPage extends DSVRFWebsiteBasePage {
 		}
 	}
 
-	public void cleanAllBillingProfiles(){
-		List<WebElement> allBillingProfiles =  driver.findElements(By.xpath("//div[@id='multiple-billing-profiles']/div[contains(@class,'non-autoship')]"));
-
-		for(int i=1;i<=allBillingProfiles.size();i++){
-			try{
-				driver.click(By.xpath("//div[@id='multiple-billing-profiles']/descendant::a[contains(text(),'Delete')][1]"));
-			}catch(NoSuchElementException e){
-				logger.info("All Profiles deleted except the last one");
-				break;
-			}
-
-			int listSize = driver.findElements(USED_IN_AUTOSHIP_POPUP).size();
-			if(listSize==0){
-				driver.quickWaitForElementPresent(CONFIRM_DELETE_POPUP);
-				driver.click(CONFIRM_DELETE_POPUP);	
-			}
-			else{
-				driver.pauseExecutionFor(2000);
-				logger.info("Used in Autoship,can't delete");
-				((JavascriptExecutor)RFWebsiteDriver.driver).executeScript("arguments[0].click()", driver.findElement(CANCEL_AUTOSHIP_MSG));
-				driver.findElement(CANCEL_AUTOSHIP_MSG);
-				driver.waitForLoadingImageToDisappear();
-				continue;
-			}
+	public boolean deleteBillingProfiles(){
+		driver.waitForLoadingImageToDisappear();
+		driver.click(By.xpath("//div[@id='multiple-billing-profiles']/descendant::a[contains(text(),'Delete')][1]"));
+		driver.pauseExecutionFor(2000);
+		boolean isAutoshipPopUpDisplayed = driver.findElement(USED_IN_AUTOSHIP_POPUP).isDisplayed();
+		logger.info("is Autoship PopUp Displayed = "+isAutoshipPopUpDisplayed);
+		if(isAutoshipPopUpDisplayed==false){
+			driver.quickWaitForElementPresent(CONFIRM_DELETE_POPUP);
+			//((JavascriptExecutor)RFWebsiteDriver.driver).executeScript("arguments[0].click()", driver.findElement(CONFIRM_DELETE_POPUP));
+			Actions actions = new Actions(RFWebsiteDriver.driver);
+			actions.click(driver.findElement(CONFIRM_DELETE_POPUP)).build().perform();
+			driver.pauseExecutionFor(2000);
+			driver.waitForLoadingImageToDisappear();
+			return driver.isElementPresent(By.xpath("//div[@id='main-content']/div/div[2]//p[text()='Your Billing profile has been removed']"));
 		}
+		else{
+			driver.pauseExecutionFor(2000);
+			logger.info("Used in Autoship,can't delete");
+			((JavascriptExecutor)RFWebsiteDriver.driver).executeScript("arguments[0].click()", driver.findElement(CANCEL_AUTOSHIP_MSG));
+			driver.findElement(CANCEL_AUTOSHIP_MSG);
+			driver.waitForLoadingImageToDisappear();
+			return true;
+		}
+
+	}
+
+	public boolean areMoreBillingProfilesLeftForDeletion(){
+		boolean areMoreBillingProfilesLeftForDeletion=false;
+		if(driver.findElements(By.xpath("//div[@id='multiple-billing-profiles']/descendant::a[contains(text(),'Delete')][1]")).size()>0){
+			areMoreBillingProfilesLeftForDeletion=true;
+		}
+			
+		else{
+			areMoreBillingProfilesLeftForDeletion=false;
+		}
+		System.out.println("areMoreBillingProfilesLeftForDeletion = "+areMoreBillingProfilesLeftForDeletion);
+			return areMoreBillingProfilesLeftForDeletion;
+
+	}
+
+	public int getTotalBillingProfiles(){
+		List<WebElement> allBillingProfiles =  driver.findElements(By.xpath("//div[@id='multiple-billing-profiles']/div[contains(@class,'non-autoship')]"));
+		return allBillingProfiles.size();
 	}
 
 	public void enterNameAndSecurityCode(String billingName,String securityCode){

@@ -15,9 +15,10 @@ import com.rf.core.website.constants.dbQueries.DBQueries_RFO;
 import com.rf.pages.website.storeFrontLegacy.StoreFrontLegacyConsultantPage;
 import com.rf.pages.website.storeFrontLegacy.StoreFrontLegacyHomePage;
 import com.rf.pages.website.storeFrontLegacy.StoreFrontLegacyPCUserPage;
+import com.rf.test.website.RFBrandRefreshWebsiteBaseTest;
 import com.rf.test.website.RFLegacyStoreFrontWebsiteBaseTest;
 
-public class BizPWSTest extends RFLegacyStoreFrontWebsiteBaseTest{
+public class BizPWSTest extends RFBrandRefreshWebsiteBaseTest{
 	private static final Logger logger = LogManager
 			.getLogger(BizPWSTest.class.getName());
 

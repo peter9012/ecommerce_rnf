@@ -63,11 +63,14 @@ public class StoreFrontPCUserPage extends StoreFrontRFWebsiteBasePage{
 	public void clickOnPCPerksStatus(){
 		driver.waitForElementPresent(By.xpath("//a[contains(text(),'PC Perks Status')]"));
 		driver.click(By.xpath("//a[contains(text(),'PC Perks Status')]"));
+		driver.waitForPageLoad();
+		driver.pauseExecutionFor(3000);
 	}
 
 	public void clickDelayOrCancelPCPerks(){
 		driver.waitForElementPresent(By.xpath("//a[text()='Delay or Cancel PC Perks']"));
-		driver.click(By.xpath("//a[text()='Delay or Cancel PC Perks']"));
+		driver.clickByJS(RFWebsiteDriver.driver, driver.findElement(By.xpath("//a[text()='Delay or Cancel PC Perks']")));
+		//driver.click(By.xpath("//a[text()='Delay or Cancel PC Perks']"));
 	}
 
 	public void clickPleaseCancelMyPcPerksActBtn(){
@@ -338,7 +341,8 @@ public class StoreFrontPCUserPage extends StoreFrontRFWebsiteBasePage{
 
 	public void clickOnAddtoPCPerksButton(){
 		driver.quickWaitForElementPresent(By.xpath("//div[@id='main-content']/descendant::input[contains(@value,'ADD to PC Perks')][1]"));
-		driver.click(By.xpath("//div[@id='main-content']/descendant::input[contains(@value,'ADD to PC Perks')][1]"));
+		//driver.click(By.xpath("//div[@id='main-content']/descendant::input[contains(@value,'ADD to PC Perks')][1]"));
+		driver.clickByJS(RFWebsiteDriver.driver, driver.findElement(By.xpath("//div[@id='main-content']/descendant::input[contains(@value,'ADD to PC Perks')][1]")));
 		try{
 			driver.quickWaitForElementPresent(By.xpath("//input[@value='OK']"));
 			driver.click(By.xpath("//input[@value='OK']"));

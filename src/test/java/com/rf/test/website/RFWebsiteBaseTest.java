@@ -60,6 +60,8 @@ public class RFWebsiteBaseTest extends RFBaseTest {
 	public void beforeMethod(){
 		s_assert = new SoftAssert();
 		String country = driver.getCountry();
+		System.out.println("Country="+country);
+		System.out.println("driver="+driver.getURL());
 		if(driver.getURL().contains("cscockpit")||driver.getURL().contains("salesforce")==true){                 
 			driver.get(driver.getURL());
 		}
@@ -69,11 +71,11 @@ public class RFWebsiteBaseTest extends RFBaseTest {
 		if(driver.getURL().contains("cscockpit")==true||driver.getURL().contains("salesforce")==true){  
 
 		}else{
-//			try{
-//				logout();		
-//			}catch(NoSuchElementException e){
-//
-//			} 
+			//			try{
+			//				logout();		
+			//			}catch(NoSuchElementException e){
+			//
+			//			} 
 			if(isLogoutBtnPresent())
 				logout();
 		}	
@@ -146,21 +148,23 @@ public class RFWebsiteBaseTest extends RFBaseTest {
 	public void logout(){
 		StoreFrontHomePage storeFrontHomePage = new StoreFrontHomePage(driver);
 		storeFrontHomePage.clickOnRodanAndFieldsLogo();
-		try
-		{
+		driver.waitForPageLoad();
+		driver.pauseExecutionFor(2000);
+		try{
 			driver.waitForElementPresent(By.id("account-info-button"));
-			driver.click(By.id("account-info-button"));
+			//driver.click(By.id("account-info-button"));
+			driver.clickByJS(RFWebsiteDriver.driver, driver.findElement(By.xpath("//div[@id='account-info-button']/a")));
 			logger.info("Your account info has been clicked");
 			driver.waitForElementPresent(By.linkText("Log out"));
 			driver.click(By.linkText("Log out"));
-			logger.info("Logout");                    
+			logger.info("Logout");
+			driver.waitForPageLoad();
 			driver.pauseExecutionFor(3000);
 		}
 		catch(Exception e)
 		{
 
 		}
-
 	}
 
 	public boolean isLogoutBtnPresent(){

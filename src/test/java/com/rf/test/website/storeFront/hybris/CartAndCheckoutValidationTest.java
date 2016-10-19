@@ -231,7 +231,7 @@ public class CartAndCheckoutValidationTest extends RFWebsiteBaseTest{
 			storeFrontUpdateCartPage.clickAddNewBillingProfileLink();
 			storeFrontUpdateCartPage.enterNewBillingCardNumber(TestConstants.CARD_NUMBER);
 			storeFrontUpdateCartPage.enterNewBillingNameOnCard(newBillingProfileName+i+" "+lastName);
-			storeFrontUpdateCartPage.selectNewBillingCardExpirationDate();
+			storeFrontUpdateCartPage.selectNewBillingCardExpirationDate("OCT","2025");
 			storeFrontUpdateCartPage.enterNewBillingSecurityCode(TestConstants.SECURITY_CODE);
 			storeFrontUpdateCartPage.selectNewBillingCardAddress();
 			storeFrontUpdateCartPage.clickOnSaveBillingProfile();
@@ -256,7 +256,7 @@ public class CartAndCheckoutValidationTest extends RFWebsiteBaseTest{
 		storeFrontConsultantPage.clickOnWelcomeDropDown();
 		storeFrontBillingInfoPage = storeFrontConsultantPage.clickBillingInfoLinkPresentOnWelcomeDropDown();
 		s_assert.assertTrue(storeFrontBillingInfoPage.verifyBillingInfoPageIsDisplayed(),"Billing Info page has not been displayed");
-		s_assert.assertTrue(storeFrontBillingInfoPage.isTheBillingAddressPresentOnPage(newBillingProfileName+i),"Newly added Billing profile is NOT listed on the billing page");
+		s_assert.assertTrue(storeFrontBillingInfoPage.isBillingAddressPresentOnPage(newBillingProfileName+i),"Newly added Billing profile is NOT listed on the billing page");
 		s_assert.assertAll();
 	}
 
@@ -508,10 +508,18 @@ public class CartAndCheckoutValidationTest extends RFWebsiteBaseTest{
 	public void testCheckShippingAndHandlingFee_2144() throws SQLException, InterruptedException{
 		RFO_DB = driver.getDBNameRFO();
 		List<Map<String, Object>> randomConsultantList =  null;
+		List<Map<String, Object>> randomPCUserList =  null;
+		List<Map<String, Object>> randomRCUserList =  null;
 		String consultantEmailID = null;
+		String pcUserEmailID = null;
+		String rcUserEmailID = null;
 		String accountId = null;
+		String accountIdForPCUser = null;
+		String accountIdForRCUser = null;
 		storeFrontHomePage = new StoreFrontHomePage(driver);
 		storeFrontUpdateCartPage = new StoreFrontUpdateCartPage(driver);
+		double orderTotal = 0.00;
+		String deliveryCharges = null;
 		while(true){
 			randomConsultantList = DBUtil.performDatabaseQuery(DBQueries_RFO.callQueryWithArguement(DBQueries_RFO.GET_RANDOM_ACTIVE_CONSULTANT_WITH_ORDERS_AND_AUTOSHIPS_RFO,countryId),RFO_DB);
 			consultantEmailID = (String) getValueFromQueryResult(randomConsultantList, "UserName");  
@@ -532,12 +540,95 @@ public class CartAndCheckoutValidationTest extends RFWebsiteBaseTest{
 		storeFrontConsultantPage.clickAddToBagButton(driver.getCountry());
 		storeFrontUpdateCartPage.clickOnCheckoutButton();
 		storeFrontUpdateCartPage.selectShippingMethod2DayForAdhocOrder();
-		double orderTotal = storeFrontUpdateCartPage.getOrderTotal();
+		orderTotal = storeFrontUpdateCartPage.getOrderTotal();
 		logger.info("subtotal ="+orderTotal);
-		String deliveryCharges = String.valueOf(storeFrontUpdateCartPage.getDeliveryCharges());
+		deliveryCharges = String.valueOf(storeFrontUpdateCartPage.getDeliveryCharges());
 		logger.info("deliveryCharges ="+deliveryCharges);
 		/*  String handlingCharges = String.valueOf(storeFrontUpdateCartPage.getHandlingCharges());
-		  logger.info("handlingCharges ="+handlingCharges);*/
+	    logger.info("handlingCharges ="+handlingCharges);*/
+		if(orderTotal<=999999){
+			if(driver.getCountry().equalsIgnoreCase("CA")){
+				System.out.println("Inside");
+				//Assert of shipping cost from UI
+				s_assert.assertTrue(storeFrontUpdateCartPage.isDeliveryChargesPresent(),"Shipping charges is not present on UI");
+			}else if(driver.getCountry().equalsIgnoreCase("US")){
+				s_assert.assertTrue(deliveryCharges.equalsIgnoreCase("$23.00"),"Shipping charges on UI is not As per shipping method selected");
+			}
+
+		}else{
+			logger.info("Order total is not in required range");
+		}
+		logout();
+		driver.get(driver.getURL()+"/"+driver.getCountry());
+		//Check shipping and handling for PC User.
+		while(true){
+			randomPCUserList = DBUtil.performDatabaseQuery(DBQueries_RFO.callQueryWithArguement(DBQueries_RFO.GET_RANDOM_ACTIVE_PC_WITH_ORDERS_AND_AUTOSHIPS_RFO,countryId),RFO_DB);
+			pcUserEmailID = (String) getValueFromQueryResult(randomPCUserList, "UserName");  
+			accountIdForPCUser = String.valueOf(getValueFromQueryResult(randomPCUserList, "AccountID"));
+			logger.info("Account Id of the user is "+accountIdForPCUser);
+
+			storeFrontPCUserPage = storeFrontHomePage.loginAsPCUser(pcUserEmailID, password);
+			boolean isError = driver.getCurrentUrl().contains("error");
+			if(isError){
+				logger.info("login error for the user "+pcUserEmailID);
+				driver.get(driver.getURL()+"/"+driver.getCountry());
+			}
+			else
+				break;
+		}
+		logger.info("login is successful");
+		storeFrontConsultantPage.hoverOnShopLinkAndClickAllProductsLinksAfterLogin();
+		storeFrontConsultantPage.clickAddToBagButton(driver.getCountry());
+		storeFrontUpdateCartPage.clickOnCheckoutButton();
+		storeFrontUpdateCartPage.selectShippingMethod2DayForAdhocOrder();
+		orderTotal = storeFrontUpdateCartPage.getOrderTotal();
+		logger.info("subtotal ="+orderTotal);
+		deliveryCharges = String.valueOf(storeFrontUpdateCartPage.getDeliveryCharges());
+		logger.info("deliveryCharges ="+deliveryCharges);
+		/*  String handlingCharges = String.valueOf(storeFrontUpdateCartPage.getHandlingCharges());
+	    logger.info("handlingCharges ="+handlingCharges);*/
+		if(orderTotal<=999999){
+			if(driver.getCountry().equalsIgnoreCase("CA")){
+				System.out.println("Inside");
+				//Assert of shipping cost from UI
+				s_assert.assertTrue(storeFrontUpdateCartPage.isDeliveryChargesPresent(),"Shipping charges is not present on UI");
+			}else if(driver.getCountry().equalsIgnoreCase("US")){
+				s_assert.assertTrue(deliveryCharges.equalsIgnoreCase("$23.00"),"Shipping charges on UI is not As per shipping method selected");
+			}
+
+		}else{
+			logger.info("Order total is not in required range");
+		}
+		logout();
+		driver.get(driver.getURL()+"/"+driver.getCountry());
+		//Check shipping and handling for RC User.
+		while(true){
+			randomRCUserList = DBUtil.performDatabaseQuery(DBQueries_RFO.callQueryWithArguement(DBQueries_RFO.GET_RANDOM_ACTIVE_RC_HAVING_ORDERS_RFO,countryId),RFO_DB);
+			rcUserEmailID = (String) getValueFromQueryResult(randomRCUserList, "UserName");  
+			accountIdForRCUser = String.valueOf(getValueFromQueryResult(randomRCUserList, "AccountID"));
+			logger.info("Account Id of the user is "+accountIdForRCUser);
+
+			storeFrontRCUserPage = storeFrontHomePage.loginAsRCUser(rcUserEmailID, password);
+			boolean isError = driver.getCurrentUrl().contains("error");
+			if(isError){
+				logger.info("login error for the user "+pcUserEmailID);
+				driver.get(driver.getURL()+"/"+driver.getCountry());
+			}
+			else
+				break;
+		}
+		logger.info("login is successful");
+		storeFrontConsultantPage.hoverOnShopLinkAndClickAllProductsLinksAfterLogin();
+		storeFrontConsultantPage.clickAddToBagButton(driver.getCountry());
+		storeFrontUpdateCartPage.clickOnCheckoutButton();
+		storeFrontUpdateCartPage.clickOnEditShipping();
+		storeFrontUpdateCartPage.selectShippingMethod2DayForAdhocOrder();
+		orderTotal = storeFrontUpdateCartPage.getOrderTotal();
+		logger.info("subtotal ="+orderTotal);
+		deliveryCharges = String.valueOf(storeFrontUpdateCartPage.getDeliveryCharges());
+		logger.info("deliveryCharges ="+deliveryCharges);
+		/*  String handlingCharges = String.valueOf(storeFrontUpdateCartPage.getHandlingCharges());
+	    logger.info("handlingCharges ="+handlingCharges);*/
 		if(orderTotal<=999999){
 			if(driver.getCountry().equalsIgnoreCase("CA")){
 				System.out.println("Inside");
@@ -660,7 +751,7 @@ public class CartAndCheckoutValidationTest extends RFWebsiteBaseTest{
 
 	//Hybris Project-2120:Increase the Quantity
 	@Test
-	public void testIncreseTheQuantity_2120() throws InterruptedException{
+	public void testIncreaseTheQuantity_2120() throws InterruptedException{
 		String qtyIncrease = "2";
 		storeFrontHomePage = new StoreFrontHomePage(driver);
 		storeFrontHomePage.hoverOnShopLinkAndClickAllProductsLinks();
@@ -668,7 +759,7 @@ public class CartAndCheckoutValidationTest extends RFWebsiteBaseTest{
 		storeFrontHomePage.clickAddToBagButtonWithoutFilter();
 		double subTotalOfAddedProduct = storeFrontHomePage.getSubTotalOnShoppingCartPage();
 		storeFrontHomePage.addQuantityOfProduct(qtyIncrease);
-		s_assert.assertTrue(storeFrontHomePage.validateAutoshipTemplateUpdatedMsgAfterIncreasingQtyOfProducts(),"update message not coming as expected");
+		//s_assert.assertTrue(storeFrontHomePage.validateAutoshipTemplateUpdatedMsgAfterIncreasingQtyOfProducts(),"update message not coming as expected");
 		s_assert.assertTrue(storeFrontHomePage.getAutoshipTemplateUpdatedMsg().contains("Product quantity has been updated."),"update message not coming as expected");
 		double subTotalOfAfterUpdate = storeFrontHomePage.getSubTotalOnShoppingCartPage();
 		s_assert.assertTrue(storeFrontHomePage.verifySubTotalAccordingToQuantity(qtyIncrease,subTotalOfAddedProduct,subTotalOfAfterUpdate),"subTotal is not updated with increased quantity");
@@ -693,6 +784,9 @@ public class CartAndCheckoutValidationTest extends RFWebsiteBaseTest{
 		s_assert.assertTrue(storeFrontHomePage.validateAutoshipTemplateUpdatedMsgAfterIncreasingQtyOfProducts(),"update message not coming as expected");
 		double subTotalAfterReduce = storeFrontHomePage.getSubTotalOnShoppingCartPage();
 		s_assert.assertTrue(storeFrontHomePage.verifySubTotalAccordingToQuantity(qtyReduce,subTotalOfAddedProduct,subTotalAfterReduce),"subTotal is not updated with reduced quantity");
+		storeFrontHomePage.deleteTheOnlyAddedProductInTheCart();
+		s_assert.assertTrue(storeFrontHomePage.getMessageFromTheCart().contains(TestConstants.PRODUCT_HAS_BEEN_REMOVED_FROM_CART_MSG.toLowerCase().trim()),"expected message after removing the product is "+TestConstants.PRODUCT_HAS_BEEN_REMOVED_FROM_CART_MSG.toLowerCase().trim()+" but getting "+storeFrontHomePage.getMessageFromTheCart());
+		s_assert.assertTrue(storeFrontHomePage.isCartEmpty(), "cart is not empty after removing all the products");
 		s_assert.assertAll();
 	}
 
@@ -1561,7 +1655,7 @@ public class CartAndCheckoutValidationTest extends RFWebsiteBaseTest{
 		storeFrontBillingInfoPage = storeFrontShippingInfoPage.clickBillingInfoLinkPresentOnWelcomeDropDown();
 		storeFrontBillingInfoPage.enterNewBillingCardNumber(TestConstants.CARD_NUMBER);
 		storeFrontBillingInfoPage.enterNewBillingNameOnCard(firstName);
-		storeFrontBillingInfoPage.selectNewBillingCardExpirationDate();
+		storeFrontUpdateCartPage.selectNewBillingCardExpirationDate("OCT","2025");
 		storeFrontBillingInfoPage.enterNewBillingSecurityCode(TestConstants.SECURITY_CODE);
 		storeFrontBillingInfoPage.selectNewBillingCardAddress();
 		storeFrontBillingInfoPage.clickOnSaveBillingProfile();
@@ -1614,14 +1708,14 @@ public class CartAndCheckoutValidationTest extends RFWebsiteBaseTest{
 		storeFrontHomePage.enterMainAccountInfo();
 		logger.info("Main account details entered");
 
-//		String accountID;// = String.valueOf(getValueFromQueryResult(randomConsultantList, "AccountID"));
+		//		String accountID;// = String.valueOf(getValueFromQueryResult(randomConsultantList, "AccountID"));
 		storeFrontHomePage.clickOnNextButtonAfterSelectingSponsor();
 
 		storeFrontHomePage.clickOnShippingAddressNextStepBtn();
 		//Enter Billing Profile
 		storeFrontHomePage.enterNewBillingCardNumber(TestConstants.CARD_NUMBER);
 		storeFrontHomePage.enterNewBillingNameOnCard(newBillingProfileName+" "+lastName);
-		storeFrontHomePage.selectNewBillingCardExpirationDate();
+		storeFrontUpdateCartPage.selectNewBillingCardExpirationDate("OCT","2025");
 		storeFrontHomePage.enterNewBillingSecurityCode(TestConstants.SECURITY_CODE);
 		storeFrontHomePage.selectNewBillingCardAddress();
 		storeFrontHomePage.clickOnSaveBillingProfile();
@@ -1680,7 +1774,7 @@ public class CartAndCheckoutValidationTest extends RFWebsiteBaseTest{
 		logger.info("Quick shop products are displayed");
 
 		//Verify enrollment kit option are not present for pc User.
-		s_assert.assertFalse(storeFrontHomePage.isKitPresentDuringPCEnrollment(), "Kit Options are present during pc enrollment");
+		s_assert.assertFalse(storeFrontHomePage.isKitProductPresent(), "Kit product is present");
 
 		//verify all prices are in respective currency.
 		s_assert.assertTrue(storeFrontHomePage.verifyProductPriceAsPerCountry(driver.getCountry()), "Product Prices are not as per country selected");
@@ -1799,7 +1893,7 @@ public class CartAndCheckoutValidationTest extends RFWebsiteBaseTest{
 		//Enter Billing Profile
 		storeFrontHomePage.enterNewBillingCardNumber(TestConstants.CARD_NUMBER);
 		storeFrontHomePage.enterNewBillingNameOnCard(newBillingProfileName+" "+lastName);
-		storeFrontHomePage.selectNewBillingCardExpirationDate();
+		storeFrontHomePage.selectNewBillingCardExpirationDate("OCT","2025");
 		storeFrontHomePage.enterNewBillingSecurityCode(TestConstants.SECURITY_CODE);
 		storeFrontHomePage.selectNewBillingCardAddress();
 		storeFrontHomePage.clickOnSaveBillingProfile();
@@ -1841,7 +1935,7 @@ public class CartAndCheckoutValidationTest extends RFWebsiteBaseTest{
 		storeFrontUpdateCartPage.clickAddNewBillingProfileLink();
 		storeFrontUpdateCartPage.enterNewBillingCardNumber(TestConstants.CARD_NUMBER);
 		storeFrontUpdateCartPage.enterNewBillingNameOnCard(newBillingProfileName);
-		storeFrontUpdateCartPage.selectNewBillingCardExpirationDate();
+		storeFrontUpdateCartPage.selectNewBillingCardExpirationDate("OCT","2025");
 		storeFrontUpdateCartPage.enterNewBillingSecurityCode(TestConstants.SECURITY_CODE);
 		storeFrontUpdateCartPage.selectNewBillingCardAddress();
 		storeFrontUpdateCartPage.clickOnSaveBillingProfile();
@@ -1968,10 +2062,9 @@ public class CartAndCheckoutValidationTest extends RFWebsiteBaseTest{
 		storeFrontUpdateCartPage = new StoreFrontUpdateCartPage(driver);
 		storeFrontUpdateCartPage.clickOnShippingAddressNextStepBtn();
 		storeFrontUpdateCartPage.clickAddNewBillingProfileLink();
-
 		storeFrontUpdateCartPage.enterNewBillingCardNumber(TestConstants.CARD_NUMBER);
 		storeFrontUpdateCartPage.enterNewBillingNameOnCard(newBillingProfileName+" "+lastName);
-		storeFrontUpdateCartPage.selectNewBillingCardExpirationDate();
+		storeFrontUpdateCartPage.selectNewBillingCardExpirationDate("OCT","2025");
 		storeFrontUpdateCartPage.enterNewBillingSecurityCode(TestConstants.SECURITY_CODE);
 		storeFrontUpdateCartPage.selectNewBillingCardAddress();
 		storeFrontUpdateCartPage.clickAddANewAddressLink();
@@ -1983,9 +2076,9 @@ public class CartAndCheckoutValidationTest extends RFWebsiteBaseTest{
 		storeFrontUpdateCartPage.enterNewBillingAddressPhoneNumber(phoneNumber);
 		storeFrontUpdateCartPage.clickOnSaveBillingProfile();
 		storeFrontUpdateCartPage.clickOnEditDefaultBillingProfile();
-		storeFrontUpdateCartPage.selectNewBillingCardExpirationDate(TestConstants.CARD_EXP_MONTH,TestConstants.CARD_EXP_YEAR);
+		storeFrontUpdateCartPage.selectNewBillingCardExpirationDate("OCT","2024");
 		storeFrontUpdateCartPage.enterNewBillingSecurityCode(TestConstants.SECURITY_CODE);
-		storeFrontUpdateCartPage.clickAddANewAddressLink();
+		//storeFrontUpdateCartPage.clickAddANewAddressLink();
 		storeFrontUpdateCartPage.selectNewlyAddedBillingAddressName(newBillingProfileName);
 		storeFrontUpdateCartPage.clickOnSaveBillingProfile();
 		storeFrontUpdateCartPage.clickOnBillingNextStepBtn(); 
@@ -2182,7 +2275,7 @@ public class CartAndCheckoutValidationTest extends RFWebsiteBaseTest{
 		storeFrontUpdateCartPage.clickAddNewBillingProfileLink();
 		storeFrontUpdateCartPage.enterNewBillingNameOnCard(newBillingProfileName+" "+lastName);
 		storeFrontUpdateCartPage.enterNewBillingCardNumber(TestConstants.AMERICAN_EXPRESS_CARD_NUMBER);
-		storeFrontUpdateCartPage.selectNewBillingCardExpirationDate();
+		storeFrontUpdateCartPage.selectNewBillingCardExpirationDate("OCT","2025");
 		storeFrontUpdateCartPage.enterNewBillingSecurityCode(TestConstants.SECURITY_CODE_FOR_SPECIAL_CARDS);
 		storeFrontUpdateCartPage.selectNewBillingCardAddress();
 		storeFrontUpdateCartPage.clickOnSaveBillingProfile();
@@ -2230,7 +2323,7 @@ public class CartAndCheckoutValidationTest extends RFWebsiteBaseTest{
 		String deliveryCharges = storeFrontUpdateCartPage.getDeliveryCharges();
 		logger.info("Delivery charges while creating order is "+deliveryCharges);
 		/*		String handlingCharges = storeFrontUpdateCartPage.getHandlingCharges();
-		logger.info("Handling charges while creating order is "+handlingCharges);*/
+			logger.info("Handling charges while creating order is "+handlingCharges);*/
 		String tax = storeFrontUpdateCartPage.getTax();
 		logger.info("Tax while creating order is "+tax);
 		String total = storeFrontUpdateCartPage.getTotal();
@@ -2241,7 +2334,7 @@ public class CartAndCheckoutValidationTest extends RFWebsiteBaseTest{
 		storeFrontUpdateCartPage.clickAddNewBillingProfileLink();
 		storeFrontUpdateCartPage.enterNewBillingNameOnCard(newBillingProfileName+" "+lastName);
 		storeFrontUpdateCartPage.enterNewBillingCardNumber(TestConstants.CARD_NUMBER);
-		storeFrontUpdateCartPage.selectNewBillingCardExpirationDate();
+		storeFrontUpdateCartPage.selectNewBillingCardExpirationDate("OCT","2025");
 		storeFrontUpdateCartPage.enterNewBillingSecurityCode(TestConstants.SECURITY_CODE);
 		storeFrontUpdateCartPage.selectNewBillingCardAddress();
 		storeFrontUpdateCartPage.clickOnSaveBillingProfile();
@@ -2255,7 +2348,7 @@ public class CartAndCheckoutValidationTest extends RFWebsiteBaseTest{
 		String orderHistoryNumber = storeFrontOrdersPage.getFirstOrderNumberFromOrderHistory();
 		storeFrontOrdersPage.clickOrderNumber(orderHistoryNumber);
 		s_assert.assertTrue(storeFrontOrdersPage.getSubTotalFromAutoshipTemplate().contains(subtotal),"Adhoc Order template subtotal "+subtotal+" and on UI is "+storeFrontOrdersPage.getSubTotalFromAutoshipTemplate());
-		s_assert.assertTrue(storeFrontOrdersPage.getTaxAmountFromAutoshipTemplate().contains(tax),"Adhoc Order template tax "+tax+" and on UI is "+storeFrontOrdersPage.getTaxAmountFromAdhocOrderTemplate());
+		s_assert.assertTrue(storeFrontOrdersPage.getTaxAmountFromAutoshipTemplate().contains(tax.trim()),"Adhoc Order template tax "+tax+" and on UI is "+storeFrontOrdersPage.getTaxAmountFromAdhocOrderTemplate());
 		s_assert.assertTrue(storeFrontOrdersPage.getGrandTotalFromAutoshipTemplate().contains(total),"Adhoc Order template grand total "+total+" and on UI is "+storeFrontOrdersPage.getGrandTotalFromAutoshipTemplate());
 		/*		s_assert.assertTrue(storeFrontOrdersPage.getHandlingAmountFromAutoshipTemplate().contains(handlingCharges),"Adhoc Order template handling amount "+handlingCharges+" and on UI is "+storeFrontOrdersPage.getHandlingAmountFromAutoshipTemplate());
 		 */		s_assert.assertTrue(shippingMethod.contains(storeFrontOrdersPage.getShippingMethodFromAutoshipTemplate()),"Adhoc Order template shipping method "+shippingMethod+" and on UI is "+storeFrontOrdersPage.getShippingMethodFromAutoshipTemplate());
@@ -2510,7 +2603,7 @@ public class CartAndCheckoutValidationTest extends RFWebsiteBaseTest{
 		storeFrontHomePage.clickNextButton();
 		storeFrontHomePage.enterCardNumber(TestConstants.CARD_NUMBER);
 		storeFrontHomePage.enterNameOnCard(TestConstants.FIRST_NAME+randomNum);
-		storeFrontHomePage.selectNewBillingCardExpirationDate();
+		storeFrontHomePage.selectNewBillingCardExpirationDate("OCT","2025");
 		storeFrontHomePage.enterSecurityCode(TestConstants.SECURITY_CODE);
 		storeFrontHomePage.enterSocialInsuranceNumber(socialInsuranceNumber);
 		storeFrontHomePage.enterNameAsItAppearsOnCard(TestConstants.FIRST_NAME);
@@ -2583,7 +2676,7 @@ public class CartAndCheckoutValidationTest extends RFWebsiteBaseTest{
 		storeFrontUpdateCartPage.clickAddNewBillingProfileLink();
 		storeFrontUpdateCartPage.enterNewBillingNameOnCard(newBillingProfileName+" "+lastName);
 		storeFrontUpdateCartPage.enterNewBillingCardNumber(TestConstants.MASTER_CARD_NUMBER);
-		storeFrontUpdateCartPage.selectNewBillingCardExpirationDate();
+		storeFrontUpdateCartPage.selectNewBillingCardExpirationDate("OCT","2025");
 		storeFrontUpdateCartPage.enterNewBillingSecurityCode(TestConstants.SECURITY_CODE);
 		storeFrontUpdateCartPage.selectNewBillingCardAddress();
 		storeFrontUpdateCartPage.clickOnSaveBillingProfile();
@@ -2597,7 +2690,7 @@ public class CartAndCheckoutValidationTest extends RFWebsiteBaseTest{
 		String orderHistoryNumber = storeFrontOrdersPage.getFirstOrderNumberFromOrderHistory();
 		storeFrontOrdersPage.clickOrderNumber(orderHistoryNumber);
 		s_assert.assertTrue(storeFrontOrdersPage.getSubTotalFromAutoshipTemplate().contains(subtotal),"Adhoc Order template subtotal "+subtotal+" and on UI is "+storeFrontOrdersPage.getSubTotalFromAutoshipTemplate());
-//		s_assert.assertTrue(storeFrontOrdersPage.getTaxAmountFromAutoshipTemplate().contains(tax),"Adhoc Order template tax "+tax+" and on UI is "+storeFrontOrdersPage.getTaxAmountFromAdhocOrderTemplate());
+		//		s_assert.assertTrue(storeFrontOrdersPage.getTaxAmountFromAutoshipTemplate().contains(tax),"Adhoc Order template tax "+tax+" and on UI is "+storeFrontOrdersPage.getTaxAmountFromAdhocOrderTemplate());
 		s_assert.assertTrue(storeFrontOrdersPage.getGrandTotalFromAutoshipTemplate().contains(total),"Adhoc Order template grand total "+total+" and on UI is "+storeFrontOrdersPage.getGrandTotalFromAutoshipTemplate());
 		/*		s_assert.assertTrue(storeFrontOrdersPage.getHandlingAmountFromAutoshipTemplate().contains(handlingCharges),"Adhoc Order template handling amount "+handlingCharges+" and on UI is "+storeFrontOrdersPage.getHandlingAmountFromAutoshipTemplate());
 		 */		s_assert.assertTrue(shippingMethod.contains(storeFrontOrdersPage.getShippingMethodFromAutoshipTemplate()),"Adhoc Order template shipping method "+shippingMethod+" and on UI is "+storeFrontOrdersPage.getShippingMethodFromAutoshipTemplate());
@@ -2642,7 +2735,7 @@ public class CartAndCheckoutValidationTest extends RFWebsiteBaseTest{
 		storeFrontUpdateCartPage.clickAddNewBillingProfileLink();
 		storeFrontUpdateCartPage.enterNewBillingNameOnCard(newBillingProfileName+" "+lastName);
 		storeFrontUpdateCartPage.enterNewBillingCardNumber(TestConstants.DISCOVER_CARD_NUMBER);
-		storeFrontUpdateCartPage.selectNewBillingCardExpirationDate();
+		storeFrontUpdateCartPage.selectNewBillingCardExpirationDate("OCT","2025");
 		storeFrontUpdateCartPage.enterNewBillingSecurityCode(TestConstants.SECURITY_CODE);
 		storeFrontUpdateCartPage.clickOnSaveBillingProfile();
 		s_assert.assertTrue(storeFrontHomePage.validateInvalidCreditCardMessage(), "Please enter a valid credit card message is displayed");
@@ -2977,9 +3070,10 @@ public class CartAndCheckoutValidationTest extends RFWebsiteBaseTest{
 		//click the edit link in the payment section
 		storeFrontUpdateCartPage.clickOnEditPaymentBillingProfile();
 		//click the edit link in the billing section
+
 		storeFrontUpdateCartPage.clickOnDefaultBillingProfileEdit();
 		//update the CC Expiration date and re-enter the CC security code..
-		storeFrontUpdateCartPage.selectNewBillingCardExpirationDateAsExpiredDate();
+		storeFrontUpdateCartPage.selectNewBillingCardExpirationDate("OCT","2025");
 		storeFrontUpdateCartPage.enterNewBillingSecurityCode(TestConstants.SECURITY_CODE);
 		storeFrontUpdateCartPage.clickOnSaveBillingProfile();
 		//click the edit link in the shipping section

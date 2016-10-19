@@ -104,6 +104,7 @@ public class CSCockpitCustomerSearchTabPage extends CSCockpitRFWebsiteBasePage{
 	public void enterEmailIdInSearchFieldInCustomerSearchTab(String emailId){
 		driver.waitForElementPresent(ENTER_EMAIL_ID);
 		driver.type(ENTER_EMAIL_ID, emailId);
+		driver.waitForCSCockpitLoadingImageToDisappear();
 	}
 
 	public String getfirstNameOfTheCustomerInCustomerSearchTab(String customerSequenceNumber){

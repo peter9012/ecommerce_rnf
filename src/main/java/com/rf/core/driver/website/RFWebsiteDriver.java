@@ -14,6 +14,7 @@ import java.util.Set;
 import java.util.concurrent.TimeUnit;
 
 import org.apache.commons.io.FileUtils;
+import org.apache.commons.lang3.StringUtils;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.openqa.selenium.By;
@@ -52,7 +53,11 @@ public class RFWebsiteDriver implements RFDriver,WebDriver {
 	private PropertyFile propertyFile;
 	private static int DEFAULT_TIMEOUT = 50;
 	private static int DEFAULT_TIMEOUT_CSCOCKPIT = 60;
-
+	String browser = null;
+	String dbIP = null;
+	String baseURL  =null;
+	String country = null;
+	String environment = null;
 	public RFWebsiteDriver(PropertyFile propertyFile) {
 		//super();
 		this.propertyFile = propertyFile;			
@@ -67,28 +72,34 @@ public class RFWebsiteDriver implements RFDriver,WebDriver {
 	 *             Prepares the environment that tests to be run on
 	 */
 	public void loadApplication() throws MalformedURLException {
+		browser=System.getProperty("browser");
+		if(StringUtils.isEmpty(browser)){
+			browser = propertyFile.getProperty("browser");
+		}
+		
 		FirefoxProfile prof = new FirefoxProfile();
 		prof.setPreference("brower.startup.homepage", "about:blank");
 		prof.setPreference("startup.homepage_welcome_url", "about:blank");
 		prof.setPreference("startup.homepage_welcome_url.additional",  "about:blank");
-		if (propertyFile.getProperty("browser").equalsIgnoreCase("firefox"))
+		if (browser.equalsIgnoreCase("firefox"))
 			driver = new FirefoxDriver(prof);
-		else if (propertyFile.getProperty("browser").equalsIgnoreCase("chrome")){
+		else if (browser.equalsIgnoreCase("chrome")){
 			System.setProperty("webdriver.chrome.driver", "src\\test\\resources\\chromedriver.exe");
 			ChromeOptions options = new ChromeOptions();
 			options.addArguments("no-sandbox");
 			options.addArguments("chrome.switches","--disable-extensions");
+			options.addArguments("disable-popup-blocking");
 			DesiredCapabilities capabilities = new DesiredCapabilities();
 			capabilities.setCapability(ChromeOptions.CAPABILITY, options);
 			// for clearing cache
 			capabilities.setCapability(CapabilityType.ForSeleniumServer.ENSURING_CLEAN_SESSION, true);
 			driver = new ChromeDriver(capabilities);
 		}
-		else if(propertyFile.getProperty("browser").equalsIgnoreCase("headless")){
+		else if(browser.equalsIgnoreCase("headless")){
 			driver = new HtmlUnitDriver(true);
 		}
-		else if(propertyFile.getProperty("browser").equalsIgnoreCase("ie")){
-			System.setProperty("webdriver.ie.driver", "src/test/resources/IEDriverServer.exe");			
+		else if(browser.equalsIgnoreCase("ie")){
+			System.setProperty("webdriver.ie.driver", "src/test/resources/IEDriverServer.exe");
 			DesiredCapabilities capabilities = new DesiredCapabilities();
 			// for clearing cache
 			capabilities.setCapability(CapabilityType.ForSeleniumServer.ENSURING_CLEAN_SESSION, true);
@@ -97,7 +108,7 @@ public class RFWebsiteDriver implements RFDriver,WebDriver {
 		}
 		driver.manage().timeouts().implicitlyWait(15, TimeUnit.SECONDS);
 		driver.manage().window().maximize();
-		if (propertyFile.getProperty("browser").equalsIgnoreCase("firefox")){
+		if (browser.equalsIgnoreCase("firefox")){
 			System.out.println(driver.manage().window().getSize());
 			Dimension d = new Dimension(1936, 1056);
 			driver.manage().window().setSize(d);
@@ -112,19 +123,25 @@ public class RFWebsiteDriver implements RFDriver,WebDriver {
 	}
 
 	public void setDBConnectionString(){
-		String dbIP = null;
 		String dbUsername = null;
 		String dbPassword = null;
 		String dbDomain = null;
-
+        
+		dbIP=System.getProperty("dbIP");
+		if(StringUtils.isEmpty(dbIP)){
+			dbIP = propertyFile.getProperty("dbIP");
+		}
 		String authentication = null;
-		dbIP = propertyFile.getProperty("dbIP");
 		dbUsername = propertyFile.getProperty("dbUsername");
 		dbPassword = propertyFile.getProperty("dbPassword");
 		dbDomain = propertyFile.getProperty("dbDomain");		 
 		authentication = propertyFile.getProperty("authentication");
 		DBUtil.setDBDetails(dbIP, dbUsername, dbPassword, dbDomain, authentication);
 		logger.info("DB connections are set");
+	}
+
+	public String getDBIP2(){
+		return propertyFile.getProperty("dbIP2");
 	}
 
 	public void selectCountry(String country){
@@ -139,18 +156,39 @@ public class RFWebsiteDriver implements RFDriver,WebDriver {
 	}
 
 	public String getURL() {
-		return propertyFile.getProperty("baseUrl");
+		baseURL=System.getProperty("baseURL");
+		if(StringUtils.isEmpty(baseURL)){
+			baseURL = propertyFile.getProperty("baseUrl");
+		}
+		return baseURL;
 	}
-	
+
 	public String getBrowser(){
-		return propertyFile.getProperty("browser");
+		return browser;
 	}
 	public String getBizPWSURL() {
-		return propertyFile.getProperty("pwsBizBase");
+		if (propertyFile.getProperty("environment").equalsIgnoreCase("tst1"))
+		{
+			return propertyFile.getProperty("pwsBase")+".biz";
+			}
+		else
+		{
+			return propertyFile.getProperty("pwsBase")+getEnvironment()+".biz";
+		}
 	}
+	
 	public String getComPWSURL() {
-		return propertyFile.getProperty("pwsComBase");
+		//		return propertyFile.getProperty("pwsComBase");
+		if (propertyFile.getProperty("environment").equalsIgnoreCase("tst1"))
+		{
+			return propertyFile.getProperty("pwsBase")+".com";
+			}
+		else
+		{
+			return propertyFile.getProperty("pwsBase")+getEnvironment()+".com";
+		}
 	}
+	
 	public String getDBNameRFL(){
 		return propertyFile.getProperty("databaseNameRFL");
 	}
@@ -160,13 +198,20 @@ public class RFWebsiteDriver implements RFDriver,WebDriver {
 	}
 
 	public String getCountry(){
-		return propertyFile.getProperty("country");
+		country=System.getProperty("country");
+		if(StringUtils.isEmpty(country)){
+			country = propertyFile.getProperty("country");
+		}
+		return country;
 	}
 
 	public String getEnvironment(){
-		return propertyFile.getProperty("environment");
+		environment=System.getProperty("env");
+		if(StringUtils.isEmpty(environment)){
+			environment = propertyFile.getProperty("environment");
+		}
+		return environment;
 	}
-
 	public String getStoreFrontPassword(){
 		return propertyFile.getProperty("storeFrontPassword");
 	}
@@ -514,7 +559,7 @@ public class RFWebsiteDriver implements RFDriver,WebDriver {
 	}
 
 	public void get(String Url) {
-		logger.info("URL hit is "+Url);
+		logger.info("URL opened is "+Url);
 		driver.get(Url);
 		waitForPageLoad();
 	}
@@ -522,19 +567,26 @@ public class RFWebsiteDriver implements RFDriver,WebDriver {
 	public void click(By locator) {		
 		//waitForElementToBeClickable(locator, DEFAULT_TIMEOUT);
 		//quickWaitForElementPresent(locator);
+		//movetToElementJavascript(locator);
+		turnOffImplicitWaits();
 		try{
 			findElement(locator).click();			
 		}catch(Exception e){
 			retryingFindClick(locator);
 		}
-		//		waitForLoadingImageToDisappear();
+		turnOnImplicitWaits();
 	}
 
 	public void type(By locator, String input) {
 		/*		driver.manage().timeouts().implicitlyWait(5, TimeUnit.SECONDS);
 		 */		
 		// quickWaitForElementPresent(locator);
-		findElement(locator).clear();
+		try{
+			findElement(locator).clear();
+		}catch(Exception e){
+			pauseExecutionFor(2000);
+			findElement(locator).clear();	
+		}
 		findElement(locator).sendKeys(input);
 	}
 
@@ -895,7 +947,7 @@ public class RFWebsiteDriver implements RFDriver,WebDriver {
 		return sDateTime;
 	}
 
-	public void switchToSecondWindow(){
+	public String switchToSecondWindow(){
 		//		Set<String> allWindows = driver.getWindowHandles();
 		//		Iterator itr = allWindows.iterator();
 		//		while(itr.hasNext()){
@@ -913,7 +965,8 @@ public class RFWebsiteDriver implements RFDriver,WebDriver {
 			}
 
 		}
-		logger.info("Switched to second window whose title is "+driver.getTitle());		
+		logger.info("Switched to second window whose title is "+driver.getTitle());	
+		return parentWindow;
 	}
 
 	public String getCrmURL(){
@@ -921,4 +974,3 @@ public class RFWebsiteDriver implements RFDriver,WebDriver {
 	}
 
 }
-

@@ -1,9 +1,12 @@
 package com.rf.pages.website.dsv;
 
+import java.util.List;
+
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.openqa.selenium.By;
 import org.openqa.selenium.JavascriptExecutor;
+import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.interactions.Actions;
 
@@ -36,43 +39,39 @@ public class DSVStoreFrontHomePage extends DSVRFWebsiteBasePage{
 	}
 
 	public void clickLoginLink(){
-		System.out.println("***************** 3");
 		driver.quickWaitForElementPresent(LOGIN_LINK);
 		driver.click(LOGIN_LINK);
 	}
 
 	public boolean isLoginLinkPresent(){
 		boolean isLoginPresent = false;
-		try{
-			driver.waitForElementPresent(LOGIN_LINK);
-			driver.findElement(LOGIN_LINK);	
-			isLoginPresent = true;			
-		}catch(Exception e){				
-		}		
-		return isLoginPresent;
+		driver.quickWaitForElementPresent(LOGIN_LINK);
+		List<WebElement> loginBtnList = driver.findElements(LOGIN_LINK);
+		if(loginBtnList.size()>0)
+			isLoginPresent = true;
+		return isLoginPresent;		
 	}
 
 	public boolean isWelcomeTxtPresent(){
 		boolean isWelcomePresent = false;
-		try{
-			driver.waitForElementPresent(WELCOME_TXT);
-			driver.findElement(WELCOME_TXT);	
-			isWelcomePresent = true;			
-		}catch(Exception e){				
-		}		
-		return isWelcomePresent;
+		driver.quickWaitForElementPresent(WELCOME_TXT);
+		List<WebElement> welcomeTxtList = driver.findElements(WELCOME_TXT);
+		if(welcomeTxtList.size()>0)
+			isWelcomePresent = true;
+		return isWelcomePresent;		
 	}
 
 	public boolean isLoginOrWelcomePresent(){
 		boolean isLoginOrWelcomePresent = false;
-		try{
-			driver.waitForElementPresent(LOGIN_LINK);
-			driver.findElement(LOGIN_LINK);	
-			isLoginOrWelcomePresent = true;			
-		}catch(Exception e){
-			System.out.println("Login Link not found");
-			driver.findElement(WELCOME_TXT);
-			isLoginOrWelcomePresent = true;			
+
+		driver.quickWaitForElementPresent(LOGIN_LINK);
+		List<WebElement> loginBtnList = driver.findElements(LOGIN_LINK);
+		if(loginBtnList.size()>0)
+			isLoginOrWelcomePresent = true;
+		else{
+			List<WebElement> welcomeTxtList = driver.findElements(WELCOME_TXT);
+			if(welcomeTxtList.size()>0)
+				isLoginOrWelcomePresent = true;
 		}		
 		return isLoginOrWelcomePresent;
 	}
@@ -125,7 +124,9 @@ public class DSVStoreFrontHomePage extends DSVRFWebsiteBasePage{
 	}
 
 	public void clickWelcomeDropDown(){
+		driver.waitForLoadingImageToDisappear();
 		driver.quickWaitForElementPresent(WELCOME_DROP_DOWN);
+		driver.pauseExecutionFor(2000);
 		driver.click(WELCOME_DROP_DOWN);
 		driver.pauseExecutionFor(2000);
 	}
@@ -190,7 +191,7 @@ public class DSVStoreFrontHomePage extends DSVRFWebsiteBasePage{
 		driver.quickWaitForElementPresent(SPONSOR_SEARCH_FIELD_LOC);
 		driver.type(SPONSOR_SEARCH_FIELD_LOC, dsvCanadianSponsorWithPwssponsor);
 		logger.info("sponsor name entered");
-		driver.click(SEARCH_BUTTON_LOC);
+		driver.clickByJS(RFWebsiteDriver.driver,driver.findElement(SEARCH_BUTTON_LOC));
 		logger.info("Search Button Clicked");
 		driver.waitForPageLoad();
 	}
@@ -199,6 +200,20 @@ public class DSVStoreFrontHomePage extends DSVRFWebsiteBasePage{
 		JavascriptExecutor js = (JavascriptExecutor)(RFWebsiteDriver.driver);
 		js.executeScript("arguments[0].click();", driver.findElement(By.xpath("//div[@id='search-results']//input[contains(@value,'Select')]")));
 		logger.info("sponsor's Select & Continue has been clicked");
+		driver.waitForLoadingImageToDisappear();
+		driver.waitForPageLoad();
+	}
+
+	public void mouseHoverOnSponsorAndClickSelectAndContinue(int resultNumber) {
+		JavascriptExecutor js = (JavascriptExecutor)(RFWebsiteDriver.driver);
+		if(resultNumber==1)
+			js.executeScript("arguments[0].click();", driver.findElement(By.xpath("//div[@id='search-results']//input[contains(@value,'Select')]")));
+		if(resultNumber==2){
+			List<WebElement> allSearchResults = driver.findElements(By.xpath("//div[@id='search-results']//input[contains(@value,'Select')]"));
+			js.executeScript("arguments[0].click();", allSearchResults.get(1));
+		}
+
+			logger.info("sponsor's Select & Continue has been clicked");
 		driver.waitForLoadingImageToDisappear();
 		driver.waitForPageLoad();
 

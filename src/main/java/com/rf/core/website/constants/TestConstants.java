@@ -70,7 +70,7 @@ public class TestConstants {
 	public static final String FIRST_NAME_NEW_BILLING_ADDRESS = "rfTestUser3";
 	public static final String PROVINCECA = "Yukon Territory";
 	public static final String CIDCA = "989828";
-	public static final String INVALID_CARD_NUMBER_15DIGITS = "4747";
+	public static final String INVALID_CARD_NUMBER_15DIGITS = "474747474747474";
 	public static final String INVALID_CARD_NUMBER_17DIGITS = "47474747474747474";
 	public static final String SPONSOR_ID_US="1686295";
 	public static final String INVALID_CARD_NUMBER_15DIGITS_WITH_SPECIAL_CHAR = "474747474747474#";
@@ -118,7 +118,7 @@ public class TestConstants {
 	public static final String PC_PERKS_TERMS_CONDITION_POPUP_HEADER_TEXT = "PC PERKS TERMS & CONDITIONS";
 	public static final String AUTOSHIP_TEMPLATE_THRESHOLD_MSG= "greater than the threshold $80";
 	public static final String AUTOSHIP_TEMPLATE_PRODUCT_ADDED = "Product quantity has been updated.";
-
+	public static final String PRODUCT_HAS_BEEN_REMOVED_FROM_CART_MSG="Product has been removed from your cart";
 
 	//public static final String CONSULTANT_PASSWORD_STG2 = "test1234";
 	//public static final String CONSULTANT_NEW_PASSWORD_STG2 = "test12345";
@@ -439,7 +439,7 @@ public class TestConstants {
 	public static final String DSV_CA_SPONSOR_WITH_NO_PWS = "06383507";
 
 	public static final String CRM_LOGIN_USERNAME = "crmqa@rodanandfields.com.stg1";
-	public static final String CRM_LOGIN_PASSWORD = "CRM121Spear"; // for tst3 the password is tst3@123
+	public static final String CRM_LOGIN_PASSWORD = "CRM60Spear"; // for tst3 the password is tst3@123
 	public static final String CRM_DSV_LOGIN_USERNAME = "crmqa@rodanandfields.com";
 	public static final String CRM_DSV_LOGIN_PASSWORD = "CRM60Spear"; // for tst3 the password is tst3@123
 	public static final String CRM_INVALID_LOGIN_USERNAME = "crmqaguest@rodanandfields";

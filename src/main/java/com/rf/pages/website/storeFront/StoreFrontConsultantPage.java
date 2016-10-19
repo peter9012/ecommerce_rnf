@@ -65,7 +65,7 @@ public class StoreFrontConsultantPage extends StoreFrontRFWebsiteBasePage{
 
 	public void cancelPulseSubscription(){
 		driver.waitForElementPresent(By.xpath("//a[text()='Cancel my Pulse subscription »']"));
-		driver.click(By.xpath("//a[text()='Cancel my Pulse subscription »']"));
+		driver.clickByJS(RFWebsiteDriver.driver,driver.findElement(By.xpath("//a[text()='Cancel my Pulse subscription »']")));
 		driver.pauseExecutionFor(2000);
 		driver.click(By.xpath("//a[@id='cancelPulse']"));
 		driver.waitForLoadingImageToDisappear();
@@ -179,9 +179,8 @@ public class StoreFrontConsultantPage extends StoreFrontRFWebsiteBasePage{
 	}
 	public void clickSaveButton() {
 		driver.waitForElementPresent(By.xpath("//div[@id='consultant-container']//input[1]"));
-		driver.click(By.xpath("//div[@id='consultant-container']//input[1]"));
+		driver.clickByJS(RFWebsiteDriver.driver,driver.findElement(By.xpath("//div[@id='consultant-container']//input[1]")));
 		driver.waitForLoadingImageToDisappear();
-
 	}
 
 	public boolean verifyNewlyAddedContentSaved() {
@@ -191,7 +190,7 @@ public class StoreFrontConsultantPage extends StoreFrontRFWebsiteBasePage{
 
 	public void clickResetToDefaultCopyLink() {
 		driver.waitForElementPresent(By.xpath("//a[@id='aboutMeBizReset']"));
-		driver.click(By.xpath("//a[@id='aboutMeBizReset']"));
+		driver.clickByJS(RFWebsiteDriver.driver, driver.findElement(By.xpath("//a[@id='aboutMeBizReset']")));
 	}
 
 	public void addNewContentOfYourOwnCopyInComPWS() {

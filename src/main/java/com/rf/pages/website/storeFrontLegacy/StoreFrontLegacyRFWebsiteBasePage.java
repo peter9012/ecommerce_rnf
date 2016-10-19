@@ -88,19 +88,19 @@ public class StoreFrontLegacyRFWebsiteBasePage extends RFBasePage{
 			driver.findElement(By.xpath("//a[text()='Add to Cart']"));
 			driver.click(By.xpath("//a[text()='Add to Cart']"));
 			System.out.println("Add to cart button on ProdDetailPage is clicked");
-			
+
 		} catch (NoSuchElementException e) {
 			driver.findElement(ADD_TO_CART_BTN_LOC);
 			driver.quickWaitForElementPresent(ADD_TO_CART_BTN_LOC);
 			driver.click(ADD_TO_CART_BTN_LOC);
 			logger.info("Add to cart button is clicked");
-		
+
 		}
-		
-		
-		
-		
-		
+
+
+
+
+
 	}
 	public void mouseHoverOnMyShoppingBagLinkAndClickOnCheckoutBtn(){
 		actions =  new Actions(RFWebsiteDriver.driver);
@@ -250,6 +250,7 @@ public class StoreFrontLegacyRFWebsiteBasePage extends RFBasePage{
 		driver.click(CHANGE_BILLING_INFO);
 		logger.info("Change billing information button clicked");
 		driver.waitForPageLoad();
+		driver.pauseExecutionFor(3000);
 	}
 
 	public void clickUseThisBillingInformationBtn(){
@@ -268,6 +269,7 @@ public class StoreFrontLegacyRFWebsiteBasePage extends RFBasePage{
 	}
 
 	public void mouseHoverOnShopSkinCareAndClickOnConsultantOnlyProductsLink(){
+		driver.waitForElementPresent(SHOP_SKINCARE_ON_PWS_LOC);
 		actions =  new Actions(RFWebsiteDriver.driver);
 		actions.moveToElement(driver.findElement(SHOP_SKINCARE_ON_PWS_LOC)).click(driver.findElement(PRODUCT_LINK_UNDER_SHOP_SKIN_CARE)).build().perform();
 		logger.info("Mouse hover on shop skincare link and clicked on product link on pws");

@@ -336,8 +336,9 @@ public class StoreFrontOrdersPage extends StoreFrontRFWebsiteBasePage{
 
 	public void clickOnFirstAdHocOrder(){
 		driver.waitForElementPresent(ORDER_NUM_OF_ORDER_HISTORY);
-		driver.click(ORDER_NUM_OF_ORDER_HISTORY);	
-		logger.info("First order from the order history clicked");		
+		//driver.click(ORDER_NUM_OF_ORDER_HISTORY); 
+		driver.clickByJS(RFWebsiteDriver.driver, driver.findElement(ORDER_NUM_OF_ORDER_HISTORY));
+		logger.info("First order from the order history clicked");  
 	}
 
 	public String getFirstOrderNumberFromOrderHistory(){
@@ -355,6 +356,7 @@ public class StoreFrontOrdersPage extends StoreFrontRFWebsiteBasePage{
 		driver.waitForElementPresent(By.linkText(orderNumber));
 		driver.click(By.linkText(orderNumber));
 		logger.info("Order number clicked "+orderNumber);
+		driver.waitForPageLoad();
 	}
 
 	public boolean verifyAutoShipTemplateSubtotal(String subTotalDB){
@@ -1010,7 +1012,8 @@ public class StoreFrontOrdersPage extends StoreFrontRFWebsiteBasePage{
 
 	public void clickReturnOrderNumber(String orderNumber){
 		driver.waitForElementPresent(By.xpath("//h3[contains(text(),'Return Order')]/following::a[contains(text(),'"+orderNumber+"')]"));
-		driver.click(By.xpath("//h3[contains(text(),'Return Order')]/following::a[contains(text(),'"+orderNumber+"')]"));
+		//driver.click(By.xpath("//h3[contains(text(),'Return Order')]/following::a[contains(text(),'"+orderNumber+"')]"));
+		driver.clickByJS(RFWebsiteDriver.driver, driver.findElement(By.xpath("//h3[contains(text(),'Return Order')]/following::a[contains(text(),'"+orderNumber+"')]")));
 		driver.waitForLoadingImageToDisappear();
 		driver.pauseExecutionFor(2000);
 		logger.info("Return order clicked " +By.xpath("//h3[contains(text(),'Return Order')]/following::a[contains(text(),'"+orderNumber+"')]"));

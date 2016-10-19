@@ -562,7 +562,7 @@ public class HomePageFunctionalityTest extends RFWebsiteBaseTest{
 	}	
 
 	//Hybris Project-3822:Verify Footer Links on .COM home Page
-	@Test 
+	@Test(enabled=false)//same as 3847
 	public void testVerifyFooterLinksOnHomePage_3822(){
 		//Navgate to app home page
 		storeFrontHomePage = new StoreFrontHomePage(driver);
@@ -893,13 +893,11 @@ public class HomePageFunctionalityTest extends RFWebsiteBaseTest{
 		country = driver.getCountry();
 		env = driver.getEnvironment();  
 		storeFrontHomePage = new StoreFrontHomePage(driver);
-		String sitePrefix = "bhopkins"; // standard active consultant site
-		String comPWS = driver.getComPWSURL();
-		String PWS = "https://"+sitePrefix+comPWS+"/"+country;
-		storeFrontHomePage.openPWS(PWS);
-		WebElement eLink = driver.findElement(By.xpath("//a[@href='/ca/dynamic/url/solutionTool']"));
-		eLink.click();
-		
+		//String sitePrefix = "bhopkins"; // standard active consultant site
+		//String comPWS = driver.getComPWSURL();
+		//String PWS = "https://"+sitePrefix+comPWS+"/"+country;
+		storeFrontHomePage.openComPWSSite(country, env);
+		storeFrontHomePage.clickLearnMoreLinkUnderSolutionToolAndSwitchControl();
 		//validate consultant info on top right corner..
 		s_assert.assertTrue(storeFrontHomePage.validateConsultantNameOnTopRightCorner(),"Consultant Info is not present on right top Corner");
 		s_assert.assertAll();
@@ -1022,10 +1020,8 @@ public class HomePageFunctionalityTest extends RFWebsiteBaseTest{
 	public void testToVerifyTheMoreAboutMeSectionForPWSBiz_1900() throws InterruptedException{
 		RFO_DB = driver.getDBNameRFO();
 		List<Map<String, Object>> randomConsultantList =  null;
-
 		String consultantEmailId =null;
 		String accountId = null;
-
 		country = driver.getCountry();
 		env = driver.getEnvironment();
 		storeFrontHomePage = new StoreFrontHomePage(driver);
@@ -1314,7 +1310,7 @@ public class HomePageFunctionalityTest extends RFWebsiteBaseTest{
 		//Enter Billing Profile
 		storeFrontHomePage.enterNewBillingCardNumber(TestConstants.CARD_NUMBER);
 		storeFrontHomePage.enterNewBillingNameOnCard(newBillingProfileName+" "+lastName);
-		storeFrontHomePage.selectNewBillingCardExpirationDate();
+		storeFrontHomePage.selectNewBillingCardExpirationDate("OCT","2025");
 		storeFrontHomePage.enterNewBillingSecurityCode(TestConstants.SECURITY_CODE);
 		storeFrontHomePage.selectNewBillingCardAddress();
 		storeFrontHomePage.clickOnSaveBillingProfile();
@@ -1535,10 +1531,9 @@ public class HomePageFunctionalityTest extends RFWebsiteBaseTest{
 		storeFrontHomePage = new StoreFrontHomePage(driver);
 		String sitePrefix = "bhopkins"; // standard active consultant site
 		String comPWS = driver.getComPWSURL();
-		String PWS = "http://"+sitePrefix+comPWS+"/"+country;
-		storeFrontHomePage.openPWS(PWS);
-		
-		
+		 /*"http://"+sitePrefix+comPWS+"/"+country;*/
+		String PWS = storeFrontHomePage.getComPWS(country, env) ;     
+		storeFrontHomePage.openPWS(storeFrontHomePage.convertBizSiteToComSite(PWS));		
 		s_assert.assertTrue(storeFrontHomePage.isSolutionToolContentBlockPresent(),"Solution Tool content block is not present");
 		//removed content block as we don't access the tool
 		s_assert.assertAll();
@@ -1874,9 +1869,13 @@ public class HomePageFunctionalityTest extends RFWebsiteBaseTest{
 	public void testLookUpActiveCAConsultantFullName_4003() throws InterruptedException{
 		String consultantFirstName = null;
 		String consultantLastName = null;
+		storeFrontHomePage = new StoreFrontHomePage(driver);		
+		RFO_DB = driver.getDBNameRFO(); 
+		List<Map<String, Object>> randomConsultantDetailList =  null;
 		storeFrontHomePage = new StoreFrontHomePage(driver);
-		consultantFirstName = "Elizabeth";//(String) getValueFromQueryResult(randomConsultantDetailList, "FirstName");
-		consultantLastName = "Hopkins";//(String) getValueFromQueryResult(randomConsultantDetailList, "LastName");
+		randomConsultantDetailList = DBUtil.performDatabaseQuery(DBQueries_RFO.callQueryWithArguement(DBQueries_RFO.GET_CONSULTANT_DETAILS_RFO,countryId),RFO_DB);		
+		consultantFirstName =(String) getValueFromQueryResult(randomConsultantDetailList, "FirstName");
+		consultantLastName = (String) getValueFromQueryResult(randomConsultantDetailList, "LastName");
 		storeFrontHomePage.clickOnSponsorName();
 		storeFrontHomePage.enterSponsorNameAndClickOnSearchForPCAndRC(consultantFirstName+" "+consultantLastName);
 		//s_assert.assertTrue(storeFrontHomePage.verifySponsorDetailsPresent(),"Sponsor Detail not present on page");
@@ -2167,7 +2166,7 @@ public class HomePageFunctionalityTest extends RFWebsiteBaseTest{
 		storeFrontHomePage.clickNextButton();
 		storeFrontHomePage.enterCardNumber(TestConstants.CARD_NUMBER);
 		storeFrontHomePage.enterNameOnCard(TestConstants.FIRST_NAME+randomNum);
-		storeFrontHomePage.selectNewBillingCardExpirationDate();
+		storeFrontHomePage.selectNewBillingCardExpirationDate("OCT","2025");
 		storeFrontHomePage.enterSecurityCode(TestConstants.SECURITY_CODE);
 		storeFrontHomePage.enterSocialInsuranceNumber(socialInsuranceNumber);
 		storeFrontHomePage.enterNameAsItAppearsOnCard(TestConstants.FIRST_NAME);
@@ -2252,7 +2251,7 @@ public class HomePageFunctionalityTest extends RFWebsiteBaseTest{
 		storeFrontHomePage.clickNextButton();
 		storeFrontHomePage.enterCardNumber(TestConstants.CARD_NUMBER);
 		storeFrontHomePage.enterNameOnCard(TestConstants.FIRST_NAME+randomNum);
-		storeFrontHomePage.selectNewBillingCardExpirationDate();
+		storeFrontHomePage.selectNewBillingCardExpirationDate("OCT","2025");
 		storeFrontHomePage.enterSecurityCode(TestConstants.SECURITY_CODE);
 		storeFrontHomePage.enterSocialInsuranceNumber(socialInsuranceNumber2);
 		storeFrontHomePage.enterNameAsItAppearsOnCard(TestConstants.FIRST_NAME);
@@ -2484,7 +2483,6 @@ public class HomePageFunctionalityTest extends RFWebsiteBaseTest{
 		s_assert.assertAll();
 	}	
 
-
 	//Hybris Project-1907:To verify JOIN MY TEAM functionality in edit meet the consultant page from biz site
 	@Test
 	public void testToVerifyJOINMyTeamFunctionalityInEditMeetTheConsultantPageFromBizSite_1907() throws InterruptedException{
@@ -2521,7 +2519,7 @@ public class HomePageFunctionalityTest extends RFWebsiteBaseTest{
 		storeFrontHomePage.clickNextButton();
 		storeFrontHomePage.enterCardNumber(TestConstants.CARD_NUMBER);
 		storeFrontHomePage.enterNameOnCard(TestConstants.FIRST_NAME+randomNum);
-		storeFrontHomePage.selectNewBillingCardExpirationDate();
+		storeFrontHomePage.selectNewBillingCardExpirationDate("OCT","2025");
 		storeFrontHomePage.enterSecurityCode(TestConstants.SECURITY_CODE);
 		storeFrontHomePage.enterSocialInsuranceNumber(socialInsuranceNumber);
 		storeFrontHomePage.enterNameAsItAppearsOnCard(TestConstants.FIRST_NAME);
@@ -2797,7 +2795,7 @@ public class HomePageFunctionalityTest extends RFWebsiteBaseTest{
 		//storeFrontHomePage.acceptTheVerifyYourShippingAddressPop();  
 		storeFrontHomePage.enterCardNumber(TestConstants.CARD_NUMBER);
 		storeFrontHomePage.enterNameOnCard(TestConstants.FIRST_NAME+randomNum);
-		storeFrontHomePage.selectNewBillingCardExpirationDate();
+		storeFrontHomePage.selectNewBillingCardExpirationDate("OCT","2025");
 		storeFrontHomePage.enterSecurityCode(TestConstants.SECURITY_CODE);
 		storeFrontHomePage.enterSocialInsuranceNumber(socialInsuranceNumber);
 		s_assert.assertTrue(storeFrontHomePage.validateExistingConsultantPopup(),"Invalid Sponsor Popup is not displayed");
@@ -2842,7 +2840,7 @@ public class HomePageFunctionalityTest extends RFWebsiteBaseTest{
 		//storeFrontHomePage.acceptTheVerifyYourShippingAddressPop();  
 		storeFrontHomePage.enterCardNumber(TestConstants.CARD_NUMBER);
 		storeFrontHomePage.enterNameOnCard(TestConstants.FIRST_NAME+randomNum);
-		storeFrontHomePage.selectNewBillingCardExpirationDate();
+		storeFrontHomePage.selectNewBillingCardExpirationDate("OCT","2025");
 		storeFrontHomePage.enterSecurityCode(TestConstants.SECURITY_CODE);
 		storeFrontHomePage.enterSocialInsuranceNumber(socialInsuranceNumber);
 		s_assert.assertTrue(storeFrontHomePage.validateExistingConsultantPopup(),"Invalid Sponsor Popup is not displayed");

@@ -14,6 +14,7 @@ import org.apache.logging.log4j.Logger;
 import org.apache.maven.model.Site;
 import org.openqa.selenium.By;
 import org.openqa.selenium.JavascriptExecutor;
+import org.openqa.selenium.Keys;
 import org.openqa.selenium.NoSuchElementException;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.interactions.Actions;
@@ -1691,6 +1692,8 @@ public class StoreFrontRFWebsiteBasePage extends RFBasePage{
 	public void enterWebsitePrefixName(String name){
 		driver.waitForElementPresent(By.id("webSitePrefix"));
 		driver.type(By.id("webSitePrefix"), name);
+		driver.findElement(By.id("webSitePrefix")).sendKeys(Keys.TAB);
+		driver.pauseExecutionFor(2000);
 		try{
 			if(driver.isElementPresent(By.xpath("//span[@class='icon-search']"))==true){
 				driver.click(By.xpath("//span[@class='icon-search']"));

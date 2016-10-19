@@ -84,7 +84,8 @@ public class StoreFrontBillingInfoPage extends StoreFrontRFWebsiteBasePage{
 
 	public void clickAddNewBillingProfileLink() throws InterruptedException{
 		driver.waitForElementPresent(ADD_NEW_BILLING_LINK_LOC);
-		driver.click(ADD_NEW_BILLING_LINK_LOC);
+		//driver.click(ADD_NEW_BILLING_LINK_LOC);
+		driver.clickByJS(RFWebsiteDriver.driver, driver.findElement(ADD_NEW_BILLING_LINK_LOC));
 		logger.info("Add new billing profile link clicked");
 	}
 
@@ -140,7 +141,7 @@ public class StoreFrontBillingInfoPage extends StoreFrontRFWebsiteBasePage{
 		driver.waitForElementPresent(NEW_BILLING_PROFILE_SAVE_BTN_LOC);
 		driver.click(NEW_BILLING_PROFILE_SAVE_BTN_LOC);
 		driver.waitForLoadingImageToDisappear();
-		logger.info("save billing profile button clicked");
+		logger.info("save billing profile button clicked");		
 	}
 
 	public void makeBillingProfileDefault(String firstName) throws InterruptedException{
@@ -188,5 +189,5 @@ public class StoreFrontBillingInfoPage extends StoreFrontRFWebsiteBasePage{
 		driver.waitForElementPresent(By.xpath("//div[@class='successMessage']/span"));
 		return driver.isElementPresent(By.xpath("//div[@class='successMessage']/span"));
 	}
-	
+
 }

@@ -424,13 +424,13 @@ public class StoreFrontHomePage extends StoreFrontRFWebsiteBasePage {
 		finally{
 			driver.turnOnImplicitWaits();
 		}
-		if(driver.isElementPresent(By.xpath("//span[contains(text(),'Unable to process with billing information provided')]"))){
-			driver.waitForPageLoad();
-			//storeFrontHomePage.enterCardNumber(TestConstants.CARD_NUMBER);
-			enterEditedCardNumber(TestConstants.CARD_NUMBER);
-			enterSecurityCode(TestConstants.SECURITY_CODE);
-			driver.clickByJS(RFWebsiteDriver.driver, driver.findElement(By.id("enrollment-next-button")));
-		}
+		/*if(driver.isElementPresent(By.xpath("//span[contains(text(),'Unable to process with billing information provided')]"))){
+		   driver.waitForPageLoad();
+		   //storeFrontHomePage.enterCardNumber(TestConstants.CARD_NUMBER);
+		   enterEditedCardNumber(TestConstants.CARD_NUMBER);
+		   enterSecurityCode(TestConstants.SECURITY_CODE);
+		   driver.clickByJS(RFWebsiteDriver.driver, driver.findElement(By.id("enrollment-next-button")));
+		  }*/
 		driver.waitForLoadingImageToDisappear();
 	}
 

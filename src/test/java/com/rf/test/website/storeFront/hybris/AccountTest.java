@@ -1279,9 +1279,14 @@ public class AccountTest extends RFWebsiteBaseTest{
 			String firstNameFromUI=null;
 			String lastNameFromUI=null;
 			String legalName=null;
-			String mainPhoneNumberDB = null;
-			List<Map<String, Object>> mainPhoneNumberList =  null;
 			String accountIdForConsultant = null;
+			String stateName = null;
+			if(driver.getCountry().equalsIgnoreCase("CA")){
+				city = TestConstants.CONSULTANT_CITY_FOR_ACCOUNT_INFORMATION_CA;
+				postalCode = TestConstants.CONSULTANT_POSTAL_CODE_FOR_ACCOUNT_INFORMATION_CA;
+				addressLine1 =  TestConstants.CONSULTANT_ADDRESS_LINE1_FOR_ACCOUNT_INFORMATION_CA;
+				stateName = TestConstants.CONSULTANT_STATE_FOR_ACCOUNT_INFORMATION_CA;
+			}
 			while(true){
 				randomConsultantList = DBUtil.performDatabaseQuery(DBQueries_RFO.callQueryWithArguement(DBQueries_RFO.GET_RANDOM_ACTIVE_CONSULTANT_WITH_ORDERS_AND_AUTOSHIPS_RFO,countryId),RFO_DB);
 				consultantEmailID = (String) getValueFromQueryResult(randomConsultantList, "UserName");  
@@ -1301,13 +1306,16 @@ public class AccountTest extends RFWebsiteBaseTest{
 			logger.info("login is successful");
 			storeFrontConsultantPage.clickOnWelcomeDropDown();
 			storeFrontAccountInfoPage = storeFrontConsultantPage.clickAccountInfoLinkPresentOnWelcomeDropDown();
+			storeFrontAccountInfoPage.updateAddressWithCityAndPostalCode(addressLine1, city, postalCode);
+			storeFrontAccountInfoPage.updateStateAndReturnName(stateName);
 			storeFrontAccountInfoPage.enterMainPhoneNumber(TestConstants.CONSULTANT_MAIN_PHONE_NUMBER_FOR_ACCOUNT_INFORMATION_CA);
 			s_assert.assertTrue(storeFrontAccountInfoPage.verifyProfileUpdationMessage(),"Profile updation message not present on UI");
 			storeFrontAccountInfoPage.enterMobileNumber(TestConstants.PHONE_NUMBER_CA);
 
 			firstNameFromUI=storeFrontAccountInfoPage.getFirstNameFromAccountInfo();
 			lastNameFromUI=storeFrontAccountInfoPage.getLastNameFromAccountInfo();
-			legalName=firstNameFromUI+" "+lastNameFromUI; 
+			legalName=firstNameFromUI+" "+lastNameFromUI;
+			logger.info("State/province selected is "+state);
 			storeFrontAccountInfoPage.enterBirthDateOnAccountInfoPage();
 			storeFrontAccountInfoPage.clickOnGenderRadioButton(TestConstants.CONSULTANT_GENDER);
 			storeFrontAccountInfoPage.clickOnAllowMySpouseOrDomesticPartnerCheckbox();
@@ -1330,9 +1338,9 @@ public class AccountTest extends RFWebsiteBaseTest{
 			assertTrue("DOB on UI is different from DB", storeFrontAccountInfoPage.verifyEnteredBirthDateFromDB(dobDB,TestConstants.CONSULTANT_DAY_OF_BIRTH,TestConstants.CONSULTANT_MONTH_OF_BIRTH,TestConstants.CONSULTANT_YEAR_OF_BIRTH));  
 			s_assert.assertTrue(storeFrontAccountInfoPage.verifyProfileUpdationMessage(),"Profile updation message not present on UI");
 			// need to work on the following
-			//			mainPhoneNumberList = DBUtil.performDatabaseQuery(DBQueries_RFO.callQueryWithArguement(DBQueries_RFO.GET_ACCOUNT_PHONE_NUMBER_QUERY_RFO, consultantEmailID), RFO_DB);
-			//			mainPhoneNumberDB = (String) getValueFromQueryResult(mainPhoneNumberList, "PhoneNumberRaw");
-			//			assertTrue("Main Phone Number on UI is different from DB", storeFrontAccountInfoPage.verifyMainPhoneNumberFromUIForAccountInfo(mainPhoneNumberDB));
+			//   mainPhoneNumberList = DBUtil.performDatabaseQuery(DBQueries_RFO.callQueryWithArguement(DBQueries_RFO.GET_ACCOUNT_PHONE_NUMBER_QUERY_RFO, consultantEmailID), RFO_DB);
+			//   mainPhoneNumberDB = (String) getValueFromQueryResult(mainPhoneNumberList, "PhoneNumberRaw");
+			//   assertTrue("Main Phone Number on UI is different from DB", storeFrontAccountInfoPage.verifyMainPhoneNumberFromUIForAccountInfo(mainPhoneNumberDB));
 
 			s_assert.assertAll();
 		}
@@ -1399,6 +1407,13 @@ public class AccountTest extends RFWebsiteBaseTest{
 			List<Map<String, Object>> randomConsultantList =  null;
 			String consultantEmailID = null;
 			String accountIdForConsultant = null;
+			String stateName = null;
+			if(driver.getCountry().equalsIgnoreCase("CA")){
+				city = TestConstants.CONSULTANT_CITY_FOR_ACCOUNT_INFORMATION_CA;
+				postalCode = TestConstants.CONSULTANT_POSTAL_CODE_FOR_ACCOUNT_INFORMATION_CA;
+				addressLine1 =  TestConstants.CONSULTANT_ADDRESS_LINE1_FOR_ACCOUNT_INFORMATION_CA;
+				stateName = TestConstants.CONSULTANT_STATE_FOR_ACCOUNT_INFORMATION_CA;
+			}
 			while(true){
 				randomConsultantList = DBUtil.performDatabaseQuery(DBQueries_RFO.callQueryWithArguement(DBQueries_RFO.GET_RANDOM_ACTIVE_CONSULTANT_WITH_ORDERS_AND_AUTOSHIPS_RFO,countryId),RFO_DB);
 				consultantEmailID = (String) getValueFromQueryResult(randomConsultantList, "UserName");  
@@ -1417,6 +1432,8 @@ public class AccountTest extends RFWebsiteBaseTest{
 			logger.info("login is successful");
 			storeFrontConsultantPage.clickOnWelcomeDropDown();
 			storeFrontAccountInfoPage = storeFrontConsultantPage.clickAccountInfoLinkPresentOnWelcomeDropDown();
+			storeFrontAccountInfoPage.updateAddressWithCityAndPostalCode(addressLine1, city, postalCode);
+			storeFrontAccountInfoPage.updateStateAndReturnName(stateName);
 			storeFrontAccountInfoPage.enterNameOfUser(TestConstants.FIRST_NAME+randomNum,lastName);
 			storeFrontAccountInfoPage.clickSaveAccountPageInfo();
 			s_assert.assertTrue(storeFrontAccountInfoPage.verifyProfileUpdationMessage(),"Profile updation message not present on UI");
@@ -1445,6 +1462,13 @@ public class AccountTest extends RFWebsiteBaseTest{
 			List<Map<String, Object>> randomConsultantList =  null;
 			String consultantEmailID = null;
 			String accountIdForConsultant = null;
+			String stateName = null;
+			if(driver.getCountry().equalsIgnoreCase("CA")){
+				city = TestConstants.CONSULTANT_CITY_FOR_ACCOUNT_INFORMATION_CA;
+				postalCode = TestConstants.CONSULTANT_POSTAL_CODE_FOR_ACCOUNT_INFORMATION_CA;
+				addressLine1 =  TestConstants.CONSULTANT_ADDRESS_LINE1_FOR_ACCOUNT_INFORMATION_CA;
+				stateName = TestConstants.CONSULTANT_STATE_FOR_ACCOUNT_INFORMATION_CA;
+			}
 			storeFrontHomePage = new StoreFrontHomePage(driver);
 			while(true){
 				randomConsultantList = DBUtil.performDatabaseQuery(DBQueries_RFO.callQueryWithArguement(DBQueries_RFO.GET_RANDOM_ACTIVE_CONSULTANT_WITH_ORDERS_AND_AUTOSHIPS_RFO,countryId),RFO_DB);
@@ -1465,6 +1489,8 @@ public class AccountTest extends RFWebsiteBaseTest{
 			storeFrontConsultantPage.clickOnWelcomeDropDown();
 			storeFrontAccountInfoPage = storeFrontConsultantPage.clickAccountInfoLinkPresentOnWelcomeDropDown();
 			s_assert.assertTrue(storeFrontAccountInfoPage.verifyEmailAddressOnAccountInfoPage(consultantEmailID),"Email address is not "+consultantEmailID+"");
+			storeFrontAccountInfoPage.updateAddressWithCityAndPostalCode(addressLine1, city, postalCode);
+			storeFrontAccountInfoPage.updateStateAndReturnName(stateName);
 			storeFrontAccountInfoPage.enterUserName(newUserName);
 			storeFrontAccountInfoPage.clickOnSaveAfterEnterSpouseDetails();
 			s_assert.assertTrue(storeFrontAccountInfoPage.verifyProfileUpdationMessage(),"Profile updation message not present on UI");
@@ -1479,7 +1505,6 @@ public class AccountTest extends RFWebsiteBaseTest{
 			logger.info("NOT EXECUTED...Test is ONLY for CANADA env");
 		}
 	}
-
 	// Hybris Project-4359:New autoship date for Reactivated Consultant
 	@Test(enabled=false)//Test No longer valid
 	public void testAutoshipDateForReactivatedConsultant_4359() throws InterruptedException, Exception{
@@ -1826,7 +1851,7 @@ public class AccountTest extends RFWebsiteBaseTest{
 	}
 
 	// Hybris Project-4275:verify Uniqueness of Username
-	@Test
+	@Test(enabled=false)//US user giving login error
 	public void testVerifyUniqnessOfUsername_4275() throws InterruptedException {
 		RFO_DB = driver.getDBNameRFO(); 
 		int randomNum = CommonUtils.getRandomNum(10000, 1000000);

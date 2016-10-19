@@ -28,7 +28,7 @@ public class StoreFrontBrandRefreshWebsiteBasePage extends RFBasePage{
 	private static String sublinkUnderShopSkinCareOrBeAConsultant = "//div[@id='LeftNav']//a/span[text()='%s']/../..//span[text()='%s']";
 	private static String consultantOnlyProductonPWSLoc= "//span[contains(text(),'%s')]/preceding::a[1]/img";
 
-	protected static final By BE_A_CONSULTANT_LOC = By.xpath("//span[text()='Be a Consultant']");
+	protected static final By BE_A_CONSULTANT_LOC = By.xpath("//span[text()='Become a Consultant']");
 	private static final By ORDER_NUMBER_AFTER_PLACED = By.xpath("//span[contains(@id,'uxOrderNumber')]//cufon");
 	private static final By EDIT_ORDER_UNDER_MY_ACCOUNT_LOC = By.xpath("//span[text()=' Edit Order']");
 	private static final By CHANGE_SHIPPING_INFO_LINK_ON_PWS = By.xpath("//a[contains(@id,'uxChangeShippingLink')]");

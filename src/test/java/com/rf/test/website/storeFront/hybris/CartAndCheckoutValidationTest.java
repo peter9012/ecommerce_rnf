@@ -59,16 +59,13 @@ public class CartAndCheckoutValidationTest extends RFWebsiteBaseTest{
 		s_assert.assertFalse(storeFrontHomePage.validateMiniCart(), "mini cart is displayed for not registered user");
 		//Add a item to the cart and validate the mini cart in the header section
 		storeFrontHomePage.hoverOnShopLinkAndClickAllProductsLinks();
-
 		// Products are displayed?
 		s_assert.assertTrue(storeFrontHomePage.areProductsDisplayed(), "quickshop products not displayed");
 		logger.info("Quick shop products are displayed");
 		storeFrontHomePage.selectProductAndProceedToBuy();
-
 		//Cart page is displayed?
 		s_assert.assertTrue(storeFrontHomePage.isCartPageDisplayed(), "Cart page is not displayed");
 		logger.info("Cart page is displayed");
-
 		s_assert.assertTrue(storeFrontHomePage.validateMiniCart(), "mini cart is not being displayed");
 		s_assert.assertAll();
 	}
@@ -102,16 +99,13 @@ public class CartAndCheckoutValidationTest extends RFWebsiteBaseTest{
 		s_assert.assertTrue(storeFrontConsultantPage.validateNextCRPMiniCart(), "next CRP Mini cart is not displayed");
 		//Add a item to the cart and validate the mini cart in the header section
 		storeFrontHomePage.hoverOnShopLinkAndClickAllProductsLinksAfterLogin();  
-
 		// Products are displayed?
 		s_assert.assertTrue(storeFrontHomePage.areProductsDisplayed(), "quickshop products not displayed");
 		logger.info("Quick shop products are displayed");
 		storeFrontHomePage.selectProductAndProceedToBuy();
-
 		//Cart page is displayed?
 		s_assert.assertTrue(storeFrontHomePage.isCartPageDisplayed(), "Cart page is not displayed");
 		logger.info("Cart page is displayed");
-
 		s_assert.assertTrue(storeFrontHomePage.validateMiniCart(), "mini cart is not being displayed");
 		s_assert.assertAll();
 	}
@@ -120,13 +114,9 @@ public class CartAndCheckoutValidationTest extends RFWebsiteBaseTest{
 	@Test(enabled=true) 
 	public void testCheckThresholdByAddRemoveProductsAndIncreaseDecreaseQty_143() throws InterruptedException {
 		RFO_DB = driver.getDBNameRFO(); 
-
 		List<Map<String, Object>> randomConsultantList =  null;
 		String consultantEmailID = null;
-		String qtyOfProducts="10";
-		String newQtyOfProducts="5";
 		double remainingSVValue=0;
-
 		storeFrontHomePage = new StoreFrontHomePage(driver);
 		while(true){
 			randomConsultantList = DBUtil.performDatabaseQuery(DBQueries_RFO.callQueryWithArguement(DBQueries_RFO.GET_RANDOM_ACTIVE_CONSULTANT_WITH_ORDERS_AND_AUTOSHIPS_RFO,countryId),RFO_DB);
@@ -160,7 +150,6 @@ public class CartAndCheckoutValidationTest extends RFWebsiteBaseTest{
 			if(flag==true){
 				double SVValue = Double.parseDouble(storeFrontUpdateCartPage.getSVValueFromCart().trim());
 				String SVValueOfRemovedProduct = storeFrontUpdateCartPage.removeProductSFromCart(i);
-
 				remainingSVValue = storeFrontUpdateCartPage.compareSVValue(SVValueOfRemovedProduct, SVValue);
 				noOfProduct = storeFrontUpdateCartPage.getNoOfProductInCart();
 				if(driver.getCountry().equalsIgnoreCase("us")){
@@ -219,7 +208,6 @@ public class CartAndCheckoutValidationTest extends RFWebsiteBaseTest{
 			else
 				break;
 		}
-
 		//s_assert.assertTrue(storeFrontConsultantPage.verifyConsultantPage(),"Consultant User Page doesn't contain Welcome User Message");
 		logger.info("login is successful");
 		storeFrontConsultantPage.hoverOnShopLinkAndClickAllProductsLinksAfterLogin();
@@ -268,7 +256,6 @@ public class CartAndCheckoutValidationTest extends RFWebsiteBaseTest{
 		List<Map<String, Object>> randomConsultantList =  null;
 		String consultantEmailID = null;
 		String accountID = null;
-
 		if(country.equalsIgnoreCase("us")){
 			addressLine1 = TestConstants.ADDRESS_LINE_1_US;
 			city = TestConstants.CITY_US;
@@ -297,19 +284,15 @@ public class CartAndCheckoutValidationTest extends RFWebsiteBaseTest{
 		//s_assert.assertTrue(storeFrontConsultantPage.verifyConsultantPage(),"Consultant Page doesn't contain Welcome User Message");
 		logger.info("login is successful");
 		storeFrontHomePage.hoverOnShopLinkAndClickAllProductsLinks();
-
 		// Products are displayed?
 		s_assert.assertTrue(storeFrontHomePage.areProductsDisplayed(), "quickshop products not displayed");
 		logger.info("Quick shop products are displayed");
-
 		//Select a product with the price less than $80 and proceed to buy it
 		storeFrontHomePage.applyPriceFilterLowToHigh();
 		storeFrontHomePage.selectProductAndProceedToBuyWithoutFilter();
-
 		//Cart page is displayed?
 		s_assert.assertTrue(storeFrontHomePage.isCartPageDisplayed(), "Cart page is not displayed");
 		logger.info("Cart page is displayed");
-
 		//1 product is in the Shopping Cart?
 		s_assert.assertTrue(storeFrontHomePage.verifyNumberOfProductsInCart("1"), "number of products in the cart is NOT 1");
 		logger.info("1 product is successfully added to the cart");
@@ -427,7 +410,6 @@ public class CartAndCheckoutValidationTest extends RFWebsiteBaseTest{
 		storeFrontHomePage.addQuantityOfProduct("2"); 
 		//add another product in the cart
 		storeFrontHomePage.addSecondProduct();
-
 		logger.info("2 products are successfully added to the cart");
 		//update qty to 2 of the second product
 		storeFrontHomePage.updateQuantityOfProductToTheSecondProduct("2"); 
@@ -489,7 +471,6 @@ public class CartAndCheckoutValidationTest extends RFWebsiteBaseTest{
 		logger.info("subtotal ="+subtotal);
 		String deliveryCharges = String.valueOf(storeFrontUpdateCartPage.getDeliveryCharges());
 		logger.info("deliveryCharges ="+deliveryCharges);
-
 		if(subtotal<=999999){
 			if(driver.getCountry().equalsIgnoreCase("ca")){
 				//Assert  shipping cost from UI
@@ -705,21 +686,16 @@ public class CartAndCheckoutValidationTest extends RFWebsiteBaseTest{
 		storeFrontHomePage = new StoreFrontHomePage(driver);
 		// Click on our product link that is located at the top of the page and then click in on quick shop
 		storeFrontHomePage.hoverOnShopLinkAndClickAllProductsLinks();
-
 		// Products are displayed?
 		s_assert.assertTrue(storeFrontHomePage.areProductsDisplayed(), "quickshop products not displayed");
 		logger.info("Quick shop products are displayed");
-
 		storeFrontHomePage.selectProductAndProceedToBuyWithoutFilter();
-
 		//Cart page is displayed?
 		s_assert.assertTrue(storeFrontHomePage.isCartPageDisplayed(), "Cart page is not displayed");
 		logger.info("Cart page is displayed");
-
 		//1 product is in the Shopping Cart?
 		s_assert.assertTrue(storeFrontHomePage.verifyNumberOfProductsInCart("1"), "number of products in the cart is NOT 1");
 		logger.info("1 product is successfully added to the cart");
-
 		//click on continue shopping link
 		storeFrontHomePage.clickOnContinueShoppingLink();
 		//verify the number of products in mini cart

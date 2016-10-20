@@ -423,7 +423,8 @@ public class StoreFrontAccountInfoPage extends StoreFrontRFWebsiteBasePage{
 	public void clickOnSubscribeToPulseBtn(){
 		driver.waitForElementPresent(By.id("subscribe_pulse_button_new"));
 		driver.click(By.id("subscribe_pulse_button_new"));
-		driver.pauseExecutionFor(1000);
+		// driver.clickByJS(RFWebsiteDriver.driver,driver.findElement(By.id("subscribe_pulse_button_new")));
+		driver.pauseExecutionFor(2500);
 		driver.waitForElementPresent(By.id("pulse-enroll"));
 		driver.click(By.id("pulse-enroll"));
 		driver.waitForPageLoad();

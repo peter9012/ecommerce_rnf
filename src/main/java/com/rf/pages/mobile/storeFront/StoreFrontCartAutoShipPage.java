@@ -13,7 +13,7 @@ public class StoreFrontCartAutoShipPage extends StoreFrontRFMobileBasePage{
 			.getLogger(StoreFrontCartAutoShipPage.class.getName());
 
 
-	private final By UPDATE_MORE_INFO_LINK_LOC = By.xpath("//input[@value='Update more info']");
+	private final By UPDATE_MORE_INFO_LINK_LOC = By.xpath("//a[text()='Update Shipping and Billing info']");
 	
 	public StoreFrontCartAutoShipPage(RFMobileDriver driver) {
 		super(driver);		

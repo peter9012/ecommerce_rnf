@@ -157,7 +157,7 @@
 						<testprops>${dbIP}</testprops>
 					</systemPropertyVariables>
 					<useFile>true</useFile>
-					<testFailureIgnore>true</testFailureIgnore>
+					<!-- <testFailureIgnore>true</testFailureIgnore> -->
 					<suiteXmlFiles>
 						<suiteXmlFile>src/test/resources/profiles/${suiteToRun}</suiteXmlFile>
 					</suiteXmlFiles>

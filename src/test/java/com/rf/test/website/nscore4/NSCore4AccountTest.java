@@ -1049,8 +1049,7 @@ public class NSCore4AccountTest extends RFNSCoreWebsiteBaseTest{
 	
 	
 	@Test(enabled=false)
-	public void testOrdersTab_NewOrder_RC() {
-		
+	public void testOrdersTab_NewOrder_RC() {		
 		/*for(int i=0; i<200; i++){*/
             /*System.out.println("Count is: " + i);*/
     		String accountNumber = null;

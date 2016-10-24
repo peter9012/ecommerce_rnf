@@ -24,7 +24,7 @@ public class OrderTabTests extends RFNSCoreWebsiteBaseTest{
 
 
 	//Orders - User is able to search for orders by customer name
-	@Test
+	@Test 
 	public void testOrdersUserIsAbleToSearchForOrdersByCustomerName(){
 		String orderID = "Order ID";
 		String orderNumber = "Order Number";
@@ -102,7 +102,7 @@ public class OrderTabTests extends RFNSCoreWebsiteBaseTest{
 	}
 
 	//Distributors-Search by e-mail
-	@Test
+	@Test 
 	public void testSearchByEmail() throws InterruptedException{
 		RFL_DB = driver.getDBNameRFL();
 		String distributorTab = "Distributors";
@@ -148,7 +148,7 @@ public class OrderTabTests extends RFNSCoreWebsiteBaseTest{
 
 
 	//Orders - User is able to search for orders by order number
-	@Test
+	@Test 
 	public void testUserAbleToSearchOrdersByOrderNumber(){
 		String orderID = "Order ID";
 		String orderNumber = "Order Number";
@@ -215,7 +215,7 @@ public class OrderTabTests extends RFNSCoreWebsiteBaseTest{
 	}
 
 	//Orders - User is able to search for orders by customer account
-	@Test
+	@Test 
 	public void testVerifyUserIsAbleToSearchForOrderByCustomerAccount() throws InterruptedException{
 		RFL_DB = driver.getDBNameRFL();
 		String orderID = "Order ID";
@@ -283,7 +283,7 @@ public class OrderTabTests extends RFNSCoreWebsiteBaseTest{
 	}
 
 	//Distributors-Search by customer Name
-	@Test
+	@Test 
 	public void testSearchByCustomerName() throws InterruptedException{
 		RFL_DB = driver.getDBNameRFL();
 		String distributorTab = "Distributors";
@@ -311,7 +311,7 @@ public class OrderTabTests extends RFNSCoreWebsiteBaseTest{
 	}
 
 	//Distributors-Search by consultant
-	@Test
+	@Test 
 	public void testSearchByConsultant() throws InterruptedException{
 		RFL_DB = driver.getDBNameRFL();
 		String distributorTab = "Distributors";
@@ -330,7 +330,7 @@ public class OrderTabTests extends RFNSCoreWebsiteBaseTest{
 	}
 
 	//Distributors-search by account No
-	@Test
+	@Test 
 	public void testDistributorsbyAccountNo(){
 		RFL_DB = driver.getDBNameRFL();
 		String distributors = "Distributors";
@@ -387,7 +387,7 @@ public class OrderTabTests extends RFNSCoreWebsiteBaseTest{
 	}
 
 	//Distributors-Search by sponsor name
-	@Test
+	@Test 
 	public void testSearchBySponserName() throws InterruptedException{
 		RFL_DB = driver.getDBNameRFL();
 		String distributorTab = "Distributors";
@@ -457,7 +457,7 @@ public class OrderTabTests extends RFNSCoreWebsiteBaseTest{
 	}
 
 	//Orders - User is able to search for orders by consultant name
-	//	@Test
+	//	@Test 
 	//	public void testOrdersUserIsAbleToSearchForOrdersByConsultant(){
 	//		String orderID = "Order ID";
 	//		String orderNumber = "Order Number";

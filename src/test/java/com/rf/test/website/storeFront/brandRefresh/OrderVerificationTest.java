@@ -61,7 +61,7 @@ public class OrderVerificationTest extends RFBrandRefreshWebsiteBaseTest{
 		s_assert.assertFalse(storeFrontBrandRefreshHomePage.isSignInButtonPresent(), "PC user not logged in successfully");
 		storeFrontBrandRefreshHomePage.clickContinueBtnForPCAndRC();
 		storeFrontBrandRefreshHomePage.clickChangeBillingInformationBtn();
-		storeFrontBrandRefreshHomePage.enterBillingInfo(billingName, billingProfileFirstName, billingProfileLastName, nameOnCard, cardNumber, expMonth, expYear, addressLine1, postalCode, phnNumber);
+		storeFrontBrandRefreshHomePage.enterBillingInfo(billingName, billingProfileFirstName, billingProfileLastName, nameOnCard, cardNumber, expMonth, expYear, addressLine1, postalCode, phnNumber,CVV);
 		storeFrontBrandRefreshHomePage.clickUseThisBillingInformationBtn();
 		storeFrontBrandRefreshHomePage.clickUseAsEnteredBtn();
 		storeFrontBrandRefreshHomePage.clickCompleteOrderBtn();
@@ -105,7 +105,7 @@ public class OrderVerificationTest extends RFBrandRefreshWebsiteBaseTest{
 		storeFrontBrandRefreshHomePage.clickContinueWithoutConsultantLink();
 		storeFrontBrandRefreshHomePage.clickContinueBtnForPCAndRC();
 		storeFrontBrandRefreshHomePage.clickChangeBillingInformationBtn();
-		storeFrontBrandRefreshHomePage.enterBillingInfo(billingName, billingProfileFirstName, billingProfileLastName, nameOnCard, cardNumber, expMonth, expYear, addressLine1, postalCode, phnNumber);
+		storeFrontBrandRefreshHomePage.enterBillingInfo(billingName, billingProfileFirstName, billingProfileLastName, nameOnCard, cardNumber, expMonth, expYear, addressLine1, postalCode, phnNumber,CVV);
 		storeFrontBrandRefreshHomePage.clickUseThisBillingInformationBtn();
 		storeFrontBrandRefreshHomePage.clickUseAsEnteredBtn();
 		storeFrontBrandRefreshHomePage.clickCompleteOrderBtn();
@@ -148,7 +148,7 @@ public class OrderVerificationTest extends RFBrandRefreshWebsiteBaseTest{
 		storeFrontBrandRefreshConsultantPage.clickCheckoutBtn();
 		storeFrontBrandRefreshConsultantPage.clickContinueBtnForPCAndRC();
 		storeFrontBrandRefreshHomePage.clickChangeBillingInformationBtn();
-		storeFrontBrandRefreshHomePage.enterBillingInfo(billingName, billingProfileFirstName, billingProfileLastName, nameOnCard, cardNumber, expMonth, expYear, addressLine1, postalCode, phnNumber);
+		storeFrontBrandRefreshHomePage.enterBillingInfo(billingName, billingProfileFirstName, billingProfileLastName, nameOnCard, cardNumber, expMonth, expYear, addressLine1, postalCode, phnNumber,CVV);
 		storeFrontBrandRefreshHomePage.clickUseThisBillingInformationBtn();
 		storeFrontBrandRefreshHomePage.clickUseAsEnteredBtn();
 		storeFrontBrandRefreshConsultantPage.clickCompleteOrderBtn();

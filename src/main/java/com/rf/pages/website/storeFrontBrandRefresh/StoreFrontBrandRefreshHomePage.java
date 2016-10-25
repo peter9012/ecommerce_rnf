@@ -74,6 +74,7 @@ public class StoreFrontBrandRefreshHomePage extends StoreFrontBrandRefreshWebsit
 	private static final By EXPRESS_ENROLLMENT_LOC = By.id("btnGoToExpressEnroll");
 	private static final By ENROLLMENT_NEXT_BTN_LOC = By.xpath("//a[@id='btnNext']");
 	private static final By STANDARD_ENROLLMENT_LOC = By.id("btnGoToStandardEnrollment");
+	private static final By CVV_FIELD = By.xpath("//input[contains(@id,'uxCreditCardCvv')]");
 
 	private static final By ACCOUNT_FIRST_NAME_LOC = By.id("Account_FirstName");
 	private static final By ACCOUNT_LAST_NAME_LOC = By.id("Account_LastName");
@@ -405,6 +406,22 @@ public class StoreFrontBrandRefreshHomePage extends StoreFrontBrandRefreshWebsit
 		logger.info("Exp Year selected as: "+expYear);
 	}
 
+	public void enterBillingInformation(String cardNumber,String nameOnCard, String expMonth,String expYear,String CVV){
+		driver.findElement(CARD_NUMBER_LOC).sendKeys(cardNumber);
+		logger.info("card number entered is: "+cardNumber);
+		driver.findElement(NAME_ON_CARD_LOC).sendKeys(nameOnCard);
+		logger.info("name on card entered is: "+nameOnCard);
+		/*Select dropdown1 = new Select(driver.findElement(EXP_MONTH_LOC));
+		    dropdown1.selectByVisibleText(expMonth);*/
+		driver.type(By.id("TxtBCvv"), CVV);
+		driver.click(By.xpath("//select[@id='ExpMonth']"));
+		driver.click(By.xpath("//select[contains(@id,'ExpMonth')]//option[@value='"+expMonth+"']"));
+		logger.info("Exp Month selected as: "+expMonth);
+		Select dropdown2 = new Select(driver.findElement(EXP_YEAR_LOC));
+		dropdown2.selectByVisibleText(expYear);
+		logger.info("Exp Year selected as: "+expYear);
+	}
+
 	public void enterAccountInformation(int randomNum1,int randomNum2,int randomNum3,String SSNCardName){
 		driver.findElement(SSN1_LOC).sendKeys(String.valueOf(randomNum1));
 		logger.info("SSN1 entered as: "+randomNum1);
@@ -673,7 +690,7 @@ public class StoreFrontBrandRefreshHomePage extends StoreFrontBrandRefreshWebsit
 		logger.info("Phone number entered as: "+phnNumber);
 	}
 
-	public void enterBillingInfoDetails(String billingName, String firstName,String lastName,String cardName,String cardNumer,String month,String year,String addressLine1,String postalCode,String phnNumber){
+	public void enterBillingInfoDetails(String billingName, String firstName,String lastName,String cardName,String cardNumer,String month,String year,String addressLine1,String postalCode,String phnNumber,String CVV){
 		driver.pauseExecutionFor(2000);
 		driver.type(BILLING_NAME_FOR_BILLING_PROFILE, billingName);
 		logger.info("Billing profile name entered as: "+billingName);
@@ -689,6 +706,8 @@ public class StoreFrontBrandRefreshHomePage extends StoreFrontBrandRefreshWebsit
 		logger.info("Card Name entered as: "+cardName);
 		driver.type(CREDIT_CARD_NUMBER_INPUT_FIELD, cardNumer);
 		logger.info("Card number entered as: "+cardNumer);
+		driver.type(CVV_FIELD, CVV);
+		logger.info("CVV entered as "+CVV);
 		driver.click(EXPIRATION_DATE_MONTH_DD);
 		logger.info("Expiration month dropdown clicked");
 		driver.click(By.xpath(String.format(expiryMonthLoc, month)));
@@ -711,12 +730,6 @@ public class StoreFrontBrandRefreshHomePage extends StoreFrontBrandRefreshWebsit
 		driver.waitForElementPresent(FIRST_VALUE_OF_CITY_DD);
 		driver.click(FIRST_VALUE_OF_CITY_DD);
 		logger.info("City selected");
-		/*driver.click(CITY_DD);
-		        logger.info("City dropdown clicked");
-		        driver.click(FIRST_VALUE_OF_CITY_DD);
-		        logger.info("City selected");*/
-		//driver.type(CITY_DD, "Fremont");
-		//logger.info("City Selected");
 		driver.type(PHONE_NUMBER_BILLING_PROFILE_PAGE,phnNumber);
 		logger.info("Phone number entered as: "+phnNumber);
 	}
@@ -1417,7 +1430,48 @@ public class StoreFrontBrandRefreshHomePage extends StoreFrontBrandRefreshWebsit
 		driver.waitForPageLoad();
 	}
 
-	public void enterBillingInfo(String billingName, String firstName,String lastName,String cardName,String cardNumer,String month,String year,String addressLine1,String postalCode,String phnNumber){
+	//	public void enterBillingInfo(String billingName, String firstName,String lastName,String cardName,String cardNumer,String month,String year,String addressLine1,String postalCode,String phnNumber){
+	//		driver.type(BILLING_NAME_FOR_BILLING_PROFILE, billingName);
+	//		logger.info("Billing profile name entered as: "+billingName);
+	//		driver.type(ATTENTION_FIRST_NAME, firstName);
+	//		//driver.type(BILLING_FIRST_NAME, firstName);
+	//		logger.info("Attention first name entered as: "+firstName);
+	//		driver.type(ATTENTION_LAST_NAME, lastName);
+	//		//driver.type(BILLING_LAST_NAME, lastName);
+	//		logger.info("Attention last name entered as: "+lastName);
+	//		driver.type(NAME_ON_CARD, cardName);
+	//		logger.info("Card Name entered as: "+cardName);
+	//		driver.type(CREDIT_CARD_NUMBER_INPUT_FIELD, cardNumer);
+	//		logger.info("Card number entered as: "+cardNumer);
+	//		driver.click(EXPIRATION_DATE_MONTH_DD);
+	//		logger.info("Expiration month dropdown clicked");
+	//		driver.click(By.xpath(String.format(expiryMonthLoc, month)));
+	//		logger.info("Expiry month selected is: "+month);
+	//		driver.click(EXPIRATION_DATE_YEAR_DD);
+	//		logger.info("Expiration year dropdown clicked");
+	//		driver.click(By.xpath(String.format(expiryYearLoc, year)));
+	//		logger.info("Expiry year selected is: "+year);
+	//		driver.type(ADDRESS_LINE_1, addressLine1);
+	//		logger.info("Billing street address entered as: "+addressLine1);
+	//		driver.type(ZIP_CODE, postalCode+"\t");
+	//		logger.info("Postal code entered as: "+postalCode);
+	//		driver.findElement(By.xpath("//input[contains(@id,'uxCityDropDown_Input')]")).click();
+	//		driver.waitForStorfrontLegacyLoadingImageToDisappear();
+	//		//driver.pauseExecutionFor(5000);
+	//		Actions actions = new Actions(RFWebsiteDriver.driver);
+	//		actions.moveToElement(driver.findElement(CITY_DD)).click().build().perform();
+	//		//driver.click(CITY_DD);
+	//		logger.info("City dropdown clicked");
+	//		driver.waitForElementPresent(FIRST_VALUE_OF_CITY_DD);
+	//		driver.click(FIRST_VALUE_OF_CITY_DD);
+	//		logger.info("City selected");
+	//		//  driver.type(CITY_DD, "Fremont");
+	//		//  logger.info("City Selected");
+	//		driver.type(PHONE_NUMBER_BILLING_PROFILE_PAGE,phnNumber);
+	//		logger.info("Phone number entered as: "+phnNumber);
+	//	}
+
+	public void enterBillingInfo(String billingName, String firstName,String lastName,String cardName,String cardNumer,String month,String year,String addressLine1,String postalCode,String phnNumber,String CVV){
 		driver.type(BILLING_NAME_FOR_BILLING_PROFILE, billingName);
 		logger.info("Billing profile name entered as: "+billingName);
 		driver.type(ATTENTION_FIRST_NAME, firstName);
@@ -1430,6 +1484,8 @@ public class StoreFrontBrandRefreshHomePage extends StoreFrontBrandRefreshWebsit
 		logger.info("Card Name entered as: "+cardName);
 		driver.type(CREDIT_CARD_NUMBER_INPUT_FIELD, cardNumer);
 		logger.info("Card number entered as: "+cardNumer);
+		driver.type(By.id("ctl00_ContentPlaceHolder1_uxBillingEditor_uxCreditCardCvv"), CVV);
+		logger.info("CVV entered as: "+CVV);
 		driver.click(EXPIRATION_DATE_MONTH_DD);
 		logger.info("Expiration month dropdown clicked");
 		driver.click(By.xpath(String.format(expiryMonthLoc, month)));
@@ -1493,17 +1549,16 @@ public class StoreFrontBrandRefreshHomePage extends StoreFrontBrandRefreshWebsit
 	}
 
 	public void enterEmailAddressToRecoverPassword(String emailID){
-		driver.quickWaitForElementPresent(EMAIL_ADDRESS_FIELD_LOC);
+		driver.waitForElementPresent(EMAIL_ADDRESS_FIELD_LOC);
 		driver.type(EMAIL_ADDRESS_FIELD_LOC, emailID);
 		logger.info("email address entered to recover password is "+emailID);
 	}
-
 
 	public void clickSendEmailButton(){
 		driver.quickWaitForElementPresent(SEND_EMAIL_BTN_LOC);
 		driver.click(SEND_EMAIL_BTN_LOC);
 		logger.info("Send Email Button clicked");
-		driver.waitForPageLoad();
+		driver.pauseExecutionFor(3000);
 	}
 
 	public boolean validatePasswordChangeAndEmailSent(){
@@ -1545,12 +1600,14 @@ public class StoreFrontBrandRefreshHomePage extends StoreFrontBrandRefreshWebsit
 		actions.moveToElement(driver.findElement(CITY_DD)).click().build().perform();
 		logger.info("City dropdown clicked");
 		driver.waitForElementPresent(FIRST_VALUE_OF_CITY_DD);
-		driver.click(FIRST_VALUE_OF_CITY_DD);
+		//driver.click(FIRST_VALUE_OF_CITY_DD);
+		driver.clickByJS(RFWebsiteDriver.driver, driver.findElement(FIRST_VALUE_OF_CITY_DD));
 		logger.info("First value of City selected");
 		driver.waitForElementPresent(COUNTRY_DD);
 		driver.click(COUNTRY_DD);
 		logger.info("Country dropdown clicked");
-		driver.click(FIRST_VALUE_OF_COUNTRY_DD);
+		//driver.click(FIRST_VALUE_OF_COUNTRY_DD);
+		driver.clickByJS(RFWebsiteDriver.driver, driver.findElement(FIRST_VALUE_OF_COUNTRY_DD));
 		logger.info("First value of Country selected");
 		driver.type(PHONE_NUMBER_SHIPPING_PROFILE_PAGE,phnNumber);
 		logger.info("Phone number entered as: "+phnNumber);
@@ -1763,7 +1820,7 @@ public class StoreFrontBrandRefreshHomePage extends StoreFrontBrandRefreshWebsit
 		driver.waitForPageLoad();
 	}
 
-	public void enterBillingInfoForPWS(String billingName, String firstName,String lastName,String cardName,String cardNumer,String month,String year,String addressLine1,String postalCode,String phnNumber){
+	public void enterBillingInfoForPWS(String billingName, String firstName,String lastName,String cardName,String cardNumer,String month,String year,String addressLine1,String postalCode,String phnNumber, String CVV){
 		driver.type(BILLING_NAME_FOR_BILLING_PROFILE, billingName);
 		logger.info("Billing profile name entered as: "+billingName);
 		driver.type(ATTENTION_FIRST_NAME, firstName);
@@ -1776,6 +1833,8 @@ public class StoreFrontBrandRefreshHomePage extends StoreFrontBrandRefreshWebsit
 		logger.info("Card Name entered as: "+cardName);
 		driver.type(CREDIT_CARD_NUMBER_INPUT_FIELD, cardNumer);
 		logger.info("Card number entered as: "+cardNumer);
+		driver.type(By.id("ctl00_ContentPlaceHolder1_uxBillingEditor_uxCreditCardCvv"), CVV);
+		logger.info("CVV entered as: "+CVV);
 		driver.click(EXPIRATION_DATE_MONTH_DD);
 		logger.info("Expiration month dropdown clicked");
 		driver.click(By.xpath(String.format(expiryMonthLoc, month)));
@@ -1800,9 +1859,9 @@ public class StoreFrontBrandRefreshHomePage extends StoreFrontBrandRefreshWebsit
 		logger.info("City selected");
 		driver.waitForStorfrontLegacyLoadingImageToDisappear();
 		/*driver.click(CITY_DD);
-		  logger.info("City dropdown clicked");*/
+		    logger.info("City dropdown clicked");*/
 		/*driver.click(FIRST_VALUE_OF_CITY_DD);
-		  logger.info("City selected");*/
+		    logger.info("City selected");*/
 		driver.type(PHONE_NUMBER_BILLING_PROFILE_PAGE,phnNumber);
 		logger.info("Phone number entered as: "+phnNumber);
 	}
@@ -2055,6 +2114,21 @@ public class StoreFrontBrandRefreshHomePage extends StoreFrontBrandRefreshWebsit
 	public boolean verifyErrorMessageForTermsAndConditionsForPCAndRC(){
 		driver.waitForElementPresent(ERROR_MESSAGE_FOR_TERMS_AND_CANDITIONS_FOR_PC_RC);
 		return driver.isElementPresent(ERROR_MESSAGE_FOR_TERMS_AND_CANDITIONS_FOR_PC_RC);
+	}
+
+	public void switchToChildWindow(){
+		driver.pauseExecutionFor(5000);
+		String parentWindowID=driver.getWindowHandle();
+		Set<String> set=driver.getWindowHandles();
+		Iterator<String> it=set.iterator();
+		while(it.hasNext()){
+			String childWindowID=it.next();
+			if(!parentWindowID.equalsIgnoreCase(childWindowID)){
+				driver.switchTo().window(childWindowID);
+				//driver.close(); 
+				break;
+			}
+		}
 	}
 
 }

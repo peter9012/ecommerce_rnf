@@ -19,6 +19,7 @@ import org.testng.annotations.BeforeSuite;
 import com.rf.core.driver.website.RFWebsiteDriver;
 import com.rf.core.utils.HtmlLogger;
 import com.rf.core.utils.SoftAssert;
+import com.rf.core.website.constants.TestConstantsRFL;
 import com.rf.test.base.RFBaseTest;
 
 /**
@@ -30,6 +31,7 @@ public class RFBrandRefreshWebsiteBaseTest extends RFBaseTest {
 	StringBuilder verificationErrors = new StringBuilder();
 	protected String password = null;
 	protected String countryId = null;
+	protected String CVV  = TestConstantsRFL.SECURITY_CODE;
 
 	protected RFWebsiteDriver driver = new RFWebsiteDriver(propertyFile);
 	private static final Logger logger = LogManager
@@ -65,7 +67,7 @@ public class RFBrandRefreshWebsiteBaseTest extends RFBaseTest {
 			countryId = "40";
 		else if(country.equalsIgnoreCase("us"))
 			countryId = "236";	
-	
+
 		setStoreFrontPassword(driver.getStoreFrontPassword());
 		logger.info("Out of Before method..");
 	}
@@ -99,7 +101,7 @@ public class RFBrandRefreshWebsiteBaseTest extends RFBaseTest {
 			driver.pauseExecutionFor(3000);
 			driver.waitForPageLoad();	
 		}
-				
+
 	}
 
 	// This assertion for the UI Texts
@@ -240,6 +242,5 @@ public class RFBrandRefreshWebsiteBaseTest extends RFBaseTest {
 		}
 		return allReturnedValuesFromQuery;
 	}
-	
 
 }

@@ -81,7 +81,7 @@ public class ComPWSTest extends RFBrandRefreshWebsiteBaseTest{
 		storeFrontBrandRefreshHomePage.clickCheckoutBtn();
 		storeFrontBrandRefreshHomePage.clickContinueBtnForPCAndRC();
 		storeFrontBrandRefreshHomePage.clickChangeBillingInformationBtn();
-		storeFrontBrandRefreshHomePage.enterBillingInfo(billingName, billingProfileFirstName, billingProfileLastName, nameOnCard, cardNumber, expMonth, expYear, addressLine1, postalCode, phnNumber);
+		storeFrontBrandRefreshHomePage.enterBillingInfo(billingName, billingProfileFirstName, billingProfileLastName, nameOnCard, cardNumber, expMonth, expYear, addressLine1, postalCode, phnNumber,CVV);
 		storeFrontBrandRefreshHomePage.clickUseThisBillingInformationBtn();
 		storeFrontBrandRefreshHomePage.clickUseAsEnteredBtn();
 		storeFrontBrandRefreshHomePage.clickCompleteOrderBtn();
@@ -127,7 +127,7 @@ public class ComPWSTest extends RFBrandRefreshWebsiteBaseTest{
 		storeFrontBrandRefreshHomePage.clickCheckoutBtn();
 		storeFrontBrandRefreshHomePage.clickContinueBtnForPCAndRC();
 		storeFrontBrandRefreshHomePage.clickChangeBillingInformationBtn();
-		storeFrontBrandRefreshHomePage.enterBillingInfo(billingName, billingProfileFirstName, billingProfileLastName, nameOnCard, cardNumber, expMonth, expYear, addressLine1, postalCode, phnNumber);
+		storeFrontBrandRefreshHomePage.enterBillingInfo(billingName, billingProfileFirstName, billingProfileLastName, nameOnCard, cardNumber, expMonth, expYear, addressLine1, postalCode, phnNumber,CVV);
 		storeFrontBrandRefreshHomePage.clickUseThisBillingInformationBtn();
 		storeFrontBrandRefreshHomePage.clickUseAsEnteredBtn();
 		storeFrontBrandRefreshHomePage.clickCompleteOrderBtn();
@@ -193,7 +193,7 @@ public class ComPWSTest extends RFBrandRefreshWebsiteBaseTest{
 		storeFrontBrandRefreshHomePage.clickCheckoutBtn();
 		storeFrontBrandRefreshHomePage.clickContinueBtnForPCAndRC();
 		storeFrontBrandRefreshHomePage.clickChangeBillingInformationBtn();
-		storeFrontBrandRefreshHomePage.enterBillingInfo(billingName, billingProfileFirstName, billingProfileLastName, nameOnCard, cardNumber, expMonth, expYear, addressLine1, postalCode, phnNumber);
+		storeFrontBrandRefreshHomePage.enterBillingInfo(billingName, billingProfileFirstName, billingProfileLastName, nameOnCard, cardNumber, expMonth, expYear, addressLine1, postalCode, phnNumber,CVV);
 		storeFrontBrandRefreshHomePage.clickUseThisBillingInformationBtn();
 		storeFrontBrandRefreshHomePage.clickUseAsEnteredBtn();
 		storeFrontBrandRefreshHomePage.clickCompleteOrderBtn();

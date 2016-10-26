@@ -91,8 +91,6 @@ public class UINavigationTest extends RFBrandRefreshWebsiteBaseTest{
 		String subLinkProducts = "Products";
 		String subLinkFAQ = "FAQs";
 		String subLinkResults = "Results";
-
-
 		storeFrontBrandRefreshHomePage.mouseHoverShopSkinCareAndClickLink(subLinkRegimen);
 		s_assert.assertTrue(storeFrontBrandRefreshHomePage.getCurrentURL().toLowerCase().contains(subLinkRegimen.toLowerCase()), "Expected regimen name is "+subLinkRegimen.toLowerCase()+" Actual on UI is "+storeFrontBrandRefreshHomePage.getCurrentURL().toLowerCase());
 		s_assert.assertTrue(storeFrontBrandRefreshHomePage.getCurrentURL().toLowerCase().contains(subLinkProducts.toLowerCase()), "Expected sublink in url is "+subLinkProducts.toLowerCase()+" Actual on UI is "+storeFrontBrandRefreshHomePage.getCurrentURL().toLowerCase());
@@ -441,7 +439,7 @@ public class UINavigationTest extends RFBrandRefreshWebsiteBaseTest{
 	}
 
 	//Corporate_BUsinessSystem_ SuccessStories
-	@Test
+	@Test(enabled=false)//No more visible on UI
 	public void testCorporateBusinessSystemSuccessStories(){
 		String meetOurCommunity = "Meet Our Community";
 		String rfxCircleAG = "RFXcircleAG";
@@ -684,7 +682,7 @@ public class UINavigationTest extends RFBrandRefreshWebsiteBaseTest{
 	public void testCorporateFindAConsultant(){
 		String expectedURL = "LocatePWS.aspx?fromHome=1";
 		storeFrontBrandRefreshHomePage.clickConnectWithAConsultant();
-		s_assert.assertTrue(storeFrontBrandRefreshHomePage.getCurrentURL().contains(expectedURL), "Current url expected is: "+expectedURL+" while actual on UI is "+storeFrontBrandRefreshHomePage.getCurrentURL());
+		s_assert.assertTrue(storeFrontBrandRefreshHomePage.getCurrentUrlOpenedWindow().contains(expectedURL), "Current url expected is: "+expectedURL+" while actual on UI is "+storeFrontBrandRefreshHomePage.getCurrentURL());
 		s_assert.assertAll();
 	}
 
@@ -893,7 +891,6 @@ public class UINavigationTest extends RFBrandRefreshWebsiteBaseTest{
 	//Company-PFC Foundation link should be redirecting properly 
 	@Test(enabled=false)//needs updation
 	public void testCompanyPFCFoundationLinkShouldRedirectProperly(){
-
 		storeFrontBrandRefreshHomePage.clickAboutRFBtn();
 		//verify company PFC Foundation link?
 		storeFrontBrandRefreshHomePage.clickGivingBackLinkUnderAboutRF();
@@ -905,11 +902,10 @@ public class UINavigationTest extends RFBrandRefreshWebsiteBaseTest{
 	@Test(enabled=true)
 	public void testCorporateRFInTheNews(){
 		String expectedURL = "Company/PR";
-		storeFrontBrandRefreshHomePage.mouseHoverAboutRFAndClickLink("Press Room");
-		//storeFrontBrandRefreshHomePage.clickCompanyPressRoomLink();
+		//storeFrontBrandRefreshHomePage.mouseHoverAboutRFAndClickLink("Press Room");
+		storeFrontBrandRefreshHomePage.clickCompanyPressRoomLink();
 		s_assert.assertTrue(storeFrontBrandRefreshHomePage.getCurrentURL().contains(expectedURL), "Current url expected is: "+expectedURL+" while actual on UI is "+storeFrontBrandRefreshHomePage.getCurrentURL());
 		s_assert.assertAll();
 	}
-
 
 }

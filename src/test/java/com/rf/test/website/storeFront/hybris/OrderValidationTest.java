@@ -2137,14 +2137,12 @@ public class OrderValidationTest extends RFWebsiteBaseTest{
 		String accountId = null;
 		storeFrontHomePage = new StoreFrontHomePage(driver);
 		storeFrontUpdateCartPage = new StoreFrontUpdateCartPage(driver);
-
-
 		while(true){
 			randomConsultantList = DBUtil.performDatabaseQuery(DBQueries_RFO.callQueryWithArguement(DBQueries_RFO.GET_RANDOM_ACTIVE_CONSULTANT_WITH_ORDERS_AND_AUTOSHIPS_RFO,countryId),RFO_DB);
 			consultantEmailID = (String) getValueFromQueryResult(randomConsultantList, "UserName");		
 			accountId = String.valueOf(getValueFromQueryResult(randomConsultantList, "AccountID"));
 			logger.info("Account Id of the user is "+accountId);
-
+			System.out.println("User from DB is "+consultantEmailID);
 			storeFrontConsultantPage = storeFrontHomePage.loginAsConsultant(consultantEmailID, password);
 			boolean isSiteNotFoundPresent = driver.getCurrentUrl().contains("error");
 			if(isSiteNotFoundPresent){
@@ -2154,34 +2152,12 @@ public class OrderValidationTest extends RFWebsiteBaseTest{
 			else
 				break;
 		}
-		//s_assert.assertTrue(storeFrontConsultantPage.verifyConsultantPage(),"Consultant User Page doesn't contain Welcome User Message");
+		
 		logger.info("login is successful");
-		/*storeFrontConsultantPage.clickOnShopLink();
-				storeFrontConsultantPage.clickOnAllProductsLink();*/
 		storeFrontConsultantPage.hoverOnShopLinkAndClickAllProductsLinksAfterLogin();
 		storeFrontUpdateCartPage.clickOnBuyNowButton();
 		storeFrontUpdateCartPage.clickOnCheckoutButton();
-		//s_assert.assertTrue(storeFrontUpdateCartPage.verifyCheckoutConfirmation(),"Confirmation of order popup is not present");
-		//storeFrontUpdateCartPage.clickOnConfirmationOK();
-
-		String subtotal = String.valueOf(storeFrontUpdateCartPage.getSubtotal());
-		logger.info("subtotal ="+subtotal);
-		String deliveryCharges = String.valueOf(storeFrontUpdateCartPage.getDeliveryCharges());
-		logger.info("deliveryCharges ="+deliveryCharges);
-		/*		String handlingCharges = String.valueOf(storeFrontUpdateCartPage.getHandlingCharges());
-		logger.info("handlingCharges ="+handlingCharges);*/
-		String tax = String.valueOf(storeFrontUpdateCartPage.getTax());
-		logger.info("tax ="+tax);
-		String total = String.valueOf(storeFrontUpdateCartPage.getTotal());
-		logger.info("total ="+total);
-		String totalSV = String.valueOf(storeFrontUpdateCartPage.getTotalSV());
-		logger.info("totalSV ="+totalSV);
-		String shippingMethod = storeFrontUpdateCartPage.getShippingMethod();
-		logger.info("shippingMethod ="+shippingMethod);
 		storeFrontUpdateCartPage.clickOnShippingAddressNextStepBtn();
-		String BillingAddress = storeFrontUpdateCartPage.getSelectedBillingAddress();
-		logger.info("BillingAddress ="+BillingAddress);
-
 		storeFrontUpdateCartPage.clickOnDefaultBillingProfileEdit();
 		storeFrontUpdateCartPage.enterNewBillingNameOnCard(newBillingProfileName+" "+lastName);
 		storeFrontUpdateCartPage.enterNewBillingCardNumber(TestConstants.CARD_NUMBER);
@@ -2189,13 +2165,9 @@ public class OrderValidationTest extends RFWebsiteBaseTest{
 		storeFrontUpdateCartPage.enterNewBillingSecurityCode(TestConstants.SECURITY_CODE);
 		storeFrontUpdateCartPage.selectNewBillingCardAddress();
 		storeFrontUpdateCartPage.clickOnSaveBillingProfile();
-
 		storeFrontUpdateCartPage.clickOnBillingNextStepBtn();
 		storeFrontUpdateCartPage.clickPlaceOrderBtn();
-		//String orderNumber = storeFrontUpdateCartPage.getOrderNumberAfterPlaceOrder();
 		s_assert.assertTrue(storeFrontUpdateCartPage.verifyOrderPlacedConfirmationMessage(), "Order has been not placed successfully");
-		//**** TEST IS DONE HERE ****
-		
 		s_assert.assertAll();
 	}
 

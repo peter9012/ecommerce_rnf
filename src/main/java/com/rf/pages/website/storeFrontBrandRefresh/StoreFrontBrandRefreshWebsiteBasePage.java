@@ -543,4 +543,15 @@ public class StoreFrontBrandRefreshWebsiteBasePage extends RFBasePage{
 		}
 	}
 
+	public boolean isLoginFailed(){
+		driver.waitForElementPresent(By.id("loginError"));
+		return driver.isElementPresent(By.id("loginError"));
+	}
+
+	public void refreshThePage(){
+		driver.navigate().refresh();
+		driver.waitForPageLoad();
+		driver.pauseExecutionFor(2000);
+	}
+
 }

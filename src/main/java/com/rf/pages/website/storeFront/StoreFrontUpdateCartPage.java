@@ -59,8 +59,10 @@ public class StoreFrontUpdateCartPage extends StoreFrontRFWebsiteBasePage{
 	}
 
 	public void enterNewBillingNameOnCard(String nameOnCard){
-		driver.waitForElementPresent(By.id("card-name"));
-		driver.clear(By.id("card-name"));
+		driver.waitForElementPresent(By.id("card-name"));		
+//		JavascriptExecutor js = ((JavascriptExecutor)RFWebsiteDriver.driver);
+//		js.executeScript("$('#card-name-masked').hide();$('#card-name').show(); ", driver.findElement(By.id("card-name")));
+		driver.pauseExecutionFor(2000);		
 		driver.type(By.id("card-name"),nameOnCard);
 	}
 

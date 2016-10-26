@@ -1133,8 +1133,9 @@ public class UpgradeDowngradeTest extends RFWebsiteBaseTest{
 			storeFrontHomePage = new StoreFrontHomePage(driver);
 			while(true){
 				randomConsultantList = DBUtil.performDatabaseQuery(DBQueries_RFO.callQueryWithArguement(DBQueries_RFO.GET_RANDOM_ACTIVE_CONSULTANT_WITH_ORDERS_AND_AUTOSHIPS_RFO,countryId),RFO_DB);
-				consultantEmailID = (String) getValueFromQueryResult(randomConsultantList, "UserName");		
 				accountID = String.valueOf(getValueFromQueryResult(randomConsultantList, "AccountID"));
+				randomConsultantList = DBUtil.performDatabaseQuery(DBQueries_RFO.callQueryWithArguement(DBQueries_RFO.GET_EMAIL_ID_FROM_ACCOUNT_ID,accountID),RFO_DB);
+			    consultantEmailID = String.valueOf(getValueFromQueryResult(randomConsultantList, "EmailAddress"));
 				logger.info("Account Id of the user is "+accountID);
 				storeFrontConsultantPage = storeFrontHomePage.loginAsConsultant(consultantEmailID, password);
 				boolean isLoginError = driver.getCurrentUrl().contains("error");
@@ -1825,19 +1826,19 @@ public class UpgradeDowngradeTest extends RFWebsiteBaseTest{
 		s_assert.assertTrue(accountTypeIDOfUpgradedRC.equals("1"), "Enrolled PC user account is not upgraded to consultant account in RFO database.");
 		logout();
 		//Verify enrolled consultant in cscockpit.
-		driver.get(driver.getCSCockpitURL());
-		cscockpitLoginPage = new CSCockpitLoginPage(driver);
-		cscockpitCustomerSearchTabPage = cscockpitLoginPage.clickLoginBtn();
-		cscockpitCustomerSearchTabPage.selectCustomerTypeFromDropDownInCustomerSearchTab("CONSULTANT");
-		cscockpitCustomerSearchTabPage.selectCountryFromDropDownInCustomerSearchTab(reqCountry);
-		cscockpitCustomerSearchTabPage.selectAccountStatusFromDropDownInCustomerSearchTab("Active");
-		cscockpitCustomerSearchTabPage.enterEmailIdInSearchFieldInCustomerSearchTab(rcEmailAddress);
-		cscockpitCustomerSearchTabPage.clickSearchBtn();
-		String randomCustomerSequenceNumber = String.valueOf(cscockpitCustomerSearchTabPage.getRandomCustomerFromSearchResult());
-		String customerTypeFromCSCockpit = cscockpitCustomerSearchTabPage.getCustomerTypeFromSearchResult(randomCustomerSequenceNumber);
-		s_assert.assertTrue(customerTypeFromCSCockpit.equalsIgnoreCase("CONSULTANT"),"Enrolled PC user account is not upgraded to consultant account in CSCockpit");
-		cscockpitCustomerSearchTabPage.clickMenuButton();
-		cscockpitCustomerSearchTabPage.clickLogoutButton();
+//		driver.get(driver.getCSCockpitURL());
+//		cscockpitLoginPage = new CSCockpitLoginPage(driver);
+//		cscockpitCustomerSearchTabPage = cscockpitLoginPage.clickLoginBtn();
+//		cscockpitCustomerSearchTabPage.selectCustomerTypeFromDropDownInCustomerSearchTab("CONSULTANT");
+//		cscockpitCustomerSearchTabPage.selectCountryFromDropDownInCustomerSearchTab(reqCountry);
+//		cscockpitCustomerSearchTabPage.selectAccountStatusFromDropDownInCustomerSearchTab("Active");
+//		cscockpitCustomerSearchTabPage.enterEmailIdInSearchFieldInCustomerSearchTab(rcEmailAddress);
+//		cscockpitCustomerSearchTabPage.clickSearchBtn();
+//		String randomCustomerSequenceNumber = String.valueOf(cscockpitCustomerSearchTabPage.getRandomCustomerFromSearchResult());
+//		String customerTypeFromCSCockpit = cscockpitCustomerSearchTabPage.getCustomerTypeFromSearchResult(randomCustomerSequenceNumber);
+//		s_assert.assertTrue(customerTypeFromCSCockpit.equalsIgnoreCase("CONSULTANT"),"Enrolled PC user account is not upgraded to consultant account in CSCockpit");
+//		cscockpitCustomerSearchTabPage.clickMenuButton();
+//		cscockpitCustomerSearchTabPage.clickLogoutButton();
 		//Enroll consultant under different sponser.
 		driver.get(driver.getURL()+"/"+driver.getCountry());
 		randomRCList = DBUtil.performDatabaseQuery(DBQueries_RFO.callQueryWithArguement(DBQueries_RFO.GET_RANDOM_RC_EMAIL_ID_RFO,countryId),RFO_DB);
@@ -1893,19 +1894,19 @@ public class UpgradeDowngradeTest extends RFWebsiteBaseTest{
 		s_assert.assertTrue(accountTypeIDOfUpgradedRC.equals("1"), "PC user account is not upgraded to consultant account in RFO database.");
 		logout();
 		//Verify enrolled consultant in cscockpit.
-		driver.get(driver.getCSCockpitURL());
-		cscockpitLoginPage = new CSCockpitLoginPage(driver);
-		cscockpitCustomerSearchTabPage = cscockpitLoginPage.clickLoginBtn();
-		cscockpitCustomerSearchTabPage.selectCustomerTypeFromDropDownInCustomerSearchTab("CONSULTANT");
-		cscockpitCustomerSearchTabPage.selectCountryFromDropDownInCustomerSearchTab(reqCountry);
-		cscockpitCustomerSearchTabPage.selectAccountStatusFromDropDownInCustomerSearchTab("Active");
-		cscockpitCustomerSearchTabPage.enterEmailIdInSearchFieldInCustomerSearchTab(rcUserEmailID);
-		cscockpitCustomerSearchTabPage.clickSearchBtn();
-		randomCustomerSequenceNumber = String.valueOf(cscockpitCustomerSearchTabPage.getRandomCustomerFromSearchResult());
-		customerTypeFromCSCockpit = cscockpitCustomerSearchTabPage.getCustomerTypeFromSearchResult(randomCustomerSequenceNumber);
-		s_assert.assertTrue(customerTypeFromCSCockpit.equalsIgnoreCase("CONSULTANT"),"PC user account is not upgraded to consultant account in CSCockpit");
-		cscockpitCustomerSearchTabPage.clickMenuButton();
-		cscockpitCustomerSearchTabPage.clickLogoutButton();
+//		driver.get(driver.getCSCockpitURL());
+//		cscockpitLoginPage = new CSCockpitLoginPage(driver);
+//		cscockpitCustomerSearchTabPage = cscockpitLoginPage.clickLoginBtn();
+//		cscockpitCustomerSearchTabPage.selectCustomerTypeFromDropDownInCustomerSearchTab("CONSULTANT");
+//		cscockpitCustomerSearchTabPage.selectCountryFromDropDownInCustomerSearchTab(reqCountry);
+//		cscockpitCustomerSearchTabPage.selectAccountStatusFromDropDownInCustomerSearchTab("Active");
+//		cscockpitCustomerSearchTabPage.enterEmailIdInSearchFieldInCustomerSearchTab(rcUserEmailID);
+//		cscockpitCustomerSearchTabPage.clickSearchBtn();
+//		randomCustomerSequenceNumber = String.valueOf(cscockpitCustomerSearchTabPage.getRandomCustomerFromSearchResult());
+//		customerTypeFromCSCockpit = cscockpitCustomerSearchTabPage.getCustomerTypeFromSearchResult(randomCustomerSequenceNumber);
+//		s_assert.assertTrue(customerTypeFromCSCockpit.equalsIgnoreCase("CONSULTANT"),"PC user account is not upgraded to consultant account in CSCockpit");
+//		cscockpitCustomerSearchTabPage.clickMenuButton();
+//		cscockpitCustomerSearchTabPage.clickLogoutButton();
 		s_assert.assertAll();
 	}
 	//Hybris Project-3958:CORP: Active PC email id during consultant enrollment under same sponsor.
@@ -2025,19 +2026,19 @@ public class UpgradeDowngradeTest extends RFWebsiteBaseTest{
 		s_assert.assertTrue(accountTypeIDOfUpgradedPC.equals("1"), "PC user account is not upgraded to consultant account in RFO database.");
 		logout();
 		//Verify enrolled consultant in cscockpit.
-		driver.get(driver.getCSCockpitURL());
-		cscockpitLoginPage = new CSCockpitLoginPage(driver);
-		cscockpitCustomerSearchTabPage = cscockpitLoginPage.clickLoginBtn();
-		cscockpitCustomerSearchTabPage.selectCustomerTypeFromDropDownInCustomerSearchTab("CONSULTANT");
-		cscockpitCustomerSearchTabPage.selectCountryFromDropDownInCustomerSearchTab(reqCountry);
-		cscockpitCustomerSearchTabPage.selectAccountStatusFromDropDownInCustomerSearchTab("Active");
-		cscockpitCustomerSearchTabPage.enterEmailIdInSearchFieldInCustomerSearchTab(pcEmailId);
-		cscockpitCustomerSearchTabPage.clickSearchBtn();
-		String randomCustomerSequenceNumber = String.valueOf(cscockpitCustomerSearchTabPage.getRandomCustomerFromSearchResult());
-		String customerTypeFromCSCockpit = cscockpitCustomerSearchTabPage.getCustomerTypeFromSearchResult(randomCustomerSequenceNumber);
-		s_assert.assertTrue(customerTypeFromCSCockpit.equalsIgnoreCase("CONSULTANT"),"PC user account is not upgraded to consultant account in CSCockpit");
-		cscockpitCustomerSearchTabPage.clickMenuButton();
-		cscockpitCustomerSearchTabPage.clickLogoutButton();
+//		driver.get(driver.getCSCockpitURL());
+//		cscockpitLoginPage = new CSCockpitLoginPage(driver);
+//		cscockpitCustomerSearchTabPage = cscockpitLoginPage.clickLoginBtn();
+//		cscockpitCustomerSearchTabPage.selectCustomerTypeFromDropDownInCustomerSearchTab("CONSULTANT");
+//		cscockpitCustomerSearchTabPage.selectCountryFromDropDownInCustomerSearchTab(reqCountry);
+//		cscockpitCustomerSearchTabPage.selectAccountStatusFromDropDownInCustomerSearchTab("Active");
+//		cscockpitCustomerSearchTabPage.enterEmailIdInSearchFieldInCustomerSearchTab(pcEmailId);
+//		cscockpitCustomerSearchTabPage.clickSearchBtn();
+//		String randomCustomerSequenceNumber = String.valueOf(cscockpitCustomerSearchTabPage.getRandomCustomerFromSearchResult());
+//		String customerTypeFromCSCockpit = cscockpitCustomerSearchTabPage.getCustomerTypeFromSearchResult(randomCustomerSequenceNumber);
+//		s_assert.assertTrue(customerTypeFromCSCockpit.equalsIgnoreCase("CONSULTANT"),"PC user account is not upgraded to consultant account in CSCockpit");
+//		cscockpitCustomerSearchTabPage.clickMenuButton();
+//		cscockpitCustomerSearchTabPage.clickLogoutButton();
 		s_assert.assertAll();
 	}
 
@@ -2287,19 +2288,19 @@ public class UpgradeDowngradeTest extends RFWebsiteBaseTest{
 		s_assert.assertTrue(accountTypeIDOfUpgradedPC.equals("1"), "PC user account is not upgraded to consultant account in RFO database.");
 		logout();
 		//Verify enrolled consultant in cscockpit.
-		driver.get(driver.getCSCockpitURL());
-		cscockpitLoginPage = new CSCockpitLoginPage(driver);
-		cscockpitCustomerSearchTabPage = cscockpitLoginPage.clickLoginBtn();
-		cscockpitCustomerSearchTabPage.selectCustomerTypeFromDropDownInCustomerSearchTab("CONSULTANT");
-		cscockpitCustomerSearchTabPage.selectCountryFromDropDownInCustomerSearchTab(reqCountry);
-		cscockpitCustomerSearchTabPage.selectAccountStatusFromDropDownInCustomerSearchTab("Active");
-		cscockpitCustomerSearchTabPage.enterEmailIdInSearchFieldInCustomerSearchTab(pcEmailId);
-		cscockpitCustomerSearchTabPage.clickSearchBtn();
-		String randomCustomerSequenceNumber = String.valueOf(cscockpitCustomerSearchTabPage.getRandomCustomerFromSearchResult());
-		String customerTypeFromCSCockpit = cscockpitCustomerSearchTabPage.getCustomerTypeFromSearchResult(randomCustomerSequenceNumber);
-		s_assert.assertTrue(customerTypeFromCSCockpit.equalsIgnoreCase("CONSULTANT"),"PC user account is not upgraded to consultant account in CSCockpit");
-		cscockpitCustomerSearchTabPage.clickMenuButton();
-		cscockpitCustomerSearchTabPage.clickLogoutButton();
+//		driver.get(driver.getCSCockpitURL());
+//		cscockpitLoginPage = new CSCockpitLoginPage(driver);
+//		cscockpitCustomerSearchTabPage = cscockpitLoginPage.clickLoginBtn();
+//		cscockpitCustomerSearchTabPage.selectCustomerTypeFromDropDownInCustomerSearchTab("CONSULTANT");
+//		cscockpitCustomerSearchTabPage.selectCountryFromDropDownInCustomerSearchTab(reqCountry);
+//		cscockpitCustomerSearchTabPage.selectAccountStatusFromDropDownInCustomerSearchTab("Active");
+//		cscockpitCustomerSearchTabPage.enterEmailIdInSearchFieldInCustomerSearchTab(pcEmailId);
+//		cscockpitCustomerSearchTabPage.clickSearchBtn();
+//		String randomCustomerSequenceNumber = String.valueOf(cscockpitCustomerSearchTabPage.getRandomCustomerFromSearchResult());
+//		String customerTypeFromCSCockpit = cscockpitCustomerSearchTabPage.getCustomerTypeFromSearchResult(randomCustomerSequenceNumber);
+//		s_assert.assertTrue(customerTypeFromCSCockpit.equalsIgnoreCase("CONSULTANT"),"PC user account is not upgraded to consultant account in CSCockpit");
+//		cscockpitCustomerSearchTabPage.clickMenuButton();
+//		cscockpitCustomerSearchTabPage.clickLogoutButton();
 		s_assert.assertAll();
 	}
 

@@ -320,10 +320,13 @@ public class StoreFrontHomePage extends StoreFrontRFWebsiteBasePage {
 				try{
 					driver.click(By.id("new-password-account2"));
 				}catch(Exception e2){
-					driver.click(By.id("existingAccountForm"));
-					logger.info("Clicked new password inside CATCH");
-				}
+					try{
+						driver.click(By.xpath("//h1[contains(text(),'Log in or')]"));
+						logger.info("Clicked new password inside CATCH");
+					}catch(Exception e3){
 
+					}
+				}
 			}
 		}
 		logger.info("email Address of the user is "+emailAddress);

@@ -1061,7 +1061,7 @@ public class HomePageFunctionalityTest extends RFWebsiteBaseTest{
 
 		String consultantEmailId =null;
 		String accountId = null;
-
+		storeFrontConsultantPage = new StoreFrontConsultantPage(driver);
 		country = driver.getCountry();
 		env = driver.getEnvironment();
 		storeFrontHomePage = new StoreFrontHomePage(driver);

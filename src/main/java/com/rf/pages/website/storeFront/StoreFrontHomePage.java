@@ -206,8 +206,8 @@ public class StoreFrontHomePage extends StoreFrontRFWebsiteBasePage {
 	}
 
 	public boolean isSponsorPresentInSearchResult(){
-		driver.waitForElementPresent(By.xpath("//div[@id='search-results']/div[1]/div[1]//input[contains(@value,'Select')]"));
-		return driver.isElementPresent(By.xpath("//div[@id='search-results']/div[1]/div[1]//input[contains(@value,'Select')]"));
+		driver.waitForElementPresent(By.xpath("//div[@id='search-results']/div[1]/div[1]//a[contains(text(),'Select')]"));
+		return driver.isElementPresent(By.xpath("//div[@id='search-results']/div[1]/div[1]//a[contains(text(),'Select')]"));
 	}
 
 	public void hoverOnBecomeAConsultantAndClickEnrollNowLink(){
@@ -310,15 +310,20 @@ public class StoreFrontHomePage extends StoreFrontRFWebsiteBasePage {
 		driver.findElement(By.id("email-account")).sendKeys(Keys.TAB);
 		try{
 			driver.findElement(By.xpath("//*[@id='new-password-account']")).sendKeys("111Maiden$");
-			//			driver.clickByJS(RFWebsiteDriver.driver, driver.findElement(By.xpath("//*[@id='new-password-account']")));
+			//   driver.clickByJS(RFWebsiteDriver.driver, driver.findElement(By.xpath("//*[@id='new-password-account']")));
 			//driver.click(By.id("new-password-account"));
 			logger.info("Clicked new password inside try");
 		}catch(NoSuchElementException e){
 			try{
 				driver.click(By.id("password"));
 			}catch(Exception e1){
-				driver.click(By.id("new-password-account2"));
-				logger.info("Clicked new password inside CATCH");
+				try{
+					driver.click(By.id("new-password-account2"));
+				}catch(Exception e2){
+					driver.click(By.id("existingAccountForm"));
+					logger.info("Clicked new password inside CATCH");
+				}
+
 			}
 		}
 		logger.info("email Address of the user is "+emailAddress);
@@ -1124,10 +1129,10 @@ public class StoreFrontHomePage extends StoreFrontRFWebsiteBasePage {
 
 	public void searchCIDForPCAndRC() throws InterruptedException{
 		driver.waitForElementPresent(By.id("sponsor-name-id"));
-		driver.type(By.id("sponsor-name-id"),"test");
+		driver.type(By.id("sponsor-name-id"),"mary");
 		driver.waitForElementPresent(By.xpath("//input[@value='Search']"));
 		driver.click(By.xpath("//input[@value='Search']"));
-		logger.info("Sponsor entered as 'test' and search button clicked");
+		logger.info("Sponsor entered as 'mary' and search button clicked");
 		driver.waitForLoadingImageToDisappear();
 	}
 
@@ -1788,7 +1793,8 @@ public class StoreFrontHomePage extends StoreFrontRFWebsiteBasePage {
 
 	public void clickOnReviewAndConfirmBillingEditBtn(){
 		driver.waitForElementPresent(By.xpath("//h3[contains(text(),'Billing info')]/a"));
-		driver.click(By.xpath("//h3[contains(text(),'Billing info')]/a"));
+		//driver.click(By.xpath("//h3[contains(text(),'Billing info')]/a"));
+		driver.clickByJS(RFWebsiteDriver.driver, driver.findElement(By.xpath("//h3[contains(text(),'Billing info')]/a")));
 	}
 
 	public boolean isEnterNameOnCardPrepopulated(){
@@ -2195,7 +2201,7 @@ public class StoreFrontHomePage extends StoreFrontRFWebsiteBasePage {
 
 	public void enterSponsorNameAndClickOnSearchForPCAndRC(){
 		driver.waitForElementPresent(By.xpath("//input[@id='sponsor-name-id']"));
-		driver.type(By.xpath("//input[@id='sponsor-name-id']"), "test");
+		driver.type(By.xpath("//input[@id='sponsor-name-id']"), "mary");
 		driver.click(By.xpath("//input[@value='Search']"));
 	}
 

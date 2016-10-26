@@ -838,7 +838,7 @@ public class HomePageFunctionalityTest extends RFWebsiteBaseTest{
 		storeFrontHomePage.updateEmailOnMeetYourConsultantPage(emailAddress);
 		storeFrontHomePage.clickOnSaveAfterEditPWS();
 		logout();
-		storeFrontHomePage.openPWS(bizPWS);
+		storeFrontHomePage.openPWSSite(bizPWS);
 		storeFrontHomePage.clickOnSponsorName();
 
 		s_assert.assertTrue(storeFrontHomePage.verifyEmailIdIsPresentInContactBoxAfterUpdate(emailAddress), "Email Address is not Present in contact box After Edit");
@@ -1057,17 +1057,11 @@ public class HomePageFunctionalityTest extends RFWebsiteBaseTest{
 	@Test
 	public void testToVerifyTheMoreAboutMeSectionForPWSCom_1899(){
 		RFO_DB = driver.getDBNameRFO();
-		List<Map<String, Object>> randomConsultantList =  null;
-
-		String consultantEmailId =null;
-		String accountId = null;
 		storeFrontConsultantPage = new StoreFrontConsultantPage(driver);
 		country = driver.getCountry();
 		env = driver.getEnvironment();
 		storeFrontHomePage = new StoreFrontHomePage(driver);
-		String sitePrefix = "bhopkins"; // standard active consultant site
-		String comPWS = driver.getComPWSURL();
-		String PWS = "https://"+sitePrefix+comPWS+"/"+country;
+		String PWS = storeFrontHomePage.getComPWS(country, env) ; 
 		storeFrontHomePage.openPWS(PWS);
 		storeFrontConsultantPage.clickOnMeetYourConsultantLink();
 		s_assert.assertTrue(storeFrontConsultantPage.validateMeetYourConsultantPage(),"This is not meet your consultant page");
@@ -1529,9 +1523,9 @@ public class HomePageFunctionalityTest extends RFWebsiteBaseTest{
 		country = driver.getCountry();
 		env = driver.getEnvironment();  
 		storeFrontHomePage = new StoreFrontHomePage(driver);
-		String sitePrefix = "bhopkins"; // standard active consultant site
-		String comPWS = driver.getComPWSURL();
-		 /*"http://"+sitePrefix+comPWS+"/"+country;*/
+//		String sitePrefix = "bhopkins"; // standard active consultant site
+//		String comPWS = driver.getComPWSURL();
+//		 /*"http://"+sitePrefix+comPWS+"/"+country;*/
 		String PWS = storeFrontHomePage.getComPWS(country, env) ;     
 		storeFrontHomePage.openPWS(storeFrontHomePage.convertBizSiteToComSite(PWS));		
 		s_assert.assertTrue(storeFrontHomePage.isSolutionToolContentBlockPresent(),"Solution Tool content block is not present");
@@ -3153,9 +3147,7 @@ public class HomePageFunctionalityTest extends RFWebsiteBaseTest{
 			country = driver.getCountry();
 			env = driver.getEnvironment();
 			storeFrontHomePage = new StoreFrontHomePage(driver);
-			String sitePrefix = "bhopkins"; // standard active consultant site
-			String bizPWS = driver.getBizPWSURL();
-			String PWS = "https://"+sitePrefix+bizPWS+"/"+country;
+			String PWS = storeFrontHomePage.getBizPWS(country, env) ; 
 			storeFrontHomePage.openPWS(PWS);
 			storeFrontHomePage.hoverOnBecomeAConsultantAndClickEnrollNowLink();
 			s_assert.assertTrue(storeFrontHomePage.isProcedurePageIsDisplayedAfterClickPolicyAndProcedureLink(),"Policy and procedure page is not displayed after clicked on policy link");

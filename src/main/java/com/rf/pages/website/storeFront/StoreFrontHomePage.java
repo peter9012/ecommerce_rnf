@@ -201,13 +201,13 @@ public class StoreFrontHomePage extends StoreFrontRFWebsiteBasePage {
 		actions.moveToElement(driver.findElements(By.xpath("//div[@class='sponsorDataDiv']")).get(0)).build().perform();
 		driver.pauseExecutionFor(1000);
 		//		driver.click(By.xpath("//input[@value='Select & Continue']"));
-		driver.click(By.xpath("//input[contains(@value,'Select')]"));
+		driver.click(By.xpath("//*[contains(@value,'Select') or contains(text(),'Select & Continue')]"));
 		driver.waitForLoadingImageToDisappear();
 	}
 
 	public boolean isSponsorPresentInSearchResult(){
-		driver.waitForElementPresent(By.xpath("//div[@id='search-results']/div[1]/div[1]//a[contains(text(),'Select')]"));
-		return driver.isElementPresent(By.xpath("//div[@id='search-results']/div[1]/div[1]//a[contains(text(),'Select')]"));
+		driver.waitForElementPresent(By.xpath("//*[@id='search-results']/div[1]/div[1]//a[contains(text(),'Select')]"));
+		return driver.isElementPresent(By.xpath("//*[@id='search-results']/div[1]/div[1]//a[contains(text(),'Select')]"));
 	}
 
 	public void hoverOnBecomeAConsultantAndClickEnrollNowLink(){
@@ -1331,6 +1331,11 @@ public class StoreFrontHomePage extends StoreFrontRFWebsiteBasePage {
 		}
 	}
 
+	public void openPWSSite(String pws){
+		driver.get(pws);
+		driver.waitForPageLoad();
+	}
+
 	public void clickOnPersonalizeMyProfileLink(){
 		driver.waitForElementPresent(By.xpath("//a[contains(text(),'Personalize my Profile')]"));
 		driver.click(By.xpath("//a[contains(text(),'Personalize my Profile')]"));
@@ -2231,7 +2236,7 @@ public class StoreFrontHomePage extends StoreFrontRFWebsiteBasePage {
 
 	public boolean validateRFConnectionLink(){
 		driver.waitForElementPresent(By.xpath("//div[@class='footer-sections']//a[contains(text(),'RF Connection')]"));
-		driver.click(By.xpath("//div[@class='footer-sections']//a[contains(text(),'RF Connection')]"));
+		driver.clickByJS(RFWebsiteDriver.driver,driver.findElement(By.xpath("//div[@class='footer-sections']//a[contains(text(),'RF Connection')]")));
 		driver.pauseExecutionFor(5000);
 		Set<String> set=driver.getWindowHandles();
 		Iterator<String> it=set.iterator();
@@ -2246,7 +2251,7 @@ public class StoreFrontHomePage extends StoreFrontRFWebsiteBasePage {
 
 	public boolean validateCareersLink(){
 		driver.waitForElementPresent(By.xpath("//div[@class='footer-sections']//a[contains(text(),'Careers')]"));
-		driver.click(By.xpath("//div[@class='footer-sections']//a[contains(text(),'Careers')]"));
+		driver.clickByJS(RFWebsiteDriver.driver,driver.findElement(By.xpath("//div[@class='footer-sections']//a[contains(text(),'Careers')]")));
 		driver.pauseExecutionFor(4000);
 		return driver.getCurrentUrl().contains("careers");
 	}
@@ -2260,22 +2265,22 @@ public class StoreFrontHomePage extends StoreFrontRFWebsiteBasePage {
 
 	public boolean validateDisclaimerLink(){
 		driver.waitForElementPresent(By.xpath("//div[@class='footer-sections']//a[contains(text(),'Disclaimer')]"));
-		driver.click(By.xpath("//div[@class='footer-sections']//a[contains(text(),'Disclaimer')]"));
+		driver.clickByJS(RFWebsiteDriver.driver,driver.findElement(By.xpath("//div[@class='footer-sections']//a[contains(text(),'Disclaimer')]")));
 		driver.pauseExecutionFor(5000);
 		return driver.getCurrentUrl().contains("disclaimer");
 	}
 
 	public boolean validatePrivacyPolicyLink(){
 		driver.waitForElementPresent(By.xpath("//div[@class='footer-sections']//a[contains(text(),'Privacy Policy')]"));
-		driver.click(By.xpath("//div[@class='footer-sections']//a[contains(text(),'Privacy Policy')]"));
+		driver.clickByJS(RFWebsiteDriver.driver,driver.findElement(By.xpath("//div[@class='footer-sections']//a[contains(text(),'Privacy Policy')]")));
 		driver.pauseExecutionFor(5500);
 		return driver.getCurrentUrl().contains("privacy-policy");
 	}
 
 	public boolean validateTermsConditionsLink(){
 		driver.waitForElementPresent(By.xpath("//div[@class='footer-sections']//a[contains(text(),'Terms & Cond')]"));
-		driver.click(By.xpath("//div[@class='footer-sections']//a[contains(text(),'Terms & Cond')]"));
-		driver.pauseExecutionFor(4000);
+		driver.clickByJS(RFWebsiteDriver.driver,driver.findElement(By.xpath("//div[@class='footer-sections']//a[contains(text(),'Terms & Cond')]")));
+		driver.pauseExecutionFor(6000);
 		return driver.getCurrentUrl().contains("terms-conditions");
 	}
 
@@ -2288,14 +2293,14 @@ public class StoreFrontHomePage extends StoreFrontRFWebsiteBasePage {
 
 	public boolean validatePressRoomLink(){
 		driver.waitForElementPresent(By.xpath("//div[@class='footer-sections']//a[contains(text(),'Press Room')]"));
-		driver.click(By.xpath("//div[@class='footer-sections']//a[contains(text(),'Press Room')]"));
+		driver.clickByJS(RFWebsiteDriver.driver,driver.findElement(By.xpath("//div[@class='footer-sections']//a[contains(text(),'Press Room')]")));
 		driver.pauseExecutionFor(5000);
 		return driver.getCurrentUrl().contains("pressroom");
 	}
 
 	public boolean validateDermRFLink(){
 		driver.waitForElementPresent(By.xpath("//div[@class='footer-sections']//a[contains(text(),'Derm RF')]"));
-		driver.click(By.xpath("//div[@class='footer-sections']//a[contains(text(),'Derm RF')]"));
+		driver.clickByJS(RFWebsiteDriver.driver,driver.findElement(By.xpath("//div[@class='footer-sections']//a[contains(text(),'Derm RF')]")));
 		driver.pauseExecutionFor(8000);
 		Set<String> set=driver.getWindowHandles();
 		Iterator<String> it=set.iterator();

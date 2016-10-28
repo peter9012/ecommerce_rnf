@@ -2016,10 +2016,11 @@ public class StoreFrontBrandRefreshHomePage extends StoreFrontBrandRefreshWebsit
 		return fetchPWS;
 	}
 
-	public void clickConnectWithAConsultant(){
+	public void clickConnectWithAConsultant() throws InterruptedException{
 		driver.waitForElementPresent(CONNECT_WITH_A_CONSULTANT);
 		driver.click(CONNECT_WITH_A_CONSULTANT);
 		logger.info("Connect with a consultant");
+		Thread.sleep(2000);
 	}
 
 	public void clickClickhereLinkToLearnDirectSelling(){

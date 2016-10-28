@@ -688,12 +688,16 @@ public class StoreFrontHomePage extends StoreFrontRFWebsiteBasePage {
 	}
 
 	public void clickOnConfirmAutomaticPayment() throws InterruptedException{
-		driver.pauseExecutionFor(4000);
-		driver.waitForElementPresent(By.xpath("//input[@id='enroll']"));
-		driver.clickByJS(RFWebsiteDriver.driver,driver.findElement(By.xpath("//input[@id='enroll']")));
-		//driver.click(By.xpath("//input[@id='enroll']"));
-		logger.info("Automatic payment confirmation button clicked");
-		driver.waitForLoadingImageToDisappear();
+		try{
+			driver.pauseExecutionFor(4000);
+			driver.waitForElementPresent(By.xpath("//input[@id='enroll']"));
+			driver.clickByJS(RFWebsiteDriver.driver,driver.findElement(By.xpath("//input[@id='enroll']")));
+			//driver.click(By.xpath("//input[@id='enroll']"));
+			logger.info("Automatic payment confirmation button clicked");
+			driver.waitForLoadingImageToDisappear();
+		}catch(NoSuchElementException e){
+			logger.info("Confirmation Automatic Payment popup not present.");
+		}
 	}
 
 	public boolean verifyCongratsMessage(){
@@ -4266,15 +4270,15 @@ public class StoreFrontHomePage extends StoreFrontRFWebsiteBasePage {
 	}
 
 	public void clickOnAcceptSecurityCertificate(){
-		if(driver.getBrowser().equalsIgnoreCase("ie")){
-			try{
-				driver.waitForPageLoad();
-				driver.get("javascript:document.getElementById('overridelink').click();");
-				driver.waitForPageLoad();
-			}catch(Exception e){
-				logger.info("No Certificate error");
-			}
-		}
+		//		if(driver.getBrowser().equalsIgnoreCase("ie")){
+		//			try{
+		//				driver.waitForPageLoad();
+		//				driver.get("javascript:document.getElementById('overridelink').click();");
+		//				driver.waitForPageLoad();
+		//			}catch(Exception e){
+		//				logger.info("No Certificate error");
+		//			}
+		//		}
 	}
 
 }

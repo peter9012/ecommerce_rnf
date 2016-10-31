@@ -30,6 +30,8 @@ public class TestConstants {
 	public static final String REGIMEN_NAME_REDEFINE = "REDEFINE";
 	public static final String REGIMEN_NAME_SOOTHE = "SOOTHE";
 	public static final String REGIMEN_NAME_UNBLEMISH = "UNBLEMISH";
+	public static final String REGIMEN_NAME_ESSENTIALS = "ESSENTIALS";
+	public static final String REGIMEN_NAME_ENHANCEMENTS = "ENHANCEMENTS";
 	public static final String PASSWORD_BELOW_6CHARS = "test1";
 	public static final String SPOUSE_FIRST_NAME = "Mary";
 	public static final String SPOUSE_LAST_NAME = "Stone";
@@ -452,8 +454,8 @@ public class TestConstants {
 	public static final String COMPLIANCE_RE_ACTIVATION ="Compliance re-activation";
 	public static final String CRM_LOGIN_LOGISTICS_USERNAME = "opsuser@rodanandfields.com.stg1";
 	public static final String CRM_LOGIN_LOGISTICS_PASSWORD = "121Spear";
-	
-	
+
+
 	//DSV CSCOCKPIT
 	public static final String DSV_CSCOCKPIT_USERNAME = "qauser@rodanandfields.com";
 	public static final String DSV_CSCOCKPIT_PASSWORD = "csr@user";

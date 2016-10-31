@@ -19,6 +19,7 @@ import org.openqa.selenium.support.ui.Select;
 
 import com.rf.core.driver.RFDriver;
 import com.rf.core.driver.website.RFWebsiteDriver;
+import com.rf.core.utils.CommonUtils;
 import com.rf.core.website.constants.TestConstants;
 
 
@@ -4279,6 +4280,84 @@ public class StoreFrontHomePage extends StoreFrontRFWebsiteBasePage {
 		//				logger.info("No Certificate error");
 		//			}
 		//		}
+	}
+
+	public void selectProductCategory(String category){
+		driver.waitForElementPresent(By.xpath("//input[@value='- Product(s) -']"));
+		driver.click(By.xpath("//input[@value='- Product(s) -']"));
+		driver.pauseExecutionFor(2000);
+		driver.click(By.xpath(String.format("//input[@value='- Product(s) -']/following-sibling::ul//div[text()='%s']/following-sibling::div/div[contains(@class,'repaired-checkbox')]",category)));
+		driver.waitForPageLoad();
+	}
+	public void selectRandomProductCategory(int randomNumber){
+		String number = Integer.toString(randomNumber);
+		driver.waitForElementPresent(By.xpath("//input[@value='- Product(s) -']"));
+		driver.click(By.xpath("//input[@value='- Product(s) -']"));
+		driver.pauseExecutionFor(2000);
+		String selectedProductCategory = driver.findElement(By.xpath(String.format("//input[@value='- Product(s) -']/following-sibling::ul/li[%s]//div[@class='dropdown-items']/div[1]", number))).getText();
+		driver.click(By.xpath(String.format("//input[@value='- Product(s) -']/following-sibling::ul/li[%s]//div/div[contains(@class,'repaired-checkbox')]",number)));
+		logger.info("Random selected product category is "+selectedProductCategory);
+		driver.waitForPageLoad();
+	}
+	public String selectAndGetRandomProductPriceFilter(int randomNumProductprice){
+		String randomProductPriceNumber= Integer.toString(randomNumProductprice);
+		driver.waitForElementPresent(By.xpath("//input[@value='- Price -']"));
+		driver.click(By.xpath("//input[@value='- Price -']"));
+		driver.pauseExecutionFor(2000);
+		String randomPriceRange = driver.findElement(By.xpath(String.format("//input[@value='- Price -']/following-sibling::ul/li[%s]//div[@class='dropdown-items']/div[1]", randomProductPriceNumber))).getText();
+		driver.click(By.xpath(String.format("//input[@value='- Price -']/following-sibling::ul/li[%s]//div/div[contains(@class,'repaired-checkbox')]",randomProductPriceNumber)));
+		logger.info("Random selected product Price is "+randomPriceRange);
+		driver.waitForPageLoad();
+		return randomPriceRange;
+	}
+	
+	public boolean isProductCategoryPageSelected(String category){
+		return driver.isElementPresent(By.xpath(String.format("//h2[text()='%s']", category)));
+	}
+	
+	public boolean verifyProductPriceForRandomProduct(String priceRange){
+		String valueToCompared = priceRange.split("TO")[1].split("\\$")[1];
+		logger.info("Value from filter to compared is "+valueToCompared);
+		Double comparableValue = Double.parseDouble(valueToCompared);
+		int totalNumberOfProduct = driver.findElements(By.xpath("//div[@id='main-content']/descendant::button[contains(text(),'ADD TO BAG')]")).size();
+		logger.info("Total number of add to bag btn "+totalNumberOfProduct);
+		String randomProductNumber = Integer.toString(CommonUtils.getRandomNum(1,totalNumberOfProduct));
+		String priceOfRandomProduct = driver.findElement(By.xpath(String.format("//div[@id='main-content']/descendant::p[contains(text(),'Retail:')][%s]/span", randomProductNumber))).getText().split("\\$")[1];
+		logger.info("Price for random product"+randomProductNumber+" is :"+priceOfRandomProduct);
+		Double priceOfRandomProductToBeCompared = Double.parseDouble(priceOfRandomProduct);
+		if(comparableValue>=priceOfRandomProductToBeCompared){
+			return true;
+		}else{
+			return false;
+		}
+	}
+	
+	public boolean isHighToLowProductPriceFilterIsAppliedSuccessfully(){
+		String priceOfFirstProduct = driver.findElement(By.xpath("//div[@id='main-content']/descendant::p[contains(text(),'Retail:')][1]/span")).getText().split("\\$")[1]; 
+		Double firstPrice = Double.parseDouble(priceOfFirstProduct);
+		String priceOfSecondProduct = driver.findElement(By.xpath("//div[@id='main-content']/descendant::p[contains(text(),'Retail:')][2]/span")).getText().split("\\$")[1];
+		Double secondPrice = Double.parseDouble(priceOfSecondProduct);
+		String priceOfThirdProduct = driver.findElement(By.xpath("//div[@id='main-content']/descendant::p[contains(text(),'Retail:')][3]/span")).getText().split("\\$")[1];
+		Double thirdPrice = Double.parseDouble(priceOfThirdProduct);
+		if(firstPrice>secondPrice && secondPrice>thirdPrice){
+			return true;
+		}else{
+			return false;
+		}
+	}
+
+	public boolean isLowToHighProductPriceFilterIsAppliedSuccessfully(){
+		String priceOfFirstProduct = driver.findElement(By.xpath("//div[@id='main-content']/descendant::p[contains(text(),'Retail:')][1]/span")).getText().split("\\$")[1]; 
+		Double firstPrice = Double.parseDouble(priceOfFirstProduct);
+		String priceOfSecondProduct = driver.findElement(By.xpath("//div[@id='main-content']/descendant::p[contains(text(),'Retail:')][2]/span")).getText().split("\\$")[1];
+		Double secondPrice = Double.parseDouble(priceOfSecondProduct);
+		String priceOfThirdProduct = driver.findElement(By.xpath("//div[@id='main-content']/descendant::p[contains(text(),'Retail:')][3]/span")).getText().split("\\$")[1];
+		Double thirdPrice = Double.parseDouble(priceOfThirdProduct);
+		if(firstPrice<secondPrice && secondPrice<thirdPrice){
+			return true;
+		}else{
+			return false;
+		}
 	}
 
 }

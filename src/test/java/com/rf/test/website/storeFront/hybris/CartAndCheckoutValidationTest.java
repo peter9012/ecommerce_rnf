@@ -1030,8 +1030,12 @@ public class CartAndCheckoutValidationTest extends RFWebsiteBaseTest{
 
 	//Hybris Project-2306:Filter Product on Category
 	@Test
-	public void testFilterProductOnCategory_2306(){
+	public void testFilterProductOnCategory_2306() throws InterruptedException{
 		storeFrontHomePage = new StoreFrontHomePage(driver);
+		int randomNumberForProductCategory = CommonUtils.getRandomNum(1,6);
+		int randomNumberForProductPrice = CommonUtils.getRandomNum(1,3);
+		logger.info("Random Number first "+randomNumberForProductCategory);
+		logger.info("Random Number second "+randomNumberForProductPrice);
 
 		// Click on our product link that is located at the top of the page and then click in on quick shop
 		storeFrontHomePage.hoverOnShopLinkAndClickAllProductsLinks();
@@ -1039,13 +1043,79 @@ public class CartAndCheckoutValidationTest extends RFWebsiteBaseTest{
 		// Products are displayed?
 		s_assert.assertTrue(storeFrontHomePage.areProductsDisplayed(), "quickshop products not displayed");
 		logger.info("Quick shop products are displayed");
-
-		int sizeOfProductFilter = 4; //storeFrontHomePage.getSizeOfProductFilter();
-		// just need to check the basic regimens.
-		for(int i=1; i<=sizeOfProductFilter; i++){
-			s_assert.assertTrue(storeFrontHomePage.verifyProductFilterIsApply(i), "Product name is not similar as product filter"+" "+i );
-		}
-
+		//Select product filter one by one and assert.
+		//Select first product category.
+		storeFrontHomePage.selectProductCategory(TestConstants.REGIMEN_NAME_REDEFINE);
+		s_assert.assertTrue(storeFrontHomePage.isProductCategoryPageSelected(TestConstants.REGIMEN_NAME_REDEFINE),"Refine product category page is not present.");
+		s_assert.assertFalse(storeFrontHomePage.isProductCategoryPageSelected(TestConstants.REGIMEN_NAME_REVERSE),"Reverse product category page is present.");
+		s_assert.assertFalse(storeFrontHomePage.isProductCategoryPageSelected(TestConstants.REGIMEN_NAME_SOOTHE),"Soothe product category page is present.");
+		s_assert.assertFalse(storeFrontHomePage.isProductCategoryPageSelected(TestConstants.REGIMEN_NAME_UNBLEMISH),"Unblemish product category page is present.");
+		s_assert.assertFalse(storeFrontHomePage.isProductCategoryPageSelected(TestConstants.REGIMEN_NAME_ESSENTIALS),"Essentials product category page is present.");
+		s_assert.assertFalse(storeFrontHomePage.isProductCategoryPageSelected(TestConstants.REGIMEN_NAME_ENHANCEMENTS),"Enhancements product category page is present.");
+		//Deselect selected product category.
+		storeFrontHomePage.clickOnClearAll();
+		//Select Second product category.
+		storeFrontHomePage.selectProductCategory(TestConstants.REGIMEN_NAME_REVERSE);
+		s_assert.assertFalse(storeFrontHomePage.isProductCategoryPageSelected(TestConstants.REGIMEN_NAME_REDEFINE),"Refine product category page is present.");
+		s_assert.assertTrue(storeFrontHomePage.isProductCategoryPageSelected(TestConstants.REGIMEN_NAME_REVERSE),"Reverse product category page is not present.");
+		s_assert.assertFalse(storeFrontHomePage.isProductCategoryPageSelected(TestConstants.REGIMEN_NAME_SOOTHE),"Soothe product category page is present.");
+		s_assert.assertFalse(storeFrontHomePage.isProductCategoryPageSelected(TestConstants.REGIMEN_NAME_UNBLEMISH),"Unblemish product category page is present.");
+		s_assert.assertFalse(storeFrontHomePage.isProductCategoryPageSelected(TestConstants.REGIMEN_NAME_ESSENTIALS),"Essentials product category page is present.");
+		s_assert.assertFalse(storeFrontHomePage.isProductCategoryPageSelected(TestConstants.REGIMEN_NAME_ENHANCEMENTS),"Enhancements product category page is present.");
+		//Deselect selected product category.
+		storeFrontHomePage.clickOnClearAll();
+		//Select Third product category.
+		storeFrontHomePage.selectProductCategory(TestConstants.REGIMEN_NAME_SOOTHE);
+		s_assert.assertFalse(storeFrontHomePage.isProductCategoryPageSelected(TestConstants.REGIMEN_NAME_REDEFINE),"Refine product category page is present.");
+		s_assert.assertFalse(storeFrontHomePage.isProductCategoryPageSelected(TestConstants.REGIMEN_NAME_REVERSE),"Reverse product category page is present.");
+		s_assert.assertTrue(storeFrontHomePage.isProductCategoryPageSelected(TestConstants.REGIMEN_NAME_SOOTHE),"Soothe product category page is not present.");
+		s_assert.assertFalse(storeFrontHomePage.isProductCategoryPageSelected(TestConstants.REGIMEN_NAME_UNBLEMISH),"Unblemish product category page is present.");
+		s_assert.assertFalse(storeFrontHomePage.isProductCategoryPageSelected(TestConstants.REGIMEN_NAME_ESSENTIALS),"Essentials product category page is present.");
+		s_assert.assertFalse(storeFrontHomePage.isProductCategoryPageSelected(TestConstants.REGIMEN_NAME_ENHANCEMENTS),"Enhancements product category page is present.");
+		//Deselect selected product category.
+		storeFrontHomePage.clickOnClearAll();
+		//Select fourth product category.
+		storeFrontHomePage.selectProductCategory(TestConstants.REGIMEN_NAME_UNBLEMISH);
+		s_assert.assertFalse(storeFrontHomePage.isProductCategoryPageSelected(TestConstants.REGIMEN_NAME_REDEFINE),"Refine product category page is present.");
+		s_assert.assertFalse(storeFrontHomePage.isProductCategoryPageSelected(TestConstants.REGIMEN_NAME_REVERSE),"Reverse product category page is present.");
+		s_assert.assertFalse(storeFrontHomePage.isProductCategoryPageSelected(TestConstants.REGIMEN_NAME_SOOTHE),"Soothe product category page is present.");
+		s_assert.assertTrue(storeFrontHomePage.isProductCategoryPageSelected(TestConstants.REGIMEN_NAME_UNBLEMISH),"Unblemish product category page is not present.");
+		s_assert.assertFalse(storeFrontHomePage.isProductCategoryPageSelected(TestConstants.REGIMEN_NAME_ESSENTIALS),"Essentials product category page is present.");
+		s_assert.assertFalse(storeFrontHomePage.isProductCategoryPageSelected(TestConstants.REGIMEN_NAME_ENHANCEMENTS),"Enhancements product category page is present.");
+		//Deselect selected product category.
+		storeFrontHomePage.clickOnClearAll();
+		//Select fifth product category.
+		storeFrontHomePage.selectProductCategory(TestConstants.REGIMEN_NAME_ESSENTIALS);
+		s_assert.assertFalse(storeFrontHomePage.isProductCategoryPageSelected(TestConstants.REGIMEN_NAME_REDEFINE),"Refine product category page is  present.");
+		s_assert.assertFalse(storeFrontHomePage.isProductCategoryPageSelected(TestConstants.REGIMEN_NAME_REVERSE),"Reverse product category page is present.");
+		s_assert.assertFalse(storeFrontHomePage.isProductCategoryPageSelected(TestConstants.REGIMEN_NAME_SOOTHE),"Soothe product category page is present.");
+		s_assert.assertFalse(storeFrontHomePage.isProductCategoryPageSelected(TestConstants.REGIMEN_NAME_UNBLEMISH),"Unblemish product category page is present.");
+		s_assert.assertTrue(storeFrontHomePage.isProductCategoryPageSelected(TestConstants.REGIMEN_NAME_ESSENTIALS),"Essentials product category page is not present.");
+		s_assert.assertFalse(storeFrontHomePage.isProductCategoryPageSelected(TestConstants.REGIMEN_NAME_ENHANCEMENTS),"Enhancements product category page is present.");
+		//Deselect selected product category.
+		storeFrontHomePage.clickOnClearAll();
+		//Select sixth product category.
+		storeFrontHomePage.selectProductCategory(TestConstants.REGIMEN_NAME_ENHANCEMENTS);
+		s_assert.assertFalse(storeFrontHomePage.isProductCategoryPageSelected(TestConstants.REGIMEN_NAME_REDEFINE),"Refine product category page is present.");
+		s_assert.assertFalse(storeFrontHomePage.isProductCategoryPageSelected(TestConstants.REGIMEN_NAME_REVERSE),"Reverse product category page is present.");
+		s_assert.assertFalse(storeFrontHomePage.isProductCategoryPageSelected(TestConstants.REGIMEN_NAME_SOOTHE),"Soothe product category page is present.");
+		s_assert.assertFalse(storeFrontHomePage.isProductCategoryPageSelected(TestConstants.REGIMEN_NAME_UNBLEMISH),"Unblemish product category page is present.");
+		s_assert.assertFalse(storeFrontHomePage.isProductCategoryPageSelected(TestConstants.REGIMEN_NAME_ESSENTIALS),"Essentials product category page is present.");
+		s_assert.assertTrue(storeFrontHomePage.isProductCategoryPageSelected(TestConstants.REGIMEN_NAME_ENHANCEMENTS),"Enhancements product category page is not present.");
+		//Deselect selected product category.
+		storeFrontHomePage.clickOnClearAll();
+		//Select random product category filter and select random product price filter.
+		storeFrontHomePage.selectRandomProductCategory(randomNumberForProductCategory);
+		String productPriceRange = storeFrontHomePage.selectAndGetRandomProductPriceFilter(randomNumberForProductPrice);
+		//String productPriceRange = "CAD$200 TO CAD$499.99";
+		s_assert.assertTrue(storeFrontHomePage.verifyProductPriceForRandomProduct(productPriceRange),"Random Selected Product Price is Greater than the product price filter applied.");
+		//Deselect selected product category.
+		storeFrontHomePage.clickOnClearAll();
+		//Select product price filter.
+		storeFrontHomePage.applyPriceFilterHighToLow();
+		s_assert.assertTrue(storeFrontHomePage.isHighToLowProductPriceFilterIsAppliedSuccessfully(),"Product Price filter from high to low price is not applied");
+		storeFrontHomePage.applyPriceFilterLowToHigh();
+		s_assert.assertTrue(storeFrontHomePage.isLowToHighProductPriceFilterIsAppliedSuccessfully(),"Product Price filter from low to high price is not applied");
 		s_assert.assertAll();
 	}
 

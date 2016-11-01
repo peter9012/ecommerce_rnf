@@ -218,7 +218,7 @@ public class StoreFrontOrdersPage extends StoreFrontRFWebsiteBasePage{
 			String[] total = autoshipGrandTotalPrice.split("\\,");
 			autoshipGrandTotalPrice = total[0]+total[1];
 		}
-		return autoshipGrandTotalPrice;
+		return autoshipGrandTotalPrice.trim();
 	}
 
 	public boolean verifySKUValueOfItemInOrder(String skuValueDB){
@@ -372,7 +372,7 @@ public class StoreFrontOrdersPage extends StoreFrontRFWebsiteBasePage{
 			subTotal = total[0]+total[1];
 		}
 		System.out.println("Subtotal is "+subTotal);
-		return subTotal;  
+		return subTotal.trim();  
 	}
 
 	public boolean verifyAutoShipTemplateShipping(String shippingDB){

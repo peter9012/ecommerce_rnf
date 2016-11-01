@@ -1751,10 +1751,13 @@ public class OrderValidationTest extends RFWebsiteBaseTest{
 		/*		String handlingCharges = storeFrontUpdateCartPage.getHandlingCharges();
 		logger.info("handlingCharges ="+handlingCharges);*/
 		String tax = storeFrontUpdateCartPage.getTax();
+		tax=tax.trim();
 		logger.info("tax ="+tax);
 		String total = storeFrontUpdateCartPage.getTotal();
+		total=total.trim();
 		logger.info("total ="+total);
 		String shippingMethod = storeFrontUpdateCartPage.getShippingMethod();
+		shippingMethod=shippingMethod.trim();
 		logger.info("shippingMethod ="+shippingMethod);
 		storeFrontUpdateCartPage.clickOnShippingAddressNextStepBtn();
 		String BillingAddress = storeFrontUpdateCartPage.getSelectedBillingAddress();

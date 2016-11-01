@@ -1,6 +1,5 @@
 package com.rf.test.website.storeFront.hybris.standardEnrollment.corp;
 
-import org.apache.commons.lang3.RandomStringUtils;
 import org.testng.annotations.Test;
 import com.rf.core.utils.CommonUtils;
 import com.rf.core.website.constants.TestConstants;
@@ -64,7 +63,7 @@ public class PersonalResultsKitTest extends RFWebsiteBaseTest{
 		storeFrontHomePage.checkPulseAndCRPEnrollment();
 		storeFrontHomePage.clickNextButton();
 		storeFrontHomePage.selectProductAndProceedToAddToCRP();
-		storeFrontHomePage.addQuantityOfProduct("5");
+		storeFrontHomePage.addQuantityOfProduct("10");
 		storeFrontHomePage.clickOnNextBtnAfterAddingProductAndQty();
 		s_assert.assertTrue(storeFrontHomePage.isTheTermsAndConditionsCheckBoxDisplayed(), "Terms and Conditions checkbox is not visible");
 		storeFrontHomePage.checkThePoliciesAndProceduresCheckBox();

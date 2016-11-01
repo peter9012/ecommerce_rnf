@@ -245,6 +245,7 @@ public class StoreFrontHomePage extends StoreFrontRFWebsiteBasePage {
 	public void selectEnrollmentKitPage(String kitName,String regimenName){
 		//		driver.waitForElementPresent(By.xpath("//img[@title='"+kitName+"']"));
 		driver.click(By.xpath("//img[@title='"+kitName+"']"));
+		driver.waitForLoadingImageToDisappear();
 		regimenName = regimenName.toUpperCase();
 		Actions actions = new Actions(RFWebsiteDriver.driver);
 		actions.moveToElement(driver.findElement(By.xpath("//span[@class='regimen-name' and contains(.,'"+regimenName+"')]"))).click();

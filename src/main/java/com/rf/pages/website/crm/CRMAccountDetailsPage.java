@@ -646,6 +646,7 @@ public class CRMAccountDetailsPage extends CRMRFWebsiteBasePage {
 		driver.switchTo().frame(driver.findElement(By.xpath("//div[@id='navigatortab']/div[3]/div/div[3]/descendant::iframe[1]")));
 		driver.waitForElementPresent(By.xpath("//h3[contains(text(),'Autoships')]/following::tr[2]/th[1]//a"));
 		driver.click(By.xpath("//h3[contains(text(),'Autoships')]/following::tr[2]/th[1]//a"));
+		driver.pauseExecutionFor(5000);
 	}
 
 	public boolean isLabelUnderAutoshipNumberPresent(String label){

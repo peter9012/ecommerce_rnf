@@ -729,6 +729,7 @@ public class StoreFrontBrandRefreshHomePage extends StoreFrontBrandRefreshWebsit
 		logger.info("Billing street address entered as: "+addressLine1);
 		driver.type(ZIP_CODE, postalCode+"\t");
 		logger.info("Postal code entered as: "+postalCode);
+		driver.pauseExecutionFor(3000);
 		driver.findElement(By.xpath("//input[contains(@id,'uxCityDropDown_Input')]")).click();
 		driver.waitForStorfrontLegacyLoadingImageToDisappear();
 		//driver.pauseExecutionFor(5000);

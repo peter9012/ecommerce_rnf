@@ -206,7 +206,7 @@ public class StoreFrontBrandRefreshWebsiteBasePage extends RFBasePage{
 
 	public void clickAddToCartButtonForEssentialsAndEnhancementsAfterLogin() {
 		driver.quickWaitForElementPresent(ADD_TO_CART_BTN_AS_PER_REGIMEN);
-		driver.click(ADD_TO_CART_BTN_AS_PER_REGIMEN);
+		driver.clickByJS(RFWebsiteDriver.driver,driver.findElement(ADD_TO_CART_BTN_AS_PER_REGIMEN));
 		logger.info("Add to cart button is clicked");
 		driver.waitForLoadingImageToDisappear();
 		driver.pauseExecutionFor(3000);
@@ -507,7 +507,7 @@ public class StoreFrontBrandRefreshWebsiteBasePage extends RFBasePage{
 
 	public void clickMyShoppingBagLink(){
 		driver.waitForElementPresent(MY_SHOPPING_BAG_LINK);
-		driver.click(MY_SHOPPING_BAG_LINK);
+		driver.clickByJS(RFWebsiteDriver.driver, driver.findElement(MY_SHOPPING_BAG_LINK));
 		logger.info("Clicked on My shopping bag link.");
 		driver.waitForPageLoad();
 	}
@@ -526,24 +526,25 @@ public class StoreFrontBrandRefreshWebsiteBasePage extends RFBasePage{
 
 	public void clickContinueBtnForPCAndRC(){
 		driver.waitForElementPresent(CONTINUE_BTN_PREFERRED_PROFILE_PAGE_LOC);
-		driver.click(CONTINUE_BTN_PREFERRED_PROFILE_PAGE_LOC);
+		//driver.click(CONTINUE_BTN_PREFERRED_PROFILE_PAGE_LOC);
+		driver.clickByJS(RFWebsiteDriver.driver, driver.findElement(CONTINUE_BTN_PREFERRED_PROFILE_PAGE_LOC));
 		logger.info("Continue button clicked");
 		driver.waitForPageLoad();
 	}
 
-//	public void closeTheChildWindow() {
-//		String parentWindowID=driver.getWindowHandle();
-//		Set<String> set=driver.getWindowHandles();
-//		Iterator<String> it=set.iterator();
-//		while(it.hasNext()){
-//			String childWindowID=it.next();
-//			if(!parentWindowID.equalsIgnoreCase(childWindowID)){
-//				driver.switchTo().window(childWindowID);
-//				driver.close();
-//				driver.switchTo().window(parentWindowID);
-//			}
-//		}
-//	}
+	//	public void closeTheChildWindow() {
+	//		String parentWindowID=driver.getWindowHandle();
+	//		Set<String> set=driver.getWindowHandles();
+	//		Iterator<String> it=set.iterator();
+	//		while(it.hasNext()){
+	//			String childWindowID=it.next();
+	//			if(!parentWindowID.equalsIgnoreCase(childWindowID)){
+	//				driver.switchTo().window(childWindowID);
+	//				driver.close();
+	//				driver.switchTo().window(parentWindowID);
+	//			}
+	//		}
+	//	}
 
 	public boolean isLoginFailed(){
 		driver.quickWaitForElementPresent(By.id("loginError"));

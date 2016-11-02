@@ -676,8 +676,10 @@ public class StoreFrontBrandRefreshHomePage extends StoreFrontBrandRefreshWebsit
 		logger.info("Address line 1 entered as: "+addressLine1);
 		driver.type(ZIP_CODE, postalCode+"\t");
 		logger.info("Postal code entered as: "+postalCode);
+		driver.pauseExecutionFor(3000);
+		driver.waitForElementPresent(By.xpath("//input[contains(@id,'uxCityDropDown_Input')]"));
 		driver.findElement(By.xpath("//input[contains(@id,'uxCityDropDown_Input')]")).click();
-		driver.pauseExecutionFor(5000);
+		driver.pauseExecutionFor(3000);
 		driver.waitForStorfrontLegacyLoadingImageToDisappear();
 		Actions actions = new Actions(RFWebsiteDriver.driver);
 		actions.moveToElement(driver.findElement(CITY_DD)).click().build().perform();

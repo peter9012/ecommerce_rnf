@@ -677,10 +677,10 @@ public class StoreFrontBrandRefreshHomePage extends StoreFrontBrandRefreshWebsit
 		driver.type(ZIP_CODE, postalCode+"\t");
 		logger.info("Postal code entered as: "+postalCode);
 		driver.pauseExecutionFor(3000);
-//		driver.waitForElementPresent(By.xpath("//input[contains(@id,'uxCityDropDown_Input')]"));
-//		driver.findElement(By.xpath("//input[contains(@id,'uxCityDropDown_Input')]")).click();
-//		driver.pauseExecutionFor(1000);
-//		driver.waitForStorfrontLegacyLoadingImageToDisappear();
+		//		driver.waitForElementPresent(By.xpath("//input[contains(@id,'uxCityDropDown_Input')]"));
+		//		driver.findElement(By.xpath("//input[contains(@id,'uxCityDropDown_Input')]")).click();
+		//		driver.pauseExecutionFor(1000);
+		//		driver.waitForStorfrontLegacyLoadingImageToDisappear();
 		Actions actions = new Actions(RFWebsiteDriver.driver);
 		actions.moveToElement(driver.findElement(CITY_DD)).click().build().perform();
 		logger.info("City dropdown clicked");
@@ -738,7 +738,13 @@ public class StoreFrontBrandRefreshHomePage extends StoreFrontBrandRefreshWebsit
 		//driver.click(CITY_DD);
 		logger.info("City dropdown clicked");
 		driver.waitForElementPresent(FIRST_VALUE_OF_CITY_DD);
-		driver.click(FIRST_VALUE_OF_CITY_DD);
+		try{
+			driver.click(FIRST_VALUE_OF_CITY_DD);
+		}catch(Exception e){
+			driver.findElement(By.xpath("//input[contains(@id,'uxCityDropDown_Input')]")).click();
+			driver.waitForElementPresent(FIRST_VALUE_OF_CITY_DD);
+			driver.click(FIRST_VALUE_OF_CITY_DD);	
+		}
 		logger.info("City selected");
 		driver.type(PHONE_NUMBER_BILLING_PROFILE_PAGE,phnNumber);
 		logger.info("Phone number entered as: "+phnNumber);
@@ -1509,8 +1515,8 @@ public class StoreFrontBrandRefreshHomePage extends StoreFrontBrandRefreshWebsit
 		driver.type(ZIP_CODE, postalCode+"\t");
 		logger.info("Postal code entered as: "+postalCode);
 		driver.pauseExecutionFor(3000);
-//		driver.findElement(By.xpath("//input[contains(@id,'uxCityDropDown_Input')]")).click();
-//		driver.waitForStorfrontLegacyLoadingImageToDisappear();
+		//		driver.findElement(By.xpath("//input[contains(@id,'uxCityDropDown_Input')]")).click();
+		//		driver.waitForStorfrontLegacyLoadingImageToDisappear();
 		//driver.pauseExecutionFor(5000);
 		Actions actions = new Actions(RFWebsiteDriver.driver);
 		actions.moveToElement(driver.findElement(CITY_DD)).click().build().perform();
@@ -2114,7 +2120,7 @@ public class StoreFrontBrandRefreshHomePage extends StoreFrontBrandRefreshWebsit
 		boolean isPCEnrollmentCompletedSuccessfully = false;
 		driver.waitForElementPresent(By.xpath("//h2[contains(text(),'Welcome to PC Perks')]"));
 		isPCEnrollmentCompletedSuccessfully =  driver.isElementPresent(By.xpath("//h2[contains(text(),'Welcome to PC Perks')]"));
-//		driver.switchTo().window(parentWindow);
+		//		driver.switchTo().window(parentWindow);
 		return isPCEnrollmentCompletedSuccessfully;
 	}
 

@@ -208,6 +208,8 @@ public class StoreFrontBrandRefreshWebsiteBasePage extends RFBasePage{
 		driver.quickWaitForElementPresent(ADD_TO_CART_BTN_AS_PER_REGIMEN);
 		driver.click(ADD_TO_CART_BTN_AS_PER_REGIMEN);
 		logger.info("Add to cart button is clicked");
+		driver.waitForLoadingImageToDisappear();
+		driver.pauseExecutionFor(3000);
 	}
 
 	public boolean verifyUserSuccessfullyLoggedIn() {

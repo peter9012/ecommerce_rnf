@@ -600,6 +600,8 @@ public class StoreFrontBrandRefreshHomePage extends StoreFrontBrandRefreshWebsit
 			parentWindow = driver.switchToSecondWindow();
 		}
 		driver.waitForPageLoad();
+		driver.waitForLoadingImageToDisappear();
+		driver.pauseExecutionFor(3000);
 	}
 
 

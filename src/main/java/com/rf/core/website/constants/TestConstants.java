@@ -470,7 +470,7 @@ public class TestConstants {
 	public static final String DELIVERY_COST = "20";
 	public static final String HANDLING_COST = "5";
 	public static final String DSV_RC_ORDER_STATUS = "All";
-
+	public static final String DSV_FIRST_NAME = "RFAutoCS";
 	//CSCockpit Constants
 
 	public static final String ADMIN_USERNAME = "admin";

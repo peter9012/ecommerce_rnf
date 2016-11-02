@@ -771,12 +771,12 @@ public class HomePageFunctionalityTest extends RFWebsiteBaseTest{
 				logger.info("Login error for the user "+consultantEmailID);
 				driver.get(driver.getURL());
 				System.out.println(consultantEmailID + " failed to login.");
-				
+
 			}
 			else
 				break;
 		}
-	
+
 		logger.info("login is successful");
 		//click meet your consultant banner link
 		storeFrontConsultantPage.clickOnMeetYourConsultantLink();
@@ -1049,7 +1049,7 @@ public class HomePageFunctionalityTest extends RFWebsiteBaseTest{
 		storeFrontConsultantPage.addNewContentOfYourOwnCopy();
 		storeFrontConsultantPage.clickSaveButton();
 		s_assert.assertTrue(storeFrontConsultantPage.verifyNewlyAddedContentSaved(),"newly added content not saved");
-//		s_assert.assertTrue(storeFrontConsultantPage.validateMeetYourConsultantPage(),"This is not meet your consultant page");
+		//		s_assert.assertTrue(storeFrontConsultantPage.validateMeetYourConsultantPage(),"This is not meet your consultant page");
 		s_assert.assertAll();
 	}
 
@@ -1523,9 +1523,9 @@ public class HomePageFunctionalityTest extends RFWebsiteBaseTest{
 		country = driver.getCountry();
 		env = driver.getEnvironment();  
 		storeFrontHomePage = new StoreFrontHomePage(driver);
-//		String sitePrefix = "bhopkins"; // standard active consultant site
-//		String comPWS = driver.getComPWSURL();
-//		 /*"http://"+sitePrefix+comPWS+"/"+country;*/
+		//		String sitePrefix = "bhopkins"; // standard active consultant site
+		//		String comPWS = driver.getComPWSURL();
+		//		 /*"http://"+sitePrefix+comPWS+"/"+country;*/
 		String PWS = storeFrontHomePage.getComPWS(country, env) ;     
 		storeFrontHomePage.openPWS(storeFrontHomePage.convertBizSiteToComSite(PWS));		
 		s_assert.assertTrue(storeFrontHomePage.isSolutionToolContentBlockPresent(),"Solution Tool content block is not present");
@@ -2645,34 +2645,38 @@ public class HomePageFunctionalityTest extends RFWebsiteBaseTest{
 	// Hybris Project-4070:Login to US Con's PWS(.BIZ, .COM) as Another US Consultant With Pulse
 	@Test
 	public void testLoginToUSConsultantPWSAsAnotherUSConsultantWithPulse_4070() {
-		RFO_DB = driver.getDBNameRFO(); 
-		country = driver.getCountry();
-		env = driver.getEnvironment(); 
-		storeFrontHomePage = new StoreFrontHomePage(driver);
-		String bizPWS=storeFrontHomePage.getBizPWS(country, env);
-		//Navigate to canadian PWS
-		String bizPWSCA=storeFrontHomePage.convertUSBizPWSToCA(bizPWS);
-		driver.get(bizPWSCA);
-		//Get the Consultant with PWS 
-		List<Map<String, Object>> randomConsultantList =  null;
-		String consultantWithPWSEmailID = null;
-		while(true){
-			randomConsultantList = DBUtil.performDatabaseQuery(DBQueries_RFO.callQueryWithArguementPWS(DBQueries_RFO.GET_RANDOM_CONSULTANT_WITH_PWS_RFO,env,driver.getCountry(),countryId),RFO_DB);
-			consultantWithPWSEmailID = (String) getValueFromQueryResult(randomConsultantList, "UserName");  
-			String comPWSOfSponser=String.valueOf(getValueFromQueryResult(randomConsultantList, "URL"));
-			logger.info("BIZ PWS of sponsor is "+comPWSOfSponser);
-			storeFrontConsultantPage = storeFrontHomePage.loginAsConsultant(consultantWithPWSEmailID, password);
-			boolean isLoginError = driver.getCurrentUrl().contains("error");
-			if(isLoginError){
-				logger.info("Login error for the user "+consultantWithPWSEmailID);
-				driver.get(driver.getURL());
+		if(driver.getCountry().equalsIgnoreCase("ca")){
+			RFO_DB = driver.getDBNameRFO(); 
+			country = driver.getCountry();
+			env = driver.getEnvironment(); 
+			storeFrontHomePage = new StoreFrontHomePage(driver);
+			String bizPWS=storeFrontHomePage.getBizPWS(country, env);
+			//Navigate to canadian PWS
+			String bizPWSCA=storeFrontHomePage.convertUSBizPWSToCA(bizPWS);
+			driver.get(bizPWSCA);
+			//Get the Consultant with PWS 
+			List<Map<String, Object>> randomConsultantList =  null;
+			String consultantWithPWSEmailID = null;
+			while(true){
+				randomConsultantList = DBUtil.performDatabaseQuery(DBQueries_RFO.callQueryWithArguementPWS(DBQueries_RFO.GET_RANDOM_CONSULTANT_WITH_PWS_RFO,env,driver.getCountry(),countryId),RFO_DB);
+				consultantWithPWSEmailID = (String) getValueFromQueryResult(randomConsultantList, "UserName");  
+				String comPWSOfSponser=String.valueOf(getValueFromQueryResult(randomConsultantList, "URL"));
+				logger.info("BIZ PWS of sponsor is "+comPWSOfSponser);
+				storeFrontConsultantPage = storeFrontHomePage.loginAsConsultant(consultantWithPWSEmailID, password);
+				boolean isLoginError = driver.getCurrentUrl().contains("error");
+				if(isLoginError){
+					logger.info("Login error for the user "+consultantWithPWSEmailID);
+					driver.get(driver.getURL());
+				}
+				else
+					break;
+				//Verify user is redirected to its ows pws site
+				s_assert.assertTrue(driver.getCurrentUrl().replaceAll("biz","com").trim().equalsIgnoreCase(comPWSOfSponser),"user is not redirected to its own PWS site");
 			}
-			else
-				break;
-			//Verify user is redirected to its ows pws site
-			s_assert.assertTrue(driver.getCurrentUrl().replaceAll("biz","com").trim().equalsIgnoreCase(comPWSOfSponser),"user is not redirected to its own PWS site");
+			s_assert.assertAll();
+		}else{
+			logger.info("Only CA specific test");
 		}
-		s_assert.assertAll();
 	}
 
 	//Hybris Project-4072:Try Accessing canadian PWS site of EXISTING OLD USConsultant
@@ -3143,7 +3147,7 @@ public class HomePageFunctionalityTest extends RFWebsiteBaseTest{
 	@Test
 	public void testPoliciesAndProceduresLinkOnSponsorSelectionPageForEnrollingConsBIZSite_5277() {
 		if(driver.getCountry().equalsIgnoreCase("ca")){
-			
+
 			country = driver.getCountry();
 			env = driver.getEnvironment();
 			storeFrontHomePage = new StoreFrontHomePage(driver);

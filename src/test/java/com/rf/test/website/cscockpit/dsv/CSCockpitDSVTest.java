@@ -185,7 +185,7 @@ public class CSCockpitDSVTest extends RFDSVCscockpitWebsiteBaseTest{
 	public void testVerifyAddAndEditShippingForConsultant_5499() throws InterruptedException{
 		int randomNum = CommonUtils.getRandomNum(1000, 9999);		
 		String addressLine = null;
-		String attendentFirstName = TestConstants.FIRST_NAME+" "+randomNum;
+		String attendentFirstName = TestConstants.DSV_FIRST_NAME+" "+randomNum;
 		String city = null;
 		String postal = null;
 		String province = null;
@@ -230,7 +230,7 @@ public class CSCockpitDSVTest extends RFDSVCscockpitWebsiteBaseTest{
 	public void testVerifyAddAndEditShippingForPC_5500() throws InterruptedException{
 		int randomNum = CommonUtils.getRandomNum(1000, 9999);		
 		String addressLine = null;
-		String attendentFirstName = TestConstants.FIRST_NAME+" "+randomNum;
+		String attendentFirstName = TestConstants.DSV_FIRST_NAME+" "+randomNum;
 		String city = null;
 		String postal = null;
 		String province = null;
@@ -275,7 +275,7 @@ public class CSCockpitDSVTest extends RFDSVCscockpitWebsiteBaseTest{
 	public void testVerifyAddAndEditShippingForRC_5501() throws InterruptedException{
 		int randomNum = CommonUtils.getRandomNum(1000, 9999);		
 		String addressLine = null;
-		String attendentFirstName = TestConstants.FIRST_NAME+" "+randomNum;
+		String attendentFirstName = TestConstants.DSV_FIRST_NAME+" "+randomNum;
 		String city = null;
 		String postal = null;
 		String province = null;

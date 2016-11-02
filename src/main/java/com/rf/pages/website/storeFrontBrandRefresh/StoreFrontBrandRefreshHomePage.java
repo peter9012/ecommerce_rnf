@@ -595,9 +595,12 @@ public class StoreFrontBrandRefreshHomePage extends StoreFrontBrandRefreshWebsit
 		driver.quickWaitForElementPresent(ENROLL_NOW_FOR_PC_AND_RC);
 		driver.click(ENROLL_NOW_FOR_PC_AND_RC);
 		logger.info("Enroll now button clicked");
-		driver.pauseExecutionFor(2000);
+		driver.pauseExecutionFor(4000);
 		if(driver.getWindowHandles().size()>1){
-			parentWindow = driver.switchToSecondWindow();
+			String parentWinHandle = driver.getWindowHandle();
+			driver.close();
+			driver.switchToChildWindow(parentWinHandle);
+			logger.info("switched to second window");
 		}
 		driver.waitForPageLoad();
 		driver.waitForLoadingImageToDisappear();
@@ -2106,7 +2109,7 @@ public class StoreFrontBrandRefreshHomePage extends StoreFrontBrandRefreshWebsit
 		boolean isPCEnrollmentCompletedSuccessfully = false;
 		driver.waitForElementPresent(By.xpath("//h2[contains(text(),'Welcome to PC Perks')]"));
 		isPCEnrollmentCompletedSuccessfully =  driver.isElementPresent(By.xpath("//h2[contains(text(),'Welcome to PC Perks')]"));
-		//driver.switchTo().window(parentWindow);
+//		driver.switchTo().window(parentWindow);
 		return isPCEnrollmentCompletedSuccessfully;
 	}
 

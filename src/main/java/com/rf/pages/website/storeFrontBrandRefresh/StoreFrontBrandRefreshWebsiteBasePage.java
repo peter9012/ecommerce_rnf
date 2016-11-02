@@ -531,22 +531,22 @@ public class StoreFrontBrandRefreshWebsiteBasePage extends RFBasePage{
 		driver.waitForPageLoad();
 	}
 
-	public void closeTheChildWindow() {
-		String parentWindowID=driver.getWindowHandle();
-		Set<String> set=driver.getWindowHandles();
-		Iterator<String> it=set.iterator();
-		while(it.hasNext()){
-			String childWindowID=it.next();
-			if(!parentWindowID.equalsIgnoreCase(childWindowID)){
-				driver.switchTo().window(childWindowID);
-				driver.close();
-				driver.switchTo().window(parentWindowID);
-			}
-		}
-	}
+//	public void closeTheChildWindow() {
+//		String parentWindowID=driver.getWindowHandle();
+//		Set<String> set=driver.getWindowHandles();
+//		Iterator<String> it=set.iterator();
+//		while(it.hasNext()){
+//			String childWindowID=it.next();
+//			if(!parentWindowID.equalsIgnoreCase(childWindowID)){
+//				driver.switchTo().window(childWindowID);
+//				driver.close();
+//				driver.switchTo().window(parentWindowID);
+//			}
+//		}
+//	}
 
 	public boolean isLoginFailed(){
-		driver.waitForElementPresent(By.id("loginError"));
+		driver.quickWaitForElementPresent(By.id("loginError"));
 		return driver.isElementPresent(By.id("loginError"));
 	}
 

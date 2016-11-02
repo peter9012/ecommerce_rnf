@@ -946,13 +946,6 @@ public class RFWebsiteDriver implements RFDriver,WebDriver {
 	}
 
 	public String switchToSecondWindow(){
-		//		Set<String> allWindows = driver.getWindowHandles();
-		//		Iterator itr = allWindows.iterator();
-		//		while(itr.hasNext()){
-		//			driver.switchTo().window((String) itr.next());
-		//			break;
-		//		}
-
 		Set<String> allWindows = driver.getWindowHandles();
 		logger.info("total windows opened = "+allWindows.size());
 		String parentWindow = driver.getWindowHandle();
@@ -965,6 +958,20 @@ public class RFWebsiteDriver implements RFDriver,WebDriver {
 		}
 		logger.info("Switched to second window whose title is "+driver.getTitle());	
 		return parentWindow;
+	}
+	
+	public void switchToChildWindow(String parentWinHandle){
+		Set<String> allWindows = driver.getWindowHandles();
+		logger.info("total windows opened = "+allWindows.size());
+		for(String allWin : allWindows){
+			if(!allWin.equalsIgnoreCase(parentWinHandle)){
+				driver.switchTo().window(allWin);
+				break;
+			}
+
+		}
+		logger.info("Switched to second window whose title is "+driver.getTitle());	
+
 	}
 
 	public String getCrmURL(){

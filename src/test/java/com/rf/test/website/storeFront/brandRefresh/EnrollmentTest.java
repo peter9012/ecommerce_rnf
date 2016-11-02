@@ -167,7 +167,7 @@ public class EnrollmentTest extends RFBrandRefreshWebsiteBaseTest{
 		String phnNumber1 = "415";
 		String phnNumber2 = "780";
 		String phnNumber3 = "9099";
-		storeFrontBrandRefreshHomePage.closeTheChildWindow();
+		//storeFrontBrandRefreshHomePage.closeTheChildWindow();
 		//  storeFrontBrandRefreshHomePage.clickBeAConsultantBtn();
 		//  storeFrontBrandRefreshHomePage.clickEnrollNowBtnOnBusinessPage();
 		//Get Sponser details for Consultant enrollment.

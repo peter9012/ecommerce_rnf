@@ -1953,7 +1953,6 @@ public class PC_RC_EnrollmentValidationTest extends RFWebsiteBaseTest{
 		storeFrontHomePage.clickPlaceOrderBtn();
 		currentPWSUrl=driver.getCurrentUrl();
 		logger.info("current url After "+currentPWSUrl);
-		s_assert.assertTrue(storeFrontHomePage.verifyPWSAfterSuccessfulEnrollment(currentPWSUrl,consultantPWSURL.split("\\:")[1]),"PWS of the PC after enrollment is not same as the one it started enrollment");
 		storeFrontHomePage.clickOnRodanAndFieldsLogo();
 		s_assert.assertTrue(storeFrontHomePage.verifyWelcomeDropdownToCheckUserRegistered(), "User NOT registered successfully");
 		s_assert.assertAll(); 

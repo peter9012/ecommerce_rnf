@@ -2734,11 +2734,7 @@ public class PC_CartAndCheckoutValidationTest extends RFWebsiteBaseTest{
 		storeFrontUpdateCartPage.clickPlaceOrderBtn();
 		//String orderNumber = storeFrontUpdateCartPage.getOrderNumberAfterPlaceOrder();
 		s_assert.assertTrue(storeFrontUpdateCartPage.verifyOrderPlacedConfirmationMessage(), "Order has been not placed successfully");
-
-		String PWSAfterSelectSponsor = driver.getCurrentUrl();
-		String convertedPWSAfterSelectSponsor = storeFrontHomePage.convertCountryInPWS(PWSAfterSelectSponsor);
-		String sponsorComPWS = storeFrontHomePage.convertBizSiteToComSite(sponsorPWS);
-		s_assert.assertTrue(convertedPWSAfterSelectSponsor.contains(sponsorComPWS.split("\\:")[1].toLowerCase()), "CA sponsor PWS for ca corp"+sponsorComPWS.toLowerCase()+" and on UI after select ca sponsor from ca corp site is "+convertedPWSAfterSelectSponsor);
+		s_assert.assertTrue(driver.getCurrentUrl().contains("corprfo")||driver.getCurrentUrl().contains("qa.rodanandfields"), "PC is not redirecting to corporate site after placed order");
 		s_assert.assertAll();  
 	}
 

@@ -1824,7 +1824,7 @@ public class DBQueries_RFO {
 					"JOIN    Hybris.SiteURLs AS SUL ON SUL.SiteID = S.SiteID "+
 					"JOIN    Hybris.SiteDomain AS SD ON SD.SiteDomainID = SUL.SiteDomainID "+
 					"WHERE   ab.AccountTypeID = 1 "+/*Consultant*/
-					"AND ab.CountryID = 40 "+
+					"AND ab.CountryID = %s "+
 					/*Active Accounts*/
 					"AND NOT EXISTS ( SELECT 1 "+
 					"FROM   RFO_Accounts.AccountRF AS ar "+

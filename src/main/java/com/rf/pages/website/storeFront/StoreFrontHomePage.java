@@ -1465,6 +1465,7 @@ public class StoreFrontHomePage extends StoreFrontRFWebsiteBasePage {
 		String[] totalvalue= total.split("\\$+");
 		Double.parseDouble(totalvalue[1].trim());
 		//Integer.parseInt(totalvalue[1].trim());
+		logger.info("Subtotal of first product "+Integer.parseInt(qty)*Double.parseDouble(totalvalue[1].trim()));
 		return Integer.parseInt(qty)*Double.parseDouble(totalvalue[1].trim());
 	}
 
@@ -1476,6 +1477,7 @@ public class StoreFrontHomePage extends StoreFrontRFWebsiteBasePage {
 		String[] totalvalue= total.split("\\$+");
 		Double.parseDouble(totalvalue[1].trim());
 		//Integer.parseInt(totalvalue[1].trim());
+		logger.info("Subtotal of second product "+Integer.parseInt(qty)*Double.parseDouble(totalvalue[1].trim()));
 		return Integer.parseInt(qty)*Double.parseDouble(totalvalue[1].trim());
 	}
 
@@ -4311,11 +4313,11 @@ public class StoreFrontHomePage extends StoreFrontRFWebsiteBasePage {
 		driver.waitForPageLoad();
 		return randomPriceRange;
 	}
-	
+
 	public boolean isProductCategoryPageSelected(String category){
 		return driver.isElementPresent(By.xpath(String.format("//h2[text()='%s']", category)));
 	}
-	
+
 	public boolean verifyProductPriceForRandomProduct(String priceRange){
 		String valueToCompared = priceRange.split("TO")[1].split("\\$")[1];
 		logger.info("Value from filter to compared is "+valueToCompared);
@@ -4332,7 +4334,7 @@ public class StoreFrontHomePage extends StoreFrontRFWebsiteBasePage {
 			return false;
 		}
 	}
-	
+
 	public boolean isHighToLowProductPriceFilterIsAppliedSuccessfully(){
 		String priceOfFirstProduct = driver.findElement(By.xpath("//div[@id='main-content']/descendant::p[contains(text(),'Retail:')][1]/span")).getText().split("\\$")[1]; 
 		Double firstPrice = Double.parseDouble(priceOfFirstProduct);

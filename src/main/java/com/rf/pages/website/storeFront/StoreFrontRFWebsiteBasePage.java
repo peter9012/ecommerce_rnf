@@ -1697,6 +1697,8 @@ public class StoreFrontRFWebsiteBasePage extends RFBasePage{
 		try{
 			if(driver.isElementPresent(By.xpath("//span[@class='icon-search']"))==true){
 				driver.click(By.xpath("//span[@class='icon-search']"));
+				driver.findElement(By.id("webSitePrefix")).sendKeys(Keys.TAB);
+				driver.pauseExecutionFor(1500);
 			}}catch(Exception e){
 				try{
 					driver.waitForElementNotPresent(By.xpath("//h3[text()='DECIDE TODAY HOW TOMORROW LOOKS']"));

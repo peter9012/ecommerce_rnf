@@ -80,7 +80,8 @@ public class StoreFrontPCUserPage extends StoreFrontRFWebsiteBasePage{
 
 	public StoreFrontHomePage cancelMyPCPerksAct(){
 		driver.waitForElementPresent(By.id("problemType"));
-		driver.click(By.id("problemType"));
+		//driver.click(By.id("problemType"));
+		driver.clickByJS(RFWebsiteDriver.driver, driver.findElement(By.id("problemType")));
 		driver.waitForElementPresent(By.xpath("//select[@id='problemType']/option[6]"));
 		driver.click(By.xpath("//select[@id='problemType']/option[6]"));
 		driver.waitForElementPresent(By.xpath("//textarea[@id='terminationComments']"));
@@ -92,7 +93,7 @@ public class StoreFrontPCUserPage extends StoreFrontRFWebsiteBasePage{
 		try{
 			driver.quickWaitForElementPresent(By.xpath("//input[@value='Close window']"));
 			driver.click(By.xpath("//input[@value='Close window']"));
-		}catch(Exception e){			
+		}catch(Exception e){   
 			driver.click(By.xpath("//div[@id='popup-content']/div/div/following::input[@value='Close window']"));
 		}
 		driver.waitForPageLoad();

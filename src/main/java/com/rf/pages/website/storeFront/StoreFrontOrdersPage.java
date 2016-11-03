@@ -827,6 +827,7 @@ public class StoreFrontOrdersPage extends StoreFrontRFWebsiteBasePage{
 		String subTotalVal=driver.findElement(By.xpath("//div[@id='idSubTotal']")).getText();
 		String[] totalvalue= subTotalVal.split("\\$+");
 		double subTotalValue=Double.valueOf((totalvalue[1].replaceAll(",", "")).trim());
+		logger.info("Total subtotal Value is "+subTotalVal);
 		if(subTotalValue==(subtotal1+subtotal2)){
 			return true;
 		}else{

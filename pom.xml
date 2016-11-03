@@ -145,7 +145,7 @@
 						</property>
 						<property>
 							<name>listener</name>
-							<value>org.uncommons.reportng.HTMLReporter</value>
+							<value>org.uncommons.reportng.HTMLReporter,com.rf.core.listeners.TestListner,com.rf.core.listeners.RetryListener</value>
 						</property>
 					</properties>
 					<systemPropertyVariables>

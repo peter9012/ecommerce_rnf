@@ -1647,7 +1647,6 @@ public class OrderValidationTest extends RFWebsiteBaseTest{
 		s_assert.assertTrue(storeFrontUpdateCartPage.verifyOrderPlacedConfirmationMessage(), "Order has been not placed successfully");
 		s_assert.assertAll();
 	}
-
 	// Hybris Phase 2-1879 :: Version : 1 :: Create Adhoc Order For The Retail Customer
 	@Test
 	public void testCreateAdhocOrderRC_1879() throws InterruptedException {

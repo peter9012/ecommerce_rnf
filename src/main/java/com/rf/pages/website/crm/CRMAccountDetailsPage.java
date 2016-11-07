@@ -1635,5 +1635,43 @@ public class CRMAccountDetailsPage extends CRMRFWebsiteBasePage {
 			logger.info("No User Entered Address Button Found");
 		}
 	}
+
+	public boolean isAddNewShippingProfileButtonPresentAShippingProfileSectiont(){
+		driver.switchTo().defaultContent();
+		driver.waitForElementPresent(By.xpath("//div[@id='navigatortab']/div[3]/div/div[3]/descendant::iframe[1]"));
+		driver.switchTo().frame(driver.findElement(By.xpath("//div[@id='navigatortab']/div[3]/div/div[3]/descendant::iframe[1]")));
+		return driver.isElementPresent(By.xpath("//input[@value='New Shipping Profile']"));
+	}
+
+	public boolean isActionPresentAtShippingProfileSectionForFirstProfile(String actionName){
+		driver.switchTo().defaultContent();
+		driver.waitForElementPresent(By.xpath("//div[@id='navigatortab']/div[3]/div/div[3]/descendant::iframe[1]"));
+		driver.switchTo().frame(driver.findElement(By.xpath("//div[@id='navigatortab']/div[3]/div/div[3]/descendant::iframe[1]")));
+		return driver.isElementPresent(By.xpath("//h3[contains(text(),'Shipping Profiles')]/following::table[@class='list'][1]//tr[2]//a[text()='"+actionName+"']"));
+	}
+
+	public void clickFirstShippingProfile(){
+		driver.switchTo().defaultContent();
+		driver.waitForElementPresent(By.xpath("//div[@id='navigatortab']/div[3]/div/div[3]/descendant::iframe[1]"));
+		driver.switchTo().frame(driver.findElement(By.xpath("//div[@id='navigatortab']/div[3]/div/div[3]/descendant::iframe[1]")));
+		driver.click(By.xpath("//h3[contains(text(),'Shipping Profiles')]/following::table[@class='list'][1]//tr[2]//th[contains(@class,'cellCol1')]/a"));
+		driver.waitForCRMLoadingImageToDisappear();
+	}
+
+	public boolean isActionPresentAtShippingProfilePage(String actionName){
+		driver.switchTo().defaultContent();
+		driver.waitForElementPresent(By.xpath("//div[@id='navigatortab']/div[3]/div/div[3]/descendant::iframe[2]"));
+		driver.switchTo().frame(driver.findElement(By.xpath("//div[@id='navigatortab']/div[3]/div/div[3]/descendant::iframe[2]")));
+		return driver.isElementPresent(By.xpath("//td[@id='topButtonRow']//input[contains(@value,'"+actionName+"')]"));
+	}
+
+	public String getErrorMessageFromLogAccountNoteSection(){
+		driver.switchTo().defaultContent();
+		driver.waitForElementPresent(By.xpath("//div[@id='navigatortab']/div[3]/div/div[3]/descendant::iframe[2]"));
+		driver.switchTo().frame(driver.findElement(By.xpath("//div[@id='navigatortab']/div[3]/div/div[3]/descendant::iframe[2]")));
+		String errorMessage =  driver.findElement(By.xpath("//td[@class='messageCell']//div[contains(@id,'accountNoteId')]")).getText().toLowerCase().trim();
+		logger.info("Error message is "+errorMessage);
+		return errorMessage;
+	}
 }
 

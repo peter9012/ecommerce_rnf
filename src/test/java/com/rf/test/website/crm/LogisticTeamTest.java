@@ -72,7 +72,7 @@ public class LogisticTeamTest extends RFCRMWebsiteBaseTest{
 		rcUserName = String.valueOf(getValueFromQueryResult(randomRCUsernameList, "EmailAddress"));
 	}	
 
-			
+
 	// RF Saleforce CRM-167:Log In As A Logistics Agent
 	@Test
 	public void testLoginAsALogisticsAgent() throws InterruptedException{
@@ -106,7 +106,7 @@ public class LogisticTeamTest extends RFCRMWebsiteBaseTest{
 		s_assert.assertTrue(crmAccountDetailsPage.isAccountDetailsPagePresent(),"Account Details page has not displayed");
 		s_assert.assertAll();
 	}
-	
+
 	// RF Saleforce CRM-170 Verify Contact details page for Consultant/PC/RC for CA/US
 	@Test
 	public void verifyLoginAsALogisticsAgentContactDetailsPageForConsultant() throws InterruptedException{
@@ -117,7 +117,7 @@ public class LogisticTeamTest extends RFCRMWebsiteBaseTest{
 		logger.info("The username is "+consultantEmailID); 
 		s_assert.assertTrue(crmHomePage.verifyHomePage(),"Home page does not come after login");
 		crmHomePage.enterTextInSearchFieldAndHitEnter(consultantEmailID);
-/*		while(true){
+		/*		while(true){
 			if(crmHomePage.isSearchResultHasActiveUser("Consultant") ==false || crmHomePage.isAccountSectionPresent()==false){
 				logger.info("No active user in the search results..searching new user");
 				randomConsultantList = DBUtil.performDatabaseQuery(DBQueries_RFO.callQueryWithArguement(DBQueries_RFO.GET_RANDOM_ACTIVE_CONSULTANT_WITH_AUTOSHIPS_RFO,countryId),RFO_DB);
@@ -141,8 +141,8 @@ public class LogisticTeamTest extends RFCRMWebsiteBaseTest{
 		s_assert.assertTrue(crmAccountDetailsPage.isMouseHoverContactsSectionNewContentButtonNotPresentOfFields(consultantEmailID),"Contact Button Not Avaliable");
 		s_assert.assertAll();
 	}
-	
-	
+
+
 	// RF Saleforce CRM-170 Verify Contact details page for PC for CA/US
 	@Test
 	public void verifyLoginAsALogisticsAgentContactDetailsPageForPC() throws InterruptedException{
@@ -153,7 +153,7 @@ public class LogisticTeamTest extends RFCRMWebsiteBaseTest{
 		logger.info("The username is "+pcUserName); 
 		s_assert.assertTrue(crmHomePage.verifyHomePage(),"Home page does not come after login");
 		crmHomePage.enterTextInSearchFieldAndHitEnter(pcUserName);
-/*		while(true){
+		/*		while(true){
 			if(crmHomePage.isSearchResultHasActiveUser("Consultant") ==false || crmHomePage.isAccountSectionPresent()==false){
 				logger.info("No active user in the search results..searching new user");
 				randomConsultantList = DBUtil.performDatabaseQuery(DBQueries_RFO.callQueryWithArguement(DBQueries_RFO.GET_RANDOM_ACTIVE_CONSULTANT_WITH_AUTOSHIPS_RFO,countryId),RFO_DB);
@@ -177,8 +177,8 @@ public class LogisticTeamTest extends RFCRMWebsiteBaseTest{
 		s_assert.assertTrue(crmAccountDetailsPage.isMouseHoverContactsSectionNewContentButtonNotPresentOfFields(pcUserName),"Contact Button Not Avaliable");
 		s_assert.assertAll();
 	}
-	
-	
+
+
 	// RF Saleforce CRM-170 Verify Contact details page for RC for CA/US
 	@Test
 	public void verifyLoginAsALogisticsAgentContactDetailsPageForRC() throws InterruptedException{
@@ -189,7 +189,7 @@ public class LogisticTeamTest extends RFCRMWebsiteBaseTest{
 		logger.info("The username is "+rcUserName); 
 		s_assert.assertTrue(crmHomePage.verifyHomePage(),"Home page does not come after login");
 		crmHomePage.enterTextInSearchFieldAndHitEnter(rcUserName);
-/*		while(true){
+		/*		while(true){
 			if(crmHomePage.isSearchResultHasActiveUser("Consultant") ==false || crmHomePage.isAccountSectionPresent()==false){
 				logger.info("No active user in the search results..searching new user");
 				randomConsultantList = DBUtil.performDatabaseQuery(DBQueries_RFO.callQueryWithArguement(DBQueries_RFO.GET_RANDOM_ACTIVE_CONSULTANT_WITH_AUTOSHIPS_RFO,countryId),RFO_DB);
@@ -214,7 +214,7 @@ public class LogisticTeamTest extends RFCRMWebsiteBaseTest{
 		s_assert.assertAll();
 
 	}
-	
+
 	@Test
 	public void testVerifyLoginAsALogisticsAgentDisplayAutoshipDetailsForConsultant() throws InterruptedException{
 		crmLoginpage.crmLogout();
@@ -268,9 +268,9 @@ public class LogisticTeamTest extends RFCRMWebsiteBaseTest{
 		s_assert.assertTrue(crmAccountDetailsPage.isLabelUnderPendingAutoshipBreakdownPresent("Product Tax"),"In Pending Autoship Breakdown Product Tax is not Present");
 		s_assert.assertTrue(crmAccountDetailsPage.isLabelUnderPendingAutoshipBreakdownPresent("Total Tax"),"In Pending Autoship Breakdown Total Tax is not Present");  
 		s_assert.assertAll();
-		
+
 	}
-	
+
 	@Test
 	public void testVerifyLoginAsALogisticsAgentDisplayAutoshipDetailsForPC() throws InterruptedException{
 		crmLoginpage.crmLogout();
@@ -324,8 +324,54 @@ public class LogisticTeamTest extends RFCRMWebsiteBaseTest{
 		s_assert.assertTrue(crmAccountDetailsPage.isLabelUnderPendingAutoshipBreakdownPresent("Product Tax"),"In Pending Autoship Breakdown Product Tax is not Present");
 		s_assert.assertTrue(crmAccountDetailsPage.isLabelUnderPendingAutoshipBreakdownPresent("Total Tax"),"In Pending Autoship Breakdown Total Tax is not Present");  
 		s_assert.assertAll();
-		
+
 	}
-	
-	
+
+	//Verify Shipping Profile details page for Consultant/PC/RC  for CA/US
+	@Test
+	public void testVerifyShippingProfileDetailsPageForConsultantPCRC() throws InterruptedException{
+		crmLoginpage.crmLogout();
+		crmLoginpage.loginLogisticsUser(TestConstants.CRM_LOGIN_LOGISTICS_USERNAME, TestConstants.CRM_LOGIN_LOGISTICS_PASSWORD);
+		s_assert.assertTrue(crmHomePage.verifyHomePage(),"Home page does not come after login");
+		crmHomePage.enterTextInSearchFieldAndHitEnter(consultantEmailID);
+		crmHomePage.clickAnyTypeOfActiveCustomerInSearchResult("Consultant");
+		s_assert.assertTrue(crmAccountDetailsPage.isAccountDetailsPagePresent(),"Account Details page has not displayed");
+		crmAccountDetailsPage.clickAccountMainMenuOptions("Shipping Profiles");
+		s_assert.assertFalse(crmAccountDetailsPage.isAddNewShippingProfileButtonPresentAShippingProfileSectiont(),"Add new shipping profile button is Present at shipping profile section for consultant");
+		s_assert.assertFalse(crmAccountDetailsPage.isActionPresentAtShippingProfileSectionForFirstProfile("Edit"),"For first shipping profile Edit action is Present at shipping profile section for consultant");
+		s_assert.assertFalse(crmAccountDetailsPage.isActionPresentAtShippingProfileSectionForFirstProfile("Del"),"For first shipping profile Del action is Present at shipping profile section for consultant");
+		crmAccountDetailsPage.clickFirstShippingProfile();
+		s_assert.assertFalse(crmAccountDetailsPage.isActionPresentAtShippingProfilePage("Edit"),"Edit action is Present at shipping profile page for consultant");
+		s_assert.assertFalse(crmAccountDetailsPage.isActionPresentAtShippingProfilePage("Del"),"Del action is Present at shipping profile page for consultant");
+		crmAccountDetailsPage.closeSubTabOfEditShippingProfile();
+		crmAccountDetailsPage.closeAllOpenedTabs();
+
+		// For PC
+		crmHomePage.enterTextInSearchFieldAndHitEnter(pcUserName);
+		crmHomePage.clickAnyTypeOfActiveCustomerInSearchResult("Preferred Customer");
+		s_assert.assertTrue(crmAccountDetailsPage.isAccountDetailsPagePresent(),"Account Details page has not displayed");
+		crmAccountDetailsPage.clickAccountMainMenuOptions("Shipping Profiles");
+		s_assert.assertFalse(crmAccountDetailsPage.isAddNewShippingProfileButtonPresentAShippingProfileSectiont(),"Add new shipping profile button is Present at shipping profile section for PC");
+		s_assert.assertFalse(crmAccountDetailsPage.isActionPresentAtShippingProfileSectionForFirstProfile("Edit"),"For first shipping profile Edit action is Present at shipping profile section for PC");
+		s_assert.assertFalse(crmAccountDetailsPage.isActionPresentAtShippingProfileSectionForFirstProfile("Del"),"For first shipping profile Del action is Present at shipping profile section for PC");
+		crmAccountDetailsPage.clickFirstShippingProfile();
+		s_assert.assertFalse(crmAccountDetailsPage.isActionPresentAtShippingProfilePage("Edit"),"Edit action is Present at shipping profile page for PC");
+		s_assert.assertFalse(crmAccountDetailsPage.isActionPresentAtShippingProfilePage("Del"),"Del action is Present at shipping profile page for PC");
+		crmAccountDetailsPage.closeSubTabOfEditShippingProfile();
+		crmAccountDetailsPage.closeAllOpenedTabs();
+
+		//For RC
+		crmHomePage.enterTextInSearchFieldAndHitEnter(rcUserName);
+		crmHomePage.clickAnyTypeOfActiveCustomerInSearchResult("Retail Customer");
+		s_assert.assertTrue(crmAccountDetailsPage.isAccountDetailsPagePresent(),"Account Details page has not displayed");
+		crmAccountDetailsPage.clickAccountMainMenuOptions("Shipping Profiles");
+		s_assert.assertFalse(crmAccountDetailsPage.isAddNewShippingProfileButtonPresentAShippingProfileSectiont(),"Add new shipping profile button is Present at shipping profile section for RC");
+		s_assert.assertFalse(crmAccountDetailsPage.isActionPresentAtShippingProfileSectionForFirstProfile("Edit"),"For first shipping profile Edit action is Present at shipping profile section for RC");
+		s_assert.assertFalse(crmAccountDetailsPage.isActionPresentAtShippingProfileSectionForFirstProfile("Del"),"For first shipping profile Del action is Present at shipping profile section for RC");
+		crmAccountDetailsPage.clickFirstShippingProfile();
+		s_assert.assertFalse(crmAccountDetailsPage.isActionPresentAtShippingProfilePage("Edit"),"Edit action is Present at shipping profile page for RC");
+		s_assert.assertFalse(crmAccountDetailsPage.isActionPresentAtShippingProfilePage("Del"),"Del action is Present at shipping profile page for RC");
+		s_assert.assertAll();
+	}
+
 }

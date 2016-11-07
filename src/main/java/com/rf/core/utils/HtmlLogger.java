@@ -17,7 +17,6 @@ public class HtmlLogger
 
 {
 
-	@Test(testName="")
 	public void createHtmlLogFile() throws IOException {
 		OutputStream htmlfile = new FileOutputStream(new File(
 				"logs/rf-info.html"));

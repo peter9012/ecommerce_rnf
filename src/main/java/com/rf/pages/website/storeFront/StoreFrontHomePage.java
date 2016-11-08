@@ -1380,9 +1380,8 @@ public class StoreFrontHomePage extends StoreFrontRFWebsiteBasePage {
 		return pws;		
 	}
 
-
 	public boolean verifyContinueWithoutSponserLinkPresent(){
-		return driver.isElementPresent(By.id("continue-no-sponsor"));
+		return driver.findElement(By.id("continue-no-sponsor")).isDisplayed();
 	}
 
 	public boolean verifyRequestASponsorBtn(){
@@ -2878,18 +2877,19 @@ public class StoreFrontHomePage extends StoreFrontRFWebsiteBasePage {
 	}
 
 	public void clickLearnMoreLinkUnderSolutionToolAndSwitchControl(){
-		driver.waitForElementPresent(By.xpath("//div[@id='corp_content']/div/div[1]/div[3]/descendant::a"));
-		driver.click(By.xpath("//div[@id='corp_content']/div/div[1]/div[3]/descendant::a"));
-		driver.pauseExecutionFor(11000);
-		String parentWindowID=driver.getWindowHandle();
-		Set<String> set=driver.getWindowHandles();
-		Iterator<String> it=set.iterator();
-		while(it.hasNext()){
-			String childWindowID=it.next();
-			if(!parentWindowID.equalsIgnoreCase(childWindowID)){
-				driver.switchTo().window(childWindowID);
-			}
-		}
+		driver.waitForElementPresent(By.xpath("//div[@id='corp_content']/descendant::a[contains(text(),'GET STARTED')][1]"));
+		driver.click(By.xpath("//div[@id='corp_content']/descendant::a[contains(text(),'GET STARTED')][1]"));
+		driver.waitForPageLoad();
+		driver.pauseExecutionFor(5000);
+		/*String parentWindowID=driver.getWindowHandle();
+		  Set<String> set=driver.getWindowHandles();
+		  Iterator<String> it=set.iterator();
+		  while(it.hasNext()){
+		   String childWindowID=it.next();
+		   if(!parentWindowID.equalsIgnoreCase(childWindowID)){
+		    driver.switchTo().window(childWindowID);
+		   }
+		  }*/
 	}
 
 	public boolean validateConsultantNameOnTopRightCorner(){

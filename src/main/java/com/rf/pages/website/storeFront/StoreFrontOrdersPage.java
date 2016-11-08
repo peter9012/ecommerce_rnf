@@ -778,11 +778,12 @@ public class StoreFrontOrdersPage extends StoreFrontRFWebsiteBasePage{
 		}else 
 			return driver.findElement(By.xpath("//div[@id='main-content']//div[contains(text(),'Grand Total')]/following::div[1]")).getText().contains("US$");
 	}
+
 	public String getAutoshipOrderDate(){
 		String autoShipOrderDate = null;
 		if(driver.getCountry().equalsIgnoreCase("ca")){
-			driver.waitForElementPresent(By.xpath("//div[@id='pending-autoship-orders-table']/div[2]/div[2]/div[@class='ref-labels']/div/div[2]"));
-			autoShipOrderDate = driver.findElement(By.xpath("//div[@id='pending-autoship-orders-table']/div[2]/div[2]/div[@class='ref-labels']/div/div[2]")).getText();
+			driver.waitForElementPresent(By.xpath("//div[@id='pending-autoship-orders-table']/descendant::div[text()='PENDING'][1]/preceding::div[2]"));
+			autoShipOrderDate = driver.findElement(By.xpath("//div[@id='pending-autoship-orders-table']/descendant::div[text()='PENDING'][1]/preceding::div[2]")).getText();
 			return  autoShipOrderDate;
 		}else{
 			driver.waitForElementPresent(AUTOSHIP_DATE_LOC);

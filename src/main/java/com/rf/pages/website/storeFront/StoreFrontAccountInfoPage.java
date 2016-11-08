@@ -689,8 +689,13 @@ public class StoreFrontAccountInfoPage extends StoreFrontRFWebsiteBasePage{
 	}	
 
 	public boolean errorMessageForExistingUser(){
-		driver.waitForElementPresent(By.xpath("//div[@id='globalMessages']//div[contains(., 'Your Username already exist,Please Enter the Different Username')]//div"));
-		return driver.findElement(By.xpath("//div[@id='globalMessages']//div[contains(., 'Your Username already exist,Please Enter the Different Username')]//div")).isDisplayed();
+		try{
+			driver.waitForElementPresent(By.xpath("//div[@id='globalMessages']//div[@class='information_message negative']/span[contains(., 'Unable to update account details')]"));
+			return driver.findElement(By.xpath("//div[@id='globalMessages']//div[@class='information_message negative']/span[contains(., 'Unable to update account details')]")).isDisplayed();
+		}catch(NoSuchElementException e){
+			driver.waitForElementPresent(By.xpath("//div[@id='globalMessages']//div[contains(., 'Your Username already exist,Please Enter the Different Username')]//div"));
+			return driver.findElement(By.xpath("//div[@id='globalMessages']//div[contains(., 'Your Username already exist,Please Enter the Different Username')]//div")).isDisplayed();
+		}
 	}
 
 	public String getWrongUsernameErrorMessage() {

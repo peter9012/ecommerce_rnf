@@ -1676,7 +1676,7 @@ public class CartAndCheckoutValidationTest extends RFWebsiteBaseTest{
 		String lastName = TestConstants.LAST_NAME;
 		String emailAddress = firstName+TestConstants.EMAIL_ADDRESS_SUFFIX;
 		storeFrontHomePage = new StoreFrontHomePage(driver);
-
+		storeFrontUpdateCartPage = new StoreFrontUpdateCartPage(driver);
 		storeFrontHomePage.openPWSSite(country, env);
 		storeFrontHomePage.clickSignUpnowOnbizSite();
 		storeFrontHomePage.enterNewRCDetails(firstName, lastName, emailAddress, password);
@@ -2438,8 +2438,12 @@ public class CartAndCheckoutValidationTest extends RFWebsiteBaseTest{
 		logger.info("Cart page is displayed");
 		//Click on Check out
 		storeFrontHomePage.clickOnCheckoutButton();
+		//Enter main account info
+		storeFrontHomePage.enterMainAccountInfo();
+		storeFrontHomePage.clickOnContinueWithoutSponsorLink();
+		storeFrontHomePage.clickOnNextButtonAfterSelectingSponsor();
 		//click edit next to shipment Section 
-		storeFrontHomePage.clickEditShippingInShipmentOnCheckoutPage();
+		//storeFrontHomePage.clickEditShippingInShipmentOnCheckoutPage();
 		//select UPS 2 Day shipping method
 		String selectedShippingMethod=storeFrontHomePage.selectShippingMethodUPS2DayUnderShippingSectionAndGetName();
 		//click next on shipping section

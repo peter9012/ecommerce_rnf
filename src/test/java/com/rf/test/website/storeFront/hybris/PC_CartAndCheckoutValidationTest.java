@@ -1874,10 +1874,15 @@ public class PC_CartAndCheckoutValidationTest extends RFWebsiteBaseTest{
 		s_assert.assertTrue(storeFrontHomePage.verifyNumberOfProductsInCart("1"), "number of products in the cart is NOT 1");
 		logger.info("1 product is successfully added to the cart");
 
-		//Click on place order
+		//For Cross country sponsor
+		if(driver.getCountry().equalsIgnoreCase("ca")){
+			countryId="236";
+		}else{
+			countryId="40";
+		}
 		storeFrontHomePage.clickOnCheckoutButton();
 		while(true){
-			sponserWithoutPWSList = DBUtil.performDatabaseQuery(DBQueries_RFO.GET_ACTIVE_US_CONSULTANT_WITHOUT_PWS_AND_PULSE,RFO_DB);
+			sponserWithoutPWSList = DBUtil.performDatabaseQuery(DBQueries_RFO.callQueryWithArguement(DBQueries_RFO.GET_RANDOM_ACTIVE_CONSULTANT_WITHOUT_PULSE_RFO, countryId),RFO_DB);
 			sponserId=String.valueOf(getValueFromQueryResult(sponserWithoutPWSList, "AccountNumber"));
 			storeFrontHomePage.enterSponsorNameAndClickOnSearchForPCAndRC(sponserId);
 			if(storeFrontHomePage.verifySponserSearchResult(sponserId)){
@@ -1891,7 +1896,6 @@ public class PC_CartAndCheckoutValidationTest extends RFWebsiteBaseTest{
 		s_assert.assertTrue(storeFrontHomePage.validatePCPerksCheckBoxIsDisplayed(), "pc perks checkbox is displayed");
 		s_assert.assertFalse(storeFrontHomePage.verifyPCPerksCheckBoxIsSelected(),"pc perks checbox is selected for rc user");
 		storeFrontHomePage.clickYesIWantToJoinPCPerksCB();
-
 		storeFrontHomePage.clickOnShippingAddressNextStepBtn();
 		storeFrontHomePage.clickOnBillingNextStepBtn();
 		storeFrontHomePage.clickOnPCPerksTermsAndConditionsCheckBoxes();

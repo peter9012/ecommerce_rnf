@@ -453,7 +453,7 @@ public class TestConstants {
 	public static final String FIRST_TIME_ACTIVATION ="First Time activation";
 	public static final String COMPLIANCE_RE_ACTIVATION ="Compliance re-activation";
 	public static final String CRM_LOGIN_LOGISTICS_USERNAME = "opsuser@rodanandfields.com.stg1";
-	public static final String CRM_LOGIN_LOGISTICS_PASSWORD = "121Spear";
+	public static final String CRM_LOGIN_LOGISTICS_PASSWORD = "60Spear!";
 
 
 	//DSV CSCOCKPIT

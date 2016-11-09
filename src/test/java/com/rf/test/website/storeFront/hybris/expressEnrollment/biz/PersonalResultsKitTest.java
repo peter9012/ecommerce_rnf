@@ -46,7 +46,7 @@ public class PersonalResultsKitTest extends RFWebsiteBaseTest{
 		randomActiveSitePrefixList = DBUtil.performDatabaseQuery(DBQueries_RFO.callQueryWithArguement(DBQueries_RFO.GET_RANDOM_ACTIVE_SITE_PREFIX_RFO,countryId),RFO_DB);
 		activeSitePrefix = (String) getValueFromQueryResult(randomActiveSitePrefixList, "SitePrefix");
 
-		String PWS = "https://"+activeSitePrefix+driver.getBizPWSURL()+"/"+driver.getCountry();
+		String PWS = "https://"+activeSitePrefix+storeFrontHomePage.getBizPWSUrl()+"/"+driver.getCountry();
 		storeFrontHomePage.openPWSSite(PWS);
 		if(country.equalsIgnoreCase("CA")){
 			kitName = TestConstants.KIT_NAME_PERSONAL;    
@@ -86,5 +86,4 @@ public class PersonalResultsKitTest extends RFWebsiteBaseTest{
 		s_assert.assertTrue(storeFrontHomePage.verifyCongratsMessage(), "Congrats Message is not visible");
 		s_assert.assertAll(); // Please don't comment this line
 	}
-
 }

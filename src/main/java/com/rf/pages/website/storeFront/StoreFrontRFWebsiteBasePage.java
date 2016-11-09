@@ -179,7 +179,7 @@ public class StoreFrontRFWebsiteBasePage extends RFBasePage{
 		driver.waitForPageLoad();
 		return productName;
 	}
-	
+
 	public String getNameOfTheOnlyAddedProductOnCart(){
 		String productNameFromCart = null;
 		productNameFromCart=driver.findElement(By.xpath("//div[@id='left-shopping']/div[@class='cartItems']//h3")).getText();
@@ -769,7 +769,7 @@ public class StoreFrontRFWebsiteBasePage extends RFBasePage{
 		driver.click(By.xpath("//select[@id='expiryYear']/option[10]"));
 		//driver.clickByJS(RFWebsiteDriver.driver,driver.findElement(By.xpath("//select[@id='expiryYear']/option[10]")));  
 	}
-	
+
 	public void selectNewBillingCardExpirationDateAsExpiredDate(){
 		driver.click(By.id("expiryMonth"));
 		driver.waitForElementPresent(By.xpath("//select[@id='expiryMonth']/option[@value='02']"));
@@ -1360,9 +1360,18 @@ public class StoreFrontRFWebsiteBasePage extends RFBasePage{
 	public StoreFrontOrdersPage clickOrdersLinkPresentOnWelcomeDropDown() throws InterruptedException{
 		Actions actions = new Actions(RFWebsiteDriver.driver);
 		driver.waitForElementPresent(WELCOME_USER_DD_LOC);
-		actions.moveToElement(driver.findElement(WELCOME_USER_DD_LOC)).perform();
+		//actions.moveToElement(driver.findElement(WELCOME_USER_DD_LOC)).perform();
 		driver.waitForElementPresent(WELCOME_DD_ORDERS_LINK_LOC);
-		actions.moveToElement(driver.findElement(WELCOME_DD_ORDERS_LINK_LOC)).click().perform();
+
+		String strJavaScript = "var element = arguments[0];"
+				+ "var mouseEventObj = document.createEvent('MouseEvents');"
+				+ "mouseEventObj.initEvent( 'mouseover', true, true );"
+				+ "element.dispatchEvent(mouseEventObj);";
+		JavascriptExecutor js = (JavascriptExecutor) (RFWebsiteDriver.driver);
+		js.executeScript(strJavaScript, driver.findElement(WELCOME_DD_ORDERS_LINK_LOC));
+		logger.info("mouse hover operation performed");
+		driver.click(WELCOME_DD_ORDERS_LINK_LOC);
+		//actions.moveToElement(driver.findElement(WELCOME_DD_ORDERS_LINK_LOC)).click().perform();
 		logger.info("User has clicked on orders link from welcome drop down");
 		driver.waitForPageLoad();
 		driver.waitForLoadingImageToDisappear();
@@ -2265,8 +2274,14 @@ public class StoreFrontRFWebsiteBasePage extends RFBasePage{
 	}
 
 	public void mouseHoverOnMiniCart(){
-		Actions actions = new Actions(RFWebsiteDriver.driver);
-		actions.moveToElement(driver.findElement(By.xpath("//a[@id='shopping-cart']"))).build().perform();
+		String strJavaScript = "var element = arguments[0];"
+				+ "var mouseEventObj = document.createEvent('MouseEvents');"
+				+ "mouseEventObj.initEvent( 'mouseover', true, true );"
+				+ "element.dispatchEvent(mouseEventObj);";
+		JavascriptExecutor js = (JavascriptExecutor) (RFWebsiteDriver.driver);
+		js.executeScript(strJavaScript, driver.findElement(By.xpath("//a[@id='shopping-cart']")));
+		logger.info("mouse hover operation performed");
+		//actions.moveToElement(driver.findElement(By.xpath("//a[@id='shopping-cart']"))).build().perform();
 		driver.waitForLoadingImageToDisappear();
 	}
 
@@ -2314,6 +2329,12 @@ public class StoreFrontRFWebsiteBasePage extends RFBasePage{
 
 		}
 		driver.waitForPageLoad();
+	}
+
+	public String getBizPWSUrl(){
+		String PWS = driver.getBizPWSURL(); 
+		logger.info("PWS is "+PWS);
+		return PWS;
 	}
 
 }

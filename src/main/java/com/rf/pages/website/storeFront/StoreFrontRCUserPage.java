@@ -49,6 +49,8 @@ public class StoreFrontRCUserPage extends StoreFrontRFWebsiteBasePage{
 		JavascriptExecutor js = (JavascriptExecutor)(RFWebsiteDriver.driver);
 		js.executeScript("arguments[0].click();", driver.findElement(WELCOME_DD_ACCOUNT_INFO_LOC));
 		logger.info("Account info link from welcome drop down clicked");
+		driver.waitForPageLoad();
+		driver.waitForLoadingImageToDisappear();
 		return new StoreFrontAccountInfoPage(driver);
 	}
 

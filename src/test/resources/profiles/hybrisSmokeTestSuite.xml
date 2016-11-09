@@ -29,13 +29,19 @@
 				</methods>
 			</class>
 			<class
-				name="com.rf.test.website.storeFront.hybris.EnrollmentValidationTest">
+				name="com.rf.test.website.storeFront.hybris.majorEnrollments.EnrollmentsTest">
 				<methods>
-					<include name="testTermsAndConditionsRCEnrollment_2188"></include>
-					<include name="testPCEnrollment_1308"></include>
-					<include name="testStandardEnrollmentWithoutCRPAndPulse_3255"></include>
+					<include name="testRCEnrollment_1307_2250_2188"></include>
+					<include name="testPCEnrollment_1308_2160_2187_2300_1308"></include>				
 				</methods>
 			</class>
+			<class
+				name="com.rf.test.website.storeFront.hybris.StandardEnrollmentValidationTest">
+				<methods>
+					<include name="testStandardEnrollmentWithoutCRPAndPulse_3255"></include>								
+				</methods>
+			</class>
+			
 		</classes>
 	</test>
 </suite>

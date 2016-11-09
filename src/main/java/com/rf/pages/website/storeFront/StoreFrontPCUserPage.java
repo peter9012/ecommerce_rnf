@@ -65,11 +65,14 @@ public class StoreFrontPCUserPage extends StoreFrontRFWebsiteBasePage{
 	public void clickOnPCPerksStatus(){
 		driver.waitForElementPresent(By.xpath("//a[contains(text(),'PC Perks Status')]"));
 		driver.click(By.xpath("//a[contains(text(),'PC Perks Status')]"));
+		driver.waitForPageLoad();
+		driver.pauseExecutionFor(3000);
 	}
 
 	public void clickDelayOrCancelPCPerks(){
 		driver.waitForElementPresent(By.xpath("//a[text()='Delay or Cancel PC Perks']"));
-		driver.click(By.xpath("//a[text()='Delay or Cancel PC Perks']"));
+		driver.clickByJS(RFWebsiteDriver.driver, driver.findElement(By.xpath("//a[text()='Delay or Cancel PC Perks']")));
+		//driver.click(By.xpath("//a[text()='Delay or Cancel PC Perks']"));
 	}
 
 	public void clickPleaseCancelMyPcPerksActBtn(){
@@ -79,7 +82,8 @@ public class StoreFrontPCUserPage extends StoreFrontRFWebsiteBasePage{
 
 	public StoreFrontHomePage cancelMyPCPerksAct(){
 		driver.waitForElementPresent(By.id("problemType"));
-		driver.click(By.id("problemType"));
+		//driver.click(By.id("problemType"));
+		driver.clickByJS(RFWebsiteDriver.driver, driver.findElement(By.id("problemType")));
 		driver.waitForElementPresent(By.xpath("//select[@id='problemType']/option[6]"));
 		driver.click(By.xpath("//select[@id='problemType']/option[6]"));
 		driver.waitForElementPresent(By.xpath("//textarea[@id='terminationComments']"));
@@ -91,7 +95,7 @@ public class StoreFrontPCUserPage extends StoreFrontRFWebsiteBasePage{
 		try{
 			driver.quickWaitForElementPresent(By.xpath("//input[@value='Close window']"));
 			driver.click(By.xpath("//input[@value='Close window']"));
-		}catch(Exception e){			
+		}catch(Exception e){   
 			driver.click(By.xpath("//div[@id='popup-content']/div/div/following::input[@value='Close window']"));
 		}
 		driver.waitForPageLoad();
@@ -341,7 +345,8 @@ public class StoreFrontPCUserPage extends StoreFrontRFWebsiteBasePage{
 
 	public void clickOnAddtoPCPerksButton(){
 		driver.quickWaitForElementPresent(By.xpath("//div[@id='main-content']/descendant::input[contains(@value,'ADD to PC Perks')][1]"));
-		driver.click(By.xpath("//div[@id='main-content']/descendant::input[contains(@value,'ADD to PC Perks')][1]"));
+		//driver.click(By.xpath("//div[@id='main-content']/descendant::input[contains(@value,'ADD to PC Perks')][1]"));
+		driver.clickByJS(RFWebsiteDriver.driver, driver.findElement(By.xpath("//div[@id='main-content']/descendant::input[contains(@value,'ADD to PC Perks')][1]")));
 		try{
 			driver.quickWaitForElementPresent(By.xpath("//input[@value='OK']"));
 			driver.click(By.xpath("//input[@value='OK']"));

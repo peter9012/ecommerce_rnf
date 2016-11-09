@@ -79,9 +79,9 @@ public class ComPWSTest extends RFBrandRefreshWebsiteBaseTest{
 		//storeFrontBrandRefreshConsultantPage.mouseHoverOnMyShoppingBagLinkAndClickOnCheckoutBtn();
 		storeFrontBrandRefreshConsultantPage.clickMyShoppingBagLink();
 		storeFrontBrandRefreshHomePage.clickCheckoutBtn();
-		storeFrontBrandRefreshHomePage.clickContinueBtn();
+		storeFrontBrandRefreshHomePage.clickContinueBtnForPCAndRC();
 		storeFrontBrandRefreshHomePage.clickChangeBillingInformationBtn();
-		storeFrontBrandRefreshHomePage.enterBillingInfo(billingName, billingProfileFirstName, billingProfileLastName, nameOnCard, cardNumber, expMonth, expYear, addressLine1, postalCode, phnNumber);
+		storeFrontBrandRefreshHomePage.enterBillingInfo(billingName, billingProfileFirstName, billingProfileLastName, nameOnCard, cardNumber, expMonth, expYear, addressLine1, postalCode, phnNumber,CVV);
 		storeFrontBrandRefreshHomePage.clickUseThisBillingInformationBtn();
 		storeFrontBrandRefreshHomePage.clickUseAsEnteredBtn();
 		storeFrontBrandRefreshHomePage.clickCompleteOrderBtn();
@@ -125,9 +125,9 @@ public class ComPWSTest extends RFBrandRefreshWebsiteBaseTest{
 		//  storeFrontBrandRefreshConsultantPage.mouseHoverOnShopSkinCareAndClickOnConsultantOnlyProductsLink();
 		storeFrontBrandRefreshHomePage.clickMyShoppingBagLink();
 		storeFrontBrandRefreshHomePage.clickCheckoutBtn();
-		storeFrontBrandRefreshHomePage.clickContinueBtn();
+		storeFrontBrandRefreshHomePage.clickContinueBtnForPCAndRC();
 		storeFrontBrandRefreshHomePage.clickChangeBillingInformationBtn();
-		storeFrontBrandRefreshHomePage.enterBillingInfo(billingName, billingProfileFirstName, billingProfileLastName, nameOnCard, cardNumber, expMonth, expYear, addressLine1, postalCode, phnNumber);
+		storeFrontBrandRefreshHomePage.enterBillingInfo(billingName, billingProfileFirstName, billingProfileLastName, nameOnCard, cardNumber, expMonth, expYear, addressLine1, postalCode, phnNumber,CVV);
 		storeFrontBrandRefreshHomePage.clickUseThisBillingInformationBtn();
 		storeFrontBrandRefreshHomePage.clickUseAsEnteredBtn();
 		storeFrontBrandRefreshHomePage.clickCompleteOrderBtn();
@@ -191,9 +191,9 @@ public class ComPWSTest extends RFBrandRefreshWebsiteBaseTest{
 		storeFrontBrandRefreshHomePage.clickAddToCartButtonAfterLogin();
 		storeFrontBrandRefreshHomePage.clickMyShoppingBagLink();
 		storeFrontBrandRefreshHomePage.clickCheckoutBtn();
-		storeFrontBrandRefreshHomePage.clickContinueBtn();
+		storeFrontBrandRefreshHomePage.clickContinueBtnForPCAndRC();
 		storeFrontBrandRefreshHomePage.clickChangeBillingInformationBtn();
-		storeFrontBrandRefreshHomePage.enterBillingInfo(billingName, billingProfileFirstName, billingProfileLastName, nameOnCard, cardNumber, expMonth, expYear, addressLine1, postalCode, phnNumber);
+		storeFrontBrandRefreshHomePage.enterBillingInfo(billingName, billingProfileFirstName, billingProfileLastName, nameOnCard, cardNumber, expMonth, expYear, addressLine1, postalCode, phnNumber,CVV);
 		storeFrontBrandRefreshHomePage.clickUseThisBillingInformationBtn();
 		storeFrontBrandRefreshHomePage.clickUseAsEnteredBtn();
 		storeFrontBrandRefreshHomePage.clickCompleteOrderBtn();

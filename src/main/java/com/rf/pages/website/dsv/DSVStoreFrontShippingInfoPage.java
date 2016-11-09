@@ -14,7 +14,7 @@ public class DSVStoreFrontShippingInfoPage extends DSVRFWebsiteBasePage {
 	private static final Logger logger = LogManager
 			.getLogger(DSVStoreFrontShippingInfoPage.class.getName());
 	
-	private static final By ADD_A_NEW_SHIPPING_ADDRESS_LINK = By.xpath("//a[contains(text(),'Add a new shipping address')]");
+	private static final By ADD_A_NEW_SHIPPING_ADDRESS_LINK = By.xpath("//a[contains(text(),'Add new shipping address')]");
 	private static final By NAME_TXT_FIELD = By.id("new-attention");
 	private static final By ADDRESS_LINE_1_TXT_FIELD = By.id("new-address-1");
 	private static final By CITY_TXT_FIELD = By.id("townCity");
@@ -25,7 +25,7 @@ public class DSVStoreFrontShippingInfoPage extends DSVRFWebsiteBasePage {
 	private static final By SECURITY_CODE_TXT_FIELD = By.id("security-code");
 	private static final By SAVE_ADDRESS_BTN = By.id("saveShippingAddress");
 	private static final By VERIFY_YOUR_SHIPPING_ADDRESS_POPUP = By.id("QAS_AcceptOriginal");
-	private static String ShippingProfiles = "//ul[@id='multiple-billing-profiles']//span[contains(@class,'font-bold')][contains(text(),'%s')]";
+	private static String ShippingProfiles = "//div[@id='multiple-billing-profiles']//span[contains(@class,'font-bold')][contains(text(),'%s')]";
 	
 	
 	public DSVStoreFrontShippingInfoPage(RFWebsiteDriver driver) {
@@ -34,7 +34,9 @@ public class DSVStoreFrontShippingInfoPage extends DSVRFWebsiteBasePage {
 	}
 	
 	public void clickAddANewShippingAddressLink(){
+		driver.waitForLoadingImageToDisappear();
 		driver.quickWaitForElementPresent(ADD_A_NEW_SHIPPING_ADDRESS_LINK);
+		driver.pauseExecutionFor(2000);
 		driver.click(ADD_A_NEW_SHIPPING_ADDRESS_LINK);
 	}
 	
@@ -48,9 +50,9 @@ public class DSVStoreFrontShippingInfoPage extends DSVRFWebsiteBasePage {
 		provinceDD.selectByIndex(1);
 		driver.type(POSTAL_CODE_TXT_FIELD, postalCode);
 		driver.type(PHONE_NUMBER_TXT_FIELD, phoneNumber);
-		Select cardNumberDD = new Select(driver.findElement(CARD_NUMBER_DROP_DOWN));
-		cardNumberDD.selectByIndex(1);
-		driver.type(SECURITY_CODE_TXT_FIELD, securityCode);
+//		Select cardNumberDD = new Select(driver.findElement(CARD_NUMBER_DROP_DOWN));
+//		cardNumberDD.selectByIndex(1);
+//		driver.type(SECURITY_CODE_TXT_FIELD, securityCode);
 	}
 	
 	public void clickSaveAddressBtn(){
@@ -79,9 +81,9 @@ public class DSVStoreFrontShippingInfoPage extends DSVRFWebsiteBasePage {
 		logger.info("Shipping name entered for edit is "+shippingName);
 		driver.waitForElementPresent(NAME_TXT_FIELD);
 		driver.type(NAME_TXT_FIELD, shippingName);
-		Select cardNumberDD = new Select(driver.findElement(CARD_NUMBER_DROP_DOWN));
-		cardNumberDD.selectByIndex(1);
-		driver.type(SECURITY_CODE_TXT_FIELD, securityCode);
+//		Select cardNumberDD = new Select(driver.findElement(CARD_NUMBER_DROP_DOWN));
+//		cardNumberDD.selectByIndex(1);
+//		driver.type(SECURITY_CODE_TXT_FIELD, securityCode);
 	}
 
 }

@@ -36,8 +36,13 @@ public class CSCockpitLoginPage extends CSCockpitRFWebsiteBasePage{
 
 
 	public CSCockpitCustomerSearchTabPage clickLoginBtn(){
-		driver.waitForCSCockpitLoadingImageToDisappear();
+				driver.waitForCSCockpitLoadingImageToDisappear();
 		driver.waitForElementPresent(LOGIN_BTN);
+
+		this.enterUsername("csagent");
+		this.enterPassword("1234");
+		
+		
 		driver.click(LOGIN_BTN);
 		driver.waitForCSCockpitLoadingImageToDisappear();
 		driver.pauseExecutionFor(5000);

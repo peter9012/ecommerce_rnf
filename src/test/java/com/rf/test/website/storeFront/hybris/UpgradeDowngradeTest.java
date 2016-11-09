@@ -75,7 +75,7 @@ public class UpgradeDowngradeTest extends RFWebsiteBaseTest{
 		//Enter Billing Profile
 		storeFrontHomePage.enterNewBillingCardNumber(TestConstants.CARD_NUMBER);
 		storeFrontHomePage.enterNewBillingNameOnCard(newBillingProfileName+" "+lastName);
-		storeFrontHomePage.selectNewBillingCardExpirationDate();
+		storeFrontHomePage.selectNewBillingCardExpirationDate("OCT","2025");
 		storeFrontHomePage.enterNewBillingSecurityCode(TestConstants.SECURITY_CODE);
 		storeFrontHomePage.selectNewBillingCardAddress();
 		storeFrontHomePage.clickOnSaveBillingProfile();
@@ -285,7 +285,7 @@ public class UpgradeDowngradeTest extends RFWebsiteBaseTest{
 		//Enter Billing Profile
 		storeFrontHomePage.enterNewBillingCardNumber(TestConstants.CARD_NUMBER);
 		storeFrontHomePage.enterNewBillingNameOnCard(newBillingProfileName+" "+lastName);
-		storeFrontHomePage.selectNewBillingCardExpirationDate();
+		storeFrontHomePage.selectNewBillingCardExpirationDate("OCT","2025");
 		storeFrontHomePage.enterNewBillingSecurityCode(TestConstants.SECURITY_CODE);
 		storeFrontHomePage.selectNewBillingCardAddress();
 		storeFrontHomePage.clickOnSaveBillingProfile();
@@ -404,7 +404,7 @@ public class UpgradeDowngradeTest extends RFWebsiteBaseTest{
 		//Enter Billing Profile
 		storeFrontHomePage.enterNewBillingCardNumber(TestConstants.CARD_NUMBER);
 		storeFrontHomePage.enterNewBillingNameOnCard(newBillingProfileName+" "+lastName);
-		storeFrontHomePage.selectNewBillingCardExpirationDate();
+		storeFrontHomePage.selectNewBillingCardExpirationDate("OCT","2025");
 		storeFrontHomePage.enterNewBillingSecurityCode(TestConstants.SECURITY_CODE);
 		storeFrontHomePage.selectNewBillingCardAddress();
 		storeFrontHomePage.clickOnSaveBillingProfile();
@@ -447,7 +447,7 @@ public class UpgradeDowngradeTest extends RFWebsiteBaseTest{
 		storeFrontHomePage.clickNextButton();		
 		storeFrontHomePage.enterCardNumber(TestConstants.CARD_NUMBER);
 		storeFrontHomePage.enterNameOnCard(TestConstants.FIRST_NAME+randomNum);
-		storeFrontHomePage.selectNewBillingCardExpirationDate();
+		storeFrontHomePage.selectNewBillingCardExpirationDate("OCT","2025");
 		storeFrontHomePage.enterSecurityCode(TestConstants.SECURITY_CODE);
 		storeFrontHomePage.enterSocialInsuranceNumber(socialInsuranceNumberForReEnrollment);
 		storeFrontHomePage.enterNameAsItAppearsOnCard(TestConstants.FIRST_NAME);
@@ -557,7 +557,7 @@ public class UpgradeDowngradeTest extends RFWebsiteBaseTest{
 			//Enter Billing Profile
 			storeFrontHomePage.enterNewBillingCardNumber(TestConstants.CARD_NUMBER);
 			storeFrontHomePage.enterNewBillingNameOnCard(newBillingProfileName+" "+lastName);
-			storeFrontHomePage.selectNewBillingCardExpirationDate();
+			storeFrontHomePage.selectNewBillingCardExpirationDate("OCT","2025");
 			storeFrontHomePage.enterNewBillingSecurityCode(TestConstants.SECURITY_CODE);
 			storeFrontHomePage.selectNewBillingCardAddress();
 			storeFrontHomePage.clickOnSaveBillingProfile();
@@ -665,7 +665,7 @@ public class UpgradeDowngradeTest extends RFWebsiteBaseTest{
 			//Enter Billing Profile
 			storeFrontHomePage.enterNewBillingCardNumber(TestConstants.CARD_NUMBER);
 			storeFrontHomePage.enterNewBillingNameOnCard(newBillingProfileName+" "+lastName);
-			storeFrontHomePage.selectNewBillingCardExpirationDate();
+			storeFrontHomePage.selectNewBillingCardExpirationDate("OCT","2025");
 			storeFrontHomePage.enterNewBillingSecurityCode(TestConstants.SECURITY_CODE);
 			storeFrontHomePage.selectNewBillingCardAddress();
 			storeFrontHomePage.clickOnSaveBillingProfile();
@@ -777,7 +777,7 @@ public class UpgradeDowngradeTest extends RFWebsiteBaseTest{
 		//Enter Billing Profile
 		storeFrontHomePage.enterNewBillingCardNumber(TestConstants.CARD_NUMBER);
 		storeFrontHomePage.enterNewBillingNameOnCard(newBillingProfileName+" "+lastName);
-		storeFrontHomePage.selectNewBillingCardExpirationDate();
+		storeFrontHomePage.selectNewBillingCardExpirationDate("OCT","2025");
 		storeFrontHomePage.enterNewBillingSecurityCode(TestConstants.SECURITY_CODE);
 		storeFrontHomePage.selectNewBillingCardAddress();
 		storeFrontHomePage.clickOnSaveBillingProfile();
@@ -867,7 +867,7 @@ public class UpgradeDowngradeTest extends RFWebsiteBaseTest{
 		//Enter Billing Profile
 		storeFrontHomePage.enterNewBillingCardNumber(TestConstants.CARD_NUMBER);
 		storeFrontHomePage.enterNewBillingNameOnCard(newBillingProfileName+" "+lastName);
-		storeFrontHomePage.selectNewBillingCardExpirationDate();
+		storeFrontHomePage.selectNewBillingCardExpirationDate("OCT","2025");
 		storeFrontHomePage.enterNewBillingSecurityCode(TestConstants.SECURITY_CODE);
 		storeFrontHomePage.selectNewBillingCardAddress();
 		storeFrontHomePage.clickOnSaveBillingProfile();
@@ -984,7 +984,7 @@ public class UpgradeDowngradeTest extends RFWebsiteBaseTest{
 			//Enter Billing Profile
 			storeFrontHomePage.enterNewBillingCardNumber(TestConstants.CARD_NUMBER);
 			storeFrontHomePage.enterNewBillingNameOnCard(newBillingProfileName+" "+lastName);
-			storeFrontHomePage.selectNewBillingCardExpirationDate();
+			storeFrontHomePage.selectNewBillingCardExpirationDate("OCT","2025");
 			storeFrontHomePage.enterNewBillingSecurityCode(TestConstants.SECURITY_CODE);
 			storeFrontHomePage.selectNewBillingCardAddress();
 			storeFrontHomePage.clickOnSaveBillingProfile();
@@ -1039,7 +1039,7 @@ public class UpgradeDowngradeTest extends RFWebsiteBaseTest{
 		//storeFrontHomePage.acceptTheVerifyYourShippingAddressPop();  
 		storeFrontHomePage.enterCardNumber(TestConstants.CARD_NUMBER);
 		storeFrontHomePage.enterNameOnCard(TestConstants.FIRST_NAME+randomNum);
-		storeFrontHomePage.selectNewBillingCardExpirationDate();
+		storeFrontHomePage.selectNewBillingCardExpirationDate("OCT","2025");
 		storeFrontHomePage.enterSecurityCode(TestConstants.SECURITY_CODE);
 		storeFrontHomePage.enterSocialInsuranceNumber(socialInsuranceNumber);
 		storeFrontHomePage.enterNameAsItAppearsOnCard(TestConstants.FIRST_NAME);
@@ -1103,7 +1103,7 @@ public class UpgradeDowngradeTest extends RFWebsiteBaseTest{
 		//Enter Billing Profile
 		storeFrontHomePage.enterNewBillingCardNumber(TestConstants.CARD_NUMBER);
 		storeFrontHomePage.enterNewBillingNameOnCard(newBillingProfileName+" "+lastName);
-		storeFrontHomePage.selectNewBillingCardExpirationDate();
+		storeFrontHomePage.selectNewBillingCardExpirationDate("OCT","2025");
 		storeFrontHomePage.enterNewBillingSecurityCode(TestConstants.SECURITY_CODE);
 		storeFrontHomePage.selectNewBillingCardAddress();
 		storeFrontHomePage.clickOnSaveBillingProfile();
@@ -1133,8 +1133,9 @@ public class UpgradeDowngradeTest extends RFWebsiteBaseTest{
 			storeFrontHomePage = new StoreFrontHomePage(driver);
 			while(true){
 				randomConsultantList = DBUtil.performDatabaseQuery(DBQueries_RFO.callQueryWithArguement(DBQueries_RFO.GET_RANDOM_ACTIVE_CONSULTANT_WITH_ORDERS_AND_AUTOSHIPS_RFO,countryId),RFO_DB);
-				consultantEmailID = (String) getValueFromQueryResult(randomConsultantList, "UserName");		
 				accountID = String.valueOf(getValueFromQueryResult(randomConsultantList, "AccountID"));
+				randomConsultantList = DBUtil.performDatabaseQuery(DBQueries_RFO.callQueryWithArguement(DBQueries_RFO.GET_EMAIL_ID_FROM_ACCOUNT_ID,accountID),RFO_DB);
+			    consultantEmailID = String.valueOf(getValueFromQueryResult(randomConsultantList, "EmailAddress"));
 				logger.info("Account Id of the user is "+accountID);
 				storeFrontConsultantPage = storeFrontHomePage.loginAsConsultant(consultantEmailID, password);
 				boolean isLoginError = driver.getCurrentUrl().contains("error");
@@ -1183,7 +1184,7 @@ public class UpgradeDowngradeTest extends RFWebsiteBaseTest{
 			//Enter Billing Profile
 			storeFrontHomePage.enterNewBillingCardNumber(TestConstants.CARD_NUMBER);
 			storeFrontHomePage.enterNewBillingNameOnCard(newBillingProfileName+" "+lastName);
-			storeFrontHomePage.selectNewBillingCardExpirationDate();
+			storeFrontHomePage.selectNewBillingCardExpirationDate("OCT","2025");
 			storeFrontHomePage.enterNewBillingSecurityCode(TestConstants.SECURITY_CODE);
 			storeFrontHomePage.selectNewBillingCardAddress();
 			storeFrontHomePage.clickOnSaveBillingProfile();
@@ -1263,7 +1264,7 @@ public class UpgradeDowngradeTest extends RFWebsiteBaseTest{
 		//Enter Billing Profile
 		storeFrontHomePage.enterNewBillingCardNumber(TestConstants.CARD_NUMBER);
 		storeFrontHomePage.enterNewBillingNameOnCard(newBillingProfileName+" "+lastName);
-		storeFrontHomePage.selectNewBillingCardExpirationDate();
+		storeFrontHomePage.selectNewBillingCardExpirationDate("OCT","2025");
 		storeFrontHomePage.enterNewBillingSecurityCode(TestConstants.SECURITY_CODE);
 		storeFrontHomePage.selectNewBillingCardAddress();
 		storeFrontHomePage.clickOnSaveBillingProfile();
@@ -1319,7 +1320,7 @@ public class UpgradeDowngradeTest extends RFWebsiteBaseTest{
 		storeFrontHomePage.clickNextButton();
 		storeFrontHomePage.enterCardNumber(TestConstants.CARD_NUMBER);
 		storeFrontHomePage.enterNameOnCard(TestConstants.FIRST_NAME+consultant1randomNumber);
-		storeFrontHomePage.selectNewBillingCardExpirationDate();
+		storeFrontHomePage.selectNewBillingCardExpirationDate("OCT","2025");
 		storeFrontHomePage.enterSecurityCode(TestConstants.SECURITY_CODE);
 		storeFrontHomePage.enterSocialInsuranceNumber(socialInsuranceNumber);
 		storeFrontHomePage.enterNameAsItAppearsOnCard(TestConstants.FIRST_NAME);
@@ -1407,7 +1408,7 @@ public class UpgradeDowngradeTest extends RFWebsiteBaseTest{
 		storeFrontHomePage.clickNextButton();
 		storeFrontHomePage.enterCardNumber(TestConstants.CARD_NUMBER);
 		storeFrontHomePage.enterNameOnCard(TestConstants.FIRST_NAME+consultant2randomNumber);
-		storeFrontHomePage.selectNewBillingCardExpirationDate();
+		storeFrontHomePage.selectNewBillingCardExpirationDate("OCT","2025");
 		storeFrontHomePage.enterSecurityCode(TestConstants.SECURITY_CODE);
 		storeFrontHomePage.enterSocialInsuranceNumber(socialInsuranceNumber);
 		storeFrontHomePage.enterNameAsItAppearsOnCard(TestConstants.FIRST_NAME);
@@ -1450,7 +1451,7 @@ public class UpgradeDowngradeTest extends RFWebsiteBaseTest{
 		//Enter billing info
 		storeFrontHomePage.enterNewBillingCardNumber(TestConstants.CARD_NUMBER);
 		storeFrontHomePage.enterNewBillingNameOnCard(newBillingProfileName+" "+lastName);
-		storeFrontHomePage.selectNewBillingCardExpirationDate();
+		storeFrontHomePage.selectNewBillingCardExpirationDate("OCT","2025");
 		storeFrontHomePage.enterNewBillingSecurityCode(TestConstants.SECURITY_CODE);
 		storeFrontHomePage.selectNewBillingCardAddress();
 		storeFrontHomePage.clickOnSaveBillingProfile();
@@ -1501,7 +1502,7 @@ public class UpgradeDowngradeTest extends RFWebsiteBaseTest{
 		//Enter billing info
 		storeFrontHomePage.enterNewBillingCardNumber(TestConstants.CARD_NUMBER);
 		storeFrontHomePage.enterNewBillingNameOnCard(newBillingProfileName+" "+lastName);
-		storeFrontHomePage.selectNewBillingCardExpirationDate();
+		storeFrontHomePage.selectNewBillingCardExpirationDate("OCT","2025");
 		storeFrontHomePage.enterNewBillingSecurityCode(TestConstants.SECURITY_CODE);
 		storeFrontHomePage.selectNewBillingCardAddress();
 		storeFrontHomePage.clickOnSaveBillingProfile();
@@ -1578,7 +1579,7 @@ public class UpgradeDowngradeTest extends RFWebsiteBaseTest{
 		//Enter Billing Profile
 		storeFrontHomePage.enterNewBillingCardNumber(TestConstants.CARD_NUMBER);
 		storeFrontHomePage.enterNewBillingNameOnCard(newBillingProfileName+" "+lastName);
-		storeFrontHomePage.selectNewBillingCardExpirationDate();
+		storeFrontHomePage.selectNewBillingCardExpirationDate("OCT","2025");
 		storeFrontHomePage.enterNewBillingSecurityCode(TestConstants.SECURITY_CODE);
 		storeFrontHomePage.selectNewBillingCardAddress();
 		storeFrontHomePage.clickOnSaveBillingProfile();
@@ -1617,7 +1618,7 @@ public class UpgradeDowngradeTest extends RFWebsiteBaseTest{
 		storeFrontHomePage.clickNextButton();
 		storeFrontHomePage.enterCardNumber(TestConstants.CARD_NUMBER);
 		storeFrontHomePage.enterNameOnCard(TestConstants.FIRST_NAME+randomNum);
-		storeFrontHomePage.selectNewBillingCardExpirationDate();
+		storeFrontHomePage.selectNewBillingCardExpirationDate("OCT","2025");
 		storeFrontHomePage.enterSecurityCode(TestConstants.SECURITY_CODE);
 		storeFrontHomePage.enterSocialInsuranceNumber(socialInsuranceNumber);
 		storeFrontHomePage.enterNameAsItAppearsOnCard(TestConstants.FIRST_NAME);
@@ -1685,7 +1686,7 @@ public class UpgradeDowngradeTest extends RFWebsiteBaseTest{
 		storeFrontHomePage.clickNextButton();
 		storeFrontHomePage.enterCardNumber(TestConstants.CARD_NUMBER);
 		storeFrontHomePage.enterNameOnCard(TestConstants.FIRST_NAME+randomNumbers);
-		storeFrontHomePage.selectNewBillingCardExpirationDate();
+		storeFrontHomePage.selectNewBillingCardExpirationDate("OCT","2025");
 		storeFrontHomePage.enterSecurityCode(TestConstants.SECURITY_CODE);
 		storeFrontHomePage.enterSocialInsuranceNumber(socialInsuranceNumbers);
 		storeFrontHomePage.enterNameAsItAppearsOnCard(TestConstants.FIRST_NAME);
@@ -1771,7 +1772,7 @@ public class UpgradeDowngradeTest extends RFWebsiteBaseTest{
 		//Enter Billing Profile
 		storeFrontHomePage.enterNewBillingCardNumber(TestConstants.CARD_NUMBER);
 		storeFrontHomePage.enterNewBillingNameOnCard(newBillingProfileName+" "+lastName);
-		storeFrontHomePage.selectNewBillingCardExpirationDate();
+		storeFrontHomePage.selectNewBillingCardExpirationDate("OCT","2025");
 		storeFrontHomePage.enterNewBillingSecurityCode(TestConstants.SECURITY_CODE);
 		storeFrontHomePage.selectNewBillingCardAddress();
 		storeFrontHomePage.clickOnSaveBillingProfile();
@@ -1803,7 +1804,7 @@ public class UpgradeDowngradeTest extends RFWebsiteBaseTest{
 		storeFrontHomePage.clickNextButton();
 		storeFrontHomePage.enterCardNumber(TestConstants.CARD_NUMBER);
 		storeFrontHomePage.enterNameOnCard(TestConstants.FIRST_NAME+randomNum);
-		storeFrontHomePage.selectNewBillingCardExpirationDate();
+		storeFrontHomePage.selectNewBillingCardExpirationDate("OCT","2025");
 		storeFrontHomePage.enterSecurityCode(TestConstants.SECURITY_CODE);
 		storeFrontHomePage.enterSocialInsuranceNumber(socialInsuranceNumber);
 		storeFrontHomePage.enterNameAsItAppearsOnCard(TestConstants.FIRST_NAME);
@@ -1825,21 +1826,6 @@ public class UpgradeDowngradeTest extends RFWebsiteBaseTest{
 		s_assert.assertTrue(accountTypeIDOfUpgradedRC.equals("1"), "Enrolled PC user account is not upgraded to consultant account in RFO database.");
 		logout();
 		//Verify enrolled consultant in cscockpit.
-		driver.get(driver.getCSCockpitURL());
-		cscockpitLoginPage = new CSCockpitLoginPage(driver);
-		cscockpitLoginPage.enterUsername(TestConstants.CS_AGENT_USERNAME);
-		cscockpitLoginPage.enterPassword("1234");
-		cscockpitCustomerSearchTabPage = cscockpitLoginPage.clickLoginBtn();
-		cscockpitCustomerSearchTabPage.selectCustomerTypeFromDropDownInCustomerSearchTab("CONSULTANT");
-		cscockpitCustomerSearchTabPage.selectCountryFromDropDownInCustomerSearchTab(reqCountry);
-		cscockpitCustomerSearchTabPage.selectAccountStatusFromDropDownInCustomerSearchTab("Active");
-		cscockpitCustomerSearchTabPage.enterEmailIdInSearchFieldInCustomerSearchTab(rcEmailAddress);
-		cscockpitCustomerSearchTabPage.clickSearchBtn();
-		String randomCustomerSequenceNumber = String.valueOf(cscockpitCustomerSearchTabPage.getRandomCustomerFromSearchResult());
-		String customerTypeFromCSCockpit = cscockpitCustomerSearchTabPage.getCustomerTypeFromSearchResult(randomCustomerSequenceNumber);
-		s_assert.assertTrue(customerTypeFromCSCockpit.equalsIgnoreCase("CONSULTANT"),"Enrolled PC user account is not upgraded to consultant account in CSCockpit");
-		cscockpitCustomerSearchTabPage.clickMenuButton();
-		cscockpitCustomerSearchTabPage.clickLogoutButton();
 		//Enroll consultant under different sponser.
 		driver.get(driver.getURL()+"/"+driver.getCountry());
 		randomRCList = DBUtil.performDatabaseQuery(DBQueries_RFO.callQueryWithArguement(DBQueries_RFO.GET_RANDOM_RC_EMAIL_ID_RFO,countryId),RFO_DB);
@@ -1873,7 +1859,7 @@ public class UpgradeDowngradeTest extends RFWebsiteBaseTest{
 		storeFrontHomePage.clickNextButton();
 		storeFrontHomePage.enterCardNumber(TestConstants.CARD_NUMBER);
 		storeFrontHomePage.enterNameOnCard(TestConstants.FIRST_NAME+randomNum);
-		storeFrontHomePage.selectNewBillingCardExpirationDate();
+		storeFrontHomePage.selectNewBillingCardExpirationDate("OCT","2025");
 		storeFrontHomePage.enterSecurityCode(TestConstants.SECURITY_CODE);
 		storeFrontHomePage.enterSocialInsuranceNumber(socialInsuranceNumbers);
 		storeFrontHomePage.enterNameAsItAppearsOnCard(TestConstants.FIRST_NAME);
@@ -1895,21 +1881,6 @@ public class UpgradeDowngradeTest extends RFWebsiteBaseTest{
 		s_assert.assertTrue(accountTypeIDOfUpgradedRC.equals("1"), "PC user account is not upgraded to consultant account in RFO database.");
 		logout();
 		//Verify enrolled consultant in cscockpit.
-		driver.get(driver.getCSCockpitURL());
-		cscockpitLoginPage = new CSCockpitLoginPage(driver);
-		cscockpitLoginPage.enterUsername(TestConstants.CS_AGENT_USERNAME);
-		cscockpitLoginPage.enterPassword("1234");
-		cscockpitCustomerSearchTabPage = cscockpitLoginPage.clickLoginBtn();
-		cscockpitCustomerSearchTabPage.selectCustomerTypeFromDropDownInCustomerSearchTab("CONSULTANT");
-		cscockpitCustomerSearchTabPage.selectCountryFromDropDownInCustomerSearchTab(reqCountry);
-		cscockpitCustomerSearchTabPage.selectAccountStatusFromDropDownInCustomerSearchTab("Active");
-		cscockpitCustomerSearchTabPage.enterEmailIdInSearchFieldInCustomerSearchTab(rcUserEmailID);
-		cscockpitCustomerSearchTabPage.clickSearchBtn();
-		randomCustomerSequenceNumber = String.valueOf(cscockpitCustomerSearchTabPage.getRandomCustomerFromSearchResult());
-		customerTypeFromCSCockpit = cscockpitCustomerSearchTabPage.getCustomerTypeFromSearchResult(randomCustomerSequenceNumber);
-		s_assert.assertTrue(customerTypeFromCSCockpit.equalsIgnoreCase("CONSULTANT"),"PC user account is not upgraded to consultant account in CSCockpit");
-		cscockpitCustomerSearchTabPage.clickMenuButton();
-		cscockpitCustomerSearchTabPage.clickLogoutButton();
 		s_assert.assertAll();
 	}
 	//Hybris Project-3958:CORP: Active PC email id during consultant enrollment under same sponsor.
@@ -1973,7 +1944,7 @@ public class UpgradeDowngradeTest extends RFWebsiteBaseTest{
 		//Enter Billing Profile
 		storeFrontHomePage.enterNewBillingCardNumber(TestConstants.CARD_NUMBER);
 		storeFrontHomePage.enterNewBillingNameOnCard(newBillingProfileName+" "+lastName);
-		storeFrontHomePage.selectNewBillingCardExpirationDate();
+		storeFrontHomePage.selectNewBillingCardExpirationDate("OCT","2025");
 		storeFrontHomePage.enterNewBillingSecurityCode(TestConstants.SECURITY_CODE);
 		storeFrontHomePage.selectNewBillingCardAddress();
 		storeFrontHomePage.clickOnSaveBillingProfile();
@@ -2007,7 +1978,7 @@ public class UpgradeDowngradeTest extends RFWebsiteBaseTest{
 		storeFrontHomePage.clickNextButton();
 		storeFrontHomePage.enterCardNumber(TestConstants.CARD_NUMBER);
 		storeFrontHomePage.enterNameOnCard(TestConstants.FIRST_NAME+randomNum);
-		storeFrontHomePage.selectNewBillingCardExpirationDate();
+		storeFrontHomePage.selectNewBillingCardExpirationDate("OCT","2025");
 		storeFrontHomePage.enterSecurityCode(TestConstants.SECURITY_CODE);
 		storeFrontHomePage.enterSocialInsuranceNumber(socialInsuranceNumber);
 		storeFrontHomePage.enterNameAsItAppearsOnCard(TestConstants.FIRST_NAME);
@@ -2029,21 +2000,6 @@ public class UpgradeDowngradeTest extends RFWebsiteBaseTest{
 		s_assert.assertTrue(accountTypeIDOfUpgradedPC.equals("1"), "PC user account is not upgraded to consultant account in RFO database.");
 		logout();
 		//Verify enrolled consultant in cscockpit.
-		driver.get(driver.getCSCockpitURL());
-		cscockpitLoginPage = new CSCockpitLoginPage(driver);
-		cscockpitLoginPage.enterUsername(TestConstants.CS_AGENT_USERNAME);
-		cscockpitLoginPage.enterPassword("1234");
-		cscockpitCustomerSearchTabPage = cscockpitLoginPage.clickLoginBtn();
-		cscockpitCustomerSearchTabPage.selectCustomerTypeFromDropDownInCustomerSearchTab("CONSULTANT");
-		cscockpitCustomerSearchTabPage.selectCountryFromDropDownInCustomerSearchTab(reqCountry);
-		cscockpitCustomerSearchTabPage.selectAccountStatusFromDropDownInCustomerSearchTab("Active");
-		cscockpitCustomerSearchTabPage.enterEmailIdInSearchFieldInCustomerSearchTab(pcEmailId);
-		cscockpitCustomerSearchTabPage.clickSearchBtn();
-		String randomCustomerSequenceNumber = String.valueOf(cscockpitCustomerSearchTabPage.getRandomCustomerFromSearchResult());
-		String customerTypeFromCSCockpit = cscockpitCustomerSearchTabPage.getCustomerTypeFromSearchResult(randomCustomerSequenceNumber);
-		s_assert.assertTrue(customerTypeFromCSCockpit.equalsIgnoreCase("CONSULTANT"),"PC user account is not upgraded to consultant account in CSCockpit");
-		cscockpitCustomerSearchTabPage.clickMenuButton();
-		cscockpitCustomerSearchTabPage.clickLogoutButton();
 		s_assert.assertAll();
 	}
 
@@ -2121,7 +2077,7 @@ public class UpgradeDowngradeTest extends RFWebsiteBaseTest{
 		storeFrontHomePage.clickNextButton();
 		storeFrontHomePage.enterCardNumber(TestConstants.CARD_NUMBER);
 		storeFrontHomePage.enterNameOnCard(TestConstants.FIRST_NAME+randomNum);
-		storeFrontHomePage.selectNewBillingCardExpirationDate();
+		storeFrontHomePage.selectNewBillingCardExpirationDate("OCT","2025");
 		storeFrontHomePage.enterSecurityCode(TestConstants.SECURITY_CODE);
 		storeFrontHomePage.enterSocialInsuranceNumber(socialInsuranceNumber);
 		storeFrontHomePage.enterNameAsItAppearsOnCard(TestConstants.FIRST_NAME);
@@ -2199,7 +2155,7 @@ public class UpgradeDowngradeTest extends RFWebsiteBaseTest{
 		//Enter Billing Profile
 		storeFrontHomePage.enterNewBillingCardNumber(TestConstants.CARD_NUMBER);
 		storeFrontHomePage.enterNewBillingNameOnCard(newBillingProfileName+" "+lastName);
-		storeFrontHomePage.selectNewBillingCardExpirationDate();
+		storeFrontHomePage.selectNewBillingCardExpirationDate("OCT","2025");
 		storeFrontHomePage.enterNewBillingSecurityCode(TestConstants.SECURITY_CODE);
 		storeFrontHomePage.selectNewBillingCardAddress();
 		storeFrontHomePage.clickOnSaveBillingProfile();
@@ -2271,7 +2227,7 @@ public class UpgradeDowngradeTest extends RFWebsiteBaseTest{
 		storeFrontHomePage.clickNextButton();
 		storeFrontHomePage.enterCardNumber(TestConstants.CARD_NUMBER);
 		storeFrontHomePage.enterNameOnCard(TestConstants.FIRST_NAME+randomNum);
-		storeFrontHomePage.selectNewBillingCardExpirationDate();
+		storeFrontHomePage.selectNewBillingCardExpirationDate("OCT","2025");
 		storeFrontHomePage.enterSecurityCode(TestConstants.SECURITY_CODE);
 		storeFrontHomePage.enterSocialInsuranceNumber(socialInsuranceNumber);
 		storeFrontHomePage.enterNameAsItAppearsOnCard(TestConstants.FIRST_NAME);
@@ -2293,21 +2249,6 @@ public class UpgradeDowngradeTest extends RFWebsiteBaseTest{
 		s_assert.assertTrue(accountTypeIDOfUpgradedPC.equals("1"), "PC user account is not upgraded to consultant account in RFO database.");
 		logout();
 		//Verify enrolled consultant in cscockpit.
-		driver.get(driver.getCSCockpitURL());
-		cscockpitLoginPage = new CSCockpitLoginPage(driver);
-		cscockpitLoginPage.enterUsername(TestConstants.CS_AGENT_USERNAME);
-		cscockpitLoginPage.enterPassword("1234");		
-		cscockpitCustomerSearchTabPage = cscockpitLoginPage.clickLoginBtn();
-		cscockpitCustomerSearchTabPage.selectCustomerTypeFromDropDownInCustomerSearchTab("CONSULTANT");
-		cscockpitCustomerSearchTabPage.selectCountryFromDropDownInCustomerSearchTab(reqCountry);
-		cscockpitCustomerSearchTabPage.selectAccountStatusFromDropDownInCustomerSearchTab("Active");
-		cscockpitCustomerSearchTabPage.enterEmailIdInSearchFieldInCustomerSearchTab(pcEmailId);
-		cscockpitCustomerSearchTabPage.clickSearchBtn();
-		String randomCustomerSequenceNumber = String.valueOf(cscockpitCustomerSearchTabPage.getRandomCustomerFromSearchResult());
-		String customerTypeFromCSCockpit = cscockpitCustomerSearchTabPage.getCustomerTypeFromSearchResult(randomCustomerSequenceNumber);
-		s_assert.assertTrue(customerTypeFromCSCockpit.equalsIgnoreCase("CONSULTANT"),"PC user account is not upgraded to consultant account in CSCockpit");
-		cscockpitCustomerSearchTabPage.clickMenuButton();
-		cscockpitCustomerSearchTabPage.clickLogoutButton();
 		s_assert.assertAll();
 	}
 
@@ -2337,7 +2278,7 @@ public class UpgradeDowngradeTest extends RFWebsiteBaseTest{
 		//Enter billing info
 		storeFrontHomePage.enterNewBillingCardNumber(TestConstants.CARD_NUMBER);
 		storeFrontHomePage.enterNewBillingNameOnCard(newBillingProfileName+" "+lastName);
-		storeFrontHomePage.selectNewBillingCardExpirationDate();
+		storeFrontHomePage.selectNewBillingCardExpirationDate("OCT","2025");
 		storeFrontHomePage.enterNewBillingSecurityCode(TestConstants.SECURITY_CODE);
 		storeFrontHomePage.selectNewBillingCardAddress();
 		storeFrontHomePage.clickOnSaveBillingProfile();
@@ -2360,6 +2301,9 @@ public class UpgradeDowngradeTest extends RFWebsiteBaseTest{
 	@Test
 	public void testSwitchFronRCToPC_2091() throws InterruptedException{
 		RFO_DB = driver.getDBNameRFO();
+		int randomNum = CommonUtils.getRandomNum(10000, 1000000);  
+		String newBillingProfileName = TestConstants.NEW_BILLING_PROFILE_NAME+randomNum;
+		String lastName = "lN";
 		List<Map<String, Object>> randomRCList =  null;
 		String rcEmailID = null;
 		String qty = "10";
@@ -2400,6 +2344,13 @@ public class UpgradeDowngradeTest extends RFWebsiteBaseTest{
 		storeFrontHomePage.clickOnContinueWithoutSponsorLink();
 		storeFrontHomePage.clickOnNextButtonAfterSelectingSponsor();
 		storeFrontHomePage.clickOnShippingAddressNextStepBtn();
+		storeFrontHomePage.clickAddNewBillingProfileLink();
+		storeFrontHomePage.enterNewBillingCardNumber(TestConstants.CARD_NUMBER);
+		storeFrontHomePage.enterNewBillingNameOnCard(newBillingProfileName+" "+lastName);
+		storeFrontHomePage.selectNewBillingCardExpirationDate("OCT","2025");
+		storeFrontHomePage.enterNewBillingSecurityCode(TestConstants.SECURITY_CODE);
+		storeFrontHomePage.selectNewBillingCardAddress();
+		storeFrontHomePage.clickOnSaveBillingProfile();
 		storeFrontHomePage.clickOnBillingNextStepBtn();
 		storeFrontHomePage.clickOnPCPerksTermsAndConditionsCheckBoxes();
 		storeFrontHomePage.clickPlaceOrderBtn();
@@ -2580,7 +2531,7 @@ public class UpgradeDowngradeTest extends RFWebsiteBaseTest{
 		//Enter Billing Profile
 		storeFrontHomePage.enterNewBillingCardNumber(TestConstants.CARD_NUMBER);
 		storeFrontHomePage.enterNewBillingNameOnCard(newBillingProfileName+" "+lastName);
-		storeFrontHomePage.selectNewBillingCardExpirationDate();
+		storeFrontHomePage.selectNewBillingCardExpirationDate("OCT","2025");
 		storeFrontHomePage.enterNewBillingSecurityCode(TestConstants.SECURITY_CODE);
 		storeFrontHomePage.selectNewBillingCardAddress();
 		storeFrontHomePage.clickOnSaveBillingProfile();
@@ -2659,7 +2610,7 @@ public class UpgradeDowngradeTest extends RFWebsiteBaseTest{
 		storeFrontHomePage.clickAddNewBillingProfileLink();
 		storeFrontHomePage.enterNewBillingCardNumber(TestConstants.CARD_NUMBER);
 		storeFrontHomePage.enterNewBillingNameOnCard(newBillingProfileName+" "+lastName);
-		storeFrontHomePage.selectNewBillingCardExpirationDate();
+		storeFrontHomePage.selectNewBillingCardExpirationDate("OCT","2025");
 		storeFrontHomePage.enterNewBillingSecurityCode(TestConstants.SECURITY_CODE);
 		storeFrontHomePage.selectNewBillingCardAddress();
 		storeFrontHomePage.clickOnSaveBillingProfile();
@@ -2696,7 +2647,7 @@ public class UpgradeDowngradeTest extends RFWebsiteBaseTest{
 		//Enter Billing Profile
 		storeFrontHomePage.enterNewBillingCardNumber(TestConstants.CARD_NUMBER);
 		storeFrontHomePage.enterNewBillingNameOnCard(newBillingProfileName+" "+lastName);
-		storeFrontHomePage.selectNewBillingCardExpirationDate();
+		storeFrontHomePage.selectNewBillingCardExpirationDate("OCT","2025");
 		storeFrontHomePage.enterNewBillingSecurityCode(TestConstants.SECURITY_CODE);
 		storeFrontHomePage.selectNewBillingCardAddress();
 		storeFrontHomePage.clickOnSaveBillingProfile();
@@ -2755,7 +2706,7 @@ public class UpgradeDowngradeTest extends RFWebsiteBaseTest{
 			//Enter Billing Profile
 			storeFrontHomePage.enterNewBillingCardNumber(TestConstants.CARD_NUMBER);
 			storeFrontHomePage.enterNewBillingNameOnCard(newBillingProfileName+" "+lastName);
-			storeFrontHomePage.selectNewBillingCardExpirationDate();
+			storeFrontHomePage.selectNewBillingCardExpirationDate("OCT","2025");
 			storeFrontHomePage.enterNewBillingSecurityCode(TestConstants.SECURITY_CODE);
 			storeFrontHomePage.selectNewBillingCardAddress();
 			storeFrontHomePage.clickOnSaveBillingProfile();
@@ -2795,7 +2746,7 @@ public class UpgradeDowngradeTest extends RFWebsiteBaseTest{
 			storeFrontHomePage.clickNextButton();		
 			storeFrontHomePage.enterCardNumber(TestConstants.CARD_NUMBER);
 			storeFrontHomePage.enterNameOnCard(TestConstants.FIRST_NAME+randomNum);
-			storeFrontHomePage.selectNewBillingCardExpirationDate();
+			storeFrontHomePage.selectNewBillingCardExpirationDate("OCT","2025");
 			storeFrontHomePage.enterSecurityCode(TestConstants.SECURITY_CODE);
 			storeFrontHomePage.enterSocialInsuranceNumber(socialInsuranceNumber);
 			storeFrontHomePage.enterNameAsItAppearsOnCard(TestConstants.FIRST_NAME);
@@ -2815,3 +2766,4 @@ public class UpgradeDowngradeTest extends RFWebsiteBaseTest{
 		}
 	}
 }
+//testForgotPasswordForRetailCustomer_5006

@@ -1,4 +1,62 @@
 <?xml version="1.0" encoding="UTF-8"?>
+<<<<<<< HEAD
+<!DOCTYPE suite SYSTEM "http://testng.org/testng-1.0.dtd">
+<suite name="Failed suite [CRMRegressionTestSuite.xml]">
+  <listeners>
+    <listener class-name="org.uncommons.reportng.HTMLReporter"/>
+    <listener class-name="org.uncommons.reportng.JUnitXMLReporter"/>
+  </listeners>
+  <test name="CRMRegressionTestSuite.xml(failed)">
+    <classes>
+      <class name="com.rf.test.website.crm.regression.CRMRegressionTest">
+        <methods>
+          <include name="testSearchForAccountByName_4530"/>
+          <include name="testVerifyStatusChangesOfSoftTerminatedPC_4473"/>
+          <include name="testVerifyDisplayAutoshipDetailsForPC_4536"/>
+          <include name="testViewShippingProfileForRC_4544"/>
+          <include name="testAddingShippingProfilesWithDifferentCountryForAPC_4488"/>
+          <include name="testChangeAccountStatusForRetailCustomerFromActiveToInactive_4523"/>
+          <include name="testVerifyProxyToPulseForConsultant_4499"/>
+          <include name="testEditRetailCustomerActDetails_4510"/>
+          <include name="testVerifyStatusChangesOfSoftTerminatedConsultant_4472"/>
+          <include name="testEditSpouseContactDetailsForPC_4509"/>
+          <include name="testViewAndEditPWSDomainForConsultant_4505"/>
+          <include name="testAddingShippingProfilesWithDifferentCountryForAConsultant_4487"/>
+          <include name="testViewPreferredCustomerAccountDetails_4547"/>
+          <include name="testViewRetailCustomerAccountDetails_4549"/>
+          <include name="testPreferredCustomerdDetailViewTest_4548"/>
+          <include name="testChangeAccountStatusForPreferredCustomerFromInactiveToActive_4519"/>
+          <include name="testEditShippingProfileForConsultant_4513"/>
+          <include name="testViewBillingProfileForConsultant_4537"/>
+          <include name="testSearchForAccountByEmail_4527"/>
+          <include name="testVerifyProxyToMyAccountForConsultant_4498"/>
+          <include name="testViewShippingProfileForConsultant_4542"/>
+          <include name="testViewAccountStatusHistoryForRC_4522"/>
+          <include name="testChangeAccountStatusForPreferredCustomerFromActiveToInactive_4518"/>
+          <include name="testChangeDefaultConsultantShippingAddress_5008"/>
+          <include name="testSaveMainAddressAsShippingForPC_5160"/>
+          <include name="testChangeDefaultConsultantShippingAddress_5007"/>
+          <include name="testAddShippingProfileForPC_4492"/>
+          <include name="testEditConsultantContactDetails_4504"/>
+          <include name="testRetailCustomerdDetailViewTest_4550"/>
+          <include name="testSearchForAccountByAccountNumber_4526"/>
+          <include name="testVerifyDisplayAutoshipDetailsForConsultant_4535"/>
+          <include name="testEditPreferredCustomerActDetails_4507"/>
+          <include name="testSaveMainAddressAsShippingForConsultant_5159"/>
+          <include name="testSaveMainAddressAsShippingForRC_5161"/>
+          <include name="testAddShippingProfileForRC_4493"/>
+          <include name="testVerifyStatusChangesOfSoftTerminatedRC_4474"/>
+          <include name="testEditPreferredCustomerContactDetails_4508"/>
+          <include name="testEditShippingProfileForPC_4514"/>
+          <include name="testViewAccountPoliciesForConsultant_4494"/>
+          <include name="testViewConsultantAccountDetailsTest_4545"/>
+          <include name="testAddShippingProfileForConsultant_4491"/>
+        </methods>
+      </class> <!-- com.rf.test.website.crm.regression.CRMRegressionTest -->
+    </classes>
+  </test> <!-- CRMRegressionTestSuite.xml(failed) -->
+</suite> <!-- Failed suite [CRMRegressionTestSuite.xml] -->
+=======
 <suite name="selectiveRegression">
 	<listeners>
 		<listener class-name="org.uncommons.reportng.HTMLReporter" />
@@ -9,15 +67,32 @@
 	<test name="Regression_Suite">
 		<classes>
 			<class
-				name="com.rf.test.website.storeFront.hybris.expressEnrollment.biz.PersonalResultsKitTest">
+				name="com.rf.test.website.storeFront.legacy.BizPWSTest">
 				<methods>
-					<include
-						name="testExpressEnrollmentPersonalResultsKitUnblemishRegimen_67" />
+					<include name="testPCPerksTemplateUpdate" />
 				</methods>
 			</class>
-		</classes>
+			<class name="com.rf.test.website.storeFront.legacy.OrderVerificationTest">
+			    <methods>
+			       <include name="AdhocOrderConsultantsOnlyProducts" />
+			       <include name="placedAdhocOrderFromComSiteForRC" />
+			       <include name="testPCAdhocOrderFromCorp" />
+			    </methods>
+			   </class>
+			   <class name="com.rf.test.website.storeFront.legacy.PromotionTest">
+			       <methods>
+			           <include name="testconsultantsOnlyBuyProductPromotion" />
+			       </methods>
+			   </class>
+			<class name="com.rf.test.website.storeFront.legacy.UINavigationTest">
+			    <methods>
+			           <include name="testVerifyUserIsRedirectedToPwsAfterSelectingSponser" />
+			       </methods>
+			       </class>    
+			</classes>
 
 	</test>
 </suite>	
  
 	
+>>>>>>> newUI

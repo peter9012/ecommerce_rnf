@@ -255,7 +255,7 @@ public class CRPAutoshipVerificationTest extends RFWebsiteBaseTest{
 	@Test
 	public void testVerifyEditCRPAutoshipTemplate_1702() throws InterruptedException{
 		RFO_DB = driver.getDBNameRFO();
-		String countryCode= propertyFile.getProperty("country");
+		String countryCode= driver.getCountry();
 		String randomCustomerSequenceNumber = null;
 		int randomNum = CommonUtils.getRandomNum(10000, 1000000);
 		String cid=null;
@@ -481,7 +481,7 @@ public class CRPAutoshipVerificationTest extends RFWebsiteBaseTest{
 	@Test
 	public void testVerifyChangeCRPDate_1705() throws InterruptedException{
 		RFO_DB = driver.getDBNameRFO();
-		String countryCode= propertyFile.getProperty("country");
+		String countryCode= driver.getCountry();
 		String randomCustomerSequenceNumber = null;
 		String consultantEmailID=null;
 		String country = null;
@@ -587,7 +587,9 @@ public class CRPAutoshipVerificationTest extends RFWebsiteBaseTest{
 		storeFrontAccountInfoPage=storeFrontConsultantPage.clickAccountInfoLinkPresentOnWelcomeDropDown();
 		storeFrontAccountInfoPage.clickOnYourAccountDropdown();
 		storeFrontAccountInfoPage.clickOnAutoShipStatus();
-		storeFrontAccountInfoPage.clickOnCancelMyCRP();
+		if(storeFrontAccountInfoPage.verifyCurrentCRPStatus()){
+			storeFrontAccountInfoPage.clickOnCancelMyCRP();
+		}
 		//validate CRP has been cancelled..
 		s_assert.assertTrue(storeFrontAccountInfoPage.verifyCRPCancelled(), "CRP has not been cancelled");
 		storeFrontAccountInfoPage.clickOnCancelMyPulseSubscription();
@@ -943,7 +945,7 @@ public class CRPAutoshipVerificationTest extends RFWebsiteBaseTest{
 	@Test
 	public void testVerifyCancelAutoshipButtonNotDisplayedInCRPCheckoutPage_1704(){
 		RFO_DB = driver.getDBNameRFO();
-		String countryCode= propertyFile.getProperty("country");
+		String countryCode= driver.getCountry();
 		String randomCustomerSequenceNumber = null;
 		List<Map<String, Object>> randomConsultantList =  null;
 		String consultantEmailID;
@@ -2562,7 +2564,7 @@ public class CRPAutoshipVerificationTest extends RFWebsiteBaseTest{
 		}else if(driver.getCountry().equalsIgnoreCase("ca")){
 			addressLine=TestConstants.ADDRESS_LINE_1_CA;
 			addressLine2=TestConstants.ADDRESS_LINE_2_CA;
-			addresstoPass="54th";
+			addresstoPass="54";
 			city=TestConstants.CITY_CA;
 			postal=TestConstants.POSTAL_CODE_CA;
 			country=TestConstants.COUNTRY_DD_VALUE_CA;
@@ -2627,12 +2629,12 @@ public class CRPAutoshipVerificationTest extends RFWebsiteBaseTest{
 		cscockpitAutoshipTemplateTabPage.enterShippingInfoInAddNewPaymentProfilePopupWithoutSaveBtn(attendentNewFirstName, attendeeLastName, addressLine2, city, postal, country, province, phoneNumber);
 		cscockpitAutoshipTemplateTabPage.clickCreateNewAddressButtonInPopupAutoshipTemplateTabPage();
 		s_assert.assertTrue(cscockpitAutoshipTemplateTabPage.isQASpopupPresent(), "QAS popup is not present while creating  new shipping address");
-		cscockpitAutoshipTemplateTabPage.selectAddressFromDropdownBeforeClickingUseThisAddressBtnInPopup(addresstoPass);;
+		String defaultSuggestionSelected =cscockpitAutoshipTemplateTabPage.selectAndReturnAddressFromDropdownBeforeClickingUseThisAddressBtnInPopup(addresstoPass);;
 		cscockpitAutoshipTemplateTabPage.clickButtonsInDeliveryAndShippingAddressPopup("Use this address");
 		String getNewShippingAddressLineFromUI=cscockpitAutoshipTemplateTabPage.getShippingAddressLine1UnderShippingAddress();
-		s_assert.assertTrue(getNewShippingAddressLineFromUI.equalsIgnoreCase(addressLine2),"Newly created shipping address is not selected from dropdown");
+		s_assert.assertTrue(defaultSuggestionSelected.contains(getNewShippingAddressLineFromUI),"Newly created shipping address is not selected from dropdown");
 		s_assert.assertAll();
-	}	
+	}
 
 	//Hybris Project-4723:Verify that CRP scheduling date has to be between 1st and 17th (including).
 	@Test

@@ -263,7 +263,7 @@ public class StoreFrontLegacyRFWebsiteBasePage extends RFBasePage{
 		driver.click(CHANGE_BILLING_INFO);
 		logger.info("Change billing information button clicked");
 		driver.waitForPageLoad();
-		driver.pauseExecutionFor(5000);
+		driver.pauseExecutionFor(3000);
 	}
 
 	public void clickUseThisBillingInformationBtn(){
@@ -282,6 +282,7 @@ public class StoreFrontLegacyRFWebsiteBasePage extends RFBasePage{
 	}
 
 	public void mouseHoverOnShopSkinCareAndClickOnConsultantOnlyProductsLink(){
+		driver.waitForElementPresent(SHOP_SKINCARE_ON_PWS_LOC);
 		actions =  new Actions(RFWebsiteDriver.driver);
 		actions.moveToElement(driver.findElement(SHOP_SKINCARE_ON_PWS_LOC)).click(driver.findElement(PRODUCT_LINK_UNDER_SHOP_SKIN_CARE)).build().perform();
 		logger.info("Mouse hover on shop skincare link and clicked on product link on pws");

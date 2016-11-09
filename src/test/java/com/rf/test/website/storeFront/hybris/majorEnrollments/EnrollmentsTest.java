@@ -1,10 +1,8 @@
 package com.rf.test.website.storeFront.hybris.majorEnrollments;
 
-import com.rf.test.website.RFStoreFrontWebsiteBaseTest;
-
+import com.rf.test.website.RFWebsiteBaseTest;
 import java.util.List;
 import java.util.Map;
-
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.testng.annotations.BeforeTest;
@@ -20,7 +18,7 @@ import com.rf.core.website.constants.dbQueries.DBQueries_RFO;
 //import com.rf.pages.website.storeFront.StoreFrontConsultantPage;
 import com.rf.pages.website.storeFront.StoreFrontHomePage;
 
-public class EnrollmentsTest extends RFStoreFrontWebsiteBaseTest{
+public class EnrollmentsTest extends RFWebsiteBaseTest{
 	private static final Logger logger = LogManager
 			.getLogger(EnrollmentsTest.class.getName());
 	public String emailID=null;
@@ -181,11 +179,11 @@ public class EnrollmentsTest extends RFStoreFrontWebsiteBaseTest{
 		logger.info("PC Perks terms and conditions popup is visible when checkboxes for t&c not selected and place order button clicked");
 		storeFrontHomePage.clickOnPCPerksTermsAndConditionsCheckBoxes();
 		storeFrontHomePage.clickPlaceOrderBtn();
+		s_assert.assertTrue(storeFrontHomePage.isPCEnrolledCongratsMessagePresent(), "'Welcome to Rodan + Fields PC Perks' message has not appeared");
 		storeFrontHomePage.clickOnRodanAndFieldsLogo();
+		s_assert.assertTrue(driver.getCurrentUrl().contains("corprfo")||driver.getCurrentUrl().contains("qa.rodanandfields"), "PC is not redirecting to corporate site after enrollment");
 		s_assert.assertTrue(storeFrontHomePage.verifyWelcomeDropdownToCheckUserRegistered(), "User NOT registered successfully");
-		//s_assert.assertTrue(storeFrontHomePage.getUserNameAForVerifyLogin(firstName).contains(firstName),"Profile Name After Login"+firstName+" and on UI is "+storeFrontHomePage.getUserNameAForVerifyLogin(firstName));
-		s_assert.assertTrue(driver.getCurrentUrl().contains("corprfo"), "RC is not registered to corporate site");
-		s_assert.assertAll(); 
+		s_assert.assertAll();
 	}
 
 	// Hybris Project-2188:Terms and Conditions - RC enrollment
@@ -223,12 +221,13 @@ public class EnrollmentsTest extends RFStoreFrontWebsiteBaseTest{
 		s_assert.assertTrue(storeFrontHomePage.isOrderPlacedSuccessfully(), "Order Not placed successfully");
 		storeFrontHomePage.clickOnRodanAndFieldsLogo();
 		s_assert.assertTrue(driver.getCurrentUrl().contains("corprfo"), "RC is not registered to corporate site");
+		s_assert.assertTrue(storeFrontHomePage.verifyWelcomeDropdownToCheckUserRegistered(), "User NOT registered successfully");
 		s_assert.assertAll(); 
 
 	}
 
 	//Hybris Project-2251 :: Version : 1 :: Global Sponsorship: Cross Country Sponsor(Standard)
-	@Test
+	@Test(priority=5)
 	public void testGlobalSponsorshipCrossCountrySponsorStandardEnrollment_2251() throws InterruptedException	{
 		int randomNum = CommonUtils.getRandomNum(10000, 1000000);
 		String socialInsuranceNumber = String.valueOf(CommonUtils.getRandomNum(100000000, 999999999));

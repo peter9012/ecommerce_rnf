@@ -221,7 +221,7 @@ public class StoreFrontOrdersPage extends StoreFrontRFWebsiteBasePage{
 			String[] total = autoshipGrandTotalPrice.split("\\,");
 			autoshipGrandTotalPrice = total[0]+total[1];
 		}
-		return autoshipGrandTotalPrice;
+		return autoshipGrandTotalPrice.trim();
 	}
 
 	public boolean verifySKUValueOfItemInOrder(String skuValueDB){
@@ -339,8 +339,9 @@ public class StoreFrontOrdersPage extends StoreFrontRFWebsiteBasePage{
 
 	public void clickOnFirstAdHocOrder(){
 		driver.waitForElementPresent(ORDER_NUM_OF_ORDER_HISTORY);
-		driver.click(ORDER_NUM_OF_ORDER_HISTORY);	
-		logger.info("First order from the order history clicked");		
+		//driver.click(ORDER_NUM_OF_ORDER_HISTORY); 
+		driver.clickByJS(RFWebsiteDriver.driver, driver.findElement(ORDER_NUM_OF_ORDER_HISTORY));
+		logger.info("First order from the order history clicked");  
 	}
 
 	public String getFirstOrderNumberFromOrderHistory(){
@@ -358,6 +359,7 @@ public class StoreFrontOrdersPage extends StoreFrontRFWebsiteBasePage{
 		driver.waitForElementPresent(By.linkText(orderNumber));
 		driver.click(By.linkText(orderNumber));
 		logger.info("Order number clicked "+orderNumber);
+		driver.waitForPageLoad();
 	}
 
 	public boolean verifyAutoShipTemplateSubtotal(String subTotalDB){
@@ -373,7 +375,7 @@ public class StoreFrontOrdersPage extends StoreFrontRFWebsiteBasePage{
 			subTotal = total[0]+total[1];
 		}
 		System.out.println("Subtotal is "+subTotal);
-		return subTotal;  
+		return subTotal.trim();  
 	}
 
 	public boolean verifyAutoShipTemplateShipping(String shippingDB){
@@ -779,11 +781,12 @@ public class StoreFrontOrdersPage extends StoreFrontRFWebsiteBasePage{
 		}else 
 			return driver.findElement(By.xpath("//div[@id='main-content']//div[contains(text(),'Grand Total')]/following::div[1]")).getText().contains("US$");
 	}
+
 	public String getAutoshipOrderDate(){
 		String autoShipOrderDate = null;
 		if(driver.getCountry().equalsIgnoreCase("ca")){
-			driver.waitForElementPresent(By.xpath("//div[@id='pending-autoship-orders-table']/div[2]/div[2]/div[@class='ref-labels']/div/div[2]"));
-			autoShipOrderDate = driver.findElement(By.xpath("//div[@id='pending-autoship-orders-table']/div[2]/div[2]/div[@class='ref-labels']/div/div[2]")).getText();
+			driver.waitForElementPresent(By.xpath("//div[@id='pending-autoship-orders-table']/descendant::div[text()='PENDING'][1]/preceding::div[2]"));
+			autoShipOrderDate = driver.findElement(By.xpath("//div[@id='pending-autoship-orders-table']/descendant::div[text()='PENDING'][1]/preceding::div[2]")).getText();
 			return  autoShipOrderDate;
 		}else{
 			driver.waitForElementPresent(AUTOSHIP_DATE_LOC);
@@ -828,6 +831,7 @@ public class StoreFrontOrdersPage extends StoreFrontRFWebsiteBasePage{
 		String subTotalVal=driver.findElement(By.xpath("//div[@id='idSubTotal']")).getText();
 		String[] totalvalue= subTotalVal.split("\\$+");
 		double subTotalValue=Double.valueOf((totalvalue[1].replaceAll(",", "")).trim());
+		logger.info("Total subtotal Value is "+subTotalVal);
 		if(subTotalValue==(subtotal1+subtotal2)){
 			return true;
 		}else{
@@ -1013,7 +1017,8 @@ public class StoreFrontOrdersPage extends StoreFrontRFWebsiteBasePage{
 
 	public void clickReturnOrderNumber(String orderNumber){
 		driver.waitForElementPresent(By.xpath("//h3[contains(text(),'Return Order')]/following::a[contains(text(),'"+orderNumber+"')]"));
-		driver.click(By.xpath("//h3[contains(text(),'Return Order')]/following::a[contains(text(),'"+orderNumber+"')]"));
+		//driver.click(By.xpath("//h3[contains(text(),'Return Order')]/following::a[contains(text(),'"+orderNumber+"')]"));
+		driver.clickByJS(RFWebsiteDriver.driver, driver.findElement(By.xpath("//h3[contains(text(),'Return Order')]/following::a[contains(text(),'"+orderNumber+"')]")));
 		driver.waitForLoadingImageToDisappear();
 		driver.pauseExecutionFor(2000);
 		logger.info("Return order clicked " +By.xpath("//h3[contains(text(),'Return Order')]/following::a[contains(text(),'"+orderNumber+"')]"));

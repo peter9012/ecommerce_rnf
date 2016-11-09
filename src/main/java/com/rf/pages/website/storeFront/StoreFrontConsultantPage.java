@@ -65,7 +65,7 @@ public class StoreFrontConsultantPage extends StoreFrontRFWebsiteBasePage{
 
 	public void cancelPulseSubscription(){
 		driver.waitForElementPresent(By.xpath("//a[text()='Cancel my Pulse subscription »']"));
-		driver.click(By.xpath("//a[text()='Cancel my Pulse subscription »']"));
+		driver.clickByJS(RFWebsiteDriver.driver,driver.findElement(By.xpath("//a[text()='Cancel my Pulse subscription »']")));
 		driver.pauseExecutionFor(2000);
 		driver.click(By.xpath("//a[@id='cancelPulse']"));
 		driver.waitForLoadingImageToDisappear();
@@ -171,7 +171,7 @@ public class StoreFrontConsultantPage extends StoreFrontRFWebsiteBasePage{
 	public boolean verifyDefaultContentReseted() {
 		driver.waitForElementPresent(By.xpath("//form[@id='consultantInfoForm']//p[3]//div[4]"));
 		String content = driver.findElement(By.xpath("//form[@id='consultantInfoForm']//p[3]//div[4]")).getText();
-		if(content.contains("I am proud to represent Rodan + Fields")){
+		if(content.contains("Rodan + Fields has brought confidence, freedom, connections and fun into my life.")){
 			return true;
 		}
 		return false;
@@ -179,9 +179,8 @@ public class StoreFrontConsultantPage extends StoreFrontRFWebsiteBasePage{
 	}
 	public void clickSaveButton() {
 		driver.waitForElementPresent(By.xpath("//div[@id='consultant-container']//input[1]"));
-		driver.click(By.xpath("//div[@id='consultant-container']//input[1]"));
+		driver.clickByJS(RFWebsiteDriver.driver,driver.findElement(By.xpath("//div[@id='consultant-container']//input[1]")));
 		driver.waitForLoadingImageToDisappear();
-
 	}
 
 	public boolean verifyNewlyAddedContentSaved() {
@@ -191,7 +190,7 @@ public class StoreFrontConsultantPage extends StoreFrontRFWebsiteBasePage{
 
 	public void clickResetToDefaultCopyLink() {
 		driver.waitForElementPresent(By.xpath("//a[@id='aboutMeBizReset']"));
-		driver.click(By.xpath("//a[@id='aboutMeBizReset']"));
+		driver.clickByJS(RFWebsiteDriver.driver, driver.findElement(By.xpath("//a[@id='aboutMeBizReset']")));
 	}
 
 	public void addNewContentOfYourOwnCopyInComPWS() {

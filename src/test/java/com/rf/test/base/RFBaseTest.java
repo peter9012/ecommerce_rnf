@@ -54,8 +54,6 @@ public class RFBaseTest{
 			propertyFile.loadProps(envproperties);
 			logger.debug("Environment properties recieved and preparing the environment for "
 					+ envproperties); 
-			logger.info("EXECUTION ENVIRONMENT ------ "+propertyFile.getProperty("browser"));
-
 		} else {
 			propertyFile.loadProps(defaultProps);
 			logger.info("Environment properties are not provided by the user ... loading the default properties");
@@ -86,6 +84,12 @@ public class RFBaseTest{
 				+ "//test-output");
 		if (!fDir2.exists()) {
 			fDir2.mkdirs();
+		}
+		
+		File logDir = new File(System.getProperty("user.dir")
+				+ "\\logs");
+		if (!logDir.exists()) {
+			logDir.mkdirs();
 		}
 		
 		propertyFile.setProperty("atu.reports.dir",pathOfAtuReports);

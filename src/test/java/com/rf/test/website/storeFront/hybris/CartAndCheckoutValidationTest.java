@@ -59,16 +59,13 @@ public class CartAndCheckoutValidationTest extends RFWebsiteBaseTest{
 		s_assert.assertFalse(storeFrontHomePage.validateMiniCart(), "mini cart is displayed for not registered user");
 		//Add a item to the cart and validate the mini cart in the header section
 		storeFrontHomePage.hoverOnShopLinkAndClickAllProductsLinks();
-
 		// Products are displayed?
 		s_assert.assertTrue(storeFrontHomePage.areProductsDisplayed(), "quickshop products not displayed");
 		logger.info("Quick shop products are displayed");
 		storeFrontHomePage.selectProductAndProceedToBuy();
-
 		//Cart page is displayed?
 		s_assert.assertTrue(storeFrontHomePage.isCartPageDisplayed(), "Cart page is not displayed");
 		logger.info("Cart page is displayed");
-
 		s_assert.assertTrue(storeFrontHomePage.validateMiniCart(), "mini cart is not being displayed");
 		s_assert.assertAll();
 	}
@@ -102,16 +99,13 @@ public class CartAndCheckoutValidationTest extends RFWebsiteBaseTest{
 		s_assert.assertTrue(storeFrontConsultantPage.validateNextCRPMiniCart(), "next CRP Mini cart is not displayed");
 		//Add a item to the cart and validate the mini cart in the header section
 		storeFrontHomePage.hoverOnShopLinkAndClickAllProductsLinksAfterLogin();  
-
 		// Products are displayed?
 		s_assert.assertTrue(storeFrontHomePage.areProductsDisplayed(), "quickshop products not displayed");
 		logger.info("Quick shop products are displayed");
 		storeFrontHomePage.selectProductAndProceedToBuy();
-
 		//Cart page is displayed?
 		s_assert.assertTrue(storeFrontHomePage.isCartPageDisplayed(), "Cart page is not displayed");
 		logger.info("Cart page is displayed");
-
 		s_assert.assertTrue(storeFrontHomePage.validateMiniCart(), "mini cart is not being displayed");
 		s_assert.assertAll();
 	}
@@ -120,13 +114,9 @@ public class CartAndCheckoutValidationTest extends RFWebsiteBaseTest{
 	@Test(enabled=true) 
 	public void testCheckThresholdByAddRemoveProductsAndIncreaseDecreaseQty_143() throws InterruptedException {
 		RFO_DB = driver.getDBNameRFO(); 
-
 		List<Map<String, Object>> randomConsultantList =  null;
 		String consultantEmailID = null;
-		String qtyOfProducts="10";
-		String newQtyOfProducts="5";
 		double remainingSVValue=0;
-
 		storeFrontHomePage = new StoreFrontHomePage(driver);
 		while(true){
 			randomConsultantList = DBUtil.performDatabaseQuery(DBQueries_RFO.callQueryWithArguement(DBQueries_RFO.GET_RANDOM_ACTIVE_CONSULTANT_WITH_ORDERS_AND_AUTOSHIPS_RFO,countryId),RFO_DB);
@@ -160,7 +150,6 @@ public class CartAndCheckoutValidationTest extends RFWebsiteBaseTest{
 			if(flag==true){
 				double SVValue = Double.parseDouble(storeFrontUpdateCartPage.getSVValueFromCart().trim());
 				String SVValueOfRemovedProduct = storeFrontUpdateCartPage.removeProductSFromCart(i);
-
 				remainingSVValue = storeFrontUpdateCartPage.compareSVValue(SVValueOfRemovedProduct, SVValue);
 				noOfProduct = storeFrontUpdateCartPage.getNoOfProductInCart();
 				if(driver.getCountry().equalsIgnoreCase("us")){
@@ -219,7 +208,6 @@ public class CartAndCheckoutValidationTest extends RFWebsiteBaseTest{
 			else
 				break;
 		}
-
 		//s_assert.assertTrue(storeFrontConsultantPage.verifyConsultantPage(),"Consultant User Page doesn't contain Welcome User Message");
 		logger.info("login is successful");
 		storeFrontConsultantPage.hoverOnShopLinkAndClickAllProductsLinksAfterLogin();
@@ -231,7 +219,7 @@ public class CartAndCheckoutValidationTest extends RFWebsiteBaseTest{
 			storeFrontUpdateCartPage.clickAddNewBillingProfileLink();
 			storeFrontUpdateCartPage.enterNewBillingCardNumber(TestConstants.CARD_NUMBER);
 			storeFrontUpdateCartPage.enterNewBillingNameOnCard(newBillingProfileName+i+" "+lastName);
-			storeFrontUpdateCartPage.selectNewBillingCardExpirationDate();
+			storeFrontUpdateCartPage.selectNewBillingCardExpirationDate("OCT","2025");
 			storeFrontUpdateCartPage.enterNewBillingSecurityCode(TestConstants.SECURITY_CODE);
 			storeFrontUpdateCartPage.selectNewBillingCardAddress();
 			storeFrontUpdateCartPage.clickOnSaveBillingProfile();
@@ -256,7 +244,7 @@ public class CartAndCheckoutValidationTest extends RFWebsiteBaseTest{
 		storeFrontConsultantPage.clickOnWelcomeDropDown();
 		storeFrontBillingInfoPage = storeFrontConsultantPage.clickBillingInfoLinkPresentOnWelcomeDropDown();
 		s_assert.assertTrue(storeFrontBillingInfoPage.verifyBillingInfoPageIsDisplayed(),"Billing Info page has not been displayed");
-		s_assert.assertTrue(storeFrontBillingInfoPage.isTheBillingAddressPresentOnPage(newBillingProfileName+i),"Newly added Billing profile is NOT listed on the billing page");
+		s_assert.assertTrue(storeFrontBillingInfoPage.isBillingAddressPresentOnPage(newBillingProfileName+i),"Newly added Billing profile is NOT listed on the billing page");
 		s_assert.assertAll();
 	}
 
@@ -268,7 +256,6 @@ public class CartAndCheckoutValidationTest extends RFWebsiteBaseTest{
 		List<Map<String, Object>> randomConsultantList =  null;
 		String consultantEmailID = null;
 		String accountID = null;
-
 		if(country.equalsIgnoreCase("us")){
 			addressLine1 = TestConstants.ADDRESS_LINE_1_US;
 			city = TestConstants.CITY_US;
@@ -297,19 +284,15 @@ public class CartAndCheckoutValidationTest extends RFWebsiteBaseTest{
 		//s_assert.assertTrue(storeFrontConsultantPage.verifyConsultantPage(),"Consultant Page doesn't contain Welcome User Message");
 		logger.info("login is successful");
 		storeFrontHomePage.hoverOnShopLinkAndClickAllProductsLinks();
-
 		// Products are displayed?
 		s_assert.assertTrue(storeFrontHomePage.areProductsDisplayed(), "quickshop products not displayed");
 		logger.info("Quick shop products are displayed");
-
 		//Select a product with the price less than $80 and proceed to buy it
 		storeFrontHomePage.applyPriceFilterLowToHigh();
 		storeFrontHomePage.selectProductAndProceedToBuyWithoutFilter();
-
 		//Cart page is displayed?
 		s_assert.assertTrue(storeFrontHomePage.isCartPageDisplayed(), "Cart page is not displayed");
 		logger.info("Cart page is displayed");
-
 		//1 product is in the Shopping Cart?
 		s_assert.assertTrue(storeFrontHomePage.verifyNumberOfProductsInCart("1"), "number of products in the cart is NOT 1");
 		logger.info("1 product is successfully added to the cart");
@@ -387,27 +370,17 @@ public class CartAndCheckoutValidationTest extends RFWebsiteBaseTest{
 		logger.info("login is successful");
 		//Add multiple quantities of multiple product in the cart
 		storeFrontHomePage.hoverOnShopLinkAndClickAllProductsLinks();
-		// Products are displayed?
-		s_assert.assertTrue(storeFrontHomePage.areProductsDisplayed(), "quickshop products not displayed");
-		logger.info("Quick shop products are displayed");
-
 		//Select a product with the price less than $80 and proceed to buy it
 		//storeFrontHomePage.applyPriceFilterLowToHigh();
 		storeFrontHomePage.selectProductAndProceedToBuyWithoutFilter();
-
-		//Cart page is displayed?
-		s_assert.assertTrue(storeFrontHomePage.isCartPageDisplayed(), "Cart page is not displayed");
-		logger.info("Cart page is displayed");
-
 		//1 product is in the Shopping Cart?
 		s_assert.assertTrue(storeFrontHomePage.verifyNumberOfProductsInCart("1"), "number of products in the cart is NOT 1");
 		logger.info("1 product is successfully added to the cart");
-		//update qty to 2 of the first product
+		//update qty to 3 of the first product
 		storeFrontHomePage.addQuantityOfProduct("3"); 
 		//add another product in the cart
 		storeFrontHomePage.addAnotherProduct();
-
-		//update qty to 2 of the second product
+		//update qty to 3 of the second product
 		storeFrontHomePage.updateQuantityOfProductToTheSecondProduct("3"); 
 		//Click on Check out
 		storeFrontHomePage.clickOnCheckoutButton();
@@ -427,13 +400,9 @@ public class CartAndCheckoutValidationTest extends RFWebsiteBaseTest{
 		//validate empty shopping cart page is displayed
 		storeFrontHomePage.validateEmptyShoppingCartPageIsDisplayed();
 		//click on continue shopping link
-		storeFrontHomePage.clickOnContinueShoppingLinkOnEmptyShoppingCartPage();
+		storeFrontHomePage.clickOnAddMoreItemsBtn();
 		//Select a product  and proceed to buy it
 		storeFrontHomePage.selectProductAndProceedToBuy();
-		//Cart page is displayed?
-		s_assert.assertTrue(storeFrontHomePage.isCartPageDisplayed(), "Cart page is not displayed");
-		logger.info("Cart page is displayed");
-
 		//1 product is in the Shopping Cart?
 		s_assert.assertTrue(storeFrontHomePage.verifyNumberOfProductsInCart("1"), "number of products in the cart is NOT 1");
 		logger.info("1 product is successfully added to the cart");
@@ -441,7 +410,6 @@ public class CartAndCheckoutValidationTest extends RFWebsiteBaseTest{
 		storeFrontHomePage.addQuantityOfProduct("2"); 
 		//add another product in the cart
 		storeFrontHomePage.addSecondProduct();
-
 		logger.info("2 products are successfully added to the cart");
 		//update qty to 2 of the second product
 		storeFrontHomePage.updateQuantityOfProductToTheSecondProduct("2"); 
@@ -503,7 +471,6 @@ public class CartAndCheckoutValidationTest extends RFWebsiteBaseTest{
 		logger.info("subtotal ="+subtotal);
 		String deliveryCharges = String.valueOf(storeFrontUpdateCartPage.getDeliveryCharges());
 		logger.info("deliveryCharges ="+deliveryCharges);
-
 		if(subtotal<=999999){
 			if(driver.getCountry().equalsIgnoreCase("ca")){
 				//Assert  shipping cost from UI
@@ -522,10 +489,18 @@ public class CartAndCheckoutValidationTest extends RFWebsiteBaseTest{
 	public void testCheckShippingAndHandlingFee_2144() throws SQLException, InterruptedException{
 		RFO_DB = driver.getDBNameRFO();
 		List<Map<String, Object>> randomConsultantList =  null;
+		List<Map<String, Object>> randomPCUserList =  null;
+		List<Map<String, Object>> randomRCUserList =  null;
 		String consultantEmailID = null;
+		String pcUserEmailID = null;
+		String rcUserEmailID = null;
 		String accountId = null;
+		String accountIdForPCUser = null;
+		String accountIdForRCUser = null;
 		storeFrontHomePage = new StoreFrontHomePage(driver);
 		storeFrontUpdateCartPage = new StoreFrontUpdateCartPage(driver);
+		double orderTotal = 0.00;
+		String deliveryCharges = null;
 		while(true){
 			randomConsultantList = DBUtil.performDatabaseQuery(DBQueries_RFO.callQueryWithArguement(DBQueries_RFO.GET_RANDOM_ACTIVE_CONSULTANT_WITH_ORDERS_AND_AUTOSHIPS_RFO,countryId),RFO_DB);
 			consultantEmailID = (String) getValueFromQueryResult(randomConsultantList, "UserName");  
@@ -546,12 +521,95 @@ public class CartAndCheckoutValidationTest extends RFWebsiteBaseTest{
 		storeFrontConsultantPage.clickAddToBagButton(driver.getCountry());
 		storeFrontUpdateCartPage.clickOnCheckoutButton();
 		storeFrontUpdateCartPage.selectShippingMethod2DayForAdhocOrder();
-		double orderTotal = storeFrontUpdateCartPage.getOrderTotal();
+		orderTotal = storeFrontUpdateCartPage.getOrderTotal();
 		logger.info("subtotal ="+orderTotal);
-		String deliveryCharges = String.valueOf(storeFrontUpdateCartPage.getDeliveryCharges());
+		deliveryCharges = String.valueOf(storeFrontUpdateCartPage.getDeliveryCharges());
 		logger.info("deliveryCharges ="+deliveryCharges);
 		/*  String handlingCharges = String.valueOf(storeFrontUpdateCartPage.getHandlingCharges());
-		  logger.info("handlingCharges ="+handlingCharges);*/
+	    logger.info("handlingCharges ="+handlingCharges);*/
+		if(orderTotal<=999999){
+			if(driver.getCountry().equalsIgnoreCase("CA")){
+				System.out.println("Inside");
+				//Assert of shipping cost from UI
+				s_assert.assertTrue(storeFrontUpdateCartPage.isDeliveryChargesPresent(),"Shipping charges is not present on UI");
+			}else if(driver.getCountry().equalsIgnoreCase("US")){
+				s_assert.assertTrue(deliveryCharges.equalsIgnoreCase("$23.00"),"Shipping charges on UI is not As per shipping method selected");
+			}
+
+		}else{
+			logger.info("Order total is not in required range");
+		}
+		logout();
+		driver.get(driver.getURL()+"/"+driver.getCountry());
+		//Check shipping and handling for PC User.
+		while(true){
+			randomPCUserList = DBUtil.performDatabaseQuery(DBQueries_RFO.callQueryWithArguement(DBQueries_RFO.GET_RANDOM_ACTIVE_PC_WITH_ORDERS_AND_AUTOSHIPS_RFO,countryId),RFO_DB);
+			pcUserEmailID = (String) getValueFromQueryResult(randomPCUserList, "UserName");  
+			accountIdForPCUser = String.valueOf(getValueFromQueryResult(randomPCUserList, "AccountID"));
+			logger.info("Account Id of the user is "+accountIdForPCUser);
+
+			storeFrontPCUserPage = storeFrontHomePage.loginAsPCUser(pcUserEmailID, password);
+			boolean isError = driver.getCurrentUrl().contains("error");
+			if(isError){
+				logger.info("login error for the user "+pcUserEmailID);
+				driver.get(driver.getURL()+"/"+driver.getCountry());
+			}
+			else
+				break;
+		}
+		logger.info("login is successful");
+		storeFrontConsultantPage.hoverOnShopLinkAndClickAllProductsLinksAfterLogin();
+		storeFrontConsultantPage.clickAddToBagButton(driver.getCountry());
+		storeFrontUpdateCartPage.clickOnCheckoutButton();
+		storeFrontUpdateCartPage.selectShippingMethod2DayForAdhocOrder();
+		orderTotal = storeFrontUpdateCartPage.getOrderTotal();
+		logger.info("subtotal ="+orderTotal);
+		deliveryCharges = String.valueOf(storeFrontUpdateCartPage.getDeliveryCharges());
+		logger.info("deliveryCharges ="+deliveryCharges);
+		/*  String handlingCharges = String.valueOf(storeFrontUpdateCartPage.getHandlingCharges());
+	    logger.info("handlingCharges ="+handlingCharges);*/
+		if(orderTotal<=999999){
+			if(driver.getCountry().equalsIgnoreCase("CA")){
+				System.out.println("Inside");
+				//Assert of shipping cost from UI
+				s_assert.assertTrue(storeFrontUpdateCartPage.isDeliveryChargesPresent(),"Shipping charges is not present on UI");
+			}else if(driver.getCountry().equalsIgnoreCase("US")){
+				s_assert.assertTrue(deliveryCharges.equalsIgnoreCase("$23.00"),"Shipping charges on UI is not As per shipping method selected");
+			}
+
+		}else{
+			logger.info("Order total is not in required range");
+		}
+		logout();
+		driver.get(driver.getURL()+"/"+driver.getCountry());
+		//Check shipping and handling for RC User.
+		while(true){
+			randomRCUserList = DBUtil.performDatabaseQuery(DBQueries_RFO.callQueryWithArguement(DBQueries_RFO.GET_RANDOM_ACTIVE_RC_HAVING_ORDERS_RFO,countryId),RFO_DB);
+			rcUserEmailID = (String) getValueFromQueryResult(randomRCUserList, "UserName");  
+			accountIdForRCUser = String.valueOf(getValueFromQueryResult(randomRCUserList, "AccountID"));
+			logger.info("Account Id of the user is "+accountIdForRCUser);
+
+			storeFrontRCUserPage = storeFrontHomePage.loginAsRCUser(rcUserEmailID, password);
+			boolean isError = driver.getCurrentUrl().contains("error");
+			if(isError){
+				logger.info("login error for the user "+pcUserEmailID);
+				driver.get(driver.getURL()+"/"+driver.getCountry());
+			}
+			else
+				break;
+		}
+		logger.info("login is successful");
+		storeFrontConsultantPage.hoverOnShopLinkAndClickAllProductsLinksAfterLogin();
+		storeFrontConsultantPage.clickAddToBagButton(driver.getCountry());
+		storeFrontUpdateCartPage.clickOnCheckoutButton();
+		storeFrontUpdateCartPage.clickOnEditShipping();
+		storeFrontUpdateCartPage.selectShippingMethod2DayForAdhocOrder();
+		orderTotal = storeFrontUpdateCartPage.getOrderTotal();
+		logger.info("subtotal ="+orderTotal);
+		deliveryCharges = String.valueOf(storeFrontUpdateCartPage.getDeliveryCharges());
+		logger.info("deliveryCharges ="+deliveryCharges);
+		/*  String handlingCharges = String.valueOf(storeFrontUpdateCartPage.getHandlingCharges());
+	    logger.info("handlingCharges ="+handlingCharges);*/
 		if(orderTotal<=999999){
 			if(driver.getCountry().equalsIgnoreCase("CA")){
 				System.out.println("Inside");
@@ -628,21 +686,16 @@ public class CartAndCheckoutValidationTest extends RFWebsiteBaseTest{
 		storeFrontHomePage = new StoreFrontHomePage(driver);
 		// Click on our product link that is located at the top of the page and then click in on quick shop
 		storeFrontHomePage.hoverOnShopLinkAndClickAllProductsLinks();
-
 		// Products are displayed?
 		s_assert.assertTrue(storeFrontHomePage.areProductsDisplayed(), "quickshop products not displayed");
 		logger.info("Quick shop products are displayed");
-
 		storeFrontHomePage.selectProductAndProceedToBuyWithoutFilter();
-
 		//Cart page is displayed?
 		s_assert.assertTrue(storeFrontHomePage.isCartPageDisplayed(), "Cart page is not displayed");
 		logger.info("Cart page is displayed");
-
 		//1 product is in the Shopping Cart?
 		s_assert.assertTrue(storeFrontHomePage.verifyNumberOfProductsInCart("1"), "number of products in the cart is NOT 1");
 		logger.info("1 product is successfully added to the cart");
-
 		//click on continue shopping link
 		storeFrontHomePage.clickOnContinueShoppingLink();
 		//verify the number of products in mini cart
@@ -674,7 +727,7 @@ public class CartAndCheckoutValidationTest extends RFWebsiteBaseTest{
 
 	//Hybris Project-2120:Increase the Quantity
 	@Test
-	public void testIncreseTheQuantity_2120() throws InterruptedException{
+	public void testIncreaseTheQuantity_2120() throws InterruptedException{
 		String qtyIncrease = "2";
 		storeFrontHomePage = new StoreFrontHomePage(driver);
 		storeFrontHomePage.hoverOnShopLinkAndClickAllProductsLinks();
@@ -682,7 +735,7 @@ public class CartAndCheckoutValidationTest extends RFWebsiteBaseTest{
 		storeFrontHomePage.clickAddToBagButtonWithoutFilter();
 		double subTotalOfAddedProduct = storeFrontHomePage.getSubTotalOnShoppingCartPage();
 		storeFrontHomePage.addQuantityOfProduct(qtyIncrease);
-		s_assert.assertTrue(storeFrontHomePage.validateAutoshipTemplateUpdatedMsgAfterIncreasingQtyOfProducts(),"update message not coming as expected");
+		//s_assert.assertTrue(storeFrontHomePage.validateAutoshipTemplateUpdatedMsgAfterIncreasingQtyOfProducts(),"update message not coming as expected");
 		s_assert.assertTrue(storeFrontHomePage.getAutoshipTemplateUpdatedMsg().contains("Product quantity has been updated."),"update message not coming as expected");
 		double subTotalOfAfterUpdate = storeFrontHomePage.getSubTotalOnShoppingCartPage();
 		s_assert.assertTrue(storeFrontHomePage.verifySubTotalAccordingToQuantity(qtyIncrease,subTotalOfAddedProduct,subTotalOfAfterUpdate),"subTotal is not updated with increased quantity");
@@ -707,6 +760,9 @@ public class CartAndCheckoutValidationTest extends RFWebsiteBaseTest{
 		s_assert.assertTrue(storeFrontHomePage.validateAutoshipTemplateUpdatedMsgAfterIncreasingQtyOfProducts(),"update message not coming as expected");
 		double subTotalAfterReduce = storeFrontHomePage.getSubTotalOnShoppingCartPage();
 		s_assert.assertTrue(storeFrontHomePage.verifySubTotalAccordingToQuantity(qtyReduce,subTotalOfAddedProduct,subTotalAfterReduce),"subTotal is not updated with reduced quantity");
+		storeFrontHomePage.deleteTheOnlyAddedProductInTheCart();
+		s_assert.assertTrue(storeFrontHomePage.getMessageFromTheCart().contains(TestConstants.PRODUCT_HAS_BEEN_REMOVED_FROM_CART_MSG.toLowerCase().trim()),"expected message after removing the product is "+TestConstants.PRODUCT_HAS_BEEN_REMOVED_FROM_CART_MSG.toLowerCase().trim()+" but getting "+storeFrontHomePage.getMessageFromTheCart());
+		s_assert.assertTrue(storeFrontHomePage.isCartEmpty(), "cart is not empty after removing all the products");
 		s_assert.assertAll();
 	}
 
@@ -974,8 +1030,12 @@ public class CartAndCheckoutValidationTest extends RFWebsiteBaseTest{
 
 	//Hybris Project-2306:Filter Product on Category
 	@Test
-	public void testFilterProductOnCategory_2306(){
+	public void testFilterProductOnCategory_2306() throws InterruptedException{
 		storeFrontHomePage = new StoreFrontHomePage(driver);
+		int randomNumberForProductCategory = CommonUtils.getRandomNum(1,6);
+		int randomNumberForProductPrice = CommonUtils.getRandomNum(1,3);
+		logger.info("Random Number first "+randomNumberForProductCategory);
+		logger.info("Random Number second "+randomNumberForProductPrice);
 
 		// Click on our product link that is located at the top of the page and then click in on quick shop
 		storeFrontHomePage.hoverOnShopLinkAndClickAllProductsLinks();
@@ -983,13 +1043,79 @@ public class CartAndCheckoutValidationTest extends RFWebsiteBaseTest{
 		// Products are displayed?
 		s_assert.assertTrue(storeFrontHomePage.areProductsDisplayed(), "quickshop products not displayed");
 		logger.info("Quick shop products are displayed");
-
-		int sizeOfProductFilter = 4; //storeFrontHomePage.getSizeOfProductFilter();
-		// just need to check the basic regimens.
-		for(int i=1; i<=sizeOfProductFilter; i++){
-			s_assert.assertTrue(storeFrontHomePage.verifyProductFilterIsApply(i), "Product name is not similar as product filter"+" "+i );
-		}
-
+		//Select product filter one by one and assert.
+		//Select first product category.
+		storeFrontHomePage.selectProductCategory(TestConstants.REGIMEN_NAME_REDEFINE);
+		s_assert.assertTrue(storeFrontHomePage.isProductCategoryPageSelected(TestConstants.REGIMEN_NAME_REDEFINE),"Refine product category page is not present.");
+		s_assert.assertFalse(storeFrontHomePage.isProductCategoryPageSelected(TestConstants.REGIMEN_NAME_REVERSE),"Reverse product category page is present.");
+		s_assert.assertFalse(storeFrontHomePage.isProductCategoryPageSelected(TestConstants.REGIMEN_NAME_SOOTHE),"Soothe product category page is present.");
+		s_assert.assertFalse(storeFrontHomePage.isProductCategoryPageSelected(TestConstants.REGIMEN_NAME_UNBLEMISH),"Unblemish product category page is present.");
+		s_assert.assertFalse(storeFrontHomePage.isProductCategoryPageSelected(TestConstants.REGIMEN_NAME_ESSENTIALS),"Essentials product category page is present.");
+		s_assert.assertFalse(storeFrontHomePage.isProductCategoryPageSelected(TestConstants.REGIMEN_NAME_ENHANCEMENTS),"Enhancements product category page is present.");
+		//Deselect selected product category.
+		storeFrontHomePage.clickOnClearAll();
+		//Select Second product category.
+		storeFrontHomePage.selectProductCategory(TestConstants.REGIMEN_NAME_REVERSE);
+		s_assert.assertFalse(storeFrontHomePage.isProductCategoryPageSelected(TestConstants.REGIMEN_NAME_REDEFINE),"Refine product category page is present.");
+		s_assert.assertTrue(storeFrontHomePage.isProductCategoryPageSelected(TestConstants.REGIMEN_NAME_REVERSE),"Reverse product category page is not present.");
+		s_assert.assertFalse(storeFrontHomePage.isProductCategoryPageSelected(TestConstants.REGIMEN_NAME_SOOTHE),"Soothe product category page is present.");
+		s_assert.assertFalse(storeFrontHomePage.isProductCategoryPageSelected(TestConstants.REGIMEN_NAME_UNBLEMISH),"Unblemish product category page is present.");
+		s_assert.assertFalse(storeFrontHomePage.isProductCategoryPageSelected(TestConstants.REGIMEN_NAME_ESSENTIALS),"Essentials product category page is present.");
+		s_assert.assertFalse(storeFrontHomePage.isProductCategoryPageSelected(TestConstants.REGIMEN_NAME_ENHANCEMENTS),"Enhancements product category page is present.");
+		//Deselect selected product category.
+		storeFrontHomePage.clickOnClearAll();
+		//Select Third product category.
+		storeFrontHomePage.selectProductCategory(TestConstants.REGIMEN_NAME_SOOTHE);
+		s_assert.assertFalse(storeFrontHomePage.isProductCategoryPageSelected(TestConstants.REGIMEN_NAME_REDEFINE),"Refine product category page is present.");
+		s_assert.assertFalse(storeFrontHomePage.isProductCategoryPageSelected(TestConstants.REGIMEN_NAME_REVERSE),"Reverse product category page is present.");
+		s_assert.assertTrue(storeFrontHomePage.isProductCategoryPageSelected(TestConstants.REGIMEN_NAME_SOOTHE),"Soothe product category page is not present.");
+		s_assert.assertFalse(storeFrontHomePage.isProductCategoryPageSelected(TestConstants.REGIMEN_NAME_UNBLEMISH),"Unblemish product category page is present.");
+		s_assert.assertFalse(storeFrontHomePage.isProductCategoryPageSelected(TestConstants.REGIMEN_NAME_ESSENTIALS),"Essentials product category page is present.");
+		s_assert.assertFalse(storeFrontHomePage.isProductCategoryPageSelected(TestConstants.REGIMEN_NAME_ENHANCEMENTS),"Enhancements product category page is present.");
+		//Deselect selected product category.
+		storeFrontHomePage.clickOnClearAll();
+		//Select fourth product category.
+		storeFrontHomePage.selectProductCategory(TestConstants.REGIMEN_NAME_UNBLEMISH);
+		s_assert.assertFalse(storeFrontHomePage.isProductCategoryPageSelected(TestConstants.REGIMEN_NAME_REDEFINE),"Refine product category page is present.");
+		s_assert.assertFalse(storeFrontHomePage.isProductCategoryPageSelected(TestConstants.REGIMEN_NAME_REVERSE),"Reverse product category page is present.");
+		s_assert.assertFalse(storeFrontHomePage.isProductCategoryPageSelected(TestConstants.REGIMEN_NAME_SOOTHE),"Soothe product category page is present.");
+		s_assert.assertTrue(storeFrontHomePage.isProductCategoryPageSelected(TestConstants.REGIMEN_NAME_UNBLEMISH),"Unblemish product category page is not present.");
+		s_assert.assertFalse(storeFrontHomePage.isProductCategoryPageSelected(TestConstants.REGIMEN_NAME_ESSENTIALS),"Essentials product category page is present.");
+		s_assert.assertFalse(storeFrontHomePage.isProductCategoryPageSelected(TestConstants.REGIMEN_NAME_ENHANCEMENTS),"Enhancements product category page is present.");
+		//Deselect selected product category.
+		storeFrontHomePage.clickOnClearAll();
+		//Select fifth product category.
+		storeFrontHomePage.selectProductCategory(TestConstants.REGIMEN_NAME_ESSENTIALS);
+		s_assert.assertFalse(storeFrontHomePage.isProductCategoryPageSelected(TestConstants.REGIMEN_NAME_REDEFINE),"Refine product category page is  present.");
+		s_assert.assertFalse(storeFrontHomePage.isProductCategoryPageSelected(TestConstants.REGIMEN_NAME_REVERSE),"Reverse product category page is present.");
+		s_assert.assertFalse(storeFrontHomePage.isProductCategoryPageSelected(TestConstants.REGIMEN_NAME_SOOTHE),"Soothe product category page is present.");
+		s_assert.assertFalse(storeFrontHomePage.isProductCategoryPageSelected(TestConstants.REGIMEN_NAME_UNBLEMISH),"Unblemish product category page is present.");
+		s_assert.assertTrue(storeFrontHomePage.isProductCategoryPageSelected(TestConstants.REGIMEN_NAME_ESSENTIALS),"Essentials product category page is not present.");
+		s_assert.assertFalse(storeFrontHomePage.isProductCategoryPageSelected(TestConstants.REGIMEN_NAME_ENHANCEMENTS),"Enhancements product category page is present.");
+		//Deselect selected product category.
+		storeFrontHomePage.clickOnClearAll();
+		//Select sixth product category.
+		storeFrontHomePage.selectProductCategory(TestConstants.REGIMEN_NAME_ENHANCEMENTS);
+		s_assert.assertFalse(storeFrontHomePage.isProductCategoryPageSelected(TestConstants.REGIMEN_NAME_REDEFINE),"Refine product category page is present.");
+		s_assert.assertFalse(storeFrontHomePage.isProductCategoryPageSelected(TestConstants.REGIMEN_NAME_REVERSE),"Reverse product category page is present.");
+		s_assert.assertFalse(storeFrontHomePage.isProductCategoryPageSelected(TestConstants.REGIMEN_NAME_SOOTHE),"Soothe product category page is present.");
+		s_assert.assertFalse(storeFrontHomePage.isProductCategoryPageSelected(TestConstants.REGIMEN_NAME_UNBLEMISH),"Unblemish product category page is present.");
+		s_assert.assertFalse(storeFrontHomePage.isProductCategoryPageSelected(TestConstants.REGIMEN_NAME_ESSENTIALS),"Essentials product category page is present.");
+		s_assert.assertTrue(storeFrontHomePage.isProductCategoryPageSelected(TestConstants.REGIMEN_NAME_ENHANCEMENTS),"Enhancements product category page is not present.");
+		//Deselect selected product category.
+		storeFrontHomePage.clickOnClearAll();
+		//Select random product category filter and select random product price filter.
+		storeFrontHomePage.selectRandomProductCategory(randomNumberForProductCategory);
+		String productPriceRange = storeFrontHomePage.selectAndGetRandomProductPriceFilter(randomNumberForProductPrice);
+		//String productPriceRange = "CAD$200 TO CAD$499.99";
+		s_assert.assertTrue(storeFrontHomePage.verifyProductPriceForRandomProduct(productPriceRange),"Random Selected Product Price is Greater than the product price filter applied.");
+		//Deselect selected product category.
+		storeFrontHomePage.clickOnClearAll();
+		//Select product price filter.
+		storeFrontHomePage.applyPriceFilterHighToLow();
+		s_assert.assertTrue(storeFrontHomePage.isHighToLowProductPriceFilterIsAppliedSuccessfully(),"Product Price filter from high to low price is not applied");
+		storeFrontHomePage.applyPriceFilterLowToHigh();
+		s_assert.assertTrue(storeFrontHomePage.isLowToHighProductPriceFilterIsAppliedSuccessfully(),"Product Price filter from low to high price is not applied");
 		s_assert.assertAll();
 	}
 
@@ -1562,7 +1688,7 @@ public class CartAndCheckoutValidationTest extends RFWebsiteBaseTest{
 		String lastName = TestConstants.LAST_NAME;
 		String emailAddress = firstName+TestConstants.EMAIL_ADDRESS_SUFFIX;
 		storeFrontHomePage = new StoreFrontHomePage(driver);
-
+		storeFrontUpdateCartPage = new StoreFrontUpdateCartPage(driver);
 		storeFrontHomePage.openPWSSite(country, env);
 		storeFrontHomePage.clickSignUpnowOnbizSite();
 		storeFrontHomePage.enterNewRCDetails(firstName, lastName, emailAddress, password);
@@ -1587,7 +1713,7 @@ public class CartAndCheckoutValidationTest extends RFWebsiteBaseTest{
 		storeFrontBillingInfoPage = storeFrontShippingInfoPage.clickBillingInfoLinkPresentOnWelcomeDropDown();
 		storeFrontBillingInfoPage.enterNewBillingCardNumber(TestConstants.CARD_NUMBER);
 		storeFrontBillingInfoPage.enterNewBillingNameOnCard(firstName);
-		storeFrontBillingInfoPage.selectNewBillingCardExpirationDate();
+		storeFrontUpdateCartPage.selectNewBillingCardExpirationDate("OCT","2025");
 		storeFrontBillingInfoPage.enterNewBillingSecurityCode(TestConstants.SECURITY_CODE);
 		storeFrontBillingInfoPage.selectNewBillingCardAddress();
 		storeFrontBillingInfoPage.clickOnSaveBillingProfile();
@@ -1647,7 +1773,7 @@ public class CartAndCheckoutValidationTest extends RFWebsiteBaseTest{
 		//Enter Billing Profile
 		storeFrontHomePage.enterNewBillingCardNumber(TestConstants.CARD_NUMBER);
 		storeFrontHomePage.enterNewBillingNameOnCard(newBillingProfileName+" "+lastName);
-		storeFrontHomePage.selectNewBillingCardExpirationDate();
+		storeFrontUpdateCartPage.selectNewBillingCardExpirationDate("OCT","2025");
 		storeFrontHomePage.enterNewBillingSecurityCode(TestConstants.SECURITY_CODE);
 		storeFrontHomePage.selectNewBillingCardAddress();
 		storeFrontHomePage.clickOnSaveBillingProfile();
@@ -1706,7 +1832,7 @@ public class CartAndCheckoutValidationTest extends RFWebsiteBaseTest{
 		logger.info("Quick shop products are displayed");
 
 		//Verify enrollment kit option are not present for pc User.
-		s_assert.assertFalse(storeFrontHomePage.isKitPresentDuringPCEnrollment(), "Kit Options are present during pc enrollment");
+		s_assert.assertFalse(storeFrontHomePage.isKitProductPresent(), "Kit product is present");
 
 		//verify all prices are in respective currency.
 		s_assert.assertTrue(storeFrontHomePage.verifyProductPriceAsPerCountry(driver.getCountry()), "Product Prices are not as per country selected");
@@ -1825,7 +1951,7 @@ public class CartAndCheckoutValidationTest extends RFWebsiteBaseTest{
 		//Enter Billing Profile
 		storeFrontHomePage.enterNewBillingCardNumber(TestConstants.CARD_NUMBER);
 		storeFrontHomePage.enterNewBillingNameOnCard(newBillingProfileName+" "+lastName);
-		storeFrontHomePage.selectNewBillingCardExpirationDate();
+		storeFrontHomePage.selectNewBillingCardExpirationDate("OCT","2025");
 		storeFrontHomePage.enterNewBillingSecurityCode(TestConstants.SECURITY_CODE);
 		storeFrontHomePage.selectNewBillingCardAddress();
 		storeFrontHomePage.clickOnSaveBillingProfile();
@@ -1867,7 +1993,7 @@ public class CartAndCheckoutValidationTest extends RFWebsiteBaseTest{
 		storeFrontUpdateCartPage.clickAddNewBillingProfileLink();
 		storeFrontUpdateCartPage.enterNewBillingCardNumber(TestConstants.CARD_NUMBER);
 		storeFrontUpdateCartPage.enterNewBillingNameOnCard(newBillingProfileName);
-		storeFrontUpdateCartPage.selectNewBillingCardExpirationDate();
+		storeFrontUpdateCartPage.selectNewBillingCardExpirationDate("OCT","2025");
 		storeFrontUpdateCartPage.enterNewBillingSecurityCode(TestConstants.SECURITY_CODE);
 		storeFrontUpdateCartPage.selectNewBillingCardAddress();
 		storeFrontUpdateCartPage.clickOnSaveBillingProfile();
@@ -1994,10 +2120,9 @@ public class CartAndCheckoutValidationTest extends RFWebsiteBaseTest{
 		storeFrontUpdateCartPage = new StoreFrontUpdateCartPage(driver);
 		storeFrontUpdateCartPage.clickOnShippingAddressNextStepBtn();
 		storeFrontUpdateCartPage.clickAddNewBillingProfileLink();
-
 		storeFrontUpdateCartPage.enterNewBillingCardNumber(TestConstants.CARD_NUMBER);
 		storeFrontUpdateCartPage.enterNewBillingNameOnCard(newBillingProfileName+" "+lastName);
-		storeFrontUpdateCartPage.selectNewBillingCardExpirationDate();
+		storeFrontUpdateCartPage.selectNewBillingCardExpirationDate("OCT","2025");
 		storeFrontUpdateCartPage.enterNewBillingSecurityCode(TestConstants.SECURITY_CODE);
 		storeFrontUpdateCartPage.selectNewBillingCardAddress();
 		storeFrontUpdateCartPage.clickAddANewAddressLink();
@@ -2009,9 +2134,9 @@ public class CartAndCheckoutValidationTest extends RFWebsiteBaseTest{
 		storeFrontUpdateCartPage.enterNewBillingAddressPhoneNumber(phoneNumber);
 		storeFrontUpdateCartPage.clickOnSaveBillingProfile();
 		storeFrontUpdateCartPage.clickOnEditDefaultBillingProfile();
-		storeFrontUpdateCartPage.selectNewBillingCardExpirationDate(TestConstants.CARD_EXP_MONTH,TestConstants.CARD_EXP_YEAR);
+		storeFrontUpdateCartPage.selectNewBillingCardExpirationDate("OCT","2024");
 		storeFrontUpdateCartPage.enterNewBillingSecurityCode(TestConstants.SECURITY_CODE);
-		storeFrontUpdateCartPage.clickAddANewAddressLink();
+		//storeFrontUpdateCartPage.clickAddANewAddressLink();
 		storeFrontUpdateCartPage.selectNewlyAddedBillingAddressName(newBillingProfileName);
 		storeFrontUpdateCartPage.clickOnSaveBillingProfile();
 		storeFrontUpdateCartPage.clickOnBillingNextStepBtn(); 
@@ -2208,7 +2333,7 @@ public class CartAndCheckoutValidationTest extends RFWebsiteBaseTest{
 		storeFrontUpdateCartPage.clickAddNewBillingProfileLink();
 		storeFrontUpdateCartPage.enterNewBillingNameOnCard(newBillingProfileName+" "+lastName);
 		storeFrontUpdateCartPage.enterNewBillingCardNumber(TestConstants.AMERICAN_EXPRESS_CARD_NUMBER);
-		storeFrontUpdateCartPage.selectNewBillingCardExpirationDate();
+		storeFrontUpdateCartPage.selectNewBillingCardExpirationDate("OCT","2025");
 		storeFrontUpdateCartPage.enterNewBillingSecurityCode(TestConstants.SECURITY_CODE_FOR_SPECIAL_CARDS);
 		storeFrontUpdateCartPage.selectNewBillingCardAddress();
 		storeFrontUpdateCartPage.clickOnSaveBillingProfile();
@@ -2256,7 +2381,7 @@ public class CartAndCheckoutValidationTest extends RFWebsiteBaseTest{
 		String deliveryCharges = storeFrontUpdateCartPage.getDeliveryCharges();
 		logger.info("Delivery charges while creating order is "+deliveryCharges);
 		/*		String handlingCharges = storeFrontUpdateCartPage.getHandlingCharges();
-		logger.info("Handling charges while creating order is "+handlingCharges);*/
+			logger.info("Handling charges while creating order is "+handlingCharges);*/
 		String tax = storeFrontUpdateCartPage.getTax();
 		logger.info("Tax while creating order is "+tax);
 		String total = storeFrontUpdateCartPage.getTotal();
@@ -2267,7 +2392,7 @@ public class CartAndCheckoutValidationTest extends RFWebsiteBaseTest{
 		storeFrontUpdateCartPage.clickAddNewBillingProfileLink();
 		storeFrontUpdateCartPage.enterNewBillingNameOnCard(newBillingProfileName+" "+lastName);
 		storeFrontUpdateCartPage.enterNewBillingCardNumber(TestConstants.CARD_NUMBER);
-		storeFrontUpdateCartPage.selectNewBillingCardExpirationDate();
+		storeFrontUpdateCartPage.selectNewBillingCardExpirationDate("OCT","2025");
 		storeFrontUpdateCartPage.enterNewBillingSecurityCode(TestConstants.SECURITY_CODE);
 		storeFrontUpdateCartPage.selectNewBillingCardAddress();
 		storeFrontUpdateCartPage.clickOnSaveBillingProfile();
@@ -2281,7 +2406,7 @@ public class CartAndCheckoutValidationTest extends RFWebsiteBaseTest{
 		String orderHistoryNumber = storeFrontOrdersPage.getFirstOrderNumberFromOrderHistory();
 		storeFrontOrdersPage.clickOrderNumber(orderHistoryNumber);
 		s_assert.assertTrue(storeFrontOrdersPage.getSubTotalFromAutoshipTemplate().contains(subtotal),"Adhoc Order template subtotal "+subtotal+" and on UI is "+storeFrontOrdersPage.getSubTotalFromAutoshipTemplate());
-		s_assert.assertTrue(storeFrontOrdersPage.getTaxAmountFromAutoshipTemplate().contains(tax),"Adhoc Order template tax "+tax+" and on UI is "+storeFrontOrdersPage.getTaxAmountFromAdhocOrderTemplate());
+		s_assert.assertTrue(storeFrontOrdersPage.getTaxAmountFromAutoshipTemplate().contains(tax.trim()),"Adhoc Order template tax "+tax+" and on UI is "+storeFrontOrdersPage.getTaxAmountFromAdhocOrderTemplate());
 		s_assert.assertTrue(storeFrontOrdersPage.getGrandTotalFromAutoshipTemplate().contains(total),"Adhoc Order template grand total "+total+" and on UI is "+storeFrontOrdersPage.getGrandTotalFromAutoshipTemplate());
 		/*		s_assert.assertTrue(storeFrontOrdersPage.getHandlingAmountFromAutoshipTemplate().contains(handlingCharges),"Adhoc Order template handling amount "+handlingCharges+" and on UI is "+storeFrontOrdersPage.getHandlingAmountFromAutoshipTemplate());
 		 */		s_assert.assertTrue(shippingMethod.contains(storeFrontOrdersPage.getShippingMethodFromAutoshipTemplate()),"Adhoc Order template shipping method "+shippingMethod+" and on UI is "+storeFrontOrdersPage.getShippingMethodFromAutoshipTemplate());
@@ -2325,8 +2450,12 @@ public class CartAndCheckoutValidationTest extends RFWebsiteBaseTest{
 		logger.info("Cart page is displayed");
 		//Click on Check out
 		storeFrontHomePage.clickOnCheckoutButton();
+		//Enter main account info
+		storeFrontHomePage.enterMainAccountInfo();
+		storeFrontHomePage.clickOnContinueWithoutSponsorLink();
+		storeFrontHomePage.clickOnNextButtonAfterSelectingSponsor();
 		//click edit next to shipment Section 
-		storeFrontHomePage.clickEditShippingInShipmentOnCheckoutPage();
+		//storeFrontHomePage.clickEditShippingInShipmentOnCheckoutPage();
 		//select UPS 2 Day shipping method
 		String selectedShippingMethod=storeFrontHomePage.selectShippingMethodUPS2DayUnderShippingSectionAndGetName();
 		//click next on shipping section
@@ -2536,7 +2665,7 @@ public class CartAndCheckoutValidationTest extends RFWebsiteBaseTest{
 		storeFrontHomePage.clickNextButton();
 		storeFrontHomePage.enterCardNumber(TestConstants.CARD_NUMBER);
 		storeFrontHomePage.enterNameOnCard(TestConstants.FIRST_NAME+randomNum);
-		storeFrontHomePage.selectNewBillingCardExpirationDate();
+		storeFrontHomePage.selectNewBillingCardExpirationDate("OCT","2025");
 		storeFrontHomePage.enterSecurityCode(TestConstants.SECURITY_CODE);
 		storeFrontHomePage.enterSocialInsuranceNumber(socialInsuranceNumber);
 		storeFrontHomePage.enterNameAsItAppearsOnCard(TestConstants.FIRST_NAME);
@@ -2609,7 +2738,7 @@ public class CartAndCheckoutValidationTest extends RFWebsiteBaseTest{
 		storeFrontUpdateCartPage.clickAddNewBillingProfileLink();
 		storeFrontUpdateCartPage.enterNewBillingNameOnCard(newBillingProfileName+" "+lastName);
 		storeFrontUpdateCartPage.enterNewBillingCardNumber(TestConstants.MASTER_CARD_NUMBER);
-		storeFrontUpdateCartPage.selectNewBillingCardExpirationDate();
+		storeFrontUpdateCartPage.selectNewBillingCardExpirationDate("OCT","2025");
 		storeFrontUpdateCartPage.enterNewBillingSecurityCode(TestConstants.SECURITY_CODE);
 		storeFrontUpdateCartPage.selectNewBillingCardAddress();
 		storeFrontUpdateCartPage.clickOnSaveBillingProfile();
@@ -2668,7 +2797,7 @@ public class CartAndCheckoutValidationTest extends RFWebsiteBaseTest{
 		storeFrontUpdateCartPage.clickAddNewBillingProfileLink();
 		storeFrontUpdateCartPage.enterNewBillingNameOnCard(newBillingProfileName+" "+lastName);
 		storeFrontUpdateCartPage.enterNewBillingCardNumber(TestConstants.DISCOVER_CARD_NUMBER);
-		storeFrontUpdateCartPage.selectNewBillingCardExpirationDate();
+		storeFrontUpdateCartPage.selectNewBillingCardExpirationDate("OCT","2025");
 		storeFrontUpdateCartPage.enterNewBillingSecurityCode(TestConstants.SECURITY_CODE);
 		storeFrontUpdateCartPage.clickOnSaveBillingProfile();
 		s_assert.assertTrue(storeFrontHomePage.validateInvalidCreditCardMessage(), "Please enter a valid credit card message is displayed");
@@ -3003,9 +3132,10 @@ public class CartAndCheckoutValidationTest extends RFWebsiteBaseTest{
 		//click the edit link in the payment section
 		storeFrontUpdateCartPage.clickOnEditPaymentBillingProfile();
 		//click the edit link in the billing section
+
 		storeFrontUpdateCartPage.clickOnDefaultBillingProfileEdit();
 		//update the CC Expiration date and re-enter the CC security code..
-		storeFrontUpdateCartPage.selectNewBillingCardExpirationDateAsExpiredDate();
+		storeFrontUpdateCartPage.selectNewBillingCardExpirationDate("OCT","2025");
 		storeFrontUpdateCartPage.enterNewBillingSecurityCode(TestConstants.SECURITY_CODE);
 		storeFrontUpdateCartPage.clickOnSaveBillingProfile();
 		//click the edit link in the shipping section

@@ -30,6 +30,8 @@ public class TestConstants {
 	public static final String REGIMEN_NAME_REDEFINE = "REDEFINE";
 	public static final String REGIMEN_NAME_SOOTHE = "SOOTHE";
 	public static final String REGIMEN_NAME_UNBLEMISH = "UNBLEMISH";
+	public static final String REGIMEN_NAME_ESSENTIALS = "ESSENTIALS";
+	public static final String REGIMEN_NAME_ENHANCEMENTS = "ENHANCEMENTS";
 	public static final String PASSWORD_BELOW_6CHARS = "test1";
 	public static final String SPOUSE_FIRST_NAME = "Mary";
 	public static final String SPOUSE_LAST_NAME = "Stone";
@@ -61,7 +63,7 @@ public class TestConstants {
 	public static final String ADDRESS_LINE_1_QUEBEC = "2 rue Desjardins";
 	public static final String CITY_QUEBEC = "CANDIAC";
 
-	public static final String CARD_NUMBER = "4747474747474747";
+	public static final String CARD_NUMBER = "4716521990995203";
 	public static final String CARD_NUMBER_SECOND = "4747474747474747";
 	public static final String CARD_EXP_MONTH = "12";
 	public static final String CARD_EXP_YEAR = "2020";
@@ -70,7 +72,7 @@ public class TestConstants {
 	public static final String FIRST_NAME_NEW_BILLING_ADDRESS = "rfTestUser3";
 	public static final String PROVINCECA = "Yukon Territory";
 	public static final String CIDCA = "989828";
-	public static final String INVALID_CARD_NUMBER_15DIGITS = "4747";
+	public static final String INVALID_CARD_NUMBER_15DIGITS = "474747474747474";
 	public static final String INVALID_CARD_NUMBER_17DIGITS = "47474747474747474";
 	public static final String SPONSOR_ID_US="1686295";
 	public static final String INVALID_CARD_NUMBER_15DIGITS_WITH_SPECIAL_CHAR = "474747474747474#";
@@ -118,7 +120,7 @@ public class TestConstants {
 	public static final String PC_PERKS_TERMS_CONDITION_POPUP_HEADER_TEXT = "PC PERKS TERMS & CONDITIONS";
 	public static final String AUTOSHIP_TEMPLATE_THRESHOLD_MSG= "greater than the threshold $80";
 	public static final String AUTOSHIP_TEMPLATE_PRODUCT_ADDED = "Product quantity has been updated.";
-
+	public static final String PRODUCT_HAS_BEEN_REMOVED_FROM_CART_MSG="Product has been removed from your cart";
 
 	//public static final String CONSULTANT_PASSWORD_STG2 = "test1234";
 	//public static final String CONSULTANT_NEW_PASSWORD_STG2 = "test12345";
@@ -421,9 +423,9 @@ public class TestConstants {
 	public static final String DSV_PWS_SUFFIX ="myrandf";
 	public static final String DSV_NEXT_CRP_TEXT = "Next CRP";
 
-	public static final String DSV_ADDRESS_LINE_1_CA = "5502 - 54th Street";
-	public static final String DSV_CITY_CA = "Bonnyville";
-	public static final String DSV_POSTAL_CODE_CA = "T9N 2H4";
+	public static final String DSV_ADDRESS_LINE_1_CA = "5940 Macleod Trail SW Suite 500";
+	public static final String DSV_CITY_CA = "Calgary";
+	public static final String DSV_POSTAL_CODE_CA = "T2H 2G4";
 	public static final String DSV_PHONE_NUMBER = "8067736419";
 	//public static final String DSV_SECURITY_CODE = "5487";
 	public static final String DSV_SECURITY_CODE = "7475";
@@ -439,7 +441,7 @@ public class TestConstants {
 	public static final String DSV_CA_SPONSOR_WITH_NO_PWS = "06383507";
 
 	public static final String CRM_LOGIN_USERNAME = "crmqa@rodanandfields.com.stg1";
-	public static final String CRM_LOGIN_PASSWORD = "CRM121Spear"; // for tst3 the password is tst3@123
+	public static final String CRM_LOGIN_PASSWORD = "CRM60Spear"; // for tst3 the password is tst3@123
 	public static final String CRM_DSV_LOGIN_USERNAME = "crmqa@rodanandfields.com";
 	public static final String CRM_DSV_LOGIN_PASSWORD = "CRM60Spear"; // for tst3 the password is tst3@123
 	public static final String CRM_INVALID_LOGIN_USERNAME = "crmqaguest@rodanandfields";
@@ -450,6 +452,9 @@ public class TestConstants {
 	public static final String CHANGED_MY_MIND ="Changed my mind";
 	public static final String FIRST_TIME_ACTIVATION ="First Time activation";
 	public static final String COMPLIANCE_RE_ACTIVATION ="Compliance re-activation";
+	public static final String CRM_LOGIN_LOGISTICS_USERNAME = "opsuser@rodanandfields.com.stg1";
+	public static final String CRM_LOGIN_LOGISTICS_PASSWORD = "60Spear!";
+
 
 	//DSV CSCOCKPIT
 	public static final String DSV_CSCOCKPIT_USERNAME = "qauser@rodanandfields.com";
@@ -465,7 +470,7 @@ public class TestConstants {
 	public static final String DELIVERY_COST = "20";
 	public static final String HANDLING_COST = "5";
 	public static final String DSV_RC_ORDER_STATUS = "All";
-
+	public static final String DSV_FIRST_NAME = "RFAutoCS";
 	//CSCockpit Constants
 
 	public static final String ADMIN_USERNAME = "admin";

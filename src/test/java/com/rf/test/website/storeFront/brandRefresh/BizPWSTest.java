@@ -85,32 +85,31 @@ public class BizPWSTest extends RFBrandRefreshWebsiteBaseTest{
 		List<Map<String, Object>> randomPWSList =  null;
 		String PWS = "https://rfqa"+driver.getBizPWSURL();
 		driver.get(PWS);
-		List<Map<String, Object>> randomConsultantList = DBUtil.performDatabaseQuery(DBQueries_RFL.GET_RANDOM_ACTIVE_CONSULTANT_EMAILID,RFL_DB);
-		String consultantEmailID = (String) getValueFromQueryResult(randomConsultantList, "EmailAddress");
-		storeFrontBrandRefreshHomePage.loginAsConsultant(consultantEmailID,password);
-		//  storeFrontBrandRefreshHomePage.clickShopSkinCareBtnOnPWS();
-		//  storeFrontBrandRefreshHomePage.clickRegimenOnPWS(regimen);
-		//  storeFrontBrandRefreshHomePage.clickAddToCartButtonAfterLogin();
+		while(true){
+			List<Map<String, Object>> randomConsultantList = DBUtil.performDatabaseQuery(DBQueries_RFL.GET_RANDOM_ACTIVE_CONSULTANT_EMAILID,RFL_DB);
+			String consultantEmailID = (String) getValueFromQueryResult(randomConsultantList, "EmailAddress");
+			storeFrontBrandRefreshHomePage.loginAsConsultant(consultantEmailID,password);
+			if(storeFrontBrandRefreshHomePage.isLoginFailed()){
+				storeFrontBrandRefreshHomePage.refreshThePage();
+				continue;
+			}else{
+				break;
+			}
+		}
 		storeFrontBrandRefreshHomePage.mouseHoverShopSkinCareAndClickLinkOnPWS("CONSULTANT-ONLY PRODUCTS");
 		storeFrontBrandRefreshHomePage.clickConsultantOnlyProductOnPWS(TestConstantsRFL.CONSULTANT_ONLY_BUSINESS_PROMOTION);
 		storeFrontBrandRefreshHomePage.clickAddToCartButtonForEssentialsAndEnhancementsAfterLogin();
 		//storeFrontBrandRefreshHomePage.mouseHoverOnMyShoppingBagLinkAndClickOnCheckoutBtn();
 		storeFrontBrandRefreshHomePage.clickMyShoppingBagLink();
 		storeFrontBrandRefreshHomePage.clickCheckoutBtn();
-		storeFrontBrandRefreshHomePage.clickContinueBtn();
+		storeFrontBrandRefreshHomePage.clickContinueBtnForPCAndRC();
 		storeFrontBrandRefreshHomePage.clickChangeBillingInformationBtn();
-		storeFrontBrandRefreshHomePage.enterBillingInfo(billingName, billingProfileFirstName, billingProfileLastName, nameOnCard, cardNumber, expMonth, expYear, addressLine1, postalCode, phnNumber);
+		storeFrontBrandRefreshHomePage.enterBillingInfo(billingName, billingProfileFirstName, billingProfileLastName, nameOnCard, cardNumber, expMonth, expYear, addressLine1, postalCode, phnNumber, CVV);
 		storeFrontBrandRefreshHomePage.clickUseThisBillingInformationBtn();
 		storeFrontBrandRefreshHomePage.clickUseAsEnteredBtn();
 		storeFrontBrandRefreshHomePage.clickCompleteOrderBtn();
 		s_assert.assertTrue(storeFrontBrandRefreshHomePage.isThankYouTextPresentAfterOrderPlaced(), "Adhoc order not placed successfully from biz site for Consultant user.");
 		s_assert.assertTrue(storeFrontBrandRefreshHomePage.getOrderConfirmationTextMsgAfterOrderPlaced().contains("You will receive an email confirmation shortly"), "Order confirmation message does not contains email confirmation");
-		//String orderNumber = storeFrontBrandRefreshHomePage.getOrderNumebrAfterOrderPlaced();
-		//System.out.println ("OrderNumber - "+ orderNumber);
-		//verify Account status
-		//orderNumberList =  DBUtil.performDatabaseQuery(DBQueries_RFL.callQueryWithArguement(DBQueries_RFL.GET_ORDER_DETAILS, orderNumber), RFL_DB);
-		//orderStatusID = String.valueOf(getValueFromQueryResult(orderNumberList, "OrderStatusID"));
-		//s_assert.assertTrue(orderStatusID.contains("4"), "Order not submitted successfully");
 		s_assert.assertAll();
 	}
 
@@ -221,7 +220,7 @@ public class BizPWSTest extends RFBrandRefreshWebsiteBaseTest{
 		storeFrontBrandRefreshHomePage.selectEnrollmentType(enrollemntType);
 		storeFrontBrandRefreshHomePage.enterSetUpAccountInformation(firstName, lastName, emailAddress, password, addressLine1, postalCode, phnNumber1, phnNumber2, phnNumber3);
 		storeFrontBrandRefreshHomePage.clickSetUpAccountNextBtn();
-		storeFrontBrandRefreshHomePage.enterBillingInformation(cardNumber, nameOnCard, expMonth, expYear);
+		storeFrontBrandRefreshHomePage.enterBillingInformation(cardNumber, nameOnCard, expMonth, expYear,CVV);
 		storeFrontBrandRefreshHomePage.enterAccountInformation(ssnRandomNum1, ssnRandomNum2, ssnRandomNum3, firstName);
 		String bizPWS = storeFrontBrandRefreshHomePage.getBizPWSBeforeEnrollment();
 		storeFrontBrandRefreshHomePage.clickCompleteAccountNextBtn();
@@ -321,12 +320,11 @@ public class BizPWSTest extends RFBrandRefreshWebsiteBaseTest{
 		storeFrontBrandRefreshHomePage.selectEnrollmentType(enrollemntType);
 		storeFrontBrandRefreshHomePage.enterSetUpAccountInformation(firstName, lastName, emailAddress, password, addressLine1, postalCode, phnNumber1, phnNumber2, phnNumber3);
 		storeFrontBrandRefreshHomePage.clickSetUpAccountNextBtn();
-		storeFrontBrandRefreshHomePage.enterBillingInformation(cardNumber, nameOnCard, expMonth, expYear);
+		storeFrontBrandRefreshHomePage.enterBillingInformation(cardNumber, nameOnCard, expMonth, expYear,CVV);
 		storeFrontBrandRefreshHomePage.enterAccountInformation(ssnRandomNum1, ssnRandomNum2, ssnRandomNum3, firstName);
 		storeFrontBrandRefreshHomePage.enterUserPrefixInPrefixField(prefix);
 		s_assert.assertTrue(storeFrontBrandRefreshHomePage.getPrefixMessageForBiz().contains("unavailable"),"Expected message is unavailable for .biz but actual on UI is: "+storeFrontBrandRefreshHomePage.getPrefixMessageForBiz());
 		s_assert.assertTrue(storeFrontBrandRefreshHomePage.getPrefixMessageForCom().contains("unavailable"),"Expected message is unavailable for .com but actual on UI is: "+storeFrontBrandRefreshHomePage.getPrefixMessageForCom());
-		s_assert.assertTrue(storeFrontBrandRefreshHomePage.getPrefixMessageForEmail().contains("unavailable"),"Expected message is unavailable for email but actual on UI is: "+storeFrontBrandRefreshHomePage.getPrefixMessageForEmail());
 		s_assert.assertAll();
 	}
 
@@ -389,7 +387,7 @@ public class BizPWSTest extends RFBrandRefreshWebsiteBaseTest{
 		storeFrontBrandRefreshHomePage.clickEditOrderLink();
 		//storeFrontBrandRefreshHomePage.clickSectionUnderReplenishmentOrderManagement("Billing");
 		storeFrontBrandRefreshHomePage.clickChangeBillingInformationLinkUnderBillingTabOnPWS();
-		storeFrontBrandRefreshHomePage.enterBillingInfoForPWS(billingName, billingProfileFirstName, billingProfileLastName, nameOnCard, cardNumber, expMonth, expYear, addressLine1, postalCode, phnNumber);
+		storeFrontBrandRefreshHomePage.enterBillingInfoForPWS(billingName, billingProfileFirstName, billingProfileLastName, nameOnCard, cardNumber, expMonth, expYear, addressLine1, postalCode, phnNumber,CVV);
 		storeFrontBrandRefreshHomePage.clickUseThisBillingInformationBtn();
 		storeFrontBrandRefreshHomePage.clickUseAsEnteredBtn();
 		//s_assert.assertTrue(storeFrontBrandRefreshHomePage.getOrderBillingDetailsUpdateMessage().contains("Order billing information successfully updated!"), "Expected order Billing update message is Replenishment Order billing information successfully updated! but actual on UI is: "+storeFrontBrandRefreshHomePage.getOrderBillingDetailsUpdateMessage());
@@ -443,7 +441,7 @@ public class BizPWSTest extends RFBrandRefreshWebsiteBaseTest{
 		s_assert.assertTrue(driver.getCurrentUrl().contains("SetupAccount"), "Set up account page is not present");
 		storeFrontBrandRefreshHomePage.enterSetUpAccountInformation(firstName, lastName, consultantEmailID, password, addressLine1, postalCode, phnNumber1, phnNumber2, phnNumber3);
 		storeFrontBrandRefreshHomePage.clickSetUpAccountNextBtn();
-		storeFrontBrandRefreshHomePage.enterBillingInformation(cardNumber, nameOnCard, expMonth, expYear);
+		storeFrontBrandRefreshHomePage.enterBillingInformation(cardNumber, nameOnCard, expMonth, expYear,CVV);
 		storeFrontBrandRefreshHomePage.enterAccountInformation(ssnRandomNum1, ssnRandomNum2, ssnRandomNum3, firstName);
 		storeFrontBrandRefreshHomePage.clickBillingInfoNextBtn();
 		storeFrontBrandRefreshHomePage.clickTermsAndConditions();
@@ -510,7 +508,7 @@ public class BizPWSTest extends RFBrandRefreshWebsiteBaseTest{
 		storeFrontBrandRefreshHomePage.selectEnrollmentType(enrollemntType);
 		storeFrontBrandRefreshHomePage.enterSetUpAccountInformation(firstName, lastName, emailAddress, password, addressLine1, postalCode, phnNumber1, phnNumber2, phnNumber3);
 		storeFrontBrandRefreshHomePage.clickSetUpAccountNextBtn();
-		storeFrontBrandRefreshHomePage.enterBillingInformation(cardNumber, nameOnCard, expMonth, expYear);
+		storeFrontBrandRefreshHomePage.enterBillingInformation(cardNumber, nameOnCard, expMonth, expYear,CVV);
 		storeFrontBrandRefreshHomePage.enterAccountInformation(ssnRandomNum1, ssnRandomNum2, ssnRandomNum3, firstName);
 		storeFrontBrandRefreshHomePage.enterUserPrefixInPrefixField(prefix);
 		s_assert.assertTrue(storeFrontBrandRefreshHomePage.getDotComPWS().contains(comPWSToAssert),"Com pws is available for cross country user site prefix");
@@ -600,7 +598,7 @@ public class BizPWSTest extends RFBrandRefreshWebsiteBaseTest{
 		storeFrontBrandRefreshHomePage.selectEnrollmentType(enrollemntType);
 		storeFrontBrandRefreshHomePage.enterSetUpAccountInformation(firstName, lastName, emailAddress, password, addressLine1, postalCode, phnNumber1, phnNumber2, phnNumber3);
 		storeFrontBrandRefreshHomePage.clickSetUpAccountNextBtn();
-		storeFrontBrandRefreshHomePage.enterBillingInformation(cardNumber, nameOnCard, expMonth, expYear);
+		storeFrontBrandRefreshHomePage.enterBillingInformation(cardNumber, nameOnCard, expMonth, expYear,CVV);
 		storeFrontBrandRefreshHomePage.enterAccountInformation(ssnRandomNum1, ssnRandomNum2, ssnRandomNum3, firstName);
 		storeFrontBrandRefreshHomePage.enterSpecialCharacterInWebSitePrefixField(PWSSpclChars);
 		storeFrontBrandRefreshHomePage.clickCompleteAccountNextBtn();
@@ -654,7 +652,7 @@ public class BizPWSTest extends RFBrandRefreshWebsiteBaseTest{
 		String nameOnCard = firstName;
 		String expMonth = TestConstantsRFL.EXP_MONTH;
 		String expYear = TestConstantsRFL.EXP_YEAR;
-		String kitName = TestConstantsRFL.CONSULTANT_RF_EXPRESS_BUSINESS_KIT;
+		String kitName = TestConstantsRFL.CONSULTANT_RFX_EXPRESS_BUSINESS_KIT;
 		String regimen = TestConstantsRFL.REGIMEN_NAME_REDEFINE;
 		String enrollemntType = "Express";
 		String phnNumber1 = "415";
@@ -666,13 +664,13 @@ public class BizPWSTest extends RFBrandRefreshWebsiteBaseTest{
 		String PWS = "https://rfqa"+pwsBizBase;
 		driver.get(PWS);
 		storeFrontBrandRefreshHomePage.hoverOnBeAConsultantAndClickLinkOnEnrollMe();
-		storeFrontBrandRefreshHomePage.selectConsultantEnrollmentKitByPrice(kitName);
+		storeFrontBrandRefreshHomePage.selectEnrollmentKit(kitName);
 		storeFrontBrandRefreshHomePage.selectRegimenForConsultant(regimen);
 		storeFrontBrandRefreshHomePage.clickNextBtnAfterSelectRegimen();
 		storeFrontBrandRefreshHomePage.selectEnrollmentType(enrollemntType);
 		storeFrontBrandRefreshHomePage.enterSetUpAccountInformation(firstName, lastName, emailAddress, password, addressLine1, postalCode, phnNumber1, phnNumber2, phnNumber3);
 		storeFrontBrandRefreshHomePage.clickSetUpAccountNextBtn();
-		storeFrontBrandRefreshHomePage.enterBillingInformation(cardNumber, nameOnCard, expMonth, expYear);
+		storeFrontBrandRefreshHomePage.enterBillingInformation(cardNumber, nameOnCard, expMonth, expYear,CVV);
 		storeFrontBrandRefreshHomePage.enterAccountInformation(ssnRandomNum1, ssnRandomNum2, ssnRandomNum3, firstName);
 		storeFrontBrandRefreshHomePage.clickCompleteAccountNextBtn();
 		storeFrontBrandRefreshHomePage.clickTermsAndConditions();
@@ -681,28 +679,28 @@ public class BizPWSTest extends RFBrandRefreshWebsiteBaseTest{
 		storeFrontBrandRefreshHomePage.clickOnRodanAndFieldsLogo();
 		logout();
 		driver.get(PWS);
-		storeFrontBrandRefreshHomePage.clickEnrollNowBtnOnbizPWSPage();
-		storeFrontBrandRefreshHomePage.selectConsultantEnrollmentKitByPrice(kitName);
+		storeFrontBrandRefreshHomePage.hoverOnBeAConsultantAndClickLinkOnEnrollMe();
+		storeFrontBrandRefreshHomePage.selectEnrollmentKit(kitName);
 		storeFrontBrandRefreshHomePage.selectRegimenForConsultant(regimen);
 		storeFrontBrandRefreshHomePage.clickNextBtnAfterSelectRegimen();
 		storeFrontBrandRefreshHomePage.selectEnrollmentType(enrollemntType);
 		storeFrontBrandRefreshHomePage.enterSetUpAccountInformation(firstName, lastNameForReEnrollment, emailAddressForReEnrollment, password, addressLine1, postalCode, phnNumber1, phnNumber2, phnNumber3);
 		storeFrontBrandRefreshHomePage.clickSetUpAccountNextBtn();
-		storeFrontBrandRefreshHomePage.enterBillingInformation(cardNumber, nameOnCard, expMonth, expYear);
+		storeFrontBrandRefreshHomePage.enterBillingInformation(cardNumber, nameOnCard, expMonth, expYear,CVV);
 		storeFrontBrandRefreshHomePage.enterAccountInformation(ssnRandomNum1, ssnRandomNum2, ssnRandomNum3, firstName);
 		s_assert.assertTrue(storeFrontBrandRefreshHomePage.isExistingConsultantPopupPresent(), "Existing consultant popup is not present");
 		storeFrontBrandRefreshHomePage.clickCancelEnrollmentBtn();
 		s_assert.assertTrue(storeFrontBrandRefreshHomePage.isLoginButtonPresent(),"User is not redirected to home page after clicked on cancel enrollment button");
 		driver.get(PWS);
-		storeFrontBrandRefreshHomePage.clickEnrollNowBtnOnbizPWSPage();
+		storeFrontBrandRefreshHomePage.hoverOnBeAConsultantAndClickLinkOnEnrollMe();
 		/*storeFrontLegacyHomePage.clickEnrollNowBtnAtWhyRFPage();*/
-		storeFrontBrandRefreshHomePage.selectConsultantEnrollmentKitByPrice(kitName);
+		storeFrontBrandRefreshHomePage.selectEnrollmentKit(kitName);
 		storeFrontBrandRefreshHomePage.selectRegimenForConsultant(regimen);
 		storeFrontBrandRefreshHomePage.clickNextBtnAfterSelectRegimen();
 		storeFrontBrandRefreshHomePage.selectEnrollmentType(enrollemntType);
 		storeFrontBrandRefreshHomePage.enterSetUpAccountInformation(firstName, lastName2, emailAddress2, password, addressLine1, postalCode, phnNumber1, phnNumber2, phnNumber3);
 		storeFrontBrandRefreshHomePage.clickSetUpAccountNextBtn();
-		storeFrontBrandRefreshHomePage.enterBillingInformation(cardNumber, nameOnCard, expMonth, expYear);
+		storeFrontBrandRefreshHomePage.enterBillingInformation(cardNumber, nameOnCard, expMonth, expYear,CVV);
 		storeFrontBrandRefreshHomePage.enterAccountInformation(ssnRandomNum1, ssnRandomNum2, ssnRandomNum3, firstName);
 		s_assert.assertTrue(storeFrontBrandRefreshHomePage.isExistingConsultantPopupPresent(), "Existing consultant popup is not present");
 		storeFrontBrandRefreshHomePage.clickSendEmailToResetMyPassword();
@@ -745,7 +743,7 @@ public class BizPWSTest extends RFBrandRefreshWebsiteBaseTest{
 		storeFrontBrandRefreshHomePage.selectEnrollmentType(enrollemntType);
 		storeFrontBrandRefreshHomePage.enterSetUpAccountInformation(firstName, lastName, emailAddress, password, addressLine1, postalCode, phnNumber1, phnNumber2, phnNumber3);
 		storeFrontBrandRefreshHomePage.clickSetUpAccountNextBtn();
-		storeFrontBrandRefreshHomePage.enterBillingInformation(cardNumber, nameOnCard, expMonth, expYear);
+		storeFrontBrandRefreshHomePage.enterBillingInformation(cardNumber, nameOnCard, expMonth, expYear,CVV);
 		storeFrontBrandRefreshHomePage.enterAccountInformation(ssnRandomNum1, ssnRandomNum2, ssnRandomNum3, firstName);
 		storeFrontBrandRefreshHomePage.clickCompleteAccountNextBtn();
 		storeFrontBrandRefreshHomePage.clickTermsAndConditions();

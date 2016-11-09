@@ -57,7 +57,7 @@ public class RFExpressBusinessKitTest extends RFWebsiteBaseTest{
 		//storeFrontHomePage.acceptTheVerifyYourShippingAddressPop();  
 		storeFrontHomePage.enterCardNumber(TestConstants.CARD_NUMBER);
 		storeFrontHomePage.enterNameOnCard(TestConstants.FIRST_NAME+randomNum);
-		storeFrontHomePage.selectNewBillingCardExpirationDate();
+		storeFrontHomePage.selectNewBillingCardExpirationDate("OCT","2025");
 		storeFrontHomePage.enterSecurityCode(TestConstants.SECURITY_CODE);
 		storeFrontHomePage.enterSocialInsuranceNumber(socialInsuranceNumber);
 		storeFrontHomePage.enterNameAsItAppearsOnCard(TestConstants.FIRST_NAME);
@@ -80,7 +80,7 @@ public class RFExpressBusinessKitTest extends RFWebsiteBaseTest{
 		storeFrontHomePage.enterEditedCardNumber(TestConstants.CARD_NUMBER);
 		String editedBillingProfileName = TestConstants.FIRST_NAME+randomNum2;
 		storeFrontHomePage.enterNameOnCard(editedBillingProfileName+" "+TestConstants.LAST_NAME);
-		storeFrontHomePage.selectNewBillingCardExpirationDate();
+		storeFrontHomePage.selectNewBillingCardExpirationDate("OCT","2025");
 		storeFrontHomePage.enterSecurityCode(TestConstants.SECURITY_CODE);;
 		storeFrontHomePage.enterSocialInsuranceNumber(socialInsuranceNumber);
 		storeFrontHomePage.clickNextButton();
@@ -130,7 +130,7 @@ public class RFExpressBusinessKitTest extends RFWebsiteBaseTest{
 		storeFrontHomePage.clickNextButton();
 		storeFrontHomePage.enterCardNumber(TestConstants.CARD_NUMBER);
 		storeFrontHomePage.enterNameOnCard(TestConstants.FIRST_NAME+randomNum);
-		storeFrontHomePage.selectNewBillingCardExpirationDate();
+		storeFrontHomePage.selectNewBillingCardExpirationDate("OCT","2025");
 		storeFrontHomePage.enterSecurityCode(TestConstants.SECURITY_CODE);
 		storeFrontHomePage.enterSocialInsuranceNumber(socialInsuranceNumber);
 		storeFrontHomePage.enterNameAsItAppearsOnCard(TestConstants.FIRST_NAME);

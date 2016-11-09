@@ -9,7 +9,7 @@ import com.rf.pages.website.storeFront.StoreFrontHomePage;
 import com.rf.test.website.RFStoreFrontWebsiteBaseTest;
 import com.rf.test.website.RFWebsiteBaseTest;
 
-public class BigBusinessLaunchKitTest extends RFStoreFrontWebsiteBaseTest{
+public class BigBusinessLaunchKitTest extends RFWebsiteBaseTest{
 
 	private StoreFrontHomePage storeFrontHomePage;
 	private String kitName = null;
@@ -81,7 +81,7 @@ public class BigBusinessLaunchKitTest extends RFStoreFrontWebsiteBaseTest{
 		storeFrontHomePage.enterEditedCardNumber(TestConstants.CARD_NUMBER);
 		String editedBillingProfileName = TestConstants.FIRST_NAME+randomNum2;
 		storeFrontHomePage.enterNameOnCard(editedBillingProfileName+" "+TestConstants.LAST_NAME);
-		storeFrontHomePage.selectNewBillingCardExpirationDate();
+		storeFrontHomePage.selectNewBillingCardExpirationDate("OCT","2025");
 		storeFrontHomePage.enterSecurityCode(TestConstants.SECURITY_CODE);;
 		storeFrontHomePage.enterSocialInsuranceNumber(socialInsuranceNumber);
 		storeFrontHomePage.clickNextButton();

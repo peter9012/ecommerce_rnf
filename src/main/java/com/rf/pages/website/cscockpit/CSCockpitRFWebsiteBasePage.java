@@ -32,7 +32,7 @@ public class CSCockpitRFWebsiteBasePage extends RFBasePage{
 	private static String crossButtonOfDeliveryAndShippingAddress = "//div[text()='%s']/div";
 	private static String buttonsInDeliveryAndShippingAddressPopup = "//td[contains(text(),'%s')]";
 	private static String  deliveryAndShippingAddressPopup = "//div[text()='%s']";
-	private static String shippingAddressDropdownValueInPopupLoc ="//div[@class='csPopupArea']//following::td[contains(text(),'%s')]";
+	private static String shippingAddressDropdownValueInPopupLoc ="(//div[@class='z-combobox-pp'])[4]//tr[1]/td[contains(text(),'%s')]";
 
 	private static final By NO_RESULTS_LBL = By.xpath("//span[text()='No Results']");
 	private static final By CHANGE_ORDER_LINK = By.xpath("//a[text()='Change Order']");
@@ -945,6 +945,7 @@ public class CSCockpitRFWebsiteBasePage extends RFBasePage{
 		driver.waitForElementPresent(PHONE_TEXT_BOX);
 		driver.type(PHONE_TEXT_BOX, phoneNumber);
 		logger.info("Phone number entered is "+phoneNumber);
+		driver.waitForCRMLoadingImageToDisappear();
 	}
 
 	public String getNewBillingAddressNameInCheckoutTab(){
@@ -1261,9 +1262,10 @@ public class CSCockpitRFWebsiteBasePage extends RFBasePage{
 			}
 		}
 		logger.info("Value of i is:+"+i);
+		driver.waitForCSCockpitLoadingImageToDisappear();
 		return ""+i;
 	}
-
+	
 	public int getDayFromDate(String date){
 		int day = 0;
 		try{
@@ -1273,6 +1275,17 @@ public class CSCockpitRFWebsiteBasePage extends RFBasePage{
 			day = Integer.parseInt(pstDay.split("\\,")[0]);
 		}
 		return day;
+	}
+
+	public String selectAndReturnAddressFromDropdownBeforeClickingUseThisAddressBtnInPopup(String partOfShippingAddress){
+		driver.waitForElementPresent(SHIPPING_ADDRESS_DROPDOWN_IN_POPUP);
+		driver.click(SHIPPING_ADDRESS_DROPDOWN_IN_POPUP);
+		driver.waitForElementPresent(By.xpath(String.format(shippingAddressDropdownValueInPopupLoc, partOfShippingAddress)));
+		String selectedAddress= driver.findElement(By.xpath(String.format(shippingAddressDropdownValueInPopupLoc, partOfShippingAddress))).getText();
+		logger.info("Default selected shipping address is "+selectedAddress);
+		driver.click(By.xpath(String.format(shippingAddressDropdownValueInPopupLoc, partOfShippingAddress)));
+		driver.waitForCSCockpitLoadingImageToDisappear();
+		return selectedAddress.trim();
 	}
 
 }

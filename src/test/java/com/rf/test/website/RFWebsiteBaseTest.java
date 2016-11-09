@@ -47,9 +47,9 @@ public class RFWebsiteBaseTest extends RFBaseTest {
 	 */
 	@BeforeSuite(alwaysRun=true)
 	public void setUp() throws Exception {
-		driver.loadApplication();                               
+		driver.loadApplication();
 		logger.info("Application loaded");                                                            
-		driver.setDBConnectionString();                
+		driver.setDBConnectionString();
 	}
 
 	public void navigateToStoreFrontBaseURL(){
@@ -61,6 +61,8 @@ public class RFWebsiteBaseTest extends RFBaseTest {
 	public void beforeMethod(){
 		s_assert = new SoftAssert();
 		String country = driver.getCountry();
+		System.out.println("Country="+country);
+		System.out.println("driver="+driver.getURL());
 		if(driver.getURL().contains("cscockpit")||driver.getURL().contains("salesforce")==true){                 
 			driver.get(driver.getURL());
 		}
@@ -70,12 +72,14 @@ public class RFWebsiteBaseTest extends RFBaseTest {
 		if(driver.getURL().contains("cscockpit")==true||driver.getURL().contains("salesforce")==true){  
 
 		}else{
-			try{
-				logout();		
-			}catch(NoSuchElementException e){
-
-			}   
-		}		           
+			//			try{
+			//				logout();		
+			//			}catch(NoSuchElementException e){
+			//
+			//			} 
+			if(isLogoutBtnPresent())
+				logout();
+		}	
 		if(country.equalsIgnoreCase("ca"))
 			countryId = "40";
 		else if(country.equalsIgnoreCase("us"))
@@ -157,12 +161,22 @@ public class RFWebsiteBaseTest extends RFBaseTest {
 			js.executeScript("arguments[0].click();", driver.findElement(By.xpath("//*[@id='account-info-button']//a[text()='Log out']")));		
 			//driver.click(By.linkText("Log out"));
 			logger.info("Logout");                    
+			driver.waitForPageLoad();
 			driver.pauseExecutionFor(3000);
 		}
 		catch(Exception e)
 		{
-			
+
 		}
+
+	}
+
+	public boolean isLogoutBtnPresent(){
+		int listSize = driver.findElements(By.id("account-info-button")).size();
+		if(listSize>0)
+			return true;
+		else
+			return false;
 	}
 
 	// This assertion for the UI Texts

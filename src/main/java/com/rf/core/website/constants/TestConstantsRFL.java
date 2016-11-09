@@ -7,7 +7,7 @@ public class TestConstantsRFL {
 	public static final String FIRST_NAME = "testRF";
 	public static final String LAST_NAME = "ln";
 	public static final String ADDRESS_LINE1 = "60 Spear St";
-	public static final String POSTAL_CODE = "94536";
+	public static final String POSTAL_CODE = "94105";
 	public static final String CARD_NUMBER = "5424000000000015";
 	public static final String EXP_MONTH = "4";
 	public static final String EXP_YEAR = "2018";
@@ -24,7 +24,7 @@ public class TestConstantsRFL {
 	public static final String BILLING_PROFILE_NAME = "newBPName";
 	public static final String BILLING_PROFILE_FIRST_NAME = "newBPFName";
 	public static final String BILLING_PROFILE_LAST_NAME = "newBPLName";
-	//public static final String USERNAME_PC = "pcrandfautomation@xyz.com";//"lacey@rodanandfields.com";
+	public static final String SECURITY_CODE = "123";
 
 	public static final String REGIMEN_NAME_REVERSE = "REVERSE";
 	public static final String REGIMEN_NAME_REDEFINE = "REDEFINE";

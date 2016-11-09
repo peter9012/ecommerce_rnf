@@ -76,57 +76,57 @@ public class EnrollmentTest extends RFLegacyStoreFrontWebsiteBaseTest{
 		s_assert.assertAll();
 	}
 
-	//RC Enrollment from corp site.
-	@Test(enabled=true)//smoke
-	public void testRCEnrollment(){
-		int randomNum = CommonUtils.getRandomNum(10000, 1000000);
-		int randomNumber = CommonUtils.getRandomNum(10000, 1000000);
-		int randomNumbers = CommonUtils.getRandomNum(10000, 1000000);
-		String firstName = TestConstantsRFL.FIRST_NAME;
-		String lastName = TestConstantsRFL.LAST_NAME+randomNum;
-		String shippingProfileFirstName = TestConstantsRFL.SHIPPING_PROFILE_FIRST_NAME;
-		String shippingProfileLastName = TestConstantsRFL.SHIPPING_PROFILE_LAST_NAME+randomNumber;
-		String emailAddress = firstName+randomNum+"@xyz.com";
-		String addressLine1 =  TestConstantsRFL.ADDRESS_LINE1;
-		String postalCode = TestConstantsRFL.POSTAL_CODE;
-		String cardNumber = TestConstantsRFL.CARD_NUMBER;
-		String billingName =TestConstantsRFL.BILLING_PROFILE_NAME;
-		String billingProfileFirstName = TestConstantsRFL.BILLING_PROFILE_FIRST_NAME+randomNumbers;
-		String billingProfileLastName = TestConstantsRFL.BILLING_PROFILE_LAST_NAME;
-		String nameOnCard = firstName;
-		String expMonth = TestConstantsRFL.EXP_MONTH;
-		String expYear = TestConstantsRFL.EXP_YEAR;
-		String regimen = TestConstantsRFL.REGIMEN_NAME_REVERSE;
-		String phnNumber = TestConstantsRFL.NEW_ADDRESS_PHONE_NUMBER_US;
-		String gender = TestConstantsRFL.GENDER_MALE;
-		String javaScriptPopupTxt = TestConstantsRFL.RC_ACCOUNT_CONFIRMATION_POPUP_TXT;
-		String sponsorID = TestConstantsRFL.CID_CONSULTANT;
-		String addressName = "Home";
-
-		storeFrontLegacyHomePage =  new StoreFrontLegacyHomePage(driver);
-		storeFrontLegacyHomePage.clickShopSkinCareBtn();
-		storeFrontLegacyHomePage.selectRegimen(regimen);
-		storeFrontLegacyHomePage.clickAddToCartBtn();
-		storeFrontLegacyHomePage.clickCheckoutBtn();
-		storeFrontLegacyHomePage.clickClickHereLinkForRC();
-		storeFrontLegacyHomePage.enterProfileDetailsForPCAndRC(firstName,lastName,emailAddress,password,phnNumber,gender);
-		storeFrontLegacyHomePage.clickCreateMyAccountBtnOnCreateRetailAccountPage();
-		//s_assert.assertTrue(storeFrontLegacyHomePage.getJavaScriptPopUpText().contains(javaScriptPopupTxt),"Java Script Popup for RC account confirmation not present");
-		//storeFrontLegacyHomePage.clickOKBtnOfJavaScriptPopUp();
-		storeFrontLegacyHomePage.enterIDNumberAsSponsorForPCAndRC(sponsorID);
-		storeFrontLegacyHomePage.clickBeginSearchBtn();
-		storeFrontLegacyHomePage.selectSponsorRadioBtn();
-		storeFrontLegacyHomePage.clickSelectAndContinueBtnForPCAndRC();
-		storeFrontLegacyHomePage.enterShippingProfileDetails(addressName, shippingProfileFirstName,shippingProfileLastName, addressLine1, postalCode, phnNumber);
-		storeFrontLegacyHomePage.clickContinueBtn();
-		storeFrontLegacyHomePage.clickUseAsEnteredBtn();
-		storeFrontLegacyHomePage.enterBillingInfoDetailsForRC(billingName, billingProfileFirstName, billingProfileLastName, nameOnCard, cardNumber, expMonth, expYear, addressLine1, postalCode, phnNumber);
-		storeFrontLegacyHomePage.clickContinueBtn();
-		storeFrontLegacyHomePage.clickUseAsEnteredBtn();
-		storeFrontLegacyHomePage.clickCompleteOrderBtn();
-		s_assert.assertTrue(storeFrontLegacyHomePage.isThankYouTextPresentAfterOrderPlaced(), "Enrollment is not completed successfully");
-		s_assert.assertAll();	
-	}
+//	//RC Enrollment from corp site.
+//	@Test(enabled=true)//smoke
+//	public void testRCEnrollment(){
+//		int randomNum = CommonUtils.getRandomNum(10000, 1000000);
+//		int randomNumber = CommonUtils.getRandomNum(10000, 1000000);
+//		int randomNumbers = CommonUtils.getRandomNum(10000, 1000000);
+//		String firstName = TestConstantsRFL.FIRST_NAME;
+//		String lastName = TestConstantsRFL.LAST_NAME+randomNum;
+//		String shippingProfileFirstName = TestConstantsRFL.SHIPPING_PROFILE_FIRST_NAME;
+//		String shippingProfileLastName = TestConstantsRFL.SHIPPING_PROFILE_LAST_NAME+randomNumber;
+//		String emailAddress = firstName+randomNum+"@xyz.com";
+//		String addressLine1 =  TestConstantsRFL.ADDRESS_LINE1;
+//		String postalCode = TestConstantsRFL.POSTAL_CODE;
+//		String cardNumber = TestConstantsRFL.CARD_NUMBER;
+//		String billingName =TestConstantsRFL.BILLING_PROFILE_NAME;
+//		String billingProfileFirstName = TestConstantsRFL.BILLING_PROFILE_FIRST_NAME+randomNumbers;
+//		String billingProfileLastName = TestConstantsRFL.BILLING_PROFILE_LAST_NAME;
+//		String nameOnCard = firstName;
+//		String expMonth = TestConstantsRFL.EXP_MONTH;
+//		String expYear = TestConstantsRFL.EXP_YEAR;
+//		String regimen = TestConstantsRFL.REGIMEN_NAME_REVERSE;
+//		String phnNumber = TestConstantsRFL.NEW_ADDRESS_PHONE_NUMBER_US;
+//		String gender = TestConstantsRFL.GENDER_MALE;
+//		String javaScriptPopupTxt = TestConstantsRFL.RC_ACCOUNT_CONFIRMATION_POPUP_TXT;
+//		String sponsorID = TestConstantsRFL.CID_CONSULTANT;
+//		String addressName = "Home";
+//
+//		storeFrontLegacyHomePage =  new StoreFrontLegacyHomePage(driver);
+//		storeFrontLegacyHomePage.clickShopSkinCareBtn();
+//		storeFrontLegacyHomePage.selectRegimen(regimen);
+//		storeFrontLegacyHomePage.clickAddToCartBtn();
+//		storeFrontLegacyHomePage.clickCheckoutBtn();
+//		storeFrontLegacyHomePage.clickClickHereLinkForRC();
+//		storeFrontLegacyHomePage.enterProfileDetailsForPCAndRC(firstName,lastName,emailAddress,password,phnNumber,gender);
+//		storeFrontLegacyHomePage.clickCreateMyAccountBtnOnCreateRetailAccountPage();
+//		//s_assert.assertTrue(storeFrontLegacyHomePage.getJavaScriptPopUpText().contains(javaScriptPopupTxt),"Java Script Popup for RC account confirmation not present");
+//		//storeFrontLegacyHomePage.clickOKBtnOfJavaScriptPopUp();
+//		storeFrontLegacyHomePage.enterIDNumberAsSponsorForPCAndRC(sponsorID);
+//		storeFrontLegacyHomePage.clickBeginSearchBtn();
+//		storeFrontLegacyHomePage.selectSponsorRadioBtn();
+//		storeFrontLegacyHomePage.clickSelectAndContinueBtnForPCAndRC();
+//		storeFrontLegacyHomePage.enterShippingProfileDetails(addressName, shippingProfileFirstName,shippingProfileLastName, addressLine1, postalCode, phnNumber);
+//		storeFrontLegacyHomePage.clickContinueBtn();
+//		storeFrontLegacyHomePage.clickUseAsEnteredBtn();
+//		storeFrontLegacyHomePage.enterBillingInfoDetailsForRC(billingName, billingProfileFirstName, billingProfileLastName, nameOnCard, cardNumber, expMonth, expYear, addressLine1, postalCode, phnNumber);
+//		storeFrontLegacyHomePage.clickContinueBtn();
+//		storeFrontLegacyHomePage.clickUseAsEnteredBtn();
+//		storeFrontLegacyHomePage.clickCompleteOrderBtn();
+//		s_assert.assertTrue(storeFrontLegacyHomePage.isThankYouTextPresentAfterOrderPlaced(), "Enrollment is not completed successfully");
+//		s_assert.assertAll();	
+//	}
 
 	//Consultant Express Enrollment from Corp
 	@Test(enabled=true)//smoke

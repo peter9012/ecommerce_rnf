@@ -8,12 +8,12 @@ import org.apache.logging.log4j.Logger;
 import org.openqa.selenium.Alert;
 import org.openqa.selenium.By;
 import org.openqa.selenium.NoSuchElementException;
+import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.openqa.selenium.support.ui.Select;
 import org.openqa.selenium.support.ui.WebDriverWait;
 import org.openqa.selenium.JavascriptExecutor;
 import org.openqa.selenium.Keys;
-
 import com.rf.core.driver.website.RFWebsiteDriver;
 import com.rf.core.utils.CommonUtils;
 
@@ -121,7 +121,7 @@ public class StoreFrontLegacyHomePage extends StoreFrontLegacyRFWebsiteBasePage{
 	private static final By LOGOUT_LOC = By.xpath("//a[text()='Log Out']");
 	private static final By EXISTING_CONSULTANT_LOC = By.xpath("//div[@id='ExistentConsultant']/p[contains(text(),'already have a Consultant account')]");
 	private static final By BECOME_A_CONSULTANT_MENU = By.xpath("//a[@href='/Pages/BusinessSystem/WhyRF/GettingStarted']");
-	private static final By ENROLL_NOW_ON_BIZ_PWS_PAGE_LOC = By.xpath("//a[@href='/NewEnrollment/SearchSponsor']");
+	private static final By ENROLL_NOW_ON_BIZ_PWS_PAGE_LOC = By.xpath("//*[@id='nav']/div/ul/li[2]/ul/li[2]/a/span");
 	private static final By ENROLL_NOW_ON_WHY_RF_PAGE_LOC = By.xpath("//ul[@class='SubNav']//span[contains(text(),'Enroll Now')]");
 
 	private static final By ADD_TO_CART_BTN = By.id("addToCartButton");//"//a[text()='Add to Cart']");
@@ -150,7 +150,7 @@ public class StoreFrontLegacyHomePage extends StoreFrontLegacyRFWebsiteBasePage{
 	private static final By COUNTRY_DD = By.xpath("//input[contains(@id,'uxCountyDropDown_Input')]");
 	private static final By FIRST_VALUE_OF_COUNTRY_DD = By.xpath("//div[contains(@id,'uxCountyDropDown_DropDown')]//ul[@class='rcbList']/li");
 	private static final By PHONE_NUMBER_SHIPPING_PROFILE_PAGE = By.xpath("//input[contains(@id,'uxShippingEditor_AppPhone')]");
-	private static final By BILLING_NAME_FOR_BILLING_PROFILE = By.id("ctl00_ctl00_ContentPlaceHolder1_MainContent_uxBillingInfo_uxBillingEditor_uxBillingProfileName");//xpath("//input[contains(@id,'uxBillingProfileName')]");
+	private static final By BILLING_NAME_FOR_BILLING_PROFILE = By.xpath("//input[contains(@id,'uxBillingProfileName')]");
 	private static final By NAME_ON_CARD = By.xpath("//input[contains(@id,'uxNameOnCard')]");
 	private static final By CREDIT_CARD_NUMBER_INPUT_FIELD = By.xpath("//input[contains(@id,'uxCreditCardNumber')]");
 	private static final By EXPIRATION_DATE_MONTH_DD = By.xpath("//select[contains(@id,'uxMonthDropDown')]");
@@ -263,6 +263,9 @@ public class StoreFrontLegacyHomePage extends StoreFrontLegacyRFWebsiteBasePage{
 	private static final By ORDER_DETAILS_POPUP = By.xpath("//h2[@class='FL modal']//cufontext[contains(text(),'Order')]/../following-sibling::cufon/cufontext[text()='Details']");
 	private static final By CLOSE_OF_ORDER_DETAILS_POPUP = By.xpath("//h2[@class='FL modal']/following::cufontext[text()='X']/..");
 	private static final By BILLING_NAME_FOR_BILLING_PROFILE_RC = By.id("ctl00_ctl00_ctl00_ContentPlaceHolder1_ContentPlaceHolder1_MainContent_uxBillingInfo_uxBillingEditor_uxBillingProfileName");
+	private static final By CONNECT_WITH_A_CONSULTANT = By.cssSelector("a[href*='LocatePWS']");
+	private static final By CLICK_HERE_TO_LEARN_MORE_ABOUT_DIRECT_SELLING = By.cssSelector("a[href*='directselling']");
+	private static final By PRESS_ROOM = By.xpath("//span[contains(text(),'Press Room')]");
 
 	public StoreFrontLegacyHomePage(RFWebsiteDriver driver) {
 		super(driver);
@@ -329,6 +332,7 @@ public class StoreFrontLegacyHomePage extends StoreFrontLegacyRFWebsiteBasePage{
 		}
 		driver.click(ENROLLMENT_NEXT_BTN_LOC);
 		logger.info("Next button after selecting enrollment type is clicked");
+		driver.waitForPageLoad();
 	}
 
 	public void enterSetUpAccountInformation(String firstName,String lastName,String emailAddress,String password,String addressLine1,String postalCode,String phnNumber1,String phnNumber2,String phnNumber3){
@@ -366,6 +370,7 @@ public class StoreFrontLegacyHomePage extends StoreFrontLegacyRFWebsiteBasePage{
 			logger.info("Use as entered popup not present.");
 		}
 		driver.waitForPageLoad();
+		driver.pauseExecutionFor(5000);
 	}
 
 	public void enterBillingInformation(String cardNumber,String nameOnCard,String expMonth,String expYear){
@@ -396,13 +401,14 @@ public class StoreFrontLegacyHomePage extends StoreFrontLegacyRFWebsiteBasePage{
 		driver.quickWaitForElementPresent(PWS_LOC);
 		driver.type(PWS_LOC, pws);
 		logger.info("PWS enterd as: "+pws);
-
 	}
 
 	public void clickCompleteAccountNextBtn(){
 		driver.waitForElementToBeVisible(PWS_AVAILABLE_MSG_LOC, 30);
 		driver.findElement(COMPLETE_ACCOUNT_NEXT_BTN_LOC).click();
 		logger.info("complete account next button clicked");
+		driver.waitForPageLoad();
+		driver.pauseExecutionFor(5000);
 	}
 
 	public void clickTermsAndConditions(){
@@ -467,6 +473,8 @@ public class StoreFrontLegacyHomePage extends StoreFrontLegacyRFWebsiteBasePage{
 	public void clickBillingInfoNextBtn(){
 		driver.findElement(COMPLETE_ACCOUNT_NEXT_BTN_LOC).click();
 		logger.info("standard enrollment complete account next button clicked");
+		driver.waitForPageLoad();
+		driver.pauseExecutionFor(2000);
 	}
 
 	public void openBizPWS(String pws){
@@ -543,8 +551,10 @@ public class StoreFrontLegacyHomePage extends StoreFrontLegacyRFWebsiteBasePage{
 
 	public void selectRegimen(String regimen){
 		regimen = regimen.toUpperCase();
-		driver.waitForElementPresent(By.xpath(String.format(regimenLoc, regimen)));
-		driver.click(By.xpath(String.format(regimenLoc, regimen)));
+		driver.get(driver.getURL()+"/Shop/"+regimen);
+
+		//		driver.quickWaitForElementPresent(By.xpath(String.format(regimenLoc, regimen)));
+		//		driver.click(By.xpath(String.format(regimenLoc, regimen)));
 		logger.info("Regimen selected is: "+regimen);
 		driver.waitForPageLoad();
 	}
@@ -554,14 +564,21 @@ public class StoreFrontLegacyHomePage extends StoreFrontLegacyRFWebsiteBasePage{
 			driver.findElement(By.xpath("//a[text()='Add to Cart']"));
 			driver.click(By.xpath("//a[text()='Add to Cart']"));
 			System.out.println("Add to cart button on ProdDetailPage is clicked");
-			driver.waitForPageLoad();
+		} catch (NoSuchElementException e1) {
+			try{
+				driver.findElement(ADD_TO_CART_BTN_LOC);
+				driver.quickWaitForElementPresent(ADD_TO_CART_BTN_LOC);
+				driver.click(ADD_TO_CART_BTN_LOC);
+				logger.info("Add to cart button is clicked");
+			}
+			catch(NoSuchElementException e2)
+			{
+				driver.quickWaitForElementPresent(By.xpath("//*[@id='FullPageItemList']/div[1]//a[@id='addToCartButton']"));
+				driver.click(By.xpath("//*[@id='FullPageItemList']/div[1]//a[@id='addToCartButton']"));
+				logger.info("Add to cart button is clicked");
 
-		} catch (NoSuchElementException e) {
-			driver.findElement(ADD_TO_CART_BTN_LOC);
-			driver.waitForElementPresent(ADD_TO_CART_BTN_LOC);
-			driver.click(ADD_TO_CART_BTN_LOC);
-			logger.info("Add to cart button is clicked");
-			driver.waitForPageLoad();
+			}
+
 
 		}
 	}
@@ -674,6 +691,7 @@ public class StoreFrontLegacyHomePage extends StoreFrontLegacyRFWebsiteBasePage{
 	}
 
 	public void enterBillingInfoDetails(String billingName, String firstName,String lastName,String cardName,String cardNumer,String month,String year,String addressLine1,String postalCode,String phnNumber){
+		driver.pauseExecutionFor(2000);
 		driver.type(BILLING_NAME_FOR_BILLING_PROFILE, billingName);
 		logger.info("Billing profile name entered as: "+billingName);
 		//driver.type(ATTENTION_FIRST_NAME, firstName);
@@ -1417,8 +1435,8 @@ public class StoreFrontLegacyHomePage extends StoreFrontLegacyRFWebsiteBasePage{
 		logger.info("Postal code entered as: "+postalCode);
 		driver.waitForStorfrontLegacyLoadingImageToDisappear();
 		driver.click(CITY_DD);
-		logger.info("City dropdown clicked");
-		driver.click(FIRST_VALUE_OF_CITY_DD);
+		/*		logger.info("City dropdown clicked");
+		driver.click(FIRST_VALUE_OF_CITY_DD);*/
 		logger.info("City selected");
 		driver.type(CITY_DD, "Fremont");
 		logger.info("City Selected");
@@ -1482,10 +1500,16 @@ public class StoreFrontLegacyHomePage extends StoreFrontLegacyRFWebsiteBasePage{
 	}
 
 	public void clickHeaderLinkAfterLogin(String linkName) {
-		driver.quickWaitForElementPresent(By.xpath(String.format(myAccountLinkAfterLoginLink, linkName)));
-		driver.click(By.xpath(String.format(myAccountLinkAfterLoginLink, linkName)));
-		logger.info("my account link is clicked");
-		driver.waitForPageLoad();
+		try{
+			driver.quickWaitForElementPresent(By.xpath(String.format(myAccountLinkAfterLoginLink, linkName)));
+			driver.click(By.xpath(String.format(myAccountLinkAfterLoginLink, linkName)));
+			logger.info("my account link is clicked");
+		}
+		catch(NoSuchElementException e){
+			driver.quickWaitForElementPresent(By.xpath("//*[@id='ConsultantWelcome']/ul/li[1]/a"));
+			driver.click(By.xpath("//*[@id='ConsultantWelcome']/ul/li[1]/a"));
+			logger.info("my account link is clicked");
+		}
 	}
 
 	public void clickEditOrderLink(){
@@ -1553,10 +1577,7 @@ public class StoreFrontLegacyHomePage extends StoreFrontLegacyRFWebsiteBasePage{
 		//*** Price became unstable for selection, opting for Javascript
 		JavascriptExecutor js = (JavascriptExecutor) RFWebsiteDriver.driver;
 		js.executeScript("selectKit(269)");
-
-		//driver.waitForElementPresent(By.xpath(String.format(consultantEnrollmentKit, price)));
-		//driver.click(By.xpath(String.format(consultantEnrollmentKit, price)));
-		//logger.info("Selected consultant enrollment kit's price is: "+price);
+		driver.waitForPageLoad();
 	}
 
 	public void selectRegimenForConsultant(String regimen){
@@ -1913,42 +1934,25 @@ public class StoreFrontLegacyHomePage extends StoreFrontLegacyRFWebsiteBasePage{
 		return fetchPWS;
 	}
 
-	public void enterBillingInfoDetailsForRC(String billingName, String firstName,String lastName,String cardName,String cardNumer,String month,String year,String addressLine1,String postalCode,String phnNumber){
-		driver.waitForElementPresent(BILLING_NAME_FOR_BILLING_PROFILE_RC);
-		driver.type(BILLING_NAME_FOR_BILLING_PROFILE_RC, billingName);
-		logger.info("Billing profile name entered as: "+billingName);
-		//driver.type(ATTENTION_FIRST_NAME, firstName);
-		driver.type(BILLING_FIRST_NAME, firstName);
-		logger.info("Attention first name entered as: "+firstName);
-		//driver.type(ATTENTION_LAST_NAME, lastName);
-		driver.type(BILLING_LAST_NAME, lastName);
-		logger.info("Attention last name entered as: "+lastName);
-		driver.type(NAME_ON_CARD, cardName);
-		logger.info("Card Name entered as: "+cardName);
-		driver.type(CREDIT_CARD_NUMBER_INPUT_FIELD, cardNumer);
-		logger.info("Card number entered as: "+cardNumer);
-		driver.click(EXPIRATION_DATE_MONTH_DD);
-		logger.info("Expiration month dropdown clicked");
-		driver.click(By.xpath(String.format(expiryMonthLoc, month)));
-		logger.info("Expiry month selected is: "+month);
-		driver.click(EXPIRATION_DATE_YEAR_DD);
-		logger.info("Expiration year dropdown clicked");
-		driver.click(By.xpath(String.format(expiryYearLoc, year)));
-		logger.info("Expiry year selected is: "+year);
-		driver.type(ADDRESS_LINE_1, addressLine1);
-		logger.info("Billing street address entered as: "+addressLine1);
-		driver.type(ZIP_CODE, postalCode+"\t");
-		driver.findElement(ZIP_CODE).sendKeys(Keys.ENTER);
-		logger.info("Postal code entered as: "+postalCode);
-		driver.waitForStorfrontLegacyLoadingImageToDisappear();
-		/*driver.click(CITY_DD);
-		    logger.info("City dropdown clicked");
-		    driver.click(FIRST_VALUE_OF_CITY_DD);
-		    logger.info("City selected");*/
-		driver.type(CITY_DD, "Fremont");
-		logger.info("City Selected");
-		driver.type(PHONE_NUMBER_BILLING_PROFILE_PAGE,phnNumber);
-		logger.info("Phone number entered as: "+phnNumber);
+	public void clickConnectWithAConsultant(){
+		driver.waitForElementPresent(CONNECT_WITH_A_CONSULTANT);
+		driver.click(CONNECT_WITH_A_CONSULTANT);
+		logger.info("Connect with a consultant");
+	}
+
+	public void clickClickhereLinkToLearnDirectSelling(){
+		driver.quickWaitForElementPresent(CLICK_HERE_TO_LEARN_MORE_ABOUT_DIRECT_SELLING);
+		driver.click(CLICK_HERE_TO_LEARN_MORE_ABOUT_DIRECT_SELLING);
+		logger.info("Click here link clicked");
+		logger.info("Redirect to direct selling page");
+		driver.waitForPageLoad();
+		driver.pauseExecutionFor(3000);
+	}
+
+	public void clickCompanyPressRoomLink(){
+		driver.quickWaitForElementPresent(PRESS_ROOM);
+		driver.click(PRESS_ROOM);
+		logger.info("Company Press Room Link clicked");
 		driver.waitForPageLoad();
 	}
 }

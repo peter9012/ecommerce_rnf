@@ -32,10 +32,11 @@ public class RFDSVStoreFrontWebsiteBaseTest extends RFBaseTest {
 	StringBuilder verificationErrors = new StringBuilder();
 	protected String password = null;
 	protected String countryId = null;
+	protected String comPWS = null;
 	private static final By LOGIN_LINK = By.xpath("//li[@id='log-in-button']/a");
 	private static final By USERNAME_TXTFIELD = By.id("username");
 	private static final By PASSWORD_TXTFIELD = By.id("password");
-	private static final By LOGIN_BTN = By.xpath("//input[@value='Log in']");
+	private static final By LOGIN_BTN = By.xpath("//input[@value='SIGN IN']");
 
 	protected RFWebsiteDriver driver = new RFWebsiteDriver(propertyFile);
 	private static final Logger logger = LogManager
@@ -73,6 +74,7 @@ public class RFDSVStoreFrontWebsiteBaseTest extends RFBaseTest {
 		driver.click(LOGIN_BTN);
 		driver.waitForLoadingImageToDisappear();
 		driver.waitForPageLoad();
+		comPWS = driver.getCurrentUrl();
 	}
 
 	@BeforeGroups(groups = { "pc" })
@@ -157,12 +159,10 @@ public class RFDSVStoreFrontWebsiteBaseTest extends RFBaseTest {
 	@BeforeMethod(alwaysRun=true)
 	public void beforeMethod(){
 		s_assert = new SoftAssert();
-		//		String country = driver.getCountry();
-		//		driver.get(driver.getURL()+"/"+country);
-		//		if(country.equalsIgnoreCase("ca"))
-		//			countryId = "40";
-		//		else if(country.equalsIgnoreCase("us"))
-		//			countryId = "236";			
+		if(driver.getCurrentUrl().contains("login")){
+			String country = driver.getCountry();
+			driver.get(driver.getURL()+"/"+country);
+		}		
 	}
 
 	@AfterMethod
@@ -181,6 +181,10 @@ public class RFDSVStoreFrontWebsiteBaseTest extends RFBaseTest {
 
 	public void setStoreFrontPassword(String pass){
 		password=pass;
+	}
+	
+	public String getComPWS(){
+		return comPWS;
 	}
 
 	public void logout(){

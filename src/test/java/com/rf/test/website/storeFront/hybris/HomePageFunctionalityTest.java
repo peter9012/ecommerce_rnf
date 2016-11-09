@@ -7,6 +7,8 @@ import java.util.Map;
 import org.apache.commons.lang3.RandomStringUtils;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
+import org.openqa.selenium.By;
+import org.openqa.selenium.WebElement;
 import org.testng.annotations.Test;
 
 import com.rf.core.utils.CommonUtils;
@@ -560,7 +562,7 @@ public class HomePageFunctionalityTest extends RFWebsiteBaseTest{
 	}	
 
 	//Hybris Project-3822:Verify Footer Links on .COM home Page
-	@Test 
+	@Test(enabled=false)//same as 3847
 	public void testVerifyFooterLinksOnHomePage_3822(){
 		//Navgate to app home page
 		storeFrontHomePage = new StoreFrontHomePage(driver);
@@ -769,12 +771,12 @@ public class HomePageFunctionalityTest extends RFWebsiteBaseTest{
 				logger.info("Login error for the user "+consultantEmailID);
 				driver.get(driver.getURL());
 				System.out.println(consultantEmailID + " failed to login.");
-				
+
 			}
 			else
 				break;
 		}
-	
+
 		logger.info("login is successful");
 		//click meet your consultant banner link
 		storeFrontConsultantPage.clickOnMeetYourConsultantLink();
@@ -836,7 +838,7 @@ public class HomePageFunctionalityTest extends RFWebsiteBaseTest{
 		storeFrontHomePage.updateEmailOnMeetYourConsultantPage(emailAddress);
 		storeFrontHomePage.clickOnSaveAfterEditPWS();
 		logout();
-		storeFrontHomePage.openPWS(bizPWS);
+		storeFrontHomePage.openPWSSite(bizPWS);
 		storeFrontHomePage.clickOnSponsorName();
 
 		s_assert.assertTrue(storeFrontHomePage.verifyEmailIdIsPresentInContactBoxAfterUpdate(emailAddress), "Email Address is not Present in contact box After Edit");
@@ -891,28 +893,10 @@ public class HomePageFunctionalityTest extends RFWebsiteBaseTest{
 		country = driver.getCountry();
 		env = driver.getEnvironment();  
 		storeFrontHomePage = new StoreFrontHomePage(driver);
-		String PWS = storeFrontHomePage.getBizPWS(country, env);
-		PWS = storeFrontHomePage.convertBizSiteToComSite(PWS);
-		storeFrontHomePage.openPWS(PWS);
-		List<Map<String, Object>> randomConsultantList =  null;
-		String consultantEmailID = null;
-		String accountId = null;
-		while(true){
-			randomConsultantList = DBUtil.performDatabaseQuery(DBQueries_RFO.callQueryWithArguementPWS(DBQueries_RFO.GET_RANDOM_ACTIVE_CONSULTANT_WITH_PWS_RFO,driver.getEnvironment()+".com",driver.getCountry(),countryId),RFO_DB);
-			consultantEmailID = (String) getValueFromQueryResult(randomConsultantList, "UserName");  
-			accountId = String.valueOf(getValueFromQueryResult(randomConsultantList, "AccountID"));
-			logger.info("Account Id of the user is "+accountId);
-			storeFrontConsultantPage = storeFrontHomePage.loginAsConsultant(consultantEmailID, password);
-			boolean isLoginError = driver.getCurrentUrl().contains("error");
-			if(isLoginError){
-				logger.info("Login error for the user "+consultantEmailID);
-				driver.get(driver.getURL()+"/"+driver.getCountry());
-			}
-			else
-				break;
-		}
-		logger.info("login is successful");
-		//click learn more link
+		//String sitePrefix = "bhopkins"; // standard active consultant site
+		//String comPWS = driver.getComPWSURL();
+		//String PWS = "https://"+sitePrefix+comPWS+"/"+country;
+		storeFrontHomePage.openComPWSSite(country, env);
 		storeFrontHomePage.clickLearnMoreLinkUnderSolutionToolAndSwitchControl();
 		//validate consultant info on top right corner..
 		s_assert.assertTrue(storeFrontHomePage.validateConsultantNameOnTopRightCorner(),"Consultant Info is not present on right top Corner");
@@ -1036,10 +1020,8 @@ public class HomePageFunctionalityTest extends RFWebsiteBaseTest{
 	public void testToVerifyTheMoreAboutMeSectionForPWSBiz_1900() throws InterruptedException{
 		RFO_DB = driver.getDBNameRFO();
 		List<Map<String, Object>> randomConsultantList =  null;
-
 		String consultantEmailId =null;
 		String accountId = null;
-
 		country = driver.getCountry();
 		env = driver.getEnvironment();
 		storeFrontHomePage = new StoreFrontHomePage(driver);
@@ -1067,7 +1049,7 @@ public class HomePageFunctionalityTest extends RFWebsiteBaseTest{
 		storeFrontConsultantPage.addNewContentOfYourOwnCopy();
 		storeFrontConsultantPage.clickSaveButton();
 		s_assert.assertTrue(storeFrontConsultantPage.verifyNewlyAddedContentSaved(),"newly added content not saved");
-//		s_assert.assertTrue(storeFrontConsultantPage.validateMeetYourConsultantPage(),"This is not meet your consultant page");
+		//		s_assert.assertTrue(storeFrontConsultantPage.validateMeetYourConsultantPage(),"This is not meet your consultant page");
 		s_assert.assertAll();
 	}
 
@@ -1075,40 +1057,14 @@ public class HomePageFunctionalityTest extends RFWebsiteBaseTest{
 	@Test
 	public void testToVerifyTheMoreAboutMeSectionForPWSCom_1899(){
 		RFO_DB = driver.getDBNameRFO();
-		List<Map<String, Object>> randomConsultantList =  null;
-
-		String consultantEmailId =null;
-		String accountId = null;
-
+		storeFrontConsultantPage = new StoreFrontConsultantPage(driver);
 		country = driver.getCountry();
 		env = driver.getEnvironment();
 		storeFrontHomePage = new StoreFrontHomePage(driver);
-		storeFrontHomePage.openComPWSSite(country, env);
-		while(true){
-			randomConsultantList = DBUtil.performDatabaseQuery(DBQueries_RFO.callQueryWithArguementPWS(DBQueries_RFO.GET_RANDOM_ACTIVE_CONSULTANT_WITH_PWS_RFO,driver.getEnvironment()+".com",driver.getCountry(),countryId),RFO_DB);
-			consultantEmailId = (String) getValueFromQueryResult(randomConsultantList, "UserName");  
-			accountId = String.valueOf(getValueFromQueryResult(randomConsultantList, "AccountID"));
-			logger.info("Account Id of the user is "+accountId);
-
-			storeFrontConsultantPage = storeFrontHomePage.loginAsConsultant(consultantEmailId, password);
-			boolean isError = driver.getCurrentUrl().contains("error");
-			if(isError){
-				logger.info("login error for the user "+consultantEmailId);
-				driver.get(driver.getURL());
-			}
-			else
-				break;
-		} 
-		logger.info("login is successful");
+		String PWS = storeFrontHomePage.getComPWS(country, env) ; 
+		storeFrontHomePage.openPWS(PWS);
 		storeFrontConsultantPage.clickOnMeetYourConsultantLink();
-		storeFrontHomePage.clickOnPersonalizeMyProfileLink();
-		storeFrontConsultantPage.addNewContentOfYourOwnCopyInComPWS();
-		storeFrontConsultantPage.clickResetToDefaultCopyLinkInComPWS();
-		s_assert.assertTrue(storeFrontConsultantPage.verifyDefaultContentResetedForComPWS(),"Default content is not reseted");
-		storeFrontConsultantPage.addNewContentOfYourOwnCopyInComPWS();
-		storeFrontConsultantPage.clickSaveButton();
-		s_assert.assertTrue(storeFrontConsultantPage.verifyNewlyAddedContentSaved(),"newly added content not saved");
-//		s_assert.assertTrue(storeFrontConsultantPage.validateMeetYourConsultantPage(),"This is not meet your consultant page");
+		s_assert.assertTrue(storeFrontConsultantPage.validateMeetYourConsultantPage(),"This is not meet your consultant page");
 		s_assert.assertAll();
 	}
 
@@ -1348,7 +1304,7 @@ public class HomePageFunctionalityTest extends RFWebsiteBaseTest{
 		//Enter Billing Profile
 		storeFrontHomePage.enterNewBillingCardNumber(TestConstants.CARD_NUMBER);
 		storeFrontHomePage.enterNewBillingNameOnCard(newBillingProfileName+" "+lastName);
-		storeFrontHomePage.selectNewBillingCardExpirationDate();
+		storeFrontHomePage.selectNewBillingCardExpirationDate("OCT","2025");
 		storeFrontHomePage.enterNewBillingSecurityCode(TestConstants.SECURITY_CODE);
 		storeFrontHomePage.selectNewBillingCardAddress();
 		storeFrontHomePage.clickOnSaveBillingProfile();
@@ -1567,27 +1523,11 @@ public class HomePageFunctionalityTest extends RFWebsiteBaseTest{
 		country = driver.getCountry();
 		env = driver.getEnvironment();  
 		storeFrontHomePage = new StoreFrontHomePage(driver);
-		String PWS = storeFrontHomePage.getBizPWS(country, env);
-		PWS = storeFrontHomePage.convertBizSiteToComSite(PWS);
-		storeFrontHomePage.openPWS(PWS);
-		List<Map<String, Object>> randomConsultantList =  null;
-		String consultantEmailID = null;
-		String accountId = null;
-		while(true){
-			randomConsultantList = DBUtil.performDatabaseQuery(DBQueries_RFO.callQueryWithArguementPWS(DBQueries_RFO.GET_RANDOM_ACTIVE_CONSULTANT_WITH_PWS_RFO,driver.getEnvironment()+".com",driver.getCountry(),countryId),RFO_DB);
-			consultantEmailID = (String) getValueFromQueryResult(randomConsultantList, "UserName");  
-			accountId = String.valueOf(getValueFromQueryResult(randomConsultantList, "AccountID"));
-			logger.info("Account Id of the user is "+accountId);
-			storeFrontConsultantPage = storeFrontHomePage.loginAsConsultant(consultantEmailID, password);
-			boolean isLoginError = driver.getCurrentUrl().contains("error");
-			if(isLoginError){
-				logger.info("Login error for the user "+consultantEmailID);
-				driver.get(PWS);
-			}
-			else
-				break;
-		}
-		logger.info("login is successful");
+		//		String sitePrefix = "bhopkins"; // standard active consultant site
+		//		String comPWS = driver.getComPWSURL();
+		//		 /*"http://"+sitePrefix+comPWS+"/"+country;*/
+		String PWS = storeFrontHomePage.getComPWS(country, env) ;     
+		storeFrontHomePage.openPWS(storeFrontHomePage.convertBizSiteToComSite(PWS));		
 		s_assert.assertTrue(storeFrontHomePage.isSolutionToolContentBlockPresent(),"Solution Tool content block is not present");
 		//removed content block as we don't access the tool
 		s_assert.assertAll();
@@ -1921,22 +1861,18 @@ public class HomePageFunctionalityTest extends RFWebsiteBaseTest{
 	//Hybris Project-4003:Look up with Active CA consultant's full name
 	@Test
 	public void testLookUpActiveCAConsultantFullName_4003() throws InterruptedException{
-		RFO_DB = driver.getDBNameRFO();
-		List<Map<String, Object>> randomConsultantList =  null;
-		List<Map<String, Object>> randomConsultantDetailList = null;
-		String accountID = null;
 		String consultantFirstName = null;
 		String consultantLastName = null;
+		storeFrontHomePage = new StoreFrontHomePage(driver);		
+		RFO_DB = driver.getDBNameRFO(); 
+		List<Map<String, Object>> randomConsultantDetailList =  null;
 		storeFrontHomePage = new StoreFrontHomePage(driver);
-		randomConsultantList = 	DBUtil.performDatabaseQuery(DBQueries_RFO.callQueryWithArguementPWS(DBQueries_RFO.GET_RANDOM_ACTIVE_CONSULTANT_WITH_PWS_RFO,driver.getEnvironment()+".com",driver.getCountry(),countryId),RFO_DB);
-		accountID = String.valueOf(getValueFromQueryResult(randomConsultantList, "AccountID"));
-
-		randomConsultantDetailList = DBUtil.performDatabaseQuery(DBQueries_RFO.callQueryWithArguement(DBQueries_RFO.GET_USER_DETAILS_FROM_ACCOUNTID_RFO,accountID),RFO_DB);
-		consultantFirstName = (String) getValueFromQueryResult(randomConsultantDetailList, "FirstName");
+		randomConsultantDetailList = DBUtil.performDatabaseQuery(DBQueries_RFO.callQueryWithArguement(DBQueries_RFO.GET_CONSULTANT_DETAILS_RFO,countryId),RFO_DB);		
+		consultantFirstName =(String) getValueFromQueryResult(randomConsultantDetailList, "FirstName");
 		consultantLastName = (String) getValueFromQueryResult(randomConsultantDetailList, "LastName");
 		storeFrontHomePage.clickOnSponsorName();
 		storeFrontHomePage.enterSponsorNameAndClickOnSearchForPCAndRC(consultantFirstName+" "+consultantLastName);
-		s_assert.assertTrue(storeFrontHomePage.verifySponsorDetailsPresent(),"Sponsor Detail not present on page");
+		//s_assert.assertTrue(storeFrontHomePage.verifySponsorDetailsPresent(),"Sponsor Detail not present on page");
 		storeFrontHomePage.mouseHoverSponsorDataAndClickContinue();
 		s_assert.assertTrue(storeFrontHomePage.verifyUserRedirectingToComSite(),"user is not redirecting to com site");
 		s_assert.assertAll();		
@@ -2224,7 +2160,7 @@ public class HomePageFunctionalityTest extends RFWebsiteBaseTest{
 		storeFrontHomePage.clickNextButton();
 		storeFrontHomePage.enterCardNumber(TestConstants.CARD_NUMBER);
 		storeFrontHomePage.enterNameOnCard(TestConstants.FIRST_NAME+randomNum);
-		storeFrontHomePage.selectNewBillingCardExpirationDate();
+		storeFrontHomePage.selectNewBillingCardExpirationDate("OCT","2025");
 		storeFrontHomePage.enterSecurityCode(TestConstants.SECURITY_CODE);
 		storeFrontHomePage.enterSocialInsuranceNumber(socialInsuranceNumber);
 		storeFrontHomePage.enterNameAsItAppearsOnCard(TestConstants.FIRST_NAME);
@@ -2309,7 +2245,7 @@ public class HomePageFunctionalityTest extends RFWebsiteBaseTest{
 		storeFrontHomePage.clickNextButton();
 		storeFrontHomePage.enterCardNumber(TestConstants.CARD_NUMBER);
 		storeFrontHomePage.enterNameOnCard(TestConstants.FIRST_NAME+randomNum);
-		storeFrontHomePage.selectNewBillingCardExpirationDate();
+		storeFrontHomePage.selectNewBillingCardExpirationDate("OCT","2025");
 		storeFrontHomePage.enterSecurityCode(TestConstants.SECURITY_CODE);
 		storeFrontHomePage.enterSocialInsuranceNumber(socialInsuranceNumber2);
 		storeFrontHomePage.enterNameAsItAppearsOnCard(TestConstants.FIRST_NAME);
@@ -2541,7 +2477,6 @@ public class HomePageFunctionalityTest extends RFWebsiteBaseTest{
 		s_assert.assertAll();
 	}	
 
-
 	//Hybris Project-1907:To verify JOIN MY TEAM functionality in edit meet the consultant page from biz site
 	@Test
 	public void testToVerifyJOINMyTeamFunctionalityInEditMeetTheConsultantPageFromBizSite_1907() throws InterruptedException{
@@ -2578,7 +2513,7 @@ public class HomePageFunctionalityTest extends RFWebsiteBaseTest{
 		storeFrontHomePage.clickNextButton();
 		storeFrontHomePage.enterCardNumber(TestConstants.CARD_NUMBER);
 		storeFrontHomePage.enterNameOnCard(TestConstants.FIRST_NAME+randomNum);
-		storeFrontHomePage.selectNewBillingCardExpirationDate();
+		storeFrontHomePage.selectNewBillingCardExpirationDate("OCT","2025");
 		storeFrontHomePage.enterSecurityCode(TestConstants.SECURITY_CODE);
 		storeFrontHomePage.enterSocialInsuranceNumber(socialInsuranceNumber);
 		storeFrontHomePage.enterNameAsItAppearsOnCard(TestConstants.FIRST_NAME);
@@ -2710,34 +2645,38 @@ public class HomePageFunctionalityTest extends RFWebsiteBaseTest{
 	// Hybris Project-4070:Login to US Con's PWS(.BIZ, .COM) as Another US Consultant With Pulse
 	@Test
 	public void testLoginToUSConsultantPWSAsAnotherUSConsultantWithPulse_4070() {
-		RFO_DB = driver.getDBNameRFO(); 
-		country = driver.getCountry();
-		env = driver.getEnvironment(); 
-		storeFrontHomePage = new StoreFrontHomePage(driver);
-		String bizPWS=storeFrontHomePage.getBizPWS(country, env);
-		//Navigate to canadian PWS
-		String bizPWSCA=storeFrontHomePage.convertUSBizPWSToCA(bizPWS);
-		driver.get(bizPWSCA);
-		//Get the Consultant with PWS 
-		List<Map<String, Object>> randomConsultantList =  null;
-		String consultantWithPWSEmailID = null;
-		while(true){
-			randomConsultantList = DBUtil.performDatabaseQuery(DBQueries_RFO.callQueryWithArguementPWS(DBQueries_RFO.GET_RANDOM_CONSULTANT_WITH_PWS_RFO,env,driver.getCountry(),countryId),RFO_DB);
-			consultantWithPWSEmailID = (String) getValueFromQueryResult(randomConsultantList, "UserName");  
-			String comPWSOfSponser=String.valueOf(getValueFromQueryResult(randomConsultantList, "URL"));
-			logger.info("BIZ PWS of sponsor is "+comPWSOfSponser);
-			storeFrontConsultantPage = storeFrontHomePage.loginAsConsultant(consultantWithPWSEmailID, password);
-			boolean isLoginError = driver.getCurrentUrl().contains("error");
-			if(isLoginError){
-				logger.info("Login error for the user "+consultantWithPWSEmailID);
-				driver.get(driver.getURL());
+		if(driver.getCountry().equalsIgnoreCase("ca")){
+			RFO_DB = driver.getDBNameRFO(); 
+			country = driver.getCountry();
+			env = driver.getEnvironment(); 
+			storeFrontHomePage = new StoreFrontHomePage(driver);
+			String bizPWS=storeFrontHomePage.getBizPWS(country, env);
+			//Navigate to canadian PWS
+			String bizPWSCA=storeFrontHomePage.convertUSBizPWSToCA(bizPWS);
+			driver.get(bizPWSCA);
+			//Get the Consultant with PWS 
+			List<Map<String, Object>> randomConsultantList =  null;
+			String consultantWithPWSEmailID = null;
+			while(true){
+				randomConsultantList = DBUtil.performDatabaseQuery(DBQueries_RFO.callQueryWithArguementPWS(DBQueries_RFO.GET_RANDOM_CONSULTANT_WITH_PWS_RFO,env,driver.getCountry(),countryId),RFO_DB);
+				consultantWithPWSEmailID = (String) getValueFromQueryResult(randomConsultantList, "UserName");  
+				String comPWSOfSponser=String.valueOf(getValueFromQueryResult(randomConsultantList, "URL"));
+				logger.info("BIZ PWS of sponsor is "+comPWSOfSponser);
+				storeFrontConsultantPage = storeFrontHomePage.loginAsConsultant(consultantWithPWSEmailID, password);
+				boolean isLoginError = driver.getCurrentUrl().contains("error");
+				if(isLoginError){
+					logger.info("Login error for the user "+consultantWithPWSEmailID);
+					driver.get(driver.getURL());
+				}
+				else
+					break;
+				//Verify user is redirected to its ows pws site
+				s_assert.assertTrue(driver.getCurrentUrl().replaceAll("biz","com").trim().equalsIgnoreCase(comPWSOfSponser),"user is not redirected to its own PWS site");
 			}
-			else
-				break;
-			//Verify user is redirected to its ows pws site
-			s_assert.assertTrue(driver.getCurrentUrl().replaceAll("biz","com").trim().equalsIgnoreCase(comPWSOfSponser),"user is not redirected to its own PWS site");
+			s_assert.assertAll();
+		}else{
+			logger.info("Only CA specific test");
 		}
-		s_assert.assertAll();
 	}
 
 	//Hybris Project-4072:Try Accessing canadian PWS site of EXISTING OLD USConsultant
@@ -2854,7 +2793,7 @@ public class HomePageFunctionalityTest extends RFWebsiteBaseTest{
 		//storeFrontHomePage.acceptTheVerifyYourShippingAddressPop();  
 		storeFrontHomePage.enterCardNumber(TestConstants.CARD_NUMBER);
 		storeFrontHomePage.enterNameOnCard(TestConstants.FIRST_NAME+randomNum);
-		storeFrontHomePage.selectNewBillingCardExpirationDate();
+		storeFrontHomePage.selectNewBillingCardExpirationDate("OCT","2025");
 		storeFrontHomePage.enterSecurityCode(TestConstants.SECURITY_CODE);
 		storeFrontHomePage.enterSocialInsuranceNumber(socialInsuranceNumber);
 		s_assert.assertTrue(storeFrontHomePage.validateExistingConsultantPopup(),"Invalid Sponsor Popup is not displayed");
@@ -2899,7 +2838,7 @@ public class HomePageFunctionalityTest extends RFWebsiteBaseTest{
 		//storeFrontHomePage.acceptTheVerifyYourShippingAddressPop();  
 		storeFrontHomePage.enterCardNumber(TestConstants.CARD_NUMBER);
 		storeFrontHomePage.enterNameOnCard(TestConstants.FIRST_NAME+randomNum);
-		storeFrontHomePage.selectNewBillingCardExpirationDate();
+		storeFrontHomePage.selectNewBillingCardExpirationDate("OCT","2025");
 		storeFrontHomePage.enterSecurityCode(TestConstants.SECURITY_CODE);
 		storeFrontHomePage.enterSocialInsuranceNumber(socialInsuranceNumber);
 		s_assert.assertTrue(storeFrontHomePage.validateExistingConsultantPopup(),"Invalid Sponsor Popup is not displayed");
@@ -3208,11 +3147,11 @@ public class HomePageFunctionalityTest extends RFWebsiteBaseTest{
 	@Test
 	public void testPoliciesAndProceduresLinkOnSponsorSelectionPageForEnrollingConsBIZSite_5277() {
 		if(driver.getCountry().equalsIgnoreCase("ca")){
-			RFO_DB = driver.getDBNameRFO();
+
 			country = driver.getCountry();
 			env = driver.getEnvironment();
 			storeFrontHomePage = new StoreFrontHomePage(driver);
-			String PWS = storeFrontHomePage.getBizPWS(country, env);
+			String PWS = storeFrontHomePage.getBizPWS(country, env) ; 
 			storeFrontHomePage.openPWS(PWS);
 			storeFrontHomePage.hoverOnBecomeAConsultantAndClickEnrollNowLink();
 			s_assert.assertTrue(storeFrontHomePage.isProcedurePageIsDisplayedAfterClickPolicyAndProcedureLink(),"Policy and procedure page is not displayed after clicked on policy link");
@@ -3285,9 +3224,6 @@ public class HomePageFunctionalityTest extends RFWebsiteBaseTest{
 		storeFrontHomePage.openPWSSite(country, env);
 		//click Enroll now from the Home-Page..
 		storeFrontHomePage.clickEnrollNowFromBizHomePage();
-		//validate user is navigated to why R+F Page..
-		s_assert.assertTrue(driver.getCurrentUrl().contains("why-rf#"), "Why R+F page is not dsplayed!");
-		//click again 'enroll now' from why R+F Page
 		storeFrontHomePage.clickEnrollNowFromWhyRFPage();
 		//validate 'select kit' page is displayed..
 		s_assert.assertTrue(driver.getCurrentUrl().contains("kitproduct"), "Select Kit page is not displayed!!");

@@ -9,10 +9,9 @@ import org.testng.annotations.Test;
 
 import com.rf.core.utils.CommonUtils;
 import com.rf.core.utils.DBUtil;
+import com.rf.core.website.constants.TestConstants;
 import com.rf.core.website.constants.TestConstantsRFL;
 import com.rf.core.website.constants.dbQueries.DBQueries_RFL;
-import com.rf.pages.website.storeFrontBrandRefresh.StoreFrontBrandRefreshConsultantPage;
-/*import com.rf.pages.website.storeFrontBrandRefresh.StoreFrontBrandRefreshWebsiteBasePage;*/
 import com.rf.pages.website.storeFrontBrandRefresh.StoreFrontBrandRefreshHomePage;
 import com.rf.pages.website.storeFrontBrandRefresh.StoreFrontBrandRefreshPCUserPage;
 import com.rf.test.website.RFBrandRefreshWebsiteBaseTest;
@@ -24,14 +23,13 @@ public class EnrollmentTest extends RFBrandRefreshWebsiteBaseTest{
 	private StoreFrontBrandRefreshHomePage storeFrontBrandRefreshHomePage;
 	private StoreFrontBrandRefreshPCUserPage storeFrontBrandRefreshPCUserPage;
 	String RFL_DB = null;
-
 	public EnrollmentTest() {
 		storeFrontBrandRefreshHomePage = new StoreFrontBrandRefreshHomePage(driver);
 		storeFrontBrandRefreshPCUserPage = new StoreFrontBrandRefreshPCUserPage(driver);
 	}
 
 	//PC Enrollment From Corp site
-	@Test(enabled=true)//smoke
+	@Test(priority=2)//smoke
 	public void testPCEnrollment(){
 		RFL_DB = driver.getDBNameRFL();
 		int randomNum = CommonUtils.getRandomNum(10000, 1000000);
@@ -80,9 +78,9 @@ public class EnrollmentTest extends RFBrandRefreshWebsiteBaseTest{
 		storeFrontBrandRefreshHomePage.clickContinueBtnOnAutoshipSetupPageForPC();
 		storeFrontBrandRefreshHomePage.clickContinueBtn();
 		storeFrontBrandRefreshHomePage.enterShippingProfileDetails(addressName, shippingProfileFirstName,shippingProfileLastName, addressLine1, postalCode, phnNumber);
-		storeFrontBrandRefreshHomePage.clickContinueBtn();
+		storeFrontBrandRefreshHomePage.clickContinueBtnForPCAndRC();
 		storeFrontBrandRefreshHomePage.clickUseAsEnteredBtn();
-		storeFrontBrandRefreshHomePage.enterBillingInfoDetails(billingName, billingProfileFirstName, billingProfileLastName, nameOnCard, cardNumber, expMonth, expYear, addressLine1, postalCode, phnNumber);
+		storeFrontBrandRefreshHomePage.enterBillingInfoDetails(billingName, billingProfileFirstName, billingProfileLastName, nameOnCard, cardNumber, expMonth, expYear, addressLine1, postalCode, phnNumber,CVV);
 		storeFrontBrandRefreshHomePage.clickContinueBtn();
 		storeFrontBrandRefreshHomePage.clickUseAsEnteredBtn();
 		storeFrontBrandRefreshHomePage.clickCompleteEnrollmentBtn();
@@ -92,7 +90,7 @@ public class EnrollmentTest extends RFBrandRefreshWebsiteBaseTest{
 	}
 
 	//RC Enrollment from corp site.
-	@Test(enabled=true)//smoke
+	@Test(priority=1)//smoke
 	public void testRCEnrollment(){
 		RFL_DB = driver.getDBNameRFL();
 		int randomNum = CommonUtils.getRandomNum(10000, 1000000);
@@ -123,7 +121,6 @@ public class EnrollmentTest extends RFBrandRefreshWebsiteBaseTest{
 		//Get RC Sponser from database
 		List<Map<String, Object>> randomConsultantList = DBUtil.performDatabaseQuery(DBQueries_RFL.GET_RANDOM_ACTIVE_CONSULTANT_EMAILID,RFL_DB);
 		sponsorID = String.valueOf(getValueFromQueryResult(randomConsultantList, "AccountNumber"));
-
 		storeFrontBrandRefreshHomePage.mouseHoverShopSkinCareAndClickLink(regimen);
 		storeFrontBrandRefreshHomePage.clickAddToCartBtn();
 		storeFrontBrandRefreshHomePage.clickCheckoutBtn();
@@ -136,9 +133,9 @@ public class EnrollmentTest extends RFBrandRefreshWebsiteBaseTest{
 		storeFrontBrandRefreshHomePage.selectSponsorRadioBtn();
 		storeFrontBrandRefreshHomePage.clickSelectAndContinueBtnForPCAndRC();
 		storeFrontBrandRefreshHomePage.enterShippingProfileDetails(addressName, shippingProfileFirstName,shippingProfileLastName, addressLine1, postalCode, phnNumber);
-		storeFrontBrandRefreshHomePage.clickContinueBtn();
+		storeFrontBrandRefreshHomePage.clickContinueBtnForPCAndRC();
 		storeFrontBrandRefreshHomePage.clickUseAsEnteredBtn();
-		storeFrontBrandRefreshHomePage.enterBillingInfoDetails(billingName, billingProfileFirstName, billingProfileLastName, nameOnCard, cardNumber, expMonth, expYear, addressLine1, postalCode, phnNumber);
+		storeFrontBrandRefreshHomePage.enterBillingInfoDetails(billingName, billingProfileFirstName, billingProfileLastName, nameOnCard, cardNumber, expMonth, expYear, addressLine1, postalCode, phnNumber,CVV);
 		storeFrontBrandRefreshHomePage.clickContinueBtn();
 		storeFrontBrandRefreshHomePage.clickUseAsEnteredBtn();
 		storeFrontBrandRefreshHomePage.clickCompleteOrderBtn();
@@ -147,7 +144,7 @@ public class EnrollmentTest extends RFBrandRefreshWebsiteBaseTest{
 	}
 
 	//Consultant Express Enrollment from Corp
-	@Test(enabled=true)//smoke
+	@Test(priority=3)//smoke
 	public void testConsultantExpressEnrollment(){
 		RFL_DB = driver.getDBNameRFL();
 		int randomNum = CommonUtils.getRandomNum(10000, 1000000);
@@ -169,11 +166,6 @@ public class EnrollmentTest extends RFBrandRefreshWebsiteBaseTest{
 		String phnNumber1 = "415";
 		String phnNumber2 = "780";
 		String phnNumber3 = "9099";
-
-
-		//  storeFrontBrandRefreshHomePage.clickBeAConsultantBtn();
-		//  storeFrontBrandRefreshHomePage.clickEnrollNowBtnOnBusinessPage();
-		//Get Sponser details for Consultant enrollment.
 		List<Map<String, Object>> randomConsultantList = DBUtil.performDatabaseQuery(DBQueries_RFL.GET_RANDOM_ACTIVE_CONSULTANT_EMAILID,RFL_DB);
 		String sponsorID = String.valueOf(getValueFromQueryResult(randomConsultantList, "AccountNumber"));
 		storeFrontBrandRefreshHomePage.mouseHoverBeAConsultantAndClickLink("Enroll Now");
@@ -184,7 +176,7 @@ public class EnrollmentTest extends RFBrandRefreshWebsiteBaseTest{
 		storeFrontBrandRefreshHomePage.selectEnrollmentType(enrollemntType);
 		storeFrontBrandRefreshHomePage.enterSetUpAccountInformation(firstName, lastName, emailAddress, password, addressLine1, postalCode, phnNumber1, phnNumber2, phnNumber3);
 		storeFrontBrandRefreshHomePage.clickSetUpAccountNextBtn();
-		storeFrontBrandRefreshHomePage.enterBillingInformation(cardNumber, nameOnCard, expMonth, expYear);
+		storeFrontBrandRefreshHomePage.enterBillingInformation(cardNumber, nameOnCard, expMonth, expYear, CVV);
 		storeFrontBrandRefreshHomePage.enterAccountInformation(ssnRandomNum1, ssnRandomNum2, ssnRandomNum3, firstName);
 		//storeFrontBrandRefreshHomePage.enterPWS(firstName+lastName+randomNum);
 		storeFrontBrandRefreshHomePage.clickCompleteAccountNextBtn();
@@ -197,12 +189,12 @@ public class EnrollmentTest extends RFBrandRefreshWebsiteBaseTest{
 	}
 
 	//Consultant Standard Enrollment
-	@Test(enabled=true)//smoke
+	@Test(priority=4)//smoke
 	public void testConsultantStandardEnrollment(){
 		RFL_DB = driver.getDBNameRFL();
 		int randomNum = CommonUtils.getRandomNum(10000, 1000000);
 		int ssnRandomNum1 = CommonUtils.getRandomNum(100, 999);
-		int ssnRandomNum2 = CommonUtils.getRandomNum(00, 99);
+		int ssnRandomNum2 = CommonUtils.getRandomNum(11, 99);
 		int ssnRandomNum3 = CommonUtils.getRandomNum(1000, 9999);
 		String firstName = TestConstantsRFL.FIRST_NAME;
 		String lastName = TestConstantsRFL.LAST_NAME+randomNum;
@@ -231,8 +223,7 @@ public class EnrollmentTest extends RFBrandRefreshWebsiteBaseTest{
 		storeFrontBrandRefreshHomePage.selectEnrollmentType(enrollemntType);
 		storeFrontBrandRefreshHomePage.enterSetUpAccountInformation(firstName, lastName, emailAddress, password, addressLine1, postalCode, phnNumber1, phnNumber2, phnNumber3);
 		storeFrontBrandRefreshHomePage.clickSetUpAccountNextBtn();
-		storeFrontBrandRefreshHomePage.enterBillingInformation(cardNumber, nameOnCard, expMonth, expYear);
-
+		storeFrontBrandRefreshHomePage.enterBillingInformation(cardNumber, nameOnCard, expMonth, expYear, CVV);
 		storeFrontBrandRefreshHomePage.enterAccountInformation(ssnRandomNum1, ssnRandomNum2, ssnRandomNum3, firstName);
 		storeFrontBrandRefreshHomePage.clickBillingInfoNextBtn();
 		storeFrontBrandRefreshHomePage.clickYesSubscribeToPulseNow();
@@ -249,7 +240,7 @@ public class EnrollmentTest extends RFBrandRefreshWebsiteBaseTest{
 	}
 
 	//My account options as RC customer
-	@Test
+	@Test(priority=5)
 	public void testMyAccountOptionAsRCCustomer(){
 		RFL_DB = driver.getDBNameRFL();
 		List<Map<String, Object>> randomRCList =  null;
@@ -270,7 +261,7 @@ public class EnrollmentTest extends RFBrandRefreshWebsiteBaseTest{
 	}
 
 	//Search for a Sponsor
-	@Test
+	@Test(enabled=false)
 	public void testSearchForASponser(){
 		RFL_DB = driver.getDBNameRFL();
 		List<Map<String, Object>> randomConsultantList =  null;
@@ -288,7 +279,7 @@ public class EnrollmentTest extends RFBrandRefreshWebsiteBaseTest{
 	}
 
 	// My account options as PC customer
-	@Test
+	@Test(priority=6)
 	public void testMyAccountOptionsAs_PC_Customer(){
 		RFL_DB = driver.getDBNameRFL();
 		List<Map<String, Object>> randomPCList = null;
@@ -326,7 +317,7 @@ public class EnrollmentTest extends RFBrandRefreshWebsiteBaseTest{
 	}
 
 	//PC Edit order as a PC User
-	@Test(enabled=true)
+	@Test(priority=7)
 	public void testPCEditOrderAsAPCUser(){
 		RFL_DB = driver.getDBNameRFL();
 		List<Map<String, Object>> randomPCList = null;
@@ -355,5 +346,4 @@ public class EnrollmentTest extends RFBrandRefreshWebsiteBaseTest{
 		s_assert.assertTrue(storeFrontBrandRefreshHomePage.getConfirmationMessage().contains("Replenishment Order items successfully updated!"),"No Message appearing after order update");
 		s_assert.assertAll();
 	}
-
 }

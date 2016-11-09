@@ -11,7 +11,7 @@
 			<class name="com.rf.test.website.crm.CRMRegressionTest">
 				<methods>
 					<include name="testAddAccountNoteForConsultant_4479" />
-					<include name="testVerifyProxyToMyAccountForConsultant_4498" />
+<!-- 					<include name="testVerifyProxyToMyAccountForConsultant_4498" />
 					<include name="testVerifyProxyToPulseForConsultant_4499" />
 					<include name="testEditConsultantAccountDetails_4503" />
 					<include name="testViewAndEditPWSDomainForConsultant_4505" />
@@ -21,7 +21,7 @@
 					<include name="testVerifyDisplayAutoshipDetailsForConsultant_4535" />
 					<include name="testViewBillingProfileForConsultant_4537" />
 					<include name="testViewShippingProfileForConsultant_4542" />
-					<include name="testViewShippingProfileForRC_4544" />
+					<include name="testViewShippingProfileForRC_4544" /> -->
 				</methods>
 			</class>
 		</classes>

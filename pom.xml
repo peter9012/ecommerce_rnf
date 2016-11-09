@@ -185,14 +185,19 @@
 						</property>
 						<property>
 							<name>listener</name>
-							<value>org.uncommons.reportng.HTMLReporter</value>
+							<value>org.uncommons.reportng.HTMLReporter,com.rf.core.listeners.TestListner,com.rf.core.listeners.RetryListener</value>
 						</property>
 					</properties>
 					<systemPropertyVariables>
 						<testprops>${envproperties}</testprops>
+						<testprops>${browser}</testprops>
+						<testprops>${baseURL}</testprops>
+						<testprops>${country}</testprops>
+						<testprops>${env}</testprops>
+						<testprops>${dbIP}</testprops>
 					</systemPropertyVariables>
 					<useFile>true</useFile>
-					<testFailureIgnore>true</testFailureIgnore>
+					<!-- <testFailureIgnore>true</testFailureIgnore> -->
 					<suiteXmlFiles>
 						<suiteXmlFile>src/test/resources/profiles/${suiteToRun}</suiteXmlFile>
 					</suiteXmlFiles>

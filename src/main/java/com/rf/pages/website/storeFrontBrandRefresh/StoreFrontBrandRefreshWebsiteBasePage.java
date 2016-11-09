@@ -398,6 +398,7 @@ public class StoreFrontBrandRefreshWebsiteBasePage extends RFBasePage{
 		alert.accept();
 		logger.info("Ok button of java Script popup is clicked.");
 		driver.waitForPageLoad();
+		driver.pauseExecutionFor(3000);
 	}
 
 	public String convertBizSiteToComSite(String pws){

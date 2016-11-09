@@ -1,9 +1,7 @@
 package com.rf.core.driver.website;
 
 import java.io.File;
-
 import org.openqa.selenium.Dimension;
-
 import java.net.MalformedURLException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -83,8 +81,8 @@ public class RFWebsiteDriver implements RFDriver,WebDriver {
 		prof.setPreference("startup.homepage_welcome_url.additional",  "about:blank");
 		if (browser.equalsIgnoreCase("firefox"))
 			driver = new FirefoxDriver(prof);
-		else if (browser.equalsIgnoreCase("chrome")){
-			System.setProperty("webdriver.chrome.driver", "src\\test\\resources\\chromedriver.exe");
+		else if (propertyFile.getProperty("browser").equalsIgnoreCase("chrome")){
+			System.setProperty("webdriver.chrome.driver", "src//test//resources//chromedriver");
 			ChromeOptions options = new ChromeOptions();
 			options.addArguments("no-sandbox");
 			options.addArguments("chrome.switches","--disable-extensions");
@@ -98,7 +96,7 @@ public class RFWebsiteDriver implements RFDriver,WebDriver {
 		else if(browser.equalsIgnoreCase("headless")){
 			driver = new HtmlUnitDriver(true);
 		}
-		else if(browser.equalsIgnoreCase("ie")){
+		else if(propertyFile.getProperty("browser").equalsIgnoreCase("ie")){
 			System.setProperty("webdriver.ie.driver", "src/test/resources/IEDriverServer.exe");
 			DesiredCapabilities capabilities = new DesiredCapabilities();
 			// for clearing cache
@@ -153,7 +151,7 @@ public class RFWebsiteDriver implements RFDriver,WebDriver {
 		DBUtil.setDBDetails(dbIP, dbUsername, dbPassword, dbDomain, authentication);
 		logger.info("DB connections are set");
 	}
-
+	
 	public void selectCountry(String country){
 		driver.findElement(By.xpath("//div[@class='btn-group']")).click();
 		if(country.equalsIgnoreCase("ca")){
@@ -172,10 +170,11 @@ public class RFWebsiteDriver implements RFDriver,WebDriver {
 		}
 		return baseURL;
 	}
-
+	
 	public String getBrowser(){
 		return browser;
 	}
+	
 	public String getBizPWSURL() {
 		if (propertyFile.getProperty("environment").equalsIgnoreCase("tst1"))
 		{
@@ -314,7 +313,7 @@ public class RFWebsiteDriver implements RFDriver,WebDriver {
 	}
 
 	public void waitForLoadingImageToDisappear(){
-		int DEFAULT_TIMEOUT = 60;
+		int DEFAULT_TIMEOUT = 50;
 		turnOffImplicitWaits();
 		By locator = By.xpath("//div[@id='blockUIBody']");
 		logger.info("Waiting for loading image to get disappear");
@@ -576,14 +575,11 @@ public class RFWebsiteDriver implements RFDriver,WebDriver {
 		logger.info("URL opened is "+Url);
 		driver.get(Url);
 		waitForPageLoad();
-		pauseExecutionFor(5000);
 	}
 
 	public void click(By locator) {		
 		//waitForElementToBeClickable(locator, DEFAULT_TIMEOUT);
 		//quickWaitForElementPresent(locator);
-		//movetToElementJavascript(locator);
-		turnOffImplicitWaits();
 		try{
 			findElement(locator).click();			
 		}catch(Exception e){
@@ -610,9 +606,7 @@ public class RFWebsiteDriver implements RFDriver,WebDriver {
 	}
 
 	public String getCurrentUrl() {
-		String currentURL = driver.getCurrentUrl();
-		logger.info("current URL is "+currentURL);
-		return currentURL;
+		return driver.getCurrentUrl();
 	}
 
 	public String getTitle() {

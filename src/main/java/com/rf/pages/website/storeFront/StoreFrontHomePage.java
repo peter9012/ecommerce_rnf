@@ -56,7 +56,7 @@ public class StoreFrontHomePage extends StoreFrontRFWebsiteBasePage {
 		driver.type(USERNAME_TXTFLD_LOC, username);
 		driver.type(PASSWORD_TXTFLD_LOC, password);   
 		driver.click(LOGIN_BTN_LOC);
-		clickOnAcceptSecurityCertificate();		
+		clickOnAcceptSecurityCertificate(); 
 		dismissPolicyPopup();
 		clickRenewLater();
 		logger.info("login button clicked");
@@ -115,7 +115,7 @@ public class StoreFrontHomePage extends StoreFrontRFWebsiteBasePage {
 	public void searchCID() throws InterruptedException{
 		//driver.pauseExecutionFor(2000);
 		try{
-			driver.type(By.id("sponserparam"),"mary");			
+			driver.type(By.id("sponserparam"),"mary");
 		}catch(NoSuchElementException e){
 			driver.waitForLoadingImageToDisappear();
 			driver.type(By.id("sponsor-name-id"),"mary");
@@ -352,11 +352,6 @@ public class StoreFrontHomePage extends StoreFrontRFWebsiteBasePage {
 			}
 		}
 		logger.info("email Address of the user is "+emailAddress);
-		try{
-			driver.findElement(By.xpath("//*[@id='new-password-account']")).click();
-		}catch(Exception e){
-			driver.findElement(By.id("password")).click();
-		}
 		driver.waitForSpinImageToDisappear();
 		driver.pauseExecutionFor(15000);
 	}
@@ -540,6 +535,7 @@ public class StoreFrontHomePage extends StoreFrontRFWebsiteBasePage {
 				return false;
 			}
 		}
+		
 	}
 
 	public boolean verifyAndClickAcceptOnQASPopup(){
@@ -576,21 +572,13 @@ public class StoreFrontHomePage extends StoreFrontRFWebsiteBasePage {
 	}
 
 	public boolean validateInvalidCreditCardMessage(){
-		try{
-			driver.quickWaitForElementPresent(By.xpath("//div[@class='mat-div']/descendant::label[@class='error']"));
-			if(driver.findElement(By.xpath("//div[@class='mat-div']/descendant::label[@class='error']")).isDisplayed()){
-				return true;
-			}else{
-				return false;
-			}
-		}catch(Exception e){
-			driver.waitForElementPresent(By.xpath("//div[@class='ssn-table']/descendant::label[@class='error']"));
-			if(driver.findElement(By.xpath("//div[@class='ssn-table']/descendant::label[@class='error']")).isDisplayed()){
-				return true;
-			}
-			else{
-				return false;
-			}}
+		driver.waitForElementPresent(By.xpath("//div[@id='add-new-billing']/descendant::label[@class='error']"));
+		if(driver.findElement(By.xpath("//div[@id='add-new-billing']/descendant::label[@class='error']")).isDisplayed()){
+			return true;
+		}
+		else{
+			return false;
+		}
 	}
 
 
@@ -625,7 +613,6 @@ public class StoreFrontHomePage extends StoreFrontRFWebsiteBasePage {
 		driver.pauseExecutionFor(5000);
 		driver.click(By.id("name-on-card"));
 		logger.info("Social Insurance Number is "+sin);
-
 	}
 
 	public void enterNameAsItAppearsOnCard(String nameOnCard){
@@ -712,7 +699,7 @@ public class StoreFrontHomePage extends StoreFrontRFWebsiteBasePage {
 		driver.clickByJS(RFWebsiteDriver.driver, driver.findElement(By.xpath("//input[@id='electronically-check']/..")));
 		//driver.click(By.xpath("//input[@id='electronically-check']/.."));
 		logger.info("I Agree checkbox clicked");
-		driver.pauseExecutionFor(1000);
+		driver.pauseExecutionFor(1000);		
 	}
 
 	public void clickOnChargeMyCardAndEnrollMeBtn() throws InterruptedException{
@@ -1082,7 +1069,7 @@ public class StoreFrontHomePage extends StoreFrontRFWebsiteBasePage {
 	public boolean validateMiniCart() {
 		actions=new Actions(RFWebsiteDriver.driver);
 		return driver.findElement(By.xpath("//a[@id='shopping-cart']")).isDisplayed();
-	}	
+	}
 
 	public String getNumberOfProductsDisplayedOnMiniCart(){
 		return driver.findElement(By.xpath("//div[@id='shopping-bag']//span[@class='cart-count']")).getText();
@@ -2298,11 +2285,11 @@ public class StoreFrontHomePage extends StoreFrontRFWebsiteBasePage {
 	}
 
 	public void enterSponsorNameAndClickOnSearchForPCAndRC(String sponsor){
-		driver.pauseExecutionFor(2000);
+		//driver.pauseExecutionFor(2000);
 		try{
 			driver.waitForElementPresent(By.xpath("//input[@id='sponsor-name-id']"));
 			driver.type(By.xpath("//input[@id='sponsor-name-id']"),sponsor);
-		}catch(Exception e){
+		}catch(NoSuchElementException e){
 			driver.type(By.id("sponserparam"),sponsor);
 		}
 		try{
@@ -4276,24 +4263,24 @@ public class StoreFrontHomePage extends StoreFrontRFWebsiteBasePage {
 
 	public boolean isProcedurePageIsDisplayedAfterClickPolicyAndProcedureLink(){
 		String parentWindowID = driver.getWindowHandle();
-		driver.pauseExecutionFor(15000);
 		driver.waitForElementPresent(POLICY_AND_PROCEDURE_LINK);
-		String suffixURL="/_ui/responsive/common/pdf/Archives/Policies_Procedures_CANADA.pdf";
-		driver.get(driver.getURL()+suffixURL);
-		driver.pauseExecutionFor(5000);
-		logger.info("Policy and Procedure link is clicked.");
-		//Set<String> set=driver.getWindowHandles();
-		//Iterator<String> it=set.iterator();
+		driver.click(POLICY_AND_PROCEDURE_LINK);
+		driver.pauseExecutionFor(2000);
+		Set<String> set=driver.getWindowHandles();
+		Iterator<String> it=set.iterator();
 		boolean status=false;
-		//while(it.hasNext()){
-		// String childWindowID=it.next();
-		// if(!parentWindowID.equalsIgnoreCase(childWindowID)){
-		//  driver.switchTo().window(childWindowID);
-		if(driver.getCurrentUrl().contains("pdf")){
-			status=true;
+		while(it.hasNext()){
+			String childWindowID=it.next();
+			if(!parentWindowID.equalsIgnoreCase(childWindowID)){
+				driver.switchTo().window(childWindowID);
+				if(driver.getCurrentUrl().contains("pdf")){
+					status=true;
+				}
+
+			}
 		}
-		//driver.close();
-		//driver.switchTo().window(parentWindowID);
+		driver.close();
+		driver.switchTo().window(parentWindowID);
 		return status;
 	}
 

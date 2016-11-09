@@ -131,16 +131,15 @@ public class StoreFrontLegacyRFWebsiteBasePage extends RFBasePage{
 		driver.waitForElementPresent(CHECKOUT_BTN);
 		driver.click(CHECKOUT_BTN);
 		logger.info("Checkout button clicked");
-		driver.pauseExecutionFor(5000);
 		driver.waitForPageLoad();
 	}
 
 	public void clickContinueBtn(){
-		driver.waitForElementPresent(CONTINUE_BTN_PREFERRED_AUTOSHIP_CART_PAGE_LOC);
+		driver.quickWaitForElementPresent(CONTINUE_BTN_PREFERRED_AUTOSHIP_CART_PAGE_LOC);
 		driver.click(CONTINUE_BTN_PREFERRED_AUTOSHIP_CART_PAGE_LOC);
 		logger.info("Continue button clicked on Autoship cart page");
-		driver.pauseExecutionFor(5000);
 		driver.waitForPageLoad();
+		driver.pauseExecutionFor(5000);
 	}
 
 	public void clickCompleteOrderBtn(){

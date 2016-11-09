@@ -47,9 +47,9 @@ public class RFWebsiteBaseTest extends RFBaseTest {
 	 */
 	@BeforeSuite(alwaysRun=true)
 	public void setUp() throws Exception {
-		driver.loadApplication();
+		driver.loadApplication();                               
 		logger.info("Application loaded");                                                            
-		driver.setDBConnectionString();
+		driver.setDBConnectionString();                
 	}
 
 	public void navigateToStoreFrontBaseURL(){
@@ -79,7 +79,7 @@ public class RFWebsiteBaseTest extends RFBaseTest {
 			//			} 
 			if(isLogoutBtnPresent())
 				logout();
-		}	
+		}		           
 		if(country.equalsIgnoreCase("ca"))
 			countryId = "40";
 		else if(country.equalsIgnoreCase("us"))

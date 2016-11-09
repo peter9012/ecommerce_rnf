@@ -179,7 +179,7 @@ public class StoreFrontRFWebsiteBasePage extends RFBasePage{
 		driver.waitForPageLoad();
 		return productName;
 	}
-
+	
 	public String getNameOfTheOnlyAddedProductOnCart(){
 		String productNameFromCart = null;
 		productNameFromCart=driver.findElement(By.xpath("//div[@id='left-shopping']/div[@class='cartItems']//h3")).getText();
@@ -250,7 +250,6 @@ public class StoreFrontRFWebsiteBasePage extends RFBasePage{
 		}
 		//driver.pauseExecutionFor(2000);
 		driver.waitForPageLoad();
-		driver.pauseExecutionFor(5000);
 	}
 
 	public void clickOnNextBtnAfterAddingProductAndQty() throws InterruptedException{
@@ -426,10 +425,10 @@ public class StoreFrontRFWebsiteBasePage extends RFBasePage{
 	}
 
 	public void enterMainAccountInfo(){
-		driver.pauseExecutionFor(5000);
+		//driver.pauseExecutionFor(5000);
 		if(driver.getCountry().equalsIgnoreCase("CA")){
 			driver.waitForElementPresent(By.id("address.line1"));
-			((JavascriptExecutor) RFWebsiteDriver.driver).executeScript("arguments[0].scrollIntoView(true);", driver.findElement(By.id("address.line1")));
+			((JavascriptExecutor) RFWebsiteDriver.driver).executeScript("arguments[0].scrollIntoView(true);", driver.findElement(By.id("address.line1")));			
 			driver.type(By.id("address.line1"),TestConstants.ADDRESS_LINE_1_CA);
 			logger.info("Address Line 1 entered is "+TestConstants.ADDRESS_LINE_1_CA);
 			driver.type(By.id("address.townCity"),TestConstants.CITY_CA+"\t");
@@ -610,8 +609,7 @@ public class StoreFrontRFWebsiteBasePage extends RFBasePage{
 		driver.clickByJS(RFWebsiteDriver.driver, driver.findElement(By.xpath("//input[@value='Setup CRP Account']")));
 		logger.info("Next button on billing profile clicked");
 		driver.waitForLoadingImageToDisappear();
-	}	
-
+	}
 
 	public void clickPlaceOrderBtn()throws InterruptedException{
 		//driver.waitForElementPresent(By.id("placeOrderButton"));
@@ -624,7 +622,7 @@ public class StoreFrontRFWebsiteBasePage extends RFBasePage{
 		}catch(Exception e){
 
 		}
-		driver.waitForPageLoad();  
+		driver.waitForPageLoad();  		
 	}
 
 	public void switchToPreviousTab(){
@@ -739,7 +737,6 @@ public class StoreFrontRFWebsiteBasePage extends RFBasePage{
 		}
 		return false;
 	}
-
 	public void clickOnPCPerksTermsAndConditionsCheckBoxes(){
 		driver.waitForElementPresent(By.xpath("//input[@id='Terms3']/.."));
 		driver.pauseExecutionFor(5000);
@@ -771,6 +768,15 @@ public class StoreFrontRFWebsiteBasePage extends RFBasePage{
 		driver.waitForElementPresent(By.xpath("//select[@id='expiryYear']/option[10]"));
 		driver.click(By.xpath("//select[@id='expiryYear']/option[10]"));
 		//driver.clickByJS(RFWebsiteDriver.driver,driver.findElement(By.xpath("//select[@id='expiryYear']/option[10]")));  
+	}
+	
+	public void selectNewBillingCardExpirationDateAsExpiredDate(){
+		driver.click(By.id("expiryMonth"));
+		driver.waitForElementPresent(By.xpath("//select[@id='expiryMonth']/option[@value='02']"));
+		driver.click(By.xpath("//select[@id='expiryMonth']/option[@value='02']"));
+		driver.click(By.id("expiryYear"));
+		driver.waitForElementPresent(By.xpath("//select[@id='expiryYear']/option[2]"));
+		driver.click(By.xpath("//select[@id='expiryYear']/option[1]"));
 	}
 
 	public boolean validatePasswordFieldMessage(){
@@ -1178,7 +1184,7 @@ public class StoreFrontRFWebsiteBasePage extends RFBasePage{
 		PWS = "http://"+activeSitePrefix+".myrfo"+env+".biz/"+country.toLowerCase();
 		logger.info("PWS is "+PWS);
 		return PWS;
-	} 	
+	}
 
 	public String getComPWS(String country,String env){
 		RFO_DB = driver.getDBNameRFO();
@@ -1347,7 +1353,7 @@ public class StoreFrontRFWebsiteBasePage extends RFBasePage{
 
 	public void clickOnWelcomeDropDown() throws InterruptedException{
 		driver.waitForElementPresent(WELCOME_USER_DD_LOC);
-		((JavascriptExecutor)RFWebsiteDriver.driver).executeScript("arguments[0].click();", driver.findElement(WELCOME_USER_DD_LOC));
+		driver.click(WELCOME_USER_DD_LOC);
 		logger.info("clicked on welcome drop down");		
 	}
 
@@ -1457,6 +1463,7 @@ public class StoreFrontRFWebsiteBasePage extends RFBasePage{
 		driver.waitForLoadingImageToDisappear();
 		driver.waitForPageLoad();
 	}
+
 
 	public void clickOnEditAtAutoshipTemplate(){
 		try{
@@ -1658,7 +1665,6 @@ public class StoreFrontRFWebsiteBasePage extends RFBasePage{
 		logger.info("filter done for high to low price");
 		driver.waitForPageLoad();
 		driver.waitForLoadingImageToDisappear();
-		driver.pauseExecutionFor(2000);
 	}
 
 	public void deselectPriceFilter() throws InterruptedException{
@@ -1683,8 +1689,8 @@ public class StoreFrontRFWebsiteBasePage extends RFBasePage{
 				driver.click(By.xpath("//div[@id='left-shopping']/div[2]//a[contains(text(),'Continue')]")); 
 			}
 			catch(NoSuchElementException e2){
-				driver.quickWaitForElementPresent(By.xpath("//*[@value='ADD MORE ITEMS']"));
-				driver.click(By.xpath("//*[@value='ADD MORE ITEMS']")); 
+				driver.quickWaitForElementPresent(By.xpath("//input[@value='ADD MORE ITEMS']"));
+				driver.click(By.xpath("//input[@value='ADD MORE ITEMS']")); 
 			}
 
 		}

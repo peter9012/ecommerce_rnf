@@ -2026,7 +2026,7 @@ public class HomePageFunctionalityTest extends RFWebsiteBaseTest{
 			boolean isError = driver.getCurrentUrl().contains("error");
 			if(isError){
 				logger.info("login error for the user "+rcUserEmailID);
-				driver.get(driver.getURL()+"/"+driver.getCountry());
+				driver.get(driver.getURL());
 			}
 			else
 				break;
@@ -2043,7 +2043,7 @@ public class HomePageFunctionalityTest extends RFWebsiteBaseTest{
 		s_assert.assertTrue(storeFrontAccountTerminationPage.verifyPopupHeader(),"Account termination Page Pop Up Header is not Present");
 		storeFrontAccountTerminationPage.clickOnConfirmTerminationPopup(); 
 		//Navigate to the base url
-		driver.get(driver.getURL()+"/"+driver.getCountry());
+		driver.get(driver.getURL());
 		//connect with a consultant
 		storeFrontHomePage.clickConnectUnderConnectWithAConsultantSection();
 		//search with terminated RC
@@ -2621,7 +2621,7 @@ public class HomePageFunctionalityTest extends RFWebsiteBaseTest{
 	}
 
 	//Hybris Project-4058:View US consultant's PWS site on Canada as another US Consultant
-	@Test(enabled=false)//US specific test
+	@Test//US specific test
 	public void testViewUSConsultantPWSSiteOnCanadaAsAnotherUSConsultant_4058() throws InterruptedException{
 		if(driver.getCountry().equalsIgnoreCase("ca")){
 			RFO_DB = driver.getDBNameRFO();
@@ -3125,7 +3125,7 @@ public class HomePageFunctionalityTest extends RFWebsiteBaseTest{
 			env = driver.getEnvironment();
 			storeFrontHomePage = new StoreFrontHomePage(driver);
 			String PWS = storeFrontHomePage.getBizPWS(country, env);
-			storeFrontHomePage.openPWSSite(country, env);
+			storeFrontHomePage.openPWS(PWS);
 			storeFrontHomePage.hoverOnBecomeAConsultantAndClickEnrollNowLink();
 			s_assert.assertTrue(storeFrontHomePage.isProcedurePageIsDisplayedAfterClickPolicyAndProcedureLink(),"Policy and procedure page is not displayed after clicked on policy link");
 			s_assert.assertAll();
@@ -3147,11 +3147,11 @@ public class HomePageFunctionalityTest extends RFWebsiteBaseTest{
 	@Test
 	public void testPoliciesAndProceduresLinkOnSponsorSelectionPageForEnrollingConsBIZSite_5277() {
 		if(driver.getCountry().equalsIgnoreCase("ca")){
-
+			RFO_DB = driver.getDBNameRFO();
 			country = driver.getCountry();
 			env = driver.getEnvironment();
 			storeFrontHomePage = new StoreFrontHomePage(driver);
-			String PWS = storeFrontHomePage.getBizPWS(country, env) ; 
+			String PWS = storeFrontHomePage.getBizPWS(country, env);
 			storeFrontHomePage.openPWS(PWS);
 			storeFrontHomePage.hoverOnBecomeAConsultantAndClickEnrollNowLink();
 			s_assert.assertTrue(storeFrontHomePage.isProcedurePageIsDisplayedAfterClickPolicyAndProcedureLink(),"Policy and procedure page is not displayed after clicked on policy link");
@@ -3221,7 +3221,7 @@ public class HomePageFunctionalityTest extends RFWebsiteBaseTest{
 		env = driver.getEnvironment();  
 		storeFrontHomePage = new StoreFrontHomePage(driver);
 		String PWS = storeFrontHomePage.getBizPWS(country, env);
-		storeFrontHomePage.openPWSSite(country, env);
+		storeFrontHomePage.openPWS(PWS);
 		//click Enroll now from the Home-Page..
 		storeFrontHomePage.clickEnrollNowFromBizHomePage();
 		storeFrontHomePage.clickEnrollNowFromWhyRFPage();

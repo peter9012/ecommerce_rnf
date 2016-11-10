@@ -316,12 +316,12 @@ public class StoreFrontBrandRefreshHomePage extends StoreFrontBrandRefreshWebsit
 
 	public void selectEnrollmentKit(String kit){
 		if(kit.contains("Big Business")){
-			driver.quickWaitForElementPresent(BIG_BUSINESS_LAUNCH_KIT_LOC);
+			driver.waitForElementPresent(BIG_BUSINESS_LAUNCH_KIT_LOC);
 			driver.click(BIG_BUSINESS_LAUNCH_KIT_LOC);
 			logger.info("Big Business Launch Kit is selected");
 		}
 		else if(kit.contains("Express")){
-			driver.quickWaitForElementPresent(RF_EXPRESS_LAUNCH_KIT_LOC);
+			driver.waitForElementPresent(RF_EXPRESS_LAUNCH_KIT_LOC);
 			driver.click(RF_EXPRESS_LAUNCH_KIT_LOC);
 			logger.info("RFx Express Business Kit is selected");
 		}
@@ -412,7 +412,8 @@ public class StoreFrontBrandRefreshHomePage extends StoreFrontBrandRefreshWebsit
 		driver.findElement(NAME_ON_CARD_LOC).sendKeys(nameOnCard);
 		logger.info("name on card entered is: "+nameOnCard);
 		/*Select dropdown1 = new Select(driver.findElement(EXP_MONTH_LOC));
-		    dropdown1.selectByVisibleText(expMonth);*/
+		      dropdown1.selectByVisibleText(expMonth);*/
+		driver.waitForElementPresent(By.id("TxtBCvv"));
 		driver.type(By.id("TxtBCvv"), CVV);
 		driver.click(By.xpath("//select[@id='ExpMonth']"));
 		driver.click(By.xpath("//select[contains(@id,'ExpMonth')]//option[@value='"+expMonth+"']"));
@@ -721,6 +722,7 @@ public class StoreFrontBrandRefreshHomePage extends StoreFrontBrandRefreshWebsit
 		logger.info("Card Name entered as: "+cardName);
 		driver.type(CREDIT_CARD_NUMBER_INPUT_FIELD, cardNumer);
 		logger.info("Card number entered as: "+cardNumer);
+		driver.waitForElementPresent(CVV_FIELD);
 		driver.type(CVV_FIELD, CVV);
 		logger.info("CVV entered as "+CVV);
 		driver.click(EXPIRATION_DATE_MONTH_DD);
@@ -749,7 +751,7 @@ public class StoreFrontBrandRefreshHomePage extends StoreFrontBrandRefreshWebsit
 		}catch(Exception e){
 			driver.findElement(By.xpath("//input[contains(@id,'uxCityDropDown_Input')]")).click();
 			driver.waitForElementPresent(FIRST_VALUE_OF_CITY_DD);
-			driver.click(FIRST_VALUE_OF_CITY_DD);	
+			driver.click(FIRST_VALUE_OF_CITY_DD); 
 		}
 		logger.info("City selected");
 		driver.type(PHONE_NUMBER_BILLING_PROFILE_PAGE,phnNumber);
@@ -2062,6 +2064,7 @@ public class StoreFrontBrandRefreshHomePage extends StoreFrontBrandRefreshWebsit
 
 	public void hoverOnBeAConsultantAndClickLinkOnEnrollMe(){
 		driver.pauseExecutionFor(2000);
+		driver.waitForElementPresent(By.xpath("//span[text()= 'BECOME A CONSULTANT']"));
 		Actions actions = new Actions(RFWebsiteDriver.driver);
 		actions =  new Actions(RFWebsiteDriver.driver);
 		actions.moveToElement(driver.findElement(By.xpath("//span[text()= 'BECOME A CONSULTANT']"))).build().perform();
@@ -2069,7 +2072,7 @@ public class StoreFrontBrandRefreshHomePage extends StoreFrontBrandRefreshWebsit
 		driver.click(By.xpath("//span[text()= 'Enroll Now']"));
 		// logger.info("Clicked "+link+" link is clicked after hovering shop skincare.");
 		driver.waitForPageLoad();
-	}		
+	}	
 
 	public void mouseHoverBeAConsultant(){
 		driver.pauseExecutionFor(2000);

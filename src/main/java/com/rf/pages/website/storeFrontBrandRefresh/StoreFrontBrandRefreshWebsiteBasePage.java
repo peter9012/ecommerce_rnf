@@ -143,7 +143,7 @@ public class StoreFrontBrandRefreshWebsiteBasePage extends RFBasePage{
 	}
 
 	public void clickContinueBtn(){
-		driver.quickWaitForElementPresent(CONTINUE_BTN_PREFERRED_AUTOSHIP_CART_PAGE_LOC);
+		driver.waitForElementPresent(CONTINUE_BTN_PREFERRED_AUTOSHIP_CART_PAGE_LOC);
 		driver.click(CONTINUE_BTN_PREFERRED_AUTOSHIP_CART_PAGE_LOC);
 		logger.info("Continue button clicked on Autoship cart page");
 		driver.waitForPageLoad();
@@ -308,7 +308,7 @@ public class StoreFrontBrandRefreshWebsiteBasePage extends RFBasePage{
 	}
 
 	public void clickConsultantOnlyProductOnPWS(String productName){
-		driver.quickWaitForElementPresent(By.xpath(String.format(consultantOnlyProductonPWSLoc, productName)));
+		driver.waitForElementPresent(By.xpath(String.format(consultantOnlyProductonPWSLoc, productName)));
 		driver.click(By.xpath(String.format(consultantOnlyProductonPWSLoc, productName)));
 		logger.info("consultant only product selected is: "+productName);
 	}
@@ -442,8 +442,8 @@ public class StoreFrontBrandRefreshWebsiteBasePage extends RFBasePage{
 
 	public void mouseHoverShopSkinCareAndClickLinkOnPWS(String link){
 		driver.pauseExecutionFor(2000);
-		actions =  new Actions(RFWebsiteDriver.driver);
-		actions.moveToElement(driver.findElement(SHOP_SKINCARE_ON_PWS_LOC)).build().perform();
+		driver.mouseHoverOnElementAndClick(SHOP_SKINCARE_ON_PWS_LOC);
+		driver.click(SHOP_SKINCARE_ON_PWS_LOC);
 		logger.info("hover on Products link now as shop skincare");
 		driver.waitForElementPresent(By.xpath(String.format(linkUnderShopSkinCareOrBeAConsultant, link)));
 		driver.click(By.xpath(String.format(linkUnderShopSkinCareOrBeAConsultant, link)));
@@ -453,18 +453,19 @@ public class StoreFrontBrandRefreshWebsiteBasePage extends RFBasePage{
 
 	public void mouseHoverShopSkinCareAndClickLink(String link){
 		driver.pauseExecutionFor(2000);
-		actions =  new Actions(RFWebsiteDriver.driver);
-		actions.moveToElement(driver.findElement(SHOP_SKINCARE_LOC)).build().perform();
+		driver.mouseHoverOnElement(SHOP_SKINCARE_LOC);
 		logger.info("hover on Products link now as shop skincare");
 		driver.click(By.xpath(String.format(linkUnderShopSkinCareOrBeAConsultant, link)));
 		logger.info("Clicked "+link+" link is clicked after hovering shop skincare.");
 		driver.waitForPageLoad();
+		driver.pauseExecutionFor(2000);
 	}
 
 	public void mouseHoverBeAConsultantAndClickLink(String link){
 		driver.pauseExecutionFor(2000);
-		Actions actions =  new Actions(RFWebsiteDriver.driver);
-		actions.moveToElement(driver.findElement(BE_A_CONSULTANT_LOC)).build().perform();
+		//  Actions actions =  new Actions(RFWebsiteDriver.driver);
+		//  actions.moveToElement(driver.findElement(BE_A_CONSULTANT_LOC)).build().perform();
+		driver.mouseHoverOnElement(BE_A_CONSULTANT_LOC);
 		logger.info("hover performed on be a consultant link.");
 		driver.click(By.xpath(String.format(linkUnderShopSkinCareOrBeAConsultant, link)));
 		logger.info("Clicked "+link+" link is clicked after hovering be a consultant.");

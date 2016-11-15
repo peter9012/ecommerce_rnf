@@ -30,7 +30,7 @@ public class EnrollmentTest extends RFBrandRefreshWebsiteBaseTest{
 
 	//PC Enrollment From Corp site
 	@Test(priority=2)//smoke
-	public void testPCEnrollment(){
+	public void testPCEnrollment() throws Exception{
 		RFL_DB = driver.getDBNameRFL();
 		int randomNum = CommonUtils.getRandomNum(10000, 1000000);
 		int randomNumber = CommonUtils.getRandomNum(10000, 1000000);
@@ -91,7 +91,7 @@ public class EnrollmentTest extends RFBrandRefreshWebsiteBaseTest{
 
 	//RC Enrollment from corp site.
 	@Test(priority=1)//smoke
-	public void testRCEnrollment(){
+	public void testRCEnrollment() throws Exception{
 		RFL_DB = driver.getDBNameRFL();
 		int randomNum = CommonUtils.getRandomNum(10000, 1000000);
 		int randomNumber = CommonUtils.getRandomNum(10000, 1000000);

@@ -74,7 +74,7 @@ public class RFWebsiteDriver implements RFDriver,WebDriver {
 		if(StringUtils.isEmpty(browser)){
 			browser = propertyFile.getProperty("browser");
 		}
-		
+
 		FirefoxProfile prof = new FirefoxProfile();
 		prof.setPreference("brower.startup.homepage", "about:blank");
 		prof.setPreference("startup.homepage_welcome_url", "about:blank");
@@ -138,7 +138,7 @@ public class RFWebsiteDriver implements RFDriver,WebDriver {
 		String dbUsername = null;
 		String dbPassword = null;
 		String dbDomain = null;
-        
+
 		dbIP=System.getProperty("dbIP");
 		if(StringUtils.isEmpty(dbIP)){
 			dbIP = propertyFile.getProperty("dbIP");
@@ -151,7 +151,7 @@ public class RFWebsiteDriver implements RFDriver,WebDriver {
 		DBUtil.setDBDetails(dbIP, dbUsername, dbPassword, dbDomain, authentication);
 		logger.info("DB connections are set");
 	}
-	
+
 	public void selectCountry(String country){
 		driver.findElement(By.xpath("//div[@class='btn-group']")).click();
 		if(country.equalsIgnoreCase("ca")){
@@ -170,34 +170,34 @@ public class RFWebsiteDriver implements RFDriver,WebDriver {
 		}
 		return baseURL;
 	}
-	
+
 	public String getBrowser(){
 		return browser;
 	}
-	
+
 	public String getBizPWSURL() {
 		if (propertyFile.getProperty("environment").equalsIgnoreCase("tst1"))
 		{
 			return propertyFile.getProperty("pwsBase")+".biz";
-			}
+		}
 		else
 		{
 			return propertyFile.getProperty("pwsBase")+getEnvironment()+".biz";
 		}
 	}
-	
+
 	public String getComPWSURL() {
 		//		return propertyFile.getProperty("pwsComBase");
 		if (propertyFile.getProperty("environment").equalsIgnoreCase("tst1"))
 		{
 			return propertyFile.getProperty("pwsBase")+".com";
-			}
+		}
 		else
 		{
 			return propertyFile.getProperty("pwsBase")+getEnvironment()+".com";
 		}
 	}
-	
+
 	public String getDBNameRFL(){
 		return propertyFile.getProperty("databaseNameRFL");
 	}
@@ -213,7 +213,7 @@ public class RFWebsiteDriver implements RFDriver,WebDriver {
 		}
 		return country;
 	}
-	
+
 	public String getDBIP2(){
 		return propertyFile.getProperty("dbIP2");
 	}
@@ -465,6 +465,41 @@ public class RFWebsiteDriver implements RFDriver,WebDriver {
 			}
 		}
 
+	}
+
+	public void mouseHoverOnElement(By locator){
+		String strJavaScript = "var element = arguments[0];"
+				+ "var mouseEventObj = document.createEvent('MouseEvents');"
+				+ "mouseEventObj.initEvent( 'mouseover', true, true );"
+				+ "element.dispatchEvent(mouseEventObj);";
+		JavascriptExecutor js = (JavascriptExecutor) (RFWebsiteDriver.driver);
+		js.executeScript(strJavaScript, driver.findElement(locator));
+		logger.info("mouse hover operation performed");
+	}
+
+	public void mouseHoverOnElementAndClick(By locator){
+		String strJavaScript = "var element = arguments[0];"
+				+ "var mouseEventObj = document.createEvent('MouseEvents');"
+				+ "mouseEventObj.initEvent( 'mouseover', true, true );"
+				+ "element.dispatchEvent(mouseEventObj);";
+		JavascriptExecutor js = (JavascriptExecutor) (RFWebsiteDriver.driver);
+		js.executeScript(strJavaScript, driver.findElement(locator));
+		logger.info("mouse hover operation performed");
+		driver.findElement(locator).click();
+	}
+
+	public void typeWithSubmit(By locator, String input) {
+		/*  driver.manage().timeouts().implicitlyWait(5, TimeUnit.SECONDS);
+		 */  
+		// quickWaitForElementPresent(locator);
+		try{
+			findElement(locator).clear();
+		}catch(Exception e){
+			pauseExecutionFor(2000);
+			findElement(locator).clear(); 
+		}
+		findElement(locator).sendKeys(input);
+		findElement(locator).submit();
 	}
 
 	public void waitForNSCore4LoadingImageToDisappear(){
@@ -970,7 +1005,7 @@ public class RFWebsiteDriver implements RFDriver,WebDriver {
 		logger.info("Switched to second window whose title is "+driver.getTitle());	
 		return parentWindow;
 	}
-	
+
 	public void switchToChildWindow(String parentWinHandle){
 		Set<String> allWindows = driver.getWindowHandles();
 		logger.info("total windows opened = "+allWindows.size());

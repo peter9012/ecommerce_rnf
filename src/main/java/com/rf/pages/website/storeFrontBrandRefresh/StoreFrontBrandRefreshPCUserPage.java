@@ -116,10 +116,15 @@ public class StoreFrontBrandRefreshPCUserPage extends StoreFrontBrandRefreshWebs
 	}
 
 	public void clickUpdateOrderBtn() {
+		JavascriptExecutor js = (JavascriptExecutor) RFWebsiteDriver.driver;
 		driver.waitForStorfrontLegacyLoadingImageToDisappear();
 		driver.waitForElementPresent(UPDATE_ORDER_BTN);
-		JavascriptExecutor js = (JavascriptExecutor)(RFWebsiteDriver.driver);
-		js.executeScript("arguments[0].click();", driver.findElement(UPDATE_ORDER_BTN));
+		try{
+			js.executeScript("arguments[0].click();", driver.findElement(UPDATE_ORDER_BTN));
+			driver.pauseExecutionFor(2000);
+		}catch(Exception e){
+			js.executeScript("window.alert = function(){ return true;}");
+		}
 		logger.info("Update order button clicked");
 	}
 

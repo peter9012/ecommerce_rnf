@@ -6,6 +6,7 @@ import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.openqa.selenium.Alert;
 import org.openqa.selenium.By;
+import org.openqa.selenium.JavascriptExecutor;
 import org.openqa.selenium.NoSuchElementException;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.interactions.Actions;
@@ -200,6 +201,8 @@ public class StoreFrontBrandRefreshWebsiteBasePage extends RFBasePage{
 
 	public String getCurrentURL(){
 		driver.waitForPageLoad();
+		driver.pauseExecutionFor(5000);
+		System.out.println("url"+driver.getCurrentUrl());
 		return driver.getCurrentUrl();
 	}
 
@@ -218,8 +221,11 @@ public class StoreFrontBrandRefreshWebsiteBasePage extends RFBasePage{
 	}
 
 	public void navigateToBackPage(){
+		driver.pauseExecutionFor(1000);
+		JavascriptExecutor js = (JavascriptExecutor)RFWebsiteDriver.driver;
+		js.executeScript("history.back");
+		js.executeScript("history.go(-1)");
 		driver.waitForPageLoad();
-		driver.navigate().back();
 	}
 
 	public String getOrderConfirmationTextMsgAfterOrderPlaced(){
@@ -330,8 +336,7 @@ public class StoreFrontBrandRefreshWebsiteBasePage extends RFBasePage{
 	public void clickHeaderLinkAfterLogin(String linkName) {
 		try{
 			driver.quickWaitForElementPresent(By.xpath(String.format(myAccountLinkAfterLoginLink, linkName)));
-			Actions actions = new Actions(RFWebsiteDriver.driver);
-			actions.moveToElement(driver.findElement(By.xpath(String.format("//nav[@id='Col1']//span[text()='%s']/..", linkName)))).click().build().perform();
+			driver.mouseHoverOnElementAndClick(By.xpath(String.format("//nav[@id='Col1']//span[text()='%s']/..", linkName)));
 			logger.info("my account link is clicked");
 		}
 		catch(NoSuchElementException e){

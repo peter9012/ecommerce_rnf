@@ -1617,14 +1617,13 @@ public class StoreFrontBrandRefreshHomePage extends StoreFrontBrandRefreshWebsit
 		logger.info("Attention last name entered as: "+lastName);
 		driver.type(ADDRESS_LINE_1, addressLine1);
 		logger.info("Address line 1 entered as: "+addressLine1);
-		driver.type(ZIP_CODE, postalCode+"\t");
+		driver.typeWithSubmit(ZIP_CODE, postalCode+"\t");
 		driver.waitForStorfrontLegacyLoadingImageToDisappear();
 		logger.info("Postal code entered as: "+postalCode);
 		driver.click(By.xpath("//input[contains(@id,'uxCityDropDown_Input')]"));
 		driver.waitForLoadingImageToDisappear();
 		driver.pauseExecutionFor(2000);
-		Actions actions = new Actions(RFWebsiteDriver.driver);
-		actions.moveToElement(driver.findElement(CITY_DD)).click().build().perform();
+		driver.mouseHoverOnElementAndClick(CITY_DD);
 		logger.info("City dropdown clicked");
 		driver.waitForElementPresent(FIRST_VALUE_OF_CITY_DD);
 		//driver.click(FIRST_VALUE_OF_CITY_DD);

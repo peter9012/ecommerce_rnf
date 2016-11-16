@@ -159,4 +159,77 @@ public class OrderVerificationTest extends RFBrandRefreshWebsiteBaseTest{
 		s_assert.assertAll();
 	}
 
+	//PC Adhoc Order – Adding new billing profile with existing user
+	@Test
+	public void testAddNewBillingProfileDuringPCAdhocOrderFromCorp(){
+		RFL_DB = driver.getDBNameRFL();
+		int randomNumber = CommonUtils.getRandomNum(10000, 1000000);
+		String firstName = TestConstantsRFL.FIRST_NAME;
+		String postalCode = TestConstantsRFL.POSTAL_CODE;
+		String cardNumber = TestConstantsRFL.CARD_NUMBER;
+		String nameOnCard = firstName;
+		String expMonth = TestConstantsRFL.EXP_MONTH;
+		String expYear = TestConstantsRFL.EXP_YEAR;
+		String phnNumber = TestConstantsRFL.NEW_ADDRESS_PHONE_NUMBER_US;
+		String addressLine1 =  TestConstantsRFL.ADDRESS_LINE1;
+		String billingName =TestConstantsRFL.BILLING_PROFILE_NAME;
+		String billingProfileFirstName = TestConstantsRFL.BILLING_PROFILE_FIRST_NAME;
+		String billingProfileLastName = TestConstantsRFL.BILLING_PROFILE_LAST_NAME+randomNumber;
+		List<Map<String, Object>> randomPCList =  null;
+		String pcEmailID = null;
+
+		randomPCList = DBUtil.performDatabaseQuery(DBQueries_RFL.GET_RANDOM_ACTIVE_PC_EMAILID,RFL_DB);
+		pcEmailID = (String) getValueFromQueryResult(randomPCList, "EmailAddress");
+		String regimen = TestConstantsRFL.REGIMEN_NAME_REVERSE;
+		storeFrontBrandRefreshHomePage.clickShopSkinCareHeader();
+		storeFrontBrandRefreshHomePage.selectRegimen(regimen);
+		storeFrontBrandRefreshHomePage.clickAddToCartBtn();
+		storeFrontBrandRefreshHomePage.clickCheckoutBtn();
+		storeFrontBrandRefreshHomePage.loginAsUserOnCheckoutPage(pcEmailID, password);
+		//s_assert.assertTrue(storeFrontBrandRefreshHomePage.verifyUserSuccessfullyLoggedInOnCorpSite(), "PC user not logged in successfully");
+		s_assert.assertFalse(storeFrontBrandRefreshHomePage.isSignInButtonPresent(), "PC user not logged in successfully");
+		storeFrontBrandRefreshHomePage.clickContinueBtnForPCAndRC();
+		storeFrontBrandRefreshHomePage.clickChangeBillingInformationBtn();
+		storeFrontBrandRefreshHomePage.enterBillingInfo(billingName, billingProfileFirstName, billingProfileLastName, nameOnCard, cardNumber, expMonth, expYear, addressLine1, postalCode, phnNumber,CVV);
+		storeFrontBrandRefreshHomePage.clickUseThisBillingInformationBtn();
+		storeFrontBrandRefreshHomePage.clickUseAsEnteredBtn();
+		s_assert.assertTrue(storeFrontBrandRefreshHomePage.getBillingAddressName().contains(billingProfileFirstName), "Newly created billing profile is not selected for new order.");
+		storeFrontBrandRefreshHomePage.clickCompleteOrderBtn();
+		storeFrontBrandRefreshHomePage.clickOKBtnOnPopup();
+		s_assert.assertTrue(storeFrontBrandRefreshHomePage.isThankYouTextPresentAfterOrderPlaced(), "Adhoc order not placed successfully from corp site.");
+		storeFrontBrandRefreshHomePage.clickOnRodanAndFieldsLogo();
+		logout();
+		s_assert.assertAll();
+	}
+
+	//PC Adhoc Order – with existing billing profile
+	@Test
+	public void testPCAdhocOrderFromCorpWithExistingBillingProfile(){
+		RFL_DB = driver.getDBNameRFL();
+		int randomNumber = CommonUtils.getRandomNum(10000, 1000000);
+		List<Map<String, Object>> randomPCList =  null;
+		String pcEmailID = null;
+
+		randomPCList = DBUtil.performDatabaseQuery(DBQueries_RFL.GET_RANDOM_ACTIVE_PC_EMAILID,RFL_DB);
+		pcEmailID = (String) getValueFromQueryResult(randomPCList, "EmailAddress");
+		String regimen = TestConstantsRFL.REGIMEN_NAME_REVERSE;
+		storeFrontBrandRefreshHomePage.clickShopSkinCareHeader();
+		storeFrontBrandRefreshHomePage.selectRegimen(regimen);
+		storeFrontBrandRefreshHomePage.clickAddToCartBtn();
+		storeFrontBrandRefreshHomePage.clickCheckoutBtn();
+		storeFrontBrandRefreshHomePage.loginAsUserOnCheckoutPage(pcEmailID, password);
+		//s_assert.assertTrue(storeFrontBrandRefreshHomePage.verifyUserSuccessfullyLoggedInOnCorpSite(), "PC user not logged in successfully");
+		s_assert.assertFalse(storeFrontBrandRefreshHomePage.isSignInButtonPresent(), "PC user not logged in successfully");
+		storeFrontBrandRefreshHomePage.clickContinueBtnForPCAndRC();
+		String existingBillingProfile = storeFrontBrandRefreshHomePage.getExistingBillingProfileName();
+		storeFrontBrandRefreshHomePage.clickContinueBtnOnBillingPage();
+		s_assert.assertTrue(storeFrontBrandRefreshHomePage.getBillingAddressName().contains(existingBillingProfile)||storeFrontBrandRefreshHomePage.getBillingAddress().contains(existingBillingProfile), "Existing billing profile is not selected for new order.");
+		storeFrontBrandRefreshHomePage.clickCompleteOrderBtn();
+		storeFrontBrandRefreshHomePage.clickOKBtnOnPopup();
+		s_assert.assertTrue(storeFrontBrandRefreshHomePage.isThankYouTextPresentAfterOrderPlaced(), "Adhoc order not placed successfully from corp site.");
+		storeFrontBrandRefreshHomePage.clickOnRodanAndFieldsLogo();
+		logout();
+		s_assert.assertAll();
+	}
+
 }

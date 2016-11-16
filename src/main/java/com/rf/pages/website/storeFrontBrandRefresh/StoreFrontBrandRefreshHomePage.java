@@ -2158,4 +2158,18 @@ public class StoreFrontBrandRefreshHomePage extends StoreFrontBrandRefreshWebsit
 		}
 	}
 
+	public String getBillingAddress(){
+		driver.findElement(By.xpath("//span[contains(@id,'_lblBillingAddrSt')]"));
+		String name =  driver.findElement(By.xpath("//span[contains(@id,'_lblBillingAddrSt')]")).getText();
+		logger.info("Billing Address line name is "+name);
+		return name;
+	}
+
+	public String getExistingBillingProfileName(){
+		driver.findElement(By.xpath("//div[contains(@id,'_uxBillingEditor_uxUpdatePanel')]//div[@class='form-group']/span[1]"));
+		String name =  driver.findElement(By.xpath("//div[contains(@id,'_uxBillingEditor_uxUpdatePanel')]//div[@class='form-group']/span[1]")).getText();
+		logger.info("Existing Billing profile name is "+name);
+		return name;
+	}
+
 }

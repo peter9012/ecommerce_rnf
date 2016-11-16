@@ -24,6 +24,12 @@
 					<include name="testConsultantEnrollmentSignUp" />
 				</methods>
 			</class>
+			<class name="com.rf.test.website.storeFront.brandRefresh.OrderVerificationTest">
+				<methods>
+					<include name="testAddNewBillingProfileDuringPCAdhocOrderFromCorp" />
+					<include name="testPCAdhocOrderFromCorpWithExistingBillingProfile" />
+				</methods>
+			</class>
 		</classes>
 	</test>
 </suite>

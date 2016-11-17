@@ -295,6 +295,7 @@ public class CSCockpitOrderTabPage extends CSCockpitRFWebsiteBasePage{
 	}
 
 	public String getRefundTotalFromRefundConfirmationPopUp(){
+		driver.waitForElementPresent(REFUND_TOTAL_LBL);
 		return driver.findElement(REFUND_TOTAL_LBL).getText();
 	}
 

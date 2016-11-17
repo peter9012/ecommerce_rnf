@@ -51,7 +51,7 @@ public class RFWebsiteDriver implements RFDriver,WebDriver {
 	public static WebDriver driver; // added static and changed visibility from public to private
 	private PropertyFile propertyFile;
 	private static int DEFAULT_TIMEOUT = 50;
-	private static int DEFAULT_TIMEOUT_CSCOCKPIT = 60;
+	private static int DEFAULT_TIMEOUT_CSCOCKPIT = 70;
 	String browser = null;
 	String dbIP = null;
 	String baseURL  =null;
@@ -241,7 +241,7 @@ public class RFWebsiteDriver implements RFDriver,WebDriver {
 
 	public void waitForElementPresent(By locator) {
 		logger.info("wait started for "+locator);
-		int timeout = 10;
+		int timeout = 15;
 		turnOffImplicitWaits();
 		boolean isElementFound = false;
 		for(int i=1;i<=timeout;i++){		

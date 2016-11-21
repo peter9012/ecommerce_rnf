@@ -48,7 +48,6 @@ public class RFBaseTest{
 	@Parameters({"envproperties"})
 	public void beforeSuite(@Optional String envproperties) {
 		System.out.println("Started execution with " + " " + envproperties);
-		String pathOfAtuReports = System.getProperty("user.dir")+"\\ATU Reports";
 		logger.debug("Started execution with " + " " + envproperties);
 		if (!StringUtils.isEmpty(envproperties)) {
 			propertyFile.loadProps(envproperties);
@@ -92,8 +91,6 @@ public class RFBaseTest{
 			logDir.mkdirs();
 		}
 		
-		propertyFile.setProperty("atu.reports.dir",pathOfAtuReports);
-		propertyFile.setProperty("atu.proj.header.logo","src/test/resources/staticdata/RodanAndFields.png");
 	}
 
 	@AfterSuite(alwaysRun=true)
@@ -151,7 +148,6 @@ public class RFBaseTest{
 				+ " and the sheet is " + sheetName);
 		Object[][] testObjArray = ExcelReader.getTableArray(filePath,
 				testMethod.getName());
-
 		return (testObjArray);
 
 	}

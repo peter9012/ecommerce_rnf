@@ -37,6 +37,7 @@ import org.openqa.selenium.support.ui.ExpectedCondition;
 import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.openqa.selenium.support.ui.Select;
 import org.openqa.selenium.support.ui.WebDriverWait;
+import org.testng.Reporter;
 
 import com.rf.core.driver.RFDriver;
 import com.rf.core.utils.DBUtil;
@@ -57,6 +58,8 @@ public class RFWebsiteDriver implements RFDriver,WebDriver {
 	String baseURL  =null;
 	String country = null;
 	String environment = null;
+	String storeFrontUserPassword = null;
+	
 	public RFWebsiteDriver(PropertyFile propertyFile) {
 		//super();
 		this.propertyFile = propertyFile;			
@@ -75,7 +78,7 @@ public class RFWebsiteDriver implements RFDriver,WebDriver {
 		if(StringUtils.isEmpty(browser)){
 			browser = propertyFile.getProperty("browser");
 		}
-		
+
 		FirefoxProfile prof = new FirefoxProfile();
 		prof.setPreference("brower.startup.homepage", "about:blank");
 		prof.setPreference("startup.homepage_welcome_url", "about:blank");
@@ -124,7 +127,7 @@ public class RFWebsiteDriver implements RFDriver,WebDriver {
 		String dbUsername = null;
 		String dbPassword = null;
 		String dbDomain = null;
-        
+
 		dbIP=System.getProperty("dbIP");
 		if(StringUtils.isEmpty(dbIP)){
 			dbIP = propertyFile.getProperty("dbIP");
@@ -138,21 +141,6 @@ public class RFWebsiteDriver implements RFDriver,WebDriver {
 		logger.info("DB connections are set");
 	}
 
-	public String getDBIP2(){
-		return propertyFile.getProperty("dbIP2");
-	}
-
-	public void selectCountry(String country){
-		driver.findElement(By.xpath("//div[@class='btn-group']")).click();
-		if(country.equalsIgnoreCase("ca")){
-			driver.findElement(By.xpath("//div[contains(@class,'btn-group')]//a[@class='dropdownCA']")).click();
-		}
-		else{
-			driver.findElement(By.xpath("//div[contains(@class,'btn-group')]//a[@class='dropdownUS']")).click();
-		}
-		waitForPageLoad();
-	}
-
 	public String getURL() {
 		baseURL=System.getProperty("baseURL");
 		if(StringUtils.isEmpty(baseURL)){
@@ -164,37 +152,12 @@ public class RFWebsiteDriver implements RFDriver,WebDriver {
 	public String getBrowser(){
 		return browser;
 	}
-	public String getBizPWSURL() {
-		if (propertyFile.getProperty("environment").equalsIgnoreCase("tst1"))
-		{
-			return propertyFile.getProperty("pwsBase")+".biz";
-			}
-		else
-		{
-			return propertyFile.getProperty("pwsBase")+getEnvironment()+".biz";
-		}
+
+	public String getStoreFrontUserPassword(){
+		storeFrontUserPassword=propertyFile.getProperty("storeFrontPassword");
+		return storeFrontUserPassword;
 	}
 	
-	public String getComPWSURL() {
-		//		return propertyFile.getProperty("pwsComBase");
-		if (propertyFile.getProperty("environment").equalsIgnoreCase("tst1"))
-		{
-			return propertyFile.getProperty("pwsBase")+".com";
-			}
-		else
-		{
-			return propertyFile.getProperty("pwsBase")+getEnvironment()+".com";
-		}
-	}
-	
-	public String getDBNameRFL(){
-		return propertyFile.getProperty("databaseNameRFL");
-	}
-
-	public String getDBNameRFO(){
-		return propertyFile.getProperty("databaseNameRFO");
-	}
-
 	public String getCountry(){
 		country=System.getProperty("country");
 		if(StringUtils.isEmpty(country)){
@@ -209,17 +172,6 @@ public class RFWebsiteDriver implements RFDriver,WebDriver {
 			environment = propertyFile.getProperty("environment");
 		}
 		return environment;
-	}
-	public String getStoreFrontPassword(){
-		return propertyFile.getProperty("storeFrontPassword");
-	}
-
-	public String getCSCockpitURL(){
-		return propertyFile.getProperty("csCockpitUrl");
-	}
-
-	public String getStoreFrontURL(){
-		return propertyFile.getProperty("storeFrontUrl");
 	}
 
 	/**
@@ -551,9 +503,9 @@ public class RFWebsiteDriver implements RFDriver,WebDriver {
 
 	}
 
-	public void moveToELement(By locator) {
+	public void moveToElement(By locator) {
 		Actions build = new Actions(driver);
-		build.moveToElement(driver.findElement(locator));
+		build.moveToElement(driver.findElement(locator)).build().perform();
 	}
 
 	public void get(String Url) {
@@ -959,7 +911,7 @@ public class RFWebsiteDriver implements RFDriver,WebDriver {
 		logger.info("Switched to second window whose title is "+driver.getTitle());	
 		return parentWindow;
 	}
-	
+
 	public void switchToChildWindow(String parentWinHandle){
 		Set<String> allWindows = driver.getWindowHandles();
 		logger.info("total windows opened = "+allWindows.size());

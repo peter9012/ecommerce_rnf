@@ -47,7 +47,7 @@ public class RFMobileDriver implements RFDriver, WebDriver {
 	private static int DEFAULT_TIMEOUT = 120;
 	private static int MIN_DEFAULT_TIMEOUT=5;
 	private static String platformUsed;
-	
+
 	public RFMobileDriver(PropertyFile propertyFile) {
 		super();
 		this.propertyFile = propertyFile;
@@ -72,7 +72,7 @@ public class RFMobileDriver implements RFDriver, WebDriver {
 		capabilities.setCapability("browserName",
 				propertyFile.getProperty("browserName"));
 		capabilities.setCapability("autoAcceptAlerts", "true");
-	//	capabilities.setCapability("newCommandTimeout", 600);
+		//	capabilities.setCapability("newCommandTimeout", 600);
 		URL remoteUrl = new URL("http://" + propertyFile.getProperty("host")
 				+ "/wd/hub");
 		logger.debug("Remote URL is " + remoteUrl);
@@ -80,7 +80,7 @@ public class RFMobileDriver implements RFDriver, WebDriver {
 			driver = new IOSDriver(remoteUrl, capabilities);
 		else
 			driver = new AndroidDriver(remoteUrl, capabilities);
-		
+
 		driver.manage().timeouts().implicitlyWait(30, TimeUnit.SECONDS);
 		driver.get(propertyFile.getProperty("baseUrl"));
 		platformUsed = propertyFile.getProperty("platformName");
@@ -100,25 +100,6 @@ public class RFMobileDriver implements RFDriver, WebDriver {
 		} else
 			return false;
 	}
-
-	/**
-	 * @param locator
-	 *            Waits
-	 */
-	// public void waitForElementPresent(By locator) {
-	// try {
-	// for (int i = 0; i < 10; i++) {
-	// logger.debug("waiting for locator " + locator);
-	// if (isElementPresent(locator))
-	// break;
-	// Thread.sleep(100);
-	// }
-	// } catch (Exception e) {
-	// e.getStackTrace();
-	// }
-	// // driver.findElements((By) element).size()
-	//
-	// }
 
 	public void waitForElementPresent(By locator) {
 		try {
@@ -174,16 +155,14 @@ public class RFMobileDriver implements RFDriver, WebDriver {
 	}
 
 	public List<WebElement> findElements(By by) {
-//		if(getPlatformUsed().equalsIgnoreCase(TestConstants.IOS))
-//		movetToElementJavascript(by);
 		return driver.findElements(by);
 	}
 
-	public WebElement findElement(By by) {
-		if(getPlatformUsed().equalsIgnoreCase(TestConstants.IOS))
-			movetToElementJavascript(by);
-		return driver.findElement(by);
-	}
+//	public WebElement findElement(By by) {
+//		if(getPlatformUsed().equalsIgnoreCase(TestConstants.IOS))
+//			movetToElementJavascript(by);
+//		return driver.findElement(by);
+//	}
 
 	public WebElement findElementWithoutMove(By by) {
 		// movetToElementJavascript(by);
@@ -246,8 +225,6 @@ public class RFMobileDriver implements RFDriver, WebDriver {
 	 * 
 	 * Purpose:This Method return text value of Element.
 	 * 
-	 * @author: Amitabh Rai
-	 * @date:18-Feb-2015
 	 * @returnType: String
 	 * @param by
 	 * @return
@@ -278,8 +255,7 @@ public class RFMobileDriver implements RFDriver, WebDriver {
 	/**
 	 * Checks if element is visible Purpose:
 	 * 
-	 * @author: Sunny Sachdeva
-	 * @date:16-Feb-2015
+	 * @author: Shubham Mathur
 	 * @returnType: WebElement
 	 */
 	public boolean IsElementVisible(WebElement element) {
@@ -290,8 +266,7 @@ public class RFMobileDriver implements RFDriver, WebDriver {
 	 * 
 	 * Purpose:Waits for element to be visible
 	 * 
-	 * @author: Sunny Sachdeva
-	 * @date:16-Feb-2015
+	 * @author: Shubham Mathur
 	 * @returnType: WebElement
 	 */
 	public boolean waitForElementToBeVisible(By locator, int timeOut) {
@@ -305,8 +280,7 @@ public class RFMobileDriver implements RFDriver, WebDriver {
 	 * 
 	 * Purpose: Waits and matches the exact title
 	 * 
-	 * @author: Sunny Sachdeva
-	 * @date:17-Feb-2015
+	 * @author: Shubham Mathur
 	 * @returnType: boolean
 	 */
 	public boolean IsTitleEqual(By locator, int timeOut, String title) {
@@ -317,8 +291,7 @@ public class RFMobileDriver implements RFDriver, WebDriver {
 	/**
 	 * Waits and matches if title contains the text Purpose:
 	 * 
-	 * @author: Sunny Sachdeva
-	 * @date:17-Feb-2015
+	 * @author: Shubham Mathur
 	 * @returnType: boolean
 	 */
 	public boolean IsTitleContains(By locator, int timeOut, String title) {
@@ -329,8 +302,7 @@ public class RFMobileDriver implements RFDriver, WebDriver {
 	/**
 	 * Wait for element to be clickable Purpose:
 	 * 
-	 * @author: Sunny Sachdeva
-	 * @date:16-Feb-2015
+	 * @author: Shubham Mathur
 	 * @returnType: WebElement
 	 */
 	public WebElement waitForElementToBeClickable(By locator, int timeOut) {
@@ -344,8 +316,7 @@ public class RFMobileDriver implements RFDriver, WebDriver {
 	 * 
 	 * Purpose:Wait for element to disappear
 	 * 
-	 * @author: Sunny Sachdeva
-	 * @date:16-Feb-2015
+	 * @author: Shubham Mathur
 	 * @returnType: boolean
 	 */
 	public boolean waitForElementToBeInVisible(By locator, int timeOut) {
@@ -415,8 +386,7 @@ public class RFMobileDriver implements RFDriver, WebDriver {
 	 * 
 	 * Purpose: Helps in case of Stalement Exception
 	 * 
-	 * @author: Sunny Sachdeva
-	 * @date:02-Mar-2015
+	 * @author: Shubham Mathur
 	 * @returnType: boolean
 	 */
 	public boolean retryingFindClick(By by) {
@@ -523,8 +493,7 @@ public class RFMobileDriver implements RFDriver, WebDriver {
 	/**
 	 * 
 	 * Purpose: Verified if click operation is successfully by verifying after click Locator is present
-	 * @author: Sunny Sachdeva 
-	 * @date:10-Mar-2015
+	 * @author: Shubham Mathur 
 	 * @returnType: void
 	 */
 
@@ -594,12 +563,12 @@ public class RFMobileDriver implements RFDriver, WebDriver {
 		.executeScript("window.scrollTo(0,0);");
 	}
 
-//	public void takeScreenShot() throws Exception{
-//		WebDriver driver1 = new Augmenter().augment(driver);
-//		File file  = ((TakesScreenshot)driver1).getScreenshotAs(OutputType.FILE);
-//		FileUtils.copyFile(file, new File("Screenshot.jpg"));
-//	}
-	
+	//	public void takeScreenShot() throws Exception{
+	//		WebDriver driver1 = new Augmenter().augment(driver);
+	//		File file  = ((TakesScreenshot)driver1).getScreenshotAs(OutputType.FILE);
+	//		FileUtils.copyFile(file, new File("Screenshot.jpg"));
+	//	}
+
 	public boolean isElementClickable(WebElement element) {
 		try {
 			WebDriverWait wait = new WebDriverWait(driver, MIN_DEFAULT_TIMEOUT);
@@ -609,9 +578,15 @@ public class RFMobileDriver implements RFDriver, WebDriver {
 			return false;
 		}
 	}
-	
+
 	public String getPlatformUsed() {
 		return platformUsed;
 	}
-	
+
+	@Override
+	public WebElement findElement(By by) {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
 }

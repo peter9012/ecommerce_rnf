@@ -51,7 +51,7 @@ import com.rf.core.utils.PropertyFile;
 public class RFWebsiteDriver implements RFDriver,WebDriver {
 	public static WebDriver driver; // added static and changed visibility from public to private
 	private PropertyFile propertyFile;
-	private static int DEFAULT_TIMEOUT = 50;
+	private static int DEFAULT_TIMEOUT = 20;
 	private static int DEFAULT_TIMEOUT_CSCOCKPIT = 70;
 	String browser = null;
 	String dbIP = null;
@@ -515,8 +515,7 @@ public class RFWebsiteDriver implements RFDriver,WebDriver {
 	}
 
 	public void click(By locator) {		
-		//waitForElementToBeClickable(locator, DEFAULT_TIMEOUT);
-		//quickWaitForElementPresent(locator);
+		waitForElementToBeClickable(locator, DEFAULT_TIMEOUT);
 		//movetToElementJavascript(locator);
 		turnOffImplicitWaits();
 		try{

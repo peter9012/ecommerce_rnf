@@ -9,14 +9,15 @@ import com.rf.core.driver.website.RFWebsiteDriver;
 import com.rf.core.website.constants.TestConstants;
 import com.rf.pages.RFBasePage;
 import com.rf.pages.website.rehabitat.storeFront.StoreFrontConsultantEnrollNowPage;
+import com.rf.pages.website.rehabitat.storeFront.StoreFrontHomePage;
 import com.rf.pages.website.rehabitat.storeFront.StoreFrontShopSkinCarePage;
 
 public class StoreFrontWebsiteBasePage extends RFBasePage{
 	private static final Logger logger = LogManager
 			.getLogger(StoreFrontWebsiteBasePage.class.getName());
-	
+
 	protected RFWebsiteDriver driver;
-	
+
 	public StoreFrontWebsiteBasePage(RFWebsiteDriver driver){		
 		super(driver);
 		this.driver = driver;
@@ -29,9 +30,12 @@ public class StoreFrontWebsiteBasePage extends RFBasePage{
 	private final By WHY_RF_LOC = By.xpath("//div[@class='navbar-inverse']//a[@title='WHY R+F']");
 	private final By SHOP_SKINCARE_LOC = By.xpath("//div[@class='navbar-inverse']//a[@title='SHOP SKINCARE']");
 	private final By ALL_PRODUCTS = By.xpath("//div[@class='navbar-inverse']//a[@title='ALL PRODUCTS']");
+	private final By RODAN_AND_FIELDS_LOGO = By.id("header-logo");
+	private final By FIND_A_CONSULTANT_LINK_LOC = By.xpath("//a[@title='FIND A CONSULTANT']");
+	protected final By SPONSOR_SEARCH_FIELD_LOC = By.id("sponserparam");
 	
 	private String RFO_DB = null;
-	
+
 	public StoreFrontWebsiteBasePage mouseHoverOn(String element){
 		if(element.equalsIgnoreCase(TestConstants.BECOME_A_CONSULTANT)){
 			driver.moveToElement(BECOME_A_CONSULTANT_LOC);
@@ -43,31 +47,43 @@ public class StoreFrontWebsiteBasePage extends RFBasePage{
 		}
 		return this;
 	}
-	
+
 	public StoreFrontConsultantEnrollNowPage clickOnEnrollNow(){
 		mouseHoverOn(TestConstants.BECOME_A_CONSULTANT);
 		driver.click(ENROLL_NOW_LOC);
 		logger.info("clicked on 'Enroll Now'");
 		return new StoreFrontConsultantEnrollNowPage(driver);
 	}
-	
+
 	public StoreFrontWebsiteBasePage clickOnWhyRF(){
 		mouseHoverOn(TestConstants.BECOME_A_CONSULTANT);
 		driver.click(WHY_RF_LOC);
 		logger.info("clicked on 'Why R+F'");
 		return this;
 	}
-	
+
 	public StoreFrontShopSkinCarePage clickOnAllProducts(){
 		mouseHoverOn(TestConstants.SHOP_SKINCARE);
 		driver.click(ALL_PRODUCTS);
 		logger.info("clicked on 'All Products'");
 		return new StoreFrontShopSkinCarePage(driver);
 	}
-	
-	
 
-	
+	public String getCurrentURL(){
+		String currentURL = driver.getCurrentUrl();
+		logger.info("Current URL is "+currentURL);
+		return currentURL;
+	}
 
+	public void clickOnRodanAndFieldsLogo(){
+		driver.click(RODAN_AND_FIELDS_LOGO);
+		logger.info("Rodan and Fields logo clicked");
+	}
+
+	public void clickOnFindAConsultantLinkOnHomePage(){
+		driver.quickWaitForElementPresent(FIND_A_CONSULTANT_LINK_LOC);
+		driver.click(FIND_A_CONSULTANT_LINK_LOC);
+		logger.info("'Find a consutant' link clicked");
+	}
 
 }

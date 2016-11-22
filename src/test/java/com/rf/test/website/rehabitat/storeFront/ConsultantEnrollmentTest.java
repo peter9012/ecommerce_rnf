@@ -1,50 +1,25 @@
 package com.rf.test.website.rehabitat.storeFront;
 
-import org.apache.logging.log4j.LogManager;
-import org.apache.logging.log4j.Logger;
 import org.testng.annotations.Test;
-
-import com.rf.core.utils.CommonUtils;
 import com.rf.core.website.constants.TestConstants;
-import com.rf.pages.website.rehabitat.storeFront.StoreFrontConsultantEnrollNowPage;
-import com.rf.pages.website.rehabitat.storeFront.StoreFrontHomePage;
 import com.rf.test.website.rehabitat.storeFront.baseTest.StoreFrontWebsiteBaseTest;
 
-public class MajorEnrollmentsTest extends StoreFrontWebsiteBaseTest{
-	
-	public MajorEnrollmentsTest() {
-		randomString = CommonUtils.getRandomWord(7);
-		pcFirstName=TestConstants.PC_FIRST_NAME+"."+randomString;
-		lastName = TestConstants.LAST_NAME+"."+randomString;
-		email = lastName+TestConstants.EMAIL_SUFFIX;
-	}
-	
-	private static final Logger logger = LogManager
-			.getLogger(MajorEnrollmentsTest.class.getName());
+public class ConsultantEnrollmentTest extends StoreFrontWebsiteBaseTest{
 
-	public String email=null;
-	private String pcFirstName = null;
-	private String lastName = null;
-	private String randomString = null;
-
-
+	/***
+	 * qTest : TC-223 Find a Consultant/Search-CID
+	 * Description : This test validates that while consultant enrollment,valid & active sponsor
+	 * should be searched and valid but inactive sponsor should not be searched.
+	 * 				
+	 */
 	@Test
-	public void testConsultantEnrollment(){
-		sfEnrollNowPage = sfHomePage.clickOnEnrollNow();
-		sfEnrollNowPage.searchSponsorAndSelectFromResult(TestConstants.SPONSOR);
+	public void testFindAConsultantBySearchCID_223(){
+		sfConsEnrollNowPage = sfHomePage.clickOnEnrollNow();
+		sfConsEnrollNowPage.searchSponsor(TestConstants.SPONSOR);
+		s_assert.assertTrue(sfConsEnrollNowPage.isSponsorPresentInResult(),"No result found after searching the sponsor with name "+TestConstants.SPONSOR);
+		s_assert.assertAll();
 	}
 	
-	@Test
-	public void testPCEnrollment(){
-		sfShopSkinCarePage = sfHomePage.clickOnAllProducts();
-		sfShopSkinCarePage.addFirstProductToBag();
-		sfCartPage = sfShopSkinCarePage.checkoutTheCartFromPopUp();
-		sfCheckoutPage = sfCartPage.checkoutTheCart();
-		sfCheckoutPage.fillNewUserDetails(TestConstants.USER_TYPE_PC, pcFirstName, lastName, email, password).clickOnCreateAccountButton();
-	}
-
-	
-
 	//Test Case Hybris Phase 2-3720 :: Version : 1 :: Perform Consultant Account termination through my account
 	@Test(enabled=false)//Duplicate test,covered in Enrollment validation TC-4308
 	public void testAccountTerminationPageForConsultant_3720() throws InterruptedException {
@@ -68,7 +43,6 @@ public class MajorEnrollmentsTest extends StoreFrontWebsiteBaseTest{
 				break;
 		}
 		 */		//s_assert.assertTrue(storeFrontConsultantPage.verifyConsultantPage(),"Consultant Page doesn't contain Welcome User Message");
-		logger.info("login is successful");
 	}
 
 

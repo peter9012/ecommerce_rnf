@@ -27,17 +27,25 @@ import com.rf.test.base.RFBaseTest;
  *
  */
 public class StoreFrontWebsiteBaseTest extends RFBaseTest {
-	
+
+	/***
+	 * @author Shubham Mathur
+	 * @description StoreFrontWebsiteBaseTest constructor having StoreFront HomePage initialization
+	 */
 	public StoreFrontWebsiteBaseTest() {
 		sfHomePage = new StoreFrontHomePage(driver);
 	}
-	
+
+	/***
+	 * All page class reference declarations
+	 */
 	protected StoreFrontHomePage sfHomePage;
-	protected StoreFrontConsultantEnrollNowPage sfEnrollNowPage;
+	protected StoreFrontConsultantEnrollNowPage sfConsEnrollNowPage;
 	protected StoreFrontShopSkinCarePage sfShopSkinCarePage;
 	protected StoreFrontCartPage sfCartPage;
 	protected StoreFrontCheckoutPage sfCheckoutPage;
-		
+
+
 	StringBuilder verificationErrors = new StringBuilder();
 	protected String password = null;
 	protected String countryId = null;
@@ -56,13 +64,12 @@ public class StoreFrontWebsiteBaseTest extends RFBaseTest {
 	@BeforeSuite(alwaysRun=true)
 	public void setUp() throws Exception {
 		driver.loadApplication();
-		logger.info("Application loaded");                                                            
 		driver.setDBConnectionString();
 		setCountry();
 		setCountryId();
 		setStoreFrontPassword(driver.getStoreFrontUserPassword());
 	}
-	
+
 	@BeforeMethod(alwaysRun=true)
 	public void beforeMethod(){
 		s_assert = new SoftAssert();

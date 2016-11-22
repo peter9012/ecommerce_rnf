@@ -9,7 +9,7 @@ public class TestConstants {
 	
 	public static final String BECOME_A_CONSULTANT = "Become A Consultant";
 	public static final String SHOP_SKINCARE = "Shop Skincare";
-	public static final String SPONSOR = "pur";
+	public static final String SPONSOR = "purush";
 	public static final String USER_TYPE_PC = "PC";
 	public static final String USER_TYPE_RC = "RC";
 	public static final String PC_FIRST_NAME = "AutoPC";

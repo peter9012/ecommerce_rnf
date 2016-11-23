@@ -1,5 +1,8 @@
 package com.rf.pages.website.rehabitat.storeFront.basePage;
 
+import java.util.Iterator;
+import java.util.Set;
+
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.openqa.selenium.By;
@@ -37,9 +40,13 @@ public class StoreFrontWebsiteBasePage extends RFBasePage{
 	private final By SELECT_AND_CONTINUE_LOC= By.xpath("//div[@id='findConsultantResultArea']/descendant::button[text()='Select and Continue'][1]");
 	private final By SPONSOR_SEARCH_RESULTS_LOC = By.xpath("//div[@class='row']/div[contains(@class,'consultant-box')]");
 	private final By NO_RESULT_FOUND_MSG_LOC = By.xpath("//p[contains(text(),'No results found')]");
+	private final By EVENTS_LOC = By.xpath("//div[@class='navbar-inverse']//a[@title='EVENTS']");
+	private final By PROGRAMS_AND_INCENTIVES_LOC = By.xpath("//div[@class='navbar-inverse']//a[@title='PROGRAMS & INCENTIVES']");
+	private final By MEET_OUR_COMMUNITY_LOC = By.xpath("//div[@class='navbar-inverse']//a[@title='MEET OUR COMMUNITY']");
+	
 	private String activePageLoc  = "//span[contains(text(),'%s')]/parent::li";
 	private String navigationPageNumberLoc = "//ul[@class='pagination']//a[contains(text(),'%s')]";
-	
+
 	private String RFO_DB = null;
 
 	/***
@@ -135,7 +142,7 @@ public class StoreFrontWebsiteBasePage extends RFBasePage{
 		logger.info("'Find a consutant' link clicked");
 		return this;
 	}
-	
+
 	/***
 	 * This method enter the sponsor name and click on search button
 	 * 
@@ -150,7 +157,7 @@ public class StoreFrontWebsiteBasePage extends RFBasePage{
 		logger.info("Clicked on 'Search' button");
 		return this;
 	}
-	
+
 	/***
 	 * This method selects the first sponsor name in the search result.
 	 * 
@@ -162,7 +169,7 @@ public class StoreFrontWebsiteBasePage extends RFBasePage{
 		driver.click(SELECT_AND_CONTINUE_LOC);
 		logger.info("Clicked on 'Select And Continue' button for first result");
 	}
-	
+
 	/***
 	 * This method verifies whether any result has been present after searching
 	 * the sponsor or not.
@@ -173,7 +180,7 @@ public class StoreFrontWebsiteBasePage extends RFBasePage{
 	public boolean isSponsorPresentInResult(){
 		return driver.isElementPresent(SPONSOR_SEARCH_RESULTS_LOC);
 	}
-	
+
 	/***
 	 * This method verifies if the 'No results found' message is displayed or not 
 	 * @return boolean
@@ -181,7 +188,7 @@ public class StoreFrontWebsiteBasePage extends RFBasePage{
 	public boolean isNoResultMessagePresent(){
 		return driver.isElementPresent(NO_RESULT_FOUND_MSG_LOC);
 	}
-	
+
 	/***
 	 * This method verifies if the user is on expected navigation page in the sponsor 
 	 * search result. 
@@ -190,7 +197,7 @@ public class StoreFrontWebsiteBasePage extends RFBasePage{
 	public Boolean isTheUserOnNavigationPage(String pageNo){
 		return driver.getAttribute(By.xpath(String.format(activePageLoc, pageNo)),"class").equals("active");
 	}
-	
+
 	/***
 	 * This method naviagtes the user to the desired navigation page in the sponsor
 	 * search result 
@@ -201,5 +208,81 @@ public class StoreFrontWebsiteBasePage extends RFBasePage{
 		return this;
 	}
 
+	/***
+	 * This method hover on become a consultant  and click on events link
+	 * 
+	 * @param
+	 * @return store front website base page object
+	 * 
+	 */
+	public StoreFrontWebsiteBasePage clickOnEvents(){
+		mouseHoverOn(TestConstants.BECOME_A_CONSULTANT);
+		driver.click(EVENTS_LOC);
+		logger.info("clicked on 'Events link'");
+		return this;
+	}
+
+	/***
+	 * This method switch the window
+	 * 
+	 * @param parent window handle
+	 * @return store front website base page object
+	 * 
+	 */
+	public StoreFrontWebsiteBasePage switchToParentWindow(String parentWindowID){
+		driver.close();
+		driver.switchTo().window(parentWindowID);
+		logger.info("Switched to parent window");
+		return this;
+	}
+
+	/***
+	 * This method switch the window from parent to child
+	 * 
+	 * @param parent window handle
+	 * @return store front website base page object
+	 * 
+	 */
+	public StoreFrontWebsiteBasePage switchToChildWindow(String parentWindowID){
+		driver.pauseExecutionFor(1000);
+		Set<String> set=driver.getWindowHandles();
+		Iterator<String> it=set.iterator();
+		while(it.hasNext()){
+			String childWindowID=it.next();
+			if(!parentWindowID.equalsIgnoreCase(childWindowID)){
+				driver.switchTo().window(childWindowID);
+				logger.info("Switched to child window");
+			}
+		}
+		return this;
+	}
+
+	/***
+	 * This method hover on become a consultant  and click on programms and incentives link
+	 * 
+	 * @param
+	 * @return store front website base page object
+	 * 
+	 */
+	public StoreFrontWebsiteBasePage clickProgramsAndIncentives(){
+		mouseHoverOn(TestConstants.BECOME_A_CONSULTANT);
+		driver.click(PROGRAMS_AND_INCENTIVES_LOC);
+		logger.info("clicked on 'PROGRAMS & INCENTIVES'link");
+		return this;
+	}
+
+	/***
+	 * This method hover on become a consultant  and click on meet our community link
+	 * 
+	 * @param
+	 * @return store front website base page object
+	 * 
+	 */
+	public StoreFrontWebsiteBasePage clickMeetOurCommunityLink(){
+		mouseHoverOn(TestConstants.BECOME_A_CONSULTANT);
+		driver.click(MEET_OUR_COMMUNITY_LOC);
+		logger.info("clicked on 'MEET OUR COMMUNITY'link");
+		return this;
+	}
 
 }

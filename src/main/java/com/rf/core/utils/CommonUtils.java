@@ -11,6 +11,8 @@ import java.util.Date;
 import java.util.Random;
 import java.util.TimeZone;
 
+import com.rf.core.driver.website.RFWebsiteDriver;
+
 
 /**
  * Utility class for common functions.
@@ -152,5 +154,16 @@ public class CommonUtils {
 		return UIMonth+" "+date+", "+year;
 	}
 
+	/***
+	 * This method take the current window handle
+	 * 
+	 * @param 
+	 * @return current window handle
+	 * 
+	 */
+	public static String getCurrentWindowHandle(){
+		String currentWindowHandle = RFWebsiteDriver.driver.getWindowHandle();
+		return currentWindowHandle;
+	}
 
 }

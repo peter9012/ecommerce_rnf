@@ -402,7 +402,7 @@ public class BizPWSTest extends RFBrandRefreshWebsiteBaseTest{
 		int randomNumber = CommonUtils.getRandomNum(10000, 1000000);
 		int randomNum = CommonUtils.getRandomNum(10000, 1000000);
 		int ssnRandomNum1 = CommonUtils.getRandomNum(100, 999);
-		int ssnRandomNum2 = CommonUtils.getRandomNum(01, 99);
+		int ssnRandomNum2 = CommonUtils.getRandomNum(10, 99);
 		int ssnRandomNum3 = CommonUtils.getRandomNum(1000, 9999);
 		String firstName = TestConstantsRFL.FIRST_NAME;
 		String lastName = TestConstantsRFL.LAST_NAME+randomNum;

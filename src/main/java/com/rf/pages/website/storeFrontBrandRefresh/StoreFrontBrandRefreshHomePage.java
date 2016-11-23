@@ -1185,6 +1185,8 @@ public class StoreFrontBrandRefreshHomePage extends StoreFrontBrandRefreshWebsit
 			String childWindowID=it.next();
 			if(!parentWindowID.equalsIgnoreCase(childWindowID)){
 				driver.switchTo().window(childWindowID);
+				driver.waitForPageLoad();
+				driver.pauseExecutionFor(3000);
 				String currentUrl = driver.getCurrentUrl();
 				driver.close();
 				driver.switchTo().window(parentWindowID);

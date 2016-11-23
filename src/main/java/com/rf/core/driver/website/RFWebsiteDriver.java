@@ -51,7 +51,7 @@ import com.rf.core.utils.PropertyFile;
 public class RFWebsiteDriver implements RFDriver,WebDriver {
 	public static WebDriver driver; // added static and changed visibility from public to private
 	private PropertyFile propertyFile;
-	private static int DEFAULT_TIMEOUT = 20;
+	private static int DEFAULT_TIMEOUT = 30;
 	private static int DEFAULT_TIMEOUT_CSCOCKPIT = 70;
 	String browser = null;
 	String dbIP = null;
@@ -505,7 +505,7 @@ public class RFWebsiteDriver implements RFDriver,WebDriver {
 
 	public void moveToElement(By locator) {
 		Actions build = new Actions(driver);
-		build.moveToElement(driver.findElement(locator)).build().perform();
+		build.moveToElement(driver.findElement(locator)).click().build().perform();
 	}
 
 	public void get(String Url) {

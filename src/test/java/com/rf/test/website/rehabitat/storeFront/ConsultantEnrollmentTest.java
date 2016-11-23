@@ -8,6 +8,7 @@ public class ConsultantEnrollmentTest extends StoreFrontWebsiteBaseTest{
 
 	/***
 	 * qTest : TC-223 Find a Consultant/Search-CID
+	 * 
 	 * Description : This test validates that while consultant enrollment,valid & active sponsor
 	 * should be searched and valid but inactive sponsor should not be searched.
 	 * 				
@@ -19,7 +20,115 @@ public class ConsultantEnrollmentTest extends StoreFrontWebsiteBaseTest{
 		s_assert.assertTrue(sfConsEnrollNowPage.isSponsorPresentInResult(),"No result found after searching the sponsor with name "+TestConstants.SPONSOR);
 		s_assert.assertAll();
 	}
-	
+
+	/***
+	 * qTest : TC-224 Find a consultant/search- Prefix
+	 * 
+	 * Description : This test validates that while consultant enrollment:-	 * 
+	 * Complete Prefix with active PWS = Sponsor should be available
+	 * Complete Prefix with Inactive PWS = Sponsor should NOT be available
+	 * Partial Prefix with active PWS = Sponsor should be available
+	 * Partial Prefix with Inactive PWS = Sponsor should NOT be available
+	 */
+	@Test
+	public void testFindAConsultantByPrefix_224(){
+		sfConsEnrollNowPage = sfHomePage.clickOnEnrollNow();
+		sfConsEnrollNowPage.searchSponsor(TestConstants.SPONSOR);
+		s_assert.assertAll();
+	}
+
+	/***
+	 * qTest : TC-231 Consultant Enrollment- Checkout
+	 * 
+	 * Description : This test validates that complete checkout process for consultant
+	 * enrollment
+	 * 				
+	 */
+	@Test
+	public void testConsultantEnrollment_231(){
+		sfConsEnrollNowPage = sfHomePage.clickOnEnrollNow();
+		sfConsEnrollNowPage.searchSponsor(TestConstants.SPONSOR);
+		s_assert.assertTrue(sfConsEnrollNowPage.isSponsorPresentInResult(),"No result found after searching the sponsor with name "+TestConstants.SPONSOR);
+		s_assert.assertAll();
+	}
+
+	/***
+	 * qTest : TC-261 Request a Sponsor during consultant enrollment
+	 * 
+	 * Description : This test validates the Request for a Sponsor functionality during
+	 * consultant enrollment
+	 * 				
+	 */
+	@Test
+	public void testRequestSponsorConsultantEnrollment_261(){
+		sfConsEnrollNowPage = sfHomePage.clickOnEnrollNow();
+		sfConsEnrollNowPage.searchSponsor(TestConstants.SPONSOR);
+		s_assert.assertTrue(sfConsEnrollNowPage.isSponsorPresentInResult(),"No result found after searching the sponsor with name "+TestConstants.SPONSOR);
+		s_assert.assertAll();
+	}
+
+	/***
+	 * qTest : TC-275 User finds a consultant
+	 * 
+	 * Description : This test validates the sponsor search from 'Find A Consultant' link
+	 * and also validates the pagination in the sponsor search results.
+	 * 				
+	 */
+	@Test
+	public void testSponsorSearchFromFindAConsultantAndPagination_261(){
+		sfHomePage.clickOnFindAConsultantLinkOnHomePage().searchSponsor(TestConstants.SPONSOR);
+		s_assert.assertTrue(sfHomePage.isSponsorPresentInResult(),"No result found after searching the sponsor with name "+TestConstants.SPONSOR);
+		s_assert.assertTrue(sfHomePage.isTheUserOnNavigationPage("1"),"user is not on navigation page 1");
+		sfHomePage.navigateToPaginationInSponsorSearchResult("2");
+		s_assert.assertTrue(sfHomePage.isTheUserOnNavigationPage("2"),"user is not on navigation page 2");
+		s_assert.assertAll();
+	}
+
+	/***
+	 * qTest : TC-273 User enter a name sponsor that doesn't exist in the RF
+	 * 
+	 * Description : This test validates that while consultant enrollment,if a sponsor is searched that
+	 * doesn't exist in R+F system then the 'No Search Results' message should be displayed
+	 * 				
+	 */
+	@Test
+	public void testSearchNonExistingSponsor_273(){
+		sfConsEnrollNowPage = sfHomePage.clickOnEnrollNow();
+		sfConsEnrollNowPage.searchSponsor(TestConstants.NON_EXISTING_SPONSOR);
+		s_assert.assertTrue(sfConsEnrollNowPage.isNoResultMessagePresent(),"'No result found' msg is not present for searching non-existing sponsor");
+		s_assert.assertAll();
+	}
+
+	/***
+	 * qTest : TC-290 User selects Personal Business Porfolio
+	 * 
+	 * Description : This test validates that consultant enrollment by selecting
+	 * Personal Business Potfolio
+	 * 				
+	 */
+	@Test
+	public void testConsultantEnrollmentPersonalBusinessPortfolio_290(){
+		sfConsEnrollNowPage = sfHomePage.clickOnEnrollNow();
+		sfConsEnrollNowPage.searchSponsor(TestConstants.SPONSOR);
+		s_assert.assertTrue(sfConsEnrollNowPage.isSponsorPresentInResult(),"No result found after searching the sponsor with name "+TestConstants.SPONSOR);
+		s_assert.assertAll();
+	}
+
+	/***
+	 * qTest : TC-291 User selects View/hid details CTA in the enrollment kit selected
+	 * 
+	 * Description : //todo
+	 * 				
+	 */
+	@Test
+	public void testViewHideCTADetailsInEnrollmentKit_291(){
+		sfConsEnrollNowPage = sfHomePage.clickOnEnrollNow();
+		sfConsEnrollNowPage.searchSponsor(TestConstants.SPONSOR);
+		s_assert.assertTrue(sfConsEnrollNowPage.isSponsorPresentInResult(),"No result found after searching the sponsor with name "+TestConstants.SPONSOR);
+		s_assert.assertAll();
+	}
+
+
 	//Test Case Hybris Phase 2-3720 :: Version : 1 :: Perform Consultant Account termination through my account
 	@Test(enabled=false)//Duplicate test,covered in Enrollment validation TC-4308
 	public void testAccountTerminationPageForConsultant_3720() throws InterruptedException {

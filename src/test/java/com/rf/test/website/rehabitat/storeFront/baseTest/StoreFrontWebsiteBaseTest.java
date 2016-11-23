@@ -88,7 +88,6 @@ public class StoreFrontWebsiteBaseTest extends RFBaseTest {
 	}
 
 	public void navigateToStoreFrontBaseURL(){
-		System.out.println("^^^ "+driver.getURL()+"/"+country.toUpperCase());
 		driver.get(driver.getURL()+"/"+country.toUpperCase());
 	}
 

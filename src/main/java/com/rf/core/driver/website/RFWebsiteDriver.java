@@ -506,6 +506,7 @@ public class RFWebsiteDriver implements RFDriver,WebDriver {
 	public void moveToElement(By locator) {
 		Actions build = new Actions(driver);
 		build.moveToElement(driver.findElement(locator)).click().build().perform();
+		pauseExecutionFor(1000);
 	}
 
 	public void get(String Url) {

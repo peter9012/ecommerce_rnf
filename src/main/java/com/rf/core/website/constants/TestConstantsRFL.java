@@ -46,11 +46,6 @@ public class TestConstantsRFL {
 	public static final String CONSULTANT_RFX_EXPRESS_BUSINESS_KIT = "RF Express Business Kit";
 	public static final String PWS_SPCLCHARS = "!@$%^";
 	public static final String CARD_NUMBER_SECOND = "4747474747474747";
+	public static final String REGIMEN_NAME_FEATURED = "FEATURED";
 }
-
-
-
-
-
-
 

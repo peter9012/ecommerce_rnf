@@ -193,7 +193,7 @@ public class UINavigationTest extends RFBrandRefreshWebsiteBaseTest{
 		//For PROMOTIONS
 
 		regimen = TestConstantsRFL.REGIMEN_NAME_PROMOTIONS;
-		storeFrontBrandRefreshHomePage.mouseHoverShopSkinCareAndClickLink(regimen);
+		storeFrontBrandRefreshHomePage.mouseHoverShopSkinCareAndClickLink(TestConstantsRFL.REGIMEN_NAME_FEATURED);
 		s_assert.assertTrue(storeFrontBrandRefreshHomePage.getCurrentURL().toLowerCase().contains(regimen.toLowerCase()), "Expected regimen name is "+regimen.toLowerCase()+" Actual on UI is "+storeFrontBrandRefreshHomePage.getCurrentURL().toLowerCase());
 		//s_assert.assertTrue(storeFrontBrandRefreshHomePage.isRegimenNamePresentAfterClickedOnRegimen(regimen), "regimen name i.e.: "+regimen+" not present");
 		//For ENHANCEMENTS
@@ -379,6 +379,7 @@ public class UINavigationTest extends RFBrandRefreshWebsiteBaseTest{
 	public void testCorporateBusinessSystemDirectSelling(){
 		storeFrontBrandRefreshHomePage.clickAboutRFBtn();
 		/*storeFrontBrandRefreshHomePage.clickClickhereLink();*/
+		storeFrontBrandRefreshHomePage.mouseHoverAboutRFAndClickLink("Who We Are");
 		storeFrontBrandRefreshHomePage.clickClickhereLinkToLearnDirectSelling();
 		s_assert.assertTrue(storeFrontBrandRefreshHomePage.isClickHereLinkRedirectinToAppropriatePage("directselling.org"), "Click here link of business system is not redirecting to http://directselling.org/ page");
 		s_assert.assertAll();
@@ -907,7 +908,7 @@ public class UINavigationTest extends RFBrandRefreshWebsiteBaseTest{
 		s_assert.assertTrue(storeFrontBrandRefreshHomePage.getCurrentURL().contains(expectedURL), "Current url expected is: "+expectedURL+" while actual on UI is "+storeFrontBrandRefreshHomePage.getCurrentURL());
 		s_assert.assertAll();
 	}
-	
-	
+
+
 
 }

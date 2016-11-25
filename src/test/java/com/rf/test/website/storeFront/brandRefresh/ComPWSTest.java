@@ -46,7 +46,7 @@ public class ComPWSTest extends RFBrandRefreshWebsiteBaseTest{
 	}
 
 	//Shop Skincare-Consultants Only -buy business promotion
-	@Test(enabled=true)
+	@Test(enabled=false)//test no longer valid
 	public void testShopSkinCareConsultantsOnlyBuyBusinessPromotion(){
 		RFL_DB = driver.getDBNameRFL();
 		int randomNumber = CommonUtils.getRandomNum(10000, 1000000);

@@ -33,7 +33,7 @@ public class PromotionTest extends RFBrandRefreshWebsiteBaseTest{
 	}
 
 	//Consultants Only - buy business promotion 
-	@Test(enabled=true)//needs updation
+	@Test(enabled=false)//test no longer valid
 	public void testConsultantsOnlyBuyBusinessPromotion(){
 		RFL_DB = driver.getDBNameRFL();
 		int randomNumber = CommonUtils.getRandomNum(10000, 1000000);

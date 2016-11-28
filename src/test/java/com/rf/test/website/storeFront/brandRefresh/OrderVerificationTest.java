@@ -209,6 +209,17 @@ public class OrderVerificationTest extends RFBrandRefreshWebsiteBaseTest{
 		int randomNumber = CommonUtils.getRandomNum(10000, 1000000);
 		List<Map<String, Object>> randomPCList =  null;
 		String pcEmailID = null;
+		String firstName = TestConstantsRFL.FIRST_NAME;
+		String cardNumber = TestConstantsRFL.CARD_NUMBER_SECOND;
+		String nameOnCard = firstName;
+		String postalCode = TestConstantsRFL.POSTAL_CODE;
+		String expMonth = TestConstantsRFL.EXP_MONTH;
+		String expYear = TestConstantsRFL.EXP_YEAR;
+		String phnNumber = TestConstantsRFL.NEW_ADDRESS_PHONE_NUMBER_US;
+		String addressLine1 =  TestConstantsRFL.ADDRESS_LINE1;
+		String billingName =TestConstantsRFL.BILLING_PROFILE_NAME;
+		String billingProfileFirstName = TestConstantsRFL.BILLING_PROFILE_FIRST_NAME+randomNumber;
+		String billingProfileLastName = TestConstantsRFL.BILLING_PROFILE_LAST_NAME;
 
 		randomPCList = DBUtil.performDatabaseQuery(DBQueries_RFL.GET_RANDOM_ACTIVE_PC_EMAILID,RFL_DB);
 		pcEmailID = (String) getValueFromQueryResult(randomPCList, "EmailAddress");
@@ -221,9 +232,13 @@ public class OrderVerificationTest extends RFBrandRefreshWebsiteBaseTest{
 		//s_assert.assertTrue(storeFrontBrandRefreshHomePage.verifyUserSuccessfullyLoggedInOnCorpSite(), "PC user not logged in successfully");
 		s_assert.assertFalse(storeFrontBrandRefreshHomePage.isSignInButtonPresent(), "PC user not logged in successfully");
 		storeFrontBrandRefreshHomePage.clickContinueBtnForPCAndRC();
-		String existingBillingProfile = storeFrontBrandRefreshHomePage.getExistingBillingProfileName();
-		storeFrontBrandRefreshHomePage.clickContinueBtnOnBillingPage();
-		s_assert.assertTrue(storeFrontBrandRefreshHomePage.getBillingAddressName().contains(existingBillingProfile)||storeFrontBrandRefreshHomePage.getBillingAddress().contains(existingBillingProfile), "Existing billing profile is not selected for new order.");
+		storeFrontBrandRefreshHomePage.clickChangeBillingInformationBtn();
+		storeFrontBrandRefreshHomePage.enterBillingInfo(billingName, billingProfileFirstName, billingProfileLastName, nameOnCard, cardNumber, expMonth, expYear, addressLine1, postalCode, phnNumber,CVV);
+		storeFrontBrandRefreshHomePage.clickUseThisBillingInformationBtn();
+		storeFrontBrandRefreshHomePage.clickUseAsEnteredBtn();
+		//String existingBillingProfile = storeFrontBrandRefreshHomePage.getExistingBillingProfileName();
+		//storeFrontBrandRefreshHomePage.clickContinueBtnOnBillingPage();
+		s_assert.assertTrue(storeFrontBrandRefreshHomePage.getBillingAddressName().contains(billingProfileFirstName)||storeFrontBrandRefreshHomePage.getBillingAddress().contains(addressLine1), "Existing billing profile is not selected for new order.");
 		storeFrontBrandRefreshHomePage.clickCompleteOrderBtn();
 		storeFrontBrandRefreshHomePage.clickOKBtnOnPopup();
 		s_assert.assertTrue(storeFrontBrandRefreshHomePage.isThankYouTextPresentAfterOrderPlaced(), "Adhoc order not placed successfully from corp site.");

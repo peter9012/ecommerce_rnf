@@ -228,12 +228,11 @@ public class StoreFrontUpdateCartPage extends StoreFrontRFWebsiteBasePage{
 
 	public void clickOnBuyNowButton() throws InterruptedException{
 		if(driver.getCountry().equalsIgnoreCase("CA")){
-			driver.quickWaitForElementPresent(By.xpath("//div[@id='main-content']/div[5]/div[1]//form[@id='productDetailForm']/button"));
-			if(driver.findElement(By.xpath("//div[@id='main-content']/div[5]/div[1]//form[@id='productDetailForm']/button")).isEnabled()==true)
-				//driver.click(By.xpath("//div[@id='main-content']/div[5]/div[1]//form[@id='productDetailForm']/button"));
-				driver.clickByJS(RFWebsiteDriver.driver, driver.findElement(By.xpath("//div[@id='main-content']/div[5]/div[1]//form[@id='productDetailForm']/button")));
+			driver.quickWaitForElementPresent(By.xpath("//*[@id='main-content']/descendant::button[contains(text(),'ADD TO BAG') or @type='submit'][1]"));
+			if(driver.findElement(By.xpath("//*[@id='main-content']/descendant::button[contains(text(),'ADD TO BAG') or @type='submit'][1]")).isEnabled()==true)
+				driver.clickByJS(RFWebsiteDriver.driver, driver.findElement(By.xpath("//*[@id='main-content']/descendant::button[contains(text(),'ADD TO BAG') or @type='submit'][1]")));
 			else
-				driver.click(By.xpath("//div[@id='main-content']/div[5]/div[2]//form[@id='productDetailForm']/button"));
+				driver.clickByJS(RFWebsiteDriver.driver, driver.findElement(By.xpath("//*[@id='main-content']/descendant::button[contains(text(),'ADD TO BAG') or @type='submit'][2]")));
 			logger.info("Add To Bag button clicked");
 			driver.waitForLoadingImageToDisappear();
 		}

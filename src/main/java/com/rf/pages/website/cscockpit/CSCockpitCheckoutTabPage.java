@@ -169,6 +169,7 @@ public class CSCockpitCheckoutTabPage extends CSCockpitRFWebsiteBasePage{
 		driver.pauseExecutionFor(3000);
 		driver.click(PLACE_ORDER_BUTTON_CHECKOUT_TAB);
 		driver.waitForCSCockpitLoadingImageToDisappear();
+		driver.pauseExecutionFor(5000);
 	}
 
 	public boolean verifySelectPaymentDetailsPopupInCheckoutTab(){

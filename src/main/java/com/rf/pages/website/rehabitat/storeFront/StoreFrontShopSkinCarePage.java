@@ -19,7 +19,6 @@ public class StoreFrontShopSkinCarePage extends StoreFrontWebsiteBasePage{
 
 	private final By ADD_TO_BAG_BUTTON_LOC = By.xpath("//div[@class='product-item'][1]//button[text()='Add to Bag']");
 	private final By CHECKOUT_BUTTON_POPUP_LOC = By.xpath("//a[contains(text(),'Checkout')]");
-	private final By PRODUCTS_NAME_LINK_LOC = By.xpath("//div[@id='product_listing']/descendant::div[@class='details'][1]//a");
 	private final By ADD_TO_CART_BUTTON_AT_PRODUCT_DETAIL_PAGE = By.id("addToCartButton");
 	
 	public StoreFrontShopSkinCarePage addFirstProductToBag(){

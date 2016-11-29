@@ -36,6 +36,7 @@ public class StoreFrontWebsiteBasePage extends RFBasePage{
 	private final By RODAN_AND_FIELDS_LOGO = By.id("header-logo");
 	private final By FIND_A_CONSULTANT_LINK_LOC = By.xpath("//a[@title='FIND A CONSULTANT']");
 	protected final By SPONSOR_SEARCH_FIELD_LOC = By.id("sponserparam");
+	protected final By PRODUCTS_NAME_LINK_LOC = By.xpath("//div[@id='product_listing']/descendant::div[@class='details'][1]//a");
 	private final By SEARCH_SPONSOR_LOC = By.id("search-sponsor-button");
 	private final By SELECT_AND_CONTINUE_LOC= By.xpath("//div[@id='findConsultantResultArea']/descendant::button[text()='Select and Continue'][1]");
 	private final By SPONSOR_SEARCH_RESULTS_LOC = By.xpath("//div[@class='row']/div[contains(@class,'consultant-box')]");
@@ -43,7 +44,10 @@ public class StoreFrontWebsiteBasePage extends RFBasePage{
 	private final By EVENTS_LOC = By.xpath("//div[@class='navbar-inverse']//a[@title='EVENTS']");
 	private final By PROGRAMS_AND_INCENTIVES_LOC = By.xpath("//div[@class='navbar-inverse']//a[@title='PROGRAMS & INCENTIVES']");
 	private final By MEET_OUR_COMMUNITY_LOC = By.xpath("//div[@class='navbar-inverse']//a[@title='MEET OUR COMMUNITY']");
-	
+	private final By WHO_WE_ARE_LINK_LOC = By.xpath("//div[@class='navbar-inverse']//a[@title='WHO WE ARE']");
+	private final By GIVING_BACK_LINK_LOC = By.xpath("//div[@class='navbar-inverse']//a[@title='GIVING BACK']");
+	private final By SEARCH_ICON = By.xpath("//span[@class='icon-search']");
+
 	private String activePageLoc  = "//span[contains(text(),'%s')]/parent::li";
 	private String navigationPageNumberLoc = "//ul[@class='pagination']//a[contains(text(),'%s')]";
 
@@ -267,7 +271,7 @@ public class StoreFrontWebsiteBasePage extends RFBasePage{
 	public StoreFrontWebsiteBasePage clickProgramsAndIncentives(){
 		mouseHoverOn(TestConstants.BECOME_A_CONSULTANT);
 		driver.click(PROGRAMS_AND_INCENTIVES_LOC);
-		logger.info("clicked on 'PROGRAMS & INCENTIVES'link");
+		logger.info("clicked on 'PROGRAMS & INCENTIVES' link");
 		return this;
 	}
 
@@ -281,8 +285,62 @@ public class StoreFrontWebsiteBasePage extends RFBasePage{
 	public StoreFrontWebsiteBasePage clickMeetOurCommunityLink(){
 		mouseHoverOn(TestConstants.BECOME_A_CONSULTANT);
 		driver.click(MEET_OUR_COMMUNITY_LOC);
-		logger.info("clicked on 'MEET OUR COMMUNITY'link");
+		logger.info("clicked on 'MEET OUR COMMUNITY' link");
 		return this;
+	}
+
+	/***
+	 * This method hover on About R+F  and click on Who We Are link
+	 * 
+	 * @param
+	 * @return store front website base page object
+	 * 
+	 */
+	public StoreFrontWebsiteBasePage clickWhoWeAreLink(){
+		mouseHoverOn(TestConstants.ABOUT_RF);
+		driver.click(WHO_WE_ARE_LINK_LOC);
+		logger.info("clicked on 'WHO WE ARE' link");
+		return this;
+	}
+
+	/***
+	 * This method hover on About R+F  and click on Giving back link
+	 * 
+	 * @param
+	 * @return store front website base page object
+	 * 
+	 */
+	public StoreFrontWebsiteBasePage clickGivingBackLink(){
+		mouseHoverOn(TestConstants.ABOUT_RF);
+		driver.click(GIVING_BACK_LINK_LOC);
+		logger.info("clicked on 'GIVING BACK'link");
+		return this;
+	}
+
+	/***
+	 * This method click on search icon
+	 * 
+	 * @param
+	 * @return store front website base page object
+	 * 
+	 */
+	public StoreFrontWebsiteBasePage clickSearchIcon(){
+		driver.click(SEARCH_ICON);
+		logger.info("clicked on Search Icon");
+		return this;
+	}
+
+	/***
+	 * This method get product name
+	 * 
+	 * @param
+	 * @return product name
+	 * 
+	 */
+	public String getProductName(){
+		String productName = driver.findElement(PRODUCTS_NAME_LINK_LOC).getText(); 
+		logger.info("product name is: "+productName);
+		return productName;
 	}
 
 }

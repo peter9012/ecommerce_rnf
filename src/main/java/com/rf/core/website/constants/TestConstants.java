@@ -6,7 +6,7 @@ public class TestConstants {
 	 */
 	public static final String DOT = ".";
 	public static final String FORWARD_SLASH = "/";
-	
+
 	public static final String BECOME_A_CONSULTANT = "Become A Consultant";
 	public static final String SHOP_SKINCARE = "Shop Skincare";
 	public static final String SPONSOR = "purush";
@@ -16,5 +16,7 @@ public class TestConstants {
 	public static final String PC_FIRST_NAME = "AutoPC";
 	public static final String LAST_NAME = "lName";
 	public static final String EMAIL_SUFFIX = "@yopmail.com";
+	public static final String ABOUT_RF = "ABOUT R+F";
+	public static final String PRODUCT_NAME = "Aging REDEFINED Special";
 
 }

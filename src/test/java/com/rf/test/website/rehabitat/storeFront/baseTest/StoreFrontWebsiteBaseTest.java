@@ -45,7 +45,6 @@ public class StoreFrontWebsiteBaseTest extends RFBaseTest {
 	protected StoreFrontCartPage sfCartPage;
 	protected StoreFrontCheckoutPage sfCheckoutPage;
 
-
 	StringBuilder verificationErrors = new StringBuilder();
 	protected String password = null;
 	protected String countryId = null;

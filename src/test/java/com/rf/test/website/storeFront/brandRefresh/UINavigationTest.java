@@ -682,6 +682,7 @@ public class UINavigationTest extends RFBrandRefreshWebsiteBaseTest{
 	@Test(enabled=true)
 	public void testCorporateFindAConsultant() throws InterruptedException{
 		String expectedURL = "LocatePWS.aspx?fromHome=1";
+		storeFrontBrandRefreshHomePage = new StoreFrontBrandRefreshHomePage(driver);
 		storeFrontBrandRefreshHomePage.clickConnectWithAConsultant();
 		s_assert.assertTrue(storeFrontBrandRefreshHomePage.getCurrentUrlOpenedWindow().contains(expectedURL), "Current url expected is: "+expectedURL+" while actual on UI is "+storeFrontBrandRefreshHomePage.getCurrentURL());
 		s_assert.assertAll();

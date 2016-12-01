@@ -15,7 +15,7 @@ public class ConsultantEnrollmentTest extends StoreFrontWebsiteBaseTest{
 	 */
 	@Test
 	public void testFindAConsultantBySearchCID_223(){
-		sfConsEnrollNowPage = sfHomePage.clickOnEnrollNow();
+		sfConsEnrollNowPage = sfHomePage.clickEnrollNow();
 		sfConsEnrollNowPage.searchSponsor(TestConstants.SPONSOR);
 		s_assert.assertTrue(sfConsEnrollNowPage.isSponsorPresentInResult(),"No result found after searching the sponsor with name "+TestConstants.SPONSOR);
 		s_assert.assertAll();
@@ -32,7 +32,7 @@ public class ConsultantEnrollmentTest extends StoreFrontWebsiteBaseTest{
 	 */
 	@Test
 	public void testFindAConsultantByPrefix_224(){
-		sfConsEnrollNowPage = sfHomePage.clickOnEnrollNow();
+		sfConsEnrollNowPage = sfHomePage.clickEnrollNow();
 		sfConsEnrollNowPage.searchSponsor(TestConstants.SPONSOR);
 		s_assert.assertAll();
 	}
@@ -46,7 +46,7 @@ public class ConsultantEnrollmentTest extends StoreFrontWebsiteBaseTest{
 	 */
 	@Test
 	public void testConsultantEnrollment_231(){
-		sfConsEnrollNowPage = sfHomePage.clickOnEnrollNow();
+		sfConsEnrollNowPage = sfHomePage.clickEnrollNow();
 		sfConsEnrollNowPage.searchSponsor(TestConstants.SPONSOR);
 		s_assert.assertTrue(sfConsEnrollNowPage.isSponsorPresentInResult(),"No result found after searching the sponsor with name "+TestConstants.SPONSOR);
 		s_assert.assertAll();
@@ -61,7 +61,7 @@ public class ConsultantEnrollmentTest extends StoreFrontWebsiteBaseTest{
 	 */
 	@Test
 	public void testRequestSponsorConsultantEnrollment_261(){
-		sfConsEnrollNowPage = sfHomePage.clickOnEnrollNow();
+		sfConsEnrollNowPage = sfHomePage.clickEnrollNow();
 		sfConsEnrollNowPage.searchSponsor(TestConstants.SPONSOR);
 		s_assert.assertTrue(sfConsEnrollNowPage.isSponsorPresentInResult(),"No result found after searching the sponsor with name "+TestConstants.SPONSOR);
 		s_assert.assertAll();
@@ -76,7 +76,7 @@ public class ConsultantEnrollmentTest extends StoreFrontWebsiteBaseTest{
 	 */
 	@Test
 	public void testSponsorSearchFromFindAConsultantAndPagination_261(){
-		sfHomePage.clickOnFindAConsultantLinkOnHomePage().searchSponsor(TestConstants.SPONSOR);
+		sfHomePage.clickFindAConsultantLinkOnHomePage().searchSponsor(TestConstants.SPONSOR);
 		s_assert.assertTrue(sfHomePage.isSponsorPresentInResult(),"No result found after searching the sponsor with name "+TestConstants.SPONSOR);
 		s_assert.assertTrue(sfHomePage.isTheUserOnNavigationPage("1"),"user is not on navigation page 1");
 		sfHomePage.navigateToPaginationInSponsorSearchResult("2");
@@ -93,7 +93,7 @@ public class ConsultantEnrollmentTest extends StoreFrontWebsiteBaseTest{
 	 */
 	@Test
 	public void testSearchNonExistingSponsor_273(){
-		sfConsEnrollNowPage = sfHomePage.clickOnEnrollNow();
+		sfConsEnrollNowPage = sfHomePage.clickEnrollNow();
 		sfConsEnrollNowPage.searchSponsor(TestConstants.NON_EXISTING_SPONSOR);
 		s_assert.assertTrue(sfConsEnrollNowPage.isNoResultMessagePresent(),"'No result found' msg is not present for searching non-existing sponsor");
 		s_assert.assertAll();
@@ -108,7 +108,7 @@ public class ConsultantEnrollmentTest extends StoreFrontWebsiteBaseTest{
 	 */
 	@Test
 	public void testConsultantEnrollmentPersonalBusinessPortfolio_290(){
-		sfConsEnrollNowPage = sfHomePage.clickOnEnrollNow();
+		sfConsEnrollNowPage = sfHomePage.clickEnrollNow();
 		sfConsEnrollNowPage.searchSponsor(TestConstants.SPONSOR);
 		s_assert.assertTrue(sfConsEnrollNowPage.isSponsorPresentInResult(),"No result found after searching the sponsor with name "+TestConstants.SPONSOR);
 		s_assert.assertAll();
@@ -122,7 +122,7 @@ public class ConsultantEnrollmentTest extends StoreFrontWebsiteBaseTest{
 	 */
 	@Test
 	public void testViewHideCTADetailsInEnrollmentKit_291(){
-		sfConsEnrollNowPage = sfHomePage.clickOnEnrollNow();
+		sfConsEnrollNowPage = sfHomePage.clickEnrollNow();
 		sfConsEnrollNowPage.searchSponsor(TestConstants.SPONSOR);
 		s_assert.assertTrue(sfConsEnrollNowPage.isSponsorPresentInResult(),"No result found after searching the sponsor with name "+TestConstants.SPONSOR);
 		s_assert.assertAll();

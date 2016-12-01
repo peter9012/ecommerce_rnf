@@ -14,22 +14,22 @@ public class NavigateToHomePageFromLogoTest extends StoreFrontWebsiteBaseTest{
 	@Test
 	public void testRFLogoRedirectsToHomePage_6(){
 		String currentURL = null;
-		sfShopSkinCarePage = sfHomePage.clickOnAllProducts();
+		sfShopSkinCarePage = sfHomePage.clickAllProducts();
 		currentURL = sfShopSkinCarePage.getCurrentURL().toLowerCase();
 		s_assert.assertTrue(currentURL.contains("shopskincare"), "Expected URL should contain shopskincare but actual on UI is"+currentURL);
-		sfShopSkinCarePage.clickOnRodanAndFieldsLogo();
+		sfShopSkinCarePage.clickRodanAndFieldsLogo();
 		currentURL = sfHomePage.getCurrentURL().toLowerCase();
 		s_assert.assertTrue(sfHomePage.getCurrentURL().contains("https://www.dev1.rodanandfields.com/AU/"), "Expected URL should be like https://www.dev1.rodanandfields.com/AU/ but actual on UI is"+currentURL);
-		sfShopSkinCarePage = sfHomePage.clickOnAllProducts();
-		sfShopSkinCarePage.clickOnNameOfFirstProduct();
+		sfShopSkinCarePage = sfHomePage.clickAllProducts();
+		sfShopSkinCarePage.clickNameOfFirstProduct();
 		s_assert.assertTrue(sfShopSkinCarePage.isAddToCartButtonIsPresentAtProductDetailsPage(),"User is not redirecting to product details page after clicking on product name");
-		sfShopSkinCarePage.clickOnRodanAndFieldsLogo();
+		sfShopSkinCarePage.clickRodanAndFieldsLogo();
 		currentURL = sfHomePage.getCurrentURL().toLowerCase();
 		s_assert.assertTrue(sfHomePage.getCurrentURL().contains("https://www.dev1.rodanandfields.com/AU/"), "Expected URL should be like https://www.dev1.rodanandfields.com/AU/ but actual on UI is"+currentURL);
-		sfShopSkinCarePage = sfHomePage.clickOnAllProducts();
+		sfShopSkinCarePage = sfHomePage.clickAllProducts();
 		sfShopSkinCarePage.addFirstProductToBag();
 		sfCartPage = sfShopSkinCarePage.checkoutTheCartFromPopUp();
-		sfCartPage.clickOnRodanAndFieldsLogo();
+		sfCartPage.clickRodanAndFieldsLogo();
 		currentURL = sfHomePage.getCurrentURL().toLowerCase();
 		s_assert.assertTrue(sfHomePage.getCurrentURL().contains("https://www.dev1.rodanandfields.com/AU/"), "Expected URL should be like https://www.dev1.rodanandfields.com/AU/ but actual on UI is"+currentURL);
 		s_assert.assertAll();

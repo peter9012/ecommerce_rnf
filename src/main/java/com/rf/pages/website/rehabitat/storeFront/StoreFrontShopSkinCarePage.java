@@ -33,7 +33,7 @@ public class StoreFrontShopSkinCarePage extends StoreFrontWebsiteBasePage{
 		return new StoreFrontCartPage(driver);
 	}
 
-	public void clickOnNameOfFirstProduct(){
+	public void clickNameOfFirstProduct(){
 		String productName = driver.findElement(PRODUCTS_NAME_LINK_LOC).getText();
 		driver.click(PRODUCTS_NAME_LINK_LOC);
 		logger.info("product name "+productName+ "Clicked");

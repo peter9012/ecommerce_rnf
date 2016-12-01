@@ -13,7 +13,7 @@ public class FindAConsultantLinkTest extends StoreFrontWebsiteBaseTest{
 	 */
 	@Test //Incomplete
 	public void testCorporateSitesShouldHaveFindAConsultantLinkOnTheHomePage_7(){
-		sfHomePage.clickOnFindAConsultantLinkOnHomePage();
+		sfHomePage.clickFindAConsultantLinkOnHomePage();
 		s_assert.assertTrue(sfHomePage.isFindAConsultantPagePresent(),"'Find A Consultant' page either doesn't have the URL as 'find-consultant' or sponsor search field is not present");
 		s_assert.assertAll();
 	}

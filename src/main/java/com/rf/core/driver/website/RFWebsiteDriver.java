@@ -252,7 +252,8 @@ public class RFWebsiteDriver implements RFDriver,WebDriver {
 	public void waitForLoadingImageToDisappear(){
 		int DEFAULT_TIMEOUT = 50;
 		turnOffImplicitWaits();
-		By locator = By.xpath("//div[@id='blockUIBody']");
+//		By locator = By.xpath("//div[@id='blockUIBody']");
+		 By locator = By.xpath("//html[@class='loader']");
 		logger.info("Waiting for loading image to get disappear");
 		for(int i=1;i<=DEFAULT_TIMEOUT;i++){			
 			try{

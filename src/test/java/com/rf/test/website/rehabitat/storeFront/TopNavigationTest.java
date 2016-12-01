@@ -17,7 +17,7 @@ public class TopNavigationTest extends StoreFrontWebsiteBaseTest{
 	 */
 	@Test //Incomplete
 	public void testBecomeAConsultantAtWhyRFPage_72(){
-		sfHomePage.clickOnWhyRF();
+		sfHomePage.clickWhyRF();
 		sfHomePage.clickEnrollNowButton();
 	}
 
@@ -32,7 +32,7 @@ public class TopNavigationTest extends StoreFrontWebsiteBaseTest{
 	public void testBecomeAConsultantEvents_73(){
 		String currentWindowID = null; 
 		String currentURL = null;
-		sfHomePage.clickOnEvents();
+		sfHomePage.clickEvents();
 		currentWindowID = CommonUtils.getCurrentWindowHandle();
 		sfHomePage.clickFirstEventCalendar();
 		sfHomePage.switchToChildWindow(currentWindowID);
@@ -211,6 +211,30 @@ public class TopNavigationTest extends StoreFrontWebsiteBaseTest{
 		productNameFromUI = sfHomePage.getProductName().toLowerCase();
 		productName = productName.toLowerCase();
 		s_assert.assertTrue(productNameFromUI.contains(productName), "Expected product name is:"+productName+"Actual On UI is:"+productNameFromUI);
+		s_assert.assertAll();
+	}
+
+	/***
+	 * qTest : TC-76 About R+F- Executive Team
+	 * Description : This test validates team member details on executive team page.
+	 *  
+	 *     
+	 */
+	@Test
+	public void testAboutRFExecutiveTeam_76(){
+		String currentURL = null;
+		String teamMemberName = null;
+		String teamMemberNameOnPopup = null;
+		String urlToAssert = "executive-team";
+		sfHomePage.clickExecutiveTeam();
+		currentURL = sfHomePage.getCurrentURL().toLowerCase();
+		s_assert.assertTrue(currentURL.contains(urlToAssert), "Expected URL should contain "+urlToAssert+ "but actual on UI is"+currentURL);
+		//Click and return random team member name.
+		teamMemberName = sfHomePage.clickAndReturnTeamMemberName();
+		//Verify details of team member.
+		teamMemberNameOnPopup = sfHomePage.getTeamMemberNameFromPopup();
+		s_assert.assertTrue(teamMemberNameOnPopup.contains(teamMemberName), "Expected team member name is" +teamMemberName+ "but actual on UI is"+teamMemberNameOnPopup);
+		sfHomePage.closeMemberDetailsPopup();
 		s_assert.assertAll();
 	}
 }

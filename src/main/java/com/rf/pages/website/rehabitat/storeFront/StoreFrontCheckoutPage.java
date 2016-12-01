@@ -44,7 +44,7 @@ public class StoreFrontCheckoutPage extends StoreFrontWebsiteBasePage{
 		return this;
 	}
 
-	public void clickOnCreateAccountButton(){
+	public void clickCreateAccountButton(){
 		driver.click(CREATE_ACCOUNT_BUTTON_LOC);
 		logger.info("'Create Account' button clicked");
 	}

@@ -3,17 +3,15 @@ package com.rf.test.website.rehabitat.storeFront.baseTest;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
-
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
-import org.openqa.selenium.interactions.Actions;
 import org.testng.annotations.AfterSuite;
 import org.testng.annotations.BeforeMethod;
 import org.testng.annotations.BeforeSuite;
-
 import com.rf.core.driver.website.RFWebsiteDriver;
 import com.rf.core.utils.HtmlLogger;
 import com.rf.core.utils.SoftAssert;
+import com.rf.pages.website.rehabitat.storeFront.StoreFrontAccountInfoPage;
 import com.rf.pages.website.rehabitat.storeFront.StoreFrontCartPage;
 import com.rf.pages.website.rehabitat.storeFront.StoreFrontCheckoutPage;
 import com.rf.pages.website.rehabitat.storeFront.StoreFrontConsultantEnrollNowPage;
@@ -44,6 +42,7 @@ public class StoreFrontWebsiteBaseTest extends RFBaseTest {
 	protected StoreFrontShopSkinCarePage sfShopSkinCarePage;
 	protected StoreFrontCartPage sfCartPage;
 	protected StoreFrontCheckoutPage sfCheckoutPage;
+	protected StoreFrontAccountInfoPage sfAccountInfoPage;
 
 	StringBuilder verificationErrors = new StringBuilder();
 	protected String password = null;

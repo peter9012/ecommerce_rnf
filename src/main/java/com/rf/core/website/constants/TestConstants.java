@@ -18,5 +18,9 @@ public class TestConstants {
 	public static final String EMAIL_SUFFIX = "@yopmail.com";
 	public static final String ABOUT_RF = "ABOUT R+F";
 	public static final String PRODUCT_NAME = "Aging REDEFINED Special";
+	//Consultant user details
+	public static final String CONSULTANT_USERNAME = "autocon12@xyz.com";
+	public static final String CONSULTANT_ACCOUNT_ID = "";
+	public static final String CONSULTANT_ACCOUNT_NUMBER = "";
 
 }

@@ -34,37 +34,37 @@ public class AccessCategoryLandingPageFromHeaderTest extends StoreFrontWebsiteBa
 		s_assert.assertTrue(sfHomePage.isTopNavigationSublinkDisplayed(topNavigationLink,category_Redefine), category_Redefine +"category is not present under shop skincare");
 		//Verify Category landing pages
 		//Unblemish
-		sfHomePage.clickCategoryLink(category_Unblemish);
+		sfHomePage.navigateToShopSkincareLink(category_Unblemish);
 		currentURL = sfHomePage.getCurrentURL().toUpperCase();
 		s_assert.assertTrue(currentURL.contains(category_Unblemish), "Expected URL should contain "+category_Unblemish+" but actual on UI is"+currentURL);
 		sfHomePage.clickRodanAndFieldsLogo();
 		//FEATURED
-		sfHomePage.clickCategoryLink(category_Featured);
+		sfHomePage.navigateToShopSkincareLink(category_Featured);
 		currentURL = sfHomePage.getCurrentURL().toUpperCase();
 		s_assert.assertTrue(currentURL.contains(category_Featured), "Expected URL should contain "+category_Featured+" but actual on UI is"+currentURL);
 		sfHomePage.clickRodanAndFieldsLogo();
 		//ESSENTIALS
-		sfHomePage.clickCategoryLink(category_Essentials);
+		sfHomePage.navigateToShopSkincareLink(category_Essentials);
 		currentURL = sfHomePage.getCurrentURL().toUpperCase();
 		s_assert.assertTrue(currentURL.contains(category_Essentials), "Expected URL should contain "+category_Essentials+" but actual on UI is"+currentURL);
 		sfHomePage.clickRodanAndFieldsLogo();
 		//REVERSE
-		sfHomePage.clickCategoryLink(category_Reverse);
+		sfHomePage.navigateToShopSkincareLink(category_Reverse);
 		currentURL = sfHomePage.getCurrentURL().toUpperCase();
 		s_assert.assertTrue(currentURL.contains(category_Reverse), "Expected URL should contain "+category_Reverse+" but actual on UI is"+currentURL);
 		sfHomePage.clickRodanAndFieldsLogo();
 		//ENHANCEMENT
-		sfHomePage.clickCategoryLink(category_Enhancement);
+		sfHomePage.navigateToShopSkincareLink(category_Enhancement);
 		currentURL = sfHomePage.getCurrentURL().toUpperCase();
 		s_assert.assertTrue(currentURL.contains(category_Enhancement), "Expected URL should contain "+category_Enhancement+" but actual on UI is"+currentURL);
 		sfHomePage.clickRodanAndFieldsLogo();
 		//SOOTHE
-		sfHomePage.clickCategoryLink(category_Soothe);
+		sfHomePage.navigateToShopSkincareLink(category_Soothe);
 		currentURL = sfHomePage.getCurrentURL().toUpperCase();
 		s_assert.assertTrue(currentURL.contains(category_Soothe), "Expected URL should contain "+category_Soothe+" but actual on UI is"+currentURL);
 		sfHomePage.clickRodanAndFieldsLogo();
 		//REDEFINE
-		sfHomePage.clickCategoryLink(category_Redefine);
+		sfHomePage.navigateToShopSkincareLink(category_Redefine);
 		currentURL = sfHomePage.getCurrentURL().toUpperCase();
 		s_assert.assertTrue(currentURL.contains(category_Redefine), "Expected URL should contain "+category_Redefine+" but actual on UI is"+currentURL);
 		s_assert.assertAll();

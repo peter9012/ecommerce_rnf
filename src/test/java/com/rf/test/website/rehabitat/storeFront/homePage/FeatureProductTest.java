@@ -1,0 +1,26 @@
+package com.rf.test.website.rehabitat.storeFront.homePage;
+
+import org.testng.annotations.Test;
+import com.rf.test.website.rehabitat.storeFront.baseTest.StoreFrontWebsiteBaseTest;
+
+public class FeatureProductTest extends StoreFrontWebsiteBaseTest{
+
+	/***
+	 * qTest : TC-81 Access Featured Products From Shop Skincare Section In Header Navigation
+	 * Description : This test validates 'Featured products'under shopskincare category on corp,com and biz site.
+	 * 
+	 *     
+	 */
+	@Test//Incomplete for com and biz site.
+	public void testVerifyFeaturedProductCategoryUnderShopSkincareOnCorpComAndBizSite_81(){
+		String currentURL = null;
+		String featuredRegimenURL = "/c/featured";
+		String category_Featured = "FEATURED";
+		//Click featured link under shopskincare.
+		sfHomePage.navigateToShopSkincareLink(category_Featured);
+		currentURL = sfHomePage.getCurrentURL().toLowerCase();
+		s_assert.assertTrue(currentURL.contains(featuredRegimenURL), "Expected URL should contain" +featuredRegimenURL+" . but actual on UI is"+currentURL);
+		s_assert.assertAll();
+	}
+
+}

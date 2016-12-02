@@ -11,6 +11,7 @@ import org.testng.Reporter;
 import com.rf.core.driver.website.RFWebsiteDriver;
 import com.rf.core.website.constants.TestConstants;
 import com.rf.pages.RFBasePage;
+import com.rf.pages.website.rehabitat.storeFront.StoreFrontAccountInfoPage;
 import com.rf.pages.website.rehabitat.storeFront.StoreFrontConsultantEnrollNowPage;
 import com.rf.pages.website.rehabitat.storeFront.StoreFrontHomePage;
 import com.rf.pages.website.rehabitat.storeFront.StoreFrontShopSkinCarePage;
@@ -60,7 +61,8 @@ public class StoreFrontWebsiteBasePage extends RFBasePage{
 	private final By TOGGLE_BUTTON_OF_COUNTRY_LOC = By.xpath("//div[@class='form-group']/div");
 	private final By MINI_CART_ICON_LOC = By.xpath("//a[contains(@class,'mini-cart-link')]");
 	private final By SIGN_UP_NOW_LINK_LOC = By.xpath("//a[contains(text(),'Sign up now')]");
-
+	private final By WELCOME_DD_ACCOUNT_INFO_LOC = By.xpath("//a[text()='Account Info']");
+	
 	private String topNavigationSublinksWithTextLoc  = topNavigationLoc+"//a[text()='%s']";
 	private String topNavigationSublinksWithTitleLoc   = topNavigationLoc+"//*[@title='%s']";
 	private String activePageLoc  = "//span[contains(text(),'%s')]/parent::li";
@@ -562,19 +564,19 @@ public class StoreFrontWebsiteBasePage extends RFBasePage{
 	//		return driver.findElement(By.xpath(String.format(topNavigationSublinksWithTextLoc, categoryName))).isDisplayed();
 	//	}
 
-	/***
-	 * This method click the category links
-	 * 
-	 * @param Category name
-	 * @returnstore front website base page object
-	 * 
-	 */
-	public StoreFrontWebsiteBasePage clickCategoryLink(String categoryName){
-		mouseHoverOn(TestConstants.SHOP_SKINCARE);
-		driver.click(By.xpath(String.format(topNavigationSublinksWithTextLoc, categoryName)));
-		logger.info("Category "+categoryName+" clicked");
-		return this;
-	}
+	//	/***
+	//	 * This method click the category links
+	//	 * 
+	//	 * @param Category name
+	//	 * @returnstore front website base page object
+	//	 * 
+	//	 */
+	//	public StoreFrontWebsiteBasePage clickCategoryLink(String categoryName){
+	//		mouseHoverOn(TestConstants.SHOP_SKINCARE);
+	//		driver.click(By.xpath(String.format(topNavigationSublinksWithTextLoc, categoryName)));
+	//		logger.info("Category "+categoryName+" clicked");
+	//		return this;
+	//	}
 
 	/***
 	 * This method verify mini cart is present or not 
@@ -632,5 +634,36 @@ public class StoreFrontWebsiteBasePage extends RFBasePage{
 		driver.click(SIGN_UP_NOW_LINK_LOC);
 		logger.info("Sign up now link clicked");
 		return this;
+	}
+
+	/***
+	 * This method hover on shopSkincare  and click link mentioned in argument.
+	 * 
+	 * @param
+	 * @return store front website base page object
+	 * 
+	 */
+	public StoreFrontWebsiteBasePage navigateToShopSkincareLink(String linkName){
+		mouseHoverOn(TestConstants.SHOP_SKINCARE);
+		driver.click(By.xpath(String.format(topNavigationSublinksWithTextLoc, linkName)));
+		logger.info("clicked on"+ "'"+linkName+"'" +"under shopskincare");
+		driver.waitForLoadingImageToDisappear();
+		driver.waitForPageLoad();
+		return this;
+	}
+
+	/***
+	 * This method click Account info link from welcome dropdown.
+	 * 
+	 * @param
+	 * @return store front Account info page object
+	 * 
+	 */
+	public StoreFrontAccountInfoPage navigateToAccountInfoPage(){
+		driver.click(WELCOME_DD_ACCOUNT_INFO_LOC);
+		logger.info("Account Info clicked from welcome dropdown");
+		driver.waitForLoadingImageToDisappear();
+		driver.waitForPageLoad();
+		return new StoreFrontAccountInfoPage(driver);
 	}
 }

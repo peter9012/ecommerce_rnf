@@ -11,7 +11,7 @@ public class MyAccountTest extends StoreFrontWebsiteBaseTest{
 	/***
 	 * qTest : TC-178 Account Information Page
 	 * 
-	 * Description : This test validates the account info page for consultant,PC and RC user.
+	 * Description : This test validates that he account info page for consultant,PC and RC user.
 	 * 
 	 *     
 	 */
@@ -38,7 +38,7 @@ public class MyAccountTest extends StoreFrontWebsiteBaseTest{
 	/***
 	 * qTest : TC-179 Account Information- Update username
 	 * 
-	 * Description : This test Updates username on account info page for consultant,PC and RC user.
+	 * Description : This test updates the username on account info page for consultant,PC and RC user.
 	 * 
 	 *     
 	 */

@@ -33,8 +33,7 @@ public class StoreFrontHomePage extends StoreFrontWebsiteBasePage{
 	private final By TOTAL_TEAM_MEMBERS_IN_EXECUTIVE_TEAM_LOC = By.xpath("//div[@id='modal_front']//div[@class='title']");
 	private final By TEAM_MEMBER_NAME_FROM_POPUP_LOC = By.xpath("//div[@id='executive-team-carousel']/descendant::h4[1]");
 	private final By CLOSE_ICON_MEMBER_DETAIL_POPUP_LOC = By.xpath("//button[@class='close']");
-	private final By WELCOME_DROPDOWN = By.xpath("//div[@class='user-wrapper']/span");
-	
+		
 	private String socialMediaIconLoc = "//div[@class='container']//a[contains(@href,'%s')]";
 	private String teamMemberName = "//div[@id='modal_front']/div[%s]//div[@class='title']/h4";
 
@@ -253,19 +252,5 @@ public class StoreFrontHomePage extends StoreFrontWebsiteBasePage{
 		logger.info("clicked on close icon of member detail popup");
 		return this;
 	}
-
-	/***
-	 * This method click the welcome dropdown.
-	 * 
-	 * @param
-	 * @return store front website base page object
-	 * 
-	 */
-	public StoreFrontWebsiteBasePage clickWelcomeDropdown(){
-		driver.click(WELCOME_DROPDOWN);
-		logger.info("Welcome dropdown clicked");
-		driver.pauseExecutionFor(2000);
-		return this;
-	}
-
+	
 }

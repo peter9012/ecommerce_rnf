@@ -62,6 +62,7 @@ public class StoreFrontWebsiteBasePage extends RFBasePage{
 	private final By MINI_CART_ICON_LOC = By.xpath("//a[contains(@class,'mini-cart-link')]");
 	private final By SIGN_UP_NOW_LINK_LOC = By.xpath("//a[contains(text(),'Sign up now')]");
 	private final By WELCOME_DD_ACCOUNT_INFO_LOC = By.xpath("//a[text()='Account Info']");
+	private final By WELCOME_DROPDOWN_LOC = By.xpath("//div[@class='user-wrapper']/span");
 	
 	private String topNavigationSublinksWithTextLoc  = topNavigationLoc+"//a[text()='%s']";
 	private String topNavigationSublinksWithTitleLoc   = topNavigationLoc+"//*[@title='%s']";
@@ -665,5 +666,19 @@ public class StoreFrontWebsiteBasePage extends RFBasePage{
 		driver.waitForLoadingImageToDisappear();
 		driver.waitForPageLoad();
 		return new StoreFrontAccountInfoPage(driver);
+	}
+
+	/***
+	 * This method click the welcome dropdown.
+	 * 
+	 * @param
+	 * @return store front website base page object
+	 * 
+	 */
+	public StoreFrontWebsiteBasePage clickWelcomeDropdown(){
+		driver.click(WELCOME_DROPDOWN_LOC);
+		logger.info("Welcome dropdown clicked");
+		driver.pauseExecutionFor(2000);
+		return this;
 	}
 }

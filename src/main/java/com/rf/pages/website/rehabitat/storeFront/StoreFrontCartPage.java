@@ -17,13 +17,7 @@ public class StoreFrontCartPage extends StoreFrontWebsiteBasePage{
 	private static final Logger logger = LogManager
 			.getLogger(StoreFrontCartPage.class.getName());
 
-	private final By CHECKOUT_BUTTON_LOC = By.xpath("//div[@class='cart-container']/descendant::button[contains(text(),'Checkout')][2]");
 
-	public StoreFrontCheckoutPage checkoutTheCart(){
-		driver.click(CHECKOUT_BUTTON_LOC);
-		logger.info("Clicked on checkout button");
-		return new StoreFrontCheckoutPage(driver);
-	}
 
 }
 

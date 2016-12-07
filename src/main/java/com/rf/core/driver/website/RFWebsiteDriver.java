@@ -18,6 +18,7 @@ import org.apache.commons.lang3.StringUtils;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.openqa.selenium.By;
+import org.openqa.selenium.Capabilities;
 import org.openqa.selenium.JavascriptExecutor;
 import org.openqa.selenium.OutputType;
 import org.openqa.selenium.StaleElementReferenceException;
@@ -31,6 +32,7 @@ import org.openqa.selenium.firefox.FirefoxProfile;
 import org.openqa.selenium.htmlunit.HtmlUnitDriver;
 import org.openqa.selenium.ie.InternetExplorerDriver;
 import org.openqa.selenium.interactions.Actions;
+import org.openqa.selenium.remote.BrowserType;
 import org.openqa.selenium.remote.CapabilityType;
 import org.openqa.selenium.remote.DesiredCapabilities;
 import org.openqa.selenium.support.ui.ExpectedCondition;
@@ -59,7 +61,7 @@ public class RFWebsiteDriver implements RFDriver,WebDriver {
 	String country = null;
 	String environment = null;
 	String storeFrontUserPassword = null;
-	
+
 	public RFWebsiteDriver(PropertyFile propertyFile) {
 		//super();
 		this.propertyFile = propertyFile;			
@@ -98,7 +100,8 @@ public class RFWebsiteDriver implements RFDriver,WebDriver {
 			driver = new ChromeDriver(capabilities);
 		}
 		else if(browser.equalsIgnoreCase("headless")){
-			driver = new HtmlUnitDriver(true);
+			driver = new HtmlUnitDriver();		
+
 		}
 		else if(browser.equalsIgnoreCase("ie")){
 			System.setProperty("webdriver.ie.driver", "src/test/resources/IEDriverServer.exe");
@@ -107,7 +110,7 @@ public class RFWebsiteDriver implements RFDriver,WebDriver {
 			capabilities.setCapability(CapabilityType.ForSeleniumServer.ENSURING_CLEAN_SESSION, true);
 			driver = new InternetExplorerDriver(capabilities);
 		}
-		driver.manage().timeouts().implicitlyWait(15, TimeUnit.SECONDS);
+		driver.manage().timeouts().implicitlyWait(30, TimeUnit.SECONDS);
 		driver.manage().window().maximize();
 		if (browser.equalsIgnoreCase("firefox")){
 			System.out.println(driver.manage().window().getSize());
@@ -157,7 +160,7 @@ public class RFWebsiteDriver implements RFDriver,WebDriver {
 		storeFrontUserPassword=propertyFile.getProperty("storeFrontPassword");
 		return storeFrontUserPassword;
 	}
-	
+
 	public String getCountry(){
 		country=System.getProperty("country");
 		if(StringUtils.isEmpty(country)){
@@ -179,13 +182,18 @@ public class RFWebsiteDriver implements RFDriver,WebDriver {
 	 * @return
 	 */
 	public boolean isElementPresent(By locator) {
+		turnOffImplicitWaits();
 		try{
 			if (driver.findElements(locator).size() > 0) {
 				return true;
-			} else
+			} else{
+				turnOnImplicitWaits();
 				return false;
+
+			}
 		}
 		catch(Exception e){
+			turnOnImplicitWaits();
 			return false;
 		}
 	}
@@ -193,7 +201,7 @@ public class RFWebsiteDriver implements RFDriver,WebDriver {
 
 	public void waitForElementPresent(By locator) {
 		logger.info("wait started for "+locator);
-		int timeout = 15;
+		int timeout = 90;
 		turnOffImplicitWaits();
 		boolean isElementFound = false;
 		for(int i=1;i<=timeout;i++){		
@@ -252,8 +260,8 @@ public class RFWebsiteDriver implements RFDriver,WebDriver {
 	public void waitForLoadingImageToDisappear(){
 		int DEFAULT_TIMEOUT = 50;
 		turnOffImplicitWaits();
-//		By locator = By.xpath("//div[@id='blockUIBody']");
-		 By locator = By.xpath("//html[@class='loader']");
+		//		By locator = By.xpath("//div[@id='blockUIBody']");
+		By locator = By.xpath("//html[@class='loader']");
 		logger.info("Waiting for loading image to get disappear");
 		for(int i=1;i<=DEFAULT_TIMEOUT;i++){			
 			try{
@@ -507,6 +515,16 @@ public class RFWebsiteDriver implements RFDriver,WebDriver {
 	public void moveToElement(By locator) {
 		Actions build = new Actions(driver);
 		build.moveToElement(driver.findElement(locator)).click().build().perform();
+		pauseExecutionFor(1000);
+	}
+
+	public void moveToElementByJS(By locator) {
+		String strJavaScript = "var element = arguments[0];"
+				+ "var mouseEventObj = document.createEvent('MouseEvents');"
+				+ "mouseEventObj.initEvent( 'mouseover', true, true );"
+				+ "element.dispatchEvent(mouseEventObj);";
+		JavascriptExecutor js =  (JavascriptExecutor)RFWebsiteDriver.driver;
+		js.executeScript(strJavaScript, driver.findElement(locator));
 		pauseExecutionFor(1000);
 	}
 

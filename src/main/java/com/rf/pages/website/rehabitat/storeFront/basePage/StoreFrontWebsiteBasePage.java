@@ -12,8 +12,12 @@ import com.rf.core.driver.website.RFWebsiteDriver;
 import com.rf.core.website.constants.TestConstants;
 import com.rf.pages.RFBasePage;
 import com.rf.pages.website.rehabitat.storeFront.StoreFrontAccountInfoPage;
+import com.rf.pages.website.rehabitat.storeFront.StoreFrontAutoshipStatusPage;
+import com.rf.pages.website.rehabitat.storeFront.StoreFrontBillingInfoPage;
+import com.rf.pages.website.rehabitat.storeFront.StoreFrontCheckoutPage;
 import com.rf.pages.website.rehabitat.storeFront.StoreFrontConsultantEnrollNowPage;
 import com.rf.pages.website.rehabitat.storeFront.StoreFrontHomePage;
+import com.rf.pages.website.rehabitat.storeFront.StoreFrontShippingInfoPage;
 import com.rf.pages.website.rehabitat.storeFront.StoreFrontShopSkinCarePage;
 
 public class StoreFrontWebsiteBasePage extends RFBasePage{
@@ -40,7 +44,7 @@ public class StoreFrontWebsiteBasePage extends RFBasePage{
 	protected final By SPONSOR_SEARCH_FIELD_LOC = By.id("sponserparam");
 	protected final By PRODUCTS_NAME_LINK_LOC = By.xpath("//div[@id='product_listing']/descendant::div[@class='details'][1]//a");
 	private final By SEARCH_SPONSOR_LOC = By.id("search-sponsor-button");
-	private final By SELECT_AND_CONTINUE_LOC= By.xpath("//div[@id='findConsultantResultArea']/descendant::button[text()='Select and Continue'][1]");
+	private final By SELECT_AND_CONTINUE_LOC= By.xpath("//div[@id='findConsultantResultArea']/descendant::input[@id='consultantUid'][1]/..");
 	private final By SPONSOR_SEARCH_RESULTS_LOC = By.xpath("//div[@class='row']/div[contains(@class,'consultant-box')]");
 	private final By NO_RESULT_FOUND_MSG_LOC = By.xpath("//p[contains(text(),'No results found')]");
 	private final By EVENTS_LOC = By.xpath(topNavigationLoc+"//a[@title='EVENTS']");
@@ -63,7 +67,27 @@ public class StoreFrontWebsiteBasePage extends RFBasePage{
 	private final By SIGN_UP_NOW_LINK_LOC = By.xpath("//a[contains(text(),'Sign up now')]");
 	private final By WELCOME_DD_ACCOUNT_INFO_LOC = By.xpath("//a[text()='Account Info']");
 	private final By WELCOME_DROPDOWN_LOC = By.xpath("//div[@class='user-wrapper']/span");
-	
+	private final By CHECKOUT_BUTTON_LOC = By.id("checkoutPopup");
+	private final By CHECKOUT_CONFIRMATION_OK_BUTTON_LOC = By.xpath("//div[@id='cartCheckoutModal']/a");
+	private final By WELCOME_DD_SHIPPING_INFO_LOC = By.xpath("//a[text()='Shipping Info']");
+	protected final By FIRST_LAST_NAME_FOR_SHIPPING_DETAILS_LOC = By.id("address.firstName");
+	private final By ADDRESS_LINE_1_FOR_SHIPPING_DETAILS_LOC = By.id("address.line1");
+	private final By CITY_FOR_SHIPPING_DETAILS_LOC = By.id("address.townCity");
+	private final By POSTAL_CODE_FOR_SHIPPING_DETAILS_LOC = By.id("address.postcode");
+	private final By PHONE_NUMBER_FOR_SHIPPING_DETAILS_LOC = By.id("address.phone");
+	private final By STATE_DD_FOR_REGISTRATION_LOC = By.id("address.region");
+	private final By MAKE_THIS_MY_DEFAULT_ADDRESS_CHKBOX_LOC = By.xpath("//label[contains(text(),'Make this my default address')]");
+	private final By USE_AS_ENTERED_BUTTON_LOC = By.xpath("//div[@id='cboxLoadedContent']//button[@id='oldAddress']");
+	private final By COUNTRY_LOC = By.xpath("//span[@class='selected-country']/preceding::input[1]");
+	private final By COUNTRY_NAME_LOC = By.xpath("//span[@class='selected-country']");
+	private final By CHECKOUT_BUTTON_POPUP_LOC = By.xpath("//div[@id='addToCartLayer']/a[contains(text(),'Checkout')]");
+	private final By ADD_TO_CART_FIRST_PRODUCT_LOC = By.xpath("//div[@id='product_listing']/descendant::button[text()='Add to cart'][1]");
+	private final By ADD_TO_BAG_OF_FIRST_PRODUCT = By.xpath("//div[@id='product_listing']/descendant::span[text()='Add to Bag'][1]");
+	private final By SAVE_BUTTON_LOC = By.id("deliveryAccountSubmit");
+	private final By WELCOME_DD_AUTOSHIP_STATUS_LOC = By.xpath("//a[text()='Autoship Status']");
+	private final By EDIT_LINK_NEXT_TO_MAIN_ACCOUNT_LOC = By.xpath("//div[@class='checkout-steps']/descendant::a[1]");
+
+	private String stateForShippingDetails = "//select[@id='address.region']//option[text()='%s']";
 	private String topNavigationSublinksWithTextLoc  = topNavigationLoc+"//a[text()='%s']";
 	private String topNavigationSublinksWithTitleLoc   = topNavigationLoc+"//*[@title='%s']";
 	private String activePageLoc  = "//span[contains(text(),'%s')]/parent::li";
@@ -209,7 +233,7 @@ public class StoreFrontWebsiteBasePage extends RFBasePage{
 	 * @return
 	 * 
 	 */
-	public void selectFirstSponsorFronList(){
+	public void selectFirstSponsorFromList(){
 		driver.click(SELECT_AND_CONTINUE_LOC);
 		logger.info("Clicked on 'Select And Continue' button for first result");
 	}
@@ -553,31 +577,6 @@ public class StoreFrontWebsiteBasePage extends RFBasePage{
 		return driver.findElement(PASSWORD_TXTFLD_LOC).isDisplayed();
 	}
 
-	//	/***
-	//	 * This method verify the category links is present or not
-	//	 * 
-	//	 * @param Category name
-	//	 * @return boolean value
-	//	 * 
-	//	 */
-	//	public boolean isCategoryLinkPresent(String categoryName){
-	//		mouseHoverOn(TestConstants.SHOP_SKINCARE);
-	//		return driver.findElement(By.xpath(String.format(topNavigationSublinksWithTextLoc, categoryName))).isDisplayed();
-	//	}
-
-	//	/***
-	//	 * This method click the category links
-	//	 * 
-	//	 * @param Category name
-	//	 * @returnstore front website base page object
-	//	 * 
-	//	 */
-	//	public StoreFrontWebsiteBasePage clickCategoryLink(String categoryName){
-	//		mouseHoverOn(TestConstants.SHOP_SKINCARE);
-	//		driver.click(By.xpath(String.format(topNavigationSublinksWithTextLoc, categoryName)));
-	//		logger.info("Category "+categoryName+" clicked");
-	//		return this;
-	//	}
 
 	/***
 	 * This method verify mini cart is present or not 
@@ -680,5 +679,231 @@ public class StoreFrontWebsiteBasePage extends RFBasePage{
 		logger.info("Welcome dropdown clicked");
 		driver.pauseExecutionFor(2000);
 		return this;
+	}
+
+	/***
+	 * This method click shipping info link from welcome dropdown.
+	 * 
+	 * @param
+	 * @return store front Shipping info page object
+	 * 
+	 */
+	public StoreFrontShippingInfoPage navigateToShippingInfoPage(){
+		driver.click(WELCOME_DD_SHIPPING_INFO_LOC);
+		logger.info("Shipping Info clicked from welcome dropdown");
+		driver.waitForLoadingImageToDisappear();
+		driver.waitForPageLoad();
+		return new StoreFrontShippingInfoPage(driver);
+	}
+
+	/***
+	 * This method enter the consultant shipping details
+	 * 
+	 * @param First name,Last name, address line1, city, state, postal code, phone number
+	 * @return store front Base page object
+	 * 
+	 */
+	public StoreFrontWebsiteBasePage enterConsultantShippingDetails(String firstName, String lastName, String addressLine1, String city, String state, String postal, String phoneNumber){
+		String completeName = firstName+" "+lastName;
+		driver.type(FIRST_LAST_NAME_FOR_SHIPPING_DETAILS_LOC, completeName);
+		logger.info("Entered complete name as "+completeName);
+		driver.type(ADDRESS_LINE_1_FOR_SHIPPING_DETAILS_LOC, addressLine1);
+		logger.info("Entered address line 1 as "+addressLine1);
+		driver.type(CITY_FOR_SHIPPING_DETAILS_LOC, city);
+		logger.info("Entered city as "+city);
+		driver.click(STATE_DD_FOR_REGISTRATION_LOC);
+		logger.info("State dropdown clicked");
+		driver.click(By.xpath(String.format(stateForShippingDetails, state)));
+		logger.info("State selected as "+state);
+		driver.type(POSTAL_CODE_FOR_SHIPPING_DETAILS_LOC, postal);
+		logger.info("Entered postal code as "+postal);
+		driver.type(PHONE_NUMBER_FOR_SHIPPING_DETAILS_LOC, phoneNumber);
+		logger.info("Entered Phone number  as "+phoneNumber);
+		return this;
+	}
+
+	/***
+	 * This method click Use as entered button.
+	 * 
+	 * @param
+	 * @return store front website base page object
+	 * 
+	 */
+	public StoreFrontWebsiteBasePage clickUseAsEnteredButton(){
+		driver.click(USE_AS_ENTERED_BUTTON_LOC);
+		logger.info("Use as entered button clicked");
+		return this;
+	}
+
+	/***
+	 * This method click add to bag button for first product
+	 * 
+	 * @param
+	 * @return store front website base page object
+	 * 
+	 */
+	public StoreFrontWebsiteBasePage selectFirstProduct(){
+		driver.pauseExecutionFor(5000);
+		driver.moveToElementByJS(ADD_TO_CART_FIRST_PRODUCT_LOC);
+		driver.click(ADD_TO_BAG_OF_FIRST_PRODUCT);
+		return this;
+	}
+
+	/***
+	 * This method click the checkout button on popup.
+	 * 
+	 * @param
+	 * @return store front website base page object
+	 * 
+	 */
+	public StoreFrontWebsiteBasePage checkoutThePopup(){
+		driver.click(CHECKOUT_BUTTON_POPUP_LOC);
+		logger.info("Clicked on checkout button at popup");
+		return this;
+	}
+
+	/***
+	 * This method click the save button
+	 * 
+	 * @param
+	 * @return store front Home page object
+	 * 
+	 */
+	public StoreFrontWebsiteBasePage clickSaveButton(){
+		driver.click(SAVE_BUTTON_LOC);
+		logger.info("Save button clicked");
+		return this;
+	}
+
+	/***
+	 * This method validates the country field is editable or not
+	 * 
+	 * @param country name
+	 * @return boolean value
+	 * 
+	 */
+	public boolean isCountryNameEditable(String country){
+		try{
+			driver.type(COUNTRY_LOC, country);
+			return true;
+		}catch(Exception e){
+			return false;
+		}
+	}
+
+	/***
+	 * This method get the country name
+	 * 
+	 * @param
+	 * @return country name
+	 * 
+	 */
+	public String getCountryName(){
+		driver.pauseExecutionFor(2000);
+		String countryName = driver.findElement(COUNTRY_NAME_LOC).getText();
+		logger.info("country name is "+countryName);
+		return countryName;
+	}
+
+
+
+	/***
+	 * This method check the check box of make this my default address
+	 * 
+	 * @param
+	 * @return store front website base page object
+	 * 
+	 */
+	public StoreFrontWebsiteBasePage checkMakeThisMyDefaultAddressChkBox(){
+		driver.click(MAKE_THIS_MY_DEFAULT_ADDRESS_CHKBOX_LOC);
+		logger.info("Make this my default address check box checked");
+		return this;
+	}
+
+	/***
+	 * This method click the checkout button at cart page
+	 * 
+	 * @param
+	 * @return store front checkout page object
+	 * 
+	 */
+	public StoreFrontCheckoutPage checkoutTheCart(){
+		driver.click(CHECKOUT_BUTTON_LOC);
+		logger.info("Clicked on checkout button");
+		try{
+			driver.click(CHECKOUT_CONFIRMATION_OK_BUTTON_LOC);
+			logger.info("Clicked on OK button at checkout confirmation popup");
+		}catch(Exception e){
+			logger.info("No checkout confirmation popup");
+		}
+		return new StoreFrontCheckoutPage(driver);
+	}
+
+	/***
+	 * This method click Autoship status link from welcome dropdown.
+	 * 
+	 * @param
+	 * @return store front Account info page object
+	 * 
+	 */
+	public StoreFrontAutoshipStatusPage navigateToAutoshipStatusPage(){
+		driver.click(WELCOME_DD_AUTOSHIP_STATUS_LOC);
+		logger.info("Autoship status clicked from welcome dropdown");
+		driver.waitForLoadingImageToDisappear();
+		driver.waitForPageLoad();
+		return new StoreFrontAutoshipStatusPage(driver);
+	}
+
+	/***
+	 * This method Update first name on checkout Page.
+	 * 
+	 * @param
+	 * @return store front base page object
+	 * 
+	 */
+	public StoreFrontWebsiteBasePage updateFirstName(String updatedName){
+		driver.type(FIRST_LAST_NAME_FOR_SHIPPING_DETAILS_LOC, updatedName);
+		logger.info("First Name Updated for account info at checkout page");
+		return this;
+	}
+	/***
+	 * This method Update last name on checkout Page.
+	 * 
+	 * @param
+	 * @return store front base page object
+	 * 
+	 */
+	public StoreFrontWebsiteBasePage updateLastName(String updatedName){
+		driver.type(FIRST_LAST_NAME_FOR_SHIPPING_DETAILS_LOC, updatedName);
+		logger.info("Last Name Updated for account info at checkout page");
+		return this;
+	}
+	/***
+	 * This method edit Main Account info at checkout page
+	 * 
+	 * @param
+	 * @return store front base page object
+	 * 
+	 */
+	public StoreFrontWebsiteBasePage editMainAccountInfo(){
+		driver.click(EDIT_LINK_NEXT_TO_MAIN_ACCOUNT_LOC);
+		logger.info("Edit link clicked next to main account info");
+		driver.waitForPageLoad();
+		return this;
+	}
+
+	/***
+	 * This method click billing info link from welcome dropdown.
+	 * 
+	 * @param
+	 * @return store front billing info page object
+	 * 
+	 */
+	public StoreFrontBillingInfoPage navigateToBillingInfoPage(){
+		driver.click(WELCOME_DD_SHIPPING_INFO_LOC);
+		logger.info("Shipping Info clicked from welcome dropdown");
+		driver.waitForLoadingImageToDisappear();
+		driver.waitForPageLoad();
+		return new StoreFrontBillingInfoPage(driver);
 	}
 }

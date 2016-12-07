@@ -33,7 +33,33 @@ public class StoreFrontHomePage extends StoreFrontWebsiteBasePage{
 	private final By TOTAL_TEAM_MEMBERS_IN_EXECUTIVE_TEAM_LOC = By.xpath("//div[@id='modal_front']//div[@class='title']");
 	private final By TEAM_MEMBER_NAME_FROM_POPUP_LOC = By.xpath("//div[@id='executive-team-carousel']/descendant::h4[1]");
 	private final By CLOSE_ICON_MEMBER_DETAIL_POPUP_LOC = By.xpath("//button[@class='close']");
-		
+	private final By CARD_TYPE_DD_LOC = By.xpath("//*[@id='c-ct']");
+	private final By CARD_NUMBER_LOC= By.id("c-cn");
+	private final By NAME_ON_CARD_LOC= By.id("c-chn");
+	private final By EXP_MONTH_DD_LOC= By.id("c-exmth");
+	private final By EXP_MONTH_LOC= By.xpath("//select[@id='c-exmth']//option[11]");
+	private final By EXP_YEAR_DD_LOC= By.id("c-exyr");
+	private final By EXP_YEAR_LOC= By.xpath("//select[@id='c-exyr']//option[11]");
+	private final By CVV_LOC= By.id("c-cvv");
+	private final By BILLING_ADDRESS_DD_LOC= By.id("default-address");
+	private final By BILLING_ADDRESS_OPTION_VALUE_LOC= By.xpath("//select[@id='default-address']//option[2]");
+	private final By USE_MY_DELIVERY_ADDRESS_CHK_BOX_LOC= By.xpath("//label[contains(@class,'useDeliveryAddress')]");
+	private final By IFRAME_LOC= By.id("IFrame");
+	private final By POLICIES_AND_PROCEDURES_CHK_BOX_LOC = By.xpath("//div[contains(@class,'checkout-steps')]/descendant::label[2]");
+	private final By TERMS_AND_CONDITIONS_CHK_BOX_LOC = By.xpath("//div[contains(@class,'checkout-steps')]/descendant::label[1]");
+	private final By BILLING_NEXT_BUTTON_LOC = By.id("reviewOrder");
+	private final By SHIPPING_NEXT_BUTTON_LOC = By.id("deliveryAddressSubmit");
+	private final By SAVE_BUTTON_LOC = By.id("deliveryAccountSubmit");
+	private final By FIRST_PRODUCT_AT_KIT_PAGE_LOC = By.xpath("//div[contains(@class,'enrollmentKit-wrapper')]/descendant::div[@class='enrollmentKit-box'][1]");
+	private final By FIRST_NAME_FOR_REGISTRATION_LOC = By.id("register.firstName");
+	private final By LAST_NAME_FOR_REGISTRATION_LOC = By.id("register.lastName");
+	private final By EMAIL_ID_FOR_REGISTRATION_LOC = By.id("register.email");
+	private final By PASSWORD_FOR_REGISTRATION_LOC = By.id("register.pwd");
+	private final By CONFIRM_PASSWORD_FOR_REGISTRATION_LOC = By.id("register.checkPwd");
+	private final By SSN_FOR_REGISTRATION_LOC = By.id("register.socialSecurity");
+	private final By NEXT_BUTTON_LOC = By.id("consultant-next-button");
+
+	private String cardTypeLoc= "//select[@id='c-ct']//option[text()='%s']";
 	private String socialMediaIconLoc = "//div[@class='container']//a[contains(@href,'%s')]";
 	private String teamMemberName = "//div[@id='modal_front']/div[%s]//div[@class='title']/h4";
 
@@ -252,5 +278,214 @@ public class StoreFrontHomePage extends StoreFrontWebsiteBasePage{
 		logger.info("clicked on close icon of member detail popup");
 		return this;
 	}
-	
+
+	/***
+	 * This method enter the consultant enrollment details
+	 * 
+	 * @param First name,Last name, emailID, password, SSN number
+	 * @return store front Home page object
+	 * 
+	 */
+	public StoreFrontHomePage enterConsultantEnrollmentDetails(String firstName, String lastName, String emailID, String password, String SSN){
+		driver.type(FIRST_NAME_FOR_REGISTRATION_LOC, firstName);
+		logger.info("Entered first name as "+firstName);
+		driver.type(LAST_NAME_FOR_REGISTRATION_LOC, lastName);
+		logger.info("Entered last name as "+lastName);
+		driver.type(EMAIL_ID_FOR_REGISTRATION_LOC, emailID);
+		logger.info("Entered email id as "+emailID);
+		driver.type(PASSWORD_FOR_REGISTRATION_LOC, password);
+		logger.info("Entered password as "+password);
+		driver.type(CONFIRM_PASSWORD_FOR_REGISTRATION_LOC, password);
+		logger.info("Entered confirm password as "+password);
+		driver.type(SSN_FOR_REGISTRATION_LOC, SSN);
+		logger.info("Entered SSN  as "+SSN);
+		return this;
+	}
+
+	/***
+	 * This method click the next button
+	 * 
+	 * @param
+	 * @return store front Home page object
+	 * 
+	 */
+	public StoreFrontHomePage clickNextButton(){
+		driver.clickByJS(RFWebsiteDriver.driver,driver.findElement(NEXT_BUTTON_LOC));
+		logger.info("Next button clicked");
+		return this;
+	}
+
+	/***
+	 * This method choose first product at kit page
+	 * 
+	 * @param
+	 * @return store front Home page object
+	 * 
+	 */
+	public StoreFrontHomePage chooseProductFrmoKitPage(){
+		driver.click(FIRST_PRODUCT_AT_KIT_PAGE_LOC);
+		logger.info("Choose first product at kit page");
+		return this;
+	}
+
+	/***
+	 * This method click the next button
+	 * 
+	 * @param
+	 * @return store front Home page object
+	 * 
+	 */
+	public StoreFrontHomePage clickSaveButton(){
+		driver.pauseExecutionFor(3000);
+		driver.clickByJS(RFWebsiteDriver.driver,driver.findElement(SAVE_BUTTON_LOC));
+		logger.info("Save button clicked");
+		return this;
+	}
+
+	/***
+	 * This method click the next button at shipping details page
+	 * 
+	 * @param
+	 * @return store front Home page object
+	 * 
+	 */
+	public StoreFrontHomePage clickShippingDetailsNextbutton(){
+		driver.click(SHIPPING_NEXT_BUTTON_LOC);
+		logger.info("Next button clicked of shipping details");
+		return this;
+	}
+
+	/***
+	 * This method click the next button at billing details page
+	 * 
+	 * @param
+	 * @return store front Home page object
+	 * 
+	 */
+	public StoreFrontHomePage clickBillingDetailsNextbutton(){
+		driver.click(BILLING_NEXT_BUTTON_LOC);
+		logger.info("Next button clicked of billing details");
+		return this;
+	}
+
+	/***
+	 * This method select the terms & conditions checkbox
+	 * 
+	 * @param
+	 * @return store front Home page object
+	 * 
+	 */
+	public StoreFrontHomePage selectTermsAndConditionsChkBox(){
+		driver.pauseExecutionFor(5000);
+		driver.clickByJS(RFWebsiteDriver.driver, driver.findElement(TERMS_AND_CONDITIONS_CHK_BOX_LOC));
+		logger.info("Terms & condition checkbox selected");
+		driver.pauseExecutionFor(2000);
+		return this;
+	}
+
+	/***
+	 * This method select the policies & procedures checkbox
+	 * 
+	 * @param
+	 * @return store front Home page object
+	 * 
+	 */
+	public StoreFrontHomePage selectPoliciesAndProceduresChkBox(){
+		driver.click(POLICIES_AND_PROCEDURES_CHK_BOX_LOC);
+		logger.info("Policies & procedures checkbox selected");
+		return this;
+	}
+
+	private final By BECOME_A_CONSULTANT_BTN_LOC = By.id("placeOrder");
+
+	/***
+	 * This method click become a consultant button
+	 * 
+	 * @param
+	 * @return store front Home page object
+	 * 
+	 */
+	public StoreFrontHomePage clickBecomeAConsultant(){
+		driver.click(BECOME_A_CONSULTANT_BTN_LOC);
+		logger.info("Become a consultant button clicked");
+		return this;
+	}
+
+	private final By CONFIRMATION_MSG_OF_CONSULTANT_ENROLLMENT = By.xpath("//div[@class='global-alerts']/div");
+
+	/***
+	 * This method get the confirmation message of consultant enrollment
+	 * 
+	 * @param
+	 * @return store front Home page object
+	 * 
+	 */
+	public String getConfirmationMsgOfConsultantEnrollment(){
+		String msg = driver.findElement(CONFIRMATION_MSG_OF_CONSULTANT_ENROLLMENT).getText();
+		logger.info("Confirmation message is "+msg);
+		return msg;
+	}
+
+
+	/***
+	 * This method enter the consultant billing details
+	 * 
+	 * @param Card type, card number, card name, CVV
+	 * @return store front Home page object
+	 * 
+	 */
+	public StoreFrontHomePage enterConsultantBillingDetails(String cardType, String cardNumber, String nameOnCard,String CVV){
+		driver.switchTo().frame(driver.findElement(IFRAME_LOC));
+		logger.info("Switched into iframe");
+		driver.clickByJS(RFWebsiteDriver.driver, driver.findElement(CARD_TYPE_DD_LOC));
+		logger.info("Card type dropdown clicked");
+		driver.click(By.xpath(String.format(cardTypeLoc, cardType)));
+		logger.info("Card type selected as "+cardType);
+		driver.type(CARD_NUMBER_LOC, cardNumber);
+		logger.info("Entered card number as"+cardNumber);
+		driver.type(NAME_ON_CARD_LOC, nameOnCard);
+		logger.info("Entered card name as"+nameOnCard);
+		driver.click(EXP_MONTH_DD_LOC);
+		logger.info("Exp month dropdown clicked");
+		driver.click(EXP_MONTH_LOC);
+		logger.info("Exp month selected");
+		driver.click(EXP_YEAR_DD_LOC);
+		logger.info("Exp year dropdown clicked");
+		driver.click(EXP_YEAR_LOC);
+		logger.info("Exp year selected");
+		driver.type(CVV_LOC, CVV);
+		logger.info("Entered CVV as"+CVV);
+		driver.switchTo().defaultContent();
+		logger.info("Switched to default content");			
+		return this;
+
+	}
+
+	/***
+	 * This method select the first billing address from DD
+	 * 
+	 * @param
+	 * @return store front Home page object
+	 * 
+	 */
+	public StoreFrontHomePage selectBillingAddressFromDD(){
+		driver.click(BILLING_ADDRESS_DD_LOC);
+		logger.info("Billing address dropdown clicked");
+		driver.click(BILLING_ADDRESS_OPTION_VALUE_LOC);
+		logger.info("Billing address selected");
+		return this;
+	}
+	/***
+	 * This method check the checkbox of Use my delivery address check box
+	 * 
+	 * @param
+	 * @return store front Home page object
+	 * 
+	 */
+	public StoreFrontHomePage checkUseMyDeliveryAddressChkBox(){
+		driver.click(USE_MY_DELIVERY_ADDRESS_CHK_BOX_LOC);
+		logger.info("Use My delivery address check box checked");
+		return this;
+	}
+
 }

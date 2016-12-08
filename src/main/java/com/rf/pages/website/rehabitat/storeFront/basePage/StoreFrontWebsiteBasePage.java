@@ -17,6 +17,7 @@ import com.rf.pages.website.rehabitat.storeFront.StoreFrontBillingInfoPage;
 import com.rf.pages.website.rehabitat.storeFront.StoreFrontCheckoutPage;
 import com.rf.pages.website.rehabitat.storeFront.StoreFrontConsultantEnrollNowPage;
 import com.rf.pages.website.rehabitat.storeFront.StoreFrontHomePage;
+import com.rf.pages.website.rehabitat.storeFront.StoreFrontOrdersPage;
 import com.rf.pages.website.rehabitat.storeFront.StoreFrontShippingInfoPage;
 import com.rf.pages.website.rehabitat.storeFront.StoreFrontShopSkinCarePage;
 
@@ -86,7 +87,9 @@ public class StoreFrontWebsiteBasePage extends RFBasePage{
 	private final By SAVE_BUTTON_LOC = By.id("deliveryAccountSubmit");
 	private final By WELCOME_DD_AUTOSHIP_STATUS_LOC = By.xpath("//a[text()='Autoship Status']");
 	private final By EDIT_LINK_NEXT_TO_MAIN_ACCOUNT_LOC = By.xpath("//div[@class='checkout-steps']/descendant::a[1]");
+	private final By WELCOME_DD_ORDERS_LOC = By.xpath("//a[text()='Orders']");
 
+	private String textLoc = "//*[contains(text(),'%s')]";
 	private String stateForShippingDetails = "//select[@id='address.region']//option[text()='%s']";
 	private String topNavigationSublinksWithTextLoc  = topNavigationLoc+"//a[text()='%s']";
 	private String topNavigationSublinksWithTitleLoc   = topNavigationLoc+"//*[@title='%s']";
@@ -905,5 +908,31 @@ public class StoreFrontWebsiteBasePage extends RFBasePage{
 		driver.waitForLoadingImageToDisappear();
 		driver.waitForPageLoad();
 		return new StoreFrontBillingInfoPage(driver);
+	}
+
+	/***
+	 * This method validates text at page 
+	 * 
+	 * @param
+	 * @return boolean value
+	 * 
+	 */
+	public boolean isTextPresent(String textName){
+		return driver.isElementPresent(By.xpath(String.format(textLoc, textName)));
+	}
+
+	/***
+	 * This method click orders link from welcome drop down
+	 * 
+	 * @param
+	 * @return store front orders page object
+	 * 
+	 */
+	public StoreFrontOrdersPage navigateToOrdersPage(){
+		driver.click(WELCOME_DD_ORDERS_LOC);
+		logger.info("orders link clicked from welcome dropdown");
+		driver.waitForLoadingImageToDisappear();
+		driver.waitForPageLoad();
+		return new StoreFrontOrdersPage(driver);
 	}
 }

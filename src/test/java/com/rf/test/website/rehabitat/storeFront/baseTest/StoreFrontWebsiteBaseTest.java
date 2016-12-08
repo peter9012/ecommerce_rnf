@@ -20,6 +20,7 @@ import com.rf.pages.website.rehabitat.storeFront.StoreFrontCartPage;
 import com.rf.pages.website.rehabitat.storeFront.StoreFrontCheckoutPage;
 import com.rf.pages.website.rehabitat.storeFront.StoreFrontConsultantEnrollNowPage;
 import com.rf.pages.website.rehabitat.storeFront.StoreFrontHomePage;
+import com.rf.pages.website.rehabitat.storeFront.StoreFrontOrdersPage;
 import com.rf.pages.website.rehabitat.storeFront.StoreFrontShippingInfoPage;
 import com.rf.pages.website.rehabitat.storeFront.StoreFrontShopSkinCarePage;
 import com.rf.test.base.RFBaseTest;
@@ -51,6 +52,7 @@ public class StoreFrontWebsiteBaseTest extends RFBaseTest {
 	protected StoreFrontShippingInfoPage sfShippingInfoPage;
 	protected StoreFrontAutoshipStatusPage sfAutoshipStatusPage;
 	protected StoreFrontBillingInfoPage sfBillingInfoPage;
+	protected StoreFrontOrdersPage sfOrdersPage;
 
 	StringBuilder verificationErrors = new StringBuilder();
 	protected String password = null;

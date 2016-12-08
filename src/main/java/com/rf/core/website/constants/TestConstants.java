@@ -22,7 +22,7 @@ public class TestConstants {
 	public static final String EMAIL_VALIDATION_ERROR_VALID_EMAIL_ADDRESS = "Please enter a valid email address";	
 	public static final String PASSWORD_VALIDATION_ERROR_LESS_THAN_SIX_CHARS = "Please enter at least 6 characters";	
 	public static final String ADD_TO_BAG = "Add to Bag";
-	
+
 	//Consultant user details
 	public static final String CONSULTANT_USERNAME = "autocon12@xyz.com";
 	public static final String CONSULTANT_EMAIL = "autocon12@xyz.com";
@@ -39,6 +39,11 @@ public class TestConstants {
 	public static final String POSTAL_CODE_CA = "T5N 2N8";
 	public static final String PHONE_NUMBER_CA = "2342342342";
 	public static final String STATE_CA = "Alberta";
+	public static final String SPOUSE_FIRST_NAME = "FNSpouse";
+	public static final String SPOUSE_LAST_NAME = "LNSpouse";
+	public static final String PROFILE_UPDATION_MESSAGE = "Your profile has been updated";
+
+
 
 	public static final String CARD_TYPE = "VISA";
 	public static final String CARD_NUMBER = "4747474747474747";

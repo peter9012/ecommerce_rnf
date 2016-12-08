@@ -29,6 +29,7 @@ public class BillingProfileTest extends StoreFrontWebsiteBaseTest{
 		//sfBillingInfoPage.clicke
 		s_assert.assertAll();
 	}
+	
 	/***
 	 * qTest : TC-386 Add Billing Profile With New Billing Address
 	 * 

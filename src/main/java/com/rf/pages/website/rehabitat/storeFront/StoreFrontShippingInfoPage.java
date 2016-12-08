@@ -28,8 +28,9 @@ public class StoreFrontShippingInfoPage extends StoreFrontWebsiteBasePage{
 	private final By ERROR_MESSAGE_FOR_STATE_LOC = By.id("address.region-error");
 	private final By ERROR_MESSAGE_FOR_POSTAL_CODE_LOC = By.id("address.postcode-error");
 	private final By ERROR_MESSAGE_FOR_PHONE_NUMBER_LOC = By.id("address.phone-error");
+	private final By EDIT_LINK_OF_DEFAULT_SHIPPING_ADDRESS_LOC = By.xpath("//strong[contains(text(),'Default')]/following::a[1]");
 	private String shippingProfileNameLoc  = "//div[contains(@class,'account-addressbook')]/descendant::strong[contains(text(),'%s')][1]";
-	
+
 	/***
 	 * This method clicked on add a new shipping address link 
 	 * 
@@ -179,6 +180,19 @@ public class StoreFrontShippingInfoPage extends StoreFrontWebsiteBasePage{
 		logger.info("default profile name is "+profileName);
 		return profileName;
 	}
-	
+
+	/***
+	 * This method clicked on edit link of default shipping address 
+	 * 
+	 * @param
+	 * @return store front shipping info page object
+	 * 
+	 */
+	public StoreFrontShippingInfoPage clickEditLinkOfDefaultShippingAddress(){
+		driver.click(EDIT_LINK_OF_DEFAULT_SHIPPING_ADDRESS_LOC);
+		logger.info("Edit link clicked of default shipping address");
+		return this;
+	}
+
 }
 

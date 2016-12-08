@@ -211,4 +211,156 @@ public class MyAccountTest extends StoreFrontWebsiteBaseTest{
 		sfAutoshipStatusPage.closePulsePopup();
 		s_assert.assertAll();
 	}
+
+	/***
+	 * qTest : TC-284 Account Information- Spouse contact checkbox
+	 * 
+	 * Description : This test Update and validate spouse information on account info page.
+	 *
+	 * 
+	 * 				
+	 */
+	@Test//Incomplete as on spouse details confirmation popup cancel button not present.
+	public void testUpdateSpouseInformation_284(){
+		String spouseFirstName = TestConstants.SPOUSE_FIRST_NAME;
+		String spouseLastName = TestConstants.SPOUSE_LAST_NAME;
+		String profileUpdationMessage = null;
+
+		//Login as consultant user.
+		sfHomePage.loginToStoreFront(TestConstants.CONSULTANT_USERNAME,password);
+		sfHomePage.clickWelcomeDropdown();
+		sfAccountInfoPage = sfHomePage.navigateToAccountInfoPage();
+		sfAccountInfoPage.checkSpouseCheckbox();
+		sfAccountInfoPage.enterSpouseFirstName(spouseFirstName);
+		sfAccountInfoPage.enterSpouseLastName(spouseLastName);
+		sfAccountInfoPage.saveAccountInfo();
+		s_assert.assertTrue(sfAccountInfoPage.isSpouseDetailsConfirmationPopUpPresent(), "'Spouse details' popup is not displayed");
+		sfAccountInfoPage.useEnteredDetailsOnSpouseDetailsPopUp();
+		profileUpdationMessage = sfAccountInfoPage.getProfileUpdationMessage();
+		s_assert.assertTrue(profileUpdationMessage.equalsIgnoreCase(TestConstants.PROFILE_UPDATION_MESSAGE.trim()), "'Spouse details' profile updation message Expected = "+TestConstants.PROFILE_UPDATION_MESSAGE+" but Actual = "+profileUpdationMessage);
+		s_assert.assertAll();
+	}
+	/***
+	 * qTest : TC-370 Account Information- Spouse contact checkbox - Invalid
+	 * 
+	 * Description : This test validate Invalid spouse information on account info page.
+	 *
+	 * 
+	 * 				
+	 */
+	@Test
+	public void testUpdateInvalidSpouseInformation_370(){
+		String spouseFirstName = " ";
+		String spouseLastName = " ";
+		String profileUpdationMessage = null;
+
+		//Login as consultant user.
+		sfHomePage.loginToStoreFront(TestConstants.CONSULTANT_USERNAME,password);
+		sfHomePage.clickWelcomeDropdown();
+		sfAccountInfoPage = sfHomePage.navigateToAccountInfoPage();
+		String expectedValidationErrorMsg = TestConstants.VALIDATION_ERROR_THIS_FIELD_IS_REQUIRED;
+		sfAccountInfoPage.checkSpouseCheckbox();
+		sfAccountInfoPage.enterSpouseFirstName(spouseFirstName);
+		sfAccountInfoPage.enterSpouseLastName(spouseLastName);
+		sfAccountInfoPage.saveAccountInfo();
+		s_assert.assertTrue(sfAccountInfoPage.isValidationMsgPresentForParticularField("spouseFirstName", expectedValidationErrorMsg),"This field is required.");
+		s_assert.assertTrue(sfAccountInfoPage.isValidationMsgPresentForParticularField("spouseLastName", expectedValidationErrorMsg),"This field is required.");
+		s_assert.assertAll();
+	}
+	/***
+	 * qTest : TC-288 Account Information Page- Account Info Fields - Valid
+	 * 
+	 * Description : This test validate profile updation on account info page when all fields are filled
+	 * and save account info clicked.
+	 *
+	 * 
+	 * 				
+	 */
+	@Test
+	public void testUpdateAccountInfoWithValidDetails_288(){
+		String spouseFirstName = TestConstants.SPOUSE_FIRST_NAME;
+		String spouseLastName = TestConstants.SPOUSE_LAST_NAME;
+		String profileUpdationMessage = null;
+		String randomWord = CommonUtils.getRandomWord(5);
+		String firstName = TestConstants.FIRST_NAME;
+		String lastName = TestConstants.LAST_NAME+randomWord;
+		String addressLine1 = TestConstants.ADDRESS_LINE_1_CA;
+		String city = TestConstants.CITY_CA;
+		String state = TestConstants.STATE_CA;
+		String postalCode = TestConstants.POSTAL_CODE_CA;
+		String phoneNumber = TestConstants.PHONE_NUMBER;
+
+		//Login as consultant user.
+		sfHomePage.loginToStoreFront(TestConstants.CONSULTANT_USERNAME,password);
+		sfHomePage.clickWelcomeDropdown();
+		sfAccountInfoPage = sfHomePage.navigateToAccountInfoPage();
+		sfAccountInfoPage.enterMainAccountInfo(firstName, lastName, addressLine1, city, state, postalCode, phoneNumber);
+		sfAccountInfoPage.checkSpouseCheckbox();
+		sfAccountInfoPage.enterSpouseFirstName(spouseFirstName);
+		sfAccountInfoPage.enterSpouseLastName(spouseLastName);
+		sfAccountInfoPage.saveAccountInfo();
+		s_assert.assertTrue(sfAccountInfoPage.isSpouseDetailsConfirmationPopUpPresent(), "'Spouse details' popup is not displayed");
+		sfAccountInfoPage.useEnteredDetailsOnSpouseDetailsPopUp();
+		profileUpdationMessage = sfAccountInfoPage.getProfileUpdationMessage();
+		s_assert.assertTrue(profileUpdationMessage.equalsIgnoreCase(TestConstants.PROFILE_UPDATION_MESSAGE.trim()), "'Spouse details' profile updation message Expected = "+TestConstants.PROFILE_UPDATION_MESSAGE+" but Actual = "+profileUpdationMessage);
+		s_assert.assertAll();
+	}
+	/***
+	 * qTest : TC-289 Account Information Page- Account Info Fields - Invalid
+	 * 
+	 * Description : This test validate error message on account info page when mandatory fields are empty
+	 * and save account info clicked.
+	 *
+	 * 
+	 * 				
+	 */
+	@Test
+	public void testUpdateAccountInfoWithInvalidDetails_289(){
+		String randomWord = CommonUtils.getRandomWord(5);
+		String firstName = TestConstants.FIRST_NAME;
+		String lastName = TestConstants.LAST_NAME+randomWord;
+		String addressLine1 = TestConstants.ADDRESS_LINE_1_CA;
+		String city = TestConstants.CITY_CA;
+		String state = TestConstants.STATE_CA;
+		String postalCode = TestConstants.POSTAL_CODE_CA;
+		String phoneNumber = TestConstants.PHONE_NUMBER;
+		String emailAddress = "abc@wyz";
+
+		//Login as consultant user.
+		sfHomePage.loginToStoreFront(TestConstants.CONSULTANT_USERNAME,password);
+		sfHomePage.clickWelcomeDropdown();
+		sfAccountInfoPage = sfHomePage.navigateToAccountInfoPage();
+		String expectedValidationErrorMsg = TestConstants.VALIDATION_ERROR_THIS_FIELD_IS_REQUIRED;
+		String expectedEmailValidationErrorMsg = TestConstants.EMAIL_VALIDATION_ERROR_VALID_EMAIL_ADDRESS;
+		sfAccountInfoPage.clearFields("firstName");
+		sfAccountInfoPage.saveAccountInfo();
+		s_assert.assertTrue(sfAccountInfoPage.isValidationMsgPresentForParticularField("First Name", expectedValidationErrorMsg),"'This field is required.' for first name");
+		sfAccountInfoPage.enterFields("firstName", firstName);
+		sfAccountInfoPage.clearFields("lastName");
+		sfAccountInfoPage.saveAccountInfo();
+		s_assert.assertTrue(sfAccountInfoPage.isValidationMsgPresentForParticularField("Last Name", expectedValidationErrorMsg),"'This field is required.' for last name");
+		sfAccountInfoPage.enterFields("lastName", lastName);
+		sfAccountInfoPage.clearFields("addressLine");
+		sfAccountInfoPage.saveAccountInfo();
+		s_assert.assertTrue(sfAccountInfoPage.isValidationMsgPresentForParticularField("address1", expectedValidationErrorMsg),"'This field is required.' for address line");
+		sfAccountInfoPage.enterFields("addressLine", addressLine1);
+		sfAccountInfoPage.clearFields("city");
+		sfAccountInfoPage.saveAccountInfo();
+		s_assert.assertTrue(sfAccountInfoPage.isValidationMsgPresentForParticularField("city", expectedValidationErrorMsg),"'This field is required.' for city");
+		sfAccountInfoPage.enterFields("city", city);
+		sfAccountInfoPage.clearFields("postalCode");
+		sfAccountInfoPage.saveAccountInfo();
+		s_assert.assertTrue(sfAccountInfoPage.isValidationMsgPresentForParticularField("postal", expectedValidationErrorMsg),"'This field is required.' for postal code");
+		sfAccountInfoPage.enterFields("postalCode", postalCode);
+		sfAccountInfoPage.clearFields("phone");
+		sfAccountInfoPage.saveAccountInfo();
+		s_assert.assertTrue(sfAccountInfoPage.isValidationMsgPresentForParticularField("phone", expectedValidationErrorMsg),"'This field is required.' for phone number");
+		sfAccountInfoPage.enterFields("phone", phoneNumber);
+		sfAccountInfoPage.clearFields("email");
+		sfAccountInfoPage.saveAccountInfo();
+		s_assert.assertTrue(sfAccountInfoPage.isValidationMsgPresentForParticularField("email", expectedValidationErrorMsg),"'This field is required.' for email address");
+		sfAccountInfoPage.enterFields("email", emailAddress);
+		s_assert.assertTrue(sfAccountInfoPage.isValidationMsgPresentForParticularField("email", expectedEmailValidationErrorMsg),"Please enter a valid email address.");
+		s_assert.assertAll();
+	}
 }

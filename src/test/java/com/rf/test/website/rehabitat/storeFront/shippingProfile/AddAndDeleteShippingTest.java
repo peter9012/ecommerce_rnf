@@ -184,7 +184,7 @@ public class AddAndDeleteShippingTest extends StoreFrontWebsiteBaseTest{
 			s_assert.assertAll();
 		}
 	}
-	
+
 	/***
 	 * qTest : TC-173 Default Ship Address displayed in checkout - Multiple Address
 	 * Description : This test validates the default shipping profile at
@@ -222,5 +222,76 @@ public class AddAndDeleteShippingTest extends StoreFrontWebsiteBaseTest{
 		s_assert.assertTrue(defaultShippingAddressName.contains(lastName), "Expected default shipping address name at checkout page is "+lastName+" but actual on UI is "+defaultShippingAddressName);
 		s_assert.assertAll();
 	}
-	
+
+	/***
+	 * qTest : TC-371 Shipping Profile-Edit a ship address and cancel
+	 * Description : This test edit the shipping profile ,click on cancel
+	 * and validates it
+	 *    
+	 */
+	@Test
+	public void testEditAShippingAddressAndCancel_371(){
+		String randomWord = CommonUtils.getRandomWord(5);
+		String firstName = TestConstants.FIRST_NAME;
+		String lastName = TestConstants.LAST_NAME+randomWord;
+		String addressLine1 = TestConstants.ADDRESS_LINE_1_US;
+		String city = TestConstants.CITY_US;
+		String state = TestConstants.STATE_US;
+		String postalCode = TestConstants.POSTAL_CODE_US;
+		String phoneNumber = TestConstants.PHONE_NUMBER;
+		String defaultShippingAddressName = null;
+		String defaultShippingAddressNameAfterUpdate = null;
+		sfHomePage.loginToStoreFront(TestConstants.CONSULTANT_USERNAME, password);
+		sfHomePage.clickWelcomeDropdown();
+		sfShippingInfoPage = sfHomePage.navigateToShippingInfoPage();
+		defaultShippingAddressName = sfShippingInfoPage.getDefaultShippingAddressName();
+		sfShippingInfoPage.clickEditLinkOfDefaultShippingAddress();
+		sfShippingInfoPage.enterConsultantShippingDetails(firstName, lastName, addressLine1, city, state, postalCode, phoneNumber);
+		sfShippingInfoPage.clickCancelButtonOfShippingAddress();
+		defaultShippingAddressNameAfterUpdate = sfShippingInfoPage.getDefaultShippingAddressName();
+		s_assert.assertTrue(defaultShippingAddressName.contains(defaultShippingAddressNameAfterUpdate), "Expected default shipping address name is "+defaultShippingAddressName+"Actual on UI is"+defaultShippingAddressNameAfterUpdate);
+		s_assert.assertAll();
+	}
+
+	/***
+	 * qTest : TC-172 Default Ship Address displayed in checkout - Single Address
+	 * Description : This test validates the default shipping profile at
+	 * checkout page
+	 *     
+	 */
+	@Test
+	public void testDefaultShipAddressDisplayedInCheckoutSingleAddress_172(){
+
+	}
+
+	/***
+	 * qTest : TC-377 Delete shipping profile
+	 * Description : This test validates delete shipping profile
+	 *     
+	 */
+	@Test
+	public void testDeleteShippingProfile_377(){
+
+	}
+
+	/***
+	 * qTest : TC-378 Delete autoship shipping profile
+	 * Description : This test validates delete shipping profile
+	 *     
+	 */
+	@Test
+	public void testDeleteAutoshipShippingProfile_378(){
+
+	}
+
+	/***
+	 * qTest : TC-384 Autoship Information should appear on the Shipping profile
+	 * Description : This test validates delete shipping profile
+	 *     
+	 */
+	@Test
+	public void testAutoshipInformationShouldAppearOnTheShippingProfilePage_384(){
+
+	}
+
 }

@@ -71,6 +71,7 @@ public class StoreFrontWebsiteBasePage extends RFBasePage{
 	private final By CHECKOUT_BUTTON_LOC = By.id("checkoutPopup");
 	private final By CHECKOUT_CONFIRMATION_OK_BUTTON_LOC = By.xpath("//div[@id='cartCheckoutModal']/a");
 	private final By WELCOME_DD_SHIPPING_INFO_LOC = By.xpath("//a[text()='Shipping Info']");
+	private final By WELCOME_DD_BILLING_INFO_LOC = By.xpath("//a[text()='Billing Info']");
 	protected final By FIRST_LAST_NAME_FOR_SHIPPING_DETAILS_LOC = By.id("address.firstName");
 	private final By ADDRESS_LINE_1_FOR_SHIPPING_DETAILS_LOC = By.id("address.line1");
 	private final By CITY_FOR_SHIPPING_DETAILS_LOC = By.id("address.townCity");
@@ -903,8 +904,8 @@ public class StoreFrontWebsiteBasePage extends RFBasePage{
 	 * 
 	 */
 	public StoreFrontBillingInfoPage navigateToBillingInfoPage(){
-		driver.click(WELCOME_DD_SHIPPING_INFO_LOC);
-		logger.info("Shipping Info clicked from welcome dropdown");
+		driver.click(WELCOME_DD_BILLING_INFO_LOC);
+		logger.info("Billing Info clicked from welcome dropdown");
 		driver.waitForLoadingImageToDisappear();
 		driver.waitForPageLoad();
 		return new StoreFrontBillingInfoPage(driver);

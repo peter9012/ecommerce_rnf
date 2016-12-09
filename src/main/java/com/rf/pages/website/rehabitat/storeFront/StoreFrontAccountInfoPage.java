@@ -1,12 +1,8 @@
 package com.rf.pages.website.rehabitat.storeFront;
 
 import org.openqa.selenium.By;
-import org.openqa.selenium.Keys;
-
 import com.rf.core.driver.website.RFWebsiteDriver;
 import com.rf.pages.website.rehabitat.storeFront.basePage.StoreFrontWebsiteBasePage;
-import com.rf.test.website.rehabitat.storeFront.baseTest.StoreFrontWebsiteBaseTest;
-
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 

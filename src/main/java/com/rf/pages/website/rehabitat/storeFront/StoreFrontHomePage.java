@@ -3,7 +3,6 @@ package com.rf.pages.website.rehabitat.storeFront;
 import com.rf.core.driver.website.RFWebsiteDriver;
 import com.rf.core.utils.CommonUtils;
 import com.rf.pages.website.rehabitat.storeFront.basePage.StoreFrontWebsiteBasePage;
-
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.openqa.selenium.By;

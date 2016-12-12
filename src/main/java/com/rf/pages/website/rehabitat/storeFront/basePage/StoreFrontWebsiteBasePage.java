@@ -68,7 +68,7 @@ public class StoreFrontWebsiteBasePage extends RFBasePage{
 	private final By SIGN_UP_NOW_LINK_LOC = By.xpath("//a[contains(text(),'Sign up now')]");
 	private final By WELCOME_DD_ACCOUNT_INFO_LOC = By.xpath("//a[text()='Account Info']");
 	private final By WELCOME_DROPDOWN_LOC = By.xpath("//div[@class='user-wrapper']/span");
-	private final By CHECKOUT_BUTTON_LOC = By.id("checkoutPopup");
+	protected final By CHECKOUT_BUTTON_LOC = By.id("checkoutPopup");
 	private final By CHECKOUT_CONFIRMATION_OK_BUTTON_LOC = By.xpath("//div[@id='cartCheckoutModal']/a");
 	private final By WELCOME_DD_SHIPPING_INFO_LOC = By.xpath("//a[text()='Shipping Info']");
 	private final By WELCOME_DD_BILLING_INFO_LOC = By.xpath("//a[text()='Billing Info']");
@@ -79,17 +79,24 @@ public class StoreFrontWebsiteBasePage extends RFBasePage{
 	private final By PHONE_NUMBER_FOR_SHIPPING_DETAILS_LOC = By.id("address.phone");
 	protected final By STATE_DD_FOR_REGISTRATION_LOC = By.id("address.region");
 	private final By MAKE_THIS_MY_DEFAULT_ADDRESS_CHKBOX_LOC = By.xpath("//label[contains(text(),'Make this my default address')]");
-	private final By USE_AS_ENTERED_BUTTON_LOC = By.xpath("//div[@id='cboxLoadedContent']//button[@id='oldAddress']");
+	protected final By USE_AS_ENTERED_BUTTON_LOC = By.xpath("//div[@id='cboxLoadedContent']//button[@id='oldAddress']");
 	private final By COUNTRY_LOC = By.xpath("//span[@class='selected-country']/preceding::input[1]");
 	private final By COUNTRY_NAME_LOC = By.xpath("//span[@class='selected-country']");
 	private final By CHECKOUT_BUTTON_POPUP_LOC = By.xpath("//div[@id='addToCartLayer']/a[contains(text(),'Checkout')]");
 	private final By ADD_TO_CART_FIRST_PRODUCT_LOC = By.xpath("//div[@id='product_listing']/descendant::button[text()='Add to cart'][1]");
 	private final By ADD_TO_BAG_OF_FIRST_PRODUCT = By.xpath("//div[@id='product_listing']/descendant::span[text()='Add to Bag'][1]");
-	private final By SAVE_BUTTON_LOC = By.id("deliveryAccountSubmit");
+	protected final By SAVE_BUTTON_LOC = By.id("deliveryAccountSubmit");
 	private final By WELCOME_DD_AUTOSHIP_STATUS_LOC = By.xpath("//a[text()='Autoship Status']");
 	private final By EDIT_LINK_NEXT_TO_MAIN_ACCOUNT_LOC = By.xpath("//div[@class='checkout-steps']/descendant::a[1]");
 	private final By WELCOME_DD_ORDERS_LOC = By.xpath("//a[text()='Orders']");
 	private final By SAVE_BUTTON_OF_SHIPPING_ADDRESS_LOC = By.xpath("//button[contains(text(),'Save')]");
+	private final By ERROR_MESSAGE_FOR_ADDRESS_LINE_1_LOC = By.id("address.line1-error");
+	private final By ERROR_MESSAGE_FOR_CITY_LOC = By.id("address.townCity-error");
+	private final By ERROR_MESSAGE_FOR_STATE_LOC = By.id("address.region-error");
+	private final By ERROR_MESSAGE_FOR_POSTAL_CODE_LOC = By.id("address.postcode-error");
+	private final By ERROR_MESSAGE_FOR_PHONE_NUMBER_LOC = By.id("address.phone-error");
+	private final By ERROR_MESSAGE_FOR_FIRST_LAST_NAME_LOC = By.id("address.firstName-error");
+	private final By SHIPPING_NEXT_BUTTON_LOC = By.id("deliveryAddressSubmit");
 	
 	private String textLoc = "//*[contains(text(),'%s')]";
 	private String stateForShippingDetails = "//select[@id='address.region']//option[text()='%s']";
@@ -937,7 +944,7 @@ public class StoreFrontWebsiteBasePage extends RFBasePage{
 		driver.waitForPageLoad();
 		return new StoreFrontOrdersPage(driver);
 	}
-	
+
 	/***
 	 * This method click the save button of shipping address
 	 * 
@@ -948,6 +955,85 @@ public class StoreFrontWebsiteBasePage extends RFBasePage{
 	public StoreFrontWebsiteBasePage clickSaveButtonOfShippingAddress(){
 		driver.clickByJS(RFWebsiteDriver.driver, driver.findElement(SAVE_BUTTON_OF_SHIPPING_ADDRESS_LOC));
 		logger.info("Save button clicked");
+		return this;
+	}
+
+	/***
+	 * This method validates the error message for first & last name field
+	 * 
+	 * @param
+	 * @return boolean value
+	 * 
+	 */
+	public boolean isErrorMessagePresentForFirstAndLastName(){
+		return driver.findElement(ERROR_MESSAGE_FOR_FIRST_LAST_NAME_LOC).isDisplayed();
+	}
+
+	/***
+	 * This method validates the error message for address line 1 field
+	 * 
+	 * @param
+	 * @return boolean value
+	 * 
+	 */
+	public boolean isErrorMessagePresentForAddressLine1(){
+		return driver.findElement(ERROR_MESSAGE_FOR_ADDRESS_LINE_1_LOC).isDisplayed();
+	}
+
+	/***
+	 * This method validates the error message for city field
+	 * 
+	 * @param
+	 * @return boolean value
+	 * 
+	 */
+	public boolean isErrorMessagePresentForCity(){
+		return driver.findElement(ERROR_MESSAGE_FOR_CITY_LOC).isDisplayed();
+	}
+
+	/***
+	 * This method validates the error message for state field
+	 * 
+	 * @param
+	 * @return boolean value
+	 * 
+	 */
+	public boolean isErrorMessagePresentForState(){
+		return driver.findElement(ERROR_MESSAGE_FOR_STATE_LOC).isDisplayed();
+	}
+
+	/***
+	 * This method validates the error message for postal code field
+	 * 
+	 * @param
+	 * @return boolean value
+	 * 
+	 */
+	public boolean isErrorMessagePresentForPostalCode(){
+		return driver.findElement(ERROR_MESSAGE_FOR_POSTAL_CODE_LOC).isDisplayed();
+	}
+
+	/***
+	 * This method validates the error message for phone number field
+	 * 
+	 * @param
+	 * @return boolean value
+	 * 
+	 */
+	public boolean isErrorMessagePresentForPhoneNumber(){
+		return driver.findElement(ERROR_MESSAGE_FOR_PHONE_NUMBER_LOC).isDisplayed();
+	}
+
+	/***
+	 * This method click the next button at shipping details page
+	 * 
+	 * @param
+	 * @return store front Home page object
+	 * 
+	 */
+	public StoreFrontWebsiteBasePage clickShippingDetailsNextbutton(){
+		driver.click(SHIPPING_NEXT_BUTTON_LOC);
+		logger.info("Next button clicked of shipping details");
 		return this;
 	}
 }

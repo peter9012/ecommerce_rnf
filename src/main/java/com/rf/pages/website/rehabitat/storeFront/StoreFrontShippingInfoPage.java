@@ -18,13 +18,7 @@ public class StoreFrontShippingInfoPage extends StoreFrontWebsiteBasePage{
 
 	private final By ADD_NEW_SHIPPING_ADDRESS_LOC = By.xpath("//a[contains(text(),'Add new shipping address')]");
 	private final By CANCEL_BUTTON_OF_SHIPPING_ADDRESS_LOC = By.xpath("//div[@class='accountActions']//a");
-	private final By ERROR_MESSAGE_FOR_FIRST_LAST_NAME_LOC = By.id("address.firstName-error");
 	private final By DEFAULT_SHIPPING_ADDRESS_NAME_LOC = By.xpath("//strong[contains(text(),'Default')]");
-	private final By ERROR_MESSAGE_FOR_ADDRESS_LINE_1_LOC = By.id("address.line1-error");
-	private final By ERROR_MESSAGE_FOR_CITY_LOC = By.id("address.townCity-error");
-	private final By ERROR_MESSAGE_FOR_STATE_LOC = By.id("address.region-error");
-	private final By ERROR_MESSAGE_FOR_POSTAL_CODE_LOC = By.id("address.postcode-error");
-	private final By ERROR_MESSAGE_FOR_PHONE_NUMBER_LOC = By.id("address.phone-error");
 	private final By EDIT_LINK_OF_DEFAULT_SHIPPING_ADDRESS_LOC = By.xpath("//strong[contains(text(),'Default')]/following::a[1]");
 	private String shippingProfileNameLoc  = "//div[contains(@class,'account-addressbook')]/descendant::strong[contains(text(),'%s')][1]";
 
@@ -85,71 +79,7 @@ public class StoreFrontShippingInfoPage extends StoreFrontWebsiteBasePage{
 		return this;
 	}
 
-	/***
-	 * This method validates the error message for first & last name field
-	 * 
-	 * @param
-	 * @return boolean value
-	 * 
-	 */
-	public boolean isErrorMessagePresentForFirstAndLastName(){
-		return driver.findElement(ERROR_MESSAGE_FOR_FIRST_LAST_NAME_LOC).isDisplayed();
-	}
 
-	/***
-	 * This method validates the error message for address line 1 field
-	 * 
-	 * @param
-	 * @return boolean value
-	 * 
-	 */
-	public boolean isErrorMessagePresentForAddressLine1(){
-		return driver.findElement(ERROR_MESSAGE_FOR_ADDRESS_LINE_1_LOC).isDisplayed();
-	}
-
-	/***
-	 * This method validates the error message for city field
-	 * 
-	 * @param
-	 * @return boolean value
-	 * 
-	 */
-	public boolean isErrorMessagePresentForCity(){
-		return driver.findElement(ERROR_MESSAGE_FOR_CITY_LOC).isDisplayed();
-	}
-
-	/***
-	 * This method validates the error message for state field
-	 * 
-	 * @param
-	 * @return boolean value
-	 * 
-	 */
-	public boolean isErrorMessagePresentForState(){
-		return driver.findElement(ERROR_MESSAGE_FOR_STATE_LOC).isDisplayed();
-	}
-
-	/***
-	 * This method validates the error message for postal code field
-	 * 
-	 * @param
-	 * @return boolean value
-	 * 
-	 */
-	public boolean isErrorMessagePresentForPostalCode(){
-		return driver.findElement(ERROR_MESSAGE_FOR_POSTAL_CODE_LOC).isDisplayed();
-	}
-
-	/***
-	 * This method validates the error message for phone number field
-	 * 
-	 * @param
-	 * @return boolean value
-	 * 
-	 */
-	public boolean isErrorMessagePresentForPhoneNumber(){
-		return driver.findElement(ERROR_MESSAGE_FOR_PHONE_NUMBER_LOC).isDisplayed();
-	}
 
 	/***
 	 * This method get the default shipping profile name

@@ -33,7 +33,13 @@ public class StoreFrontCheckoutPage extends StoreFrontWebsiteBasePage{
 	private final By POSTAL_CODE_FOR_SHIPPING_AT_CHECKOUT_PAGE_LOC=By.xpath("//form[@id='shippingAddressForm']//input[@id='address.postcode']");
 	private final By PHONE_NUMBER_FOR_SHIPPING_AT_CHECKOUT_PAGE_LOC=By.xpath("//form[@id='shippingAddressForm']//input[@id='address.phone']");
 	private final By QUEBEC_PROVINCE_FOR_SHIPPING_LOC=By.xpath("//option[@disabled='disabled' and text()='Quebec']");
-	
+	private final By SELECTED_SHIPPING_METHOD_LOC = By.xpath("//li[@class='checked']/label");
+	private String shippingMethodLoc = "//label[contains(text(),'%s')]";
+	private final By EDIT_LINK_OF_ORDERS_SUMMARY_LOC=By.xpath("//div[@class='price']/a[contains(text(),'Edit')]");
+	private final By CANCEL_BUTTON_LOC=By.xpath("//button[contains(text(),'Cancel')]");
+	private final By EDIT_LINK_OF_ACCOUNT_INFO_LOC=By.xpath("//a[@class='editIcon']");
+	private String stateForShippingDetailsAtCheckoutPageLoc = "//form[@id='shippingAddressForm']//select[@id='address.region']//option[text()='%s']";
+
 	public StoreFrontCheckoutPage fillNewUserDetails(String userType,String firstName,String lastName,String email,String password){
 		driver.type(FIRST_NAME_LOC, firstName);
 		logger.info("first name entered as "+firstName);
@@ -99,7 +105,6 @@ public class StoreFrontCheckoutPage extends StoreFrontWebsiteBasePage{
 		return this;
 	}
 
-	private String stateForShippingDetailsAtCheckoutPageLoc = "//form[@id='shippingAddressForm']//select[@id='address.region']//option[text()='%s']";
 	/**
 	 * This method update the shipping address details at checkout page
 	 * 
@@ -137,6 +142,136 @@ public class StoreFrontCheckoutPage extends StoreFrontWebsiteBasePage{
 		driver.click(STATE_DD_FOR_REGISTRATION_LOC);
 		logger.info("State dropdown clicked");
 		return driver.isElementPresent(QUEBEC_PROVINCE_FOR_SHIPPING_LOC);
+	}
+
+	/***
+	 * This method clear the all shipping address field at checkout page
+	 * 
+	 * @param
+	 * @return
+	 * 
+	 */
+	public void clearAllFieldsForShippingAddressAtCheckoutPage(){
+		driver.clear(FIRST_LAST_NAME_FOR_SHIPPING_AT_CHECKOUT_PAGE_LOC);
+		logger.info("First & last Name field is cleared");
+		driver.clear(ADDRESS_LINE1_FOR_SHIPPING_AT_CHECKOUT_PAGE_LOC);
+		logger.info("address line 1 field is cleared");
+		driver.clear(CITY_FOR_SHIPPING_AT_CHECKOUT_PAGE_LOC);
+		logger.info("City field is cleared");
+		driver.clear(POSTAL_CODE_FOR_SHIPPING_AT_CHECKOUT_PAGE_LOC);
+		logger.info("Postal code field is cleared");
+		driver.clear(PHONE_NUMBER_FOR_SHIPPING_AT_CHECKOUT_PAGE_LOC);
+		logger.info("phone number field is cleared");
+	}
+
+	/***
+	 * This method click on Edit of main account info at checkout page
+	 * 
+	 * @param
+	 * @return store front Checkout page object
+	 * 
+	 */
+	public StoreFrontCheckoutPage clickEditLinkOfAccountInfo(){
+		driver.click(EDIT_LINK_OF_ACCOUNT_INFO_LOC);
+		logger.info("Clicked on Edit link of Account info");
+		return this;
+	}
+
+	/***
+	 * This method validates save account button is displayed
+	 * 
+	 * @param
+	 * @return boolean value
+	 * 
+	 */
+	public boolean isSaveButtonDisplayedForAccountInfo(){
+		return driver.findElement(SAVE_BUTTON_LOC).isDisplayed();
+	}
+
+	/***
+	 * This method validates shipping address fields are displayed at checkout page
+	 * 
+	 * @param
+	 * @return boolean value
+	 * 
+	 */
+	public boolean isshippindAddressFieldsAreDisplayedAtCheckoutPage(){
+		return driver.findElement(FIRST_LAST_NAME_FOR_SHIPPING_AT_CHECKOUT_PAGE_LOC).isDisplayed();
+	}
+
+	/***
+	 * This method click on cancel button of shipping address at checkout page
+	 * 
+	 * @param
+	 * @return store front Checkout page object
+	 * 
+	 */
+	public StoreFrontCheckoutPage clickCancelButton(){
+		driver.click(CANCEL_BUTTON_LOC);
+		logger.info("Clicked on cancel button");
+		return this;
+	}
+
+	/***
+	 * This method click on Edit of order summary section at checkout page
+	 * 
+	 * @param
+	 * @return store front Checkout page object
+	 * 
+	 */
+	public StoreFrontCheckoutPage clickEditLinkOfOrderSummarySection(){
+		driver.clickByJS(RFWebsiteDriver.driver, driver.findElement(EDIT_LINK_OF_ORDERS_SUMMARY_LOC));
+		logger.info("Clicked on Edit link of order summary section");
+		return this;
+	}
+
+	/***
+	 * This method validates cart page is present or not
+	 * 
+	 * @param
+	 * @return boolean value
+	 * 
+	 */
+	public boolean isCartPagePresent(){
+		return driver.isElementPresent(CHECKOUT_BUTTON_LOC);
+	}
+
+	/***
+	 * This method select the shipping method
+	 * 
+	 * @param shipping method name
+	 * @return store front Checkout page object
+	 * 
+	 */
+	public StoreFrontCheckoutPage selectShippingMethod(String methodName){
+		driver.click(By.xpath(String.format(shippingMethodLoc, methodName)));
+		logger.info("Shipping method select as "+methodName);
+		return this;
+	}
+
+	/***
+	 * This method get the selected shipping method name
+	 * 
+	 * @param 
+	 * @return shipping method name
+	 * 
+	 */
+	public String getSelectedShippingMethodName(){
+		driver.pauseExecutionFor(5000);
+		String methodName = driver.findElement(SELECTED_SHIPPING_METHOD_LOC).getText();
+		logger.info("Selected shipping method name is "+methodName);
+		return methodName;
+	}
+
+	/***
+	 * This method verify Use As Entered displayed in shipping profile or not
+	 * 
+	 * @param
+	 * @return Boolean
+	 * 
+	 */
+	public Boolean isUseAsEnteredPopupDisplayed(){
+		return driver.findElement(USE_AS_ENTERED_BUTTON_LOC).isDisplayed();
 	}
 
 }

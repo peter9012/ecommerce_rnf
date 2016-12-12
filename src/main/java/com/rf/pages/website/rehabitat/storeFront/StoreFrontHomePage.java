@@ -47,7 +47,6 @@ public class StoreFrontHomePage extends StoreFrontWebsiteBasePage{
 	private final By POLICIES_AND_PROCEDURES_CHK_BOX_LOC = By.xpath("//div[contains(@class,'checkout-steps')]/descendant::label[2]");
 	private final By TERMS_AND_CONDITIONS_CHK_BOX_LOC = By.xpath("//div[contains(@class,'checkout-steps')]/descendant::label[1]");
 	private final By BILLING_NEXT_BUTTON_LOC = By.id("reviewOrder");
-	private final By SHIPPING_NEXT_BUTTON_LOC = By.id("deliveryAddressSubmit");
 	private final By SAVE_BUTTON_LOC = By.id("deliveryAccountSubmit");
 	private final By FIRST_PRODUCT_AT_KIT_PAGE_LOC = By.xpath("//div[contains(@class,'enrollmentKit-wrapper')]/descendant::div[@class='enrollmentKit-box'][1]");
 	private final By FIRST_NAME_FOR_REGISTRATION_LOC = By.id("register.firstName");
@@ -341,18 +340,6 @@ public class StoreFrontHomePage extends StoreFrontWebsiteBasePage{
 		return this;
 	}
 
-	/***
-	 * This method click the next button at shipping details page
-	 * 
-	 * @param
-	 * @return store front Home page object
-	 * 
-	 */
-	public StoreFrontHomePage clickShippingDetailsNextbutton(){
-		driver.click(SHIPPING_NEXT_BUTTON_LOC);
-		logger.info("Next button clicked of shipping details");
-		return this;
-	}
 
 	/***
 	 * This method click the next button at billing details page

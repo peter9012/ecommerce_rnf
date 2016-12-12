@@ -17,7 +17,6 @@ public class StoreFrontShippingInfoPage extends StoreFrontWebsiteBasePage{
 			.getLogger(StoreFrontShippingInfoPage.class.getName());
 
 	private final By ADD_NEW_SHIPPING_ADDRESS_LOC = By.xpath("//a[contains(text(),'Add new shipping address')]");
-	private final By SAVE_BUTTON_OF_SHIPPING_ADDRESS_LOC = By.xpath("//button[contains(text(),'Save')]");
 	private final By CANCEL_BUTTON_OF_SHIPPING_ADDRESS_LOC = By.xpath("//div[@class='accountActions']//a");
 	private final By ERROR_MESSAGE_FOR_FIRST_LAST_NAME_LOC = By.id("address.firstName-error");
 	private final By DEFAULT_SHIPPING_ADDRESS_NAME_LOC = By.xpath("//strong[contains(text(),'Default')]");
@@ -42,19 +41,6 @@ public class StoreFrontShippingInfoPage extends StoreFrontWebsiteBasePage{
 		return this;
 	}
 
-
-	/***
-	 * This method click the save button of shipping address
-	 * 
-	 * @param
-	 * @return store front shipping info page object
-	 * 
-	 */
-	public StoreFrontShippingInfoPage clickSaveButtonOfShippingAddress(){
-		driver.clickByJS(RFWebsiteDriver.driver, driver.findElement(SAVE_BUTTON_OF_SHIPPING_ADDRESS_LOC));
-		logger.info("Save button clicked");
-		return this;
-	}
 
 	/***
 	 * This method validates that shipping profile is present or not

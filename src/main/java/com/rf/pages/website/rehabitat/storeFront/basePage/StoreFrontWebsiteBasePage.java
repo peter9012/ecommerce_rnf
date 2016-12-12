@@ -77,7 +77,7 @@ public class StoreFrontWebsiteBasePage extends RFBasePage{
 	private final By CITY_FOR_SHIPPING_DETAILS_LOC = By.id("address.townCity");
 	private final By POSTAL_CODE_FOR_SHIPPING_DETAILS_LOC = By.id("address.postcode");
 	private final By PHONE_NUMBER_FOR_SHIPPING_DETAILS_LOC = By.id("address.phone");
-	private final By STATE_DD_FOR_REGISTRATION_LOC = By.id("address.region");
+	protected final By STATE_DD_FOR_REGISTRATION_LOC = By.id("address.region");
 	private final By MAKE_THIS_MY_DEFAULT_ADDRESS_CHKBOX_LOC = By.xpath("//label[contains(text(),'Make this my default address')]");
 	private final By USE_AS_ENTERED_BUTTON_LOC = By.xpath("//div[@id='cboxLoadedContent']//button[@id='oldAddress']");
 	private final By COUNTRY_LOC = By.xpath("//span[@class='selected-country']/preceding::input[1]");
@@ -89,7 +89,8 @@ public class StoreFrontWebsiteBasePage extends RFBasePage{
 	private final By WELCOME_DD_AUTOSHIP_STATUS_LOC = By.xpath("//a[text()='Autoship Status']");
 	private final By EDIT_LINK_NEXT_TO_MAIN_ACCOUNT_LOC = By.xpath("//div[@class='checkout-steps']/descendant::a[1]");
 	private final By WELCOME_DD_ORDERS_LOC = By.xpath("//a[text()='Orders']");
-
+	private final By SAVE_BUTTON_OF_SHIPPING_ADDRESS_LOC = By.xpath("//button[contains(text(),'Save')]");
+	
 	private String textLoc = "//*[contains(text(),'%s')]";
 	private String stateForShippingDetails = "//select[@id='address.region']//option[text()='%s']";
 	private String topNavigationSublinksWithTextLoc  = topNavigationLoc+"//a[text()='%s']";
@@ -935,5 +936,18 @@ public class StoreFrontWebsiteBasePage extends RFBasePage{
 		driver.waitForLoadingImageToDisappear();
 		driver.waitForPageLoad();
 		return new StoreFrontOrdersPage(driver);
+	}
+	
+	/***
+	 * This method click the save button of shipping address
+	 * 
+	 * @param
+	 * @return store front shipping info page object
+	 * 
+	 */
+	public StoreFrontWebsiteBasePage clickSaveButtonOfShippingAddress(){
+		driver.clickByJS(RFWebsiteDriver.driver, driver.findElement(SAVE_BUTTON_OF_SHIPPING_ADDRESS_LOC));
+		logger.info("Save button clicked");
+		return this;
 	}
 }

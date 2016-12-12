@@ -25,7 +25,15 @@ public class StoreFrontCheckoutPage extends StoreFrontWebsiteBasePage{
 	private final By CREATE_ACCOUNT_BUTTON_LOC = By.id("next-button");
 	private final By ADD_NEW_SHIPPING_ADDRESS_BUTTON_LOC = By.xpath("//button[contains(text(),'Add New')]");
 	private final By SHIPPING_ADDRESS_NAME_LOC = By.xpath("//span[@id='defaultShippingAddress']/b");
-
+	private final By EDIT_LINK_OF_SHIPPING_ADDRESS_LOC=By.xpath("//div[@class='checkout-shipping']//a[1]");
+	private final By FIRST_LAST_NAME_FOR_SHIPPING_AT_CHECKOUT_PAGE_LOC=By.xpath("//form[@id='shippingAddressForm']//input[@id='address.firstName']");
+	private final By ADDRESS_LINE1_FOR_SHIPPING_AT_CHECKOUT_PAGE_LOC=By.xpath("//form[@id='shippingAddressForm']//input[@id='address.line1']");
+	private final By CITY_FOR_SHIPPING_AT_CHECKOUT_PAGE_LOC=By.xpath("//form[@id='shippingAddressForm']//input[@id='address.townCity']");
+	private final By STATE_DD_FOR_SHIPPING_AT_CHECKOUT_PAGE_LOC=By.xpath("//form[@id='shippingAddressForm']//select[@id='address.region']");
+	private final By POSTAL_CODE_FOR_SHIPPING_AT_CHECKOUT_PAGE_LOC=By.xpath("//form[@id='shippingAddressForm']//input[@id='address.postcode']");
+	private final By PHONE_NUMBER_FOR_SHIPPING_AT_CHECKOUT_PAGE_LOC=By.xpath("//form[@id='shippingAddressForm']//input[@id='address.phone']");
+	private final By QUEBEC_PROVINCE_FOR_SHIPPING_LOC=By.xpath("//option[@disabled='disabled' and text()='Quebec']");
+	
 	public StoreFrontCheckoutPage fillNewUserDetails(String userType,String firstName,String lastName,String email,String password){
 		driver.type(FIRST_NAME_LOC, firstName);
 		logger.info("first name entered as "+firstName);
@@ -76,6 +84,59 @@ public class StoreFrontCheckoutPage extends StoreFrontWebsiteBasePage{
 		String profileName = driver.findElement(SHIPPING_ADDRESS_NAME_LOC).getText();
 		logger.info("default profile name is "+profileName);
 		return profileName;
+	}
+
+	/***
+	 * This method click on Edit Shipping Address at checkout page
+	 * 
+	 * @param
+	 * @return store front Checkout page object
+	 * 
+	 */
+	public StoreFrontCheckoutPage clickEditLinkOfShippingAddress(){
+		driver.click(EDIT_LINK_OF_SHIPPING_ADDRESS_LOC);
+		logger.info("Clicked on Edit link of Shipping Address");
+		return this;
+	}
+
+	private String stateForShippingDetailsAtCheckoutPageLoc = "//form[@id='shippingAddressForm']//select[@id='address.region']//option[text()='%s']";
+	/**
+	 * This method update the shipping address details at checkout page
+	 * 
+	 * @param firstName, lastName, addressLine1, city, state, postal code, phone number
+	 * @return
+	 */
+	public StoreFrontCheckoutPage updateShippingAddressDetailsAtCheckoutPage(String firstName, String lastName, String addressLine1, String city, String state, String postal, String phoneNumber) {
+		String completeName = firstName+" "+lastName;
+		driver.pauseExecutionFor(5000);
+		driver.type(FIRST_LAST_NAME_FOR_SHIPPING_AT_CHECKOUT_PAGE_LOC, completeName);
+		logger.info("Entered complete name as "+completeName);
+		driver.type(ADDRESS_LINE1_FOR_SHIPPING_AT_CHECKOUT_PAGE_LOC, addressLine1);
+		logger.info("Entered address line 1 as "+addressLine1);
+		driver.type(CITY_FOR_SHIPPING_AT_CHECKOUT_PAGE_LOC, city);
+		logger.info("Entered city as "+city);
+		driver.click(STATE_DD_FOR_SHIPPING_AT_CHECKOUT_PAGE_LOC);
+		logger.info("State dropdown clicked");
+		driver.click(By.xpath(String.format(stateForShippingDetailsAtCheckoutPageLoc, state)));
+		logger.info("State selected as "+state);
+		driver.type(POSTAL_CODE_FOR_SHIPPING_AT_CHECKOUT_PAGE_LOC, postal);
+		logger.info("Entered postal code as "+postal);
+		driver.type(PHONE_NUMBER_FOR_SHIPPING_AT_CHECKOUT_PAGE_LOC, phoneNumber);
+		logger.info("Entered Phone number  as "+phoneNumber);
+		return this;
+	}
+
+	/***
+	 * This method validates the error message for postal code field
+	 * 
+	 * @param
+	 * @return boolean value
+	 * 
+	 */
+	public boolean isQuebecAddressDisabledForConsultant(){
+		driver.click(STATE_DD_FOR_REGISTRATION_LOC);
+		logger.info("State dropdown clicked");
+		return driver.isElementPresent(QUEBEC_PROVINCE_FOR_SHIPPING_LOC);
 	}
 
 }

@@ -2,6 +2,7 @@ package com.rf.test.website.rehabitat.storeFront;
 
 import org.testng.annotations.Test;
 
+import com.rf.core.utils.CommonUtils;
 import com.rf.core.website.constants.TestConstants;
 import com.rf.test.website.rehabitat.storeFront.baseTest.StoreFrontWebsiteBaseTest;
 
@@ -71,6 +72,52 @@ public class OrdersTest extends StoreFrontWebsiteBaseTest{
 		s_assert.assertAll();
 	}
 
-	
+	/***
+	 * qTest : TC-298 Checkout page edits - Edit Shipping Information
+	 * Description : This test add a new product to cart and Edit Shipping Information
+	 * 
+	 *     
+	 */
+	@Test //incomplete User state can't be accessible in CA Environment
+	public void testCheckoutPageEditsEditShippingInformation_298(){
+		String randomWord = CommonUtils.getRandomWord(5);
+		String firstName = TestConstants.FIRST_NAME;
+		String lastName = TestConstants.LAST_NAME+randomWord;
+		String addressLine1 = TestConstants.ADDRESS_LINE_1_CA;
+		String city = TestConstants.CITY_CA;
+		String state = TestConstants.STATE_CA;
+		String postalCode = TestConstants.POSTAL_CODE_CA;
+		String phoneNumber = TestConstants.PHONE_NUMBER;
+		sfHomePage.loginToStoreFront(TestConstants.CONSULTANT_USERNAME, password);
+		sfHomePage.clickAllProducts();
+		sfHomePage.selectFirstProduct();
+		sfHomePage.checkoutThePopup();
+		sfCheckoutPage=sfHomePage.checkoutTheCart();
+		sfCheckoutPage.clickSaveButton();
+		sfCheckoutPage.clickEditLinkOfShippingAddress();
+		sfCheckoutPage.updateShippingAddressDetailsAtCheckoutPage(firstName, lastName, addressLine1, city, state, postalCode, phoneNumber);
+		sfCheckoutPage.clickSaveButtonOfShippingAddress();
+		s_assert.assertAll();	
+	}
 
+	/***
+	 * qTest : TC-316 Consultants Cannot Ship to Quebec
+	 * Description : This test validates Quebec province can not be select as shipping address
+	 * for consultant
+	 *     
+	 */
+	@Test
+	public void testConsultantCanNotShipToQuebec_316(){
+		if(country.equalsIgnoreCase("ca")){
+			sfHomePage.loginToStoreFront(TestConstants.CONSULTANT_USERNAME, password);
+			sfHomePage.clickAllProducts();
+			sfHomePage.selectFirstProduct();
+			sfHomePage.checkoutThePopup();
+			sfCheckoutPage=sfHomePage.checkoutTheCart();
+			sfCheckoutPage.clickSaveButton();
+			sfCheckoutPage.clickAddNewShippingAddressButton();
+			s_assert.assertTrue(sfCheckoutPage.isQuebecAddressDisabledForConsultant(), "Quebec province is enabled for consultant as shipping address");
+			s_assert.assertAll();
+		}
+	}
 }

@@ -294,4 +294,30 @@ public class AddAndDeleteShippingTest extends StoreFrontWebsiteBaseTest{
 
 	}
 
+	/**
+	 * qTest : TC-320 Shipping Profile-Edit a ship address and save
+	 * Description: This test update the shipping profile details & validate it
+	 * at shipping info page 
+	 * 
+	 */
+	@Test
+	public void testShippingProfileEditAShipAddressAndSave_320(){
+		String randomWord = CommonUtils.getRandomWord(5);
+		String firstName = TestConstants.FIRST_NAME;
+		String lastName = TestConstants.LAST_NAME+randomWord;
+		String addressLine1 = TestConstants.ADDRESS_LINE_1_US;
+		String city = TestConstants.CITY_US;
+		String state = TestConstants.STATE_US;
+		String postalCode = TestConstants.POSTAL_CODE_US;
+		String phoneNumber = TestConstants.PHONE_NUMBER;
+		sfHomePage.loginToStoreFront(TestConstants.CONSULTANT_USERNAME, password);
+		sfHomePage.clickWelcomeDropdown();
+		sfShippingInfoPage=sfHomePage.navigateToShippingInfoPage();
+		sfShippingInfoPage.clickEditLinkOfDefaultShippingAddress();
+		sfShippingInfoPage.enterConsultantShippingDetails(firstName, lastName, addressLine1, city, state, postalCode, phoneNumber);
+		sfShippingInfoPage.clickSaveButtonOfShippingAddress();
+		s_assert.assertTrue(sfShippingInfoPage.isShippingProfilePresent(lastName), "Expected profile name is not present in Address list");
+		s_assert.assertAll();
+	}
+
 }

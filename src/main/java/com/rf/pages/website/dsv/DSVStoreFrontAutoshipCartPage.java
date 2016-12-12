@@ -13,7 +13,7 @@ public class DSVStoreFrontAutoshipCartPage extends DSVRFWebsiteBasePage{
 	private static final By CONTINUE_SHOPPING_LINK = By.xpath("//*[@value='ADD MORE ITEMS']");
 	private static String RetailPrice =  "//p[@id='cart-retail-price']/span[contains(@class,'old-price')][contains(text(),'%s')]"; 	
 	private static String allItemsNameInCart = "//div[@class='shopping-item row']//h3";
-	
+
 	public DSVStoreFrontAutoshipCartPage(RFWebsiteDriver driver) {
 		super(driver);
 		// TODO Auto-generated constructor stub
@@ -51,9 +51,9 @@ public class DSVStoreFrontAutoshipCartPage extends DSVRFWebsiteBasePage{
 	}
 
 	public boolean isThresholdMessageAppeared(){
-		driver.quickWaitForElementPresent(By.xpath("//div[@id='globalMessages']//p[contains(text(),'greater than the threshold')]"));
+		driver.quickWaitForElementPresent(By.xpath("//div[@id='globalMessages']//span[contains(text(),'greater than the threshold')]"));
 		try{
-			driver.findElement(By.xpath("//div[@id='globalMessages']//p[contains(text(),'greater than the threshold')]"));
+			driver.findElement(By.xpath("//div[@id='globalMessages']//span[contains(text(),'greater than the threshold')]"));
 			return true;
 		}catch(Exception e){
 			return false;

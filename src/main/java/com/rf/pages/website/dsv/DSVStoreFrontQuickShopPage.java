@@ -22,7 +22,7 @@ public class DSVStoreFrontQuickShopPage extends DSVRFWebsiteBasePage {
 	private static final By SECOND_PRODUCT_ADD_TO_CRP_BTN = By.xpath("//div[@id='quick-refine']/following-sibling::div[3]/div[2]//button[contains(text(),'ADD TO CRP')]");
 	private static final By FIRST_PRODUCT_NAME = By.xpath("//div[@id='quick-refine']/following-sibling::div[3]/div[1]//h3/a"); 
 	private static final By FIRST_PRODUCT_RETAIL_PRICE = By.xpath("//div[@id='quick-refine']/following-sibling::div[3]/div[1]//span[@class='old-price'][1]");
-	private static final By SECOND_PRODUCT_RETAIL_PRICE = By.xpath("//div[@id='main-content']/div[@class='quick-product-wrapper'][1]/div[2]//span[@class='old-price']");
+	private static final By SECOND_PRODUCT_RETAIL_PRICE = By.xpath("//div[@id='quick-refine']/following-sibling::div[3]/div[2]//span[@class='old-price'][1]");
 	private static final By PRODUCT_FILTER_DROP_DOWN = By.xpath("//input[@class='refine-products-button'][contains(@value,'Product(s)')]");
 	private static final By PRICE_FILTER_DROP_DOWN = By.xpath("//input[@class='refine-products-button'][contains(@value,'Price')]");
 	private static final By ALL_PRODUCTS_FROM_PRODUCT_FILTER_DROP_DOWN = By.xpath("//input[@class='refine-products-button'][contains(@value,'Product(s)')]/following::ul[1]/li");

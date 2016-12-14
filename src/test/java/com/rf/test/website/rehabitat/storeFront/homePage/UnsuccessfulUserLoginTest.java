@@ -114,8 +114,6 @@ public class UnsuccessfulUserLoginTest extends StoreFrontWebsiteBaseTest{
 		s_assert.assertTrue(sfHomePage.isLoginOrRegisterPageDisplayed()&& sfHomePage.getCurrentURL().contains("/login"), "'Login Or Register' page has not displayed");
 		s_assert.assertTrue(sfHomePage.isErrorMessageForIncorrectUsernamePasswordDisplayed(), "Error ");
 		s_assert.assertAll();
-	}	
-	
-	
+	}		
 	
 }

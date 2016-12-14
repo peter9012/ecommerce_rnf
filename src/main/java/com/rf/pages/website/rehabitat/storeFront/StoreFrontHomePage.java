@@ -56,6 +56,8 @@ public class StoreFrontHomePage extends StoreFrontWebsiteBasePage{
 	private final By CONFIRM_PASSWORD_FOR_REGISTRATION_LOC = By.id("register.checkPwd");
 	private final By SSN_FOR_REGISTRATION_LOC = By.id("register.socialSecurity");
 	private final By NEXT_BUTTON_LOC = By.id("consultant-next-button");
+	private final By ADD_TO_CART_FIRST_PRODUCT_LOC = By.xpath("//div[@id='product_listing']/descendant::button[text()='Add to cart'][1]");
+	private final By ADD_TO_BAG_OF_FIRST_PRODUCT = By.xpath("//div[@id='product_listing']/descendant::span[text()='Add to Bag'][1]");
 
 	private String cardTypeLoc= "//select[@id='c-ct']//option[text()='%s']";
 	private String socialMediaIconLoc = "//div[@class='container']//a[contains(@href,'%s')]";
@@ -472,6 +474,21 @@ public class StoreFrontHomePage extends StoreFrontWebsiteBasePage{
 		driver.click(USE_MY_DELIVERY_ADDRESS_CHK_BOX_LOC);
 		logger.info("Use My delivery address check box checked");
 		return this;
+	}
+
+	/***
+	 * This method verify add to bag button is present for first product
+	 * 
+	 * @param
+	 * @return boolean value.
+	 * 
+	 */
+
+	public boolean isAddToBagPresentOfFirstProduct(){
+		driver.pauseExecutionFor(5000);
+		driver.moveToElementByJS(ADD_TO_CART_FIRST_PRODUCT_LOC);
+		driver.pauseExecutionFor(5000);
+		return driver.findElement(ADD_TO_BAG_OF_FIRST_PRODUCT).isDisplayed();
 	}
 
 }

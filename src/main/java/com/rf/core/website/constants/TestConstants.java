@@ -20,7 +20,8 @@ public class TestConstants {
 	public static final String PRODUCT_NAME = "Aging REDEFINED Special";
 	public static final String VALIDATION_ERROR_THIS_FIELD_IS_REQUIRED = "This field is required";
 	public static final String EMAIL_VALIDATION_ERROR_VALID_EMAIL_ADDRESS = "Please enter a valid email address";	
-	public static final String PASSWORD_VALIDATION_ERROR_LESS_THAN_SIX_CHARS = "Please enter at least 6 characters";	
+	public static final String PASSWORD_VALIDATION_ERROR_LESS_THAN_SIX_CHARS = "Please enter at least 6 characters";
+	public static final String POSTAL_VALIDATION_ERROR_VALID_POSTAL_CODE = "Please enter valid postal code";
 	public static final String ADD_TO_BAG = "Add to Bag";
 
 	//Consultant user details

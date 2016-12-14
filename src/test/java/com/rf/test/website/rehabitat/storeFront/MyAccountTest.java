@@ -1,5 +1,7 @@
 package com.rf.test.website.rehabitat.storeFront;
 
+import java.awt.AWTException;
+
 import org.testng.annotations.Test;
 
 import com.rf.core.utils.CommonUtils;
@@ -240,6 +242,7 @@ public class MyAccountTest extends StoreFrontWebsiteBaseTest{
 		s_assert.assertTrue(profileUpdationMessage.equalsIgnoreCase(TestConstants.PROFILE_UPDATION_MESSAGE.trim()), "'Spouse details' profile updation message Expected = "+TestConstants.PROFILE_UPDATION_MESSAGE+" but Actual = "+profileUpdationMessage);
 		s_assert.assertAll();
 	}
+
 	/***
 	 * qTest : TC-370 Account Information- Spouse contact checkbox - Invalid
 	 * 
@@ -252,8 +255,6 @@ public class MyAccountTest extends StoreFrontWebsiteBaseTest{
 	public void testUpdateInvalidSpouseInformation_370(){
 		String spouseFirstName = " ";
 		String spouseLastName = " ";
-		String profileUpdationMessage = null;
-
 		//Login as consultant user.
 		sfHomePage.loginToStoreFront(TestConstants.CONSULTANT_USERNAME,password);
 		sfHomePage.clickWelcomeDropdown();
@@ -321,11 +322,9 @@ public class MyAccountTest extends StoreFrontWebsiteBaseTest{
 		String lastName = TestConstants.LAST_NAME+randomWord;
 		String addressLine1 = TestConstants.ADDRESS_LINE_1_CA;
 		String city = TestConstants.CITY_CA;
-		String state = TestConstants.STATE_CA;
 		String postalCode = TestConstants.POSTAL_CODE_CA;
 		String phoneNumber = TestConstants.PHONE_NUMBER;
 		String emailAddress = "abc@wyz";
-
 		//Login as consultant user.
 		sfHomePage.loginToStoreFront(TestConstants.CONSULTANT_USERNAME,password);
 		sfHomePage.clickWelcomeDropdown();
@@ -361,6 +360,187 @@ public class MyAccountTest extends StoreFrontWebsiteBaseTest{
 		s_assert.assertTrue(sfAccountInfoPage.isValidationMsgPresentForParticularField("email", expectedValidationErrorMsg),"'This field is required.' for email address");
 		sfAccountInfoPage.enterFields("email", emailAddress);
 		s_assert.assertTrue(sfAccountInfoPage.isValidationMsgPresentForParticularField("email", expectedEmailValidationErrorMsg),"Please enter a valid email address.");
+		s_assert.assertAll();
+	}
+
+	/***
+	 * qTest : TC-301 Address Validations/ Errors
+	 * 
+	 * Description : This test validate error message on account info page when mandatory fields are filled with
+	 * Invalid details and save account info clicked.
+	 *
+	 * 
+	 * 				
+	 */
+	@Test//Issue numbers are not accepted in first and last name fields and phone number with special char not accepted.
+	public void testUpdateAccountInfoWithInvalidDetails_301(){
+		String profileUpdationMessage = null;
+		String randomWord = CommonUtils.getRandomWord(5);
+		String firstName = TestConstants.FIRST_NAME;
+		String lastName = TestConstants.LAST_NAME+randomWord;
+		String addressLine1 = TestConstants.ADDRESS_LINE_1_CA;
+		String city = TestConstants.CITY_CA;
+		String state = TestConstants.STATE_CA;
+		String postalCode = TestConstants.POSTAL_CODE_CA;
+		String phoneNumber = TestConstants.PHONE_NUMBER;
+		String invalidPostalCode = "T5N";
+		String firstNameWithSpecialChar = "auto-'First";
+		String lastNameWithSpecialChar = "last'-Name";
+		String numericFirstName = "1234";
+		String numericLastName = "5678";
+		String phoneNumberWithSpecialChar = "(234)-234-2342";
+		String emailAddress= TestConstants.CONSULTANT_USERNAME;
+
+		//Login as consultant user.
+		sfHomePage.loginToStoreFront(TestConstants.CONSULTANT_USERNAME,password);
+		sfHomePage.clickWelcomeDropdown();
+		sfAccountInfoPage = sfHomePage.navigateToAccountInfoPage();
+		String expectedValidationErrorMsg = TestConstants.VALIDATION_ERROR_THIS_FIELD_IS_REQUIRED;
+		String expectedEmailValidationErrorMsg = TestConstants.EMAIL_VALIDATION_ERROR_VALID_EMAIL_ADDRESS;
+		String expectedPostalValidationErrorMsg = TestConstants.POSTAL_VALIDATION_ERROR_VALID_POSTAL_CODE;
+		sfAccountInfoPage.clearAllFields();
+		sfAccountInfoPage.saveAccountInfo();
+		s_assert.assertTrue(sfAccountInfoPage.isValidationMsgPresentForParticularField("First Name", expectedValidationErrorMsg),"This field is required. for first name");
+		s_assert.assertTrue(sfAccountInfoPage.isValidationMsgPresentForParticularField("Last Name", expectedValidationErrorMsg),"'This field is required.'for last name");
+		s_assert.assertTrue(sfAccountInfoPage.isValidationMsgPresentForParticularField("address1", expectedValidationErrorMsg),"'This field is required.' for address line");
+		s_assert.assertTrue(sfAccountInfoPage.isValidationMsgPresentForParticularField("city", expectedValidationErrorMsg),"'This field is required.' for city");
+		s_assert.assertTrue(sfAccountInfoPage.isValidationMsgPresentForParticularField("postal", expectedValidationErrorMsg),"'This field is required.' for postal code");
+		s_assert.assertTrue(sfAccountInfoPage.isValidationMsgPresentForParticularField("phone", expectedValidationErrorMsg),"'This field is required.' for phone number");
+		s_assert.assertTrue(sfAccountInfoPage.isValidationMsgPresentForParticularField("email", expectedValidationErrorMsg),"'This field is required.' for email address");
+		//Enter main account info with invalid postal code
+		sfAccountInfoPage.enterMainAccountInfo(firstName, lastName, addressLine1, city, state, postalCode, phoneNumber);
+		sfAccountInfoPage.enterFields("email", emailAddress);
+		sfAccountInfoPage.clearFields("postalCode");
+		sfAccountInfoPage.enterFields("postalCode", invalidPostalCode);
+		sfAccountInfoPage.saveAccountInfo();
+		s_assert.assertTrue(sfAccountInfoPage.isValidationMsgPresentForParticularField("postal", expectedPostalValidationErrorMsg),"Please enter a valid postal code.");
+		//Empty first and last name fields blank and save.
+		sfAccountInfoPage.enterFields("postalCode", postalCode);
+		sfAccountInfoPage.clearFields("firstName");
+		sfAccountInfoPage.clearFields("lastName");
+		sfAccountInfoPage.saveAccountInfo();
+		s_assert.assertTrue(sfAccountInfoPage.isValidationMsgPresentForParticularField("First Name", expectedValidationErrorMsg),"This field is required. for first name");
+		s_assert.assertTrue(sfAccountInfoPage.isValidationMsgPresentForParticularField("Last Name", expectedValidationErrorMsg),"'This field is required.'for last name");
+		//Enter Special characters in name field and click save.
+		sfAccountInfoPage.enterFields("firstName", firstNameWithSpecialChar);
+		sfAccountInfoPage.enterFields("lastName", lastNameWithSpecialChar);
+		sfAccountInfoPage.saveAccountInfo();
+		sfAccountInfoPage.useEnteredDetailsOnSpouseDetailsPopUp();
+		profileUpdationMessage = sfAccountInfoPage.getProfileUpdationMessage();
+		s_assert.assertTrue(profileUpdationMessage.equalsIgnoreCase(TestConstants.PROFILE_UPDATION_MESSAGE.trim()), "Profile updation message for first and last name Expected = "+TestConstants.PROFILE_UPDATION_MESSAGE+" but Actual = "+profileUpdationMessage);
+		//Enter number in first and last name fields and click save.
+		sfAccountInfoPage.clearFields("firstName");
+		sfAccountInfoPage.clearFields("lastName");
+		sfAccountInfoPage.enterFields("firstName", numericFirstName);
+		sfAccountInfoPage.enterFields("lastName", numericLastName);
+		sfAccountInfoPage.saveAccountInfo();
+		/*sfAccountInfoPage.useEnteredDetailsOnSpouseDetailsPopUp();
+		profileUpdationMessage = sfAccountInfoPage.getProfileUpdationMessage();
+		s_assert.assertTrue(profileUpdationMessage.equalsIgnoreCase(TestConstants.PROFILE_UPDATION_MESSAGE.trim()), "Profile updation message for first and last name Expected = "+TestConstants.PROFILE_UPDATION_MESSAGE+" but Actual = "+profileUpdationMessage);*/
+
+		//Enter phone number with special characters and click save.
+		sfAccountInfoPage.clearFields("firstName");
+		sfAccountInfoPage.clearFields("lastName");
+		sfAccountInfoPage.clearFields("phone");
+		sfAccountInfoPage.enterFields("firstName", firstName);
+		sfAccountInfoPage.enterFields("lastName", lastName);
+		sfAccountInfoPage.enterFields("phone", phoneNumberWithSpecialChar);
+		sfAccountInfoPage.saveAccountInfo();
+		/*sfAccountInfoPage.useEnteredDetailsOnSpouseDetailsPopUp();
+		profileUpdationMessage = sfAccountInfoPage.getProfileUpdationMessage();
+		s_assert.assertTrue(profileUpdationMessage.equalsIgnoreCase(TestConstants.PROFILE_UPDATION_MESSAGE.trim()), "Profile updation message for phone number Expected = "+TestConstants.PROFILE_UPDATION_MESSAGE+" but Actual = "+profileUpdationMessage);*/
+		s_assert.assertAll();
+	}
+	
+	/***
+	 * qTest : TC-329 User Selects account drop down to Logout
+	 * 
+	 * Description : This test validate logout functionality.
+	 * 
+	 * 				
+	 */
+	@Test
+	public void testVerifyLogoutFunctionality_329(){
+		//Login as consultant user.
+		sfHomePage.loginToStoreFront(TestConstants.CONSULTANT_USERNAME,password);
+		sfHomePage.clickWelcomeDropdown();
+		sfHomePage.logout();
+		s_assert.assertTrue(sfHomePage.isLogoutSuccessful(),"User unable to logout from application");
+		s_assert.assertAll();
+	}
+	
+	/***
+	 * qTest : TC-330 User is logged into their account with multiple tabs in the browser
+	 * 
+	 * Description : This test validate login functionality in multiple tabs.
+	 * @throws AWTException 
+	 * 
+	 * 				
+	 */
+	@Test
+	public void testVerifyLoginFunctionalityInMultipleTabs_330() throws AWTException{
+		String currentURL = null;
+		String currentWindowID = null; 
+		String redefineLinkUnderShopSkincare = "REDEFINE";
+		String redefineRegimenURL = "/redefine";
+		//Login as consultant user.
+		sfHomePage.loginToStoreFront(TestConstants.CONSULTANT_USERNAME,password);
+		currentWindowID = CommonUtils.getCurrentWindowHandle();
+		sfHomePage.navigateToShopSkincareLinkInNewTab(redefineLinkUnderShopSkincare);
+		sfHomePage.switchToChildWindow(currentWindowID);
+		currentURL = sfHomePage.getCurrentURL().toLowerCase();
+		s_assert.assertTrue(currentURL.contains(redefineRegimenURL), "Expected URL should contain" +redefineRegimenURL+" . but actual on UI is"+currentURL);
+		s_assert.assertTrue(sfHomePage.isUserLoggedInNewTab(), "Expected user should be loggedIn in new tab");
+		sfHomePage.clickWelcomeDropdown();
+		sfHomePage.logout();
+		s_assert.assertTrue(sfHomePage.isLogoutSuccessful(),"User unable to logout from application in new tab");
+		sfHomePage.switchToParentWindow(currentWindowID);
+		sfHomePage.pageRefresh();
+		s_assert.assertTrue(sfHomePage.isLogoutSuccessful(),"User unable to logout from application in parent tab");
+		s_assert.assertAll();
+	}
+	
+	/***
+	 * qTest : TC-331 My Account drop down should display "Edit CRP" link
+	 * 
+	 * Description : This test validate CRP Autoship page from welcome DD.
+	 * 
+	 * 				
+	 */
+	@Test
+	public void testVerifyCRPAutoShipPage_331(){
+		String currentURL = null;
+		String urlToAssert = "autoship/cart";
+		//Login as consultant user.
+		sfHomePage.loginToStoreFront(TestConstants.CONSULTANT_USERNAME,password);
+		sfHomePage.clickWelcomeDropdown();
+		sfHomePage.navigateToEditCRPPage();
+		currentURL = sfHomePage.getCurrentURL().toLowerCase();
+		s_assert.assertTrue(currentURL.contains(urlToAssert), "Expected URL should contain "+urlToAssert+" but actual on UI is"+currentURL);
+		s_assert.assertAll();
+	}
+	
+	/***
+	 * qTest : TC-357 My Account dropdown should display "Check my pulse"
+	 * 
+	 * Description : This test validate Check My pulse page from welcome DD.
+	 * 
+	 * 				
+	 */
+	@Test//Incomplete as pulse functionality not implemented yet.
+	public void testVerifyCheckMyPulsePage_357(){
+		String currentURL = null;
+		String currentWindowID = null;
+		String urlToAssert = "myrfpulse";
+		//Login as consultant user.
+		sfHomePage.loginToStoreFront(TestConstants.CONSULTANT_USERNAME,password);
+		sfHomePage.clickWelcomeDropdown();
+		currentWindowID = CommonUtils.getCurrentWindowHandle();
+		sfHomePage.navigateToCheckMyPulsePage();
+		sfHomePage.switchToChildWindow(currentWindowID);
+		currentURL = sfHomePage.getCurrentURL().toLowerCase();
+		s_assert.assertTrue(currentURL.contains(urlToAssert), "Expected URL should contain "+urlToAssert+" but actual on UI is"+currentURL);
+		sfHomePage.switchToParentWindow(currentWindowID);
 		s_assert.assertAll();
 	}
 }

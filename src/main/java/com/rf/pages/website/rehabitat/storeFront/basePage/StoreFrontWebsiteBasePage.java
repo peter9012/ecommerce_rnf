@@ -1,11 +1,16 @@
 package com.rf.pages.website.rehabitat.storeFront.basePage;
 
+import java.awt.AWTException;
+import java.awt.Robot;
+import java.awt.event.KeyEvent;
 import java.util.Iterator;
 import java.util.Set;
 
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.openqa.selenium.By;
+import org.openqa.selenium.WebElement;
+import org.openqa.selenium.interactions.Actions;
 import org.testng.Reporter;
 
 import com.rf.core.driver.website.RFWebsiteDriver;
@@ -97,7 +102,10 @@ public class StoreFrontWebsiteBasePage extends RFBasePage{
 	private final By ERROR_MESSAGE_FOR_PHONE_NUMBER_LOC = By.id("address.phone-error");
 	private final By ERROR_MESSAGE_FOR_FIRST_LAST_NAME_LOC = By.id("address.firstName-error");
 	private final By SHIPPING_NEXT_BUTTON_LOC = By.id("deliveryAddressSubmit");
-	
+	private final By LOGOUT_LOC = By.xpath("//a[text()='Sign Out']");
+	private final By WELCOME_DD_EDIT_CRP_LOC = By.xpath("//a[text()='Edit CRP']");
+	private final By WELCOME_DD_CHECK_MY_PULSE_LOC = By.xpath("//a[text()='Check My Pulse']");
+
 	private String textLoc = "//*[contains(text(),'%s')]";
 	private String stateForShippingDetails = "//select[@id='address.region']//option[text()='%s']";
 	private String topNavigationSublinksWithTextLoc  = topNavigationLoc+"//a[text()='%s']";
@@ -1035,5 +1043,128 @@ public class StoreFrontWebsiteBasePage extends RFBasePage{
 		driver.click(SHIPPING_NEXT_BUTTON_LOC);
 		logger.info("Next button clicked of shipping details");
 		return this;
+	}
+
+	/***
+	 * This method click the category links
+	 * 
+	 * @param Category name
+	 * @return store front website base page object
+	 * 
+	 */
+	public StoreFrontWebsiteBasePage clickCategoryLink(String categoryName){
+		mouseHoverOn(TestConstants.SHOP_SKINCARE);
+		driver.click(By.xpath(String.format(topNavigationSublinksWithTextLoc, categoryName)));
+		logger.info("Category "+categoryName+" clicked");
+		return this;
+	}
+
+	/***
+	 * This method validates logout functionality.
+	 * 
+	 * @param
+	 * @return boolean value
+	 * 
+	 */
+	public boolean isLogoutSuccessful(){
+		return driver.isElementPresent(LOGIN_ICON_LOC);
+	}
+	/***
+	 * This method hover on shopSkincare  and click link mentioned in argument in new Tab.
+	 * 
+	 * @param regimen name as linkName
+	 * @return store front website base page object
+	 * @throws AWTException 
+	 * 
+	 */
+	public StoreFrontWebsiteBasePage navigateToShopSkincareLinkInNewTab(String linkName) throws AWTException{
+		mouseHoverOn(TestConstants.SHOP_SKINCARE);
+		WebElement element = driver.findElement(By.xpath(String.format(topNavigationSublinksWithTextLoc, linkName)));
+		Actions action= new Actions(RFWebsiteDriver.driver);
+		action.contextClick(element).build().perform();
+		logger.info("Right click performed on webelement");
+		driver.pauseExecutionFor(2000);
+		Robot robot = new Robot();
+		robot.keyPress(KeyEvent.VK_DOWN);
+		robot.keyPress(KeyEvent.VK_ENTER);
+		robot.keyRelease(KeyEvent.VK_DOWN);
+		robot.keyRelease(KeyEvent.VK_ENTER);
+		logger.info("key down performed on webelement options and entered clicked");
+		driver.pauseExecutionFor(2000);
+		logger.info("clicked on"+ "'"+linkName+"'" +"under shopskincare");
+		robot.keyPress(KeyEvent.VK_CONTROL);
+		robot.keyPress(KeyEvent.VK_TAB);
+		robot.keyRelease(KeyEvent.VK_CONTROL);
+		robot.keyRelease(KeyEvent.VK_TAB);
+		return this;
+	}
+
+	/***
+	 * This method validates login functionality in multiple tabs.
+	 * 
+	 * @param
+	 * @return boolean value
+	 * 
+	 */
+	public boolean isUserLoggedInNewTab(){
+		return driver.isElementPresent(WELCOME_DROPDOWN_LOC);
+	}
+
+	/***
+	 * This method refresh or reload current page.
+	 * 
+	 * @param
+	 * @return store front base page object
+	 * 
+	 */
+	public StoreFrontWebsiteBasePage pageRefresh(){
+		driver.navigate().refresh();
+		driver.waitForPageLoad();
+		return this;
+	}
+
+	/***
+	 * This method click edit CRP link from welcome dropdown.
+	 * 
+	 * @param
+	 * @return store front base page object
+	 * 
+	 */
+	public StoreFrontWebsiteBasePage navigateToEditCRPPage(){
+		driver.click(WELCOME_DD_EDIT_CRP_LOC);
+		logger.info("Edit CRP clicked from welcome dropdown");
+		driver.waitForLoadingImageToDisappear();
+		driver.waitForPageLoad();
+		return this;
+	}
+
+	/***
+	 * This method click check my pulse link from welcome dropdown.
+	 * 
+	 * @param
+	 * @return store front base page object
+	 * 
+	 */
+	public StoreFrontWebsiteBasePage navigateToCheckMyPulsePage(){
+		driver.click(WELCOME_DD_CHECK_MY_PULSE_LOC);
+		logger.info("check my pulse clicked from welcome dropdown");
+		driver.waitForLoadingImageToDisappear();
+		driver.waitForPageLoad();
+		return this;
+	}
+
+	/***
+	 * This method click orders link from welcome drop down
+	 * 
+	 * @param
+	 * @return store front orders page object
+	 * 
+	 */
+	public StoreFrontHomePage logout(){
+		driver.click(LOGOUT_LOC);
+		logger.info("logout link clicked from welcome dropdown");
+		driver.waitForLoadingImageToDisappear();
+		driver.waitForPageLoad();
+		return new StoreFrontHomePage(driver);
 	}
 }

@@ -431,7 +431,7 @@ public class OrdersTest extends StoreFrontWebsiteBaseTest{
 	}
 
 	/***
-	 * qTest : TC-318 Shipping to PO/RR boxes
+	 * qTest : TC-319 Shipping to PO/RR boxes
 	 * Description : //TODO
 	 * 
 	 *     

@@ -50,6 +50,7 @@ public class StoreFrontWebsiteBasePage extends RFBasePage{
 	protected final By SPONSOR_SEARCH_FIELD_LOC = By.id("sponserparam");
 	protected final By PRODUCTS_NAME_LINK_LOC = By.xpath("//div[@id='product_listing']/descendant::div[@class='details'][1]//a");
 	private final By SEARCH_SPONSOR_LOC = By.id("search-sponsor-button");
+	private final By SEARCH_BOX_LOC = By.id("search-box");
 	private final By SELECT_AND_CONTINUE_LOC= By.xpath("//div[@id='findConsultantResultArea']/descendant::input[@id='consultantUid'][1]/..");
 	private final By SPONSOR_SEARCH_RESULTS_LOC = By.xpath("//div[@class='row']/div[contains(@class,'consultant-box')]");
 	private final By NO_RESULT_FOUND_MSG_LOC = By.xpath("//p[contains(text(),'No results found')]");
@@ -449,7 +450,7 @@ public class StoreFrontWebsiteBasePage extends RFBasePage{
 	 * 
 	 */
 	public boolean isSearchBoxPresent(){
-		return driver.findElement(SEARCH_ICON_LOC).isDisplayed();
+		return driver.findElement(SEARCH_BOX_LOC).isDisplayed();
 	}
 
 	/***

@@ -451,7 +451,7 @@ public class MyAccountTest extends StoreFrontWebsiteBaseTest{
 		s_assert.assertTrue(profileUpdationMessage.equalsIgnoreCase(TestConstants.PROFILE_UPDATION_MESSAGE.trim()), "Profile updation message for phone number Expected = "+TestConstants.PROFILE_UPDATION_MESSAGE+" but Actual = "+profileUpdationMessage);*/
 		s_assert.assertAll();
 	}
-	
+
 	/***
 	 * qTest : TC-329 User Selects account drop down to Logout
 	 * 
@@ -468,7 +468,7 @@ public class MyAccountTest extends StoreFrontWebsiteBaseTest{
 		s_assert.assertTrue(sfHomePage.isLogoutSuccessful(),"User unable to logout from application");
 		s_assert.assertAll();
 	}
-	
+
 	/***
 	 * qTest : TC-330 User is logged into their account with multiple tabs in the browser
 	 * 
@@ -499,7 +499,7 @@ public class MyAccountTest extends StoreFrontWebsiteBaseTest{
 		s_assert.assertTrue(sfHomePage.isLogoutSuccessful(),"User unable to logout from application in parent tab");
 		s_assert.assertAll();
 	}
-	
+
 	/***
 	 * qTest : TC-331 My Account drop down should display "Edit CRP" link
 	 * 
@@ -519,7 +519,7 @@ public class MyAccountTest extends StoreFrontWebsiteBaseTest{
 		s_assert.assertTrue(currentURL.contains(urlToAssert), "Expected URL should contain "+urlToAssert+" but actual on UI is"+currentURL);
 		s_assert.assertAll();
 	}
-	
+
 	/***
 	 * qTest : TC-357 My Account dropdown should display "Check my pulse"
 	 * 
@@ -541,6 +541,59 @@ public class MyAccountTest extends StoreFrontWebsiteBaseTest{
 		currentURL = sfHomePage.getCurrentURL().toLowerCase();
 		s_assert.assertTrue(currentURL.contains(urlToAssert), "Expected URL should contain "+urlToAssert+" but actual on UI is"+currentURL);
 		sfHomePage.switchToParentWindow(currentWindowID);
+		s_assert.assertAll();
+	}
+
+	/***
+	 * qTest : TC-392 Password Rules
+	 * 
+	 * Description : This test update and validate password of user.
+	 * 
+	 *     
+	 */
+	@Test
+	public void testUpdateAndVerifyPasswordForUser_392(){
+		String emptyNewPassword = " ";
+		String passwordLessThanSixChar = "Maide";
+		String passwordSixCharAndOneNum = "Maiden1";
+		String newConfirmPassword = "111Maiden";
+		String profileUpdationMessage = null;
+		//Login as consultant user.
+		sfHomePage.loginToStoreFront(TestConstants.CONSULTANT_USERNAME,password);
+		sfHomePage.clickWelcomeDropdown();
+		sfAccountInfoPage = sfHomePage.navigateToAccountInfoPage();
+		String expectedValidationErrorMsg = TestConstants.VALIDATION_ERROR_THIS_FIELD_IS_REQUIRED;
+		String expectedNewPasswordValidationErrorMsg = TestConstants.PASSWORD_VALIDATION_ERROR_LESS_THAN_SIX_CHARS;
+		String expectedConfirmPasswordValidationErrorMsg = TestConstants.CONFIRM_PASSWORD_VALIDATION_ERROR_SAME_VALUE;
+		sfAccountInfoPage.enterOldPassword(password);
+		sfAccountInfoPage.enterConfirmPassword(password);
+		//Leave password field blank and save account info.
+		sfAccountInfoPage.enterNewPassword(emptyNewPassword);
+		sfAccountInfoPage.saveAccountInfo();
+		s_assert.assertTrue(sfAccountInfoPage.isValidationMsgPresentForParticularField("new password", expectedValidationErrorMsg),"This field is required. for new Password");
+		//Enter password with less than six char and no number.
+		sfAccountInfoPage.enterNewPassword(passwordLessThanSixChar);
+		s_assert.assertTrue(sfAccountInfoPage.isValidationMsgPresentForParticularField("new password", expectedNewPasswordValidationErrorMsg),"Please enter atleast 6 char. for new Password");
+		//Enter new Password with at least 6 char and 1 number.
+		sfAccountInfoPage.enterNewPassword(passwordSixCharAndOneNum);
+		s_assert.assertFalse(sfAccountInfoPage.isValidationMsgPresentForParticularField("new password", expectedNewPasswordValidationErrorMsg),"Error message for new Password present for valid password");
+		//Enter different password in confirm password field.
+		sfAccountInfoPage.enterConfirmPassword(newConfirmPassword);
+		sfAccountInfoPage.saveAccountInfo();
+		s_assert.assertTrue(sfAccountInfoPage.isValidationMsgPresentForParticularField("confirm password", expectedConfirmPasswordValidationErrorMsg),"Please enter same value. for confim Password not present");
+		//Enter correct confirm password field and click save.
+		sfAccountInfoPage.enterConfirmPassword(passwordSixCharAndOneNum);
+		sfAccountInfoPage.saveAccountInfo();
+		sfAccountInfoPage.useEnteredDetailsOnSpouseDetailsPopUp();
+		profileUpdationMessage = sfAccountInfoPage.getProfileUpdationMessage();
+		s_assert.assertTrue(profileUpdationMessage.equalsIgnoreCase(TestConstants.PROFILE_UPDATION_MESSAGE.trim()), "'New Password' profile updation message Expected = "+TestConstants.PROFILE_UPDATION_MESSAGE+" but Actual = "+profileUpdationMessage);
+		//Reset password to default password.
+		sfAccountInfoPage.enterOldPassword(password);
+		sfAccountInfoPage.enterNewPassword(password);
+		sfAccountInfoPage.enterConfirmPassword(password);
+		sfAccountInfoPage.saveAccountInfo();
+		sfAccountInfoPage.useEnteredDetailsOnSpouseDetailsPopUp();
+		s_assert.assertTrue(profileUpdationMessage.equalsIgnoreCase(TestConstants.PROFILE_UPDATION_MESSAGE.trim()), "'New Password' profile updation message Expected = "+TestConstants.PROFILE_UPDATION_MESSAGE+" but Actual = "+profileUpdationMessage);
 		s_assert.assertAll();
 	}
 }

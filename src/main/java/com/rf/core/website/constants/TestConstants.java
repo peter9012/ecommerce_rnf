@@ -21,12 +21,13 @@ public class TestConstants {
 	public static final String VALIDATION_ERROR_THIS_FIELD_IS_REQUIRED = "This field is required";
 	public static final String EMAIL_VALIDATION_ERROR_VALID_EMAIL_ADDRESS = "Please enter a valid email address";	
 	public static final String PASSWORD_VALIDATION_ERROR_LESS_THAN_SIX_CHARS = "Please enter at least 6 characters";
+	public static final String CONFIRM_PASSWORD_VALIDATION_ERROR_SAME_VALUE = "Please enter the same value";
 	public static final String POSTAL_VALIDATION_ERROR_VALID_POSTAL_CODE = "Please enter valid postal code";
 	public static final String ADD_TO_BAG = "Add to Bag";
 
 	//Consultant user details
-	public static final String CONSULTANT_USERNAME = "autocon12@xyz.com";
-	public static final String CONSULTANT_EMAIL = "autocon12@xyz.com";
+	public static final String CONSULTANT_USERNAME = "autocon001@xyz.com";
+	public static final String CONSULTANT_EMAIL = "autocon001@xyz.com";
 	public static final String CONSULTANT_ACCOUNT_ID = "";
 	public static final String CONSULTANT_ACCOUNT_NUMBER = "";
 	public static final String FIRST_NAME = "auto";

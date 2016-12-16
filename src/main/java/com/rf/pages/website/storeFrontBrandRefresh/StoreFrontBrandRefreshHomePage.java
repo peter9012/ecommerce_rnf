@@ -44,10 +44,10 @@ public class StoreFrontBrandRefreshHomePage extends StoreFrontBrandRefreshWebsit
 	private static String addToCartBtnLoc = "//div[contains(@id,'uxStatusPanel')]//div[@class='FloatCol'][1]/div[%s]//a[text()='Add to Bag']";
 	private static String sectionUnderReplenishmentOrderManagementLoc = "//a[text()='%s']";
 	private static String linkUnderMyAccount = "//div[@id='RFContent']//span[contains(text(),'%s')]";
-	private static String viewDetailsOnOrderHistoryPage = "//div[@id='RFContent']//tr[@class='tdhead']/following-sibling::tr[%s]//a[contains(text(),'View Details')]";
-	private static String orderNumberOnOrderHistoryPage = "//div[@id='RFContent']//tr[@class='tdhead']/following-sibling::tr[%s]/td[1]";
 	private static String regimenImageHeaderLoc = "//div[@id='HeaderCol']//cufon[@alt='%s']";
 	private static String linkUnderShopSkinCareOrBeAConsultant = "//div[@id='LeftNav']//a/span[text()='%s']";
+	private static String viewDetailsOnOrderHistoryPage = "//div[@class='divTable CartTable']//div[@class='divTableBody']/div[%s]//a[contains(text(),'View Details')]";
+	private static String orderNumberOnOrderHistoryPage = "//div[@class='divTable CartTable']//div[@class='divTableBody']/descendant::div[%s]/descendant::div[1]";
 
 	private static final By PRODUCTS_LIST_LOC = By.xpath("//div[@id='FullPageItemList']");
 	private static final By RESULTS_TEXT_LOC = By.xpath("//div[@id='RFContent']//h1[contains(text(),'REAL RESULTS')]");
@@ -260,7 +260,7 @@ public class StoreFrontBrandRefreshHomePage extends StoreFrontBrandRefreshWebsit
 	private static final By EMAIL_VERIFICATION_TEXT = By.xpath("//div[@class='SubmittedMessage'][@style='']");
 	private static final By CANCEL_ENROLLMENT_BTN = By.xpath("//a[@id='BtnCancelEnrollment']");
 	private static final By SEND_EMAIL_TO_RESET_MY_PASSWORD_BTN = By.xpath("//a[@id='BtnResetPassword']");
-	private static final By TOTAL_ROWS_ON_ORDER_HISTORY_PAGE = By.xpath("//div[@id='RFContent']//tr[@class='tdhead']/following-sibling::tr");
+	private static final By TOTAL_ROWS_ON_ORDER_HISTORY_PAGE = By.xpath("//div[@class='divTable CartTable']//div[@class='divTableBody']/div");
 	private static final By ORDER_DETAILS_POPUP = By.xpath("//div[@id='RFContent']//h2[text()='Order Details']");
 	private static final By CLOSE_OF_ORDER_DETAILS_POPUP = By.xpath("//div[@id='RFContent']//a[text()='X']");
 	private static final By CONNECT_WITH_A_CONSULTANT = By.cssSelector("a[href*='LocatePWS']");
@@ -571,9 +571,9 @@ public class StoreFrontBrandRefreshHomePage extends StoreFrontBrandRefreshWebsit
 	}
 
 	public void clickAddToCartBtn(){		
-		driver.quickWaitForElementPresent(By.xpath("//*[@id='FullPageItemList']/div[1]//a[@id='addToCartButton']"));
-		if(driver.isElementPresent(By.xpath("//*[@id='FullPageItemList']/div[1]//a[@id='addToCartButton']"))){
-			driver.click(By.xpath("//*[@id='FullPageItemList']/div[1]//a[@id='addToCartButton']"));	
+		driver.quickWaitForElementPresent(By.xpath("//*[@id='FullPageItemList']/div[2]//a[@id='addToCartButton']"));
+		if(driver.isElementPresent(By.xpath("//*[@id='FullPageItemList']/div[2]//a[@id='addToCartButton']"))){
+			driver.click(By.xpath("//*[@id='FullPageItemList']/div[2]//a[@id='addToCartButton']"));	
 		}
 		else if(driver.isElementPresent(ADD_TO_CART_BTN_LOC)){
 			driver.click(ADD_TO_CART_BTN_LOC);	

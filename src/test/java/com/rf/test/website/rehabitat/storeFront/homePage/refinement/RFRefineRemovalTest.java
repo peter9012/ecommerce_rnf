@@ -50,4 +50,30 @@ public class RFRefineRemovalTest extends StoreFrontWebsiteBaseTest{
 		s_assert.assertTrue(sfHomePage.isShopByPriceFilterRemovedSuccessfully(totalNoOfProduct, priceRange200to499), "200 to 499 Filter not removed successfully");
 		s_assert.assertAll();
 	}
+
+	/***
+	 * qTest : TC-55 Removing one filter
+	 * Description : This test remove one filter and validates remiaing are same
+	 *     
+	 */
+	@Test
+	public void testRemovingOneFilter_55(){
+		int totalNoOfProduct = 0;
+		String priceRange0to49 = "0To49";
+		String priceRange50to199 = "50To199";
+		sfHomePage.clickAllProducts();
+		//0 to 49 price range
+		sfHomePage.selectFirstOptionInShopByPriceFilter();
+		totalNoOfProduct = sfHomePage.getTotalNoOfProduct();
+		s_assert.assertTrue(sfHomePage.isShopByPriceFirstFilterChecked(), "Fisrt option of shop by price filter is not checked");
+		sfHomePage.selectSecondOptionInShopByPriceFilter();
+		s_assert.assertTrue(sfHomePage.isShopByPriceSecondFilterChecked(), "Second option of shop by price filter is not checked");
+		for(int i=1; i<=totalNoOfProduct; i++){
+			s_assert.assertTrue(sfHomePage.isShopByPriceFilterAppliedSuccessfully(i,priceRange0to49)|| sfHomePage.isShopByPriceFilterAppliedSuccessfully(i,priceRange50to199), "product no "+i+"is out of range according to filter i.e. '0 to 49' or '50 to 199'");
+		}
+		sfHomePage.selectSecondOptionInShopByPriceFilter();
+		totalNoOfProduct = sfHomePage.getTotalNoOfProduct();
+		s_assert.assertTrue(sfHomePage.isShopByPriceFilterRemovedSuccessfully(totalNoOfProduct, priceRange50to199), "50 to 199 Filter not removed successfully");
+		s_assert.assertAll();
+	}
 }

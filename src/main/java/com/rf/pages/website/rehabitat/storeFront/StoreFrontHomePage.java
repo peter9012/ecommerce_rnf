@@ -68,6 +68,7 @@ public class StoreFrontHomePage extends StoreFrontWebsiteBasePage{
 	private final By TOTAL_NO_OF_PRODUCTS_LOC = By.xpath("//div[@class='product-item']");
 	private final By SHOP_BY_PRICE_FILTER_OPTION_200_TO_499$_LOC = By.xpath("//input[@id='$200-$499.99ID']/..");
 	private final By SHOP_BY_PRICE_FILTER_OPTION_200_TO_499$_AFTER_CHECKED_LOC = By.xpath("//input[@id='$200-$499.99ID'][@checked = 'checked']");
+	private final By MINI_CART_NUMBER_OF_ITEMS_LOC = By.xpath("//span[@class='nav-items-total']");
 
 	private String priceOfProductLoc = "//div[contains(@class,'product__listing')]//div[@class='product-item'][%s]//span[@id='cust_price']";
 	private String cardTypeLoc= "//select[@id='c-ct']//option[text()='%s']";
@@ -545,7 +546,7 @@ public class StoreFrontHomePage extends StoreFrontWebsiteBasePage{
 	}
 
 	/***
-	 * This method verify the first filter option under shop by price filter
+	 * This method verify the filter option under shop by price filter
 	 * is applied successfully or not
 	 * 
 	 * @param product number, price range
@@ -666,6 +667,32 @@ public class StoreFrontHomePage extends StoreFrontWebsiteBasePage{
 
 	public boolean isShopByPriceThirdFilterChecked(){
 		return driver.isElementPresent(SHOP_BY_PRICE_FILTER_OPTION_200_TO_499$_AFTER_CHECKED_LOC);
+	}
+
+	/***
+	 * This method get total no of itme in mini cart
+	 * 
+	 * @param
+	 * @return no of item
+	 * 
+	 */
+	public String getNumberOfItemFromMiniCart(){
+		String noOfItem = driver.findElement(MINI_CART_NUMBER_OF_ITEMS_LOC).getText(); 
+		logger.info("error is: "+noOfItem);
+		return noOfItem;
+	}
+
+
+	/***
+	 * This method click on place order button
+	 * 
+	 * @param
+	 * @return store front Home page object
+	 * 
+	 */
+	public StoreFrontHomePage clickPlaceOrderButton(){
+		clickBecomeAConsultant();
+		return this;
 	}
 
 }

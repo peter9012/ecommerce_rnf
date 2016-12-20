@@ -162,7 +162,7 @@ public class AddAndDeleteShippingTest extends StoreFrontWebsiteBaseTest{
 	@Test// Incomplete
 	public void testAddingAShipAddressDefaultCountryUSSite_174(){
 		if(country.equalsIgnoreCase("us")){
-			String expectedCountryName = "us";
+			String expectedCountryName = "united states";
 			String countryNameFromUI = null;
 			sfHomePage.loginToStoreFront(TestConstants.CONSULTANT_USERNAME, password);
 			sfHomePage.clickWelcomeDropdown();

@@ -152,7 +152,7 @@
 						<testprops>${envproperties}</testprops>
 					</systemPropertyVariables>
 					<useFile>true</useFile>
-					<testFailureIgnore>true</testFailureIgnore>
+					<testFailureIgnore>false</testFailureIgnore>
 					<suiteXmlFiles>
 						<suiteXmlFile>src/test/resources/profiles/${suiteToRun}</suiteXmlFile>
 					</suiteXmlFiles>

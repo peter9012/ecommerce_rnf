@@ -3,6 +3,10 @@ package com.rf.pages.website.rehabitat.storeFront;
 import com.rf.core.driver.website.RFWebsiteDriver;
 import com.rf.core.utils.CommonUtils;
 import com.rf.pages.website.rehabitat.storeFront.basePage.StoreFrontWebsiteBasePage;
+import java.util.Arrays;
+import java.util.Iterator;
+import java.util.List;
+
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.openqa.selenium.By;
@@ -30,7 +34,7 @@ public class StoreFrontHomePage extends StoreFrontWebsiteBasePage{
 	private final By MEET_THE_DOCTORS_TXT_LOC = By.xpath("//h1[text()=' Meet the Doctors']");
 	private final By MEET_RF_EXECUTIVE_TEAM_LINK_LOC = By.xpath("//a[@href='/executive-team']");
 	private final By TOTAL_TEAM_MEMBERS_IN_EXECUTIVE_TEAM_LOC = By.xpath("//div[@id='modal_front']//div[@class='title']");
-	private final By TEAM_MEMBER_NAME_FROM_POPUP_LOC = By.xpath("//div[@id='executive-team-carousel']/descendant::h4[1]");
+	private final By TEAM_MEMBER_NAME_FROM_POPUP_LOC = By.xpath("//div[@class='item active']/descendant::h4[1]");
 	private final By CLOSE_ICON_MEMBER_DETAIL_POPUP_LOC = By.xpath("//button[@class='close']");
 	private final By CARD_TYPE_DD_LOC = By.xpath("//*[@id='c-ct']");
 	private final By CARD_NUMBER_LOC= By.id("c-cn");
@@ -58,7 +62,14 @@ public class StoreFrontHomePage extends StoreFrontWebsiteBasePage{
 	private final By NEXT_BUTTON_LOC = By.id("consultant-next-button");
 	private final By ADD_TO_CART_FIRST_PRODUCT_LOC = By.xpath("//div[@id='product_listing']/descendant::button[text()='Add to cart'][1]");
 	private final By ADD_TO_BAG_OF_FIRST_PRODUCT = By.xpath("//div[@id='product_listing']/descendant::span[text()='Add to Bag'][1]");
+	private final By SHOP_BY_PRICE_FILTER_LOC = By.xpath("//input[@id='$0-$49.99ID']/preceding::span[contains(@class,'glyphicon')][1]/..");
+	private final By SHOP_BY_PRICE_FILTER_OPTION_0_TO_49$_LOC = By.xpath("//input[@id='$0-$49.99ID']/..");
+	private final By SHOP_BY_PRICE_FILTER_OPTION_0_TO_49$_AFTER_CHECKED_LOC = By.xpath("//input[@id='$0-$49.99ID'][@checked = 'checked']");
+	private final By TOTAL_NO_OF_PRODUCTS_LOC = By.xpath("//div[@class='product-item']");
+	private final By SHOP_BY_PRICE_FILTER_OPTION_200_TO_499$_LOC = By.xpath("//input[@id='$200-$499.99ID']/..");
+	private final By SHOP_BY_PRICE_FILTER_OPTION_200_TO_499$_AFTER_CHECKED_LOC = By.xpath("//input[@id='$200-$499.99ID'][@checked = 'checked']");
 
+	private String priceOfProductLoc = "//div[contains(@class,'product__listing')]//div[@class='product-item'][%s]//span[@id='cust_price']";
 	private String cardTypeLoc= "//select[@id='c-ct']//option[text()='%s']";
 	private String socialMediaIconLoc = "//div[@class='container']//a[contains(@href,'%s')]";
 	private String teamMemberName = "//div[@id='modal_front']/div[%s]//div[@class='title']/h4";
@@ -489,6 +500,172 @@ public class StoreFrontHomePage extends StoreFrontWebsiteBasePage{
 		driver.moveToElementByJS(ADD_TO_CART_FIRST_PRODUCT_LOC);
 		driver.pauseExecutionFor(5000);
 		return driver.findElement(ADD_TO_BAG_OF_FIRST_PRODUCT).isDisplayed();
+	}
+
+	/***
+	 * This method select the first filter option under shop by price filter
+	 * 
+	 * @param
+	 * @return store front Home page object
+	 * 
+	 */
+	public StoreFrontHomePage selectFirstOptionInShopByPriceFilter(){
+		driver.clickByJS(RFWebsiteDriver.driver, driver.findElement(SHOP_BY_PRICE_FILTER_LOC));
+		logger.info("Shop by price dropdown clicked");
+		driver.clickByJS(RFWebsiteDriver.driver, driver.findElement(SHOP_BY_PRICE_FILTER_OPTION_0_TO_49$_LOC));
+		logger.info("First option under shop by price filter selected");
+		return this;
+	}
+
+	/***
+	 * This method verify the first filter option under shop by price filter
+	 * is checked or not
+	 * 
+	 * @param
+	 * @return boolean value.
+	 * 
+	 */
+
+	public boolean isShopByPriceFirstFilterChecked(){
+		//driver.clickByJS(RFWebsiteDriver.driver, driver.findElement(SHOP_BY_PRICE_FILTER_LOC));
+		return driver.isElementPresent(SHOP_BY_PRICE_FILTER_OPTION_0_TO_49$_AFTER_CHECKED_LOC);
+	}
+
+	/***
+	 * This method get total no of product
+	 * 
+	 * @param
+	 * @return total no of product
+	 * 
+	 */
+	public int getTotalNoOfProduct(){
+		int totalNoOfProducts = driver.findElements(TOTAL_NO_OF_PRODUCTS_LOC).size(); 
+		logger.info("Total no of product is: "+totalNoOfProducts);
+		return totalNoOfProducts;
+	}
+
+	/***
+	 * This method verify the first filter option under shop by price filter
+	 * is applied successfully or not
+	 * 
+	 * @param product number, price range
+	 * @return boolean value.
+	 * 
+	 */
+	public boolean isShopByPriceFilterAppliedSuccessfully(int productNumber, String priceRange){
+		String price = driver.findElement(By.xpath(String.format(priceOfProductLoc, productNumber))).getText().split("\\$")[1].trim();
+		double priceFromUI = Double.parseDouble(price);
+		if(priceRange.equalsIgnoreCase("0To49")){
+			if(priceFromUI>0.00 & priceFromUI<49.99){
+				return true;
+			}else{
+				return false;
+			}
+		}else if(priceRange.equalsIgnoreCase("50To199")){
+			if(priceFromUI>50.00 & priceFromUI<199.99){
+				return true;
+			}else{
+				return false;
+			}
+		}else if(priceRange.equalsIgnoreCase("200To499")){
+			if(priceFromUI>200.00 & priceFromUI<499.99){
+				return true;
+			}else{
+				return false;
+			}
+		}
+		return false;
+	}
+
+	/***
+	 * This method verify the first filter option under shop by price filter
+	 * is removed successfully or not
+	 * 
+	 * @param total no of product, price range
+	 * @return boolean value.
+	 * 
+	 */
+	public boolean isShopByPriceFilterRemovedSuccessfully(int totalNoOfProduct, String priceRange){
+		Double[] price = new Double[totalNoOfProduct]; 
+		for(int i=1; i<=totalNoOfProduct; i++){
+			price[i-1] = Double.parseDouble(driver.findElement(By.xpath(String.format(priceOfProductLoc, i))).getText().split("\\$")[1].trim());
+		}
+		List<Double> lList = Arrays.asList(price);
+		Iterator<Double> iterator =  lList.iterator();
+		while(iterator.hasNext()){
+			if(priceRange.equalsIgnoreCase("0To49")){
+				if(iterator.next()>50.0){
+					return true;
+				}
+			}else if(priceRange.equalsIgnoreCase("50To199")){
+				if(iterator.next()>200.0){
+					return true;
+				}
+			}else if(priceRange.equalsIgnoreCase("200To499")){
+				if(iterator.next()<200.0){
+					return true;
+				}
+			}
+		}
+		return false;
+	}
+
+	private final By SHOP_BY_PRICE_FILTER_OPTION_50_TO_199$_LOC = By.xpath("//input[@id='$50-$199.99ID']/..");
+	private final By SHOP_BY_PRICE_FILTER_OPTION_50_TO_199$_AFTER_CHECKED_LOC = By.xpath("//input[@id='$50-$199.99ID'][@checked = 'checked']");
+
+	/***
+	 * This method select the second filter option under shop by price filter
+	 * 
+	 * @param
+	 * @return store front Home page object
+	 * 
+	 */
+	public StoreFrontHomePage selectSecondOptionInShopByPriceFilter(){
+		driver.clickByJS(RFWebsiteDriver.driver, driver.findElement(SHOP_BY_PRICE_FILTER_LOC));
+		logger.info("Shop by price dropdown clicked");
+		driver.clickByJS(RFWebsiteDriver.driver, driver.findElement(SHOP_BY_PRICE_FILTER_OPTION_50_TO_199$_LOC));
+		logger.info("Second option under shop by price filter selected");
+		return this;
+	}
+
+	/***
+	 * This method verify the second filter option under shop by price filter
+	 * is checked or not
+	 * 
+	 * @param
+	 * @return boolean value.
+	 * 
+	 */
+	public boolean isShopByPriceSecondFilterChecked(){
+		return driver.isElementPresent(SHOP_BY_PRICE_FILTER_OPTION_50_TO_199$_AFTER_CHECKED_LOC);
+	}
+
+	/***
+	 * This method select the third filter option under shop by price filter
+	 * 
+	 * @param
+	 * @return store front Home page object
+	 * 
+	 */
+	public StoreFrontHomePage selectThirdOptionInShopByPriceFilter(){
+		driver.clickByJS(RFWebsiteDriver.driver, driver.findElement(SHOP_BY_PRICE_FILTER_LOC));
+		logger.info("Shop by price dropdown clicked");
+		driver.clickByJS(RFWebsiteDriver.driver, driver.findElement(SHOP_BY_PRICE_FILTER_OPTION_200_TO_499$_LOC));
+		logger.info("Third option under shop by price filter selected");
+		return this;
+	}
+
+	/***
+	 * This method verify the third filter option under shop by price filter
+	 * is checked or not
+	 * 
+	 * @param
+	 * @return boolean value.
+	 * 
+	 */
+
+	public boolean isShopByPriceThirdFilterChecked(){
+		return driver.isElementPresent(SHOP_BY_PRICE_FILTER_OPTION_200_TO_499$_AFTER_CHECKED_LOC);
 	}
 
 }

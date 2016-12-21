@@ -62,7 +62,7 @@ public class TopNavigationTest extends StoreFrontWebsiteBaseTest{
 	 * Description : This test validates Meet our community link and social icons	  
 	 */
 	@Test
-	public void testBecomeAConsultantMeetOurCommunity_74(){
+	public void testBecomeAConsultantMeetOurCommunity_134(){
 		String currentWindowID = null;
 		String currentURL = null;
 		String redefine = "redefine";

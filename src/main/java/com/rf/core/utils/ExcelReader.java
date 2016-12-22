@@ -38,8 +38,8 @@ public class ExcelReader {
 
 			ExcelWBook = new XSSFWorkbook(ExcelFile);
 
-			//ExcelWSheet = ExcelWBook.getSheet(SheetName);
-			ExcelWSheet = ExcelWBook.getSheetAt(0);
+			ExcelWSheet = ExcelWBook.getSheet(SheetName);
+			//ExcelWSheet = ExcelWBook.getSheetAt(0);
 
 			int startRow = 1;
 
@@ -61,7 +61,7 @@ public class ExcelReader {
 
 				for (int j = startCol; j < totalCols; j++, cj++) {
 					try {
-						tabArray[ci][cj] = getCellData(i, j);
+						tabArray[ci][cj] = getCellData(i, j);						
 					} catch (Exception e) {
 						break;
 					}

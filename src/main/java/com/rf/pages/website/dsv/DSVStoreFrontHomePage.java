@@ -97,7 +97,7 @@ public class DSVStoreFrontHomePage extends DSVRFWebsiteBasePage{
 	}
 
 	public Boolean isUserNameDropDownPresent(){
-		return driver.isElementPresent(USERNAME_DROPDOWN);
+		return driver.IsElementVisible(driver.findElement(USERNAME_DROPDOWN));
 	}
 
 	public boolean isCRPCartImagePresent(){

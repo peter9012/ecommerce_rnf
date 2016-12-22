@@ -155,7 +155,7 @@ public class RFBaseTest{
 		return (testObjArray);
 
 	}
-
+	
 	public SoftAssert getSoftAssert() {
 		return s_assert;
 	}

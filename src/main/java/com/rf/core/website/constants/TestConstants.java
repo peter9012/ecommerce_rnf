@@ -30,10 +30,12 @@ public class TestConstants {
 	public static final String CONFIRM_PASSWORD_VALIDATION_ERROR_SAME_VALUE = "Please enter the same value";
 	public static final String POSTAL_VALIDATION_ERROR_VALID_POSTAL_CODE = "Please enter valid postal code";
 	public static final String ADD_TO_BAG = "Add to Bag";
+	public static final String WRONG_ADDRESS_LINE_1_US = "BAJCAC";
+	public static final String CITY_DALLAS_US = "Dallas";
 
 	//Consultant user details
-	public static final String CONSULTANT_USERNAME = "autocon001@xyz.com";
-	public static final String CONSULTANT_EMAIL = "autocon001@xyz.com";
+	public static final String CONSULTANT_USERNAME = "laks.con10@mail.com";
+	public static final String CONSULTANT_EMAIL = "laks.con10@mail.com";
 	public static final String CONSULTANT_ACCOUNT_ID = "";
 	public static final String CONSULTANT_ACCOUNT_NUMBER = "";
 	public static final String FIRST_NAME = "auto";
@@ -52,8 +54,17 @@ public class TestConstants {
 	public static final String SPOUSE_LAST_NAME = "LNSpouse";
 	public static final String PROFILE_UPDATION_MESSAGE = "Your profile has been updated";
 
+	//PC User Details
+	public static final String PC_USERNAME = "autopcdev1@xyz.com";
+	public static final String PC_EMAIL = "autopcdev1@xyz.com";
 
+	//RC User Details
+	public static final String RC_USERNAME = "autorcdev1@xyz.com";
+	public static final String RC_EMAIL = "autorcdev1@xyz.com";
 
+	public static final String SHIPPING_METHOD_UPS_2DAY = "UPS 2 Days";
+	public static final String SHIPPING_METHOD_UPS_GROUND = "UPS Ground";
+	public static final String SHIPPING_METHOD_UPS_OVERNIGHT = "UPS Overnight";
 	public static final String CARD_TYPE = "VISA";
 	public static final String CARD_NUMBER = "4747474747474747";
 	public static final String CARD_NAME = "auto lauto";

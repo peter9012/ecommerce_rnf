@@ -16,167 +16,182 @@ public class StoreFrontBillingInfoPage extends StoreFrontWebsiteBasePage{
 	private static final Logger logger = LogManager
 			.getLogger(StoreFrontBillingInfoPage.class.getName());
 
-	private final By ADD_NEW_SHIPPING_ADDRESS_LOC = By.xpath("//a[contains(text(),'Add new shipping address')]");
-	private final By SAVE_BUTTON_OF_SHIPPING_ADDRESS_LOC = By.xpath("//button[contains(text(),'Save')]");
-	private final By CANCEL_BUTTON_OF_SHIPPING_ADDRESS_LOC = By.xpath("//div[@class='accountActions']//a");
-	private final By ERROR_MESSAGE_FOR_FIRST_LAST_NAME_LOC = By.id("address.firstName-error");
-	private final By DEFAULT_SHIPPING_ADDRESS_NAME_LOC = By.xpath("//strong[contains(text(),'Default')]");
-	private final By ERROR_MESSAGE_FOR_ADDRESS_LINE_1_LOC = By.id("address.line1-error");
-	private final By ERROR_MESSAGE_FOR_CITY_LOC = By.id("address.townCity-error");
-	private final By ERROR_MESSAGE_FOR_STATE_LOC = By.id("address.region-error");
-	private final By ERROR_MESSAGE_FOR_POSTAL_CODE_LOC = By.id("address.postcode-error");
-	private final By ERROR_MESSAGE_FOR_PHONE_NUMBER_LOC = By.id("address.phone-error");
-	private String shippingProfileNameLoc  = "//div[contains(@class,'account-addressbook')]/descendant::strong[contains(text(),'%s')][1]";
-	
+	private final By ADD_NEW_BILLING_PROFILE_LOC = By.xpath("//a[@class='add-new-billing-profile']");
+	private final By SAVE_BUTTON_FOR_BILLING_DETAILS_LOC = By.xpath("//button[@id='save-account-payment-Details']");
+	private final By ADD_NEW_BILLING_INFO_HEADER_LOC = By.xpath("//form[@id='accountPaymentDetailsForm']//h3[contains(text(),'ADD NEW BILLING INFO')]");
+	private final By ADD_NEW_BILLING_ADDRESS_LINK_LOC = By.xpath("//a[@class='add-new-billing-address']");
+	private final By ADD_NEW_BILLING_ADDRESS_BLOCK_LOC = By.xpath("//div[@id='account-billing-address-form']");
+	private final By ADD_NEW_BILLING_ADDRESS_BLOCK_HEADER_LOC = By.xpath("//h3[@id='addressHeading']");
+	private final By STREET_ERROR_MSG_LOC = By.xpath("//h3[@id='addressHeading']/following-sibling::p[@id='errorMessage']");
+	private final By ADDRESS_SUGGESTION_MODAL_LOC = By.xpath("//div[@id='cboxLoadedContent']/div[@class='modal-body']");
+	private final By ADDRESS_SUGGESTION_MODAL_CLOSE_BTN_LOC = By.xpath("//button[@id='cboxClose']");
+	private final By CARD_DETAILS_SUCCESSFULLY_ADDED_MSG_LOC = By.xpath("//div[@class='global-alerts']/div[@class='alert alert-info alert-dismissable']");
+	private final By DEFAULT_BILLING_PROFILE_EDIT_BTN_LOC = By.xpath("//div[@class='account-paymentdetails account-list']//strong[contains(text(),'Default')]//ancestor::ul[1]/following-sibling::div/a[contains(text(),'Edit')]");
+	private final By NAME_ON_CARD_TF_LOC  = By.xpath("//input[@id='card_nameOnCard']");
+	private final By ACCOUNT_NUM_ON_CARD_TF_LOC = By.xpath("//input[@id='card_accountNumber']");
+	private final By CARD_TYPE_DD_LOC = By.xpath("//input[@id='card_cardType']");
+	private final By CARD_EXPIRY_MONTH_DD_LOC = By.xpath("//select[@id='card_ExpiryMonth']");
+	private final By CARD_EXPIRY_YEAR_DD_LOC = By.xpath("//select[@id='card_ExpiryYear']");
+	private final By CARD_CVV_NUM_TF_LOC = By.xpath("//input[@id='card_cvNumber']");
+	private String billingProfileFirstNameLoc = "//div[@class='account-paymentdetails account-list']//li[text()='%s']";
+
+
+
 	/***
-	 * This method clicked on add a new shipping address link 
+	 * This method clicked on add a New Billing Profile link 
 	 * 
 	 * @param
-	 * @return store front shipping info page object
+	 * @return store front billing info page object
 	 * 
 	 */
-	public StoreFrontBillingInfoPage clickAddANewShippingAddressLink(){
-		driver.click(ADD_NEW_SHIPPING_ADDRESS_LOC);
-		logger.info("Add new shipping address link clicked");
+	public StoreFrontBillingInfoPage clickAddNewBillingProfileLink(){
+		driver.click(ADD_NEW_BILLING_PROFILE_LOC);
+		logger.info("Add New Billing Profile link clicked");
 		return this;
 	}
 
 
 	/***
-	 * This method click the save button of shipping address
+	 * This method click the save button for Billing details
 	 * 
 	 * @param
 	 * @return store front shipping info page object
 	 * 
 	 */
-	public StoreFrontBillingInfoPage clickSaveButtonOfShippingAddress(){
-		driver.clickByJS(RFWebsiteDriver.driver, driver.findElement(SAVE_BUTTON_OF_SHIPPING_ADDRESS_LOC));
+	public StoreFrontBillingInfoPage clickSaveButtonForBillingDetails(){
+		driver.clickByJS(RFWebsiteDriver.driver, driver.findElement(SAVE_BUTTON_FOR_BILLING_DETAILS_LOC));
 		logger.info("Save button clicked");
 		return this;
 	}
 
-	/***
-	 * This method validates that shipping profile is present or not
-	 * at shipping info page 
-	 * 
-	 * @param profile name
-	 * @return boolean value
-	 * 
-	 */
-	public boolean isShippingProfilePresent(String profileName){
-		return driver.isElementPresent(By.xpath(String.format(shippingProfileNameLoc, profileName)));
-	}
+
 
 	/***
-	 * This method validates that shipping address details field is present or not
+	 * This method validates the SubHeader After Clicking 'Add new Billing Profile' Link
 	 * 
 	 * @param
 	 * @return boolean value
 	 * 
 	 */
-	public boolean isShippingAddressDetailFieldsPresent(String name){
-		try{
-			driver.pauseExecutionFor(1000);
-			driver.type(FIRST_LAST_NAME_FOR_SHIPPING_DETAILS_LOC, name);
-			return true;
-		}catch(Exception e){
-			return false;
-		}
+	public boolean isAddNewBillingInfoSubHeaderPresent(){
+		return driver.isElementVisible(ADD_NEW_BILLING_INFO_HEADER_LOC);
 	}
 
-
 	/***
-	 * This method click the cancel button of shipping address
+	 * This method clicked on add a New Billing Address link 
 	 * 
 	 * @param
-	 * @return store front shipping info page object
+	 * @return store front billing info page object
 	 * 
 	 */
-	public StoreFrontBillingInfoPage clickCancelButtonOfShippingAddress(){
-		driver.click(CANCEL_BUTTON_OF_SHIPPING_ADDRESS_LOC);
-		logger.info("Cancel button clicked");
+	public StoreFrontBillingInfoPage clickAddNewBillingAddressLink(){
+		driver.click(ADD_NEW_BILLING_ADDRESS_LINK_LOC);
+		logger.info("Add New Billing Address link clicked");
 		return this;
 	}
 
+
 	/***
-	 * This method validates the error message for first & last name field
+	 * This method validates the Add New Billing Address Form.
 	 * 
 	 * @param
 	 * @return boolean value
 	 * 
 	 */
-	public boolean isErrorMessagePresentForFirstAndLastName(){
-		return driver.findElement(ERROR_MESSAGE_FOR_FIRST_LAST_NAME_LOC).isDisplayed();
+	public boolean isAddNewBillingAddressFormDisplayed(){
+		return driver.getAttribute(ADD_NEW_BILLING_ADDRESS_BLOCK_LOC, "style").contains("block");
 	}
 
+
 	/***
-	 * This method validates the error message for address line 1 field
+	 * This method validates the Add New Billing Address Block Header.
 	 * 
 	 * @param
 	 * @return boolean value
 	 * 
 	 */
-	public boolean isErrorMessagePresentForAddressLine1(){
-		return driver.findElement(ERROR_MESSAGE_FOR_ADDRESS_LINE_1_LOC).isDisplayed();
+	public boolean isAddNewBillingAddressBlockHeaderPresent(){
+		return driver.getText(ADD_NEW_BILLING_ADDRESS_BLOCK_HEADER_LOC).equalsIgnoreCase("Add new Billing address");
 	}
 
+
+
 	/***
-	 * This method validates the error message for city field
+	 * This method validates the Error Message for Wrong Address.
 	 * 
 	 * @param
 	 * @return boolean value
 	 * 
 	 */
-	public boolean isErrorMessagePresentForCity(){
-		return driver.findElement(ERROR_MESSAGE_FOR_CITY_LOC).isDisplayed();
+	public boolean isUnknownAddressErrorMessageIsPresentAsExpected(){
+		return driver.getText(STREET_ERROR_MSG_LOC).equalsIgnoreCase("Unknown street");
 	}
 
+
 	/***
-	 * This method validates the error message for state field
+	 * This method fetch the suggested address in modal. 
+	 * 
+	 * @param
+	 * @return String
+	 * 
+	 */
+	public String getSuggestedBillingAddressFromBlock(){
+		logger.info(driver.getText(ADDRESS_SUGGESTION_MODAL_LOC));
+		return driver.getText(ADDRESS_SUGGESTION_MODAL_LOC);
+	}
+
+
+	/***
+	 * This method clicked on close Button of Address Suggestion Modal  
+	 * 
+	 * @param
+	 * @return store front billing info page object
+	 * 
+	 */
+	public StoreFrontBillingInfoPage clickOnAddressSuggestionModalCloseBtn(){
+		driver.clickByJS(RFWebsiteDriver.driver, driver.findElement(ADDRESS_SUGGESTION_MODAL_CLOSE_BTN_LOC));
+		logger.info("Address Suggestion Modal Close Button clicked");
+		driver.pauseExecutionFor(3000);
+		return this;
+	}
+
+
+	/***
+	 * This method validates the Creation of New Billing Profile using firstName of Billing Address.
+	 * 
+	 * @param String
+	 * @return boolean value
+	 * 
+	 */
+	public boolean isNewBillingProfilePresentInRowList(String profileFirstName){
+		return driver.isElementVisible(By.xpath(String.format(billingProfileFirstNameLoc,profileFirstName)));
+	}
+
+
+	/***
+	 * This method validates the Card Details Added Successfull Msg.
 	 * 
 	 * @param
 	 * @return boolean value
 	 * 
 	 */
-	public boolean isErrorMessagePresentForState(){
-		return driver.findElement(ERROR_MESSAGE_FOR_STATE_LOC).isDisplayed();
+	public boolean isCardDetailsAddedSuccessfulMsgAppearedAsExpected(){
+		return driver.getText(CARD_DETAILS_SUCCESSFULLY_ADDED_MSG_LOC).contains("Card details are added successfully.");
 	}
 
-	/***
-	 * This method validates the error message for postal code field
-	 * 
-	 * @param
-	 * @return boolean value
-	 * 
-	 */
-	public boolean isErrorMessagePresentForPostalCode(){
-		return driver.findElement(ERROR_MESSAGE_FOR_POSTAL_CODE_LOC).isDisplayed();
-	}
 
 	/***
-	 * This method validates the error message for phone number field
+	 * This method clicked on Edit Button of Default Billing Profile  
 	 * 
 	 * @param
-	 * @return boolean value
+	 * @return store front billing info page object
 	 * 
 	 */
-	public boolean isErrorMessagePresentForPhoneNumber(){
-		return driver.findElement(ERROR_MESSAGE_FOR_PHONE_NUMBER_LOC).isDisplayed();
+	public StoreFrontBillingInfoPage clickOnDefaultBillingProfileEditButton(){
+		driver.click(DEFAULT_BILLING_PROFILE_EDIT_BTN_LOC);
+		logger.info("Default Billing Profile Edit Button Clicked");
+		return this;
 	}
 
-	/***
-	 * This method get the default shipping profile name
-	 * 
-	 * @param
-	 * @return profile name
-	 * 
-	 */
-	public String getDefaultShippingAddressName(){
-		driver.pauseExecutionFor(2000);
-		String profileName = driver.findElement(DEFAULT_SHIPPING_ADDRESS_NAME_LOC).getText();
-		logger.info("default profile name is "+profileName);
-		return profileName;
-	}
-	
 }
 

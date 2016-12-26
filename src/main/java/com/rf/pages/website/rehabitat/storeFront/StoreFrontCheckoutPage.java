@@ -216,13 +216,12 @@ public class StoreFrontCheckoutPage extends StoreFrontWebsiteBasePage{
 	 * This method click on Edit of order summary section at checkout page
 	 * 
 	 * @param
-	 * @return store front Checkout page object
+	 * @return
 	 * 
 	 */
-	public StoreFrontCheckoutPage clickEditLinkOfOrderSummarySection(){
+	public void clickEditLinkOfOrderSummarySection(){
 		driver.clickByJS(RFWebsiteDriver.driver, driver.findElement(EDIT_LINK_OF_ORDERS_SUMMARY_LOC));
 		logger.info("Clicked on Edit link of order summary section");
-		return this;
 	}
 
 	/***
@@ -272,6 +271,21 @@ public class StoreFrontCheckoutPage extends StoreFrontWebsiteBasePage{
 	 */
 	public Boolean isUseAsEnteredPopupDisplayed(){
 		return driver.findElement(USE_AS_ENTERED_BUTTON_LOC).isDisplayed();
+	}
+
+	/***
+	 * This method get the non selected shipping method name
+	 * 
+	 * @param selected shipping method name, non selected shipping method name, non selected shipping method name
+	 * @return shipping method name
+	 * 
+	 */
+	public String getNonSelectedShippingMethodName(String selectedShippingMethodName, String nonSelectedShippingMethodName1,String nonSelectedShippingMethodName2){
+		if(selectedShippingMethodName.contains(nonSelectedShippingMethodName1)){
+			return nonSelectedShippingMethodName2;
+		}else{
+			return nonSelectedShippingMethodName1;
+		}
 	}
 
 }

@@ -36,18 +36,9 @@ public class StoreFrontHomePage extends StoreFrontWebsiteBasePage{
 	private final By TOTAL_TEAM_MEMBERS_IN_EXECUTIVE_TEAM_LOC = By.xpath("//div[@id='modal_front']//div[@class='title']");
 	private final By TEAM_MEMBER_NAME_FROM_POPUP_LOC = By.xpath("//div[@class='item active']/descendant::h4[1]");
 	private final By CLOSE_ICON_MEMBER_DETAIL_POPUP_LOC = By.xpath("//button[@class='close']");
-	private final By CARD_TYPE_DD_LOC = By.xpath("//*[@id='c-ct']");
-	private final By CARD_NUMBER_LOC= By.id("c-cn");
-	private final By NAME_ON_CARD_LOC= By.id("c-chn");
-	private final By EXP_MONTH_DD_LOC= By.id("c-exmth");
-	private final By EXP_MONTH_LOC= By.xpath("//select[@id='c-exmth']//option[11]");
-	private final By EXP_YEAR_DD_LOC= By.id("c-exyr");
-	private final By EXP_YEAR_LOC= By.xpath("//select[@id='c-exyr']//option[11]");
-	private final By CVV_LOC= By.id("c-cvv");
 	private final By BILLING_ADDRESS_DD_LOC= By.id("default-address");
 	private final By BILLING_ADDRESS_OPTION_VALUE_LOC= By.xpath("//select[@id='default-address']//option[2]");
 	private final By USE_MY_DELIVERY_ADDRESS_CHK_BOX_LOC= By.xpath("//label[contains(@class,'useDeliveryAddress')]");
-	private final By IFRAME_LOC= By.id("IFrame");
 	private final By POLICIES_AND_PROCEDURES_CHK_BOX_LOC = By.xpath("//div[contains(@class,'checkout-steps')]/descendant::label[2]");
 	private final By TERMS_AND_CONDITIONS_CHK_BOX_LOC = By.xpath("//div[contains(@class,'checkout-steps')]/descendant::label[1]");
 	private final By BILLING_NEXT_BUTTON_LOC = By.id("reviewOrder");
@@ -73,7 +64,6 @@ public class StoreFrontHomePage extends StoreFrontWebsiteBasePage{
 	
 	private String kitNameLoc = "//label[text()='%s']/preceding::input[1]";
 	private String priceOfProductLoc = "//div[contains(@class,'product__listing')]//div[@class='product-item'][%s]//span[@id='cust_price']";
-	private String cardTypeLoc= "//select[@id='c-ct']//option[text()='%s']";
 	private String socialMediaIconLoc = "//div[@class='container']//a[contains(@href,'%s')]";
 	private String teamMemberName = "//div[@id='modal_front']/div[%s]//div[@class='title']/h4";
 
@@ -207,7 +197,7 @@ public class StoreFrontHomePage extends StoreFrontWebsiteBasePage{
 	 * @return boolean
 	 */
 	public boolean isLoginOrRegisterPageDisplayed(){
-		boolean isLoginOrRegisterPageDisplayed = driver.IsElementVisible(driver.findElement(LOGIN_OR_REGISTER_TXT_LOC));
+		boolean isLoginOrRegisterPageDisplayed = driver.isElementVisible(driver.findElement(LOGIN_OR_REGISTER_TXT_LOC));
 		logger.info("is Login Or Register Page Displayed = "+isLoginOrRegisterPageDisplayed);
 		return isLoginOrRegisterPageDisplayed;
 	}
@@ -219,7 +209,7 @@ public class StoreFrontHomePage extends StoreFrontWebsiteBasePage{
 	 * @return boolean
 	 */
 	public boolean isErrorMessageForIncorrectUsernamePasswordDisplayed(){
-		boolean isErrorMessageForIncorrectUsernamePasswordDisplayed = driver.IsElementVisible(driver.findElement(INCORRECT_USERNAME_PASSOWRD_TXT_LOC));
+		boolean isErrorMessageForIncorrectUsernamePasswordDisplayed = driver.isElementVisible(driver.findElement(INCORRECT_USERNAME_PASSOWRD_TXT_LOC));
 		logger.info("is Error Message For Incorrect Username Password Displayed = "+isErrorMessageForIncorrectUsernamePasswordDisplayed);
 		return isErrorMessageForIncorrectUsernamePasswordDisplayed;
 	}
@@ -449,39 +439,6 @@ public class StoreFrontHomePage extends StoreFrontWebsiteBasePage{
 		return driver.getText(WELCOME_USER_LOC).contains("Welcome");
 	}
 
-	/***
-	 * This method enter the consultant billing details
-	 * 
-	 * @param Card type, card number, card name, CVV
-	 * @return store front Home page object
-	 * 
-	 */
-	public StoreFrontHomePage enterConsultantBillingDetails(String cardType, String cardNumber, String nameOnCard,String CVV){
-		driver.switchTo().frame(driver.findElement(IFRAME_LOC));
-		logger.info("Switched into iframe");
-		driver.clickByJS(RFWebsiteDriver.driver, driver.findElement(CARD_TYPE_DD_LOC));
-		logger.info("Card type dropdown clicked");
-		driver.click(By.xpath(String.format(cardTypeLoc, cardType)));
-		logger.info("Card type selected as "+cardType);
-		driver.type(CARD_NUMBER_LOC, cardNumber);
-		logger.info("Entered card number as"+cardNumber);
-		driver.type(NAME_ON_CARD_LOC, nameOnCard);
-		logger.info("Entered card name as"+nameOnCard);
-		driver.click(EXP_MONTH_DD_LOC);
-		logger.info("Exp month dropdown clicked");
-		driver.click(EXP_MONTH_LOC);
-		logger.info("Exp month selected");
-		driver.click(EXP_YEAR_DD_LOC);
-		logger.info("Exp year dropdown clicked");
-		driver.click(EXP_YEAR_LOC);
-		logger.info("Exp year selected");
-		driver.type(CVV_LOC, CVV);
-		logger.info("Entered CVV as"+CVV);
-		driver.switchTo().defaultContent();
-		logger.info("Switched to default content");			
-		return this;
-
-	}
 
 	/***
 	 * This method select the first billing address from DD

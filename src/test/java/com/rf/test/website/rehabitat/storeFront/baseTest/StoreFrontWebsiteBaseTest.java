@@ -6,6 +6,7 @@ import java.util.Map;
 
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
+import org.openqa.selenium.By;
 import org.testng.annotations.AfterSuite;
 import org.testng.annotations.BeforeMethod;
 import org.testng.annotations.BeforeSuite;
@@ -59,8 +60,11 @@ public class StoreFrontWebsiteBaseTest extends RFBaseTest {
 	protected String countryId = null;
 	protected String country = null;
 	protected boolean runBaseURLOrLogoutExecutionCode = true;
-
+	
 	protected RFWebsiteDriver driver = new RFWebsiteDriver(propertyFile);
+	private final By WELCOME_DROPDOWN_LOC = By.xpath("//div[@class='user-wrapper']/span");
+	private final By SIGN_OUT_LOC = By.xpath("//a[text()='Sign Out']");
+	
 	private static final Logger logger = LogManager
 			.getLogger(StoreFrontWebsiteBaseTest.class.getName());
 
@@ -99,6 +103,13 @@ public class StoreFrontWebsiteBaseTest extends RFBaseTest {
 		driver.get(driver.getURL()+"/"+country.toUpperCase());
 	}
 
+//	public void logout(){
+//		driver.click(WELCOME_DROPDOWN_LOC);
+//		logger.info("Welcome dropdown clicked");
+//		driver.pauseExecutionFor(2000);
+//		driver.click(SIGN_OUT_LOC);
+//		driver.waitForPageLoad();
+//	}
 
 	/**
 	 * @throws Exception

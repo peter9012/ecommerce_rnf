@@ -17,23 +17,49 @@ public class MyAccountTest extends StoreFrontWebsiteBaseTest{
 	 * 
 	 *     
 	 */
-	@Test//Incomplete for PC and RC user
+	@Test
 	public void testVerifyAccountInfoPageForUsers_178(){
 		String currentURL = null;
 		String urlToAssert = "my-account";
 		//Login as consultant user.
-		sfHomePage.loginToStoreFront(TestConstants.CONSULTANT_USERNAME, password);
+		sfHomePage.loginToStoreFront(TestConstants.CONSULTANT_EMAIL, password);
 		sfHomePage.clickWelcomeDropdown();
 		sfAccountInfoPage = sfHomePage.navigateToAccountInfoPage();
 		currentURL = sfAccountInfoPage.getCurrentURL().toLowerCase();
 		s_assert.assertTrue(currentURL.contains(urlToAssert), "Expected URL should contain "+urlToAssert+" but actual on UI is"+currentURL);
 		//Verify details of account info page for consultant.
-		s_assert.assertTrue(sfAccountInfoPage.isFirstNameFieldPresent(),"First Name field not present on account Info page");
-		s_assert.assertTrue(sfAccountInfoPage.isLastNameFieldPresent(),"Last Name field not present on account Info page");
-		s_assert.assertTrue(sfAccountInfoPage.isAddressFieldPresent(),"Address line field not present on account Info page");
-		s_assert.assertTrue(sfAccountInfoPage.isCityFieldPresent()," City field not present on account Info page");
-		s_assert.assertTrue(sfAccountInfoPage.isPostalFieldPresent(),"Postal field not present on account Info page");
-		s_assert.assertTrue(sfAccountInfoPage.isMainPhoneNumberFieldPresent(),"Main phone number field not present on account Info page");
+		s_assert.assertTrue(sfAccountInfoPage.isFirstNameFieldPresent(),"First Name field not present on account Info page for consultant");
+		s_assert.assertTrue(sfAccountInfoPage.isLastNameFieldPresent(),"Last Name field not present on account Info page for consultant");
+		s_assert.assertTrue(sfAccountInfoPage.isAddressFieldPresent(),"Address line field not present on account Info page for consultant");
+		s_assert.assertTrue(sfAccountInfoPage.isCityFieldPresent()," City field not present on account Info page for consultant");
+		s_assert.assertTrue(sfAccountInfoPage.isPostalFieldPresent(),"Postal field not present on account Info page for consultant");
+		s_assert.assertTrue(sfAccountInfoPage.isMainPhoneNumberFieldPresent(),"Main phone number field not present on account Info page for consultant");
+		sfAccountInfoPage.logout();
+		sfHomePage.loginToStoreFront(TestConstants.PC_EMAIL, password);
+		sfHomePage.clickWelcomeDropdown();
+		sfAccountInfoPage = sfHomePage.navigateToAccountInfoPage();
+		currentURL = sfAccountInfoPage.getCurrentURL().toLowerCase();
+		s_assert.assertTrue(currentURL.contains(urlToAssert), "Expected URL should contain "+urlToAssert+" but actual on UI is"+currentURL);
+		//Verify details of account info page for PC
+		s_assert.assertTrue(sfAccountInfoPage.isFirstNameFieldPresent(),"First Name field not present on account Info page for pc");
+		s_assert.assertTrue(sfAccountInfoPage.isLastNameFieldPresent(),"Last Name field not present on account Info page for pc");
+		s_assert.assertTrue(sfAccountInfoPage.isAddressFieldPresent(),"Address line field not present on account Info page for pc");
+		s_assert.assertTrue(sfAccountInfoPage.isCityFieldPresent()," City field not present on account Info page for pc");
+		s_assert.assertTrue(sfAccountInfoPage.isPostalFieldPresent(),"Postal field not present on account Info page for pc");
+		s_assert.assertTrue(sfAccountInfoPage.isMainPhoneNumberFieldPresent(),"Main phone number field not present on account Info page for pc");
+		sfAccountInfoPage.logout();
+		sfHomePage.loginToStoreFront(TestConstants.RC_EMAIL, password);
+		sfHomePage.clickWelcomeDropdown();
+		sfAccountInfoPage = sfHomePage.navigateToAccountInfoPage();
+		currentURL = sfAccountInfoPage.getCurrentURL().toLowerCase();
+		s_assert.assertTrue(currentURL.contains(urlToAssert), "Expected URL should contain "+urlToAssert+" but actual on UI is"+currentURL);
+		//Verify details of account info page for RC
+		s_assert.assertTrue(sfAccountInfoPage.isFirstNameFieldPresent(),"First Name field not present on account Info page for rc");
+		s_assert.assertTrue(sfAccountInfoPage.isLastNameFieldPresent(),"Last Name field not present on account Info page for rc");
+		s_assert.assertTrue(sfAccountInfoPage.isAddressFieldPresent(),"Address line field not present on account Info page for rc");
+		s_assert.assertTrue(sfAccountInfoPage.isCityFieldPresent()," City field not present on account Info page for rc");
+		s_assert.assertTrue(sfAccountInfoPage.isPostalFieldPresent(),"Postal field not present on account Info page for rc");
+		s_assert.assertTrue(sfAccountInfoPage.isMainPhoneNumberFieldPresent(),"Main phone number field not present on account Info page for rc");
 		s_assert.assertAll();
 	}
 
@@ -44,14 +70,14 @@ public class MyAccountTest extends StoreFrontWebsiteBaseTest{
 	 * 
 	 *     
 	 */
-	@Test//Incomplete for PC and RC user and also unable to update for consultant.
+	@Test//TODO Username field is disbaled
 	public void testUpdateUsernameOnAccountInfoPageForUsers_179(){
 		int randomNum = CommonUtils.getRandomNum(10000, 1000000);
 		String currentURL = null;
 		String urlToAssert = "my-account";
 		String updatedUserName = "updatedUserName"+randomNum;
 		//Login as consultant user.
-		sfHomePage.loginToStoreFront(TestConstants.CONSULTANT_USERNAME,password);
+		sfHomePage.loginToStoreFront(TestConstants.CONSULTANT_EMAIL,password);
 		sfHomePage.clickWelcomeDropdown();
 		sfAccountInfoPage = sfHomePage.navigateToAccountInfoPage();
 		currentURL = sfAccountInfoPage.getCurrentURL().toLowerCase();
@@ -65,7 +91,7 @@ public class MyAccountTest extends StoreFrontWebsiteBaseTest{
 	/***
 	 * qTest : TC-249 Email ID format error validation
 	 * 
-	 * Description : This test do the validations of the username field on account info page for consultant.
+	 * Description : This test do the validations of the email field on account info page for consultant.
 	 * 
 	 *     
 	 */
@@ -114,7 +140,7 @@ public class MyAccountTest extends StoreFrontWebsiteBaseTest{
 	public void testPasswordFormatErrorValidation_250(){
 		String passwordLessThan5Chars = "111M";
 		//Login as consultant user.
-		sfHomePage.loginToStoreFront(TestConstants.CONSULTANT_USERNAME,password);
+		sfHomePage.loginToStoreFront(TestConstants.CONSULTANT_EMAIL,password);
 		sfHomePage.clickWelcomeDropdown();
 		sfAccountInfoPage = sfHomePage.navigateToAccountInfoPage();
 		String expectedValidationErrorMsg = TestConstants.PASSWORD_VALIDATION_ERROR_LESS_THAN_SIX_CHARS;
@@ -122,8 +148,8 @@ public class MyAccountTest extends StoreFrontWebsiteBaseTest{
 		sfAccountInfoPage.enterNewPassword(passwordLessThan5Chars);
 		sfAccountInfoPage.enterConfirmPassword(passwordLessThan5Chars);
 		sfAccountInfoPage.saveAccountInfo();
-		s_assert.assertTrue(sfAccountInfoPage.isValidationMsgPresentForParticularField("new password", expectedValidationErrorMsg)," <msg needs to be added>");
-		s_assert.assertTrue(sfAccountInfoPage.isValidationMsgPresentForParticularField("confirm password", expectedValidationErrorMsg),"<msg needs to be added>");
+		s_assert.assertTrue(sfAccountInfoPage.isValidationMsgPresentForParticularField("new password", expectedValidationErrorMsg)," validation msg for less than 6 chars has not displayed for new password");
+		s_assert.assertTrue(sfAccountInfoPage.isValidationMsgPresentForParticularField("confirm password", expectedValidationErrorMsg),"validation msg for less than 6 chars has not displayed for confirm password");
 		sfAccountInfoPage.enterNewPassword("");
 		sfAccountInfoPage.enterConfirmPassword(password);
 		sfAccountInfoPage.saveAccountInfo();
@@ -175,24 +201,24 @@ public class MyAccountTest extends StoreFrontWebsiteBaseTest{
 	 *     
 	 */
 	@Test
-	public void testClearAllFieldsOnAccountInfoPageAndVerifyErrorMsg_248(){
-
+	public void testAccountInfoPageMandatoryFieldValidation_248(){
 		//Login as consultant user.
-		sfHomePage.loginToStoreFront(TestConstants.CONSULTANT_USERNAME,password);
+		sfHomePage.loginToStoreFront(TestConstants.CONSULTANT_EMAIL,password);
 		sfHomePage.clickWelcomeDropdown();
 		sfAccountInfoPage = sfHomePage.navigateToAccountInfoPage();
 		String expectedValidationErrorMsg = TestConstants.VALIDATION_ERROR_THIS_FIELD_IS_REQUIRED;
 		sfAccountInfoPage.clearAllFields();
 		sfAccountInfoPage.saveAccountInfo();
-		s_assert.assertTrue(sfAccountInfoPage.isValidationMsgPresentForParticularField("First Name", expectedValidationErrorMsg),"This field is required.");
-		s_assert.assertTrue(sfAccountInfoPage.isValidationMsgPresentForParticularField("Last Name", expectedValidationErrorMsg),"This field is required.");
-		s_assert.assertTrue(sfAccountInfoPage.isValidationMsgPresentForParticularField("address1", expectedValidationErrorMsg),"This field is required.");
-		s_assert.assertTrue(sfAccountInfoPage.isValidationMsgPresentForParticularField("city", expectedValidationErrorMsg),"This field is required.");
-		s_assert.assertTrue(sfAccountInfoPage.isValidationMsgPresentForParticularField("postal", expectedValidationErrorMsg),"This field is required.");
-		s_assert.assertTrue(sfAccountInfoPage.isValidationMsgPresentForParticularField("phone", expectedValidationErrorMsg),"This field is required.");
-		s_assert.assertTrue(sfAccountInfoPage.isValidationMsgPresentForParticularField("email", expectedValidationErrorMsg),"This field is required.");
+		s_assert.assertTrue(sfAccountInfoPage.isValidationMsgPresentForParticularField("First Name", expectedValidationErrorMsg),"First name field empty field validation msg has not displayed");
+		s_assert.assertTrue(sfAccountInfoPage.isValidationMsgPresentForParticularField("Last Name", expectedValidationErrorMsg),"Last field empty field validation msg has not displayed");
+		s_assert.assertTrue(sfAccountInfoPage.isValidationMsgPresentForParticularField("address1", expectedValidationErrorMsg),"address 1 field empty field validation msg has not displayed");
+		s_assert.assertTrue(sfAccountInfoPage.isValidationMsgPresentForParticularField("city", expectedValidationErrorMsg),"city field empty field validation msg has not displayed");
+		s_assert.assertTrue(sfAccountInfoPage.isValidationMsgPresentForParticularField("postal", expectedValidationErrorMsg),"postal code field empty field validation msg has not displayed");
+		s_assert.assertTrue(sfAccountInfoPage.isValidationMsgPresentForParticularField("phone", expectedValidationErrorMsg),"phone number field empty field validation msg has not displayed");
+		s_assert.assertTrue(sfAccountInfoPage.isValidationMsgPresentForParticularField("email", expectedValidationErrorMsg),"email field empty field validation msg has not displayed");
 		s_assert.assertAll();
 	}
+	
 	/***
 	 * qTest : TC-276 Consultant Autoship Status-Learn more about Pulse
 	 * 
@@ -222,12 +248,11 @@ public class MyAccountTest extends StoreFrontWebsiteBaseTest{
 	 * 
 	 * 				
 	 */
-	@Test//Incomplete as on spouse details confirmation popup cancel button not present.
+	@Test//TODO Incomplete as on spouse details confirmation popup cancel button not present.
 	public void testUpdateSpouseInformation_284(){
 		String spouseFirstName = TestConstants.SPOUSE_FIRST_NAME;
 		String spouseLastName = TestConstants.SPOUSE_LAST_NAME;
 		String profileUpdationMessage = null;
-
 		//Login as consultant user.
 		sfHomePage.loginToStoreFront(TestConstants.CONSULTANT_USERNAME,password);
 		sfHomePage.clickWelcomeDropdown();
@@ -253,8 +278,8 @@ public class MyAccountTest extends StoreFrontWebsiteBaseTest{
 	 */
 	@Test
 	public void testUpdateInvalidSpouseInformation_370(){
-		String spouseFirstName = " ";
-		String spouseLastName = " ";
+		String spouseFirstName = "";
+		String spouseLastName = "";
 		//Login as consultant user.
 		sfHomePage.loginToStoreFront(TestConstants.CONSULTANT_USERNAME,password);
 		sfHomePage.clickWelcomeDropdown();
@@ -264,10 +289,11 @@ public class MyAccountTest extends StoreFrontWebsiteBaseTest{
 		sfAccountInfoPage.enterSpouseFirstName(spouseFirstName);
 		sfAccountInfoPage.enterSpouseLastName(spouseLastName);
 		sfAccountInfoPage.saveAccountInfo();
-		s_assert.assertTrue(sfAccountInfoPage.isValidationMsgPresentForParticularField("spouseFirstName", expectedValidationErrorMsg),"This field is required.");
-		s_assert.assertTrue(sfAccountInfoPage.isValidationMsgPresentForParticularField("spouseLastName", expectedValidationErrorMsg),"This field is required.");
+		s_assert.assertTrue(sfAccountInfoPage.isValidationMsgPresentForParticularField("spouseFirstName", expectedValidationErrorMsg),"Spouse First name empty field validation msg has not displayed");
+		s_assert.assertTrue(sfAccountInfoPage.isValidationMsgPresentForParticularField("spouseLastName", expectedValidationErrorMsg),"Spouse Last name empty field validation msg has not displayed");
 		s_assert.assertAll();
 	}
+	
 	/***
 	 * qTest : TC-288 Account Information Page- Account Info Fields - Valid
 	 * 
@@ -306,6 +332,7 @@ public class MyAccountTest extends StoreFrontWebsiteBaseTest{
 		s_assert.assertTrue(profileUpdationMessage.equalsIgnoreCase(TestConstants.PROFILE_UPDATION_MESSAGE.trim()), "'Spouse details' profile updation message Expected = "+TestConstants.PROFILE_UPDATION_MESSAGE+" but Actual = "+profileUpdationMessage);
 		s_assert.assertAll();
 	}
+	
 	/***
 	 * qTest : TC-289 Account Information Page- Account Info Fields - Invalid
 	 * 
@@ -459,7 +486,7 @@ public class MyAccountTest extends StoreFrontWebsiteBaseTest{
 	 * 
 	 * 				
 	 */
-	@Test
+	@Test//TODO assert the successful log msg as well
 	public void testVerifyLogoutFunctionality_329(){
 		//Login as consultant user.
 		sfHomePage.loginToStoreFront(TestConstants.CONSULTANT_USERNAME,password);
@@ -553,13 +580,13 @@ public class MyAccountTest extends StoreFrontWebsiteBaseTest{
 	 */
 	@Test
 	public void testUpdateAndVerifyPasswordForUser_392(){
-		String emptyNewPassword = " ";
+		String emptyNewPassword = "";
 		String passwordLessThanSixChar = "Maide";
 		String passwordSixCharAndOneNum = "Maiden1";
-		String newConfirmPassword = "111Maiden";
+		String newConfirmPassword = "111Maiden$";
 		String profileUpdationMessage = null;
 		//Login as consultant user.
-		sfHomePage.loginToStoreFront(TestConstants.CONSULTANT_USERNAME,password);
+		sfHomePage.loginToStoreFront(TestConstants.CONSULTANT_EMAIL,password);
 		sfHomePage.clickWelcomeDropdown();
 		sfAccountInfoPage = sfHomePage.navigateToAccountInfoPage();
 		String expectedValidationErrorMsg = TestConstants.VALIDATION_ERROR_THIS_FIELD_IS_REQUIRED;
@@ -570,17 +597,19 @@ public class MyAccountTest extends StoreFrontWebsiteBaseTest{
 		//Leave password field blank and save account info.
 		sfAccountInfoPage.enterNewPassword(emptyNewPassword);
 		sfAccountInfoPage.saveAccountInfo();
-		s_assert.assertTrue(sfAccountInfoPage.isValidationMsgPresentForParticularField("new password", expectedValidationErrorMsg),"This field is required. for new Password");
+		s_assert.assertTrue(sfAccountInfoPage.isValidationMsgPresentForParticularField("new password", expectedValidationErrorMsg),"Empty field validatioin for new password field has not displayed");
 		//Enter password with less than six char and no number.
 		sfAccountInfoPage.enterNewPassword(passwordLessThanSixChar);
-		s_assert.assertTrue(sfAccountInfoPage.isValidationMsgPresentForParticularField("new password", expectedNewPasswordValidationErrorMsg),"Please enter atleast 6 char. for new Password");
+		sfAccountInfoPage.saveAccountInfo();
+		s_assert.assertTrue(sfAccountInfoPage.isValidationMsgPresentForParticularField("new password", expectedNewPasswordValidationErrorMsg),"validation msg for password less than 6 chars(no numbers) has not displayed");
 		//Enter new Password with at least 6 char and 1 number.
 		sfAccountInfoPage.enterNewPassword(passwordSixCharAndOneNum);
-		s_assert.assertFalse(sfAccountInfoPage.isValidationMsgPresentForParticularField("new password", expectedNewPasswordValidationErrorMsg),"Error message for new Password present for valid password");
+		sfAccountInfoPage.saveAccountInfo();
+		s_assert.assertFalse(sfAccountInfoPage.isValidationMsgPresentForParticularField("new password", expectedNewPasswordValidationErrorMsg),"validation msg for password less than 6 chars(no numbers) has displayed");
 		//Enter different password in confirm password field.
 		sfAccountInfoPage.enterConfirmPassword(newConfirmPassword);
 		sfAccountInfoPage.saveAccountInfo();
-		s_assert.assertTrue(sfAccountInfoPage.isValidationMsgPresentForParticularField("confirm password", expectedConfirmPasswordValidationErrorMsg),"Please enter same value. for confim Password not present");
+		s_assert.assertTrue(sfAccountInfoPage.isValidationMsgPresentForParticularField("confirm password", expectedConfirmPasswordValidationErrorMsg),"validation msg for confirm password should be same as password has not displayed");
 		//Enter correct confirm password field and click save.
 		sfAccountInfoPage.enterConfirmPassword(passwordSixCharAndOneNum);
 		sfAccountInfoPage.saveAccountInfo();
@@ -596,4 +625,22 @@ public class MyAccountTest extends StoreFrontWebsiteBaseTest{
 		s_assert.assertTrue(profileUpdationMessage.equalsIgnoreCase(TestConstants.PROFILE_UPDATION_MESSAGE.trim()), "'New Password' profile updation message Expected = "+TestConstants.PROFILE_UPDATION_MESSAGE+" but Actual = "+profileUpdationMessage);
 		s_assert.assertAll();
 	}
+
+	/***
+	 * qTest : TC-285 Account Information- Email Your Consultant - Valid
+	 * 
+	 * Description : This test logins with a PC and
+	 * 
+	 *     
+	 */
+	@Test
+	public void testEmailYourConsultantValid_285(){
+		sfHomePage.loginToStoreFront(TestConstants.PC_EMAIL, password);
+		sfHomePage.clickWelcomeDropdown();
+		sfAccountInfoPage = sfHomePage.navigateToAccountInfoPage();
+		sfAccountInfoPage.clickEmailYourConsultantLink();
+		sfAccountInfoPage.enterEmailYourConsultantDetailsAndSubmit("testName", "testEmail@rf.com", "test email");
+		
+	}
+
 }

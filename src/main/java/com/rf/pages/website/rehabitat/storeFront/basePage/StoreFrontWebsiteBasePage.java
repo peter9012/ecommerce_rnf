@@ -80,11 +80,6 @@ public class StoreFrontWebsiteBasePage extends RFBasePage{
 	private final By WELCOME_DD_SHIPPING_INFO_LOC = By.xpath("//a[text()='Shipping Info']");
 	private final By WELCOME_DD_BILLING_INFO_LOC = By.xpath("//a[text()='Billing Info']");
 	protected final By FIRST_LAST_NAME_FOR_SHIPPING_DETAILS_LOC = By.id("address.firstName");
-	private final By ADDRESS_LINE_1_FOR_SHIPPING_DETAILS_LOC = By.id("address.line1");
-	private final By ADDRESS_LINE_2_FOR_SHIPPING_DETAILS_LOC = By.id("address.line2");
-	private final By CITY_FOR_SHIPPING_DETAILS_LOC = By.id("address.townCity");
-	private final By POSTAL_CODE_FOR_SHIPPING_DETAILS_LOC = By.id("address.postcode");
-	private final By PHONE_NUMBER_FOR_SHIPPING_DETAILS_LOC = By.id("address.phone");
 	protected final By STATE_DD_FOR_REGISTRATION_LOC = By.id("address.region");
 	private final By MAKE_THIS_MY_DEFAULT_ADDRESS_CHKBOX_LOC = By.xpath("//label[contains(text(),'Make this my default address')]");
 	protected final By USE_AS_ENTERED_BUTTON_LOC = By.xpath("//div[@id='cboxLoadedContent']//button[@id='oldAddress']");
@@ -117,6 +112,21 @@ public class StoreFrontWebsiteBasePage extends RFBasePage{
 	private final By SPONSOR_ZIPCODE_LOC = By.xpath("//div[@class='enroll-page']/descendant::input[@id='sponsor.zipcode'][1]");
 	private final By THANKS_MSG_ON_SPONSOR_REQUEST_LOC = By.xpath("//div[@id='sponsor-entire-form-display'][@style='display: block;']//div[@id='sponsor-success-data']");
 	private final By BACK_TO_HOMEPAGE_LOC = By.xpath("//div[@id='sponsor-entire-form-display'][@style='display: block;']//input[@id='consultant-backhome']");
+	private final By FIRST_LAST_NAME_FOR_ADDRESS_DETAILS_LOC = By.id("address.firstName");
+	private final By ADDRESS_LINE_1_FOR_ADDRESS_DETAILS_LOC = By.id("address.line1");
+	private final By ADDRESS_LINE_2_FOR_ADDRESS_DETAILS_LOC = By.id("address.line2");
+	private final By CITY_FOR_ADDRESS_DETAILS_LOC = By.id("address.townCity");
+	private final By POSTAL_CODE_FOR_ADDRESS_DETAILS_LOC = By.id("address.postcode");
+	private final By PHONE_NUMBER_FOR_ADDRESS_DETAILS_LOC = By.id("address.phone");
+	private final By CARD_TYPE_DD_LOC = By.xpath("//*[@id='c-ct']");
+	private final By CARD_NUMBER_LOC= By.id("c-cn");
+	private final By NAME_ON_CARD_LOC= By.id("c-chn");
+	private final By EXP_MONTH_DD_LOC= By.id("c-exmth");
+	private final By EXP_MONTH_LOC= By.xpath("//select[@id='c-exmth']//option[11]");
+	private final By EXP_YEAR_DD_LOC= By.id("c-exyr");
+	private final By EXP_YEAR_LOC= By.xpath("//select[@id='c-exyr']//option[11]");
+	private final By CVV_LOC= By.id("c-cvv");
+	private final By IFRAME_LOC= By.id("IFrame");
 
 	private String textLoc = "//*[contains(text(),'%s')]";
 	private String stateForShippingDetails = "//select[@id='address.region']//option[text()='%s']";
@@ -130,7 +140,8 @@ public class StoreFrontWebsiteBasePage extends RFBasePage{
 	private String socialMediaLinkAtFooterLoc  = "//a[contains(@class,'%s')]";
 	private String sponsorEmptyFieldValidationOnPopUpLoc = "//label[@id='sponsor.%s-error'][contains(text(),'%s')]";
 	private String sponsorInvalidFieldValidationOnPopUpLoc = "//label[@id='sponsor.%s-error'][contains(text(),'%s')]";
-
+	private String cardTypeLoc= "//select[@id='c-ct']//option[text()='%s']";
+	
 	private String RFO_DB = null;
 
 	/***
@@ -290,11 +301,7 @@ public class StoreFrontWebsiteBasePage extends RFBasePage{
 	 * 
 	 */
 	public boolean isSponsorResultDisplayed(){
-		try{
-			return driver.IsElementVisible(driver.findElement(SPONSOR_SEARCH_RESULTS_LOC));
-		}catch(NoSuchElementException ex){
-			return false;
-		}
+		return driver.isElementVisible(driver.findElement(SPONSOR_SEARCH_RESULTS_LOC));		
 	}
 
 	/***
@@ -519,7 +526,7 @@ public class StoreFrontWebsiteBasePage extends RFBasePage{
 	 * @return boolean
 	 */
 	public Boolean isTheFooterLinkDisplayed(String linkName){
-		return driver.IsElementVisible(driver.findElement(By.xpath(String.format(footerLinkLoc, linkName))));
+		return driver.isElementVisible(driver.findElement(By.xpath(String.format(footerLinkLoc, linkName))));
 	}
 
 	/***
@@ -753,21 +760,21 @@ public class StoreFrontWebsiteBasePage extends RFBasePage{
 	 */
 	public StoreFrontWebsiteBasePage enterConsultantShippingDetails(String firstName, String lastName, String addressLine1, String addressLine2, String city, String state, String postal, String phoneNumber){
 		String completeName = firstName+" "+lastName;
-		driver.type(FIRST_LAST_NAME_FOR_SHIPPING_DETAILS_LOC, completeName);
+		driver.type(FIRST_LAST_NAME_FOR_ADDRESS_DETAILS_LOC, completeName);
 		logger.info("Entered complete name as "+completeName);
-		driver.type(ADDRESS_LINE_1_FOR_SHIPPING_DETAILS_LOC, addressLine1);
+		driver.type(ADDRESS_LINE_1_FOR_ADDRESS_DETAILS_LOC, addressLine1);
 		logger.info("Entered address line 1 as "+addressLine1);
-		driver.type(ADDRESS_LINE_2_FOR_SHIPPING_DETAILS_LOC, addressLine2);
+		driver.type(ADDRESS_LINE_2_FOR_ADDRESS_DETAILS_LOC, addressLine2);
 		logger.info("Entered address line 2 as "+addressLine2);
-		driver.type(CITY_FOR_SHIPPING_DETAILS_LOC, city);
+		driver.type(CITY_FOR_ADDRESS_DETAILS_LOC, city);
 		logger.info("Entered city as "+city);
 		driver.click(STATE_DD_FOR_REGISTRATION_LOC);
 		logger.info("State dropdown clicked");
 		driver.click(By.xpath(String.format(stateForShippingDetails, state)));
 		logger.info("State selected as "+state);
-		driver.type(POSTAL_CODE_FOR_SHIPPING_DETAILS_LOC, postal);
+		driver.type(POSTAL_CODE_FOR_ADDRESS_DETAILS_LOC, postal);
 		logger.info("Entered postal code as "+postal);
-		driver.type(PHONE_NUMBER_FOR_SHIPPING_DETAILS_LOC, phoneNumber);
+		driver.type(PHONE_NUMBER_FOR_ADDRESS_DETAILS_LOC, phoneNumber);
 		logger.info("Entered Phone number  as "+phoneNumber);
 		return this;
 	}
@@ -1251,11 +1258,7 @@ public class StoreFrontWebsiteBasePage extends RFBasePage{
 
 	public boolean isEmptyFieldValidationForSponsorOnPopupDisplayed(String fieldName){
 		String validationMsg = "This field is required";
-		try{
-			return driver.IsElementVisible(driver.findElement(By.xpath(String.format(sponsorEmptyFieldValidationOnPopUpLoc, fieldName,validationMsg))));
-		}catch(Exception ex){
-			return false;	
-		}
+		return driver.isElementVisible(driver.findElement(By.xpath(String.format(sponsorEmptyFieldValidationOnPopUpLoc, fieldName,validationMsg))));		
 	}
 
 	/***
@@ -1270,11 +1273,7 @@ public class StoreFrontWebsiteBasePage extends RFBasePage{
 		else if(fieldName.equalsIgnoreCase("email")){
 			validationMsg = "Please enter a valid email address";
 		}
-		try{
-			return driver.IsElementVisible(driver.findElement(By.xpath(String.format(sponsorInvalidFieldValidationOnPopUpLoc, fieldName,validationMsg))));
-		}catch(Exception ex){
-			return false;	
-		}
+		return driver.isElementVisible(driver.findElement(By.xpath(String.format(sponsorInvalidFieldValidationOnPopUpLoc, fieldName,validationMsg))));
 	}
 
 	/***
@@ -1306,5 +1305,80 @@ public class StoreFrontWebsiteBasePage extends RFBasePage{
 	public void clickBackToHomePageBtn(){
 		driver.click(BACK_TO_HOMEPAGE_LOC);
 		logger.info("back to hompage button clicked");
+	}	
+
+	/***
+	 * This method launch the baseurl
+	 *  
+	 * @param 
+	 * @return store front base page object
+	 */
+	public StoreFrontWebsiteBasePage getBaseUrl(){
+		String url = driver.getURL()+"/"+driver.getCountry().toUpperCase();
+		driver.get(url);
+		logger.info("Url launched as "+url);
+		return this;
+	}	
+
+	/***
+	 * This method enter the consultant Address details
+	 * 
+	 * @param First name,Last name, address line1, city, state, postal code, phone number
+	 * @return store front Base page object
+	 * 
+	 */
+	public StoreFrontWebsiteBasePage enterConsultantAddressDetails(String firstName, String lastName, String addressLine1, String addressLine2, String city, String state, String postal, String phoneNumber){
+		String completeName = firstName+" "+lastName;
+		driver.type(FIRST_LAST_NAME_FOR_ADDRESS_DETAILS_LOC, completeName);
+		logger.info("Entered complete name as "+completeName);
+		driver.type(ADDRESS_LINE_1_FOR_ADDRESS_DETAILS_LOC, addressLine1);
+		logger.info("Entered address line 1 as "+addressLine1);
+		driver.type(ADDRESS_LINE_2_FOR_ADDRESS_DETAILS_LOC, addressLine2);
+		logger.info("Entered address line 2 as "+addressLine2);
+		driver.type(CITY_FOR_ADDRESS_DETAILS_LOC, city);
+		logger.info("Entered city as "+city);
+		driver.click(STATE_DD_FOR_REGISTRATION_LOC);
+		logger.info("State dropdown clicked");
+		driver.click(By.xpath(String.format(stateForShippingDetails, state)));
+		logger.info("State selected as "+state);
+		driver.type(POSTAL_CODE_FOR_ADDRESS_DETAILS_LOC, postal);
+		logger.info("Entered postal code as "+postal);
+		driver.type(PHONE_NUMBER_FOR_ADDRESS_DETAILS_LOC, phoneNumber);
+		logger.info("Entered Phone number  as "+phoneNumber);
+		return this;
+	}
+
+	/***
+	 * This method enter the consultant billing details
+	 * 
+	 * @param Card type, card number, card name, CVV
+	 * @return store front Home page object
+	 * 
+	 */
+	public StoreFrontWebsiteBasePage enterConsultantBillingDetails(String cardType, String cardNumber, String nameOnCard,String CVV){
+		driver.switchTo().frame(driver.findElement(IFRAME_LOC));
+		logger.info("Switched into iframe");
+		driver.clickByJS(RFWebsiteDriver.driver, driver.findElement(CARD_TYPE_DD_LOC));
+		logger.info("Card type dropdown clicked");
+		driver.click(By.xpath(String.format(cardTypeLoc, cardType)));
+		logger.info("Card type selected as "+cardType);
+		driver.type(CARD_NUMBER_LOC, cardNumber);
+		logger.info("Entered card number as"+cardNumber);
+		driver.type(NAME_ON_CARD_LOC, nameOnCard);
+		logger.info("Entered card name as"+nameOnCard);
+		driver.click(EXP_MONTH_DD_LOC);
+		logger.info("Exp month dropdown clicked");
+		driver.click(EXP_MONTH_LOC);
+		logger.info("Exp month selected");
+		driver.click(EXP_YEAR_DD_LOC);
+		logger.info("Exp year dropdown clicked");
+		driver.click(EXP_YEAR_LOC);
+		logger.info("Exp year selected");
+		driver.type(CVV_LOC, CVV);
+		logger.info("Entered CVV as"+CVV);
+		driver.switchTo().defaultContent();
+		logger.info("Switched to default content");			
+		return this;
+
 	}
 }

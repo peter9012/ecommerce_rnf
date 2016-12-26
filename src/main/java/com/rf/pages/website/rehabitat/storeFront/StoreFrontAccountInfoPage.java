@@ -36,7 +36,12 @@ public class StoreFrontAccountInfoPage extends StoreFrontWebsiteBasePage{
 	private final By SPOUSE_DETAIL_POPUP_USE_AS_ENTERED_BTN_LOC = By.xpath("//div[@id='cboxLoadedContent']/descendant::button[@id='oldAddress']");
 	private final By PROFILE_UPDATION_MESSAGE_LOC = By.xpath("//div[@class='global-alerts']/div");
 	private final By STATE_DD_LOC = By.id("profile.region");
-
+	private final By EMAIL_YOUR_CONSULTANT_LOC = By.xpath("//a[text()='Email your Consultant']");
+	private final By EMAIL_TO_CONSULTANT_NAME_LOC= By.id("emailToConsultantForm.name");
+	private final By EMAIL_TO_CONSULTANT_EMAIL_LOC= By.id("emailToConsultantForm.emailId");
+	private final By EMAIL_TO_CONSULTANT_EMAIL_CONTENT_LOC= By.id("emailToConsultantForm.emailContent");
+	private final By EMAIL_TO_CONSULTANT_EMAIL_SUBMIT_BTN_LOC= By.id("emailToConsultantSubmitButton");
+	
 	private String spouseFirstNameValidationErrorLoc = " //*[@id='profile.spouseFirstname']/following::label[contains(text(),'%s')][1]";
 	private String spouseLastNameValidationErrorLoc = " //*[@id='profile.spouseLastname']/following::label[contains(text(),'%s')][1]";
 	private String stateForAccountDetails = "//select[@id='profile.region']//option[text()='%s']";
@@ -204,27 +209,27 @@ public class StoreFrontAccountInfoPage extends StoreFrontWebsiteBasePage{
 	public Boolean isValidationMsgPresentForParticularField(String field,String errorMsg){
 		Boolean isValidationMsgPresentForParticularField = null;
 		if(field.equalsIgnoreCase("email"))
-			isValidationMsgPresentForParticularField = driver.isElementPresent(By.xpath(String.format(emailValidationErrorLoc,errorMsg))); 
+			isValidationMsgPresentForParticularField = driver.isElementVisible(By.xpath(String.format(emailValidationErrorLoc,errorMsg))); 
 		else if(field.equalsIgnoreCase("new password"))
-			isValidationMsgPresentForParticularField = driver.isElementPresent(By.xpath(String.format(newPasswordValidationErrorLoc,errorMsg)));
+			isValidationMsgPresentForParticularField = driver.isElementVisible(By.xpath(String.format(newPasswordValidationErrorLoc,errorMsg)));
 		else if(field.equalsIgnoreCase("confirm password"))
-			isValidationMsgPresentForParticularField = driver.isElementPresent(By.xpath(String.format(confirmPasswordValidationErrorLoc,errorMsg)));
+			isValidationMsgPresentForParticularField = driver.isElementVisible(By.xpath(String.format(confirmPasswordValidationErrorLoc,errorMsg)));
 		else if(field.equalsIgnoreCase("First Name"))
-			isValidationMsgPresentForParticularField = driver.isElementPresent(By.xpath(String.format(firstNameValidationErrorLoc,errorMsg)));
+			isValidationMsgPresentForParticularField = driver.isElementVisible(By.xpath(String.format(firstNameValidationErrorLoc,errorMsg)));
 		else if(field.equalsIgnoreCase("Last Name"))
-			isValidationMsgPresentForParticularField = driver.isElementPresent(By.xpath(String.format(lastNameValidationErrorLoc,errorMsg)));
+			isValidationMsgPresentForParticularField = driver.isElementVisible(By.xpath(String.format(lastNameValidationErrorLoc,errorMsg)));
 		else if(field.equalsIgnoreCase("address1"))
-			isValidationMsgPresentForParticularField = driver.isElementPresent(By.xpath(String.format(addressLineValidationErrorLoc,errorMsg)));
+			isValidationMsgPresentForParticularField = driver.isElementVisible(By.xpath(String.format(addressLineValidationErrorLoc,errorMsg)));
 		else if(field.equalsIgnoreCase("city"))
-			isValidationMsgPresentForParticularField = driver.isElementPresent(By.xpath(String.format(cityValidationErrorLoc,errorMsg)));
+			isValidationMsgPresentForParticularField = driver.isElementVisible(By.xpath(String.format(cityValidationErrorLoc,errorMsg)));
 		else if(field.equalsIgnoreCase("postal"))
-			isValidationMsgPresentForParticularField = driver.isElementPresent(By.xpath(String.format(postalValidationErrorLoc,errorMsg)));
+			isValidationMsgPresentForParticularField = driver.isElementVisible(By.xpath(String.format(postalValidationErrorLoc,errorMsg)));
 		else if(field.equalsIgnoreCase("phone"))
-			isValidationMsgPresentForParticularField = driver.isElementPresent(By.xpath(String.format(phoneNumberValidationErrorLoc,errorMsg)));
+			isValidationMsgPresentForParticularField = driver.isElementVisible(By.xpath(String.format(phoneNumberValidationErrorLoc,errorMsg)));
 		else if(field.equalsIgnoreCase("spouseFirstName"))
-			isValidationMsgPresentForParticularField = driver.isElementPresent(By.xpath(String.format(spouseFirstNameValidationErrorLoc,errorMsg)));
+			isValidationMsgPresentForParticularField = driver.isElementVisible(By.xpath(String.format(spouseFirstNameValidationErrorLoc,errorMsg)));
 		else if(field.equalsIgnoreCase("spouseLastName"))
-			isValidationMsgPresentForParticularField = driver.isElementPresent(By.xpath(String.format(spouseLastNameValidationErrorLoc,errorMsg)));
+			isValidationMsgPresentForParticularField = driver.isElementVisible(By.xpath(String.format(spouseLastNameValidationErrorLoc,errorMsg)));
 		return isValidationMsgPresentForParticularField;
 	}
 
@@ -439,6 +444,28 @@ public class StoreFrontAccountInfoPage extends StoreFrontWebsiteBasePage{
 			logger.info("Email entered as "+value);
 		}
 		driver.pauseExecutionFor(2000);
+		return this;
+	}
+	
+	/***
+	 * This method clicks on the Email Your Consultant link
+	 * @return
+	 */
+	public StoreFrontAccountInfoPage clickEmailYourConsultantLink(){
+		driver.click(EMAIL_YOUR_CONSULTANT_LOC);
+		logger.info("clicks on the Email Your Consultant link");
+		return this;
+	}
+	
+	public StoreFrontAccountInfoPage enterEmailYourConsultantDetailsAndSubmit(String name,String email,String emailContent){
+		driver.type(EMAIL_TO_CONSULTANT_NAME_LOC, name);
+		logger.info("Email to consultant, name entered as "+name);
+		driver.type(EMAIL_TO_CONSULTANT_EMAIL_LOC, email);
+		logger.info("Email to consultant, email entered as "+email);
+		driver.type(EMAIL_TO_CONSULTANT_EMAIL_CONTENT_LOC, emailContent);
+		logger.info("Email to consultant, email content entered as "+emailContent);
+		driver.click(EMAIL_TO_CONSULTANT_EMAIL_SUBMIT_BTN_LOC);
+		logger.info("Email to consultant, submit button clicked");
 		return this;
 	}
 

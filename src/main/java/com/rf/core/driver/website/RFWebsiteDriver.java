@@ -680,8 +680,27 @@ public class RFWebsiteDriver implements RFDriver,WebDriver {
 	 * @date:
 	 * @returnType: WebElement
 	 */
-	public boolean IsElementVisible(WebElement element) {
-		return element.isDisplayed() ? true : false;
+	public boolean isElementVisible(WebElement element) {
+		try{
+			return element.isDisplayed() ? true : false;
+		}catch(Exception ex){
+			return false;
+		}
+	}
+	
+	/**
+	 * Checks if element is visible Purpose:
+	 * 
+	 * @author: 
+	 * @date:
+	 * @returnType: WebElement
+	 */
+	public boolean isElementVisible(By by) {
+		try{
+			return driver.findElement(by).isDisplayed() ? true : false;
+		}catch(Exception ex){
+			return false;
+		}
 	}
 
 	/**
@@ -696,7 +715,7 @@ public class RFWebsiteDriver implements RFDriver,WebDriver {
 		WebDriverWait wait = new WebDriverWait(driver, timeOut);
 		WebElement element = wait.until(ExpectedConditions
 				.visibilityOfElementLocated(locator));
-		return IsElementVisible(element);
+		return isElementVisible(element);
 	}
 
 	/**

@@ -14,18 +14,43 @@ public class OrdersTest extends StoreFrontWebsiteBaseTest{
 	 *     
 	 */
 	@Test
-	public void testOrderHistoryLinkToOrderDetails_178(){
+	public void testOrderHistoryLinkToOrderDetails_180(){
 		String detailsLink = "Details";
 		String orderNumber = null;
 		String currentURL = null;
 		String orderDetailsText = "Order Details";
+		//For consultant
 		sfHomePage.loginToStoreFront(TestConstants.CONSULTANT_USERNAME, password);
 		sfHomePage.clickWelcomeDropdown();
 		sfOrdersPage = sfHomePage.navigateToOrdersPage();
 		orderNumber = sfOrdersPage.getFirstOrderNumberFromOrderHistory();
 		sfOrdersPage.chooselinkFromActionsDDUnderOrderHistoryForFirstOrder(detailsLink);
 		currentURL = sfOrdersPage.getCurrentURL();
-		s_assert.assertTrue(currentURL.contains(orderNumber) && sfOrdersPage.isTextPresent(orderDetailsText),"Current url should contain "+orderNumber+"but actual on UI is "+currentURL+" and order details page is not present");
+		s_assert.assertTrue(currentURL.contains(orderNumber) && sfOrdersPage.isTextPresent(orderDetailsText),"Current url should contain for consultant "+orderNumber+"but actual on UI is "+currentURL+" and order details page is not present");
+		sfOrdersPage.clickRodanAndFieldsLogo();
+		sfHomePage.clickWelcomeDropdown();
+		sfOrdersPage.logout();
+		//For PC
+		sfHomePage.getBaseUrl();
+		sfHomePage.loginToStoreFront(TestConstants.PC_EMAIL, password);
+		sfHomePage.clickWelcomeDropdown();
+		sfOrdersPage = sfHomePage.navigateToOrdersPage();
+		orderNumber = sfOrdersPage.getFirstOrderNumberFromOrderHistory();
+		sfOrdersPage.chooselinkFromActionsDDUnderOrderHistoryForFirstOrder(detailsLink);
+		currentURL = sfOrdersPage.getCurrentURL();
+		s_assert.assertTrue(currentURL.contains(orderNumber) && sfOrdersPage.isTextPresent(orderDetailsText),"Current url should contain for PC "+orderNumber+"but actual on UI is "+currentURL+" and order details page is not present");
+		sfOrdersPage.clickRodanAndFieldsLogo();
+		sfHomePage.clickWelcomeDropdown();
+		sfOrdersPage.logout();
+		//For RC
+		sfHomePage.getBaseUrl();
+		sfHomePage.loginToStoreFront(TestConstants.RC_USERNAME, password);
+		sfHomePage.clickWelcomeDropdown();
+		sfOrdersPage = sfHomePage.navigateToOrdersPage();
+		orderNumber = sfOrdersPage.getFirstOrderNumberFromOrderHistory();
+		sfOrdersPage.chooselinkFromActionsDDUnderOrderHistoryForFirstOrder(detailsLink);
+		currentURL = sfOrdersPage.getCurrentURL();
+		s_assert.assertTrue(currentURL.contains(orderNumber) && sfOrdersPage.isTextPresent(orderDetailsText),"Current url should contain for RC "+orderNumber+"but actual on UI is "+currentURL+" and order details page is not present");
 		s_assert.assertAll();
 	}
 
@@ -78,16 +103,17 @@ public class OrdersTest extends StoreFrontWebsiteBaseTest{
 	 * 
 	 *     
 	 */
-	@Test //incomplete User state can't be accessible in CA Environment
+	@Test
 	public void testCheckoutPageEditsEditShippingInformation_298(){
 		String randomWord = CommonUtils.getRandomWord(5);
 		String firstName = TestConstants.FIRST_NAME;
-		String lastName = TestConstants.LAST_NAME+randomWord;
-		String addressLine1 = TestConstants.ADDRESS_LINE_1_CA;
-		String city = TestConstants.CITY_CA;
-		String state = TestConstants.STATE_CA;
-		String postalCode = TestConstants.POSTAL_CODE_CA;
+		String lastName = (TestConstants.LAST_NAME+randomWord).toLowerCase();
+		String addressLine1 = TestConstants.ADDRESS_LINE_1_US;
+		String city = TestConstants.CITY_US;
+		String state = TestConstants.STATE_US;
+		String postalCode = TestConstants.POSTAL_CODE_US;
 		String phoneNumber = TestConstants.PHONE_NUMBER;
+		String shippngAddressName = null;
 		sfHomePage.loginToStoreFront(TestConstants.CONSULTANT_USERNAME, password);
 		sfHomePage.clickAllProducts();
 		sfHomePage.selectFirstProduct();
@@ -97,7 +123,10 @@ public class OrdersTest extends StoreFrontWebsiteBaseTest{
 		sfCheckoutPage.clickEditLinkOfShippingAddress();
 		sfCheckoutPage.updateShippingAddressDetailsAtCheckoutPage(firstName, lastName, addressLine1, city, state, postalCode, phoneNumber);
 		sfCheckoutPage.clickSaveButtonOfShippingAddress();
-		s_assert.assertAll();	
+		sfCheckoutPage.clickUseAsEnteredButton();
+		shippngAddressName = sfCheckoutPage.getDefaultShippingAddressNameAtCheckoutPage().toLowerCase();
+		s_assert.assertTrue(shippngAddressName.contains(lastName), "Expected shipping profile name should contain last name is "+lastName+" but actual on ui is "+shippngAddressName);
+		s_assert.assertAll(); 
 	}
 
 	/***
@@ -190,7 +219,6 @@ public class OrdersTest extends StoreFrontWebsiteBaseTest{
 
 	}
 
-
 	/***
 	 * qTest : TC-295 Checkout page edits - Check Edit options
 	 * Description : this test validates all edit links at checkout page
@@ -221,38 +249,58 @@ public class OrdersTest extends StoreFrontWebsiteBaseTest{
 
 	/***
 	 * qTest : TC-299 Checkout page edits - Edit Shipping Method
-	 * Description : //TODO
+	 * Description : This test cases upadte the shipping method name and validates it
 	 * 
 	 *     
 	 */
 	@Test
 	public void testCheckoutPageEditsEditShippingMethod_299(){
-		String shippingMethod = "UPS 2 Days";
+		String shippingMethod = null;
 		String shippingMethodNameFromUI = null;
+		String nonSelectedshippingMethodName1 = TestConstants.SHIPPING_METHOD_UPS_2DAY;
+		String nonSelectedshippingMethodName2 = TestConstants.SHIPPING_METHOD_UPS_OVERNIGHT;
 		sfHomePage.loginToStoreFront(TestConstants.CONSULTANT_USERNAME, password);
 		sfHomePage.clickAllProducts();
 		sfHomePage.selectFirstProduct();
 		sfHomePage.checkoutThePopup();
 		sfCheckoutPage=sfHomePage.checkoutTheCart();
 		sfCheckoutPage.clickSaveButton();
+		shippingMethodNameFromUI = sfCheckoutPage.getSelectedShippingMethodName();
+		shippingMethod = sfCheckoutPage.getNonSelectedShippingMethodName(shippingMethodNameFromUI, nonSelectedshippingMethodName1, nonSelectedshippingMethodName2);
 		sfCheckoutPage.selectShippingMethod(shippingMethod);
 		shippingMethodNameFromUI = sfCheckoutPage.getSelectedShippingMethodName();
-
 		s_assert.assertTrue(shippingMethodNameFromUI.contains(shippingMethod),"Expected shipping method name is "+shippingMethod+" but actual on UI is:"+shippingMethodNameFromUI);
 		s_assert.assertAll();
 	}
 
 	/***
 	 * qTest : TC-300 Checkout page edits - Edit cart
-	 * Description : //TODO
+	 * Description : This test cases validates the redirection of cart and checkout page
 	 * 
 	 *     
 	 */
 	@Test
 	public void testCheckoutPageEditsEditCart_300(){
-
+		String productQuantityFromUI = null;
+		String updatedQuantity = null;
+		String checkoutPageText = "Account Info";
+		String currentURL = null;
+		sfHomePage.loginToStoreFront(TestConstants.CONSULTANT_USERNAME, password);
+		sfShopSkinCarePage = sfHomePage.clickAllProducts();
+		sfShopSkinCarePage.selectFirstProduct();
+		sfCartPage = sfShopSkinCarePage.checkoutTheCartFromPopUp();
+		sfCheckoutPage=sfHomePage.checkoutTheCart();
+		sfCheckoutPage.clickEditLinkOfOrderSummarySection();
+		s_assert.assertTrue(sfCheckoutPage.isCartPagePresent(), "Cart page is not displayed after clicked on edit link of order summary section");
+		productQuantityFromUI = sfCartPage.getQuantityOfProductFromCart("1");
+		updatedQuantity = sfCartPage.updateQuantityByOne(productQuantityFromUI);
+		sfCartPage.enterQuantityOfProductAtCart("1", updatedQuantity);
+		sfCartPage.clickOnUpdateLinkThroughItemNumber("1");
+		sfCheckoutPage = sfCartPage.checkoutTheCart();
+		currentURL = sfCartPage.getCurrentURL();
+		s_assert.assertTrue(currentURL.contains("checkout") && sfCheckoutPage.isTextPresent(checkoutPageText),"Current url should contain checkout but actual on UI is "+currentURL+" and checkout page is not present");
+		s_assert.assertAll();
 	}
-
 
 	/***
 	 * qTest : TC-302 Billing profile- Add an Address to existing Profile
@@ -262,7 +310,30 @@ public class OrdersTest extends StoreFrontWebsiteBaseTest{
 	 */
 	@Test
 	public void testBillingProfileAddAnAddressToExistingProfile_302(){
-
+		String randomWord = CommonUtils.getRandomWord(5);
+		String firstName = TestConstants.FIRST_NAME;
+		String lastName = TestConstants.LAST_NAME+randomWord;
+		String addressLine1 = TestConstants.ADDRESS_LINE_1_US;
+		String addressLine2 = TestConstants.ADDRESS_LINE_2_US;
+		String city = TestConstants.CITY_US;
+		String state = TestConstants.STATE_US;
+		String postalCode = TestConstants.POSTAL_CODE_US;
+		String phoneNumber = TestConstants.PHONE_NUMBER;
+		String shippngAddressName = null;
+		sfHomePage.loginToStoreFront(TestConstants.CONSULTANT_USERNAME, password);
+		sfHomePage.clickAllProducts();
+		sfHomePage.selectFirstProduct();
+		sfHomePage.checkoutThePopup();
+		sfCheckoutPage=sfHomePage.checkoutTheCart();
+		sfCheckoutPage.clickSaveButton();
+		sfCheckoutPage.clickEditLinkOfShippingAddress();
+		sfCheckoutPage.updateShippingAddressDetailsAtCheckoutPage(firstName, lastName, addressLine1, city, state, postalCode, phoneNumber);
+		sfCheckoutPage.clickSaveButtonOfShippingAddress();
+		sfCheckoutPage.clickUseAsEnteredButton();
+		shippngAddressName = sfCheckoutPage.getDefaultShippingAddressNameAtCheckoutPage().toLowerCase();
+		s_assert.assertTrue(shippngAddressName.contains(lastName), "Expected shipping profile name should contain last name is "+lastName+" but actual on ui is "+shippngAddressName);
+		sfCheckoutPage.clickShippingDetailsNextbutton();
+		s_assert.assertAll();
 	}
 
 	/***
@@ -677,4 +748,6 @@ public class OrdersTest extends StoreFrontWebsiteBaseTest{
 		sfCheckoutPage.clickUseAsEnteredButton();
 		s_assert.assertAll();
 	}
+
+
 }

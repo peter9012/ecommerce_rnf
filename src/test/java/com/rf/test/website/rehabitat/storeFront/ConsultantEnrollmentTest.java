@@ -14,12 +14,12 @@ public class ConsultantEnrollmentTest extends StoreFrontWebsiteBaseTest{
 	 * Description : This test validates that while consultant enrollment,valid & active sponsor
 	 * should be searched and valid but inactive sponsor should not be searched.
 	 * 				
-	 */
-	@Test
+	 */ 
+	@Test  //TODO Inactive sponsor search is pending
 	public void testFindAConsultantBySearchCID_223(){
-		sfConsEnrollNowPage = sfHomePage.clickEnrollNow();
-		sfConsEnrollNowPage.searchSponsor(TestConstants.SPONSOR);
-		s_assert.assertTrue(sfConsEnrollNowPage.isSponsorPresentInResult(),"No result found after searching the sponsor with name "+TestConstants.SPONSOR);
+		sfHomePage.clickEnrollNow();
+		sfHomePage.searchSponsor(TestConstants.SPONSOR);
+		s_assert.assertTrue(sfHomePage.isSponsorResultDisplayed(),"No result found after searching the sponsor with name "+TestConstants.SPONSOR);
 		s_assert.assertAll();
 	}
 
@@ -32,60 +32,62 @@ public class ConsultantEnrollmentTest extends StoreFrontWebsiteBaseTest{
 	 * Partial Prefix with active PWS = Sponsor should be available
 	 * Partial Prefix with Inactive PWS = Sponsor should NOT be available
 	 */
-	@Test
+	@Test //TODO The entire test
 	public void testFindAConsultantByPrefix_224(){
-		sfConsEnrollNowPage = sfHomePage.clickEnrollNow();
-		sfConsEnrollNowPage.searchSponsor(TestConstants.SPONSOR);
+		sfHomePage.clickEnrollNow();
+		sfHomePage.searchSponsor(TestConstants.SPONSOR);
 		s_assert.assertAll();
 	}
 
 	/***
-	  * qTest : TC-231 Consultant Enrollment- Checkout
-	  * 
-	  * Description : This test validates that complete checkout process for consultant
-	  * enrollment
-	  *     
-	  */
-	 @Test
-	 public void testConsultantEnrollment_231(){
-	  int randomNum = CommonUtils.getRandomNum(10000, 1000000);
-	  String socialInsuranceNumber = String.valueOf(CommonUtils.getRandomNum(100000000, 999999999));
-	  String firstName = TestConstants.FIRST_NAME;
-	  String lastName = TestConstants.LAST_NAME;
-	  String emailID = TestConstants.FIRST_NAME+randomNum+TestConstants.EMAIL_SUFFIX;
-	  String addressLine1 = TestConstants.ADDRESS_LINE_1_US;
-	  String city = TestConstants.CITY_US;
-	  String state = TestConstants.STATE_US;
-	  String postalCode = TestConstants.POSTAL_CODE_US;
-	  String phoneNumber = TestConstants.PHONE_NUMBER;
-	  String cardType = TestConstants.CARD_TYPE;
-	  String cardNumber = TestConstants.CARD_NUMBER;
-	  String cardName = TestConstants.CARD_NAME;
-	  String CVV = TestConstants.CVV;
-	  String confirmationMessageFromUI = null;
-	  String expectedConfirmationMessage = "Your enrollment kit order number is";   
-	  sfHomePage.clickEnrollNow();
-	  sfHomePage.searchSponsor(TestConstants.SPONSOR);
-	  s_assert.assertTrue(sfHomePage.isSponsorPresentInResult(),"No result found after searching the sponsor with name "+TestConstants.SPONSOR);
-	  sfHomePage.selectFirstSponsorFromList();
-	  sfHomePage.enterConsultantEnrollmentDetails(firstName, lastName, emailID, password, socialInsuranceNumber);
-	  sfHomePage.clickNextButton();
-	  sfHomePage.chooseProductFrmoKitPage();
-	  sfHomePage.clickNextButton();
-	  sfHomePage.clickSaveButton();
-	  sfHomePage.enterConsultantShippingDetails(firstName, lastName, addressLine1, city, state, postalCode, phoneNumber);
-	  sfHomePage.clickShippingDetailsNextbutton();
-	  sfHomePage.enterConsultantBillingDetails(cardType, cardNumber, cardName, CVV);
-	  sfHomePage.selectBillingAddressFromDD();
-	  sfHomePage.checkUseMyDeliveryAddressChkBox();
-	  sfHomePage.clickBillingDetailsNextbutton();
-	  sfHomePage.selectTermsAndConditionsChkBox();
-	  sfHomePage.selectPoliciesAndProceduresChkBox();
-	  sfHomePage.clickBecomeAConsultant();
-	  confirmationMessageFromUI = sfHomePage.getConfirmationMsgOfConsultantEnrollment();
-	  s_assert.assertTrue(confirmationMessageFromUI.contains(expectedConfirmationMessage), "Expected confirmation message is"+expectedConfirmationMessage+" but actual on UI is "+confirmationMessageFromUI); 
-	  s_assert.assertAll();
-	 }
+	 * qTest : TC-231 Consultant Enrollment- Checkout
+	 * 
+	 * Description : This test validates that complete checkout process for consultant
+	 * enrollment
+	 *     
+	 */
+	@Test
+	public void testConsultantEnrollment_231(){
+		int randomNum = CommonUtils.getRandomNum(10000, 1000000);
+		String socialInsuranceNumber = String.valueOf(CommonUtils.getRandomNum(100000000, 999999999));
+		String firstName = TestConstants.FIRST_NAME;
+		String lastName = TestConstants.LAST_NAME;
+		String emailID = TestConstants.FIRST_NAME+randomNum+TestConstants.EMAIL_SUFFIX;
+		String addressLine1 = TestConstants.ADDRESS_LINE_1_US;
+		String addressLine2 = TestConstants.ADDRESS_LINE_2_US;
+		String city = TestConstants.CITY_US;
+		String state = TestConstants.STATE_US;
+		String postalCode = TestConstants.POSTAL_CODE_US;
+		String phoneNumber = TestConstants.PHONE_NUMBER;
+		String cardType = TestConstants.CARD_TYPE;
+		String cardNumber = TestConstants.CARD_NUMBER;
+		String cardName = TestConstants.CARD_NAME;
+		String CVV = TestConstants.CVV;
+//		String confirmationMessageFromUI = null;
+//		String expectedConfirmationMessage = "Your enrollment kit order number is";   
+		sfHomePage.clickEnrollNow();
+		sfHomePage.searchSponsor(TestConstants.SPONSOR);
+		s_assert.assertTrue(sfHomePage.isSponsorResultDisplayed(),"No result found after searching the sponsor with name "+TestConstants.SPONSOR);
+		sfHomePage.selectFirstSponsorFromList();
+		sfHomePage.enterConsultantEnrollmentDetails(firstName, lastName, emailID, password, socialInsuranceNumber);
+		sfHomePage.clickNextButton();
+		sfHomePage.chooseProductFromKitPage();
+		sfHomePage.clickNextButton();
+		sfHomePage.clickSaveButton();
+		sfHomePage.enterConsultantShippingDetails(firstName, lastName, addressLine1, addressLine2 ,city, state, postalCode, phoneNumber);
+		sfHomePage.clickShippingDetailsNextbutton();
+		sfHomePage.enterConsultantBillingDetails(cardType, cardNumber, cardName, CVV);
+		//sfHomePage.selectBillingAddressFromDD();
+		sfHomePage.checkUseMyDeliveryAddressChkBox();
+		sfHomePage.clickBillingDetailsNextbutton();
+		sfHomePage.selectTermsAndConditionsChkBox();
+		sfHomePage.selectPoliciesAndProceduresChkBox();
+		sfHomePage.clickBecomeAConsultant();
+		//confirmationMessageFromUI = sfHomePage.getConfirmationMsgOfConsultantEnrollment();
+		//s_assert.assertTrue(confirmationMessageFromUI.contains(expectedConfirmationMessage), "Expected confirmation message is"+expectedConfirmationMessage+" but actual on UI is "+confirmationMessageFromUI); 
+		s_assert.assertTrue(sfHomePage.isWelcomeUserElementDisplayed(), "Welcome user locator has not displayed after consultant enrollment");
+		s_assert.assertAll();
+	}
 
 	/***
 	 * qTest : TC-261 Request a Sponsor during consultant enrollment
@@ -94,11 +96,32 @@ public class ConsultantEnrollmentTest extends StoreFrontWebsiteBaseTest{
 	 * consultant enrollment
 	 * 				
 	 */
-	@Test
+	@Test //TODO
 	public void testRequestSponsorConsultantEnrollment_261(){
-		sfConsEnrollNowPage = sfHomePage.clickEnrollNow();
-		sfConsEnrollNowPage.searchSponsor(TestConstants.SPONSOR);
-		s_assert.assertTrue(sfConsEnrollNowPage.isSponsorPresentInResult(),"No result found after searching the sponsor with name "+TestConstants.SPONSOR);
+		String fieldName;
+		sfHomePage.clickEnrollNow();
+		sfHomePage.clickIDontHaveSponsorCheckBox();
+		sfHomePage.clickSubmitBtnOnRequiredConsultantSponsorPopUp();
+		fieldName = "firstName";
+		s_assert.assertTrue(sfHomePage.isEmptyFieldValidationForSponsorOnPopupDisplayed(fieldName),"empty field validation is not displayed for "+fieldName);
+		fieldName = "lastName";
+		s_assert.assertTrue(sfHomePage.isEmptyFieldValidationForSponsorOnPopupDisplayed(fieldName),"empty field validation is not displayed for "+fieldName);
+		fieldName = "email";
+		s_assert.assertTrue(sfHomePage.isEmptyFieldValidationForSponsorOnPopupDisplayed(fieldName),"empty field validation is not displayed for "+fieldName);
+		fieldName = "zipcode";
+		s_assert.assertTrue(sfHomePage.isEmptyFieldValidationForSponsorOnPopupDisplayed(fieldName),"empty field validation is not displayed for "+fieldName);
+		sfHomePage.enterDetailsInRequiredConsultantSponsorPopUp("", "", "", TestConstants.SPONSOR_ZIP_CODE_US);
+		s_assert.assertTrue(sfHomePage.isSubmitBtnOnSponsorPopUpDisabled(),"Submit button is not disabled");
+		sfHomePage.enterDetailsInRequiredConsultantSponsorPopUp(TestConstants.SPONSOR_FIRST_NAME, TestConstants.SPONSOR_LAST_NAME, TestConstants.SPONSOR_EMAIL, TestConstants.SPONSOR_INVALID_ZIP_CODE_US);
+		fieldName = "zipcode";
+		s_assert.assertTrue(sfHomePage.isInvalidFieldValidationForSponsorOnPopupDisplayed(fieldName),"invalid field validation is not displayed for "+fieldName);
+		sfHomePage.enterDetailsInRequiredConsultantSponsorPopUp(TestConstants.SPONSOR_FIRST_NAME, TestConstants.SPONSOR_LAST_NAME, TestConstants.SPONSOR_INVALID_EMAIL, TestConstants.SPONSOR_ZIP_CODE_US);
+		fieldName = "email";
+		s_assert.assertTrue(sfHomePage.isInvalidFieldValidationForSponsorOnPopupDisplayed(fieldName),"invalid field validation is not displayed for "+fieldName);
+		sfHomePage.enterDetailsInRequiredConsultantSponsorPopUp(TestConstants.SPONSOR_FIRST_NAME, TestConstants.SPONSOR_LAST_NAME, TestConstants.SPONSOR_EMAIL, TestConstants.SPONSOR_ZIP_CODE_US);
+		sfHomePage.clickSubmitBtnOnRequiredConsultantSponsorPopUp();
+		s_assert.assertTrue(sfHomePage.isThanksMessageAfterSponsorRequestPresent(),"Thank msg not displayed after sponsor request submit");
+		sfHomePage.clickBackToHomePageBtn();
 		s_assert.assertAll();
 	}
 
@@ -112,7 +135,7 @@ public class ConsultantEnrollmentTest extends StoreFrontWebsiteBaseTest{
 	@Test
 	public void testSponsorSearchFromFindAConsultantAndPagination_261(){
 		sfHomePage.clickFindAConsultantLinkOnHomePage().searchSponsor(TestConstants.SPONSOR);
-		s_assert.assertTrue(sfHomePage.isSponsorPresentInResult(),"No result found after searching the sponsor with name "+TestConstants.SPONSOR);
+		s_assert.assertTrue(sfHomePage.isSponsorResultDisplayed(),"No result found after searching the sponsor with name "+TestConstants.SPONSOR);
 		s_assert.assertTrue(sfHomePage.isTheUserOnNavigationPage("1"),"user is not on navigation page 1");
 		sfHomePage.navigateToPaginationInSponsorSearchResult("2");
 		s_assert.assertTrue(sfHomePage.isTheUserOnNavigationPage("2"),"user is not on navigation page 2");
@@ -128,9 +151,9 @@ public class ConsultantEnrollmentTest extends StoreFrontWebsiteBaseTest{
 	 */
 	@Test
 	public void testSearchNonExistingSponsor_273(){
-		sfConsEnrollNowPage = sfHomePage.clickEnrollNow();
-		sfConsEnrollNowPage.searchSponsor(TestConstants.NON_EXISTING_SPONSOR);
-		s_assert.assertTrue(sfConsEnrollNowPage.isNoResultMessagePresent(),"'No result found' msg is not present for searching non-existing sponsor");
+		sfHomePage.clickEnrollNow();
+		sfHomePage.searchSponsor(TestConstants.NON_EXISTING_SPONSOR);
+		s_assert.assertTrue(sfHomePage.isNoResultMessagePresent(),"'No result found' msg is not present for searching non-existing sponsor");
 		s_assert.assertAll();
 	}
 
@@ -143,9 +166,45 @@ public class ConsultantEnrollmentTest extends StoreFrontWebsiteBaseTest{
 	 */
 	@Test
 	public void testConsultantEnrollmentPersonalBusinessPortfolio_290(){
-		sfConsEnrollNowPage = sfHomePage.clickEnrollNow();
-		sfConsEnrollNowPage.searchSponsor(TestConstants.SPONSOR);
-		s_assert.assertTrue(sfConsEnrollNowPage.isSponsorPresentInResult(),"No result found after searching the sponsor with name "+TestConstants.SPONSOR);
+		int randomNum = CommonUtils.getRandomNum(10000, 1000000);
+		String socialInsuranceNumber = String.valueOf(CommonUtils.getRandomNum(100000000, 999999999));
+		String firstName = TestConstants.FIRST_NAME;
+		String lastName = TestConstants.LAST_NAME;
+		String emailID = TestConstants.FIRST_NAME+randomNum+TestConstants.EMAIL_SUFFIX;
+		String addressLine1 = TestConstants.ADDRESS_LINE_1_US;
+		String addressLine2 = TestConstants.ADDRESS_LINE_2_US;
+		String city = TestConstants.CITY_US;
+		String state = TestConstants.STATE_US;
+		String postalCode = TestConstants.POSTAL_CODE_US;
+		String phoneNumber = TestConstants.PHONE_NUMBER;
+		String cardType = TestConstants.CARD_TYPE;
+		String cardNumber = TestConstants.CARD_NUMBER;
+		String cardName = TestConstants.CARD_NAME;
+		String CVV = TestConstants.CVV;
+		String kitName = "BUSINESS PORTFOLIO";
+//		String confirmationMessageFromUI = null;
+//		String expectedConfirmationMessage = "Your enrollment kit order number is";   
+		sfHomePage.clickEnrollNow();
+		sfHomePage.searchSponsor(TestConstants.SPONSOR);
+		s_assert.assertTrue(sfHomePage.isSponsorResultDisplayed(),"No result found after searching the sponsor with name "+TestConstants.SPONSOR);
+		sfHomePage.selectFirstSponsorFromList();
+		sfHomePage.enterConsultantEnrollmentDetails(firstName, lastName, emailID, password, socialInsuranceNumber);
+		sfHomePage.clickNextButton();
+		sfHomePage.chooseProductFromKitPage(kitName);
+		sfHomePage.clickNextButton();
+		sfHomePage.clickSaveButton();
+		sfHomePage.enterConsultantShippingDetails(firstName, lastName, addressLine1, addressLine2 ,city, state, postalCode, phoneNumber);
+		sfHomePage.clickShippingDetailsNextbutton();
+		sfHomePage.enterConsultantBillingDetails(cardType, cardNumber, cardName, CVV);
+		//sfHomePage.selectBillingAddressFromDD();
+		sfHomePage.checkUseMyDeliveryAddressChkBox();
+		sfHomePage.clickBillingDetailsNextbutton();
+		sfHomePage.selectTermsAndConditionsChkBox();
+		sfHomePage.selectPoliciesAndProceduresChkBox();
+		sfHomePage.clickBecomeAConsultant();
+		//confirmationMessageFromUI = sfHomePage.getConfirmationMsgOfConsultantEnrollment();
+		//s_assert.assertTrue(confirmationMessageFromUI.contains(expectedConfirmationMessage), "Expected confirmation message is"+expectedConfirmationMessage+" but actual on UI is "+confirmationMessageFromUI); 
+		s_assert.assertTrue(sfHomePage.isWelcomeUserElementDisplayed(), "Welcome user locator has not displayed after consultant enrollment");
 		s_assert.assertAll();
 	}
 
@@ -157,9 +216,17 @@ public class ConsultantEnrollmentTest extends StoreFrontWebsiteBaseTest{
 	 */
 	@Test
 	public void testViewHideCTADetailsInEnrollmentKit_291(){
-		sfConsEnrollNowPage = sfHomePage.clickEnrollNow();
-		sfConsEnrollNowPage.searchSponsor(TestConstants.SPONSOR);
-		s_assert.assertTrue(sfConsEnrollNowPage.isSponsorPresentInResult(),"No result found after searching the sponsor with name "+TestConstants.SPONSOR);
+		int randomNum = CommonUtils.getRandomNum(10000, 1000000);
+		String socialInsuranceNumber = String.valueOf(CommonUtils.getRandomNum(100000000, 999999999));
+		String firstName = TestConstants.FIRST_NAME;
+		String lastName = TestConstants.LAST_NAME;
+		String emailID = TestConstants.FIRST_NAME+randomNum+TestConstants.EMAIL_SUFFIX;
+		sfHomePage.clickEnrollNow();
+		sfHomePage.searchSponsor(TestConstants.SPONSOR);
+		s_assert.assertTrue(sfHomePage.isSponsorResultDisplayed(),"No result found after searching the sponsor with name "+TestConstants.SPONSOR);
+		sfHomePage.selectFirstSponsorFromList();
+		sfHomePage.enterConsultantEnrollmentDetails(firstName, lastName, emailID, password, socialInsuranceNumber);
+		sfHomePage.clickNextButton();
 		s_assert.assertAll();
 	}
 

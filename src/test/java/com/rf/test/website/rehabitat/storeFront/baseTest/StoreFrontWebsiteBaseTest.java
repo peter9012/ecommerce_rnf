@@ -44,7 +44,7 @@ public class StoreFrontWebsiteBaseTest extends RFBaseTest {
 	 * All page class reference declarations
 	 */
 	protected StoreFrontHomePage sfHomePage;
-	protected StoreFrontConsultantEnrollNowPage sfConsEnrollNowPage;
+	//protected StoreFrontConsultantEnrollNowPage sfConsEnrollNowPage;
 	protected StoreFrontShopSkinCarePage sfShopSkinCarePage;
 	protected StoreFrontCartPage sfCartPage;
 	protected StoreFrontCheckoutPage sfCheckoutPage;

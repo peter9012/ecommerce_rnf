@@ -52,7 +52,7 @@ public class StoreFrontHomePage extends StoreFrontWebsiteBasePage{
 	private final By TERMS_AND_CONDITIONS_CHK_BOX_LOC = By.xpath("//div[contains(@class,'checkout-steps')]/descendant::label[1]");
 	private final By BILLING_NEXT_BUTTON_LOC = By.id("reviewOrder");
 	private final By SAVE_BUTTON_LOC = By.id("deliveryAccountSubmit");
-	private final By FIRST_PRODUCT_AT_KIT_PAGE_LOC = By.xpath("//div[contains(@class,'enrollmentKit-wrapper')]/descendant::div[@class='enrollmentKit-box'][1]");
+	private final By FIRST_PRODUCT_AT_KIT_PAGE_LOC = By.xpath("//input[@id='ENROLL_KIT_0002']");
 	private final By FIRST_NAME_FOR_REGISTRATION_LOC = By.id("register.firstName");
 	private final By LAST_NAME_FOR_REGISTRATION_LOC = By.id("register.lastName");
 	private final By EMAIL_ID_FOR_REGISTRATION_LOC = By.id("register.email");
@@ -69,7 +69,9 @@ public class StoreFrontHomePage extends StoreFrontWebsiteBasePage{
 	private final By SHOP_BY_PRICE_FILTER_OPTION_200_TO_499$_LOC = By.xpath("//input[@id='$200-$499.99ID']/..");
 	private final By SHOP_BY_PRICE_FILTER_OPTION_200_TO_499$_AFTER_CHECKED_LOC = By.xpath("//input[@id='$200-$499.99ID'][@checked = 'checked']");
 	private final By MINI_CART_NUMBER_OF_ITEMS_LOC = By.xpath("//span[@class='nav-items-total']");
-
+	private final By WELCOME_USER_LOC = By.xpath("//div[@class='loginBlock']/div");
+	
+	private String kitNameLoc = "//label[text()='%s']/preceding::input[1]";
 	private String priceOfProductLoc = "//div[contains(@class,'product__listing')]//div[@class='product-item'][%s]//span[@id='cust_price']";
 	private String cardTypeLoc= "//select[@id='c-ct']//option[text()='%s']";
 	private String socialMediaIconLoc = "//div[@class='container']//a[contains(@href,'%s')]";
@@ -324,6 +326,8 @@ public class StoreFrontHomePage extends StoreFrontWebsiteBasePage{
 	public StoreFrontHomePage clickNextButton(){
 		driver.clickByJS(RFWebsiteDriver.driver,driver.findElement(NEXT_BUTTON_LOC));
 		logger.info("Next button clicked");
+		driver.waitForPageLoad();
+		driver.waitForLoadingImageToDisappear();
 		return this;
 	}
 
@@ -334,9 +338,22 @@ public class StoreFrontHomePage extends StoreFrontWebsiteBasePage{
 	 * @return store front Home page object
 	 * 
 	 */
-	public StoreFrontHomePage chooseProductFrmoKitPage(){
-		driver.click(FIRST_PRODUCT_AT_KIT_PAGE_LOC);
+	public StoreFrontHomePage chooseProductFromKitPage(){
+		driver.clickByJS(RFWebsiteDriver.driver, driver.findElement(FIRST_PRODUCT_AT_KIT_PAGE_LOC));
 		logger.info("Choose first product at kit page");
+		return this;
+	}
+	
+	/***
+	 * This method choose specific product at kit page
+	 * 
+	 * @param
+	 * @return store front Home page object
+	 * 
+	 */
+	public StoreFrontHomePage chooseProductFromKitPage(String kitName){
+		driver.clickByJS(RFWebsiteDriver.driver, driver.findElement(By.xpath(String.format(kitNameLoc,kitName.toUpperCase()))));
+		logger.info("Choose "+kitName.toUpperCase()+" product at kit page");
 		return this;
 	}
 
@@ -408,6 +425,8 @@ public class StoreFrontHomePage extends StoreFrontWebsiteBasePage{
 	public StoreFrontHomePage clickBecomeAConsultant(){
 		driver.click(BECOME_A_CONSULTANT_BTN_LOC);
 		logger.info("Become a consultant button clicked");
+		driver.waitForPageLoad();
+		driver.waitForLoadingImageToDisappear();
 		return this;
 	}
 
@@ -426,6 +445,9 @@ public class StoreFrontHomePage extends StoreFrontWebsiteBasePage{
 		return msg;
 	}
 
+	public boolean isWelcomeUserElementDisplayed(){
+		return driver.getText(WELCOME_USER_LOC).contains("Welcome");
+	}
 
 	/***
 	 * This method enter the consultant billing details
@@ -471,6 +493,7 @@ public class StoreFrontHomePage extends StoreFrontWebsiteBasePage{
 	public StoreFrontHomePage selectBillingAddressFromDD(){
 		driver.click(BILLING_ADDRESS_DD_LOC);
 		logger.info("Billing address dropdown clicked");
+		driver.pauseExecutionFor(500);
 		driver.click(BILLING_ADDRESS_OPTION_VALUE_LOC);
 		logger.info("Billing address selected");
 		return this;
@@ -693,6 +716,5 @@ public class StoreFrontHomePage extends StoreFrontWebsiteBasePage{
 	public StoreFrontHomePage clickPlaceOrderButton(){
 		clickBecomeAConsultant();
 		return this;
-	}
-
+	}	
 }

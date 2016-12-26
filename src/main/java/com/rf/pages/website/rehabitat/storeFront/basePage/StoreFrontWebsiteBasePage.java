@@ -4,6 +4,7 @@ import java.awt.AWTException;
 import java.awt.Robot;
 import java.awt.event.KeyEvent;
 import java.util.Iterator;
+import java.util.NoSuchElementException;
 import java.util.Set;
 
 import org.apache.logging.log4j.LogManager;
@@ -52,7 +53,7 @@ public class StoreFrontWebsiteBasePage extends RFBasePage{
 	private final By SEARCH_SPONSOR_LOC = By.id("search-sponsor-button");
 	private final By SEARCH_BOX_LOC = By.id("search-box");
 	private final By SELECT_AND_CONTINUE_LOC= By.xpath("//div[@id='findConsultantResultArea']/descendant::input[@id='consultantUid'][1]/..");
-	private final By SPONSOR_SEARCH_RESULTS_LOC = By.xpath("//div[@class='row']/div[contains(@class,'consultant-box')]");
+	private final By SPONSOR_SEARCH_RESULTS_LOC = By.xpath("//div[@id='findConsultantResultArea']//div[contains(@class,'consultant-box')][1]");
 	private final By NO_RESULT_FOUND_MSG_LOC = By.xpath("//p[contains(text(),'No results found')]");
 	private final By EVENTS_LOC = By.xpath(topNavigationLoc+"//a[@title='EVENTS']");
 	private final By PROGRAMS_AND_INCENTIVES_LOC = By.xpath(topNavigationLoc+"//a[@title='PROGRAMS & INCENTIVES']");
@@ -80,6 +81,7 @@ public class StoreFrontWebsiteBasePage extends RFBasePage{
 	private final By WELCOME_DD_BILLING_INFO_LOC = By.xpath("//a[text()='Billing Info']");
 	protected final By FIRST_LAST_NAME_FOR_SHIPPING_DETAILS_LOC = By.id("address.firstName");
 	private final By ADDRESS_LINE_1_FOR_SHIPPING_DETAILS_LOC = By.id("address.line1");
+	private final By ADDRESS_LINE_2_FOR_SHIPPING_DETAILS_LOC = By.id("address.line2");
 	private final By CITY_FOR_SHIPPING_DETAILS_LOC = By.id("address.townCity");
 	private final By POSTAL_CODE_FOR_SHIPPING_DETAILS_LOC = By.id("address.postcode");
 	private final By PHONE_NUMBER_FOR_SHIPPING_DETAILS_LOC = By.id("address.phone");
@@ -106,6 +108,15 @@ public class StoreFrontWebsiteBasePage extends RFBasePage{
 	private final By LOGOUT_LOC = By.xpath("//a[text()='Sign Out']");
 	private final By WELCOME_DD_EDIT_CRP_LOC = By.xpath("//a[text()='Edit CRP']");
 	private final By WELCOME_DD_CHECK_MY_PULSE_LOC = By.xpath("//a[text()='Check My Pulse']");
+	private final By USED_AS_ENTERED_BUTTON_LOC  = By.xpath("//div[@id='cboxContent']//button[@id='oldAddress']");
+	private final By I_DONT_HAVE_SPONSOR_CHKBOX_LOC = By.xpath("//label[text()=\"I DON'T HAVE SPONSOR\"]");
+	private final By SUBMIT_BTN_ON_REQUIRED_SPONSOR_POPUP_LOC = By.id("consultant-sponsor-submit");
+	private final By SPONSOR_FIRST_NAME_LOC = By.xpath("//div[@class='enroll-page']/descendant::input[@id='sponsor.firstName'][1]");
+	private final By SPONSOR_LAST_NAME_LOC = By.xpath("//div[@class='enroll-page']/descendant::input[@id='sponsor.lastName'][1]");
+	private final By SPONSOR_EMAIL_LOC = By.xpath("//div[@class='enroll-page']/descendant::input[@id='sponsor.email'][1]");
+	private final By SPONSOR_ZIPCODE_LOC = By.xpath("//div[@class='enroll-page']/descendant::input[@id='sponsor.zipcode'][1]");
+	private final By THANKS_MSG_ON_SPONSOR_REQUEST_LOC = By.xpath("//div[@id='sponsor-entire-form-display'][@style='display: block;']//div[@id='sponsor-success-data']");
+	private final By BACK_TO_HOMEPAGE_LOC = By.xpath("//div[@id='sponsor-entire-form-display'][@style='display: block;']//input[@id='consultant-backhome']");
 
 	private String textLoc = "//*[contains(text(),'%s')]";
 	private String stateForShippingDetails = "//select[@id='address.region']//option[text()='%s']";
@@ -117,6 +128,8 @@ public class StoreFrontWebsiteBasePage extends RFBasePage{
 	private String footerLinkLoc = "//div[@class='footer-sections']//a[text()='%s']";
 	private String countryOptionsInToggleButtonLoc  = "//div[@class='wSelect-options-holder']//div[contains(text(),'%s')]";
 	private String socialMediaLinkAtFooterLoc  = "//a[contains(@class,'%s')]";
+	private String sponsorEmptyFieldValidationOnPopUpLoc = "//label[@id='sponsor.%s-error'][contains(text(),'%s')]";
+	private String sponsorInvalidFieldValidationOnPopUpLoc = "//label[@id='sponsor.%s-error'][contains(text(),'%s')]";
 
 	private String RFO_DB = null;
 
@@ -151,8 +164,18 @@ public class StoreFrontWebsiteBasePage extends RFBasePage{
 	 * 
 	 */
 	public StoreFrontConsultantEnrollNowPage clickEnrollNow(){
-		mouseHoverOn(TestConstants.BECOME_A_CONSULTANT);
-		driver.click(ENROLL_NOW_LOC);
+		for(int attemptNumber=1;attemptNumber<=3;attemptNumber++){
+			try{
+				mouseHoverOn(TestConstants.BECOME_A_CONSULTANT);
+				driver.pauseExecutionFor(500);
+				driver.click(ENROLL_NOW_LOC);
+				break;
+			}catch(Exception ex){
+				logger.info("Become a Consultant not mouse hovered properly..retry");
+				driver.pauseExecutionFor(1000);
+				continue;
+			}
+		}
 		logger.info("clicked on 'Enroll Now'");
 		return new StoreFrontConsultantEnrollNowPage(driver);
 	}
@@ -266,8 +289,12 @@ public class StoreFrontWebsiteBasePage extends RFBasePage{
 	 * @return boolean
 	 * 
 	 */
-	public boolean isSponsorPresentInResult(){
-		return driver.isElementPresent(SPONSOR_SEARCH_RESULTS_LOC);
+	public boolean isSponsorResultDisplayed(){
+		try{
+			return driver.IsElementVisible(driver.findElement(SPONSOR_SEARCH_RESULTS_LOC));
+		}catch(NoSuchElementException ex){
+			return false;
+		}
 	}
 
 	/***
@@ -724,12 +751,14 @@ public class StoreFrontWebsiteBasePage extends RFBasePage{
 	 * @return store front Base page object
 	 * 
 	 */
-	public StoreFrontWebsiteBasePage enterConsultantShippingDetails(String firstName, String lastName, String addressLine1, String city, String state, String postal, String phoneNumber){
+	public StoreFrontWebsiteBasePage enterConsultantShippingDetails(String firstName, String lastName, String addressLine1, String addressLine2, String city, String state, String postal, String phoneNumber){
 		String completeName = firstName+" "+lastName;
 		driver.type(FIRST_LAST_NAME_FOR_SHIPPING_DETAILS_LOC, completeName);
 		logger.info("Entered complete name as "+completeName);
 		driver.type(ADDRESS_LINE_1_FOR_SHIPPING_DETAILS_LOC, addressLine1);
 		logger.info("Entered address line 1 as "+addressLine1);
+		driver.type(ADDRESS_LINE_2_FOR_SHIPPING_DETAILS_LOC, addressLine2);
+		logger.info("Entered address line 2 as "+addressLine2);
 		driver.type(CITY_FOR_SHIPPING_DETAILS_LOC, city);
 		logger.info("Entered city as "+city);
 		driver.click(STATE_DD_FOR_REGISTRATION_LOC);
@@ -1043,7 +1072,13 @@ public class StoreFrontWebsiteBasePage extends RFBasePage{
 	public StoreFrontWebsiteBasePage clickShippingDetailsNextbutton(){
 		driver.click(SHIPPING_NEXT_BUTTON_LOC);
 		logger.info("Next button clicked of shipping details");
+		clickUseAsEnteredButtonOnPopUp();
 		return this;
+	}
+
+	public void clickUseAsEnteredButtonOnPopUp(){
+		driver.click(USED_AS_ENTERED_BUTTON_LOC);
+		logger.info("'Used as entered' button clicked");
 	}
 
 	/***
@@ -1167,5 +1202,109 @@ public class StoreFrontWebsiteBasePage extends RFBasePage{
 		driver.waitForLoadingImageToDisappear();
 		driver.waitForPageLoad();
 		return new StoreFrontHomePage(driver);
+	}
+
+	/***
+	 *  This method click on I DONT HAVE SPONSOR checkbox
+	 *  @param
+	 *  @return store front base page object
+	 */
+	public StoreFrontWebsiteBasePage clickIDontHaveSponsorCheckBox(){
+		driver.click(I_DONT_HAVE_SPONSOR_CHKBOX_LOC);
+		logger.info("'I dont have sponsor checkbox' clicked");
+		return this;
+	}
+
+	/***
+	 * This method checks if the submit button on required sponsor popup is disbaled or not
+	 * @return
+	 */
+	public boolean isSubmitBtnOnSponsorPopUpDisabled(){
+		return !(driver.findElement(SUBMIT_BTN_ON_REQUIRED_SPONSOR_POPUP_LOC).isEnabled());
+	}
+
+	/***
+	 * This method enters the sponsor's first name, last name, email and zip code
+	 * @param firstName
+	 * @param lastName
+	 * @param email
+	 * @param zipCode
+	 * @return
+	 */
+	public StoreFrontWebsiteBasePage enterDetailsInRequiredConsultantSponsorPopUp(String firstName,String lastName,String email,String zipCode){
+		driver.type(SPONSOR_FIRST_NAME_LOC, firstName);
+		logger.info("entered sponsor first name as "+firstName);
+		driver.type(SPONSOR_LAST_NAME_LOC, lastName);
+		logger.info("entered sponsor last name as "+lastName);
+		driver.type(SPONSOR_EMAIL_LOC, email);
+		logger.info("entered sponsor email as "+email);
+		driver.type(SPONSOR_ZIPCODE_LOC, zipCode);
+		logger.info("entered sponsor zipcode as "+zipCode);
+		return this;		
+	}
+
+	/***
+	 * This method returns whether empty field validation displayed for sponsor popup or not
+	 * @param fieldName
+	 * @return
+	 */
+
+	public boolean isEmptyFieldValidationForSponsorOnPopupDisplayed(String fieldName){
+		String validationMsg = "This field is required";
+		try{
+			return driver.IsElementVisible(driver.findElement(By.xpath(String.format(sponsorEmptyFieldValidationOnPopUpLoc, fieldName,validationMsg))));
+		}catch(Exception ex){
+			return false;	
+		}
+	}
+
+	/***
+	 * 
+	 * @return
+	 */
+	public boolean isInvalidFieldValidationForSponsorOnPopupDisplayed(String fieldName){
+		String validationMsg = null;
+		if(fieldName.equalsIgnoreCase("zipCode")){
+			validationMsg = "Please enter valid postal code";
+		}
+		else if(fieldName.equalsIgnoreCase("email")){
+			validationMsg = "Please enter a valid email address";
+		}
+		try{
+			return driver.IsElementVisible(driver.findElement(By.xpath(String.format(sponsorInvalidFieldValidationOnPopUpLoc, fieldName,validationMsg))));
+		}catch(Exception ex){
+			return false;	
+		}
+	}
+
+	/***
+	 * This method click on Submit button on required consultant sponsor popup
+	 *  @param
+	 *  @return store front base page object
+	 * 
+	 */	
+	public StoreFrontWebsiteBasePage clickSubmitBtnOnRequiredConsultantSponsorPopUp(){
+		driver.findElement(SUBMIT_BTN_ON_REQUIRED_SPONSOR_POPUP_LOC).click();
+		logger.info("Submit button on required consultant sponsor popup clicked");
+		return this;
+	}
+
+	/***
+	 * This method checks if Thanks msg after request of sponsor is 
+	 * submitted
+	 * @return
+	 */
+	public boolean isThanksMessageAfterSponsorRequestPresent(){
+		return driver.isElementPresent(THANKS_MSG_ON_SPONSOR_REQUEST_LOC);
+	}
+
+	/***
+	 * This method clicks on the Back to HomePage button after request of sponsor is 
+	 * submitted
+	 * @return
+	 */
+	public void clickBackToHomePageBtn(){
+		driver.click(BACK_TO_HOMEPAGE_LOC);
+		logger.info("back to hompage button clicked");
 	}
 }

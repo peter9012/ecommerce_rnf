@@ -46,6 +46,7 @@ public class StoreFrontAccountInfoPage extends StoreFrontWebsiteBasePage{
 	private String spouseLastNameValidationErrorLoc = " //*[@id='profile.spouseLastname']/following::label[contains(text(),'%s')][1]";
 	private String stateForAccountDetails = "//select[@id='profile.region']//option[text()='%s']";
 	private String emailValidationErrorLoc ="//*[@id='profile.email']/following::label[contains(text(),'%s')]";
+	private String currentPasswordValidationErrorLoc ="//*[@id='profile.currentPassword']/following::label[contains(text(),'%s')]";
 	private String newPasswordValidationErrorLoc ="//*[@id='profile.newPassword']/following::label[contains(text(),'%s')]";
 	private String confirmPasswordValidationErrorLoc ="//*[@id='profile.checkNewPassword']/following::label[contains(text(),'%s')]";
 	private String firstNameValidationErrorLoc ="//*[@id='profile.firstName']/following::label[contains(text(),'%s')][1]";
@@ -210,6 +211,8 @@ public class StoreFrontAccountInfoPage extends StoreFrontWebsiteBasePage{
 		Boolean isValidationMsgPresentForParticularField = null;
 		if(field.equalsIgnoreCase("email"))
 			isValidationMsgPresentForParticularField = driver.isElementVisible(By.xpath(String.format(emailValidationErrorLoc,errorMsg))); 
+		else if(field.equalsIgnoreCase("current password"))
+			isValidationMsgPresentForParticularField = driver.isElementVisible(By.xpath(String.format(currentPasswordValidationErrorLoc,errorMsg)));
 		else if(field.equalsIgnoreCase("new password"))
 			isValidationMsgPresentForParticularField = driver.isElementVisible(By.xpath(String.format(newPasswordValidationErrorLoc,errorMsg)));
 		else if(field.equalsIgnoreCase("confirm password"))

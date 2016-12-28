@@ -164,7 +164,7 @@ public class AddAndDeleteShippingTest extends StoreFrontWebsiteBaseTest{
 	@Test// Incomplete
 	public void testAddingAShipAddressDefaultCountryUSSite_174(){
 		if(country.equalsIgnoreCase("us")){
-			String expectedCountryName = "united states";
+			String expectedCountryName = "usa";
 			String countryNameFromUI = null;
 			sfHomePage.loginToStoreFront(TestConstants.CONSULTANT_USERNAME, password);
 			sfHomePage.clickWelcomeDropdown();
@@ -235,8 +235,10 @@ public class AddAndDeleteShippingTest extends StoreFrontWebsiteBaseTest{
 	@Test
 	public void testEditAShippingAddressAndCancel_371(){
 		String randomWord = CommonUtils.getRandomWord(5);
+		String randomWord1 = CommonUtils.getRandomWord(5);
 		String firstName = TestConstants.FIRST_NAME;
 		String lastName = TestConstants.LAST_NAME+randomWord;
+		String lastNameForFurtherUpdation = TestConstants.LAST_NAME+randomWord1;
 		String addressLine1 = TestConstants.ADDRESS_LINE_1_US;
 		String addressLine2 = TestConstants.ADDRESS_LINE_2_US;
 		String city = TestConstants.CITY_US;
@@ -248,9 +250,15 @@ public class AddAndDeleteShippingTest extends StoreFrontWebsiteBaseTest{
 		sfHomePage.loginToStoreFront(TestConstants.CONSULTANT_USERNAME, password);
 		sfHomePage.clickWelcomeDropdown();
 		sfShippingInfoPage = sfHomePage.navigateToShippingInfoPage();
-		defaultShippingAddressName = sfShippingInfoPage.getDefaultShippingAddressName();
 		sfShippingInfoPage.clickEditLinkOfDefaultShippingAddress();
 		sfShippingInfoPage.enterConsultantShippingDetails(firstName, lastName, addressLine1,addressLine2, city, state, postalCode, phoneNumber);
+		sfShippingInfoPage.clickSaveButtonOfShippingAddress();
+		sfShippingInfoPage.clickUseAsEnteredButtonOnPopUp();
+		s_assert.assertTrue(sfShippingInfoPage.getAddressUpdateSuccessMsg().contains(TestConstants.SHIPPING_ADDRESS_UPDATE_MESSAGE),"Shipping Address update msg is not found as expected");
+		s_assert.assertTrue(sfShippingInfoPage.isShippingProfilePresent(lastName), "Expected profile name is not present in Address list");
+		defaultShippingAddressName = sfShippingInfoPage.getDefaultShippingAddressName();
+		sfShippingInfoPage.clickEditLinkOfDefaultShippingAddress();
+		sfShippingInfoPage.enterConsultantShippingDetails(firstName, lastNameForFurtherUpdation, addressLine1,addressLine2, city, state, postalCode, phoneNumber);
 		sfShippingInfoPage.clickCancelButtonOfShippingAddress();
 		defaultShippingAddressNameAfterUpdate = sfShippingInfoPage.getDefaultShippingAddressName();
 		s_assert.assertTrue(defaultShippingAddressName.contains(defaultShippingAddressNameAfterUpdate), "Expected default shipping address name is "+defaultShippingAddressName+"Actual on UI is"+defaultShippingAddressNameAfterUpdate);
@@ -321,6 +329,7 @@ public class AddAndDeleteShippingTest extends StoreFrontWebsiteBaseTest{
 		sfShippingInfoPage.clickEditLinkOfDefaultShippingAddress();
 		sfShippingInfoPage.enterConsultantShippingDetails(firstName, lastName, addressLine1,addressLine2, city, state, postalCode, phoneNumber);
 		sfShippingInfoPage.clickSaveButtonOfShippingAddress();
+		sfShippingInfoPage.clickUseAsEnteredButtonOnPopUp();
 		s_assert.assertTrue(sfShippingInfoPage.isShippingProfilePresent(lastName), "Expected profile name is not present in Address list");
 		s_assert.assertAll();
 	}

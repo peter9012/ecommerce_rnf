@@ -697,9 +697,12 @@ public class RFWebsiteDriver implements RFDriver,WebDriver {
 	 */
 	public boolean isElementVisible(By by) {
 		try{
+			turnOffImplicitWaits();
 			return driver.findElement(by).isDisplayed() ? true : false;
 		}catch(Exception ex){
 			return false;
+		}finally{
+			turnOnImplicitWaits();
 		}
 	}
 

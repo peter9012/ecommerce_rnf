@@ -24,10 +24,11 @@ public class StoreFrontCheckoutPage extends StoreFrontWebsiteBasePage{
 	private final By PC_PERKS_CHECKBOX_LOC = By.xpath("//input[@id='c2']/following::label[1]");
 	private final By CREATE_ACCOUNT_BUTTON_LOC = By.id("next-button");
 	private final By ADD_NEW_SHIPPING_ADDRESS_BUTTON_LOC = By.xpath("//button[contains(text(),'Add New')]");
-	private final By SHIPPING_ADDRESS_NAME_LOC = By.xpath("//span[@id='defaultShippingAddress']/b");
+	private final By SHIPPING_ADDRESS_NAME_LOC = By.xpath("//span[@id='defaultShippingAddress']");
 	private final By EDIT_LINK_OF_SHIPPING_ADDRESS_LOC=By.xpath("//div[@class='checkout-shipping']//a[1]");
 	private final By FIRST_LAST_NAME_FOR_SHIPPING_AT_CHECKOUT_PAGE_LOC=By.xpath("//form[@id='shippingAddressForm']//input[@id='address.firstName']");
 	private final By ADDRESS_LINE1_FOR_SHIPPING_AT_CHECKOUT_PAGE_LOC=By.xpath("//form[@id='shippingAddressForm']//input[@id='address.line1']");
+	private final By ADDRESS_LINE_2_FOR_SHIPPING_AT_CHECKOUT_PAGE_LOC=By.xpath("//form[@id='shippingAddressForm']//input[@id='address.line2']");
 	private final By CITY_FOR_SHIPPING_AT_CHECKOUT_PAGE_LOC=By.xpath("//form[@id='shippingAddressForm']//input[@id='address.townCity']");
 	private final By STATE_DD_FOR_SHIPPING_AT_CHECKOUT_PAGE_LOC=By.xpath("//form[@id='shippingAddressForm']//select[@id='address.region']");
 	private final By POSTAL_CODE_FOR_SHIPPING_AT_CHECKOUT_PAGE_LOC=By.xpath("//form[@id='shippingAddressForm']//input[@id='address.postcode']");
@@ -50,9 +51,16 @@ public class StoreFrontCheckoutPage extends StoreFrontWebsiteBasePage{
 	private final By USE_MY_DELIVERY_ADDRESS_CHECKBOX_LOC = By.xpath("//input[@id='useDeliveryAddress']/..");
 	private final By NEXT_BTN_AFTER_BILLING_LOC = By.id("reviewOrder");
 	private final By POPUP_FOR_TERMS_AND_CONDITIONS_LOC = By.id("city_popup");
-	
+	private final By EDIT_LINK_OF_SHIPPING_PROFILE_LOC=By.xpath("//span[@id='defaultShippingAddress']/a");
+	private final By ADD_NEW_BILLING_PROFILE_BUTTON_LOC = By.xpath("//button[text()='Add New Billing Profile']");
+
+	private String billingInfoCardDetailsLoc = "//div[@id='default-payment-method']/ul/strong[contains(text(),'%s')]/following-sibling::span[@class='cardInfo']";
+	private String billingInfoAddressNameLoc = "//div[@id='default-payment-method']/ul/strong[contains(text(),'%s')]";
+	private String billingAddressLoc = "//div[@id='default-payment-method']/ul/strong[contains(text(),'%s')]/ancestor::ul";
 	private String stateForShippingDetailsAtCheckoutPageLoc = "//form[@id='shippingAddressForm']//select[@id='address.region']//option[text()='%s']";
 	private String shippingMethodLoc = "//label[contains(text(),'%s')]";
+
+	private String[] cardDetails;
 
 	public StoreFrontCheckoutPage fillNewUserDetails(String userType,String firstName,String lastName,String email,String password){
 		driver.type(FIRST_NAME_LOC, firstName);
@@ -132,6 +140,8 @@ public class StoreFrontCheckoutPage extends StoreFrontWebsiteBasePage{
 		logger.info("Entered complete name as "+completeName);
 		driver.type(ADDRESS_LINE1_FOR_SHIPPING_AT_CHECKOUT_PAGE_LOC, addressLine1);
 		logger.info("Entered address line 1 as "+addressLine1);
+		driver.clear(ADDRESS_LINE_2_FOR_SHIPPING_AT_CHECKOUT_PAGE_LOC);
+		logger.info("Address line 2 cleared");
 		driver.type(CITY_FOR_SHIPPING_AT_CHECKOUT_PAGE_LOC, city);
 		logger.info("Entered city as "+city);
 		driver.click(STATE_DD_FOR_SHIPPING_AT_CHECKOUT_PAGE_LOC);
@@ -361,7 +371,7 @@ public class StoreFrontCheckoutPage extends StoreFrontWebsiteBasePage{
 		logger.info("Next button after billing clicked");
 		return this;
 	}
-	
+
 	/***
 	 * This method checks whether the pop up for 
 	 * terms and conditions after not selected the checkboxes 
@@ -370,6 +380,114 @@ public class StoreFrontCheckoutPage extends StoreFrontWebsiteBasePage{
 	 */
 	public boolean isPopUpForTermsAndConditionsCheckboxDisplayed(){
 		return driver.isElementVisible(POPUP_FOR_TERMS_AND_CONDITIONS_LOC);
+	}
+
+	/***
+	 * This method click on Edit Shipping profile at checkout page
+	 * 
+	 * @param
+	 * @return store front Checkout page object
+	 * 
+	 */
+	public StoreFrontCheckoutPage clickEditLinkOfShippingProfile(){
+		driver.pauseExecutionFor(5000);
+		//driver.click(EDIT_LINK_OF_SHIPPING_PROFILE_LOC);
+		driver.clickByJS(RFWebsiteDriver.driver, driver.findElement(EDIT_LINK_OF_SHIPPING_PROFILE_LOC));
+		logger.info("Clicked on Edit link of Shipping profile");
+		return this;
+	}
+
+	/***
+	 * This method get the error message for address line 1 field
+	 * 
+	 * @param
+	 * @return erroe message
+	 * 
+	 */
+	public String getErrorMessageForAddressLine1(){
+		String errorMsg =  driver.findElement(ERROR_MESSAGE_FOR_ADDRESS_LINE_1_LOC).getText();
+		logger.info("Error message is "+errorMsg);
+		return errorMsg;
+	}
+
+	/**
+	 * This method clicks on the Add new billing profile button
+	 * @return
+	 */
+	public StoreFrontCheckoutPage clickAddNewBillingProfileButton(){
+		driver.waitForElementToBeClickable(ADD_NEW_BILLING_PROFILE_BUTTON_LOC, 20);
+		driver.click(ADD_NEW_BILLING_PROFILE_BUTTON_LOC);
+		logger.info("Add New Billing Profile Button clicked");
+		return this;
+	}
+
+	/***
+	 * This method validates the New Billing Details using firstName of Billing Address.
+	 * 
+	 * @param String
+	 * @return boolean value
+	 * 
+	 */
+	public boolean isNewBillingDetailsVisibleOnUI(String profileFirstName){
+		return driver.isElementVisible(By.xpath(String.format(billingInfoAddressNameLoc,profileFirstName)));
+	}
+
+	/***
+	 * This method get The Credit card last 4 digit from Specfic Billing Profile Details. 
+	 * 
+	 * @param String
+	 * @return String
+	 * 
+	 */
+	public StoreFrontCheckoutPage getCardDetailsFromBillingInfo(String profile){
+		cardDetails = driver.getText(By.xpath(String.format(billingInfoCardDetailsLoc, profile))).replaceAll("[^-?0-9]+"," ").trim().split(" ");
+		return this;
+	}
+
+	/***
+	 * This method get The Credit card last 4 digit from Specfic Billing Profile Details. 
+	 * 
+	 * @param String
+	 * @return String
+	 * 
+	 */
+	public String getLastFourDigitsOfCardNumberInBillingDetails(){
+		return cardDetails[0];
+	}
+
+	/***
+	 * This method get the Expiry date of Card from Billing Details. 
+	 * 
+	 * @param String
+	 * @return String
+	 * 
+	 */
+	public String getExpiryDateOfCardNumberInBillingDetails(){
+		return cardDetails[1] + "/" + cardDetails[2];
+	}
+
+	/***
+	 * This method validates the Date Format of Expiry date in Billing Details
+	 * 
+	 * @param String
+	 * @return boolean value
+	 * 
+	 */
+	public boolean isExpiryDateIsPresentAsExpectedInBillingDetails(String expiryDate){
+		String[] splittedDate = expiryDate.split("/");
+		return (splittedDate[0].length() == 2) && (splittedDate[1].length() == 4); 
+	}
+
+	/***
+	 * This method get the Billing Details from Billing Profile section 
+	 * 
+	 * @param String
+	 * @return String
+	 * 
+	 */
+	public String getBillingAddressForSpecificBillingProfile(String profile){
+		String billingDetails = driver.findElement(By.xpath(String.format(billingAddressLoc, profile))).getText();
+		return billingDetails.trim();
 	}
 
 }

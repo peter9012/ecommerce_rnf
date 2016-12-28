@@ -664,5 +664,75 @@ public class MyAccountTest extends StoreFrontWebsiteBaseTest{
 		sfOrdersPage.switchToParentWindow(parentWin);
 		s_assert.assertAll();
 	}
+	
+	/***
+	 * qTest : TC-387 Order History
+	 * 
+	 * Description : This test verifies the details on Order History
+	 * 
+	 *     
+	 */
+	@Test//TODO
+	public void testOrderHistory_387(){
+		sfHomePage.loginToStoreFront(TestConstants.CONSULTANT_USERNAME, password);
+		sfHomePage.clickWelcomeDropdown();
+		sfOrdersPage = sfHomePage.navigateToOrdersPage();
+		s_assert.assertAll();
+	}
+	
+	/***
+	 * qTest : TC-282 Account Information- Reset password - Invalid Current Password
+	 * 
+	 * Description : This test verifies the reset password functionality by 
+	 * entering incorrect Current password in account info page
+	 * 
+	 *     
+	 */
+	@Test
+	public void testPasswordResetIncorrectCurrentPwd_282(){
+		String incorrectCurrentPassword = "111Maiden";
+		//Login as consultant user.
+		sfHomePage.loginToStoreFront(TestConstants.CONSULTANT_EMAIL,password);
+		sfHomePage.clickWelcomeDropdown();
+		sfAccountInfoPage = sfHomePage.navigateToAccountInfoPage();
+		String expectedValidationErrorMsg = TestConstants.PASSWORD_VALIDATION_ERROR_DO_NOT_MATCH;
+		sfAccountInfoPage.enterOldPassword(incorrectCurrentPassword);
+		sfAccountInfoPage.enterNewPassword(password);
+		sfAccountInfoPage.enterConfirmPassword(password);
+		sfAccountInfoPage.saveAccountInfo();
+		s_assert.assertTrue(sfAccountInfoPage.isValidationMsgPresentForParticularField("current password", expectedValidationErrorMsg)," validation msg for incorrect current password has not displayed");
+	}
+	
+	/***
+	 * qTest : TC-283 Account Information- Reset password - Other Invalid scenarios
+	 * 
+	 * Description : This test verifies the reset password functionality for invalid scenarios
+	 * 
+	 *     
+	 */
+	@Test
+	public void testPasswordResetInvalidScenrios_283(){
+		String incorrectCurrentPassword = "111Maiden";
+		//Login as consultant user.
+		sfHomePage.loginToStoreFront(TestConstants.CONSULTANT_EMAIL,password);
+		sfHomePage.clickWelcomeDropdown();
+		sfAccountInfoPage = sfHomePage.navigateToAccountInfoPage();
+		String expectedValidationErrorMsg = TestConstants.CONFIRM_PASSWORD_VALIDATION_ERROR_SAME_VALUE;
+		sfAccountInfoPage.enterOldPassword(password);
+		sfAccountInfoPage.enterNewPassword(incorrectCurrentPassword);
+		sfAccountInfoPage.enterConfirmPassword(password);
+		sfAccountInfoPage.saveAccountInfo();
+		s_assert.assertTrue(sfAccountInfoPage.isValidationMsgPresentForParticularField("confirm password", expectedValidationErrorMsg)," validation msg for non-matching new password has not displayed");
+		expectedValidationErrorMsg = TestConstants.VALIDATION_ERROR_THIS_FIELD_IS_REQUIRED;
+		sfAccountInfoPage.enterNewPassword("");
+		sfAccountInfoPage.saveAccountInfo();
+		s_assert.assertTrue(sfAccountInfoPage.isValidationMsgPresentForParticularField("new password", expectedValidationErrorMsg)," validation msg for incorrect current password has not displayed");
+		sfAccountInfoPage.enterNewPassword(password);
+		sfAccountInfoPage.enterConfirmPassword("");
+		sfAccountInfoPage.saveAccountInfo();
+		s_assert.assertTrue(sfAccountInfoPage.isValidationMsgPresentForParticularField("confirm password", expectedValidationErrorMsg)," validation msg for non-matching new password has not displayed");
+		s_assert.assertAll();
+		
+	}
 
 }

@@ -10,6 +10,7 @@ import java.util.List;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.openqa.selenium.By;
+import org.openqa.selenium.WebElement;
 
 public class StoreFrontHomePage extends StoreFrontWebsiteBasePage{
 
@@ -57,8 +58,20 @@ public class StoreFrontHomePage extends StoreFrontWebsiteBasePage{
 	private final By SHOP_BY_PRICE_FILTER_OPTION_200_TO_499$_AFTER_CHECKED_LOC = By.xpath("//input[@id='$200-$499.99ID'][@checked = 'checked']");
 	private final By MINI_CART_NUMBER_OF_ITEMS_LOC = By.xpath("//span[@class='nav-items-total']");
 	private final By WELCOME_USER_LOC = By.xpath("//div[@class='loginBlock']/div");
-	private final By CONFIRMATION_MSG_OF_CONSULTANT_ENROLLMENT = By.xpath("//div[@class='global-alerts']/div");
-
+	private final By CONFIRMATION_MSG_OF_CONSULTANT_ENROLLMENT_LOC = By.xpath("//div[@class='global-alerts']/div");
+	private final By POLICIES_AND_PROCEDURES_LINK_LOC = By.xpath("//a[contains(text(),'Rodan+Fields Policies and Procedure')]");
+	private final By PULSE_PRO_T_C_LINK_LOC = By.xpath("//a[contains(text(),'Pulse Pro Terms and Conditions')]");
+	private final By CRP_T_C_LINK_LOC = By.xpath("//a[contains(text(),'Consultant Replenishment Program (CRP) Terms and Conditions')]");
+	private final By NORTH_DAKOTA_CHKBOX_LOC = By.xpath("//label[@for='noEnrollmentKit']/..");
+	private final By ALL_KIT_SECTION_LOC = By.xpath("//div[@class='enrollmentKit-wrapper row']/div");
+	private final By CONNECT_BTN_LOC = By.xpath("//a[text()='CONNECT']");
+	private final By APPLYING_AS_BUSINESS_ENTITY_LINK_LOC = By.xpath("//a[text()='Applying as a business entity?']");
+	private final By APPLYING_AS_BUSINESS_ENTITY_POPUP_LOC = By.xpath("//div[contains(@class,'enroll-step-deatils')]");
+	private final By CLOSE_BTN_ON_APPLYING_AS_BUSINESS_ENTITY_POPUP_LOC = By.id("enroll-sdClose");
+	private final By SUBSCRIBE_TO_PULSE_CHKBOX_LOC = By.xpath("//label[@for='pulse-check']");
+	private final By PREFIX_FIELD_LOC = By.id("prefixId"); 
+	private final By PREFIX_AVAILABLE_LOC = By.xpath("//div[@class='available-dispaly available' or text()='Available']");
+	
 	private String kitNameLoc = "//label[text()='%s']/preceding::input[1]";
 	private String priceOfProductLoc = "//div[contains(@class,'product__listing')]//div[@class='product-item'][%s]//span[@id='cust_price']";
 	private String socialMediaIconLoc = "//div[@class='container']//a[contains(@href,'%s')]";
@@ -319,6 +332,24 @@ public class StoreFrontHomePage extends StoreFrontWebsiteBasePage{
 	}
 
 	/***
+	 * This method verifies if Next button on kit page is enabled or not
+	 * @return boolean
+	 */
+	public boolean isNextButtonEnabledBeforeSelectingKit(){
+		return driver.findElement(NEXT_BUTTON_LOC).isEnabled();
+	}
+
+	/***
+	 * This method selects the North Dakota checkbox on kit page
+	 * @return
+	 */
+	public StoreFrontHomePage selectNorthDakotaCheckBoxOnKitPage(){
+		driver.click(NORTH_DAKOTA_CHKBOX_LOC);
+		logger.info("North Dakota Checkbox selected");
+		return this;
+	}
+
+	/***
 	 * This method choose first product at kit page
 	 * 
 	 * @param
@@ -330,7 +361,18 @@ public class StoreFrontHomePage extends StoreFrontWebsiteBasePage{
 		logger.info("Choose first product at kit page");
 		return this;
 	}
-	
+
+	public boolean areAllKitsDisabled(){
+		boolean isKitDisabled = false;
+		List<WebElement> allKits = driver.findElements(ALL_KIT_SECTION_LOC);
+		for(WebElement e : allKits){
+			if(e.getAttribute("style").contains("opacity")==true){
+				isKitDisabled=true;
+			}
+		}
+		return isKitDisabled;
+	}
+
 	/***
 	 * This method choose specific product at kit page
 	 * 
@@ -358,7 +400,7 @@ public class StoreFrontHomePage extends StoreFrontWebsiteBasePage{
 		return this;
 	}
 
-	
+
 	/***
 	 * This method get the confirmation message of consultant enrollment
 	 * 
@@ -367,14 +409,17 @@ public class StoreFrontHomePage extends StoreFrontWebsiteBasePage{
 	 * 
 	 */
 	public String getConfirmationMsgOfConsultantEnrollment(){
-		String msg = driver.findElement(CONFIRMATION_MSG_OF_CONSULTANT_ENROLLMENT).getText();
+		String msg = driver.findElement(CONFIRMATION_MSG_OF_CONSULTANT_ENROLLMENT_LOC).getText();
 		logger.info("Confirmation message is "+msg);
 		return msg;
 	}
 
+	/***
+	 * This method checks whether Welcome drop has displayed or not
+	 * @return boolean
+	 */
 	public boolean isWelcomeUserElementDisplayed(){
-		System.out.println("*** "+driver.isElementVisible(WELCOME_USER_LOC));
-		return driver.isElementVisible(WELCOME_USER_LOC);
+		return driver.isElementVisible(WELCOME_DROPDOWN_LOC);
 	}
 
 
@@ -432,9 +477,7 @@ public class StoreFrontHomePage extends StoreFrontWebsiteBasePage{
 	 * @return boolean value.
 	 * 
 	 */
-
 	public boolean isShopByPriceFirstFilterChecked(){
-		//driver.clickByJS(RFWebsiteDriver.driver, driver.findElement(SHOP_BY_PRICE_FILTER_LOC));
 		return driver.isElementPresent(SHOP_BY_PRICE_FILTER_OPTION_0_TO_49$_AFTER_CHECKED_LOC);
 	}
 
@@ -447,7 +490,7 @@ public class StoreFrontHomePage extends StoreFrontWebsiteBasePage{
 	 */
 	public int getTotalNoOfProduct(){
 		int totalNoOfProducts = driver.findElements(TOTAL_NO_OF_PRODUCTS_LOC).size(); 
-		logger.info("Total no of product is: "+totalNoOfProducts);
+		logger.info("Total no of products are: "+totalNoOfProducts);
 		return totalNoOfProducts;
 	}
 
@@ -599,5 +642,105 @@ public class StoreFrontHomePage extends StoreFrontWebsiteBasePage{
 	public StoreFrontHomePage clickPlaceOrderButton(){
 		clickBecomeAConsultant();
 		return this;
-	}	
+	}
+
+	/***
+	 * This method clicks on the Policies and Procedures Link
+	 * @return store front Home page object
+	 */
+	public StoreFrontHomePage clickPoliciesAndProceduresLink(){
+		driver.click(POLICIES_AND_PROCEDURES_LINK_LOC);
+		logger.info("Policies and Procedures link clicked");
+		return this;
+	}
+
+	/***
+	 * This method clicks on the Pro Pulse Terms and Conditions Link
+	 * @return store front Home page object
+	 */
+	public StoreFrontHomePage clickPulseProTermsAndConditionsLink(){
+		driver.click(PULSE_PRO_T_C_LINK_LOC);
+		logger.info("Pulse Pro Terms and conditions link clicked");
+		return this;
+	}
+
+	/***
+	 * This method clicks on the CRP Terms and Conditions Link
+	 * @return store front Home page object
+	 */
+	public StoreFrontHomePage clickCRPTermsAndConditionsLink(){
+		driver.click(CRP_T_C_LINK_LOC);
+		logger.info("CRP Terms and conditions link clicked");
+		return this;
+	}
+
+	/***
+	 * This method clicks on the Connect btn on the home page
+	 * @return storeFront home page object
+	 */
+	public StoreFrontHomePage clickConnectBtn(){
+		driver.click(CONNECT_BTN_LOC);
+		logger.info("Connect btn clicked on home page");
+		return this;
+	}
+
+	/***
+	 * This method clicks on the 'Applying as Business Entity' Link on sponsor page
+	 * @return storeFront home page object
+	 */
+	public StoreFrontHomePage clickApplyingAsBusinessEntityLink(){
+		driver.waitForElementPresent(APPLYING_AS_BUSINESS_ENTITY_LINK_LOC);
+		driver.click(APPLYING_AS_BUSINESS_ENTITY_LINK_LOC);
+		logger.info("clicked on 'Applying as Business Entity' Link");
+		driver.pauseExecutionFor(500);
+		return this;
+	}
+	
+	/***
+	 * This method clicks on the Cross(X) button of 'Applying as Business Entity' popup on sponsor page
+	 * @return storeFront home page object
+	 */
+	public StoreFrontHomePage closeApplyingAsBusinessEntityPopUp(){
+		driver.click(CLOSE_BTN_ON_APPLYING_AS_BUSINESS_ENTITY_POPUP_LOC);
+		logger.info("closed the 'Applying as Business Entity' popup");
+		return this;
+	}
+	
+	/***
+	 * This method checks whether 'Applying as Business Entity' popup on sponsor page
+	 * has displayed or NOT
+	 * @return boolean
+	 */
+	public boolean isApplyingAsBusinessEntityPopupDisplayed(){
+		return driver.isElementVisible(APPLYING_AS_BUSINESS_ENTITY_POPUP_LOC);		
+	}
+	
+	/***
+	 * This method selects the Subscribe to Pulse checkbox
+	 * @return SF home page object
+	 */
+	public StoreFrontHomePage selectSubscribeToPulseCheckBox(){
+		driver.clickByJS(RFWebsiteDriver.driver, driver.findElement(SUBSCRIBE_TO_PULSE_CHKBOX_LOC));
+		logger.info("Subscribe to Pulse checkbox has been selected");
+		return this;
+	}
+	
+	/***
+	 * This method enters the prefix in the orefix field during consultant enrollment
+	 * @param prefix
+	 * @return
+	 */
+	public StoreFrontHomePage enterPrefix(String prefix){
+		driver.type(PREFIX_FIELD_LOC, prefix);
+		return this;
+	}
+	
+	/***
+	 * This method checks if prefix is available or not
+	 * @return
+	 */
+	public boolean isPrefixAvailable(){
+		return driver.isElementVisible(PREFIX_AVAILABLE_LOC);
+	}
+
 }

@@ -22,6 +22,7 @@ import com.rf.pages.website.rehabitat.storeFront.StoreFrontCheckoutPage;
 import com.rf.pages.website.rehabitat.storeFront.StoreFrontConsultantEnrollNowPage;
 import com.rf.pages.website.rehabitat.storeFront.StoreFrontHomePage;
 import com.rf.pages.website.rehabitat.storeFront.StoreFrontOrdersPage;
+import com.rf.pages.website.rehabitat.storeFront.StoreFrontProductDetailPage;
 import com.rf.pages.website.rehabitat.storeFront.StoreFrontShippingInfoPage;
 import com.rf.pages.website.rehabitat.storeFront.StoreFrontShopSkinCarePage;
 import com.rf.test.base.RFBaseTest;
@@ -54,6 +55,7 @@ public class StoreFrontWebsiteBaseTest extends RFBaseTest {
 	protected StoreFrontAutoshipStatusPage sfAutoshipStatusPage;
 	protected StoreFrontBillingInfoPage sfBillingInfoPage;
 	protected StoreFrontOrdersPage sfOrdersPage;
+	protected StoreFrontProductDetailPage sfProductDetailPage;
 
 	StringBuilder verificationErrors = new StringBuilder();
 	protected String password = null;
@@ -62,8 +64,6 @@ public class StoreFrontWebsiteBaseTest extends RFBaseTest {
 	protected boolean runBaseURLOrLogoutExecutionCode = true;
 	
 	protected RFWebsiteDriver driver = new RFWebsiteDriver(propertyFile);
-	private final By WELCOME_DROPDOWN_LOC = By.xpath("//div[@class='user-wrapper']/span");
-	private final By SIGN_OUT_LOC = By.xpath("//a[text()='Sign Out']");
 	
 	private static final Logger logger = LogManager
 			.getLogger(StoreFrontWebsiteBaseTest.class.getName());
@@ -86,6 +86,9 @@ public class StoreFrontWebsiteBaseTest extends RFBaseTest {
 	public void beforeMethod(){
 		s_assert = new SoftAssert();
 		navigateToStoreFrontBaseURL();
+		if(sfHomePage.isWelcomeUserElementDisplayed()==true){
+			sfHomePage.logout();
+		}
 	}
 
 	public void setCountry(){

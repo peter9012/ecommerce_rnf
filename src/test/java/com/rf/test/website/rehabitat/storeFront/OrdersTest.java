@@ -162,16 +162,16 @@ public class OrdersTest extends StoreFrontWebsiteBaseTest{
 		String randomWord = CommonUtils.getRandomWord(5);
 		String firstName = TestConstants.FIRST_NAME;
 		String lastName = TestConstants.LAST_NAME+randomWord;
-		String addressLine1 = TestConstants.ADDRESS_LINE_1_CA;
-		String city = TestConstants.CITY_CA;
-		String state = TestConstants.STATE_CA;
+		String addressLine1 = TestConstants.ADDRESS_LINE_1_US;
+		String city = TestConstants.CITY_US;
+		String state = TestConstants.STATE_US;
 		String phoneNumber = TestConstants.PHONE_NUMBER;
 		String invalidPostalCode = "123";
 		sfHomePage.loginToStoreFront(TestConstants.CONSULTANT_USERNAME, password);
 		sfShopSkinCarePage = sfHomePage.clickAllProducts();
 		sfShopSkinCarePage.selectFirstProduct();
-		sfShopSkinCarePage.checkoutTheCartFromPopUp();
-		sfCheckoutPage=sfShopSkinCarePage.checkoutTheCart();
+		sfCartPage = sfShopSkinCarePage.checkoutTheCartFromPopUp();
+		sfCheckoutPage=sfHomePage.checkoutTheCart();
 		sfCheckoutPage.clickSaveButton();
 		sfCheckoutPage.clickEditLinkOfShippingAddress();
 		sfCheckoutPage.updateShippingAddressDetailsAtCheckoutPage(firstName, lastName, addressLine1, city, state, invalidPostalCode, phoneNumber);
@@ -426,13 +426,31 @@ public class OrdersTest extends StoreFrontWebsiteBaseTest{
 
 	/***
 	 * qTest : TC-311 Ship Method-PC - direct PC enrollment
-	 * Description : //TODO
+	 * Description : This testcase validates shipping method name and cost for PC
+	 * During creation of PC
 	 * 
 	 *     
 	 */
 	@Test
 	public void testShippingMethodPCDirectPCEnrollment_311(){
-
+		int randomNum = CommonUtils.getRandomNum(10000, 1000000);
+		String firstName = TestConstants.FIRST_NAME;
+		String lastName = TestConstants.LAST_NAME;
+		String emailID = TestConstants.FIRST_NAME+randomNum+TestConstants.EMAIL_SUFFIX;
+		String shippingMethodWithCost = null;
+		String shippingMethodName = TestConstants.SHIPPING_METHOD_UPS_GROUND;
+		sfShopSkinCarePage = sfHomePage.clickAllProducts();
+		sfShopSkinCarePage.addFirstProductToBag();
+		sfCartPage = sfShopSkinCarePage.checkoutTheCartFromPopUp();
+		sfCheckoutPage = sfCartPage.clickCheckoutBtn();
+		sfCheckoutPage.fillNewUserDetails(TestConstants.USER_TYPE_PC,firstName, lastName, emailID, password);
+		sfCheckoutPage.clickCreateAccountButton();
+		sfCartPage.clickCheckoutBtn();
+		sfCheckoutPage.clickContinueWithoutConsultantLink();
+		sfCheckoutPage.clickSaveButton();
+		shippingMethodWithCost = sfCheckoutPage.getSelectedShippingMethodName();
+		s_assert.assertTrue(shippingMethodWithCost.contains("$0") && shippingMethodWithCost.contains(shippingMethodName), "Expected shipping method name is "+shippingMethodName+" and shipping cost should contain $0 but actual on UI is "+shippingMethodWithCost);
+		s_assert.assertAll();
 	}
 
 	/***
@@ -459,13 +477,23 @@ public class OrdersTest extends StoreFrontWebsiteBaseTest{
 
 	/***
 	 * qTest : TC-314 Ship Method-PC - Existing PC places Ad-hoc order
-	 * Description : //TODO
-	 * 
+	 * Description : This testcase validates shipping method name and cost for PC
+	 * During Adhoc order
 	 *     
 	 */
 	@Test
 	public void testShipMethodPCExistingPCPlaceAdhocOrder_314(){
-
+		String shippingMethodWithCost = null;
+		String shippingMethodName = TestConstants.SHIPPING_METHOD_UPS_GROUND;
+		sfHomePage.loginToStoreFront(TestConstants.PC_USERNAME, password);
+		sfShopSkinCarePage = sfHomePage.clickAllProducts();
+		sfShopSkinCarePage.selectFirstProduct();
+		sfCartPage = sfShopSkinCarePage.checkoutTheCartFromPopUp();
+		sfCheckoutPage = sfCartPage.clickCheckoutBtn();
+		sfCheckoutPage.clickSaveButton();
+		shippingMethodWithCost = sfCheckoutPage.getSelectedShippingMethodName();
+		s_assert.assertTrue(shippingMethodWithCost.contains("$0") && shippingMethodWithCost.contains(shippingMethodName), "Expected shipping method name is "+shippingMethodName+" and shipping cost should contain $0 but actual on UI is "+shippingMethodWithCost);
+		s_assert.assertAll();
 	}
 
 
@@ -503,23 +531,107 @@ public class OrdersTest extends StoreFrontWebsiteBaseTest{
 
 	/***
 	 * qTest : TC-319 Shipping to PO/RR boxes
-	 * Description : //TODO
+	 * Description : This test cases edit the shipping address with different different type of address
+	 * like PO box, RR, APO,DPO,FPO and validates it
 	 * 
 	 *     
 	 */
 	@Test
 	public void testShippingToPORRboxes_319(){
+		String randomWord = CommonUtils.getRandomWord(5);
+		String firstName = TestConstants.FIRST_NAME;
+		String lastName = TestConstants.LAST_NAME+randomWord;
+		String addressLine1 = TestConstants.PO_ADDRESS_LINE_1_US;
+		String city = TestConstants.CITY_US;
+		String state = TestConstants.STATE_US;
+		String postalCode = TestConstants.POSTAL_CODE_US;
+		String phoneNumber = TestConstants.PHONE_NUMBER;
+		String shippingProfileNameFromUI = null;
+		String errorMessageForPOAddress = "We are unable to ship to P.O. Boxes";
+		String errorMessageForPOAddressFromUI = null;
+		sfHomePage.loginToStoreFront(TestConstants.CONSULTANT_USERNAME, password);
+		sfShopSkinCarePage = sfHomePage.clickAllProducts();
+		sfShopSkinCarePage.selectFirstProduct();
+		sfCartPage = sfShopSkinCarePage.checkoutTheCartFromPopUp();
+		sfCheckoutPage=sfHomePage.checkoutTheCart();
+		sfCheckoutPage.clickSaveButton();
+		sfCheckoutPage.clickEditLinkOfShippingProfile();
+		sfCheckoutPage.updateShippingAddressDetailsAtCheckoutPage(firstName, lastName, addressLine1, city, state, postalCode, phoneNumber);
+		errorMessageForPOAddressFromUI = sfCheckoutPage.getErrorMessageForAddressLine1();
+		s_assert.assertTrue(errorMessageForPOAddressFromUI.contains(errorMessageForPOAddress), "Expected error message should contain "+errorMessageForPOAddress+ "Actual on UI is "+errorMessageForPOAddressFromUI);
 
+		//RR details
+		addressLine1 = TestConstants.RR_ADDRESS_LINE_1_US;
+		city = TestConstants.RR_CITY_US;
+		state = TestConstants.RR_STATE_US;
+		postalCode = TestConstants.RR_POSTAL_CODE_US;
+		sfCheckoutPage.updateShippingAddressDetailsAtCheckoutPage(firstName, lastName, addressLine1, city, state, postalCode, phoneNumber);
+		sfCheckoutPage.clickSaveButtonOfShippingAddress();
+		sfCheckoutPage.clickUseAsEnteredButtonOnPopUp();
+		shippingProfileNameFromUI = sfCheckoutPage.getDefaultShippingAddressNameAtCheckoutPage();
+		s_assert.assertTrue(shippingProfileNameFromUI.contains(lastName) &&shippingProfileNameFromUI.contains(city)&& shippingProfileNameFromUI.contains(state) && shippingProfileNameFromUI.contains(postalCode) , "For RR address Shipping profile name should contain "+lastName+ "City "+city+" State "+state+"Postal code "+postalCode+" Actual on UI is "+shippingProfileNameFromUI);
+
+		//APO address
+		randomWord = CommonUtils.getRandomWord(5);
+		lastName = TestConstants.LAST_NAME+randomWord;
+		addressLine1 = TestConstants.APO_ADDRESS_LINE_1_US;
+		city = TestConstants.APO_CITY_US;
+		state = TestConstants.APO_STATE_US;
+		postalCode = TestConstants.APO_POSTAL_CODE_US;
+		sfCheckoutPage.clickEditLinkOfShippingProfile();
+		sfCheckoutPage.updateShippingAddressDetailsAtCheckoutPage(firstName, lastName, addressLine1, city, state, postalCode, phoneNumber);
+		sfCheckoutPage.clickSaveButtonOfShippingAddress();
+		sfCheckoutPage.clickUseAsEnteredButtonOnPopUp();
+		shippingProfileNameFromUI = sfCheckoutPage.getDefaultShippingAddressNameAtCheckoutPage();
+		s_assert.assertTrue(shippingProfileNameFromUI.contains(lastName) &&shippingProfileNameFromUI.contains(city)&& shippingProfileNameFromUI.contains(state) && shippingProfileNameFromUI.contains(postalCode) , "For APO addressShipping profile name should contain "+lastName+ "City "+city+" State "+state+"Postal code "+postalCode+" Actual on UI is "+shippingProfileNameFromUI);
+
+		//DPO address
+		randomWord = CommonUtils.getRandomWord(5);
+		lastName = TestConstants.LAST_NAME+randomWord;
+		addressLine1 = TestConstants.DPO_ADDRESS_LINE_1_US;
+		city = TestConstants.DPO_CITY_US;
+		state = TestConstants.DPO_STATE_US;
+		postalCode = TestConstants.DPO_POSTAL_CODE_US;
+		sfCheckoutPage.clickEditLinkOfShippingProfile();
+		sfCheckoutPage.updateShippingAddressDetailsAtCheckoutPage(firstName, lastName, addressLine1, city, state, postalCode, phoneNumber);
+		sfCheckoutPage.clickSaveButtonOfShippingAddress();
+		sfCheckoutPage.clickUseAsEnteredButtonOnPopUp();
+		shippingProfileNameFromUI = sfCheckoutPage.getDefaultShippingAddressNameAtCheckoutPage();
+		s_assert.assertTrue(shippingProfileNameFromUI.contains(lastName) &&shippingProfileNameFromUI.contains(city)&& shippingProfileNameFromUI.contains(state) && shippingProfileNameFromUI.contains(postalCode) , "For DPO addressShipping profile name should contain "+lastName+ "City "+city+" State "+state+"Postal code "+postalCode+" Actual on UI is "+shippingProfileNameFromUI);
+		s_assert.assertAll();
 	}
+
 	/***
 	 * qTest : TC-321 Edit a Ship address- Checkout - Valid details
-	 * Description : //TODO
+	 * Description : This test edit the ship address and validates it at checkout page 
 	 * 
 	 *     
 	 */
 	@Test
 	public void testEditAShipAddressCheckoutValidDetails_321(){
-
+		String randomWord = CommonUtils.getRandomWord(5);
+		String firstName = TestConstants.FIRST_NAME;
+		String lastName = TestConstants.LAST_NAME+randomWord;
+		String addressLine1 = TestConstants.ADDRESS_LINE_1_US;
+		String city = TestConstants.CITY_US;
+		String state = TestConstants.STATE_US;
+		String postalCode = TestConstants.POSTAL_CODE_US;
+		String phoneNumber = TestConstants.PHONE_NUMBER;
+		String shippingProfileNameFromUI = null;
+		sfHomePage.loginToStoreFront(TestConstants.CONSULTANT_USERNAME, password);
+		sfShopSkinCarePage = sfHomePage.clickAllProducts();
+		sfShopSkinCarePage.selectFirstProduct();
+		sfCartPage = sfShopSkinCarePage.checkoutTheCartFromPopUp();
+		sfCheckoutPage=sfHomePage.checkoutTheCart();
+		sfCheckoutPage.clickSaveButton();
+		sfCheckoutPage.clickEditLinkOfShippingProfile();
+		sfCheckoutPage.updateShippingAddressDetailsAtCheckoutPage(firstName, lastName, addressLine1, city, state, postalCode, phoneNumber);
+		sfCheckoutPage.clickSaveButtonOfShippingAddress();
+		s_assert.assertTrue(sfCheckoutPage.isUseAsEnteredPopupDisplayed(), "Use As Entered Confirmation Popup is Not Displayed after added new shipping profile");
+		sfCheckoutPage.clickUseAsEnteredButtonOnPopUp();
+		shippingProfileNameFromUI = sfCheckoutPage.getDefaultShippingAddressNameAtCheckoutPage();
+		s_assert.assertTrue(shippingProfileNameFromUI.contains(lastName), "Shipping profile name should contain "+lastName+ "Actual on UI is "+shippingProfileNameFromUI);
+		s_assert.assertAll();
 	}
 
 	/***
@@ -684,7 +796,6 @@ public class OrdersTest extends StoreFrontWebsiteBaseTest{
 	public void testReviewAndPlaceOrderEditCart_471(){
 
 	}
-
 	/***
 	 * qTest : TC-324 Add a ship address- Checkout - existing user
 	 * Description : This test add a new shipping address for existing user
@@ -704,8 +815,8 @@ public class OrdersTest extends StoreFrontWebsiteBaseTest{
 		sfHomePage.loginToStoreFront(TestConstants.CONSULTANT_USERNAME, password);
 		sfShopSkinCarePage = sfHomePage.clickAllProducts();
 		sfShopSkinCarePage.selectFirstProduct();
-		sfShopSkinCarePage.checkoutTheCartFromPopUp();
-		sfCheckoutPage=sfShopSkinCarePage.checkoutTheCart();
+		sfCartPage = sfShopSkinCarePage.checkoutTheCartFromPopUp();
+		sfCheckoutPage=sfCartPage.checkoutTheCart();
 		sfCheckoutPage.clickSaveButton();
 		sfCheckoutPage.clickAddNewShippingAddressButton();
 		sfCheckoutPage.enterConsultantShippingDetails(firstName, lastName, addressLine1, addressLine2 ,city, state, postalCode, phoneNumber);

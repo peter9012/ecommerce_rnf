@@ -75,7 +75,7 @@ public class StoreFrontWebsiteBasePage extends RFBasePage{
 	private final By MINI_CART_ICON_LOC = By.xpath("//a[contains(@class,'mini-cart-link')]");
 	private final By SIGN_UP_NOW_LINK_LOC = By.xpath("//a[contains(text(),'Sign up now')]");
 	private final By WELCOME_DD_ACCOUNT_INFO_LOC = By.xpath("//a[text()='Account Info']");
-	private final By WELCOME_DROPDOWN_LOC = By.xpath("//div[contains(text(),'Welcome')]");
+	protected final By WELCOME_DROPDOWN_LOC = By.xpath("//div[contains(text(),'Welcome')]");
 	protected final By CHECKOUT_BUTTON_LOC = By.xpath("//div[@class='cart-container']/descendant::button[contains(text(),'Checkout')][2]");
 	private final By CHECKOUT_CONFIRMATION_OK_BUTTON_LOC = By.xpath("//div[@id='cartCheckoutModal']/a");
 	private final By WELCOME_DD_SHIPPING_INFO_LOC = By.xpath("//a[text()='Shipping Info']");
@@ -91,7 +91,7 @@ public class StoreFrontWebsiteBasePage extends RFBasePage{
 	private final By EDIT_LINK_NEXT_TO_MAIN_ACCOUNT_LOC = By.xpath("//div[@class='checkout-steps']/descendant::a[1]");
 	private final By WELCOME_DD_ORDERS_LOC = By.xpath("//a[text()='Orders']");
 	private final By SAVE_BUTTON_OF_SHIPPING_ADDRESS_LOC = By.xpath("//button[contains(text(),'Save')]");
-	private final By ERROR_MESSAGE_FOR_ADDRESS_LINE_1_LOC = By.id("address.line1-error");
+	protected final By ERROR_MESSAGE_FOR_ADDRESS_LINE_1_LOC = By.id("address.line1-error");
 	private final By ERROR_MESSAGE_FOR_CITY_LOC = By.id("address.townCity-error");
 	private final By ERROR_MESSAGE_FOR_STATE_LOC = By.id("address.region-error");
 	private final By ERROR_MESSAGE_FOR_POSTAL_CODE_LOC = By.id("address.postcode-error");
@@ -130,7 +130,7 @@ public class StoreFrontWebsiteBasePage extends RFBasePage{
 	private final By BILLING_NEXT_BUTTON_LOC = By.id("reviewOrder");
 	private final By BECOME_A_CONSULTANT_BTN_LOC = By.id("placeOrder");
 	private final By AUTOSHIP_TEXT_LOC = By.xpath("//span[text()='AutoShip']");
-	
+
 	private String textLoc = "//*[contains(text(),'%s')]";
 	private String stateForShippingDetails = "//select[@id='address.region']//option[text()='%s']";
 	private String topNavigationSublinksWithTextLoc  = topNavigationLoc+"//a[text()='%s']";
@@ -312,7 +312,7 @@ public class StoreFrontWebsiteBasePage extends RFBasePage{
 	 * @return boolean
 	 */
 	public boolean isNoResultMessagePresent(){
-		return driver.isElementPresent(NO_RESULT_FOUND_MSG_LOC);
+		return driver.isElementVisible(NO_RESULT_FOUND_MSG_LOC);
 	}
 
 	/***
@@ -790,6 +790,7 @@ public class StoreFrontWebsiteBasePage extends RFBasePage{
 	 * 
 	 */
 	public StoreFrontWebsiteBasePage clickSaveButton(){
+		driver.waitForLoadingImageToDisappear();
 		driver.click(SAVE_BUTTON_LOC);
 		logger.info("Save button clicked");
 		return this;
@@ -1040,9 +1041,10 @@ public class StoreFrontWebsiteBasePage extends RFBasePage{
 	 * 
 	 */
 	public StoreFrontWebsiteBasePage clickShippingDetailsNextbutton(){
+		driver.waitForLoadingImageToDisappear();
 		driver.click(SHIPPING_NEXT_BUTTON_LOC);
 		logger.info("Next button clicked of shipping details");
-		clickUseAsEnteredButtonOnPopUp();
+		// clickUseAsEnteredButtonOnPopUp();
 		return this;
 	}
 
@@ -1401,7 +1403,7 @@ public class StoreFrontWebsiteBasePage extends RFBasePage{
 		logger.info("Policies & procedures checkbox selected");
 		return this;
 	}
-	
+
 	/***
 	 * This method click become a consultant button
 	 * 
@@ -1415,7 +1417,7 @@ public class StoreFrontWebsiteBasePage extends RFBasePage{
 		driver.waitForLoadingImageToDisappear();
 		return this;
 	}
-	
+
 	/**
 	 * This method clicks on the place order button
 	 * @return
@@ -1424,7 +1426,7 @@ public class StoreFrontWebsiteBasePage extends RFBasePage{
 		clickBecomeAConsultant();
 		return this;
 	}
-	
+
 	/***
 	 * This method checks whether a pc has been enrolled successfully or not by verifying 
 	 * i) order confirmation String in URL
@@ -1434,8 +1436,34 @@ public class StoreFrontWebsiteBasePage extends RFBasePage{
 	public boolean hasPCEnrolledSuccessfully(){
 		return driver.isElementVisible(WELCOME_DROPDOWN_LOC)
 				&& driver.getCurrentUrl().contains("/orderConfirmation")
-				&& driver.isElementVisible(AUTOSHIP_TEXT_LOC);
-		
+				&& driver.isElementVisible(AUTOSHIP_TEXT_LOC);		
 	}
-	
+
+	/***
+	 * This method validates the Billing Address on UI for Specific Billing Profile
+	 * 
+	 * @param String , String, String, String, String
+	 * @return boolean value
+	 * 
+	 */
+	public boolean isBillingAddressOnUIIsFoundAsExpected(String address1, String address2, String city, String pin,String state, String billingAddressOnUI){
+		return billingAddressOnUI.contains(address1) && billingAddressOnUI.contains(address2) && 
+				billingAddressOnUI.contains(city) && billingAddressOnUI.contains(pin) && 
+				billingAddressOnUI.contains(state);
+	}
+
+	/***
+	 * This method validates the Billing Address on UI for Specific Billing Profile 
+	 * Overloaded method 
+	 * 
+	 * @param String , String, String, String
+	 * @return boolean value
+	 * 
+	 */
+	public boolean isBillingAddressOnUIIsFoundAsExpected(String address1, String city, String pin,String state, String billingAddressOnUI){
+		return billingAddressOnUI.contains(address1) && 
+				billingAddressOnUI.contains(city) && billingAddressOnUI.contains(pin) && 
+				billingAddressOnUI.contains(state);
+	}
+
 }

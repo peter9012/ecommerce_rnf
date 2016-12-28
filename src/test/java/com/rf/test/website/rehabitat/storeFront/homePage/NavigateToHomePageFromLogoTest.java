@@ -22,8 +22,8 @@ public class NavigateToHomePageFromLogoTest extends StoreFrontWebsiteBaseTest{
 		currentURL = sfHomePage.getCurrentURL().toLowerCase();
 		s_assert.assertTrue(sfHomePage.getCurrentURL().contains("https://www.dev1.rodanandfields.com/AU/"), "Expected URL should be like https://www.dev1.rodanandfields.com/AU/ but actual on UI is"+currentURL);
 		sfShopSkinCarePage = sfHomePage.clickAllProducts();
-		sfShopSkinCarePage.clickNameOfFirstProduct();
-		s_assert.assertTrue(sfShopSkinCarePage.isAddToCartButtonIsPresentAtProductDetailsPage(),"User is not redirecting to product details page after clicking on product name");
+		sfProductDetailPage= sfShopSkinCarePage.clickNameOfFirstProduct();
+		s_assert.assertTrue(sfProductDetailPage.isAddToCartButtonIsPresentAtProductDetailsPage(),"User is not redirecting to product details page after clicking on product name");
 		sfShopSkinCarePage.clickRodanAndFieldsLogo();
 		currentURL = sfHomePage.getCurrentURL().toLowerCase();
 		s_assert.assertTrue(sfHomePage.getCurrentURL().contains("https://www.dev1.rodanandfields.com/AU/"), "Expected URL should be like https://www.dev1.rodanandfields.com/AU/ but actual on UI is"+currentURL);
@@ -35,6 +35,5 @@ public class NavigateToHomePageFromLogoTest extends StoreFrontWebsiteBaseTest{
 		s_assert.assertTrue(sfHomePage.getCurrentURL().contains("https://www.dev1.rodanandfields.com/AU/"), "Expected URL should be like https://www.dev1.rodanandfields.com/AU/ but actual on UI is"+currentURL);
 		s_assert.assertAll();
 	}
-
 
 }

@@ -1,9 +1,14 @@
 package com.rf.pages.website.rehabitat.storeFront;
 
 import org.openqa.selenium.By;
+import org.openqa.selenium.WebElement;
+import org.openqa.selenium.support.ui.Select;
 
 import com.rf.core.driver.website.RFWebsiteDriver;
 import com.rf.pages.website.rehabitat.storeFront.basePage.StoreFrontWebsiteBasePage;
+
+import java.util.List;
+
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
@@ -33,9 +38,17 @@ public class StoreFrontBillingInfoPage extends StoreFrontWebsiteBasePage{
 	private final By CARD_EXPIRY_MONTH_DD_LOC = By.xpath("//select[@id='card_ExpiryMonth']");
 	private final By CARD_EXPIRY_YEAR_DD_LOC = By.xpath("//select[@id='card_ExpiryYear']");
 	private final By CARD_CVV_NUM_TF_LOC = By.xpath("//input[@id='card_cvNumber']");
-	private String billingProfileFirstNameLoc = "//div[@class='account-paymentdetails account-list']//li[text()='%s']";
+	private final By BILLING_PROFILE_SECTION_HEADER = By.xpath("//h3[@class='sub-header' and contains(text(),'BILLING PROFILE')]");
+	private final By BILLING_PROFILES_DETAILS_LIST_LOC = By.xpath("//div[@class='account-paymentdetails account-list']");
+	private final By BILLING_INFO_SECTION_HEADER_LOC = By.xpath("//h2[contains(@class,'account-section-header') and contains(text(),'BILLING INFO')]");
+	private final By BILLING_ADDRESS_DD_LOC = By.xpath("//select[@id='billingAddress.addressId']");
+	private final By BILLING_ADDRESS_DD_OPTIONS_LOC = By.xpath("//select[@id='billingAddress.addressId']/option");
+	private final By PROFILES_IN_BILLING_LIST_LOC = By.xpath("//div[@class='account-cards card-select']//div[@class='row']/div[contains(@class,'card')]"); 
 
-
+	private String creditCardNumberForSpecificBillingProfileLoc = "//div[@class='account-paymentdetails account-list']//li[text()='%s']/following-sibling::li[contains(text(),'Credit')]";
+	private String creditCardExpDateForSpecificBillingProfileLoc = "//div[@class='account-paymentdetails account-list']//li[text()='%s']/following-sibling::li[contains(text(),'Expiration')]";
+	private String billingAddressForSpecificBillingProfileLoc = "//div[@class='account-paymentdetails account-list']//li[text()='%s']/following-sibling::li[not(contains(text(),'Credit card') or contains(text(),'Expiration Date'))]";
+	private String billingProfileFirstNameLoc = "//div[@class='account-paymentdetails account-list']//li[contains(text(),'%s')]";
 
 	/***
 	 * This method clicked on add a New Billing Profile link 
@@ -50,7 +63,6 @@ public class StoreFrontBillingInfoPage extends StoreFrontWebsiteBasePage{
 		return this;
 	}
 
-
 	/***
 	 * This method click the save button for Billing details
 	 * 
@@ -63,8 +75,6 @@ public class StoreFrontBillingInfoPage extends StoreFrontWebsiteBasePage{
 		logger.info("Save button clicked");
 		return this;
 	}
-
-
 
 	/***
 	 * This method validates the SubHeader After Clicking 'Add new Billing Profile' Link
@@ -90,7 +100,6 @@ public class StoreFrontBillingInfoPage extends StoreFrontWebsiteBasePage{
 		return this;
 	}
 
-
 	/***
 	 * This method validates the Add New Billing Address Form.
 	 * 
@@ -101,7 +110,6 @@ public class StoreFrontBillingInfoPage extends StoreFrontWebsiteBasePage{
 	public boolean isAddNewBillingAddressFormDisplayed(){
 		return driver.getAttribute(ADD_NEW_BILLING_ADDRESS_BLOCK_LOC, "style").contains("block");
 	}
-
 
 	/***
 	 * This method validates the Add New Billing Address Block Header.
@@ -114,8 +122,6 @@ public class StoreFrontBillingInfoPage extends StoreFrontWebsiteBasePage{
 		return driver.getText(ADD_NEW_BILLING_ADDRESS_BLOCK_HEADER_LOC).equalsIgnoreCase("Add new Billing address");
 	}
 
-
-
 	/***
 	 * This method validates the Error Message for Wrong Address.
 	 * 
@@ -126,7 +132,6 @@ public class StoreFrontBillingInfoPage extends StoreFrontWebsiteBasePage{
 	public boolean isUnknownAddressErrorMessageIsPresentAsExpected(){
 		return driver.getText(STREET_ERROR_MSG_LOC).equalsIgnoreCase("Unknown street");
 	}
-
 
 	/***
 	 * This method fetch the suggested address in modal. 
@@ -139,7 +144,6 @@ public class StoreFrontBillingInfoPage extends StoreFrontWebsiteBasePage{
 		logger.info(driver.getText(ADDRESS_SUGGESTION_MODAL_LOC));
 		return driver.getText(ADDRESS_SUGGESTION_MODAL_LOC);
 	}
-
 
 	/***
 	 * This method clicked on close Button of Address Suggestion Modal  
@@ -155,7 +159,6 @@ public class StoreFrontBillingInfoPage extends StoreFrontWebsiteBasePage{
 		return this;
 	}
 
-
 	/***
 	 * This method validates the Creation of New Billing Profile using firstName of Billing Address.
 	 * 
@@ -166,7 +169,6 @@ public class StoreFrontBillingInfoPage extends StoreFrontWebsiteBasePage{
 	public boolean isNewBillingProfilePresentInRowList(String profileFirstName){
 		return driver.isElementVisible(By.xpath(String.format(billingProfileFirstNameLoc,profileFirstName)));
 	}
-
 
 	/***
 	 * This method validates the Card Details Added Successfull Msg.
@@ -179,6 +181,16 @@ public class StoreFrontBillingInfoPage extends StoreFrontWebsiteBasePage{
 		return driver.getText(CARD_DETAILS_SUCCESSFULLY_ADDED_MSG_LOC).contains("Card details are added successfully.");
 	}
 
+	/***
+	 * This method validates the Card Details Added Successful Msg.
+	 * 
+	 * @param
+	 * @return boolean value
+	 * 
+	 */
+	public boolean isCardDetailsAddedSuccessfulMsgAppearedAsExpected(String expectedMsg){
+		return driver.getText(CARD_DETAILS_SUCCESSFULLY_ADDED_MSG_LOC).contains(expectedMsg);
+	}
 
 	/***
 	 * This method clicked on Edit Button of Default Billing Profile  
@@ -190,6 +202,165 @@ public class StoreFrontBillingInfoPage extends StoreFrontWebsiteBasePage{
 	public StoreFrontBillingInfoPage clickOnDefaultBillingProfileEditButton(){
 		driver.click(DEFAULT_BILLING_PROFILE_EDIT_BTN_LOC);
 		logger.info("Default Billing Profile Edit Button Clicked");
+		return this;
+	}
+
+	/***
+	 * This method validates the Disability of Billing Profile Card Details Fields.
+	 * 
+	 * @param
+	 * @return boolean value
+	 * 
+	 */
+	public boolean isCardDetailsFieldsDisabled(){
+		boolean flag = driver.findElement(NAME_ON_CARD_TF_LOC).isEnabled() &&
+				driver.findElement(ACCOUNT_NUM_ON_CARD_TF_LOC).isEnabled() &&
+				driver.findElement(CARD_TYPE_DD_LOC).isEnabled() &&
+				driver.findElement(CARD_EXPIRY_MONTH_DD_LOC).isEnabled() &&
+				driver.findElement(CARD_EXPIRY_YEAR_DD_LOC).isEnabled() &&
+				driver.findElement(CARD_CVV_NUM_TF_LOC).isEnabled();
+		return !flag;
+	}
+
+	/***
+	 * This method validates the Billing Info Header.
+	 * 
+	 * @param
+	 * @return boolean value
+	 * 
+	 */
+	public boolean isBillingInfoHeaderIsPresent(){
+		return driver.isElementVisible(BILLING_INFO_SECTION_HEADER_LOC);
+	}
+
+	/***
+	 * This method validates the Billing Profile Header.
+	 * 
+	 * @param
+	 * @return boolean value
+	 * 
+	 */
+	public boolean isBillingProfilesSectionHeaderIsPresent(){
+		return driver.isElementVisible(BILLING_PROFILE_SECTION_HEADER);
+	}
+
+	/***
+	 * This method validates the Billing Profiles List.
+	 * 
+	 * @param
+	 * @return boolean value
+	 * 
+	 */
+	public boolean isBillingProfileDetailsListIsPresent(){
+		return driver.isElementVisible(BILLING_PROFILES_DETAILS_LIST_LOC);
+	}
+
+	/***
+	 * This method get The Credit card last 4 digit from Specfic Billing Profile Details. 
+	 * 
+	 * @param String
+	 * @return String
+	 * 
+	 */
+	public String getLastFourDigitOfCreditCardNumberForSpecificBillingProfile(String profile){
+		String creditCardLastFourDigit = driver.getText(By.xpath(String.format(creditCardNumberForSpecificBillingProfileLoc, profile))).replaceAll("[^-?0-9]+","");
+		return creditCardLastFourDigit;
+	}
+
+	/***
+	 * This method validates the last 4 digit of credit card number.
+	 * 
+	 * @param String , String
+	 * @return boolean value
+	 * 
+	 */
+	public boolean isLastFourDigitMatchesWithSixteenDigitCardNumber(String cardNum, String lastFourDigit){
+		return cardNum.endsWith(lastFourDigit);
+	}
+
+	/***
+	 * This method get the Billing Address from Specfic Billing Profile Details. 
+	 * 
+	 * @param String
+	 * @return String
+	 * 
+	 */
+	public String getBillingAddressForSpecificBillingProfile(String profile){
+		List<WebElement> addressElements = driver.findElements(By.xpath(String.format(billingAddressForSpecificBillingProfileLoc, profile)));
+		String addressString = "";
+		for(WebElement element : addressElements){
+			addressString = addressString + element.getText().trim() + " ";
+		}
+		return addressString.trim();
+	}
+
+	/***
+	 * This method validates the Expiry Date of Card from Specfic Billing Profile Details. 
+	 * 
+	 * @param String
+	 * @return boolean
+	 * 
+	 */
+	public boolean isExpiryDateOfCardIsPresentForSpecificProfile(String profile){
+		String creditCardExpDate = driver.getText(By.xpath(String.format(creditCardExpDateForSpecificBillingProfileLoc, profile))).replaceAll("[^-?0-9]+"," ").trim();
+		String[] splittedDate = creditCardExpDate.split(" ");
+		return (splittedDate[0].length() == 2) && (splittedDate[1].length() == 4); 
+	}
+
+	/***
+	 * This method validates the Card Details Updated Successful Msg.
+	 * 
+	 * @param
+	 * @return boolean value
+	 * 
+	 */
+	public boolean isCardDetailsUpdatedSuccessfulMsgAppearedAsExpected(String expectedMsg){
+		return driver.getText(CARD_DETAILS_SUCCESSFULLY_ADDED_MSG_LOC).contains(expectedMsg);
+	}
+
+	/***
+	 * This method validates the presence of billing addresses dropdown.
+	 * 
+	 * @param
+	 * @return boolean value
+	 * 
+	 */
+	public boolean isBillingAddressDropdownIsPresent(){
+		return driver.isElementVisible(BILLING_ADDRESS_DD_LOC);
+	}
+
+	/***
+	 * This method get the count of addresses present in Billing address dropdown.
+	 * 
+	 * @param 
+	 * @return int
+	 * 
+	 */
+	public int getCountOfBillingAddressesPresentInDropdown(){
+		return driver.findElements(BILLING_ADDRESS_DD_OPTIONS_LOC).size();
+	}
+
+	/***
+	 * This method get the count of billing profiles present in Billing details List section.
+	 * 
+	 * @param 
+	 * @return int
+	 * 
+	 */
+	public int getCountOfBillingProfilesPresentInProfilesListSection(){
+		return driver.findElements(PROFILES_IN_BILLING_LIST_LOC).size();
+	}
+
+	/***
+	 * This method get the count of billing profiles present in Billing details List section.
+	 * 
+	 * @param 
+	 * @return StoreFrontBillingInfoPage
+	 * 
+	 */
+	public StoreFrontBillingInfoPage selectRandomAddressFromBillingAddressDropdown(int index){
+		Select select = new Select(driver.findElement(BILLING_ADDRESS_DD_LOC));
+		select.selectByIndex(index);
 		return this;
 	}
 

@@ -20,6 +20,7 @@ public class StoreFrontShippingInfoPage extends StoreFrontWebsiteBasePage{
 	private final By CANCEL_BUTTON_OF_SHIPPING_ADDRESS_LOC = By.xpath("//div[@class='accountActions']//a");
 	private final By DEFAULT_SHIPPING_ADDRESS_NAME_LOC = By.xpath("//strong[contains(text(),'Default')]");
 	private final By EDIT_LINK_OF_DEFAULT_SHIPPING_ADDRESS_LOC = By.xpath("//strong[contains(text(),'Default')]/following::a[1]");
+	 private final By ADDRESS_UPDATE_SUCCESS_MSG_LOC = By.xpath("//div[contains(@class,'alert-info') and contains(@class,'alert-dismissable')]");
 	private String shippingProfileNameLoc  = "//div[contains(@class,'account-addressbook')]/descendant::strong[contains(text(),'%s')][1]";
 
 	/***
@@ -106,6 +107,17 @@ public class StoreFrontShippingInfoPage extends StoreFrontWebsiteBasePage{
 		driver.click(EDIT_LINK_OF_DEFAULT_SHIPPING_ADDRESS_LOC);
 		logger.info("Edit link clicked of default shipping address");
 		return this;
+	}
+
+	/***
+	 * This method fetch the address update success message  
+	 * 
+	 * @param
+	 * @return String
+	 * 
+	 */
+	public String getAddressUpdateSuccessMsg(){
+		return driver.getText(ADDRESS_UPDATE_SUCCESS_MSG_LOC);
 	}
 
 }

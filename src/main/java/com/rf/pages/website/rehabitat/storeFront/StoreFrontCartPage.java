@@ -99,11 +99,15 @@ public class StoreFrontCartPage extends StoreFrontWebsiteBasePage{
 	}
 
 	/***
-	 * This method clicks on the checkout Btn
-	 * @return
+	 * This method click checkout button 
+	 * 
+	 * @param
+	 * @return store front checkout page object
 	 */
-	public void clickCheckoutBtn(){
+	public StoreFrontCheckoutPage clickCheckoutBtn(){
 		driver.click(CHECKOUT_BTN_LOC);
+		logger.info("Checkout button clicked after registration");
+		return new StoreFrontCheckoutPage(driver);
 	}
 
 }

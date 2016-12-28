@@ -115,15 +115,15 @@ public class OrdersTest extends StoreFrontWebsiteBaseTest{
 		String phoneNumber = TestConstants.PHONE_NUMBER;
 		String shippngAddressName = null;
 		sfHomePage.loginToStoreFront(TestConstants.CONSULTANT_USERNAME, password);
-		sfHomePage.clickAllProducts();
-		sfHomePage.selectFirstProduct();
-		sfHomePage.checkoutThePopup();
-		sfCheckoutPage=sfHomePage.checkoutTheCart();
+		sfShopSkinCarePage = sfHomePage.clickAllProducts();
+		sfShopSkinCarePage.selectFirstProduct();
+		sfShopSkinCarePage.checkoutTheCartFromPopUp();
+		sfCheckoutPage=sfShopSkinCarePage.checkoutTheCart();
 		sfCheckoutPage.clickSaveButton();
 		sfCheckoutPage.clickEditLinkOfShippingAddress();
 		sfCheckoutPage.updateShippingAddressDetailsAtCheckoutPage(firstName, lastName, addressLine1, city, state, postalCode, phoneNumber);
 		sfCheckoutPage.clickSaveButtonOfShippingAddress();
-		sfCheckoutPage.clickUseAsEnteredButton();
+		sfCheckoutPage.clickUseAsEnteredButtonOnPopUp();
 		shippngAddressName = sfCheckoutPage.getDefaultShippingAddressNameAtCheckoutPage().toLowerCase();
 		s_assert.assertTrue(shippngAddressName.contains(lastName), "Expected shipping profile name should contain last name is "+lastName+" but actual on ui is "+shippngAddressName);
 		s_assert.assertAll(); 
@@ -139,10 +139,10 @@ public class OrdersTest extends StoreFrontWebsiteBaseTest{
 	public void testConsultantCanNotShipToQuebec_316(){
 		if(country.equalsIgnoreCase("ca")){
 			sfHomePage.loginToStoreFront(TestConstants.CONSULTANT_USERNAME, password);
-			sfHomePage.clickAllProducts();
-			sfHomePage.selectFirstProduct();
-			sfHomePage.checkoutThePopup();
-			sfCheckoutPage=sfHomePage.checkoutTheCart();
+			sfShopSkinCarePage = sfHomePage.clickAllProducts();
+			sfShopSkinCarePage.selectFirstProduct();
+			sfShopSkinCarePage.checkoutTheCartFromPopUp();
+			sfCheckoutPage=sfShopSkinCarePage.checkoutTheCart();
 			sfCheckoutPage.clickSaveButton();
 			sfCheckoutPage.clickAddNewShippingAddressButton();
 			s_assert.assertTrue(sfCheckoutPage.isQuebecAddressDisabledForConsultant(), "Quebec province is enabled for consultant as shipping address");
@@ -168,10 +168,10 @@ public class OrdersTest extends StoreFrontWebsiteBaseTest{
 		String phoneNumber = TestConstants.PHONE_NUMBER;
 		String invalidPostalCode = "123";
 		sfHomePage.loginToStoreFront(TestConstants.CONSULTANT_USERNAME, password);
-		sfHomePage.clickAllProducts();
-		sfHomePage.selectFirstProduct();
-		sfHomePage.checkoutThePopup();
-		sfCheckoutPage=sfHomePage.checkoutTheCart();
+		sfShopSkinCarePage = sfHomePage.clickAllProducts();
+		sfShopSkinCarePage.selectFirstProduct();
+		sfShopSkinCarePage.checkoutTheCartFromPopUp();
+		sfCheckoutPage=sfShopSkinCarePage.checkoutTheCart();
 		sfCheckoutPage.clickSaveButton();
 		sfCheckoutPage.clickEditLinkOfShippingAddress();
 		sfCheckoutPage.updateShippingAddressDetailsAtCheckoutPage(firstName, lastName, addressLine1, city, state, invalidPostalCode, phoneNumber);
@@ -230,10 +230,10 @@ public class OrdersTest extends StoreFrontWebsiteBaseTest{
 		String currentURL = null;
 		String accountInfo = "delivery-account";
 		sfHomePage.loginToStoreFront(TestConstants.CONSULTANT_USERNAME, password);
-		sfHomePage.clickAllProducts();
-		sfHomePage.selectFirstProduct();
-		sfHomePage.checkoutThePopup();
-		sfCheckoutPage=sfHomePage.checkoutTheCart();
+		sfShopSkinCarePage = sfHomePage.clickAllProducts();
+		sfShopSkinCarePage.selectFirstProduct();
+		sfShopSkinCarePage.checkoutTheCartFromPopUp();
+		sfCheckoutPage=sfShopSkinCarePage.checkoutTheCart();
 		sfCheckoutPage.clickSaveButton();
 		sfCheckoutPage.clickEditLinkOfAccountInfo();
 		currentURL = sfCheckoutPage.getCurrentURL();
@@ -260,10 +260,10 @@ public class OrdersTest extends StoreFrontWebsiteBaseTest{
 		String nonSelectedshippingMethodName1 = TestConstants.SHIPPING_METHOD_UPS_2DAY;
 		String nonSelectedshippingMethodName2 = TestConstants.SHIPPING_METHOD_UPS_OVERNIGHT;
 		sfHomePage.loginToStoreFront(TestConstants.CONSULTANT_USERNAME, password);
-		sfHomePage.clickAllProducts();
-		sfHomePage.selectFirstProduct();
-		sfHomePage.checkoutThePopup();
-		sfCheckoutPage=sfHomePage.checkoutTheCart();
+		sfShopSkinCarePage = sfHomePage.clickAllProducts();
+		sfShopSkinCarePage.selectFirstProduct();
+		sfShopSkinCarePage.checkoutTheCartFromPopUp();
+		sfCheckoutPage=sfShopSkinCarePage.checkoutTheCart();
 		sfCheckoutPage.clickSaveButton();
 		shippingMethodNameFromUI = sfCheckoutPage.getSelectedShippingMethodName();
 		shippingMethod = sfCheckoutPage.getNonSelectedShippingMethodName(shippingMethodNameFromUI, nonSelectedshippingMethodName1, nonSelectedshippingMethodName2);
@@ -289,7 +289,7 @@ public class OrdersTest extends StoreFrontWebsiteBaseTest{
 		sfShopSkinCarePage = sfHomePage.clickAllProducts();
 		sfShopSkinCarePage.selectFirstProduct();
 		sfCartPage = sfShopSkinCarePage.checkoutTheCartFromPopUp();
-		sfCheckoutPage=sfHomePage.checkoutTheCart();
+		sfCheckoutPage=sfShopSkinCarePage.checkoutTheCart();
 		sfCheckoutPage.clickEditLinkOfOrderSummarySection();
 		s_assert.assertTrue(sfCheckoutPage.isCartPagePresent(), "Cart page is not displayed after clicked on edit link of order summary section");
 		productQuantityFromUI = sfCartPage.getQuantityOfProductFromCart("1");
@@ -321,15 +321,15 @@ public class OrdersTest extends StoreFrontWebsiteBaseTest{
 		String phoneNumber = TestConstants.PHONE_NUMBER;
 		String shippngAddressName = null;
 		sfHomePage.loginToStoreFront(TestConstants.CONSULTANT_USERNAME, password);
-		sfHomePage.clickAllProducts();
-		sfHomePage.selectFirstProduct();
-		sfHomePage.checkoutThePopup();
-		sfCheckoutPage=sfHomePage.checkoutTheCart();
+		sfShopSkinCarePage = sfHomePage.clickAllProducts();
+		sfShopSkinCarePage.selectFirstProduct();
+		sfShopSkinCarePage.checkoutTheCartFromPopUp();
+		sfCheckoutPage=sfShopSkinCarePage.checkoutTheCart();
 		sfCheckoutPage.clickSaveButton();
 		sfCheckoutPage.clickEditLinkOfShippingAddress();
 		sfCheckoutPage.updateShippingAddressDetailsAtCheckoutPage(firstName, lastName, addressLine1, city, state, postalCode, phoneNumber);
 		sfCheckoutPage.clickSaveButtonOfShippingAddress();
-		sfCheckoutPage.clickUseAsEnteredButton();
+		sfCheckoutPage.clickUseAsEnteredButtonOnPopUp();
 		shippngAddressName = sfCheckoutPage.getDefaultShippingAddressNameAtCheckoutPage().toLowerCase();
 		s_assert.assertTrue(shippngAddressName.contains(lastName), "Expected shipping profile name should contain last name is "+lastName+" but actual on ui is "+shippngAddressName);
 		sfCheckoutPage.clickShippingDetailsNextbutton();
@@ -702,10 +702,10 @@ public class OrdersTest extends StoreFrontWebsiteBaseTest{
 		String postalCode = TestConstants.POSTAL_CODE_US;
 		String phoneNumber = TestConstants.PHONE_NUMBER;
 		sfHomePage.loginToStoreFront(TestConstants.CONSULTANT_USERNAME, password);
-		sfHomePage.clickAllProducts();
-		sfHomePage.selectFirstProduct();
-		sfHomePage.checkoutThePopup();
-		sfCheckoutPage=sfHomePage.checkoutTheCart();
+		sfShopSkinCarePage = sfHomePage.clickAllProducts();
+		sfShopSkinCarePage.selectFirstProduct();
+		sfShopSkinCarePage.checkoutTheCartFromPopUp();
+		sfCheckoutPage=sfShopSkinCarePage.checkoutTheCart();
 		sfCheckoutPage.clickSaveButton();
 		sfCheckoutPage.clickAddNewShippingAddressButton();
 		sfCheckoutPage.enterConsultantShippingDetails(firstName, lastName, addressLine1, addressLine2 ,city, state, postalCode, phoneNumber);
@@ -731,23 +731,22 @@ public class OrdersTest extends StoreFrontWebsiteBaseTest{
 		String postalCode = TestConstants.POSTAL_CODE_US;
 		String phoneNumber = TestConstants.PHONE_NUMBER;
 		sfHomePage.loginToStoreFront(TestConstants.CONSULTANT_USERNAME, password);
-		sfHomePage.clickAllProducts();
-		sfHomePage.selectFirstProduct();
-		sfHomePage.checkoutThePopup();
-		sfCheckoutPage=sfHomePage.checkoutTheCart();
+		sfShopSkinCarePage = sfHomePage.clickAllProducts();
+		sfShopSkinCarePage.selectFirstProduct();
+		sfShopSkinCarePage.checkoutTheCartFromPopUp();
+		sfCheckoutPage=sfShopSkinCarePage.checkoutTheCart();
 		sfCheckoutPage.clickSaveButton();
 		sfCheckoutPage.clickEditLinkOfShippingAddress();
 		sfCheckoutPage.updateShippingAddressDetailsAtCheckoutPage(firstName, lastName, addressLine1, city, state, postalCode, phoneNumber);
 		sfCheckoutPage.clickSaveButtonOfShippingAddress();
 		s_assert.assertTrue(sfCheckoutPage.isUseAsEnteredPopupDisplayed(), "Use As Entered Confirmation Popup is Not Displayed after Editing shipping profile");
-		sfCheckoutPage.clickUseAsEnteredButton();
+		sfCheckoutPage.clickUseAsEnteredButtonOnPopUp();
 		sfCheckoutPage.clickAddNewShippingAddressButton();
 		sfCheckoutPage.enterConsultantShippingDetails(firstName, lastName, addressLine1, addressLine2,city, state, postalCode, phoneNumber);
 		sfCheckoutPage.clickShippingDetailsNextbutton();
 		s_assert.assertTrue(sfCheckoutPage.isUseAsEnteredPopupDisplayed(), "Use As Entered Confirmation Popup is Not Displayed after added new shipping profile");
-		sfCheckoutPage.clickUseAsEnteredButton();
+		sfCheckoutPage.clickUseAsEnteredButtonOnPopUp();
 		s_assert.assertAll();
 	}
-
 
 }

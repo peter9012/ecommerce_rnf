@@ -38,6 +38,7 @@ public class StoreFrontWebsiteBasePage extends RFBasePage{
 		this.driver = driver;
 	}
 	String topNavigationLoc = "//div[contains(@class,'navbar-inverse')]";
+
 	/**
 	 * Top Navigation Links
 	 */
@@ -74,8 +75,8 @@ public class StoreFrontWebsiteBasePage extends RFBasePage{
 	private final By MINI_CART_ICON_LOC = By.xpath("//a[contains(@class,'mini-cart-link')]");
 	private final By SIGN_UP_NOW_LINK_LOC = By.xpath("//a[contains(text(),'Sign up now')]");
 	private final By WELCOME_DD_ACCOUNT_INFO_LOC = By.xpath("//a[text()='Account Info']");
-	private final By WELCOME_DROPDOWN_LOC = By.xpath("//div[@class='user-wrapper']/span");
-	protected final By CHECKOUT_BUTTON_LOC = By.id("checkoutPopup");
+	private final By WELCOME_DROPDOWN_LOC = By.xpath("//div[contains(text(),'Welcome')]");
+	protected final By CHECKOUT_BUTTON_LOC = By.xpath("//div[@class='cart-container']/descendant::button[contains(text(),'Checkout')][2]");
 	private final By CHECKOUT_CONFIRMATION_OK_BUTTON_LOC = By.xpath("//div[@id='cartCheckoutModal']/a");
 	private final By WELCOME_DD_SHIPPING_INFO_LOC = By.xpath("//a[text()='Shipping Info']");
 	private final By WELCOME_DD_BILLING_INFO_LOC = By.xpath("//a[text()='Billing Info']");
@@ -85,9 +86,6 @@ public class StoreFrontWebsiteBasePage extends RFBasePage{
 	protected final By USE_AS_ENTERED_BUTTON_LOC = By.xpath("//div[@id='cboxLoadedContent']//button[@id='oldAddress']");
 	private final By COUNTRY_LOC = By.xpath("//span[@class='selected-country']/preceding::input[1]");
 	private final By COUNTRY_NAME_LOC = By.xpath("//span[@class='selected-country']");
-	private final By CHECKOUT_BUTTON_POPUP_LOC = By.xpath("//div[@id='addToCartLayer']/a[contains(text(),'Checkout')]");
-	private final By ADD_TO_CART_FIRST_PRODUCT_LOC = By.xpath("//div[@id='product_listing']/descendant::button[text()='Add to cart'][1]");
-	private final By ADD_TO_BAG_OF_FIRST_PRODUCT = By.xpath("//div[@id='product_listing']/descendant::span[text()='Add to Bag'][1]");
 	protected final By SAVE_BUTTON_LOC = By.id("deliveryAccountSubmit");
 	private final By WELCOME_DD_AUTOSHIP_STATUS_LOC = By.xpath("//a[text()='Autoship Status']");
 	private final By EDIT_LINK_NEXT_TO_MAIN_ACCOUNT_LOC = By.xpath("//div[@class='checkout-steps']/descendant::a[1]");
@@ -103,7 +101,6 @@ public class StoreFrontWebsiteBasePage extends RFBasePage{
 	private final By LOGOUT_LOC = By.xpath("//a[text()='Sign Out']");
 	private final By WELCOME_DD_EDIT_CRP_LOC = By.xpath("//a[text()='Edit CRP']");
 	private final By WELCOME_DD_CHECK_MY_PULSE_LOC = By.xpath("//a[text()='Check My Pulse']");
-	private final By USED_AS_ENTERED_BUTTON_LOC  = By.xpath("//div[@id='cboxContent']//button[@id='oldAddress']");
 	private final By I_DONT_HAVE_SPONSOR_CHKBOX_LOC = By.xpath("//label[text()=\"I DON'T HAVE SPONSOR\"]");
 	private final By SUBMIT_BTN_ON_REQUIRED_SPONSOR_POPUP_LOC = By.id("consultant-sponsor-submit");
 	private final By SPONSOR_FIRST_NAME_LOC = By.xpath("//div[@class='enroll-page']/descendant::input[@id='sponsor.firstName'][1]");
@@ -127,7 +124,13 @@ public class StoreFrontWebsiteBasePage extends RFBasePage{
 	private final By EXP_YEAR_LOC= By.xpath("//select[@id='c-exyr']//option[11]");
 	private final By CVV_LOC= By.id("c-cvv");
 	private final By IFRAME_LOC= By.id("IFrame");
-
+	private final By USE_MY_DELIVERY_ADDRESS_CHK_BOX_LOC= By.xpath("//label[contains(@class,'useDeliveryAddress')]");
+	private final By POLICIES_AND_PROCEDURES_CHK_BOX_LOC = By.xpath("//div[contains(@class,'checkout-steps')]/descendant::label[2]");
+	private final By TERMS_AND_CONDITIONS_CHK_BOX_LOC = By.xpath("//div[contains(@class,'checkout-steps')]/descendant::label[1]");
+	private final By BILLING_NEXT_BUTTON_LOC = By.id("reviewOrder");
+	private final By BECOME_A_CONSULTANT_BTN_LOC = By.id("placeOrder");
+	private final By AUTOSHIP_TEXT_LOC = By.xpath("//span[text()='AutoShip']");
+	
 	private String textLoc = "//*[contains(text(),'%s')]";
 	private String stateForShippingDetails = "//select[@id='address.region']//option[text()='%s']";
 	private String topNavigationSublinksWithTextLoc  = topNavigationLoc+"//a[text()='%s']";
@@ -141,7 +144,7 @@ public class StoreFrontWebsiteBasePage extends RFBasePage{
 	private String sponsorEmptyFieldValidationOnPopUpLoc = "//label[@id='sponsor.%s-error'][contains(text(),'%s')]";
 	private String sponsorInvalidFieldValidationOnPopUpLoc = "//label[@id='sponsor.%s-error'][contains(text(),'%s')]";
 	private String cardTypeLoc= "//select[@id='c-ct']//option[text()='%s']";
-	
+
 	private String RFO_DB = null;
 
 	/***
@@ -682,13 +685,13 @@ public class StoreFrontWebsiteBasePage extends RFBasePage{
 	 * This method click the sign up now links
 	 * 
 	 * @param
-	 * @return store front website base page object
+	 * @return store front checkout page object
 	 * 
 	 */
-	public StoreFrontWebsiteBasePage clickSignUpNowLink(){
+	public StoreFrontCheckoutPage clickSignUpNowLink(){
 		driver.click(SIGN_UP_NOW_LINK_LOC);
 		logger.info("Sign up now link clicked");
-		return this;
+		return new StoreFrontCheckoutPage(driver);
 	}
 
 	/***
@@ -698,13 +701,13 @@ public class StoreFrontWebsiteBasePage extends RFBasePage{
 	 * @return store front website base page object
 	 * 
 	 */
-	public StoreFrontWebsiteBasePage navigateToShopSkincareLink(String linkName){
+	public StoreFrontShopSkinCarePage navigateToShopSkincareLink(String linkName){
 		mouseHoverOn(TestConstants.SHOP_SKINCARE);
 		driver.click(By.xpath(String.format(topNavigationSublinksWithTextLoc, linkName)));
 		logger.info("clicked on"+ "'"+linkName+"'" +"under shopskincare");
 		driver.waitForLoadingImageToDisappear();
 		driver.waitForPageLoad();
-		return this;
+		return new StoreFrontShopSkinCarePage(driver);
 	}
 
 	/***
@@ -730,7 +733,7 @@ public class StoreFrontWebsiteBasePage extends RFBasePage{
 	 * 
 	 */
 	public StoreFrontWebsiteBasePage clickWelcomeDropdown(){
-		driver.click(WELCOME_DROPDOWN_LOC);
+		driver.clickByJS(RFWebsiteDriver.driver, driver.findElement(WELCOME_DROPDOWN_LOC));
 		logger.info("Welcome dropdown clicked");
 		driver.pauseExecutionFor(2000);
 		return this;
@@ -776,46 +779,6 @@ public class StoreFrontWebsiteBasePage extends RFBasePage{
 		logger.info("Entered postal code as "+postal);
 		driver.type(PHONE_NUMBER_FOR_ADDRESS_DETAILS_LOC, phoneNumber);
 		logger.info("Entered Phone number  as "+phoneNumber);
-		return this;
-	}
-
-	/***
-	 * This method click Use as entered button.
-	 * 
-	 * @param
-	 * @return store front website base page object
-	 * 
-	 */
-	public StoreFrontWebsiteBasePage clickUseAsEnteredButton(){
-		driver.click(USE_AS_ENTERED_BUTTON_LOC);
-		logger.info("Use as entered button clicked");
-		return this;
-	}
-
-	/***
-	 * This method click add to bag button for first product
-	 * 
-	 * @param
-	 * @return store front website base page object
-	 * 
-	 */
-	public StoreFrontWebsiteBasePage selectFirstProduct(){
-		driver.pauseExecutionFor(5000);
-		driver.moveToElementByJS(ADD_TO_CART_FIRST_PRODUCT_LOC);
-		driver.click(ADD_TO_BAG_OF_FIRST_PRODUCT);
-		return this;
-	}
-
-	/***
-	 * This method click the checkout button on popup.
-	 * 
-	 * @param
-	 * @return store front website base page object
-	 * 
-	 */
-	public StoreFrontWebsiteBasePage checkoutThePopup(){
-		driver.click(CHECKOUT_BUTTON_POPUP_LOC);
-		logger.info("Clicked on checkout button at popup");
 		return this;
 	}
 
@@ -1084,8 +1047,12 @@ public class StoreFrontWebsiteBasePage extends RFBasePage{
 	}
 
 	public void clickUseAsEnteredButtonOnPopUp(){
-		driver.click(USED_AS_ENTERED_BUTTON_LOC);
-		logger.info("'Used as entered' button clicked");
+		try{
+			driver.click(USE_AS_ENTERED_BUTTON_LOC);
+			logger.info("'Used as entered' button clicked");
+		}catch(Exception ex){
+
+		}
 	}
 
 	/***
@@ -1349,13 +1316,13 @@ public class StoreFrontWebsiteBasePage extends RFBasePage{
 	}
 
 	/***
-	 * This method enter the consultant billing details
+	 * This method enter the user billing details
 	 * 
 	 * @param Card type, card number, card name, CVV
 	 * @return store front Home page object
 	 * 
 	 */
-	public StoreFrontWebsiteBasePage enterConsultantBillingDetails(String cardType, String cardNumber, String nameOnCard,String CVV){
+	public StoreFrontWebsiteBasePage enterUserBillingDetails(String cardType, String cardNumber, String nameOnCard,String CVV){
 		driver.switchTo().frame(driver.findElement(IFRAME_LOC));
 		logger.info("Switched into iframe");
 		driver.clickByJS(RFWebsiteDriver.driver, driver.findElement(CARD_TYPE_DD_LOC));
@@ -1379,6 +1346,96 @@ public class StoreFrontWebsiteBasePage extends RFBasePage{
 		driver.switchTo().defaultContent();
 		logger.info("Switched to default content");			
 		return this;
-
 	}
+
+	/***
+	 * This method check the checkbox of Use my delivery address check box
+	 * 
+	 * @param
+	 * @return store front Base page object
+	 * 
+	 */
+	public StoreFrontWebsiteBasePage checkUseMyDeliveryAddressChkBox(){
+		driver.click(USE_MY_DELIVERY_ADDRESS_CHK_BOX_LOC);
+		logger.info("Use My delivery address check box checked");
+		return this;
+	}
+
+	/***
+	 * This method click the next button at billing details page
+	 * 
+	 * @param
+	 * @return store front Base page object
+	 * 
+	 */
+	public StoreFrontWebsiteBasePage clickBillingDetailsNextbutton(){
+		driver.click(BILLING_NEXT_BUTTON_LOC);
+		logger.info("Next button clicked of billing details");
+		return this;
+	}
+
+	/***
+	 * This method select the terms & conditions checkbox
+	 * 
+	 * @param
+	 * @return store front Base page object
+	 * 
+	 */
+	public StoreFrontWebsiteBasePage selectTermsAndConditionsChkBox(){
+		driver.pauseExecutionFor(5000);
+		driver.clickByJS(RFWebsiteDriver.driver, driver.findElement(TERMS_AND_CONDITIONS_CHK_BOX_LOC));
+		logger.info("Terms & condition checkbox selected");
+		driver.pauseExecutionFor(2000);
+		return this;
+	}
+
+	/***
+	 * This method select the policies & procedures checkbox
+	 * 
+	 * @param
+	 * @return store front Base page object
+	 * 
+	 */
+	public StoreFrontWebsiteBasePage selectPoliciesAndProceduresChkBox(){
+		driver.click(POLICIES_AND_PROCEDURES_CHK_BOX_LOC);
+		logger.info("Policies & procedures checkbox selected");
+		return this;
+	}
+	
+	/***
+	 * This method click become a consultant button
+	 * 
+	 * @param
+	 * @return store front Base page object
+	 */
+	public StoreFrontWebsiteBasePage clickBecomeAConsultant(){
+		driver.click(BECOME_A_CONSULTANT_BTN_LOC);
+		logger.info("Become a consultant button clicked");
+		driver.waitForPageLoad();
+		driver.waitForLoadingImageToDisappear();
+		return this;
+	}
+	
+	/**
+	 * This method clicks on the place order button
+	 * @return
+	 */
+	public StoreFrontWebsiteBasePage clickPlaceOrderButton(){
+		clickBecomeAConsultant();
+		return this;
+	}
+	
+	/***
+	 * This method checks whether a pc has been enrolled successfully or not by verifying 
+	 * i) order confirmation String in URL
+	 * ii) Welcome Drop Down element
+	 * iii) autoship element on the page
+	 */
+	public boolean hasPCEnrolledSuccessfully(){
+		return driver.isElementVisible(WELCOME_DROPDOWN_LOC)
+				&& driver.getCurrentUrl().contains("/orderConfirmation")
+				&& driver.isElementVisible(AUTOSHIP_TEXT_LOC);
+		
+	}
+	
 }

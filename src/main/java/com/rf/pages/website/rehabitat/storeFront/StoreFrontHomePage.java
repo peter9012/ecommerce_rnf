@@ -38,10 +38,6 @@ public class StoreFrontHomePage extends StoreFrontWebsiteBasePage{
 	private final By CLOSE_ICON_MEMBER_DETAIL_POPUP_LOC = By.xpath("//button[@class='close']");
 	private final By BILLING_ADDRESS_DD_LOC= By.id("default-address");
 	private final By BILLING_ADDRESS_OPTION_VALUE_LOC= By.xpath("//select[@id='default-address']//option[2]");
-	private final By USE_MY_DELIVERY_ADDRESS_CHK_BOX_LOC= By.xpath("//label[contains(@class,'useDeliveryAddress')]");
-	private final By POLICIES_AND_PROCEDURES_CHK_BOX_LOC = By.xpath("//div[contains(@class,'checkout-steps')]/descendant::label[2]");
-	private final By TERMS_AND_CONDITIONS_CHK_BOX_LOC = By.xpath("//div[contains(@class,'checkout-steps')]/descendant::label[1]");
-	private final By BILLING_NEXT_BUTTON_LOC = By.id("reviewOrder");
 	private final By SAVE_BUTTON_LOC = By.id("deliveryAccountSubmit");
 	private final By FIRST_PRODUCT_AT_KIT_PAGE_LOC = By.xpath("//input[@id='ENROLL_KIT_0002']");
 	private final By FIRST_NAME_FOR_REGISTRATION_LOC = By.id("register.firstName");
@@ -61,7 +57,8 @@ public class StoreFrontHomePage extends StoreFrontWebsiteBasePage{
 	private final By SHOP_BY_PRICE_FILTER_OPTION_200_TO_499$_AFTER_CHECKED_LOC = By.xpath("//input[@id='$200-$499.99ID'][@checked = 'checked']");
 	private final By MINI_CART_NUMBER_OF_ITEMS_LOC = By.xpath("//span[@class='nav-items-total']");
 	private final By WELCOME_USER_LOC = By.xpath("//div[@class='loginBlock']/div");
-	
+	private final By CONFIRMATION_MSG_OF_CONSULTANT_ENROLLMENT = By.xpath("//div[@class='global-alerts']/div");
+
 	private String kitNameLoc = "//label[text()='%s']/preceding::input[1]";
 	private String priceOfProductLoc = "//div[contains(@class,'product__listing')]//div[@class='product-item'][%s]//span[@id='cust_price']";
 	private String socialMediaIconLoc = "//div[@class='container']//a[contains(@href,'%s')]";
@@ -361,67 +358,7 @@ public class StoreFrontHomePage extends StoreFrontWebsiteBasePage{
 		return this;
 	}
 
-
-	/***
-	 * This method click the next button at billing details page
-	 * 
-	 * @param
-	 * @return store front Home page object
-	 * 
-	 */
-	public StoreFrontHomePage clickBillingDetailsNextbutton(){
-		driver.click(BILLING_NEXT_BUTTON_LOC);
-		logger.info("Next button clicked of billing details");
-		return this;
-	}
-
-	/***
-	 * This method select the terms & conditions checkbox
-	 * 
-	 * @param
-	 * @return store front Home page object
-	 * 
-	 */
-	public StoreFrontHomePage selectTermsAndConditionsChkBox(){
-		driver.pauseExecutionFor(5000);
-		driver.clickByJS(RFWebsiteDriver.driver, driver.findElement(TERMS_AND_CONDITIONS_CHK_BOX_LOC));
-		logger.info("Terms & condition checkbox selected");
-		driver.pauseExecutionFor(2000);
-		return this;
-	}
-
-	/***
-	 * This method select the policies & procedures checkbox
-	 * 
-	 * @param
-	 * @return store front Home page object
-	 * 
-	 */
-	public StoreFrontHomePage selectPoliciesAndProceduresChkBox(){
-		driver.click(POLICIES_AND_PROCEDURES_CHK_BOX_LOC);
-		logger.info("Policies & procedures checkbox selected");
-		return this;
-	}
-
-	private final By BECOME_A_CONSULTANT_BTN_LOC = By.id("placeOrder");
-
-	/***
-	 * This method click become a consultant button
-	 * 
-	 * @param
-	 * @return store front Home page object
-	 * 
-	 */
-	public StoreFrontHomePage clickBecomeAConsultant(){
-		driver.click(BECOME_A_CONSULTANT_BTN_LOC);
-		logger.info("Become a consultant button clicked");
-		driver.waitForPageLoad();
-		driver.waitForLoadingImageToDisappear();
-		return this;
-	}
-
-	private final By CONFIRMATION_MSG_OF_CONSULTANT_ENROLLMENT = By.xpath("//div[@class='global-alerts']/div");
-
+	
 	/***
 	 * This method get the confirmation message of consultant enrollment
 	 * 
@@ -436,7 +373,8 @@ public class StoreFrontHomePage extends StoreFrontWebsiteBasePage{
 	}
 
 	public boolean isWelcomeUserElementDisplayed(){
-		return driver.getText(WELCOME_USER_LOC).contains("Welcome");
+		System.out.println("*** "+driver.isElementVisible(WELCOME_USER_LOC));
+		return driver.isElementVisible(WELCOME_USER_LOC);
 	}
 
 
@@ -453,18 +391,6 @@ public class StoreFrontHomePage extends StoreFrontWebsiteBasePage{
 		driver.pauseExecutionFor(500);
 		driver.click(BILLING_ADDRESS_OPTION_VALUE_LOC);
 		logger.info("Billing address selected");
-		return this;
-	}
-	/***
-	 * This method check the checkbox of Use my delivery address check box
-	 * 
-	 * @param
-	 * @return store front Home page object
-	 * 
-	 */
-	public StoreFrontHomePage checkUseMyDeliveryAddressChkBox(){
-		driver.click(USE_MY_DELIVERY_ADDRESS_CHK_BOX_LOC);
-		logger.info("Use My delivery address check box checked");
 		return this;
 	}
 

@@ -22,13 +22,13 @@ public class MiniCartTest extends StoreFrontWebsiteBaseTest{
 		String noOfItem = "0";
 		String noOfItemFromUI = null;   
 		sfHomePage.loginToStoreFront(TestConstants.CONSULTANT_USERNAME, password);
-		sfHomePage.clickAllProducts();
-		sfHomePage.selectFirstProduct();
-		sfHomePage.checkoutThePopup();
+		sfShopSkinCarePage = sfHomePage.clickAllProducts();
+		sfShopSkinCarePage.selectFirstProduct();
+		sfShopSkinCarePage.checkoutTheCartFromPopUp();
 		sfHomePage.checkoutTheCart();
 		sfHomePage.clickSaveButton();
 		sfHomePage.clickShippingDetailsNextbutton();
-		sfHomePage.enterConsultantBillingDetails(cardType, cardNumber, cardName, CVV);
+		sfHomePage.enterUserBillingDetails(cardType, cardNumber, cardName, CVV);
 		sfHomePage.selectBillingAddressFromDD();
 		sfHomePage.checkUseMyDeliveryAddressChkBox();
 		sfHomePage.clickBillingDetailsNextbutton();

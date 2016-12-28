@@ -28,7 +28,7 @@ public class NavigateToHomePageFromLogoTest extends StoreFrontWebsiteBaseTest{
 		currentURL = sfHomePage.getCurrentURL().toLowerCase();
 		s_assert.assertTrue(sfHomePage.getCurrentURL().contains("https://www.dev1.rodanandfields.com/AU/"), "Expected URL should be like https://www.dev1.rodanandfields.com/AU/ but actual on UI is"+currentURL);
 		sfShopSkinCarePage = sfHomePage.clickAllProducts();
-		sfShopSkinCarePage.addFirstProductToBag();
+		sfShopSkinCarePage.selectFirstProduct();
 		sfCartPage = sfShopSkinCarePage.checkoutTheCartFromPopUp();
 		sfCartPage.clickRodanAndFieldsLogo();
 		currentURL = sfHomePage.getCurrentURL().toLowerCase();

@@ -16,8 +16,8 @@ public class StoreFrontOrdersPage extends StoreFrontWebsiteBasePage{
 	private static final Logger logger = LogManager
 			.getLogger(StoreFrontOrdersPage.class.getName());
 
-	private final By FIRST_ORDER_NUMBER_UNDER_ORDER_HISTORY_LOC = By.xpath("//div[@class='account-section']/descendant::div[@class='account-orderhistory'][2]/descendant::a[1]");
-	private final By FIRST_ACTIONS_DD_UNDER_ORDER_HISTORY_LOC = By.xpath("//div[@class='account-section']/descendant::div[@class='account-orderhistory'][2]/descendant::div[contains(text(),'Actions')][1]");
+	private final By FIRST_ORDER_NUMBER_UNDER_ORDER_HISTORY_LOC = By.xpath("//div[@id='orderHistoryContentArea']//tr[2]//td[2]/a");
+	private final By FIRST_ACTIONS_DD_UNDER_ORDER_HISTORY_LOC = By.xpath("//div[@id='orderHistoryContentArea']//tr[2]//div[contains(text(),'Actions')]");
 	private final By NAME_FIELD_AT_REPORT_PROBLEM_PAGE_LOC = By.xpath("//form[@id='reportAProblemForm']/descendant::span[@class='message-content'][2]");
 	private final By EMAIL_FIELD_AT_REPORT_PROBLEM_PAGE_LOC = By.xpath("//div[contains(text(),'Email')]//input[@name='email']");
 	private final By PROBLEM_DD_LOC = By.id("problemReasonCode");
@@ -26,8 +26,9 @@ public class StoreFrontOrdersPage extends StoreFrontWebsiteBasePage{
 	private final By PROBLEM_DD_FIRST_OPTION_LOC = By.xpath("//select[@id='problemReasonCode']/option[1]");
 	private final By SUBMIT_BTN_LOC = By.xpath("//button[text()='SUBMIT']");
 	private final By CONFIRMATION_MSG_OF_REPORT_PROBLEM = By.xpath("//div[@class='account-section']");
+	private final By READ_OUR_RETURN_POLICY_LINK_LOC= By.xpath("//a[contains(text(),'Read our return policy')]");
 
-	private String detailsLinkUnderOrderHistoryLoc = "//div[@class='account-section']/descendant::div[@class='account-orderhistory'][2]/descendant::a[contains(text(),'%s')][1]";
+	private String detailsLinkUnderOrderHistoryLoc = "//div[@id='orderHistoryContentArea']//tr[2]//a[contains(text(),'%s')]";
 
 	/***
 	 * This method get first order number from order history 
@@ -149,6 +150,25 @@ public class StoreFrontOrdersPage extends StoreFrontWebsiteBasePage{
 		String msg = driver.findElement(CONFIRMATION_MSG_OF_REPORT_PROBLEM).getText();
 		logger.info("Confirmation message is "+msg);
 		return msg;
+	}
+	
+	/***
+	 * This method clicks on Read our Return Policy Link
+	 * @return
+	 */
+	public StoreFrontOrdersPage clickReadOurReturnPolicyLink(){
+		driver.click(READ_OUR_RETURN_POLICY_LINK_LOC);
+		logger.info("Read our Return Policy Link clicked");
+		return this;		
+	}
+	
+	/***
+	 * This method checks whether Return policy document has opened or not
+	 * @return
+	 */
+	public boolean isReturnPolicyPDFOpened(){
+		String returnPolicyURL = "return-policy-for-pcperks-and-retails.pdf";
+		return driver.getCurrentUrl().contains(returnPolicyURL);
 	}
 }
 

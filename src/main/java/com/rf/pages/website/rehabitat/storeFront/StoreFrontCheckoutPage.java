@@ -32,13 +32,27 @@ public class StoreFrontCheckoutPage extends StoreFrontWebsiteBasePage{
 	private final By STATE_DD_FOR_SHIPPING_AT_CHECKOUT_PAGE_LOC=By.xpath("//form[@id='shippingAddressForm']//select[@id='address.region']");
 	private final By POSTAL_CODE_FOR_SHIPPING_AT_CHECKOUT_PAGE_LOC=By.xpath("//form[@id='shippingAddressForm']//input[@id='address.postcode']");
 	private final By PHONE_NUMBER_FOR_SHIPPING_AT_CHECKOUT_PAGE_LOC=By.xpath("//form[@id='shippingAddressForm']//input[@id='address.phone']");
+
+	private final By SHIPPING_NAME_AT_CHECKOUT_PAGE_LOC=By.id("address.firstName");
+	private final By SHIPPING_ADDRESS_LINE_1_AT_CHECKOUT_PAGE_LOC=By.id("address.line1");
+	private final By SHIPPING_ADDRESS_LINE_2_AT_CHECKOUT_PAGE_LOC=By.id("address.line2");
+	private final By SHIPPING_CITY_AT_CHECKOUT_PAGE_LOC=By.id("address.townCity");
+	private final By SHIPPING_STATE_AT_CHECKOUT_PAGE_LOC=By.id("address.region");
+	private final By SHIPPING_POSTAL_CODE_AT_CHECKOUT_PAGE_LOC=By.id("address.postcode");
+	private final By SHIPPING_PHONE_NUMBER_AT_CHECKOUT_PAGE_LOC=By.id("address.phone");
+
 	private final By QUEBEC_PROVINCE_FOR_SHIPPING_LOC=By.xpath("//option[@disabled='disabled' and text()='Quebec']");
 	private final By SELECTED_SHIPPING_METHOD_LOC = By.xpath("//li[@class='checked']/label");
-	private String shippingMethodLoc = "//label[contains(text(),'%s')]";
 	private final By EDIT_LINK_OF_ORDERS_SUMMARY_LOC=By.xpath("//div[@class='price']/a[contains(text(),'Edit')]");
 	private final By CANCEL_BUTTON_LOC=By.xpath("//button[contains(text(),'Cancel')]");
 	private final By EDIT_LINK_OF_ACCOUNT_INFO_LOC=By.xpath("//a[@class='editIcon']");
+	private final By CONTINUE_WITHOUT_SPONSOR_LOC = By.xpath("//a[contains(text(),'Continue Without a Consultant')]");
+	private final By USE_MY_DELIVERY_ADDRESS_CHECKBOX_LOC = By.xpath("//input[@id='useDeliveryAddress']/..");
+	private final By NEXT_BTN_AFTER_BILLING_LOC = By.id("reviewOrder");
+	private final By POPUP_FOR_TERMS_AND_CONDITIONS_LOC = By.id("city_popup");
+	
 	private String stateForShippingDetailsAtCheckoutPageLoc = "//form[@id='shippingAddressForm']//select[@id='address.region']//option[text()='%s']";
+	private String shippingMethodLoc = "//label[contains(text(),'%s')]";
 
 	public StoreFrontCheckoutPage fillNewUserDetails(String userType,String firstName,String lastName,String email,String password){
 		driver.type(FIRST_NAME_LOC, firstName);
@@ -60,9 +74,9 @@ public class StoreFrontCheckoutPage extends StoreFrontWebsiteBasePage{
 
 	public void clickCreateAccountButton(){
 		driver.click(CREATE_ACCOUNT_BUTTON_LOC);
-		logger.info("'Create Account' button clicked");
+		logger.info("clicked on 'Create Account' button");
+		driver.waitForLoadingImageToDisappear();
 	}
-
 
 	/***
 	 * This method click the save button
@@ -162,6 +176,36 @@ public class StoreFrontCheckoutPage extends StoreFrontWebsiteBasePage{
 		logger.info("Postal code field is cleared");
 		driver.clear(PHONE_NUMBER_FOR_SHIPPING_AT_CHECKOUT_PAGE_LOC);
 		logger.info("phone number field is cleared");
+	}
+
+	/**
+	 * This method enters the shipping details at checkout page
+	 * 
+	 * @param name
+	 * @param addressLine1
+	 * @param addressLine2
+	 * @param city
+	 * @param state
+	 * @param postalCode
+	 * @param phoneNumber
+	 * @return
+	 */
+	public StoreFrontCheckoutPage enterShippingDetails(String name, String addressLine1, String addressLine2, String city, String state, String postalCode, String phoneNumber){
+		driver.type(SHIPPING_NAME_AT_CHECKOUT_PAGE_LOC, name);
+		logger.info("Entered shipping name as "+name);
+		driver.type(SHIPPING_ADDRESS_LINE_1_AT_CHECKOUT_PAGE_LOC, addressLine1);
+		logger.info("Entered shipping address Line 1 as "+addressLine1);
+		driver.type(SHIPPING_ADDRESS_LINE_2_AT_CHECKOUT_PAGE_LOC, addressLine2);
+		logger.info("Entered shipping address Line 2 as "+addressLine2);
+		driver.type(SHIPPING_CITY_AT_CHECKOUT_PAGE_LOC, city);
+		logger.info("Entered shipping city as "+city);
+		driver.findElement(SHIPPING_STATE_AT_CHECKOUT_PAGE_LOC).sendKeys(state);
+		logger.info("Entered shipping state as "+state);
+		driver.type(SHIPPING_POSTAL_CODE_AT_CHECKOUT_PAGE_LOC, postalCode);
+		logger.info("Entered shipping postal code as "+postalCode);
+		driver.type(SHIPPING_PHONE_NUMBER_AT_CHECKOUT_PAGE_LOC, phoneNumber);
+		logger.info("Entered shipping phone number as "+phoneNumber);
+		return this;
 	}
 
 	/***
@@ -286,6 +330,46 @@ public class StoreFrontCheckoutPage extends StoreFrontWebsiteBasePage{
 		}else{
 			return nonSelectedShippingMethodName1;
 		}
+	}
+
+	/***
+	 * This method clicks on the Continue without Sponsor link
+	 * @return same page object
+	 */
+	public StoreFrontCheckoutPage clickContinueWithoutConsultantLink(){
+		driver.click(CONTINUE_WITHOUT_SPONSOR_LOC);
+		logger.info("Continue without sponsor link clicked");
+		return this;
+	}
+
+	/**
+	 * This method selects the use my delivery address checkbox
+	 * @return
+	 */
+	public StoreFrontCheckoutPage selectUseMyDeliveyAddressCheckbox(){
+		driver.click(USE_MY_DELIVERY_ADDRESS_CHECKBOX_LOC);
+		logger.info("Use My delivery address checkbox checked");
+		return this;
+	}
+
+	/**
+	 * This method clicks on the next button after billing address
+	 * @return
+	 */
+	public StoreFrontCheckoutPage clickNextButtonAfterBillingAddress(){
+		driver.click(NEXT_BTN_AFTER_BILLING_LOC);
+		logger.info("Next button after billing clicked");
+		return this;
+	}
+	
+	/***
+	 * This method checks whether the pop up for 
+	 * terms and conditions after not selected the checkboxes 
+	 * has displayed or not
+	 * @return
+	 */
+	public boolean isPopUpForTermsAndConditionsCheckboxDisplayed(){
+		return driver.isElementVisible(POPUP_FOR_TERMS_AND_CONDITIONS_LOC);
 	}
 
 }

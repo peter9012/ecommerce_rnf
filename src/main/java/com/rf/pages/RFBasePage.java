@@ -26,7 +26,6 @@ public class RFBasePage {
 		WrapsDriver wrappedElement = (WrapsDriver) element;
 		JavascriptExecutor js = (JavascriptExecutor)wrappedElement.getWrappedDriver();
 		js.executeScript("arguments[0].scrollIntoView(true);", element);
-		System.out.println("************scrolled");
 		for (int i = 0; i < 5; i++) {		
 			js.executeScript("arguments[0].setAttribute('style',arguments[1]);",element, "color: yellow; border: 2px solid red;");
 			try {

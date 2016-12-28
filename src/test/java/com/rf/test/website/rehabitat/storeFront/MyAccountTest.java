@@ -177,10 +177,9 @@ public class MyAccountTest extends StoreFrontWebsiteBaseTest{
 		String updatedLastName = "wxyz";
 		//Login as consultant user.
 		sfHomePage.loginToStoreFront(TestConstants.CONSULTANT_USERNAME,password);
-		sfHomePage.navigateToShopSkincareLink(category_AllProduct);
-		//sfCartPage = sfHomePage.addProductToCart(cartType);
-		sfHomePage.selectFirstProduct();
-		sfHomePage.checkoutThePopup();
+		sfShopSkinCarePage = sfHomePage.navigateToShopSkincareLink(category_AllProduct);
+		sfShopSkinCarePage.selectFirstProduct();
+		sfShopSkinCarePage.checkoutTheCartFromPopUp();
 		sfCheckoutPage = sfHomePage.checkoutTheCart();
 		sfCheckoutPage.updateFirstName(updatedFirstName);
 		sfCheckoutPage.updateLastName(updatedLastName);
@@ -641,6 +640,29 @@ public class MyAccountTest extends StoreFrontWebsiteBaseTest{
 		sfAccountInfoPage.clickEmailYourConsultantLink();
 		sfAccountInfoPage.enterEmailYourConsultantDetailsAndSubmit("testName", "testEmail@rf.com", "test email");
 		
+	}
+	
+	/***
+	 * qTest : TC-358 User navigates to Report a Problem page from the order history
+	 * 
+	 * Description : This test verifies if Return Policy link works fine under 
+	 * Orders->Actions->Report Problems
+	 * 
+	 *     
+	 */
+	@Test
+	public void testReportAProblemOrderHistory_358(){
+		String reportProblemsLink = "Report Problems";
+		sfHomePage.loginToStoreFront(TestConstants.CONSULTANT_USERNAME, password);
+		sfHomePage.clickWelcomeDropdown();
+		sfOrdersPage = sfHomePage.navigateToOrdersPage();
+		sfOrdersPage.chooselinkFromActionsDDUnderOrderHistoryForFirstOrder(reportProblemsLink);
+		sfOrdersPage.clickReadOurReturnPolicyLink();
+		String parentWin = CommonUtils.getCurrentWindowHandle();
+		sfOrdersPage.switchToChildWindow(parentWin);
+		s_assert.assertTrue(sfOrdersPage.isReturnPolicyPDFOpened(), "Return Policy PDF has not opened");
+		sfOrdersPage.switchToParentWindow(parentWin);
+		s_assert.assertAll();
 	}
 
 }

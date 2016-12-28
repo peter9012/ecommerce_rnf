@@ -76,7 +76,7 @@ public class ConsultantEnrollmentTest extends StoreFrontWebsiteBaseTest{
 		sfHomePage.clickSaveButton();
 		sfHomePage.enterConsultantShippingDetails(firstName, lastName, addressLine1, addressLine2 ,city, state, postalCode, phoneNumber);
 		sfHomePage.clickShippingDetailsNextbutton();
-		sfHomePage.enterConsultantBillingDetails(cardType, cardNumber, cardName, CVV);
+		sfHomePage.enterUserBillingDetails(cardType, cardNumber, cardName, CVV);
 		//sfHomePage.selectBillingAddressFromDD();
 		sfHomePage.checkUseMyDeliveryAddressChkBox();
 		sfHomePage.clickBillingDetailsNextbutton();
@@ -182,8 +182,6 @@ public class ConsultantEnrollmentTest extends StoreFrontWebsiteBaseTest{
 		String cardName = TestConstants.CARD_NAME;
 		String CVV = TestConstants.CVV;
 		String kitName = "BUSINESS PORTFOLIO";
-//		String confirmationMessageFromUI = null;
-//		String expectedConfirmationMessage = "Your enrollment kit order number is";   
 		sfHomePage.clickEnrollNow();
 		sfHomePage.searchSponsor(TestConstants.SPONSOR);
 		s_assert.assertTrue(sfHomePage.isSponsorResultDisplayed(),"No result found after searching the sponsor with name "+TestConstants.SPONSOR);
@@ -195,7 +193,7 @@ public class ConsultantEnrollmentTest extends StoreFrontWebsiteBaseTest{
 		sfHomePage.clickSaveButton();
 		sfHomePage.enterConsultantShippingDetails(firstName, lastName, addressLine1, addressLine2 ,city, state, postalCode, phoneNumber);
 		sfHomePage.clickShippingDetailsNextbutton();
-		sfHomePage.enterConsultantBillingDetails(cardType, cardNumber, cardName, CVV);
+		sfHomePage.enterUserBillingDetails(cardType, cardNumber, cardName, CVV);
 		//sfHomePage.selectBillingAddressFromDD();
 		sfHomePage.checkUseMyDeliveryAddressChkBox();
 		sfHomePage.clickBillingDetailsNextbutton();
@@ -267,7 +265,7 @@ public class ConsultantEnrollmentTest extends StoreFrontWebsiteBaseTest{
 		sfHomePage.clickSaveButton();
 		sfHomePage.enterConsultantShippingDetails(firstName, lastName, addressLine1, addressLine2 ,city, state, postalCode, phoneNumber);
 		sfHomePage.clickShippingDetailsNextbutton();
-		sfHomePage.enterConsultantBillingDetails(cardType, cardNumber, cardName, CVV);
+		sfHomePage.enterUserBillingDetails(cardType, cardNumber, cardName, CVV);
 		//sfHomePage.selectBillingAddressFromDD();
 		sfHomePage.checkUseMyDeliveryAddressChkBox();
 		sfHomePage.clickBillingDetailsNextbutton();

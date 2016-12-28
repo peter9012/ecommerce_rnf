@@ -63,7 +63,7 @@ public class BillingProfileTest extends StoreFrontWebsiteBaseTest{
 		s_assert.assertTrue(currentURL.contains(urlToAssert), "Expected URL should contain "+urlToAssert+" but actual on UI is"+currentURL);
 		sfBillingInfoPage.clickAddNewBillingProfileLink();
 		s_assert.assertTrue(sfBillingInfoPage.isAddNewBillingInfoSubHeaderPresent(),"ADD NEW BILLING PROFILE Sub Header is not present");
-		sfBillingInfoPage.enterConsultantBillingDetails(TestConstants.CARD_TYPE, TestConstants.CARD_NUMBER, TestConstants.CARD_NAME, TestConstants.CVV);
+		sfBillingInfoPage.enterUserBillingDetails(TestConstants.CARD_TYPE, TestConstants.CARD_NUMBER, TestConstants.CARD_NAME, TestConstants.CVV);
 		sfBillingInfoPage.clickAddNewBillingAddressLink();
 		s_assert.assertTrue(sfBillingInfoPage.isAddNewBillingAddressFormDisplayed(),"ADD NEW BILLING ADDRESS form Block is not Displayed");
 		s_assert.assertTrue(sfBillingInfoPage.isAddNewBillingAddressBlockHeaderPresent(),"ADD NEW BILLING ADDRESS Sub Header is not present");

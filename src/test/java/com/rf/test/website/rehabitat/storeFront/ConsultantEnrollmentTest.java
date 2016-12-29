@@ -74,6 +74,7 @@ public class ConsultantEnrollmentTest extends StoreFrontWebsiteBaseTest{
 		sfHomePage.clickNextButton();
 		sfHomePage.clickSaveButton();
 		sfHomePage.enterConsultantShippingDetails(firstName, lastName, addressLine1, addressLine2 ,city, state, postalCode, phoneNumber);
+		sfHomePage.clickUseAsEnteredButtonOnPopUp();
 		sfHomePage.clickShippingDetailsNextbutton();
 		sfHomePage.enterUserBillingDetails(cardType, cardNumber, cardName, CVV);
 		//sfHomePage.selectBillingAddressFromDD();

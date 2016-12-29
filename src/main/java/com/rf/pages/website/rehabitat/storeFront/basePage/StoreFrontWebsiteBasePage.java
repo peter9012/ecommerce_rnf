@@ -1044,7 +1044,7 @@ public class StoreFrontWebsiteBasePage extends RFBasePage{
 		driver.waitForLoadingImageToDisappear();
 		driver.click(SHIPPING_NEXT_BUTTON_LOC);
 		logger.info("Next button clicked of shipping details");
-		// clickUseAsEnteredButtonOnPopUp();
+		clickUseAsEnteredButtonOnPopUp();
 		return this;
 	}
 

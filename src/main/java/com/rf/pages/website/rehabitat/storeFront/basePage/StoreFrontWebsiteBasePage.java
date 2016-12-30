@@ -323,7 +323,7 @@ public class StoreFrontWebsiteBasePage extends RFBasePage{
 	 * 
 	 */
 	public boolean isSponsorResultDisplayed(){
-		return driver.isElementVisible(driver.findElement(SPONSOR_SEARCH_RESULTS_LOC));		
+		return driver.isElementVisible(SPONSOR_SEARCH_RESULTS_LOC);		
 	}
 
 	/***
@@ -548,7 +548,7 @@ public class StoreFrontWebsiteBasePage extends RFBasePage{
 	 * @return boolean
 	 */
 	public Boolean isTheFooterLinkDisplayed(String linkName){
-		return driver.isElementVisible(driver.findElement(By.xpath(String.format(footerLinkLoc, linkName))));
+		return driver.isElementVisible(By.xpath(String.format(footerLinkLoc, linkName)));
 	}
 
 	/***
@@ -1245,7 +1245,7 @@ public class StoreFrontWebsiteBasePage extends RFBasePage{
 
 	public boolean isEmptyFieldValidationForSponsorOnPopupDisplayed(String fieldName){
 		String validationMsg = "This field is required";
-		return driver.isElementVisible(driver.findElement(By.xpath(String.format(sponsorEmptyFieldValidationOnPopUpLoc, fieldName,validationMsg))));		
+		return driver.isElementVisible(By.xpath(String.format(sponsorEmptyFieldValidationOnPopUpLoc, fieldName,validationMsg)));		
 	}
 
 	/***
@@ -1260,7 +1260,7 @@ public class StoreFrontWebsiteBasePage extends RFBasePage{
 		else if(fieldName.equalsIgnoreCase("email")){
 			validationMsg = "Please enter a valid email address";
 		}
-		return driver.isElementVisible(driver.findElement(By.xpath(String.format(sponsorInvalidFieldValidationOnPopUpLoc, fieldName,validationMsg))));
+		return driver.isElementVisible(By.xpath(String.format(sponsorInvalidFieldValidationOnPopUpLoc, fieldName,validationMsg)));
 	}
 
 	/***

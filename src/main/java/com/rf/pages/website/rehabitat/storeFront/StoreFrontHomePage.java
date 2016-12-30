@@ -207,7 +207,7 @@ public class StoreFrontHomePage extends StoreFrontWebsiteBasePage{
 	 * @return boolean
 	 */
 	public boolean isLoginOrRegisterPageDisplayed(){
-		boolean isLoginOrRegisterPageDisplayed = driver.isElementVisible(driver.findElement(LOGIN_OR_REGISTER_TXT_LOC));
+		boolean isLoginOrRegisterPageDisplayed = driver.isElementVisible(LOGIN_OR_REGISTER_TXT_LOC);
 		logger.info("is Login Or Register Page Displayed = "+isLoginOrRegisterPageDisplayed);
 		return isLoginOrRegisterPageDisplayed;
 	}
@@ -219,7 +219,7 @@ public class StoreFrontHomePage extends StoreFrontWebsiteBasePage{
 	 * @return boolean
 	 */
 	public boolean isErrorMessageForIncorrectUsernamePasswordDisplayed(){
-		boolean isErrorMessageForIncorrectUsernamePasswordDisplayed = driver.isElementVisible(driver.findElement(INCORRECT_USERNAME_PASSOWRD_TXT_LOC));
+		boolean isErrorMessageForIncorrectUsernamePasswordDisplayed = driver.isElementVisible(INCORRECT_USERNAME_PASSOWRD_TXT_LOC);
 		logger.info("is Error Message For Incorrect Username Password Displayed = "+isErrorMessageForIncorrectUsernamePasswordDisplayed);
 		return isErrorMessageForIncorrectUsernamePasswordDisplayed;
 	}

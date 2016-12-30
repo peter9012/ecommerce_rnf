@@ -83,7 +83,6 @@ public class ConsultantEnrollmentTest extends StoreFrontWebsiteBaseTest{
 		sfHomePage.selectTermsAndConditionsChkBox();
 		sfHomePage.selectPoliciesAndProceduresChkBox();
 		sfHomePage.clickBecomeAConsultant();
-		sfHomePage.getConfirmationMsgOfConsultantEnrollment();
 		//s_assert.assertTrue(confirmationMessageFromUI.contains(expectedConfirmationMessage), "Expected confirmation message is"+expectedConfirmationMessage+" but actual on UI is "+confirmationMessageFromUI); 
 		s_assert.assertTrue(sfHomePage.isWelcomeUserElementDisplayed(), "Welcome user locator has not displayed after consultant enrollment");
 		s_assert.assertAll();

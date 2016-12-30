@@ -718,7 +718,7 @@ public class RFWebsiteDriver implements RFDriver,WebDriver {
 		WebDriverWait wait = new WebDriverWait(driver, timeOut);
 		WebElement element = wait.until(ExpectedConditions
 				.visibilityOfElementLocated(locator));
-		return isElementVisible(element);
+		return isElementVisible(locator);
 	}
 
 	/**

@@ -50,6 +50,8 @@ public class StoreFrontShopSkinCarePage extends StoreFrontWebsiteBasePage{
 	public StoreFrontCartPage checkoutTheCartFromPopUp(){
 		driver.click(CHECKOUT_BUTTON_POPUP_LOC);
 		logger.info("Clicked on checkout button on the popup");
+		driver.waitForPageLoad();
+		driver.waitForLoadingImageToDisappear();
 		return new StoreFrontCartPage(driver);
 	}
 
@@ -78,6 +80,7 @@ public class StoreFrontShopSkinCarePage extends StoreFrontWebsiteBasePage{
 		//driver.clickByJS(RFWebsiteDriver.driver, driver.findElement(ADD_TO_CART_FIRST_PRODUCT_LOC));
 		driver.click(ADD_TO_CART_FIRST_PRODUCT_LOC);
 		logger.info("Added first product to the bag");
+		driver.pauseExecutionFor(2000);
 		return this;
 	}
 
@@ -297,11 +300,10 @@ public class StoreFrontShopSkinCarePage extends StoreFrontWebsiteBasePage{
 	 */
 	public StoreFrontShopSkinCarePage addProductToBag(int productNumber){
 		driver.click(By.xpath(String.format(addToCartButtonThroughProductNumber, productNumber)));
-		driver.click(By.xpath(String.format(addToBagButtonThroughProductNumber, productNumber)));
 		logger.info("Added first product to the bag");
+		driver.pauseExecutionFor(2000);
 		return this;
 	}
-
 	/***
 	 * This method get second product name from all product page
 	 * 
@@ -386,7 +388,7 @@ public class StoreFrontShopSkinCarePage extends StoreFrontWebsiteBasePage{
 	public boolean isCheckoutPopupDisplayed(){
 		return driver.findElement(CHECKOUT_BUTTON_POPUP_LOC).isDisplayed();
 	}
-	
+
 	/***
 	 * This method verify add to cart dropdown option displayed or not
 	 * 

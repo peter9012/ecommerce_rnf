@@ -105,6 +105,7 @@ public class StoreFrontCartPage extends StoreFrontWebsiteBasePage{
 	public void clickAddMoreItemsBtn(){
 		driver.click(ADD_MORE_ITEMS_BTN_LOC);
 		logger.info("clicked on add more items button");
+		driver.waitForPageLoad();
 	}
 
 	/***

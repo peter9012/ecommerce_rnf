@@ -53,8 +53,9 @@ public class StoreFrontWebsiteBasePage extends RFBasePage{
 	protected final By PRODUCTS_NAME_LINK_LOC = By.xpath("//div[@id='product_listing']/descendant::div[@class='details'][1]//a");
 	private final By SEARCH_SPONSOR_LOC = By.id("search-sponsor-button");
 	private final By SEARCH_BOX_LOC = By.id("search-box");
-	private final By SELECT_AND_CONTINUE_LOC= By.xpath("//div[@id='findConsultantResultArea']/descendant::input[@id='consultantUid'][1]/..");
+	private final By SELECT_AND_CONTINUE_LOC= By.xpath("//div[@id='findConsultantResultArea']/descendant::div[contains(@class,'consultant-box')][1]");
 	private final By SPONSOR_SEARCH_RESULTS_LOC = By.xpath("//div[@id='findConsultantResultArea']//div[contains(@class,'consultant-box')][1]");
+	private final By SELECTED_SPONSOR_BOX_LOC = By.id("findConsultantResultArea-main1");
 	private final By NO_RESULT_FOUND_MSG_LOC = By.xpath("//p[contains(text(),'No results found')]");
 	private final By EVENTS_LOC = By.xpath(topNavigationLoc+"//a[@title='EVENTS']");
 	private final By PROGRAMS_AND_INCENTIVES_LOC = By.xpath(topNavigationLoc+"//a[@title='PROGRAMS & INCENTIVES']");
@@ -129,8 +130,17 @@ public class StoreFrontWebsiteBasePage extends RFBasePage{
 	private final By TERMS_AND_CONDITIONS_CHK_BOX_LOC = By.xpath("//div[contains(@class,'checkout-steps')]/descendant::label[1]");
 	private final By BILLING_NEXT_BUTTON_LOC = By.id("reviewOrder");
 	private final By BECOME_A_CONSULTANT_BTN_LOC = By.id("placeOrder");
-	private final By AUTOSHIP_TEXT_LOC = By.xpath("//span[text()='AutoShip']");
-
+	private final By REMOVE_LINK_LOC = By.xpath("//a[contains(text(),'REMOVE')]");
+	private final By CONSULTANT_ONLY_PRODUCTS_LINK_LOC = By.xpath("//div[@class='navbar-inverse']//a[@title='CONSULTANT ONLY']");
+	private final By ERROR_MESSAGE_FOR_THRESHOLD = By.xpath("//div[@class='global-alerts']/div");
+	private final By TOTAL_NO_OF_PRODUCTS_LOC = By.xpath("//div[@class='product-item']");
+	private final By WELCOME_DD_EDIT_PC_PERKS_LOC = By.xpath("//a[text()='Edit PC Perks']");
+	private final By WELCOME_DD_PC_PERKS_FAQ_LOC = By.xpath("//a[text()='PC Perks FAQ']");
+	private final By WELCOME_DD_PC_PERKS_STATUS_LOC = By.xpath("//a[text()='PC Perks Status']");
+	private final By FIRST_PRODUCT_NAME_LOC=By.xpath("//div[@id='product_listing']/descendant::a[@class='name'][1]");
+	private final By FIRST_PRODUCT_IMAGE_LOC=By.xpath("//div[@class='product__listing product__grid']/div[1]/a");
+	protected final By ADD_TO_CART_FIRST_PRODUCT_LOC = By.xpath("//div[@id='product_listing']/descendant::button[text()='Add to cart'][1]");
+	
 	private String textLoc = "//*[contains(text(),'%s')]";
 	private String stateForShippingDetails = "//select[@id='address.region']//option[text()='%s']";
 	private String topNavigationSublinksWithTextLoc  = topNavigationLoc+"//a[text()='%s']";
@@ -168,6 +178,14 @@ public class StoreFrontWebsiteBasePage extends RFBasePage{
 			logger.info("mouseHovered on 'About R+F'"); 
 		}
 		return this;
+	}
+
+	/***
+	 * This method checks if CONSULTANT ONLY link under ShopSkincare is displayed or not
+	 * @return boolean
+	 */
+	public boolean isConsultantOnlyProductsLinkDisplayed(){
+		return driver.isElementVisible(CONSULTANT_ONLY_PRODUCTS_LINK_LOC);
 	}
 
 	/***
@@ -292,6 +310,7 @@ public class StoreFrontWebsiteBasePage extends RFBasePage{
 	 * 
 	 */
 	public void selectFirstSponsorFromList(){
+		driver.pauseExecutionFor(2000);
 		driver.click(SELECT_AND_CONTINUE_LOC);
 		logger.info("Clicked on 'Select And Continue' button for first result");
 	}
@@ -621,7 +640,7 @@ public class StoreFrontWebsiteBasePage extends RFBasePage{
 	 * 
 	 */
 	public boolean isUsernameFieldPresent(){
-		return driver.findElement(USERNAME_TXTFLD_LOC).isDisplayed();
+		return driver.isElementPresent(USERNAME_TXTFLD_LOC);
 	}
 
 	/***
@@ -632,7 +651,7 @@ public class StoreFrontWebsiteBasePage extends RFBasePage{
 	 * 
 	 */
 	public boolean isPasswordFieldPresent(){
-		return driver.findElement(PASSWORD_TXTFLD_LOC).isDisplayed();
+		return driver.isElementPresent(PASSWORD_TXTFLD_LOC);
 	}
 
 
@@ -644,7 +663,7 @@ public class StoreFrontWebsiteBasePage extends RFBasePage{
 	 * 
 	 */
 	public boolean isMiniCartPresent(){
-		return driver.findElement(MINI_CART_ICON_LOC).isDisplayed();
+		return driver.isElementVisible(MINI_CART_ICON_LOC);
 	}
 
 	/***
@@ -655,7 +674,7 @@ public class StoreFrontWebsiteBasePage extends RFBasePage{
 	 * 
 	 */
 	public boolean isToggleButtonPresent(){
-		return driver.findElement(TOGGLE_BUTTON_OF_COUNTRY_LOC).isDisplayed();
+		return driver.isElementVisible(TOGGLE_BUTTON_OF_COUNTRY_LOC);
 	}
 
 	/***
@@ -666,7 +685,7 @@ public class StoreFrontWebsiteBasePage extends RFBasePage{
 	 * 
 	 */
 	public boolean isSocialMediaIconPresentAtFooter(String mediaType){
-		return driver.findElement(By.xpath(String.format(socialMediaLinkAtFooterLoc, mediaType))).isDisplayed();
+		return driver.isElementVisible(By.xpath(String.format(socialMediaLinkAtFooterLoc, mediaType)));
 	}
 
 	/***
@@ -678,7 +697,7 @@ public class StoreFrontWebsiteBasePage extends RFBasePage{
 	 */
 	public boolean isTopNavigationSublinkDisplayed(String topNavigationLink,String sublink){
 		mouseHoverOn(topNavigationLink);
-		return driver.findElement(By.xpath(String.format(topNavigationSublinksWithTitleLoc, sublink))).isDisplayed();
+		return driver.isElementVisible(By.xpath(String.format(topNavigationSublinksWithTitleLoc, sublink)));
 	}
 
 	/***
@@ -851,10 +870,11 @@ public class StoreFrontWebsiteBasePage extends RFBasePage{
 	public StoreFrontCheckoutPage checkoutTheCart(){
 		driver.click(CHECKOUT_BUTTON_LOC);
 		logger.info("Clicked on checkout button");
-		try{
+		if(driver.isElementPresent(CHECKOUT_CONFIRMATION_OK_BUTTON_LOC)==true){
 			driver.click(CHECKOUT_CONFIRMATION_OK_BUTTON_LOC);
 			logger.info("Clicked on OK button at checkout confirmation popup");
-		}catch(Exception e){
+		}
+		else{
 			logger.info("No checkout confirmation popup");
 		}
 		return new StoreFrontCheckoutPage(driver);
@@ -1044,16 +1064,14 @@ public class StoreFrontWebsiteBasePage extends RFBasePage{
 		driver.waitForLoadingImageToDisappear();
 		driver.click(SHIPPING_NEXT_BUTTON_LOC);
 		logger.info("Next button clicked of shipping details");
-		// clickUseAsEnteredButtonOnPopUp();
+		clickUseAsEnteredButtonOnPopUp();
 		return this;
 	}
 
 	public void clickUseAsEnteredButtonOnPopUp(){
-		try{
+		if(driver.isElementVisible(USE_AS_ENTERED_BUTTON_LOC)==true){
 			driver.click(USE_AS_ENTERED_BUTTON_LOC);
 			logger.info("'Used as entered' button clicked");
-		}catch(Exception ex){
-
 		}
 	}
 
@@ -1428,18 +1446,6 @@ public class StoreFrontWebsiteBasePage extends RFBasePage{
 	}
 
 	/***
-	 * This method checks whether a pc has been enrolled successfully or not by verifying 
-	 * i) order confirmation String in URL
-	 * ii) Welcome Drop Down element
-	 * iii) autoship element on the page
-	 */
-	public boolean hasPCEnrolledSuccessfully(){
-		return driver.isElementVisible(WELCOME_DROPDOWN_LOC)
-				&& driver.getCurrentUrl().contains("/orderConfirmation")
-				&& driver.isElementVisible(AUTOSHIP_TEXT_LOC);		
-	}
-
-	/***
 	 * This method validates the Billing Address on UI for Specific Billing Profile
 	 * 
 	 * @param String , String, String, String, String
@@ -1466,4 +1472,176 @@ public class StoreFrontWebsiteBasePage extends RFBasePage{
 				billingAddressOnUI.contains(state);
 	}
 
+	/***
+	 * This method clicks on the remove Link
+	 * @return
+	 */
+	public StoreFrontWebsiteBasePage clickRemoveLink(){
+		driver.click(REMOVE_LINK_LOC);
+		logger.info("Remove link clicked");
+		return this;
+	}
+
+	/***
+	 * This method verifies if consultant box of the selected sponsor
+	 * displayed or not
+	 * @return
+	 */
+	public boolean isSelectedConsultantBoxDisplayed(){
+		return driver.isElementVisible(SELECTED_SPONSOR_BOX_LOC);
+	}
+
+	/***
+	 * This method validates the error message at cart page 
+	 * 
+	 * @param message
+	 * @return boolean
+	 * 
+	 */
+	public boolean isErrorMessagePresentForThreshold(String message){
+		String errorMessage = driver.findElement(ERROR_MESSAGE_FOR_THRESHOLD).getText();
+		if(errorMessage.contains("Message")){
+			return true;
+		}else{
+			return false;
+		}
+	}
+
+	/***
+	 * This method verify mini cart is present or not 
+	 * 
+	 * @param
+	 * @return boolean value
+	 * 
+	 */
+	public StoreFrontWebsiteBasePage clickMiniCartBagLink(){
+		driver.click(MINI_CART_ICON_LOC);
+		logger.info("Mini cart bag link clicked");
+		return this;
+	}
+
+	/***
+	 * This method get total no of product
+	 * 
+	 * @param
+	 * @return total no of product
+	 * 
+	 */
+	public int getTotalNoOfProduct(){
+		int totalNoOfProducts = driver.findElements(TOTAL_NO_OF_PRODUCTS_LOC).size(); 
+		logger.info("Total no of products are: "+totalNoOfProducts);
+		return totalNoOfProducts;
+	}
+
+	/***
+	 * This method navigate to back page from current page.
+	 * 
+	 * @param
+	 * @return store front base page object
+	 * 
+	 */
+	public StoreFrontWebsiteBasePage navigateToBackPage(){
+		driver.navigate().back();
+		driver.waitForPageLoad();
+		return this;
+	}
+	/***
+	 * This method click edit pc perks link from welcome dropdown.
+	 * 
+	 * @param
+	 * @return store front billing info page object
+	 * 
+	 */
+	public StoreFrontWebsiteBasePage navigateToEditPCPerksPage(){
+		driver.click(WELCOME_DD_EDIT_PC_PERKS_LOC);
+		logger.info("Edit PC perks clicked from welcome dropdown");
+		driver.waitForLoadingImageToDisappear();
+		driver.waitForPageLoad();
+		return this;
+	}
+	/***
+	 * This method click PC Perks FAQ link from welcome dropdown.
+	 * 
+	 * @param
+	 * @return store front billing info page object
+	 * 
+	 */
+	public StoreFrontWebsiteBasePage navigateToPCPerksFAQPage(){
+		driver.click(WELCOME_DD_PC_PERKS_FAQ_LOC);
+		logger.info("PC perks FAQ clicked from welcome dropdown");
+		driver.waitForLoadingImageToDisappear();
+		driver.waitForPageLoad();
+		return this;
+	}
+	
+	/***
+	 * This method click PC Perks status link from welcome dropdown.
+	 * 
+	 * @param
+	 * @return store front billing info page object
+	 * 
+	 */
+	public StoreFrontWebsiteBasePage navigateToPCPerksStatusPage(){
+		driver.click(WELCOME_DD_PC_PERKS_STATUS_LOC);
+		logger.info("PC perks status clicked from welcome dropdown");
+		driver.waitForLoadingImageToDisappear();
+		driver.waitForPageLoad();
+		return this;
+	}
+	
+	/***
+	 * This method click PC Perks status link from welcome dropdown.
+	 * 
+	 * @param
+	 * @return store front billing info page object
+	 * 
+	 */
+	public StoreFrontWebsiteBasePage navigateToLogoutPage(){
+		driver.click(LOGOUT_LOC);
+		logger.info("Logout clicked from welcome dropdown");
+		driver.waitForLoadingImageToDisappear();
+		driver.waitForPageLoad();
+		return this;
+	}
+	
+	/***
+	 * This method get and return current page title
+	 * 
+	 * @param 
+	 * @return current page title
+	 * 
+	 */
+	public String getCurrentpageTitle(){
+		String currentPageTitle = driver.getTitle();
+		logger.info("Current Page title is "+currentPageTitle);
+		return currentPageTitle;
+	}
+	
+	/***
+	 * This method click Quick view button of first product on all product page and return product name
+	 * 
+	 * @param
+	 * @return product name
+	 * 
+	 */
+	public String clickOnFirstProductQuickViewButtonAndReturnProductName(){
+		driver.waitForElementPresent(FIRST_PRODUCT_NAME_LOC);
+		String productName=driver.findElement(FIRST_PRODUCT_NAME_LOC).getText();
+		driver.waitForElementPresent(FIRST_PRODUCT_IMAGE_LOC);
+		driver.click(FIRST_PRODUCT_IMAGE_LOC);
+		return productName.split("\\.")[0];
+	}
+	
+	/***
+	 * This method performs mouse hover on add to cart button on all product page
+	 * 
+	 * @param
+	 * @return base page object
+	 * 
+	 */
+	public StoreFrontWebsiteBasePage mouseHoverOnAddToCart(){
+		Actions build = new Actions(RFWebsiteDriver.driver);
+		build.moveToElement(driver.findElement(ADD_TO_CART_FIRST_PRODUCT_LOC)).build().perform();
+		return this;
+	}
 }

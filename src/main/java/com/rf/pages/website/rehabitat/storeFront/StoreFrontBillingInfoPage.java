@@ -44,24 +44,19 @@ public class StoreFrontBillingInfoPage extends StoreFrontWebsiteBasePage{
 	private final By BILLING_ADDRESS_DD_LOC = By.xpath("//select[@id='billingAddress.addressId']");
 	private final By BILLING_ADDRESS_DD_OPTIONS_LOC = By.xpath("//select[@id='billingAddress.addressId']/option");
 	private final By PROFILES_IN_BILLING_LIST_LOC = By.xpath("//div[@class='account-cards card-select']//div[@class='row']/div[contains(@class,'card')]"); 
+	private final By SET_AS_DEFAULT_BILLING_PROFILE_BUTTON_LOC = By.xpath("//div[@class='myModal' and contains(@style,'display')]//div[@class='modal-content']//a[contains(text(),'Set as Default')]");
+	private final By DEFAULT_BILLING_PROFILE_ADDRESS_NAME_LOC = By.xpath("//div[@class='account-paymentdetails account-list']//strong[contains(text(),'Default')]/ancestor::li[1]");
+	private final By DEFAULT_PROFILE_DELETE_BTN_LOC = By.xpath("//div[@class='account-paymentdetails account-list']//strong[contains(text(),'Default')]//ancestor::ul[1]/following-sibling::div[contains(@class,'account-cards-actions')]/a[contains(text(),'Delete')]");
+	private final By SUCCESSFUL_ACTION_MSG_LOC = By.xpath("//div[@class='global-alerts']/div[@class='alert alert-info alert-dismissable']");
 
 	private String creditCardNumberForSpecificBillingProfileLoc = "//div[@class='account-paymentdetails account-list']//li[text()='%s']/following-sibling::li[contains(text(),'Credit')]";
 	private String creditCardExpDateForSpecificBillingProfileLoc = "//div[@class='account-paymentdetails account-list']//li[text()='%s']/following-sibling::li[contains(text(),'Expiration')]";
 	private String billingAddressForSpecificBillingProfileLoc = "//div[@class='account-paymentdetails account-list']//li[text()='%s']/following-sibling::li[not(contains(text(),'Credit card') or contains(text(),'Expiration Date'))]";
 	private String billingProfileFirstNameLoc = "//div[@class='account-paymentdetails account-list']//li[contains(text(),'%s')]";
+	private String setDefaultSpecificBillingProfileRadioBtnLoc = "//div[@class='account-paymentdetails account-list']//li[text()='%s']/ancestor::ul/following-sibling::div[contains(@class,'set-default')]/a[contains(text(),'Default')]";
+	private String defaultTagForSpecficBillingProfileLoc = "//div[@class='account-paymentdetails account-list']//li[text()='%s']/strong[contains(text(),'(Default)')]";
+	private String deleteActionForSpecificBillingProfileLoc = "//div[@class='account-paymentdetails account-list']//li[text()='%s']/ancestor::ul/following-sibling::div[contains(@class,'account-cards-actions')]/a[contains(text(),'Delete')]";
 
-	/***
-	 * This method clicked on add a New Billing Profile link 
-	 * 
-	 * @param
-	 * @return store front billing info page object
-	 * 
-	 */
-	public StoreFrontBillingInfoPage clickAddNewBillingProfileLink(){
-		driver.click(ADD_NEW_BILLING_PROFILE_LOC);
-		logger.info("Add New Billing Profile link clicked");
-		return this;
-	}
 
 	/***
 	 * This method click the save button for Billing details
@@ -85,19 +80,6 @@ public class StoreFrontBillingInfoPage extends StoreFrontWebsiteBasePage{
 	 */
 	public boolean isAddNewBillingInfoSubHeaderPresent(){
 		return driver.isElementVisible(ADD_NEW_BILLING_INFO_HEADER_LOC);
-	}
-
-	/***
-	 * This method clicked on add a New Billing Address link 
-	 * 
-	 * @param
-	 * @return store front billing info page object
-	 * 
-	 */
-	public StoreFrontBillingInfoPage clickAddNewBillingAddressLink(){
-		driver.click(ADD_NEW_BILLING_ADDRESS_LINK_LOC);
-		logger.info("Add New Billing Address link clicked");
-		return this;
 	}
 
 	/***
@@ -146,20 +128,6 @@ public class StoreFrontBillingInfoPage extends StoreFrontWebsiteBasePage{
 	}
 
 	/***
-	 * This method clicked on close Button of Address Suggestion Modal  
-	 * 
-	 * @param
-	 * @return store front billing info page object
-	 * 
-	 */
-	public StoreFrontBillingInfoPage clickOnAddressSuggestionModalCloseBtn(){
-		driver.clickByJS(RFWebsiteDriver.driver, driver.findElement(ADDRESS_SUGGESTION_MODAL_CLOSE_BTN_LOC));
-		logger.info("Address Suggestion Modal Close Button clicked");
-		driver.pauseExecutionFor(3000);
-		return this;
-	}
-
-	/***
 	 * This method validates the Creation of New Billing Profile using firstName of Billing Address.
 	 * 
 	 * @param String
@@ -190,19 +158,6 @@ public class StoreFrontBillingInfoPage extends StoreFrontWebsiteBasePage{
 	 */
 	public boolean isCardDetailsAddedSuccessfulMsgAppearedAsExpected(String expectedMsg){
 		return driver.getText(CARD_DETAILS_SUCCESSFULLY_ADDED_MSG_LOC).contains(expectedMsg);
-	}
-
-	/***
-	 * This method clicked on Edit Button of Default Billing Profile  
-	 * 
-	 * @param
-	 * @return store front billing info page object
-	 * 
-	 */
-	public StoreFrontBillingInfoPage clickOnDefaultBillingProfileEditButton(){
-		driver.click(DEFAULT_BILLING_PROFILE_EDIT_BTN_LOC);
-		logger.info("Default Billing Profile Edit Button Clicked");
-		return this;
 	}
 
 	/***
@@ -362,6 +317,157 @@ public class StoreFrontBillingInfoPage extends StoreFrontWebsiteBasePage{
 		Select select = new Select(driver.findElement(BILLING_ADDRESS_DD_LOC));
 		select.selectByIndex(index);
 		return this;
+	}
+
+	/***
+	 * This method get the default Billing profile name 
+	 * 
+	 * @param 
+	 * @return String
+	 * 
+	 */
+	public String getDefaultBillingProfileName(){
+		logger.info("Default Profile Name : "+driver.getText(DEFAULT_BILLING_PROFILE_ADDRESS_NAME_LOC));
+		return driver.getText(DEFAULT_BILLING_PROFILE_ADDRESS_NAME_LOC).replace("(DEFAULT)","").trim();
+	}
+
+
+	/***
+	 * This method set the specific profile to be default profile.
+	 * 
+	 * @param 
+	 * @return StoreFrontBillingInfoPage
+	 * 
+	 */
+	public StoreFrontBillingInfoPage setProfileAsDefault(String profile){
+		driver.click(By.xpath(String.format(setDefaultSpecificBillingProfileRadioBtnLoc,profile)));
+		logger.info("Default button is clicked for Billing Profile : "+profile);
+		driver.clickByJS(RFWebsiteDriver.driver,driver.findElement(SET_AS_DEFAULT_BILLING_PROFILE_BUTTON_LOC));
+		logger.info("Set as default option is selected from Popup");
+		return this;
+	}
+
+	/***
+	 * This method validates the presence of Delete option for Default profile 
+	 * 
+	 * @param 
+	 * @return boolean
+	 * 
+	 */
+	public boolean isDeleteOptionAvailableForDefaultProfile(){
+		return driver.isElementVisible(DEFAULT_PROFILE_DELETE_BTN_LOC);
+	}
+
+	/***
+	 * This method validates that Profile get updated as default profile.
+	 * 
+	 * @param 
+	 * @return boolean
+	 * 
+	 */
+	public boolean isProfileGetUpdatedAsDefaultProfile(String profile, String defaultProfile){
+		logger.info("Profile Name : "+profile);
+		logger.info("Default : "+defaultProfile);
+		return defaultProfile.contains(profile);
+	}
+
+
+	/***
+	 * This method validates that Profile is default or not.
+	 * 
+	 * @param 
+	 * @return boolean
+	 * 
+	 */
+	public boolean isProfileIsDefaultProfile(String profile){
+		return driver.isElementVisible(By.xpath(String.format(defaultTagForSpecficBillingProfileLoc, profile)));
+	}
+
+
+	/***
+	 * This method validates the presence of Delete option for Specific Profile 
+	 * 
+	 * @param 
+	 * @return boolean
+	 * 
+	 */
+	public boolean isDeleteOptionAvailableForProfile(String profile){
+		return driver.isElementVisible(By.xpath(String.format(deleteActionForSpecificBillingProfileLoc,profile)));
+	}
+
+	/***
+	 * This method clicked on add a New Billing Profile link 
+	 * 
+	 * @param
+	 * @return store front billing info page object
+	 * 
+	 */
+	public StoreFrontBillingInfoPage clickAddNewBillingProfileLink(){
+		driver.clickByJS(RFWebsiteDriver.driver,driver.findElement(ADD_NEW_BILLING_PROFILE_LOC));
+		logger.info("Add New Billing Profile link clicked");
+		return this;
+	}
+
+	/***
+	 * This method clicked on close Button of Address Suggestion Modal  
+	 * 
+	 * @param
+	 * @return store front billing info page object
+	 * 
+	 */
+	public StoreFrontBillingInfoPage clickOnAddressSuggestionModalCloseBtn(){
+		driver.clickByJS(RFWebsiteDriver.driver, driver.findElement(ADDRESS_SUGGESTION_MODAL_CLOSE_BTN_LOC));
+		logger.info("Address Suggestion Modal Close Button clicked");
+		driver.navigate().refresh();
+		return this;
+	}
+
+	/***
+	 * This method clicked on add a New Billing Address link 
+	 * 
+	 * @param
+	 * @return store front billing info page object
+	 * 
+	 */
+	public StoreFrontBillingInfoPage clickAddNewBillingAddressLink(){
+		driver.clickByJS(RFWebsiteDriver.driver,driver.findElement(ADD_NEW_BILLING_ADDRESS_LINK_LOC));
+		logger.info("Add New Billing Address link clicked");
+		return this;
+	}
+
+	/***
+	 * This method clicked on Edit Button of Default Billing Profile  
+	 * 
+	 * @param
+	 * @return store front billing info page object
+	 * 
+	 */
+	public StoreFrontBillingInfoPage clickOnDefaultBillingProfileEditButton(){
+		driver.clickByJS(RFWebsiteDriver.driver,driver.findElement(DEFAULT_BILLING_PROFILE_EDIT_BTN_LOC));
+		logger.info("Default Billing Profile Edit Button Clicked");
+		return this;
+	}
+
+	/***
+	 * This method validates the Card Details Added Successfull Msg.
+	 * 
+	 * @param
+	 * @return boolean value
+	 * 
+	 */
+	public boolean isActionSuccessfulMsgAppearedAsExpected(String expectedMsg){
+		return driver.getText(SUCCESSFUL_ACTION_MSG_LOC).contains(expectedMsg);
+	}
+
+	/***
+	 * This method get the count of Default Billing Profiles.
+	 * 
+	 * @param 
+	 * @return int
+	 * 
+	 */
+	public int getCountOfDefaultBillingProfiles(){
+		return driver.findElements(DEFAULT_BILLING_PROFILE_ADDRESS_NAME_LOC).size();
 	}
 
 }

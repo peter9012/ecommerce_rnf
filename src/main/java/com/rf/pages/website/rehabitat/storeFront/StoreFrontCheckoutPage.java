@@ -53,6 +53,20 @@ public class StoreFrontCheckoutPage extends StoreFrontWebsiteBasePage{
 	private final By POPUP_FOR_TERMS_AND_CONDITIONS_LOC = By.id("city_popup");
 	private final By EDIT_LINK_OF_SHIPPING_PROFILE_LOC=By.xpath("//span[@id='defaultShippingAddress']/a");
 	private final By ADD_NEW_BILLING_PROFILE_BUTTON_LOC = By.xpath("//button[text()='Add New Billing Profile']");
+	private final By CONSULTANT_NAME_ID_FIELD_LOC = By.id("sponserparam");
+	private final By CONSULTANT_SEARCH_BTN_LOC = By.id("search-sponsor-button");
+	private final By REQUEST_A_CONSULTANT_LOC = By.xpath("//a[contains(text(),'Request a Consultant')]");
+	private final By NO_RESULT_FOUND_MSG_FOR_SEARCHED_CONSULTANT_LOC = By.xpath("//p[@class='noResult' and contains(text(),'No results found for')]");
+	private final By VALIDATION_MSG_FOR_SEARCHED_CONSULTANT_LOC = By.id("sponserparam-error");
+	private final By TOTAL_NO_OF_ITEMS_LOC = By.xpath("//div[contains(text(),'Order Summary')]/following::li[contains(@class,'list-items')]//div[@class='thumb']");
+	private final By SUBTOTAL_AT_ORDER_REVIEW_PAGE_LOC = By.xpath("//div[contains(text(),'Order Summary')]/following::p[text()='Subtotal:']/following::span[1]");
+	private final By DELIVERY_AT_ORDER_REVIEW_PAGE_LOC = By.xpath("//div[contains(text(),'Order Summary')]/following::p[text()='Subtotal:']/following::span[1]");
+	private final By FIRST_ITEM_PRODUCT_NAME_REVIEW_PAGE_LOC = By.xpath("//div[contains(text(),'Order Summary')]/following::li[contains(@class,'list-items')][1]//div[@class='name']/a");
+	private final By CONFIRMATION_MSG_OF_PLACED_ORDER_LOC = By.xpath("//div[@class='orderHeading']");
+	private final By LOGIN_REGISTER_TEXT_LOC=By.xpath("//div[@class='logpage']/h1");
+	private final By USER_NAME_LOC=By.xpath("//form[@id='LoginForm']//input[@id='username']");
+	private final By PASSWORD_FOR_LOGIN_LOC=By.xpath("//form[@id='LoginForm']//input[@id='password']");
+	private final By LOGIN_AND_CHECKOUT_BUTTON_LOC=By.xpath("//form[@id='LoginForm']//input[@value='Login and Checkout']");
 
 	private String billingInfoCardDetailsLoc = "//div[@id='default-payment-method']/ul/strong[contains(text(),'%s')]/following-sibling::span[@class='cardInfo']";
 	private String billingInfoAddressNameLoc = "//div[@id='default-payment-method']/ul/strong[contains(text(),'%s')]";
@@ -488,6 +502,145 @@ public class StoreFrontCheckoutPage extends StoreFrontWebsiteBasePage{
 	public String getBillingAddressForSpecificBillingProfile(String profile){
 		String billingDetails = driver.findElement(By.xpath(String.format(billingAddressLoc, profile))).getText();
 		return billingDetails.trim();
+	}
+
+
+	/***
+	 * This method looks for the entered consultant by entering the consultant name and 
+	 * clicking on the search btn
+	 * @return
+	 */
+	public StoreFrontCheckoutPage searchForConsultant(String consultant){
+		driver.type(CONSULTANT_NAME_ID_FIELD_LOC, consultant);
+		logger.info("entered consultant name as "+consultant);
+		driver.click(CONSULTANT_SEARCH_BTN_LOC);
+		logger.info("Consultant search btn clicked");
+		return this;
+	}
+
+	/***
+	 * This method check if 'no result found' msg has been displayed for searched
+	 * consultant or not
+	 * @return
+	 */
+	public boolean isNoResultFoundMsgDisplayedForSearchedConsultant(){
+		return driver.isElementVisible(NO_RESULT_FOUND_MSG_FOR_SEARCHED_CONSULTANT_LOC);
+	}
+
+	/***
+	 * This method check the validation msg has been displayed for searched
+	 * consultant or not
+	 * @return
+	 */
+	public boolean isValidationMsgDisplayedForSearchedConsultant(){
+		return driver.isElementVisible(VALIDATION_MSG_FOR_SEARCHED_CONSULTANT_LOC);
+	}
+
+	/***
+	 * This method get total no of items
+	 * 
+	 * @param
+	 * @return total no of items
+	 * 
+	 */
+	public int getTotalNoOfItemsAtOrderReviewPage(){
+		int totalNoOfItems = driver.findElements(TOTAL_NO_OF_ITEMS_LOC).size(); 
+		logger.info("Total no of Items are at order review page: "+totalNoOfItems);
+		return totalNoOfItems;
+	}
+
+	/***
+	 * This method get get subtotal 
+	 * 
+	 * @param 
+	 * @return subtotal
+	 * 
+	 */
+	public String getSubtotalofItemsAtOrderReviewPage(){
+		String subtotal = driver.findElement(SUBTOTAL_AT_ORDER_REVIEW_PAGE_LOC).getText();
+		logger.info("Subtotal of product is "+subtotal);
+		return subtotal;
+	}
+
+	/***
+	 * This method get delivery charges at order review page
+	 * 
+	 * @param 
+	 * @return delivery charges
+	 * 
+	 */
+	public String getDeliveryChargesAtOrderReviewPage(){
+		String deliveryCharges = driver.findElement(DELIVERY_AT_ORDER_REVIEW_PAGE_LOC).getText();
+		logger.info("Delivery charges of product is "+deliveryCharges);
+		return deliveryCharges;
+	}
+
+	/***
+	 * This method get product name of first item 
+	 * 
+	 * @param itemNumber
+	 * @return product name
+	 * 
+	 */
+	public String getProductNameAtOrderReviewPage(String itemNumber){
+		String productName = null;
+		if(itemNumber.equalsIgnoreCase("1")){
+			productName = driver.findElement(FIRST_ITEM_PRODUCT_NAME_REVIEW_PAGE_LOC).getText();
+		}
+		logger.info("product name of "+itemNumber+" is "+productName);
+		return productName;
+	}
+
+
+	/***
+	 * This method get the confirmation message of consultant enrollment
+	 * 
+	 * @param
+	 * @return boolean
+	 * 
+	 */
+	public boolean isOrderPlacedSuccessfully(){
+		return driver.getText(CONFIRMATION_MSG_OF_PLACED_ORDER_LOC).contains("Thank you for your Order!");
+	}
+
+	/***
+	 * This method get the Order Number after Successful Checkout 
+	 * 
+	 * @param 
+	 * @return String
+	 * 
+	 */
+	public String getOrderNumberAfterCheckout(){
+		String orderNumber = driver.getText(CONFIRMATION_MSG_OF_PLACED_ORDER_LOC).replaceAll("[^-?0-9]+","");
+		return orderNumber;
+	}
+
+	/***
+	 * This method validates login or register text displayed or not
+	 * 
+	 * @param 
+	 * @return boolean value
+	 * 
+	 */
+	public boolean isLoginOrRegisterTextDisplayed(){
+		return driver.isElementVisible(LOGIN_REGISTER_TEXT_LOC);
+	}
+	/***
+	 * This method login to storefront on checkout page
+	 * 
+	 * @param 
+	 * @return checkout page object
+	 * 
+	 */
+	public StoreFrontCheckoutPage loginAtCheckoutPage(String userName, String password){
+		driver.type(USER_NAME_LOC, userName);
+		logger.info("user name is entered"+userName);
+		driver.type(PASSWORD_FOR_LOGIN_LOC, password);
+		logger.info("password is entered"+password);
+		driver.click(LOGIN_AND_CHECKOUT_BUTTON_LOC);
+		logger.info("clicked on login and checkout button"+password);
+		driver.pauseExecutionFor(10000);
+		return this;
 	}
 
 }

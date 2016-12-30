@@ -53,7 +53,6 @@ public class StoreFrontHomePage extends StoreFrontWebsiteBasePage{
 	private final By SHOP_BY_PRICE_FILTER_LOC = By.xpath("//input[@id='$0-$49.99ID']/preceding::span[contains(@class,'glyphicon')][1]/..");
 	private final By SHOP_BY_PRICE_FILTER_OPTION_0_TO_49$_LOC = By.xpath("//input[@id='$0-$49.99ID']/..");
 	private final By SHOP_BY_PRICE_FILTER_OPTION_0_TO_49$_AFTER_CHECKED_LOC = By.xpath("//input[@id='$0-$49.99ID'][@checked = 'checked']");
-	private final By TOTAL_NO_OF_PRODUCTS_LOC = By.xpath("//div[@class='product-item']");
 	private final By SHOP_BY_PRICE_FILTER_OPTION_200_TO_499$_LOC = By.xpath("//input[@id='$200-$499.99ID']/..");
 	private final By SHOP_BY_PRICE_FILTER_OPTION_200_TO_499$_AFTER_CHECKED_LOC = By.xpath("//input[@id='$200-$499.99ID'][@checked = 'checked']");
 	private final By MINI_CART_NUMBER_OF_ITEMS_LOC = By.xpath("//span[@class='nav-items-total']");
@@ -71,7 +70,8 @@ public class StoreFrontHomePage extends StoreFrontWebsiteBasePage{
 	private final By SUBSCRIBE_TO_PULSE_CHKBOX_LOC = By.xpath("//label[@for='pulse-check']");
 	private final By PREFIX_FIELD_LOC = By.id("prefixId"); 
 	private final By PREFIX_AVAILABLE_LOC = By.xpath("//div[@class='available-dispaly available' or text()='Available']");
-	
+	private final By AUTOSHIP_TEXT_LOC = By.xpath("//span[text()='AutoShip']");
+
 	private String kitNameLoc = "//label[text()='%s']/preceding::input[1]";
 	private String priceOfProductLoc = "//div[contains(@class,'product__listing')]//div[@class='product-item'][%s]//span[@id='cust_price']";
 	private String socialMediaIconLoc = "//div[@class='container']//a[contains(@href,'%s')]";
@@ -448,10 +448,20 @@ public class StoreFrontHomePage extends StoreFrontWebsiteBasePage{
 	 */
 
 	public boolean isAddToBagPresentOfFirstProduct(){
-		driver.pauseExecutionFor(5000);
 		driver.moveToElementByJS(ADD_TO_CART_FIRST_PRODUCT_LOC);
-		driver.pauseExecutionFor(5000);
 		return driver.findElement(ADD_TO_BAG_OF_FIRST_PRODUCT).isDisplayed();
+	}
+	
+	/***
+	 * This method verify add to cart button is present for first product
+	 * 
+	 * @param
+	 * @return boolean value.
+	 * 
+	 */
+
+	public boolean isAddToCartPresentForFirstProduct(){
+		return driver.isElementVisible(ADD_TO_CART_FIRST_PRODUCT_LOC);
 	}
 
 	/***
@@ -479,19 +489,6 @@ public class StoreFrontHomePage extends StoreFrontWebsiteBasePage{
 	 */
 	public boolean isShopByPriceFirstFilterChecked(){
 		return driver.isElementPresent(SHOP_BY_PRICE_FILTER_OPTION_0_TO_49$_AFTER_CHECKED_LOC);
-	}
-
-	/***
-	 * This method get total no of product
-	 * 
-	 * @param
-	 * @return total no of product
-	 * 
-	 */
-	public int getTotalNoOfProduct(){
-		int totalNoOfProducts = driver.findElements(TOTAL_NO_OF_PRODUCTS_LOC).size(); 
-		logger.info("Total no of products are: "+totalNoOfProducts);
-		return totalNoOfProducts;
 	}
 
 	/***
@@ -683,6 +680,14 @@ public class StoreFrontHomePage extends StoreFrontWebsiteBasePage{
 		logger.info("Connect btn clicked on home page");
 		return this;
 	}
+	
+	/***
+	 * This method verifies whether the Connect btn present on the home page or not
+	 * @return boolean
+	 */
+	public boolean isConnectBtnPresentOnHomePage(){
+		return driver.isElementVisible(CONNECT_BTN_LOC);		
+	}
 
 	/***
 	 * This method clicks on the 'Applying as Business Entity' Link on sponsor page
@@ -695,7 +700,7 @@ public class StoreFrontHomePage extends StoreFrontWebsiteBasePage{
 		driver.pauseExecutionFor(500);
 		return this;
 	}
-	
+
 	/***
 	 * This method clicks on the Cross(X) button of 'Applying as Business Entity' popup on sponsor page
 	 * @return storeFront home page object
@@ -705,7 +710,7 @@ public class StoreFrontHomePage extends StoreFrontWebsiteBasePage{
 		logger.info("closed the 'Applying as Business Entity' popup");
 		return this;
 	}
-	
+
 	/***
 	 * This method checks whether 'Applying as Business Entity' popup on sponsor page
 	 * has displayed or NOT
@@ -714,7 +719,7 @@ public class StoreFrontHomePage extends StoreFrontWebsiteBasePage{
 	public boolean isApplyingAsBusinessEntityPopupDisplayed(){
 		return driver.isElementVisible(APPLYING_AS_BUSINESS_ENTITY_POPUP_LOC);		
 	}
-	
+
 	/***
 	 * This method selects the Subscribe to Pulse checkbox
 	 * @return SF home page object
@@ -724,7 +729,7 @@ public class StoreFrontHomePage extends StoreFrontWebsiteBasePage{
 		logger.info("Subscribe to Pulse checkbox has been selected");
 		return this;
 	}
-	
+
 	/***
 	 * This method enters the prefix in the orefix field during consultant enrollment
 	 * @param prefix
@@ -734,13 +739,35 @@ public class StoreFrontHomePage extends StoreFrontWebsiteBasePage{
 		driver.type(PREFIX_FIELD_LOC, prefix);
 		return this;
 	}
-	
+
 	/***
 	 * This method checks if prefix is available or not
 	 * @return
 	 */
 	public boolean isPrefixAvailable(){
 		return driver.isElementVisible(PREFIX_AVAILABLE_LOC);
+	}
+
+	/***
+	 * This method checks whether a pc has been enrolled successfully or not by verifying 
+	 * i) order confirmation String in URL
+	 * ii) Welcome Drop Down element
+	 * iii) autoship element on the page
+	 */
+	public boolean hasPCEnrolledSuccessfully(){
+		return driver.isElementVisible(WELCOME_DROPDOWN_LOC)
+				&& driver.getCurrentUrl().contains("/orderConfirmation")
+				&& driver.isElementVisible(AUTOSHIP_TEXT_LOC);		
+	}
+
+	/***
+	 * This method checks whether a rc has been enrolled successfully or not by verifying 
+	 * i) User is on Corp
+	 * ii)Welcome Drop Down element
+	 */
+	public boolean hasRCEnrolledSuccessfully(){
+		return driver.isElementVisible(WELCOME_DROPDOWN_LOC)
+				&& driver.getCurrentUrl().contains("/orderConfirmation");
 	}
 
 }

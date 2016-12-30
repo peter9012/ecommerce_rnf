@@ -330,6 +330,7 @@ public class AddAndDeleteShippingTest extends StoreFrontWebsiteBaseTest{
 		sfShippingInfoPage.enterConsultantShippingDetails(firstName, lastName, addressLine1,addressLine2, city, state, postalCode, phoneNumber);
 		sfShippingInfoPage.clickSaveButtonOfShippingAddress();
 		sfShippingInfoPage.clickUseAsEnteredButtonOnPopUp();
+		s_assert.assertTrue(sfShippingInfoPage.getAddressUpdateSuccessMsg().contains(TestConstants.SHIPPING_ADDRESS_UPDATE_MESSAGE),"Shipping Address update msg is not found as expected");
 		s_assert.assertTrue(sfShippingInfoPage.isShippingProfilePresent(lastName), "Expected profile name is not present in Address list");
 		s_assert.assertAll();
 	}

@@ -96,7 +96,17 @@ public class ViewAreasOfSiteFromHomePageTest extends StoreFrontWebsiteBaseTest{
 	 */
 	@Test //Incomplete 
 	public void testSearchConsultantOnlyProductByAnonymousRCPCUser_5(){
-
+		sfHomePage.mouseHoverOn(TestConstants.SHOP_SKINCARE);
+		s_assert.assertFalse(sfHomePage.isConsultantOnlyProductsLinkDisplayed(), "Consultant Only Link should NOT be present for anonymous user");
+		sfHomePage.loginToStoreFront(TestConstants.PC_EMAIL, password);
+		sfHomePage.mouseHoverOn(TestConstants.SHOP_SKINCARE);
+		s_assert.assertFalse(sfHomePage.isConsultantOnlyProductsLinkDisplayed(), "Consultant Only Link should NOT be present for PC user");
+		sfHomePage.clickWelcomeDropdown();
+		sfHomePage.logout();
+		sfHomePage.loginToStoreFront(TestConstants.RC_EMAIL, password);
+		sfHomePage.mouseHoverOn(TestConstants.SHOP_SKINCARE);
+		s_assert.assertFalse(sfHomePage.isConsultantOnlyProductsLinkDisplayed(), "Consultant Only Link should NOT be present for RC user");
+		s_assert.assertAll();
 	}
 
 }

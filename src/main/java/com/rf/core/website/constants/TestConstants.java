@@ -21,6 +21,7 @@ public class TestConstants {
 	public static final String USER_TYPE_PC = "PC";
 	public static final String USER_TYPE_RC = "RC";
 	public static final String PC_FIRST_NAME = "AutoPC";
+	public static final String RC_FIRST_NAME = "AutoRC";
 	public static final String LAST_NAME = "lName";
 	public static final String EMAIL_SUFFIX = "@yopmail.com";
 	public static final String ABOUT_RF = "ABOUT R+F";
@@ -35,6 +36,9 @@ public class TestConstants {
 	public static final String ADD_TO_BAG = "Add to Bag";
 	public static final String WRONG_ADDRESS_LINE_1_US = "BAJCAC";
 	public static final String CITY_DALLAS_US = "Dallas";
+	public static final String DEFAULT_PROFILE_UPDATION_MESSAGE = "Default Payment Details are updated.";
+	// Order page Details
+	public static final String TITLE_OF_ORDER_DETAILS_PAGE = "Order Details | Rodan and Fields";
 
 	//Consultant user details
 	public static final String CONSULTANT_USERNAME = "lauto623857@yopmail.com";
@@ -81,8 +85,8 @@ public class TestConstants {
 	public static final String DPO_STATE_US = "AP Armed Forces";
 
 	//PC User Details
-	public static final String PC_USERNAME = "autopcdev1@xyz.com";
-	public static final String PC_EMAIL = "autopcdev1@xyz.com";
+	public static final String PC_USERNAME = "AutoPC668682@yopmail.com";
+	public static final String PC_EMAIL = "AutoPC668682@yopmail.com";
 
 	//RC User Details
 	public static final String RC_USERNAME = "autorcdev1@xyz.com";

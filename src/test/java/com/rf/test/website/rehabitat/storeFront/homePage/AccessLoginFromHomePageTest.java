@@ -12,7 +12,7 @@ public class AccessLoginFromHomePageTest extends StoreFrontWebsiteBaseTest{
 	 * click on login link
 	 *     
 	 */
-	@Test
+	@Test//TODO
 	public void testUserClickOnTheLoginSymbolOnTheHomepage_9(){
 		sfHomePage.clickLoginIcon();
 		s_assert.assertTrue(sfHomePage.isUsernameFieldPresent(), "Username field is not present after clicked on login icon");
@@ -26,7 +26,7 @@ public class AccessLoginFromHomePageTest extends StoreFrontWebsiteBaseTest{
 	 * reclick on login link
 	 *     
 	 */
-	@Test
+	@Test//TODO
 	public void testUserSelectsLoginSymbolToCloseTheLoginProvision_10(){
 		sfHomePage.clickLoginIcon();
 		s_assert.assertTrue(sfHomePage.isUsernameFieldPresent(), "Username field is not present after clicked on login icon");

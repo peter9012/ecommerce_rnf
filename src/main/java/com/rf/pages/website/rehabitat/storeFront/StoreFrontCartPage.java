@@ -1,6 +1,8 @@
 package com.rf.pages.website.rehabitat.storeFront;
 
 import org.openqa.selenium.By;
+import org.openqa.selenium.NoSuchElementException;
+import org.openqa.selenium.interactions.Actions;
 
 import com.rf.core.driver.website.RFWebsiteDriver;
 import com.rf.pages.website.rehabitat.storeFront.basePage.StoreFrontWebsiteBasePage;
@@ -20,7 +22,14 @@ public class StoreFrontCartPage extends StoreFrontWebsiteBasePage{
 	private final By PC_ONE_TIME_FEE_MSG_LOC = By.xpath("//span[contains(text(),'PC PERKS ONE-TIME ENROLLMENT FEE')]");
 	private final By ADD_MORE_ITEMS_BTN_LOC = By.xpath("//div[@class='cart-container']/descendant::button[contains(text(),'Add More Items')][2]"); 
 	private final By CHECKOUT_BTN_LOC = By.xpath("//div[@class='cart-container']/descendant::button[contains(text(),'Checkout')][2]");
+	private final By FIRST_ITEM_CODE_LOC = By.xpath("//ul[contains(@class,'cart__list')]/descendant::li[@class='item-list-item'][1]//div[@class='item-code']");
+	private final By FIRST_ITEM_PRODUCT_NAME_LOC = By.xpath("//ul[contains(@class,'cart__list')]/descendant::li[@class='item-list-item'][1]//span[@class='item-name']");
+	private final By SUBTOTAL_LOC = By.xpath("//td[text()='Subtotal:']/following::td[1]");
+	private final By DELIVERY_LOC = By.xpath("//td[text()='Delivery:']/following::td[1]");
+	private final By TOTAL_NO_OF_ITEMS_IN_CART_LOC = By.xpath("//ul[contains(@class,'cart__list')]/descendant::li[@class='item-list-item']");
+	private final By CHECKOUT_CONFIRMATION_MSG_LOC=By.xpath("//div[@id='cartCheckoutModal']/p");
 
+	private String recentlyViewProductOnCartPageLoc = "//div[@id='recentlyViewedTitle']/following::div[@class='owl-item active']//a[contains(text(),'%s')]";
 	/***
 	 * This method get product quantity 
 	 * 
@@ -110,5 +119,121 @@ public class StoreFrontCartPage extends StoreFrontWebsiteBasePage{
 		return new StoreFrontCheckoutPage(driver);
 	}
 
+	/***
+	 * This method get product item code 
+	 * 
+	 * @param itemNumber
+	 * @return item code
+	 * 
+	 */
+	public String getItemCode(String itemNumber){
+		String itemCode = null;
+		if(itemNumber.equalsIgnoreCase("1")){
+			itemCode = driver.findElement(FIRST_ITEM_CODE_LOC).getText();
+		}
+		logger.info("Item code of "+itemNumber+" is "+itemCode);
+		return itemCode;
+	}
+
+	/***
+	 * This method get product name of first item 
+	 * 
+	 * @param itemNumber
+	 * @return product name
+	 * 
+	 */
+	public String getProductName(String itemNumber){
+		String productName = null;
+		if(itemNumber.equalsIgnoreCase("1")){
+			productName = driver.findElement(FIRST_ITEM_PRODUCT_NAME_LOC).getText();
+		}
+		logger.info("product name of "+itemNumber+" is "+productName);
+		return productName;
+	}
+
+	/***
+	 * This method get get subtotal 
+	 * 
+	 * @param 
+	 * @return subtotal
+	 * 
+	 */
+	public String getSubtotalofItems(){
+		String subtotal = driver.findElement(SUBTOTAL_LOC).getText();
+		logger.info("Subtotal of product is "+subtotal);
+		return subtotal;
+	}
+
+	/***
+	 * This method get delivery charges
+	 * 
+	 * @param 
+	 * @return delivery charges
+	 * 
+	 */
+	public String getDeliveryCharges(){
+		String deliveryCharges = driver.findElement(DELIVERY_LOC).getText();
+		logger.info("Delivery charges of product is "+deliveryCharges);
+		return deliveryCharges;
+	}
+
+	/***
+	 * This method get total no of items
+	 * 
+	 * @param
+	 * @return total no of items
+	 * 
+	 */
+	public int getTotalNoOfItemsInCart(){
+		int totalNoOfItems = driver.findElements(TOTAL_NO_OF_ITEMS_IN_CART_LOC).size(); 
+		logger.info("Total no of products are: "+totalNoOfItems);
+		return totalNoOfItems;
+	}
+
+	/***
+	 * This method validate the text present on checkout popup
+	 * 
+	 * 
+	 * @param
+	 * @return boolean value.
+	 * 
+	 */
+	public boolean isCheckoutConfirmationDisplayed(){
+		driver.pauseExecutionFor(5000);
+		return driver.isElementVisible(CHECKOUT_CONFIRMATION_MSG_LOC);
+	}
+
+	/***
+	 * This method verify recently view product are present on cart page
+	 * 
+	 * 
+	 * @param
+	 * @return boolean value.
+	 * 
+	 */
+
+	public boolean isRecentlyViewProductPresentOnCartPage(String productName){
+		try{
+			if(driver.findElement(By.xpath(String.format(recentlyViewProductOnCartPageLoc, productName))).isDisplayed()){
+				return true;
+			}
+		}
+		catch(NoSuchElementException e){
+			logger.info("Product "+productName+" not present under recently viewed on cart page.");
+		}
+		return false;
+	}
+
+	/***
+	 * This method click product name under recently view on cart page 
+	 * 
+	 * @param
+	 * @return store front product detail page object
+	 */
+	public StoreFrontProductDetailPage clickProductUnderRecentlyView(String productName){
+		driver.clickByJS(RFWebsiteDriver.driver, driver.findElement(By.xpath(String.format(recentlyViewProductOnCartPageLoc, productName))));
+		logger.info("Product"+productName+"is clicked under recently view on cart page");
+		return new StoreFrontProductDetailPage(driver);
+	}
 }
 

@@ -76,7 +76,6 @@ public class PCEnrollmentTest extends StoreFrontWebsiteBaseTest{
 		s_assert.assertAll();
 	}
 	
-
 	/***
 	 * qTest : TC-451 PC User Enrollment/Checkout - Incomplete Enrollment
 	 * Description : This test is for incomplete enrollment of  a PC user
@@ -143,6 +142,42 @@ public class PCEnrollmentTest extends StoreFrontWebsiteBaseTest{
 		sfCheckoutPage.clickBillingDetailsNextbutton();
 		sfCheckoutPage.clickPlaceOrderButton();
 		s_assert.assertTrue(sfCheckoutPage.isPopUpForTermsAndConditionsCheckboxDisplayed(), "Pop up has not been displayed after NOT selecting the T&C checkboxes");
+		s_assert.assertAll();
+	}
+	
+	/***
+	 * qTest : TC-495 PC user can select sponsor from corp
+	 * Description : This test is for checking the functionality of selecting the 
+	 * sponsor during PC enrollment
+	 * 
+	 *     
+	 */
+	@Test
+	public void testPCEnrollmentSelectSponsor_495(){
+		String allProduct = "ALL PRODUCTS";
+		String dummyConsultant = "xxx";
+		String consultantWith2Chars = "Pu";
+		String existingConsultant = TestConstants.SPONSOR;
+		sfCartPage = new StoreFrontCartPage(driver);
+		sfShopSkinCarePage = sfHomePage.navigateToShopSkincareLink(allProduct);
+		sfShopSkinCarePage.addFirstProductToBag();
+		sfShopSkinCarePage.checkoutTheCartFromPopUp();
+		sfCheckoutPage=sfShopSkinCarePage.checkoutTheCart();
+		sfCheckoutPage.fillNewUserDetails(TestConstants.USER_TYPE_PC, firstName, lastName, email, password);
+		sfCheckoutPage.clickCreateAccountButton();
+		sfCheckoutPage = sfCartPage.clickCheckoutBtn();
+		sfCheckoutPage.searchForConsultant(dummyConsultant);
+		s_assert.assertTrue(sfCheckoutPage.isNoResultFoundMsgDisplayedForSearchedConsultant(), "No results found for msg has NOT displayed for "+dummyConsultant);
+		sfCheckoutPage.searchForConsultant(consultantWith2Chars);
+		s_assert.assertTrue(sfCheckoutPage.isValidationMsgDisplayedForSearchedConsultant(), "Please enter at least 3 characters msg has NOT displayed for "+consultantWith2Chars);
+		sfCheckoutPage.searchForConsultant(existingConsultant);
+		s_assert.assertTrue(sfCheckoutPage.isSponsorResultDisplayed(),"No result found after searching the sponsor with name "+TestConstants.SPONSOR);
+		sfCheckoutPage.selectFirstSponsorFromList();
+		s_assert.assertTrue(sfCheckoutPage.isSelectedConsultantBoxDisplayed(), "consultant box of the selected sponsor has NOT displayed");
+		sfHomePage.clickRemoveLink();
+		s_assert.assertFalse(sfCheckoutPage.isSelectedConsultantBoxDisplayed(), "consultant box of the selected sponsor has NOT removed");
+		sfCheckoutPage.searchForConsultant(existingConsultant);
+		s_assert.assertTrue(sfCheckoutPage.isSponsorResultDisplayed(),"No result found after searching the sponsor with name "+TestConstants.SPONSOR);
 		s_assert.assertAll();
 	}
 	

@@ -42,36 +42,20 @@ public class RCEnrollmentTest extends StoreFrontWebsiteBaseTest{
 	}
 
 	/***
-	 * qTest : TC-452 RC Retail user enrollment - From Corp site
+	 * qTest : TC-550 RC Retail user enrollment - From Corp site
 	 * Description : This test is for successfully enrolling a RC user
 	 * 
 	 *     
 	 */
 	@Test//TODO
-	public void testRCEnrollment_452(){
+	public void testRCEnrollment_550(){
 		sfCartPage = new StoreFrontCartPage(driver);
 		sfShopSkinCarePage = new StoreFrontShopSkinCarePage(driver);
 		sfHomePage.clickLoginIcon();
 		sfCheckoutPage=sfHomePage.clickSignUpNowLink();
 		sfCheckoutPage.fillNewUserDetails(TestConstants.USER_TYPE_RC, firstName, lastName, email, password);
 		sfCheckoutPage.clickCreateAccountButton();
-		sfCartPage.clickAddMoreItemsBtn();
-		sfShopSkinCarePage.selectFirstProduct();
-		sfCartPage = sfShopSkinCarePage.checkoutTheCartFromPopUp();
-		sfCartPage.enterQuantityOfProductAtCart("1", "10");
-		sfCartPage.clickOnUpdateLinkThroughItemNumber("1");
-		sfCartPage.clickCheckoutBtn();
-		sfCheckoutPage.clickContinueWithoutConsultantLink();
-		sfCheckoutPage.clickSaveButton();
-		sfCheckoutPage.enterShippingDetails(firstName+" "+lastName, addressLine1, addressLine2, city, state, postalCode, phoneNumber);
-		sfCheckoutPage.clickShippingDetailsNextbutton();
-		sfCheckoutPage.enterUserBillingDetails(cardType, cardNumber, cardName, CVV);
-		sfCheckoutPage.checkUseMyDeliveryAddressChkBox();
-		sfCheckoutPage.clickBillingDetailsNextbutton();
-		sfCheckoutPage.selectTermsAndConditionsChkBox();
-		sfCheckoutPage.selectPoliciesAndProceduresChkBox();
-		sfCheckoutPage.clickPlaceOrderButton();
-		s_assert.assertTrue(sfHomePage.hasPCEnrolledSuccessfully(), "PC has not been enrolled successfully");
+		s_assert.assertTrue(sfHomePage.isWelcomeUserElementDisplayed(), "RC has not been enrolled successfully");
 		s_assert.assertAll();
 	}	
 }

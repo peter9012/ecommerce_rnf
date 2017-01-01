@@ -41,8 +41,8 @@ public class TestConstants {
 	public static final String TITLE_OF_ORDER_DETAILS_PAGE = "Order Details | Rodan and Fields";
 
 	//Consultant user details
-	public static final String CONSULTANT_USERNAME = "lauto623857@yopmail.com";
-	public static final String CONSULTANT_EMAIL = "auto623857@yopmail.com";
+	public static final String CONSULTANT_USERNAME = "auto753120@yopmail.com";
+	public static final String CONSULTANT_EMAIL = "auto753120@yopmail.com";
 	public static final String CONSULTANT_ACCOUNT_ID = "";
 	public static final String CONSULTANT_ACCOUNT_NUMBER = "";
 	public static final String FIRST_NAME = "auto";
@@ -52,11 +52,16 @@ public class TestConstants {
 	public static final String POSTAL_CODE_US = "94105";
 	public static final String PHONE_NUMBER = "9842342342";
 	public static final String STATE_US = "California";
-	public static final String ADDRESS_LINE_1_CA = "5502 54th ST";
-	public static final String CITY_CA = "bonneville";
-	public static final String POSTAL_CODE_CA = "T5N 2N8";
-	public static final String PHONE_NUMBER_CA = "2342342342";
-	public static final String STATE_CA = "Alberta";
+	public static final String DAY_OF_BIRTH = "14";
+	public static final String MONTH_OF_BIRTH = "Jun";
+	public static final String YEAR_OF_BIRTH = "1986";
+	public static final String GENDER = "MALE";
+	
+//	public static final String ADDRESS_LINE_1_CA = "5502 54th ST";
+//	public static final String CITY_CA = "bonneville";
+//	public static final String POSTAL_CODE_CA = "T5N 2N8";
+//	public static final String PHONE_NUMBER_CA = "2342342342";
+//	public static final String STATE_CA = "Alberta";
 	public static final String SPOUSE_FIRST_NAME = "FNSpouse";
 	public static final String SPOUSE_LAST_NAME = "LNSpouse";
 	public static final String PROFILE_UPDATION_MESSAGE = "Your profile has been updated";
@@ -85,12 +90,12 @@ public class TestConstants {
 	public static final String DPO_STATE_US = "AP Armed Forces";
 
 	//PC User Details
-	public static final String PC_USERNAME = "AutoPC668682@yopmail.com";
-	public static final String PC_EMAIL = "AutoPC668682@yopmail.com";
+	public static final String PC_USERNAME = "AutoPC384456@yopmail.com";
+	public static final String PC_EMAIL = "AutoPC384456@yopmail.com";
 
 	//RC User Details
-	public static final String RC_USERNAME = "autorcdev1@xyz.com";
-	public static final String RC_EMAIL = "autorcdev1@xyz.com";
+	public static final String RC_USERNAME = "AutoRC263891@yopmail.com";
+	public static final String RC_EMAIL = "AutoRC263891@yopmail.com";
 
 	public static final String SHIPPING_METHOD_UPS_2DAY = "UPS 2 Days";
 	public static final String SHIPPING_METHOD_UPS_GROUND = "UPS Ground";

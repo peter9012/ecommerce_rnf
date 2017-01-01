@@ -217,7 +217,7 @@ public class MyAccountTest extends StoreFrontWebsiteBaseTest{
 		s_assert.assertTrue(sfAccountInfoPage.isValidationMsgPresentForParticularField("email", expectedValidationErrorMsg),"email field empty field validation msg has not displayed");
 		s_assert.assertAll();
 	}
-	
+
 	/***
 	 * qTest : TC-276 Consultant Autoship Status-Learn more about Pulse
 	 * 
@@ -292,7 +292,7 @@ public class MyAccountTest extends StoreFrontWebsiteBaseTest{
 		s_assert.assertTrue(sfAccountInfoPage.isValidationMsgPresentForParticularField("spouseLastName", expectedValidationErrorMsg),"Spouse Last name empty field validation msg has not displayed");
 		s_assert.assertAll();
 	}
-	
+
 	/***
 	 * qTest : TC-288 Account Information Page- Account Info Fields - Valid
 	 * 
@@ -304,34 +304,65 @@ public class MyAccountTest extends StoreFrontWebsiteBaseTest{
 	 */
 	@Test
 	public void testUpdateAccountInfoWithValidDetails_288(){
-		String spouseFirstName = TestConstants.SPOUSE_FIRST_NAME;
-		String spouseLastName = TestConstants.SPOUSE_LAST_NAME;
+		String country="USA";
 		String profileUpdationMessage = null;
 		String randomWord = CommonUtils.getRandomWord(5);
 		String firstName = TestConstants.FIRST_NAME;
 		String lastName = TestConstants.LAST_NAME+randomWord;
-		String addressLine1 = TestConstants.ADDRESS_LINE_1_CA;
-		String city = TestConstants.CITY_CA;
-		String state = TestConstants.STATE_CA;
-		String postalCode = TestConstants.POSTAL_CODE_CA;
+		String addressLine1 = TestConstants.ADDRESS_LINE_1_US;
+		String addressLine2 = TestConstants.ADDRESS_LINE_2_US;
+		String city = TestConstants.CITY_US;
+		String state = TestConstants.STATE_US;
+		String postalCode = TestConstants.POSTAL_CODE_US;
 		String phoneNumber = TestConstants.PHONE_NUMBER;
+		String phoneNumber2 = TestConstants.PHONE_NUMBER;
+		String dayOfBirth = TestConstants.DAY_OF_BIRTH;
+		String monthOfBirth = TestConstants.MONTH_OF_BIRTH;
+		String yearOfBirth = TestConstants.YEAR_OF_BIRTH;
+		String email = TestConstants.CONSULTANT_EMAIL;
+		String gender = TestConstants.GENDER;
 
-		//Login as consultant user.
-		sfHomePage.loginToStoreFront(TestConstants.CONSULTANT_USERNAME,password);
+//		//Login as consultant user.
+//		sfHomePage.loginToStoreFront(TestConstants.CONSULTANT_USERNAME,password);
+//		sfHomePage.clickWelcomeDropdown();
+//		sfAccountInfoPage = sfHomePage.navigateToAccountInfoPage();
+//		s_assert.assertFalse(sfAccountInfoPage.isCountryNameEditable(country), "Country filled is editable at account info page for consultant");
+//		sfAccountInfoPage.enterMainAccountInfo(firstName, lastName, addressLine1, addressLine2,city, state, postalCode, phoneNumber,phoneNumber2,email,dayOfBirth,monthOfBirth,yearOfBirth,gender);
+//		sfAccountInfoPage.saveAccountInfo();
+//		sfAccountInfoPage.clickUseAsEnteredButtonOnPopUp();
+//		profileUpdationMessage = sfAccountInfoPage.getProfileUpdationMessage();
+//		s_assert.assertTrue(profileUpdationMessage.equalsIgnoreCase(TestConstants.PROFILE_UPDATION_MESSAGE.trim()), "'Spouse details' profile updation message Expected = "+TestConstants.PROFILE_UPDATION_MESSAGE+" but Actual = "+profileUpdationMessage);
+//		sfAccountInfoPage.clickWelcomeDropdown();
+//		sfAccountInfoPage.logout();
+
+		//Login as pc
+		email = TestConstants.PC_EMAIL;
+		sfHomePage.loginToStoreFront(email,password);
 		sfHomePage.clickWelcomeDropdown();
 		sfAccountInfoPage = sfHomePage.navigateToAccountInfoPage();
-		sfAccountInfoPage.enterMainAccountInfo(firstName, lastName, addressLine1, city, state, postalCode, phoneNumber);
-		sfAccountInfoPage.checkSpouseCheckbox();
-		sfAccountInfoPage.enterSpouseFirstName(spouseFirstName);
-		sfAccountInfoPage.enterSpouseLastName(spouseLastName);
+		s_assert.assertFalse(sfAccountInfoPage.isCountryNameEditable(country), "Country filled is editable at account info page for consultant");
+		sfAccountInfoPage.enterMainAccountInfo(firstName, lastName, addressLine1, addressLine2,city, state, postalCode, phoneNumber,phoneNumber2,email,dayOfBirth,monthOfBirth,yearOfBirth,gender);
 		sfAccountInfoPage.saveAccountInfo();
-		s_assert.assertTrue(sfAccountInfoPage.isSpouseDetailsConfirmationPopUpPresent(), "'Spouse details' popup is not displayed");
-		sfAccountInfoPage.useEnteredDetailsOnSpouseDetailsPopUp();
+		sfAccountInfoPage.clickUseAsEnteredButtonOnPopUp();
+		profileUpdationMessage = sfAccountInfoPage.getProfileUpdationMessage();
+		s_assert.assertTrue(profileUpdationMessage.equalsIgnoreCase(TestConstants.PROFILE_UPDATION_MESSAGE.trim()), "'Spouse details' profile updation message Expected = "+TestConstants.PROFILE_UPDATION_MESSAGE+" but Actual = "+profileUpdationMessage);
+		sfAccountInfoPage.clickWelcomeDropdown();
+		sfAccountInfoPage.logout();
+
+		//Login as rc
+		email = TestConstants.RC_EMAIL;
+		sfHomePage.loginToStoreFront(email,password);
+		sfHomePage.clickWelcomeDropdown();
+		sfAccountInfoPage = sfHomePage.navigateToAccountInfoPage();
+		s_assert.assertFalse(sfAccountInfoPage.isCountryNameEditable(country), "Country filled is editable at account info page for consultant");
+		sfAccountInfoPage.enterMainAccountInfo(firstName, lastName, addressLine1, addressLine2,city, state, postalCode, phoneNumber,phoneNumber2,email,dayOfBirth,monthOfBirth,yearOfBirth,gender);
+		sfAccountInfoPage.saveAccountInfo();
+		sfAccountInfoPage.clickUseAsEnteredButtonOnPopUp();
 		profileUpdationMessage = sfAccountInfoPage.getProfileUpdationMessage();
 		s_assert.assertTrue(profileUpdationMessage.equalsIgnoreCase(TestConstants.PROFILE_UPDATION_MESSAGE.trim()), "'Spouse details' profile updation message Expected = "+TestConstants.PROFILE_UPDATION_MESSAGE+" but Actual = "+profileUpdationMessage);
 		s_assert.assertAll();
 	}
-	
+
 	/***
 	 * qTest : TC-289 Account Information Page- Account Info Fields - Invalid
 	 * 
@@ -346,9 +377,9 @@ public class MyAccountTest extends StoreFrontWebsiteBaseTest{
 		String randomWord = CommonUtils.getRandomWord(5);
 		String firstName = TestConstants.FIRST_NAME;
 		String lastName = TestConstants.LAST_NAME+randomWord;
-		String addressLine1 = TestConstants.ADDRESS_LINE_1_CA;
-		String city = TestConstants.CITY_CA;
-		String postalCode = TestConstants.POSTAL_CODE_CA;
+		String addressLine1 = TestConstants.ADDRESS_LINE_1_US;
+		String city = TestConstants.CITY_US;
+		String postalCode = TestConstants.POSTAL_CODE_US;
 		String phoneNumber = TestConstants.PHONE_NUMBER;
 		String emailAddress = "abc@wyz";
 		//Login as consultant user.
@@ -404,10 +435,10 @@ public class MyAccountTest extends StoreFrontWebsiteBaseTest{
 		String randomWord = CommonUtils.getRandomWord(5);
 		String firstName = TestConstants.FIRST_NAME;
 		String lastName = TestConstants.LAST_NAME+randomWord;
-		String addressLine1 = TestConstants.ADDRESS_LINE_1_CA;
-		String city = TestConstants.CITY_CA;
-		String state = TestConstants.STATE_CA;
-		String postalCode = TestConstants.POSTAL_CODE_CA;
+		String addressLine1 = TestConstants.ADDRESS_LINE_1_US;
+		String city = TestConstants.CITY_US;
+		String state = TestConstants.STATE_US;
+		String postalCode = TestConstants.POSTAL_CODE_US;
 		String phoneNumber = TestConstants.PHONE_NUMBER;
 		String invalidPostalCode = "T5N";
 		String firstNameWithSpecialChar = "auto-'First";
@@ -639,9 +670,9 @@ public class MyAccountTest extends StoreFrontWebsiteBaseTest{
 		sfAccountInfoPage = sfHomePage.navigateToAccountInfoPage();
 		sfAccountInfoPage.clickEmailYourConsultantLink();
 		sfAccountInfoPage.enterEmailYourConsultantDetailsAndSubmit("testName", "testEmail@rf.com", "test email");
-		
+
 	}
-	
+
 	/***
 	 * qTest : TC-358 User navigates to Report a Problem page from the order history
 	 * 
@@ -664,7 +695,7 @@ public class MyAccountTest extends StoreFrontWebsiteBaseTest{
 		sfOrdersPage.switchToParentWindow(parentWin);
 		s_assert.assertAll();
 	}
-	
+
 	/***
 	 * qTest : TC-387 Order History
 	 * 
@@ -679,7 +710,7 @@ public class MyAccountTest extends StoreFrontWebsiteBaseTest{
 		sfOrdersPage = sfHomePage.navigateToOrdersPage();
 		s_assert.assertAll();
 	}
-	
+
 	/***
 	 * qTest : TC-282 Account Information- Reset password - Invalid Current Password
 	 * 
@@ -702,7 +733,7 @@ public class MyAccountTest extends StoreFrontWebsiteBaseTest{
 		sfAccountInfoPage.saveAccountInfo();
 		s_assert.assertTrue(sfAccountInfoPage.isValidationMsgPresentForParticularField("current password", expectedValidationErrorMsg)," validation msg for incorrect current password has not displayed");
 	}
-	
+
 	/***
 	 * qTest : TC-283 Account Information- Reset password - Other Invalid scenarios
 	 * 
@@ -731,8 +762,57 @@ public class MyAccountTest extends StoreFrontWebsiteBaseTest{
 		sfAccountInfoPage.enterConfirmPassword("");
 		sfAccountInfoPage.saveAccountInfo();
 		s_assert.assertTrue(sfAccountInfoPage.isValidationMsgPresentForParticularField("confirm password", expectedValidationErrorMsg)," validation msg for non-matching new password has not displayed");
-		s_assert.assertAll();
-		
+		s_assert.assertAll();		
 	}
 
+	/***
+	 * qTest : TC-281 Account Information- Reset password - All valid details
+	 * 
+	 * Description : //TODO
+	 * 
+	 *     
+	 */
+	@Test
+	public void testResetPasswordValidDetails_281(){
+		String newValidPassword = "111Maiden";
+		String profileUpdationMessage = null;
+		String randomWord = CommonUtils.getRandomWord(5);
+		String firstName = TestConstants.PC_FIRST_NAME;
+		String lastName = TestConstants.LAST_NAME+randomWord;
+		String addressLine1 = TestConstants.ADDRESS_LINE_1_US;
+		String city = TestConstants.CITY_US;
+		String state = TestConstants.STATE_US;
+		String postalCode = TestConstants.POSTAL_CODE_US;
+		String phoneNumber = TestConstants.PHONE_NUMBER;
+		//Login as pc user
+		sfHomePage.loginToStoreFront(TestConstants.PC_EMAIL,password);
+		sfHomePage.clickWelcomeDropdown();
+		sfAccountInfoPage = sfHomePage.navigateToAccountInfoPage();
+		sfAccountInfoPage.enterMainAccountInfo(firstName, lastName, addressLine1, city, state, postalCode, phoneNumber);
+		sfAccountInfoPage.enterOldPassword(password);
+		sfAccountInfoPage.enterNewPassword(newValidPassword);
+		sfAccountInfoPage.enterConfirmPassword(newValidPassword);
+		sfAccountInfoPage.saveAccountInfo();
+		sfAccountInfoPage.clickUseAsEnteredButtonOnPopUp();
+		profileUpdationMessage = sfAccountInfoPage.getProfileUpdationMessage();
+		s_assert.assertTrue(profileUpdationMessage.equalsIgnoreCase(TestConstants.PROFILE_UPDATION_MESSAGE.trim()), "'New Password' profile updation message Expected = "+TestConstants.PROFILE_UPDATION_MESSAGE+" but Actual = "+profileUpdationMessage);
+		sfAccountInfoPage.clickWelcomeDropdown();
+		sfAccountInfoPage.logout();
+		sfHomePage.loginToStoreFront(TestConstants.PC_EMAIL,password);
+		s_assert.assertTrue(sfHomePage.isLoginOrRegisterPageDisplayed()&& sfHomePage.getCurrentURL().contains("/login"), "'Login Or Register' page has not displayed");
+		s_assert.assertTrue(sfHomePage.isErrorMessageForIncorrectUsernamePasswordDisplayed(), "Error ");
+		navigateToStoreFrontBaseURL();
+		sfHomePage.loginToStoreFront(TestConstants.PC_EMAIL,newValidPassword);
+		sfHomePage.clickWelcomeDropdown();
+		sfAccountInfoPage = sfHomePage.navigateToAccountInfoPage();
+		sfAccountInfoPage.enterOldPassword(newValidPassword);
+		sfAccountInfoPage.enterNewPassword(password);
+		sfAccountInfoPage.enterConfirmPassword(password);
+		sfAccountInfoPage.saveAccountInfo();
+		sfAccountInfoPage.clickUseAsEnteredButtonOnPopUp();
+		profileUpdationMessage = sfAccountInfoPage.getProfileUpdationMessage();
+		s_assert.assertTrue(profileUpdationMessage.equalsIgnoreCase(TestConstants.PROFILE_UPDATION_MESSAGE.trim()), "'New Password' profile updation message Expected = "+TestConstants.PROFILE_UPDATION_MESSAGE+" but Actual = "+profileUpdationMessage);
+		s_assert.assertAll();
+
+	}
 }

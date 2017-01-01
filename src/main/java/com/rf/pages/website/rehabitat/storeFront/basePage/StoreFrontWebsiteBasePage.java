@@ -77,7 +77,7 @@ public class StoreFrontWebsiteBasePage extends RFBasePage{
 	private final By SIGN_UP_NOW_LINK_LOC = By.xpath("//a[contains(text(),'Sign up now')]");
 	private final By WELCOME_DD_ACCOUNT_INFO_LOC = By.xpath("//a[text()='Account Info']");
 	protected final By WELCOME_DROPDOWN_LOC = By.xpath("//div[contains(text(),'Welcome')]");
-	protected final By CHECKOUT_BUTTON_LOC = By.xpath("//div[@class='cart-container']/descendant::button[contains(text(),'Checkout')][2]");
+	protected final By CHECKOUT_BUTTON_LOC = By.xpath("//div[@class='cart-container']/descendant::button[contains(text(),'Checkout')][2] | //a[@id='checkoutPopup']");
 	private final By CHECKOUT_CONFIRMATION_OK_BUTTON_LOC = By.xpath("//div[@id='cartCheckoutModal']/a");
 	private final By WELCOME_DD_SHIPPING_INFO_LOC = By.xpath("//a[text()='Shipping Info']");
 	private final By WELCOME_DD_BILLING_INFO_LOC = By.xpath("//a[text()='Billing Info']");

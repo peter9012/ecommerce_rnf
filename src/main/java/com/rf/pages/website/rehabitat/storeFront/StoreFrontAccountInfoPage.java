@@ -1,6 +1,8 @@
 package com.rf.pages.website.rehabitat.storeFront;
 
 import org.openqa.selenium.By;
+import org.openqa.selenium.support.ui.Select;
+
 import com.rf.core.driver.website.RFWebsiteDriver;
 import com.rf.pages.website.rehabitat.storeFront.basePage.StoreFrontWebsiteBasePage;
 import org.apache.logging.log4j.LogManager;
@@ -18,9 +20,14 @@ public class StoreFrontAccountInfoPage extends StoreFrontWebsiteBasePage{
 	private final By FIRST_NAME_LOC = By.id("profile.firstName");
 	private final By LAST_NAME_LOC = By.id("profile.lastName");
 	private final By ADDRESS_LINE_LOC = By.id("profile.line1");
+	private final By ADDRESS_LINE_2_LOC = By.id("profile.line2");
 	private final By CITY_LOC = By.id("profile.townCity");
 	private final By POSTAL_CODE_LOC = By.id("profile.postcode");
 	private final By MAIN_PHONE_NUMBER_LOC = By.id("profile.phone1");
+	private final By PHONE_NUMBER_2_LOC = By.id("profile.phone2");
+	private final By DAY_OF_BIRTH_LOC = By.xpath("//select[contains(@class,'day')]");
+	private final By MONTH_OF_BIRTH_LOC = By.xpath("//select[contains(@class,'month')]");
+	private final By YEAR_OF_BIRTH_LOC = By.xpath("//select[contains(@class,'year')]");
 	private final By EMAIL_LOC = By.id("profile.email");
 	private final By OLD_PASSWORD_LOC = By.id("profile.currentPassword");
 	private final By NEW_PASSWORD_LOC = By.id("profile.newPassword");
@@ -41,7 +48,7 @@ public class StoreFrontAccountInfoPage extends StoreFrontWebsiteBasePage{
 	private final By EMAIL_TO_CONSULTANT_EMAIL_LOC= By.id("emailToConsultantForm.emailId");
 	private final By EMAIL_TO_CONSULTANT_EMAIL_CONTENT_LOC= By.id("emailToConsultantForm.emailContent");
 	private final By EMAIL_TO_CONSULTANT_EMAIL_SUBMIT_BTN_LOC= By.id("emailToConsultantSubmitButton");
-	
+
 	private String spouseFirstNameValidationErrorLoc = " //*[@id='profile.spouseFirstname']/following::label[contains(text(),'%s')][1]";
 	private String spouseLastNameValidationErrorLoc = " //*[@id='profile.spouseLastname']/following::label[contains(text(),'%s')][1]";
 	private String stateForAccountDetails = "//select[@id='profile.region']//option[text()='%s']";
@@ -55,6 +62,7 @@ public class StoreFrontAccountInfoPage extends StoreFrontWebsiteBasePage{
 	private String cityValidationErrorLoc = "//*[@id='profile.townCity']/following::label[contains(text(),'%s')][1]";
 	private String postalValidationErrorLoc = "//*[@id='profile.postcode']/following::label[contains(text(),'%s')][1]";
 	private String phoneNumberValidationErrorLoc = "//*[@id='profile.phone1']/following::label[contains(text(),'%s')][1]";
+	private String genderRadioBtnLoc = "//input[@name='gender'][@value='%s']/..";
 
 	/***
 	 * This method verify first Name field on account info page. 
@@ -145,6 +153,7 @@ public class StoreFrontAccountInfoPage extends StoreFrontWebsiteBasePage{
 	public StoreFrontAccountInfoPage saveAccountInfo(){
 		driver.click(SAVE_BUTTON_ACCOUNT_INFO_PAGE_LOC);
 		logger.info("Save button clicked on account info page.");
+		driver.pauseExecutionFor(2000);
 		return this;
 	}
 
@@ -345,6 +354,7 @@ public class StoreFrontAccountInfoPage extends StoreFrontWebsiteBasePage{
 		logger.info("profile updation message is: "+profileUpdationMessage[1]);
 		return profileUpdationMessage[1].trim();
 	}
+
 	/***
 	 * This method enter main Account info on Account Info Page
 	 * 
@@ -352,7 +362,7 @@ public class StoreFrontAccountInfoPage extends StoreFrontWebsiteBasePage{
 	 * @return store front Account Info page object
 	 * 
 	 */
-	public StoreFrontWebsiteBasePage enterMainAccountInfo(String firstName, String lastName, String addressLine1, String city, String state, String postal, String phoneNumber){
+	public StoreFrontAccountInfoPage enterMainAccountInfo(String firstName, String lastName, String addressLine1, String city, String state, String postal, String phoneNumber){
 		driver.type(FIRST_NAME_LOC, firstName);
 		logger.info("Entered first name as "+firstName);
 		driver.type(LAST_NAME_LOC, lastName);
@@ -371,6 +381,51 @@ public class StoreFrontAccountInfoPage extends StoreFrontWebsiteBasePage{
 		logger.info("Entered Phone number  as "+phoneNumber);
 		return this;
 	}
+
+	/***
+	 * This method enter main Account info on Account Info Page
+	 * 
+	 * @param First name,Last name, address line1, city, state, postal code, phone number
+	 * @return store front Account Info page object
+	 * 
+	 */
+	public StoreFrontAccountInfoPage enterMainAccountInfo(String firstName, String lastName, String addressLine1, String addressLine2,String city, String state, String postal, String phoneNumber,String phoneNumber2
+			,String email,String dayOfBirth,String monthOfBirth,String yearOfBirth,String gender){
+		driver.type(FIRST_NAME_LOC, firstName);
+		logger.info("Entered first name as "+firstName);
+		driver.type(LAST_NAME_LOC, lastName);
+		logger.info("Entered last name as "+lastName);
+		driver.type(ADDRESS_LINE_LOC, addressLine1);
+		logger.info("Entered address line 1 as "+addressLine1);
+		driver.type(ADDRESS_LINE_2_LOC, addressLine2);
+		logger.info("Entered address line 2 as "+addressLine2);
+		driver.type(CITY_LOC, city);
+		logger.info("Entered city as "+city);
+		driver.click(STATE_DD_LOC);
+		logger.info("State dropdown clicked");
+		driver.click(By.xpath(String.format(stateForAccountDetails, state)));
+		logger.info("State selected as "+state);
+		driver.type(POSTAL_CODE_LOC, postal);
+		logger.info("Entered postal code as "+postal);
+		driver.type(MAIN_PHONE_NUMBER_LOC, phoneNumber);
+		logger.info("Entered Phone number  as "+phoneNumber);
+		driver.type(PHONE_NUMBER_2_LOC, phoneNumber2);
+		logger.info("Entered Phone number 2 as "+phoneNumber2);
+		driver.type(EMAIL_LOC, email);
+		logger.info("Entered email as "+email);
+		Select dayOfBirthDD = new Select(driver.findElement(DAY_OF_BIRTH_LOC));
+		Select monthOfBirthDD = new Select(driver.findElement(MONTH_OF_BIRTH_LOC));
+		Select yearOfBirthDD = new Select(driver.findElement(YEAR_OF_BIRTH_LOC));
+		dayOfBirthDD.selectByVisibleText(dayOfBirth);
+		logger.info("selected day of birth as "+dayOfBirth);
+		monthOfBirthDD.selectByVisibleText(monthOfBirth);
+		logger.info("selected month of birth as "+monthOfBirth);
+		yearOfBirthDD.selectByVisibleText(yearOfBirth);
+		logger.info("selected year of birth as "+yearOfBirth);
+		driver.click(By.xpath(String.format(genderRadioBtnLoc, gender.toUpperCase())));
+		return this;
+	}
+
 	/***
 	 * This method clear field mention in argument on account info page 
 	 * 
@@ -449,7 +504,7 @@ public class StoreFrontAccountInfoPage extends StoreFrontWebsiteBasePage{
 		driver.pauseExecutionFor(2000);
 		return this;
 	}
-	
+
 	/***
 	 * This method clicks on the Email Your Consultant link
 	 * @return
@@ -459,7 +514,7 @@ public class StoreFrontAccountInfoPage extends StoreFrontWebsiteBasePage{
 		logger.info("clicks on the Email Your Consultant link");
 		return this;
 	}
-	
+
 	public StoreFrontAccountInfoPage enterEmailYourConsultantDetailsAndSubmit(String name,String email,String emailContent){
 		driver.type(EMAIL_TO_CONSULTANT_NAME_LOC, name);
 		logger.info("Email to consultant, name entered as "+name);

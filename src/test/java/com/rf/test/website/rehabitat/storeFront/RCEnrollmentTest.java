@@ -22,13 +22,13 @@ public class RCEnrollmentTest extends StoreFrontWebsiteBaseTest{
 	String cardNumber = null;
 	String cardName = null;
 	String CVV = null;
-	int randomNum; 
+	String timeStamp; 
 
 	public RCEnrollmentTest() {
-		randomNum = CommonUtils.getRandomNum(10000, 1000000);
+		timeStamp = CommonUtils.getCurrentTimeStamp();
 		firstName=TestConstants.RC_FIRST_NAME;
 		lastName = TestConstants.LAST_NAME;
-		email = firstName+randomNum+TestConstants.EMAIL_SUFFIX;
+		email = firstName+timeStamp+TestConstants.EMAIL_SUFFIX;
 		addressLine1 = TestConstants.ADDRESS_LINE_1_US;
 		addressLine2 = TestConstants.ADDRESS_LINE_2_US;
 		city = TestConstants.CITY_US;
@@ -47,7 +47,7 @@ public class RCEnrollmentTest extends StoreFrontWebsiteBaseTest{
 	 * 
 	 *     
 	 */
-	@Test//TODO
+	@Test
 	public void testRCEnrollment_550(){
 		sfCartPage = new StoreFrontCartPage(driver);
 		sfShopSkinCarePage = new StoreFrontShopSkinCarePage(driver);

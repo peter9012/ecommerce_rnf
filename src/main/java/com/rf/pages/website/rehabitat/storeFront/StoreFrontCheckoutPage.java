@@ -67,12 +67,39 @@ public class StoreFrontCheckoutPage extends StoreFrontWebsiteBasePage{
 	private final By USER_NAME_LOC=By.xpath("//form[@id='LoginForm']//input[@id='username']");
 	private final By PASSWORD_FOR_LOGIN_LOC=By.xpath("//form[@id='LoginForm']//input[@id='password']");
 	private final By LOGIN_AND_CHECKOUT_BUTTON_LOC=By.xpath("//form[@id='LoginForm']//input[@value='Login and Checkout']");
+	private final By EDIT_LINK_OF_BILLING_PROFILE_LOC=By.xpath("//div[@id='default-payment-method']/a");
+	private final By FIRST_LAST_NAME_FOR_BILLING_ADDRESS_AT_CHECKOUT_PAGE_LOC=By.xpath("//div[@id='checkoutEditBillingAddressForm']//input[@id='address.firstName']");
+	private final By ADDRESS_LINE1_FOR_BILLING_ADDRESS_AT_CHECKOUT_PAGE_LOC=By.xpath("//div[@id='checkoutEditBillingAddressForm']//input[@id='address.line1']");
+	private final By ADDRESS_LINE_2_FOR_BILLING_ADDRESS_AT_CHECKOUT_PAGE_LOC=By.xpath("//div[@id='checkoutEditBillingAddressForm']//input[@id='address.line2']");
+	private final By CITY_FOR_BILLING_ADDRESS_AT_CHECKOUT_PAGE_LOC=By.xpath("//div[@id='checkoutEditBillingAddressForm']//input[@id='address.townCity']");
+	private final By STATE_DD_FOR_BILLING_ADDRESS_AT_CHECKOUT_PAGE_LOC=By.xpath("//div[@id='checkoutEditBillingAddressForm']//select[@id='address.region']");
+	private final By POSTAL_CODE_FOR_BILLING_ADDRESS_AT_CHECKOUT_PAGE_LOC=By.xpath("//div[@id='checkoutEditBillingAddressForm']//input[@id='address.postcode']");
+	private final By PHONE_NUMBER_FOR_BILLING_ADDRESS_AT_CHECKOUT_PAGE_LOC=By.xpath("//div[@id='checkoutEditBillingAddressForm']//input[@id='address.phone']");
+	private final By EDIT_LINK_OF_BILLING_ADDRESS_LOC=By.xpath("//div[text()='Billing Info']/following::a[1]");
+	private final By CREDIT_CARD_DETAILS_LOC = By.xpath("//div[@id='default-payment-method']//span[@class='cardInfo']");
+	private final By INVALID_EXP_DATE_ERROR_MSG_LOC = By.id("valmsg-c-exyr");
+	private final By CVV_ERROR_MSG_LOC = By.id("valmsg-c-cvv");
+	private final By CREDIT_CARD_ERROR_MSG_LOC = By.id("valmsg-c-cn");
+	private final By SAVE_PAYMENT_BUTTON_LOC = By.id("updateBillingAddress");
+	private final By FIRST_LAST_NAME_FOR_EDIT_BILLING_ADDRESS_LOC=By.xpath("//div[@id='checkoutEditBillingAddressForm']//input[@id='address.firstName']");
+	private final By ADDRESS_LINE1_FOR_EDIT_BILLING_ADDRESS_LOC=By.xpath("//div[@id='checkoutEditBillingAddressForm']//input[@id='address.line1']");
+	private final By ADDRESS_LINE_2_FOR_EDIT_BILLING_ADDRESS_LOC=By.xpath("//div[@id='checkoutEditBillingAddressForm']//input[@id='address.line2']");
+	private final By CITY_FOR_EDIT_BILLING_ADDRESS_LOC=By.xpath("//div[@id='checkoutEditBillingAddressForm']//input[@id='address.townCity']");
+	private final By STATE_DD_FOR_EDIT_BILLING_ADDRESS_LOC=By.xpath("//div[@id='checkoutEditBillingAddressForm']//select[@id='address.region']");
+	private final By POSTAL_CODE_FOR_EDIT_BILLING_ADDRESS_LOC=By.xpath("//div[@id='checkoutEditBillingAddressForm']//input[@id='address.postcode']");
+	private final By PHONE_NUMBER_FOR_EDIT_BILLING_ADDRESS_LOC=By.xpath("//div[@id='checkoutEditBillingAddressForm']//input[@id='address.phone']");
+	private final By BILLING_PROFILE_LOC = By.id("default-payment-method");
+	private final By ERROR_MSG_FOR_BILLING_ADDRESS_DETAILS_LOC = By.xpath("//div[@id='checkoutEditBillingAddressForm']//*[@id='errorMessage']");
+	private final By ERROR_MSG_FOR_INVALID_BILLING_ADDRESS_LOC = By.xpath("//div[@id='account-billing-container']//p[@id='errorMessage']");
 
+	private String stateForBillingAddressDetails = "//div[@id='checkoutEditBillingAddressForm']//option[text()='%s']";
+	private String stateForShippingDetails = "//div[@id='checkoutEditBillingAddressForm']//option[text()='%s']";
 	private String billingInfoCardDetailsLoc = "//div[@id='default-payment-method']/ul/strong[contains(text(),'%s')]/following-sibling::span[@class='cardInfo']";
 	private String billingInfoAddressNameLoc = "//div[@id='default-payment-method']/ul/strong[contains(text(),'%s')]";
 	private String billingAddressLoc = "//div[@id='default-payment-method']/ul/strong[contains(text(),'%s')]/ancestor::ul";
 	private String stateForShippingDetailsAtCheckoutPageLoc = "//form[@id='shippingAddressForm']//select[@id='address.region']//option[text()='%s']";
 	private String shippingMethodLoc = "//label[contains(text(),'%s')]";
+	private String billingAddressFieldsErrorMessageLoc = "//span[contains(text(),'%s')]";
 
 	private String[] cardDetails;
 
@@ -643,5 +670,245 @@ public class StoreFrontCheckoutPage extends StoreFrontWebsiteBasePage{
 		return this;
 	}
 
-}
+	/***
+	 * This method click on Edit Billing Address at checkout page
+	 * 
+	 * @param
+	 * @return store front Checkout page object
+	 * 
+	 */
+	public StoreFrontCheckoutPage clickEditLinkOfBillingProfile(){
+		//driver.click(EDIT_LINK_OF_BILLING_PROFILE_LOC);
+		driver.clickByJS(RFWebsiteDriver.driver, driver.findElement(EDIT_LINK_OF_BILLING_PROFILE_LOC));
+		logger.info("Clicked on Edit link of Billing profile");
+		return this;
+	}
+	/***
+	 * This method validates billing address dropdown is enabled
+	 * 
+	 * @param
+	 * @return boolean value
+	 * 
+	 */
+	public boolean isBillingAddressDropdownEnabled(){
+		return driver.findElement(BILLING_ADDRESS_DD_LOC).isEnabled();
+	}
 
+	/***
+	 * This method enter the billing address details after click on add a new billing profile
+	 * 
+	 * @param First name,Last name, address line1, city, state, postal code, phone number
+	 * @return store front Checkout page object
+	 * 
+	 */
+	public StoreFrontCheckoutPage enterBillingAddressDetailsAtCheckout(String firstName, String lastName, String addressLine1, String addressLine2, String city, String state, String postal, String phoneNumber){
+		String completeName = firstName+" "+lastName;
+		driver.type(FIRST_LAST_NAME_FOR_BILLING_ADDRESS_AT_CHECKOUT_PAGE_LOC, completeName);
+		logger.info("Entered complete name as "+completeName);
+		driver.type(ADDRESS_LINE1_FOR_BILLING_ADDRESS_AT_CHECKOUT_PAGE_LOC, addressLine1);
+		logger.info("Entered address line 1 as "+addressLine1);
+		driver.type(ADDRESS_LINE_2_FOR_BILLING_ADDRESS_AT_CHECKOUT_PAGE_LOC, addressLine2);
+		logger.info("Entered address line 2 as "+addressLine2);
+		driver.type(CITY_FOR_BILLING_ADDRESS_AT_CHECKOUT_PAGE_LOC, city);
+		logger.info("Entered city as "+city);
+		driver.click(STATE_DD_FOR_BILLING_ADDRESS_AT_CHECKOUT_PAGE_LOC);
+		logger.info("State dropdown clicked");
+		driver.click(By.xpath(String.format(stateForShippingDetails, state)));
+		logger.info("State selected as "+state);
+		driver.type(POSTAL_CODE_FOR_BILLING_ADDRESS_AT_CHECKOUT_PAGE_LOC, postal);
+		logger.info("Entered postal code as "+postal);
+		driver.type(PHONE_NUMBER_FOR_BILLING_ADDRESS_AT_CHECKOUT_PAGE_LOC, phoneNumber);
+		logger.info("Entered Phone number  as "+phoneNumber);
+		return this;
+	}
+
+	/***
+	 * This method click on Edit Billing Address at checkout page
+	 * 
+	 * @param
+	 * @return store front Checkout page object
+	 * 
+	 */
+	public StoreFrontCheckoutPage clickEditLinkOfBillingAddress(){
+		driver.click(EDIT_LINK_OF_BILLING_ADDRESS_LOC);
+		logger.info("Clicked on Edit link of Billing Address");
+		return this;
+	}
+
+	/***
+	 * This method get the credit card details
+	 * 
+	 * @param
+	 * @return credit card details
+	 * 
+	 */
+	public String getCreditCardDetailsFromBillingProfile(){
+		driver.pauseExecutionFor(5000);
+		String creditCardDetails = driver.findElement(CREDIT_CARD_DETAILS_LOC).getText();
+		logger.info("credit card details are "+creditCardDetails);
+		return creditCardDetails;
+	}
+
+	/***
+	 * This method get the error msg of card
+	 * 
+	 * @param
+	 * @return credit card error message
+	 * 
+	 */
+	public String getCreditCardErrorMessage(){
+		driver.switchTo().frame(driver.findElement(IFRAME_LOC));
+		logger.info("Switched into iframe");
+		String creditCardErrorMsg = driver.findElement(CREDIT_CARD_ERROR_MSG_LOC).getText();
+		logger.info("credit card error message is "+creditCardErrorMsg);
+		driver.switchTo().defaultContent();
+		logger.info("Switched to default content");
+		return creditCardErrorMsg;
+	}
+
+	/***
+	 * This method get the error msg of CVV
+	 * 
+	 * @param
+	 * @return CVV error message
+	 * 
+	 */
+	public String getCVVErrorMessage(){
+		driver.switchTo().frame(driver.findElement(IFRAME_LOC));
+		logger.info("Switched into iframe");
+		String ErrorMsg = driver.findElement(CVV_ERROR_MSG_LOC).getText();
+		logger.info("CVV error message is "+ErrorMsg);
+		driver.switchTo().defaultContent();
+		logger.info("Switched to default content");
+		return ErrorMsg;
+	}
+
+	/***
+	 * This method get the error msg of exp date
+	 * 
+	 * @param
+	 * @return Exp date error message
+	 * 
+	 */
+	public String getExpDateErrorMessage(){
+		driver.switchTo().frame(driver.findElement(IFRAME_LOC));
+		logger.info("Switched into iframe");
+		String ErrorMsg = driver.findElement(INVALID_EXP_DATE_ERROR_MSG_LOC).getText();
+		logger.info("Exp date error message is "+ErrorMsg);
+		driver.switchTo().defaultContent();
+		logger.info("Switched to default content");
+		return ErrorMsg;
+	}
+
+	/***
+	 * This method validates Billing Profile Card Details Fields are in editable mode.
+	 * 
+	 * @param
+	 * @return boolean value
+	 * 
+	 */
+	public boolean isCardDetailsFieldsEnabled(){
+		driver.switchTo().frame(driver.findElement(IFRAME_LOC));
+		logger.info("Switched into iframe");
+		boolean flag = driver.findElement(NAME_ON_CARD_LOC).isEnabled() &&
+				driver.findElement(CARD_NUMBER_LOC).isEnabled() &&
+				driver.findElement(CARD_TYPE_DD_LOC).isEnabled() &&
+				driver.findElement(EXP_MONTH_DD_LOC).isEnabled() &&
+				driver.findElement(EXP_YEAR_DD_LOC).isEnabled() &&
+				driver.findElement(CVV_LOC).isEnabled();
+		driver.switchTo().defaultContent();
+		logger.info("Switched to default content");
+		return flag;
+	}
+
+	/***
+	 * This method validates the error message for billing address fields
+	 * 
+	 * @param error message
+	 * @return boolean value
+	 * 
+	 */
+	public boolean isErrorMessagePresentForBillingAddressFields(String errorMessage){
+		return driver.isElementVisible(By.xpath(String.format(billingAddressFieldsErrorMessageLoc, errorMessage)));
+	}
+
+	/***
+	 * This method click the SAVE Payment button
+	 * 
+	 * @param
+	 * @return store front Base page object
+	 * 
+	 */
+	public StoreFrontCheckoutPage clickSavePaymentButton(){
+		driver.click(SAVE_PAYMENT_BUTTON_LOC);
+		logger.info("Save payment button clicked of billing details");
+		return this;
+	}
+
+	/***
+	 * This method enter the billing address details after click on add a new billing profile
+	 * 
+	 * @param First name,Last name, address line1, city, state, postal code, phone number
+	 * @return store front Checkout page object
+	 * 
+	 */
+	public StoreFrontCheckoutPage enterEditBillingAddressDetailsAtCheckout(String firstName, String lastName, String addressLine1, String addressLine2, String city, String state, String postal, String phoneNumber){
+		String completeName = firstName+" "+lastName;
+		driver.type(FIRST_LAST_NAME_FOR_EDIT_BILLING_ADDRESS_LOC, completeName);
+		logger.info("Entered complete name as "+completeName);
+		driver.type(ADDRESS_LINE1_FOR_EDIT_BILLING_ADDRESS_LOC, addressLine1);
+		logger.info("Entered address line 1 as "+addressLine1);
+		driver.type(ADDRESS_LINE_2_FOR_EDIT_BILLING_ADDRESS_LOC, addressLine2);
+		logger.info("Entered address line 2 as "+addressLine2);
+		driver.type(CITY_FOR_EDIT_BILLING_ADDRESS_LOC, city);
+		logger.info("Entered city as "+city);
+		driver.click(STATE_DD_FOR_EDIT_BILLING_ADDRESS_LOC);
+		logger.info("State dropdown clicked");
+		driver.click(By.xpath(String.format(stateForBillingAddressDetails, state)));
+		logger.info("State selected as "+state);
+		driver.type(POSTAL_CODE_FOR_EDIT_BILLING_ADDRESS_LOC, postal);
+		logger.info("Entered postal code as "+postal);
+		driver.type(PHONE_NUMBER_FOR_EDIT_BILLING_ADDRESS_LOC, phoneNumber);
+		logger.info("Entered Phone number  as "+phoneNumber);
+		return this;
+	}
+
+	/***
+	 * This method get BILLING PROFILE details
+	 * 
+	 * @param
+	 * @return billing profile details
+	 * 
+	 */
+	public String getBillingProfileDetailsFromBillingProfile(){
+		String details = driver.findElement(BILLING_PROFILE_LOC).getText();
+		logger.info("Billing profile details are "+details);
+		return details;
+	}
+
+	/***
+	 * This method get the error msg of billing address details
+	 * 
+	 * @param
+	 * @return  error message
+	 * 
+	 */
+	public String getErrorMessageForBillingAddressDetails(){
+		String ErrorMsg = driver.findElement(ERROR_MSG_FOR_BILLING_ADDRESS_DETAILS_LOC).getText();
+		logger.info("Error message for billing address details is "+ErrorMsg);
+		return ErrorMsg;
+	}
+
+	/***
+	 * This method get the error msg invalid billing address
+	 * 
+	 * @param
+	 * @return error message
+	 * 
+	 */
+	public String getErrorMessageForBillingAddressDetailsWhileAddANewAddress(){
+		String ErrorMsg = driver.findElement(ERROR_MSG_FOR_INVALID_BILLING_ADDRESS_LOC).getText();
+		logger.info("Error message for billing address details is while add a new address "+ErrorMsg);
+		return ErrorMsg;
+	}
+}

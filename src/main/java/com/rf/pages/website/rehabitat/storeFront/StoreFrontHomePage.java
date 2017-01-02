@@ -2,6 +2,7 @@ package com.rf.pages.website.rehabitat.storeFront;
 
 import com.rf.core.driver.website.RFWebsiteDriver;
 import com.rf.core.utils.CommonUtils;
+import com.rf.core.website.constants.TestConstants;
 import com.rf.pages.website.rehabitat.storeFront.basePage.StoreFrontWebsiteBasePage;
 import java.util.Arrays;
 import java.util.Iterator;
@@ -17,7 +18,6 @@ public class StoreFrontHomePage extends StoreFrontWebsiteBasePage{
 	public StoreFrontHomePage(RFWebsiteDriver driver) {
 		super(driver);		
 	}
-
 	private static final Logger logger = LogManager
 			.getLogger(StoreFrontHomePage.class.getName());
 
@@ -75,7 +75,8 @@ public class StoreFrontHomePage extends StoreFrontWebsiteBasePage{
 	private String kitNameLoc = "//label[text()='%s']/preceding::input[1]";
 	private String priceOfProductLoc = "//div[contains(@class,'product__listing')]//div[@class='product-item'][%s]//span[@id='cust_price']";
 	private String socialMediaIconLoc = "//div[@class='container']//a[contains(@href,'%s')]";
-	private String teamMemberName = "//div[@id='modal_front']/div[%s]//div[@class='title']/h4";
+	private String teamMemberNameLoc = "//div[@id='modal_front']/div[%s]//div[@class='title']/h4";
+	private String categoryUnderShopSkinCareLoc = topNavigationLoc+"//a[@title='%s']";
 
 	public boolean isFindAConsultantPagePresent(){
 		String findAConsultantURL = "/find-consultant";
@@ -261,8 +262,8 @@ public class StoreFrontHomePage extends StoreFrontWebsiteBasePage{
 		int totalTeamMember = driver.findElements(TOTAL_TEAM_MEMBERS_IN_EXECUTIVE_TEAM_LOC).size();
 		int randomNum = CommonUtils.getRandomNum(1, totalTeamMember);
 		logger.info("Random team member selected is "+randomNum);
-		String memberName = driver.findElement(By.xpath(String.format(teamMemberName, randomNum))).getText();
-		driver.click(By.xpath(String.format(teamMemberName, randomNum)));
+		String memberName = driver.findElement(By.xpath(String.format(teamMemberNameLoc, randomNum))).getText();
+		driver.click(By.xpath(String.format(teamMemberNameLoc, randomNum)));
 		logger.info("clicked on 'TEAM MEMBER NAME' link = "+memberName);
 		return memberName;
 	}
@@ -451,7 +452,7 @@ public class StoreFrontHomePage extends StoreFrontWebsiteBasePage{
 		driver.moveToElementByJS(ADD_TO_CART_FIRST_PRODUCT_LOC);
 		return driver.findElement(ADD_TO_BAG_OF_FIRST_PRODUCT).isDisplayed();
 	}
-	
+
 	/***
 	 * This method verify add to cart button is present for first product
 	 * 
@@ -680,7 +681,7 @@ public class StoreFrontHomePage extends StoreFrontWebsiteBasePage{
 		logger.info("Connect btn clicked on home page");
 		return this;
 	}
-	
+
 	/***
 	 * This method verifies whether the Connect btn present on the home page or not
 	 * @return boolean
@@ -768,6 +769,19 @@ public class StoreFrontHomePage extends StoreFrontWebsiteBasePage{
 	public boolean hasRCEnrolledSuccessfully(){
 		return driver.isElementVisible(WELCOME_DROPDOWN_LOC)
 				&& driver.getCurrentUrl().contains("/orderConfirmation");
+	}
+
+	/***
+	 * This method click on specific category under Shop skin care 
+	 * @param
+	 * @return StoreFrontShopSkinCarePage object
+	 */
+
+	public StoreFrontShopSkinCarePage clickOnCategoryFromShopSkinCare(String catTitle){
+		mouseHoverOn(TestConstants.SHOP_SKINCARE);
+		driver.click(By.xpath(String.format(categoryUnderShopSkinCareLoc, catTitle)));
+		logger.info("clicked on " + catTitle);
+		return new StoreFrontShopSkinCarePage(driver);
 	}
 
 }

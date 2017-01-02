@@ -31,7 +31,7 @@ public class OrdersTest extends StoreFrontWebsiteBaseTest{
 		sfHomePage.clickWelcomeDropdown();
 		sfOrdersPage.logout();
 		//For PC
-		sfHomePage.getBaseUrl();
+		navigateToStoreFrontBaseURL();
 		sfHomePage.loginToStoreFront(TestConstants.PC_EMAIL, password);
 		sfHomePage.clickWelcomeDropdown();
 		sfOrdersPage = sfHomePage.navigateToOrdersPage();
@@ -43,7 +43,7 @@ public class OrdersTest extends StoreFrontWebsiteBaseTest{
 		sfHomePage.clickWelcomeDropdown();
 		sfOrdersPage.logout();
 		//For RC
-		sfHomePage.getBaseUrl();
+		navigateToStoreFrontBaseURL();
 		sfHomePage.loginToStoreFront(TestConstants.RC_USERNAME, password);
 		sfHomePage.clickWelcomeDropdown();
 		sfOrdersPage = sfHomePage.navigateToOrdersPage();
@@ -338,35 +338,152 @@ public class OrdersTest extends StoreFrontWebsiteBaseTest{
 
 	/***
 	 * qTest : TC-303 Billing profile- Add an Address to New Profile
-	 * Description : //TODO
+	 * Description : This test case validates new billing profile is added or not
+	 * after edit from order review page
 	 * 
 	 *     
 	 */
 	@Test
 	public void testBillingProfileAddAnAddressToNewProfile_303(){
-
+		String cardType = TestConstants.CARD_TYPE;
+		String cardNumber = TestConstants.CARD_NUMBER;
+		String cardName = TestConstants.CARD_NAME;
+		String CVV = TestConstants.CVV;
+		String randomWord = CommonUtils.getRandomWord(5);
+		String firstName = TestConstants.FIRST_NAME;
+		String lastName = TestConstants.LAST_NAME+randomWord;
+		String addressLine1 = TestConstants.ADDRESS_LINE_1_US;
+		String addressLine2 = TestConstants.ADDRESS_LINE_2_US;
+		String city = TestConstants.CITY_US;
+		String state = TestConstants.STATE_US;
+		String postalCode = TestConstants.POSTAL_CODE_US;
+		String phoneNumber = TestConstants.PHONE_NUMBER;
+		sfHomePage.loginToStoreFront(TestConstants.CONSULTANT_EMAIL, password);
+		sfShopSkinCarePage = sfHomePage.clickAllProducts();
+		sfShopSkinCarePage.selectFirstProduct();
+		sfShopSkinCarePage.checkoutTheCartFromPopUp();
+		sfCheckoutPage=sfShopSkinCarePage.checkoutTheCart();
+		sfCheckoutPage.clickSaveButton();
+		sfCheckoutPage.clickShippingDetailsNextbutton();
+		sfCheckoutPage.clickAddNewBillingProfileButton();
+		sfCheckoutPage.enterUserBillingDetails(cardType, cardNumber, cardName, CVV);
+		sfCheckoutPage.checkUseMyDeliveryAddressChkBox();
+		sfCheckoutPage.clickBillingDetailsNextbutton();
+		sfCheckoutPage.clickEditLinkOfBillingAddress();
+		sfCheckoutPage.clickEditLinkOfBillingProfile();
+		s_assert.assertTrue(sfCheckoutPage.isBillingAddressDropdownEnabled(), "Billing profile is not present in editable mode");
+		sfCheckoutPage.clickAddNewBillingProfileButton();
+		sfCheckoutPage.enterBillingAddressDetailsAtCheckout(firstName, lastName, addressLine1, addressLine2, city, state, postalCode, phoneNumber);
+		sfCheckoutPage.enterUserBillingDetails(cardType, cardNumber, cardName, CVV);
+		sfCheckoutPage.clickBillingDetailsNextbutton();
+		sfCheckoutPage.clickUseAsEnteredButtonOnPopUp();
+		s_assert.assertTrue(sfCheckoutPage.isNewBillingDetailsVisibleOnUI(lastName),"New Billing Details do not get updated as Default Billing details on Checkout Page");
+		s_assert.assertAll();
 	}
 
 	/***
 	 * qTest : TC-304 Billing profile- Add a Profile with same Shipping address
-	 * Description : //TODO
+	 * Description : This test case edit the billing profile and validate it
 	 * 
 	 *     
 	 */
 	@Test
 	public void testBillingProfileAddAProfileWithSameShippingAddress_304(){
-
+		String cardType = TestConstants.CARD_TYPE;
+		String cardNumber = TestConstants.CARD_NUMBER;
+		String cardName = TestConstants.CARD_NAME;
+		String CVV = TestConstants.CVV;
+		String cardNumberFromUI = null;
+		sfHomePage.loginToStoreFront(TestConstants.CONSULTANT_EMAIL, password);
+		sfShopSkinCarePage = sfHomePage.clickAllProducts();
+		sfShopSkinCarePage.selectFirstProduct();
+		sfShopSkinCarePage.checkoutTheCartFromPopUp();
+		sfCheckoutPage=sfShopSkinCarePage.checkoutTheCart();
+		sfCheckoutPage.clickSaveButton();
+		sfCheckoutPage.clickShippingDetailsNextbutton();
+		sfCheckoutPage.clickAddNewBillingProfileButton();
+		sfCheckoutPage.enterUserBillingDetails(cardType, cardNumber, cardName, CVV);
+		sfCheckoutPage.checkUseMyDeliveryAddressChkBox();
+		sfCheckoutPage.clickBillingDetailsNextbutton();
+		sfCheckoutPage.clickEditLinkOfBillingAddress();
+		cardNumberFromUI = sfCheckoutPage.getCreditCardDetailsFromBillingProfile();
+		if(cardNumberFromUI.contains("4747")){
+			cardNumber = TestConstants.CARD_NUMBER_2;
+		}else{
+			cardNumber = TestConstants.CARD_NUMBER;
+		}
+		sfCheckoutPage.clickAddNewBillingProfileButton();
+		sfCheckoutPage.enterUserBillingDetails(cardType, cardNumber, cardName, CVV);
+		sfCheckoutPage.checkUseMyDeliveryAddressChkBox();
+		sfCheckoutPage.clickBillingDetailsNextbutton();
+		cardNumberFromUI = sfCheckoutPage.getCreditCardDetailsFromBillingProfile();
+		cardNumber= cardNumber.substring(11,15);
+		s_assert.assertTrue(cardNumberFromUI.contains(cardNumber), "Expected newly added billing profile should contains "+cardName+ "but actual on UI is "+cardNumberFromUI);
+		s_assert.assertAll();
 	}
 
 	/***
 	 * qTest : TC-305 Adding a payment method- Errors
-	 * Description : //TODO
-	 * 
+	 * Description : This test cases verify the validation of Card details fields 
 	 *     
 	 */
 	@Test
 	public void testAddingAPaymentMethodErrors_305(){
-
+		String cardType = TestConstants.CARD_TYPE;
+		String cardNumber = TestConstants.CARD_NUMBER;
+		String cardName = TestConstants.CARD_NAME;
+		String CVV = TestConstants.CVV;
+		String invalidExpMonth = TestConstants.INVALID_CARD_EXP_MONTH;
+		String invalidExpYear = TestConstants.INVALID_CARD_EXP_YEAR;
+		String cardNumberMoreThan16Digit = TestConstants.CARD_NUMBER_MORE_THAN_16_DIGIT;
+		String cardNumberLessThan16Digit = TestConstants.CARD_NUMBER_LESS_THAN_16_DIGIT;
+		String cardNumberWithChar = TestConstants.CARD_NUMBER_LESS_THAN_16_DIGIT+"q";
+		String CVVWithTwoDigit = TestConstants.CVV_WITH_TWO_DIGIT;
+		String errorMessage = null;
+		String errorMessageFromUI = null;
+		sfHomePage.loginToStoreFront(TestConstants.CONSULTANT_EMAIL, password);
+		sfShopSkinCarePage = sfHomePage.clickAllProducts();
+		sfShopSkinCarePage.selectFirstProduct();
+		sfShopSkinCarePage.checkoutTheCartFromPopUp();
+		sfCheckoutPage=sfShopSkinCarePage.checkoutTheCart();
+		sfCheckoutPage.clickSaveButton();
+		sfCheckoutPage.clickShippingDetailsNextbutton();
+		sfCheckoutPage.clickAddNewBillingProfileButton();
+		sfCheckoutPage.enterUserBillingDetails(cardType, cardNumber, cardName, CVV);
+		sfCheckoutPage.checkUseMyDeliveryAddressChkBox();
+		sfCheckoutPage.clickBillingDetailsNextbutton();
+		sfCheckoutPage.clickEditLinkOfBillingAddress();
+		sfCheckoutPage.clickAddNewBillingProfileButton();
+		sfCheckoutPage.enterUserBillingDetails(cardType, cardNumberLessThan16Digit, cardName, CVV);
+		sfCheckoutPage.checkUseMyDeliveryAddressChkBox();
+		sfCheckoutPage.clickBillingDetailsNextbutton();
+		errorMessage = "Please enter a valid card number";
+		errorMessageFromUI = sfCheckoutPage.getCreditCardErrorMessage();
+		s_assert.assertTrue(errorMessageFromUI.contains(errorMessage), "Expected error message for less than 16 digit card number is "+errorMessage+" but actual on UI is "+errorMessageFromUI);
+		sfCheckoutPage.enterUserBillingDetails(cardType, cardNumberMoreThan16Digit, cardName, CVV);
+		sfCheckoutPage.clickBillingDetailsNextbutton();
+		errorMessage = "Maximum length is 16";
+		errorMessageFromUI = sfCheckoutPage.getCreditCardErrorMessage();
+		s_assert.assertTrue(errorMessageFromUI.contains(errorMessage), "Expected error message for more than 16 digit card number is "+errorMessage+" but actual on UI is "+errorMessageFromUI);
+		//card number with char
+		sfCheckoutPage.enterUserBillingDetails(cardType, cardNumberWithChar, cardName, CVV);
+		sfCheckoutPage.clickBillingDetailsNextbutton();
+		errorMessage = "Please enter a valid card number";
+		errorMessageFromUI = sfCheckoutPage.getCreditCardErrorMessage();
+		s_assert.assertTrue(errorMessageFromUI.contains(errorMessage), "Expected error message for card number with char is "+errorMessage+" but actual on UI is "+errorMessageFromUI);
+		//wrong CVV
+		sfCheckoutPage.enterUserBillingDetails(cardType, cardNumber, cardName, CVVWithTwoDigit);
+		sfCheckoutPage.clickBillingDetailsNextbutton();
+		errorMessage = "Minimum length is 3";
+		errorMessageFromUI = sfCheckoutPage.getCVVErrorMessage();
+		s_assert.assertTrue(errorMessageFromUI.contains(errorMessage), "Expected error message for CVV with char is "+errorMessage+" but actual on UI is "+errorMessageFromUI);
+		// Invalid Exp date
+		sfCheckoutPage.enterUserBillingDetails(cardType, cardNumber, cardName, CVV, invalidExpMonth, invalidExpYear);
+		sfCheckoutPage.clickBillingDetailsNextbutton();
+		errorMessage = "Please enter a valid expiration date";
+		errorMessageFromUI = sfCheckoutPage.getExpDateErrorMessage();
+		s_assert.assertTrue(errorMessageFromUI.contains(errorMessage), "Expected error message for card exp date is "+errorMessage+" but actual on UI is "+errorMessageFromUI);
+		s_assert.assertAll();
 	}
 
 	/***
@@ -415,13 +532,36 @@ public class OrdersTest extends StoreFrontWebsiteBaseTest{
 
 	/***
 	 * qTest : TC-310 Add a payment method-Checkout
-	 * Description : //TODO
+	 * Description : This test case validates billing profile details are in editable mode
 	 * 
 	 *     
 	 */
 	@Test
 	public void testAddAPaymentMethodCheckout_310(){
-
+		int randomNum = CommonUtils.getRandomNum(10000, 1000000);
+		String firstName = TestConstants.FIRST_NAME;
+		String lastName = TestConstants.LAST_NAME;
+		String emailID = TestConstants.FIRST_NAME+randomNum+TestConstants.EMAIL_SUFFIX;
+		String addressLine1 = TestConstants.ADDRESS_LINE_1_US;
+		String addressLine2 = TestConstants.ADDRESS_LINE_2_US;
+		String city = TestConstants.CITY_US;
+		String state = TestConstants.STATE_US;
+		String postalCode = TestConstants.POSTAL_CODE_US;
+		String phoneNumber = TestConstants.PHONE_NUMBER;
+		sfShopSkinCarePage = sfHomePage.clickAllProducts();
+		sfShopSkinCarePage.addFirstProductToBag();
+		sfCartPage = sfShopSkinCarePage.checkoutTheCartFromPopUp();
+		sfCheckoutPage = sfCartPage.checkoutTheCart();
+		sfCheckoutPage.fillNewUserDetails(TestConstants.USER_TYPE_PC,firstName, lastName, emailID, password);
+		sfCheckoutPage.clickCreateAccountButton();
+		sfCheckoutPage.checkoutTheCart();
+		sfCheckoutPage.clickContinueWithoutConsultantLink();
+		sfCheckoutPage.clickSaveButton();
+		sfCheckoutPage.enterConsultantShippingDetails(firstName, lastName, addressLine1, addressLine2, city, state, postalCode, phoneNumber);
+		sfCheckoutPage.clickShippingDetailsNextbutton();
+		sfCheckoutPage.clickUseAsEnteredButtonOnPopUp();
+		s_assert.assertTrue(sfCheckoutPage.isCardDetailsFieldsEnabled(), "Credit card details fields are not in editable mode");
+		s_assert.assertAll();
 	}
 
 	/***
@@ -433,10 +573,10 @@ public class OrdersTest extends StoreFrontWebsiteBaseTest{
 	 */
 	@Test
 	public void testShippingMethodPCDirectPCEnrollment_311(){
-		int randomNum = CommonUtils.getRandomNum(10000, 1000000);
+		String timeStamp = CommonUtils.getCurrentTimeStamp();
 		String firstName = TestConstants.FIRST_NAME;
 		String lastName = TestConstants.LAST_NAME;
-		String emailID = TestConstants.FIRST_NAME+randomNum+TestConstants.EMAIL_SUFFIX;
+		String emailID = TestConstants.FIRST_NAME+timeStamp+TestConstants.EMAIL_SUFFIX;
 		String shippingMethodWithCost = null;
 		String shippingMethodName = TestConstants.SHIPPING_METHOD_UPS_GROUND;
 		sfShopSkinCarePage = sfHomePage.clickAllProducts();
@@ -688,26 +828,132 @@ public class OrdersTest extends StoreFrontWebsiteBaseTest{
 	public void testPCUserIsInTheProcessOfPlacingAnAdhocOrderMoreThan90$_355(){
 
 	}
+
 	/***
 	 * qTest : TC-366 Billing profile- Add an Address with invalid details to existing Profile
-	 * Description : //TODO
-	 * 
+	 * Description : This test case validates error message of address fields of billing profile
+	 * while editing
 	 *     
 	 */
 	@Test
 	public void testBillingProfileAddAnAddressWithInvalidDetailsToExistingProfile_366(){
-
+		String cardType = TestConstants.CARD_TYPE;
+		String cardNumber = TestConstants.CARD_NUMBER;
+		String cardName = TestConstants.CARD_NAME;
+		String CVV = TestConstants.CVV;
+		String randomWord = CommonUtils.getRandomWord(5);
+		String firstName = TestConstants.FIRST_NAME;
+		String lastName = TestConstants.LAST_NAME+randomWord;
+		String addressLine1 ="address line 1";
+		String addressLine2 = TestConstants.ADDRESS_LINE_2_US;
+		String city = TestConstants.CITY_US;
+		String state = TestConstants.STATE_US;
+		String postalCode = "12345";
+		String phoneNumber = TestConstants.PHONE_NUMBER;
+		String errorMessageFromUI = null;
+		String errorMessage= null;
+		String billingProfileDetails = null;
+		sfHomePage.loginToStoreFront(TestConstants.CONSULTANT_EMAIL, password);
+		sfShopSkinCarePage = sfHomePage.clickAllProducts();
+		sfShopSkinCarePage.selectFirstProduct();
+		sfShopSkinCarePage.checkoutTheCartFromPopUp();
+		sfCheckoutPage=sfShopSkinCarePage.checkoutTheCart();
+		sfCheckoutPage.clickSaveButton();
+		sfCheckoutPage.clickShippingDetailsNextbutton();
+		sfCheckoutPage.clickAddNewBillingProfileButton();
+		sfCheckoutPage.enterUserBillingDetails(cardType, cardNumber, cardName, CVV);
+		sfCheckoutPage.checkUseMyDeliveryAddressChkBox();
+		sfCheckoutPage.clickBillingDetailsNextbutton();
+		sfCheckoutPage.clickEditLinkOfBillingAddress();
+		sfCheckoutPage.clickEditLinkOfBillingProfile();
+		sfCheckoutPage.clickSavePaymentButton();
+		errorMessage = "Name must contain first name and last name with no special characters";
+		s_assert.assertTrue(sfCheckoutPage.isErrorMessagePresentForBillingAddressFields(errorMessage), "Error message is not displayed for first and last name");
+		errorMessage = "Please enter valid address";
+		s_assert.assertTrue(sfCheckoutPage.isErrorMessagePresentForBillingAddressFields(errorMessage), "Error message is not displayed for address line1");
+		errorMessage = "Please enter valid city";
+		s_assert.assertTrue(sfCheckoutPage.isErrorMessagePresentForBillingAddressFields(errorMessage), "Error message is not displayed for City");
+		errorMessage = "Please select a Province";
+		s_assert.assertTrue(sfCheckoutPage.isErrorMessagePresentForBillingAddressFields(errorMessage), "Error message is not displayed for province");
+		errorMessage = "Please enter valid postal code";
+		s_assert.assertTrue(sfCheckoutPage.isErrorMessagePresentForBillingAddressFields(errorMessage), "Error message is not displayed for postal code");
+		errorMessage = "Please specify a valid phone number";
+		s_assert.assertTrue(sfCheckoutPage.isErrorMessagePresentForBillingAddressFields(errorMessage), "Error message is not displayed for phone number");
+		// enter invalid address
+		sfCheckoutPage.enterEditBillingAddressDetailsAtCheckout(firstName, lastName, addressLine1, addressLine2, city, state, postalCode, phoneNumber);
+		sfCheckoutPage.clickSavePaymentButton();
+		errorMessage = "Unknown street";
+		errorMessageFromUI = sfCheckoutPage.getErrorMessageForBillingAddressDetails();
+		s_assert.assertTrue(errorMessageFromUI.contains(errorMessage), "Expected error message for invalid address details is "+errorMessage+" But actual on UI is "+errorMessage);
+		postalCode = TestConstants.POSTAL_CODE_US;
+		addressLine1 = TestConstants.ADDRESS_LINE_1_US;
+		sfCheckoutPage.enterEditBillingAddressDetailsAtCheckout(firstName, lastName, addressLine1, addressLine2, city, state, postalCode, phoneNumber);
+		sfCheckoutPage.clickSavePaymentButton();
+		sfCheckoutPage.clickUseAsEnteredButtonOnPopUp();
+		billingProfileDetails = sfCheckoutPage.getBillingProfileDetailsFromBillingProfile();
+		s_assert.assertTrue(billingProfileDetails.contains(lastName), "Billing profile name should contain "+lastName+" but actual On UI is"+billingProfileDetails);
+		s_assert.assertAll();
 	}
+
 	/***
 	 * qTest : TC-367 Billing profile- Add an Address with invalid Details to New Profile
-	 * Description : //TODO
-	 * 
+	 * Description : This test case validates error message of address fields of billing profile
+	 * while adding a new profile
 	 *     
 	 */
 	@Test
 	public void testBillingProfileAddAnAddressWithInvalidDetailsToNewProfile_367(){
-
+		String cardType = TestConstants.CARD_TYPE;
+		String cardNumber = TestConstants.CARD_NUMBER;
+		String cardName = TestConstants.CARD_NAME;
+		String CVV = TestConstants.CVV;
+		String randomWord = CommonUtils.getRandomWord(5);
+		String firstName = TestConstants.FIRST_NAME;
+		String lastName = TestConstants.LAST_NAME+randomWord;
+		String addressLine1 ="address line 1";
+		String addressLine2 = TestConstants.ADDRESS_LINE_2_US;
+		String city = TestConstants.CITY_US;
+		String state = TestConstants.STATE_US;
+		String postalCode = "12345";
+		String phoneNumber = TestConstants.PHONE_NUMBER;
+		String errorMessageFromUI = null;
+		String errorMessage= null;
+		String billingProfileDetails = null;
+		sfHomePage.loginToStoreFront(TestConstants.CONSULTANT_EMAIL, password);
+		sfShopSkinCarePage = sfHomePage.clickAllProducts();
+		sfShopSkinCarePage.selectFirstProduct();
+		sfShopSkinCarePage.checkoutTheCartFromPopUp();
+		sfCheckoutPage=sfShopSkinCarePage.checkoutTheCart();
+		sfCheckoutPage.clickSaveButton();
+		sfCheckoutPage.clickShippingDetailsNextbutton();
+		sfCheckoutPage.clickAddNewBillingProfileButton();
+		sfCheckoutPage.enterUserBillingDetails(cardType, cardNumber, cardName, CVV);
+		sfCheckoutPage.checkUseMyDeliveryAddressChkBox();
+		sfCheckoutPage.clickBillingDetailsNextbutton();
+		sfCheckoutPage.clickEditLinkOfBillingAddress();
+		sfCheckoutPage.clickAddNewBillingProfileButton();
+		sfCheckoutPage.enterUserBillingDetails(cardType, cardNumber, cardName, CVV);
+		sfCheckoutPage.clickBillingDetailsNextbutton();
+		s_assert.assertTrue(sfCheckoutPage.isErrorMessagePresentForFirstAndLastName(), "Error message is not present for first and last name field");
+		s_assert.assertTrue(sfCheckoutPage.isErrorMessagePresentForAddressLine1(), "Error message is not present for address line 1 field");
+		s_assert.assertTrue(sfCheckoutPage.isErrorMessagePresentForCity(), "Error message is not present for city field");
+		s_assert.assertTrue(sfCheckoutPage.isErrorMessagePresentForPostalCode(), "Error message is not present for postal code field");
+		s_assert.assertTrue(sfCheckoutPage.isErrorMessagePresentForPhoneNumber(), "Error message is not present for phone number field");
+		sfCheckoutPage.enterShippingDetails(firstName+" "+lastName, addressLine1, addressLine2, city, state, postalCode, phoneNumber);
+		sfCheckoutPage.clickBillingDetailsNextbutton();
+		errorMessage = "Unknown street";
+		errorMessageFromUI = sfCheckoutPage.getErrorMessageForBillingAddressDetailsWhileAddANewAddress();
+		s_assert.assertTrue(errorMessageFromUI.contains(errorMessage), "Expected error message for invalid address details is "+errorMessage+" But actual on UI is "+errorMessage);
+		postalCode = TestConstants.POSTAL_CODE_US;
+		addressLine1 = TestConstants.ADDRESS_LINE_1_US;
+		sfCheckoutPage.enterShippingDetails(firstName+" "+lastName, addressLine1, addressLine2, city, state, postalCode, phoneNumber);
+		sfCheckoutPage.clickBillingDetailsNextbutton();
+		sfCheckoutPage.clickUseAsEnteredButtonOnPopUp();
+		billingProfileDetails = sfCheckoutPage.getBillingProfileDetailsFromBillingProfile();
+		s_assert.assertTrue(billingProfileDetails.contains(lastName), "Billing profile name should contain "+lastName+" but actual On UI is"+billingProfileDetails);
+		s_assert.assertAll();
 	}
+
 	/***
 	 * qTest : TC-368 Shipping to PO/RR with PO number as address detail
 	 * Description : //TODO

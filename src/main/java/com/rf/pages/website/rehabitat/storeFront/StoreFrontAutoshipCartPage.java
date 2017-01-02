@@ -7,14 +7,14 @@ import org.openqa.selenium.By;
 import com.rf.core.driver.website.RFWebsiteDriver;
 import com.rf.pages.website.rehabitat.storeFront.basePage.StoreFrontWebsiteBasePage;
 
-public class StoreFrontAutoshipStatusPage extends StoreFrontWebsiteBasePage{
+public class StoreFrontAutoshipCartPage extends StoreFrontWebsiteBasePage{
 
-	public StoreFrontAutoshipStatusPage(RFWebsiteDriver driver) {
+	public StoreFrontAutoshipCartPage(RFWebsiteDriver driver) {
 		super(driver);  
 	}
 
 	private static final Logger logger = LogManager
-			.getLogger(StoreFrontAutoshipStatusPage.class.getName());
+			.getLogger(StoreFrontAutoshipCartPage.class.getName());
 
 	private final By CLOSE_ICON_PULSE_OVERLAY_LOC = By.id("cboxClose");
 	private final By LEARN_MORE_ABOUT_PULSE_LOC = By.xpath("//a[contains(text(),'Learn more about Pulse')]");
@@ -29,7 +29,7 @@ public class StoreFrontAutoshipStatusPage extends StoreFrontWebsiteBasePage{
 	 * @return store front autoship status page object
 	 * 
 	 */
-	public StoreFrontAutoshipStatusPage clickLearnMoreAboutPulse(){
+	public StoreFrontAutoshipCartPage clickLearnMoreAboutPulse(){
 		driver.click(LEARN_MORE_ABOUT_PULSE_LOC);
 		logger.info("clicked on 'learn more about pulse' link");
 		return this;
@@ -54,7 +54,7 @@ public class StoreFrontAutoshipStatusPage extends StoreFrontWebsiteBasePage{
 	 * @return store front autoship status page object
 	 * 
 	 */
-	public StoreFrontAutoshipStatusPage closePulsePopup(){
+	public StoreFrontAutoshipCartPage closePulsePopup(){
 		driver.click(CLOSE_ICON_PULSE_OVERLAY_LOC);
 		logger.info("clicked X of 'pulse overlay'");
 		driver.pauseExecutionFor(2000);

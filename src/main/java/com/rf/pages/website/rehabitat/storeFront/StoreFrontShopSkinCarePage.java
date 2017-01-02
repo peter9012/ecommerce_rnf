@@ -2,6 +2,7 @@ package com.rf.pages.website.rehabitat.storeFront;
 
 import org.openqa.selenium.By;
 import org.openqa.selenium.Keys;
+import org.openqa.selenium.NoSuchElementException;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.interactions.Actions;
 
@@ -33,7 +34,19 @@ public class StoreFrontShopSkinCarePage extends StoreFrontWebsiteBasePage{
 	private final By ONE_TIME_ORDER_DD_OPTION_LOC=By.xpath("//form[@id='addToCartFormAAPM030_237']//span[contains(text(),'One Time Order :')]");
 	private final By SUBSCRIBE_PLUS_SAVE_DD_OPTIONS_LOC=By.xpath("//div[@class='product-item'][1]//span[contains(text(),'subscribe + save')]");
 	private final By ADD_TO_CRP_DD_OPTIONS_LOC=By.xpath("//div[@class='product-item'][1]//span[contains(text(),'Add to CRP')]");
+	private final By PRODUCT_NAME_ON_CHECKOUT_POPUP_LOC = By.xpath("//div[@class='add-to-cart-item']//div[@class='details']/a[@class='name']");
+	private final By PRODUCT_QTY_ON_CHECKOUT_POPUP_LOC = By.xpath("//div[@class='add-to-cart-item']//div[@class='details']/div[@class='qty']");
+	private final By PRODUCT_PRICE_ON_CEHCKOUT_POPUP = By.xpath("//div[@class='add-to-cart-item']//div[@class='details']/div[@class='price']");
+	private final By YOUR_PRICE_ON_QUICK_VIEW_POPUP_LOC = By.xpath("//div[@class='quick-view-popup']//span[@id='cust_price']");
+	private final By VIEW_PRODUCT_DETAILS_LINK_ON_QUICK_VIEW_LOC = By.xpath("//div[@id='quickViewPDP']//a[contains(text(),'View Product Details')]");
+	private final By ADD_MORE_ITEMS_BUTTON_ON_CHCKOUT_POPUP_LOC = By.xpath("//a[contains(text(),'Add More Items')]");
+	private final By CLOSE_BUTTON_FOR_CHCKOUT_POPUP_LOC = By.xpath("//button[@id='cboxClose']") ;
+	private final By YES_ON_ENROLL_IN_CRP_POPUP_LOC = By.xpath("//div[@id='enrollCRPModal'][1]//input[@value='Yes']");
+	private final By ADD_TO_CRP_OF_FIRST_PRODUCT = By.xpath("//div[@id='product_listing']/descendant::span[contains(text(),'Add to CRP')][1]");
 
+	private String addToCRPButtonThroughProductNumber = "//div[@id='product_listing']/descendant::span[contains(text(),'Add to CRP')][%s]";
+	private String addToPCPerksButtonThroughProductNumber = "//div[@class='product-item'][%s]//span[contains(text(),'subscribe + save')]";
+	private String quickViewForSpecificProductLoc = "//div[@class='product__listing product__grid']//div[@class='product-item'][%s]/a[@class='thumb']";
 	private String productNameLinkOnAllProductPageLoc = "//div[@id='product_listing']/descendant::div[@class='details'][%s]//a";
 	private String priceOfProductLoc = "//div[contains(@class,'product__listing')]//div[@class='product-item'][%s]//span[@id='cust_price']";
 	private String categoryNameLoc = "//div[@id='product-facet']//descendant::ul[2]/li/descendant::span[contains(text(),'%s')]/preceding::label[1]";
@@ -42,6 +55,9 @@ public class StoreFrontShopSkinCarePage extends StoreFrontWebsiteBasePage{
 	private String addToCartButtonThroughProductNumber = "//div[@id='product_listing']/descendant::button[text()='Add to cart'][%s]";
 	private String addToBagButtonThroughProductNumber = "//div[@id='product_listing']/descendant::span[contains(text(),'One Time Order')][%s]";
 	private String yourpriceOfProductLoc = "//div[contains(@class,'product__listing')]//div[@class='product-item'][%s]//em[contains(text(),'Your Price')]/..";
+	private String yourPriceOfProductLoc = "//div[contains(@class,'product__listing')]//div[@class='product-item'][%s]//span[@id='retail']";
+	private String productPriceThroughProductNumberLoc = "//div[@id='product_listing']/descendant::span[contains(text(),'%s')][%s]/following-sibling::span[contains(@class,'productPrice')]";
+	private String addToBagButtonForSpecificOrderTypeThroughProductNumberLoc = "//div[@id='product_listing']/descendant::span[contains(text(),'%s')][%s]";
 
 	/**
 	 * This method click on the checkOut Button on the popup on the cart.
@@ -77,7 +93,9 @@ public class StoreFrontShopSkinCarePage extends StoreFrontWebsiteBasePage{
 	 * 
 	 */
 	public StoreFrontShopSkinCarePage addFirstProductToBag(){
-		//driver.clickByJS(RFWebsiteDriver.driver, driver.findElement(ADD_TO_CART_FIRST_PRODUCT_LOC));
+		driver.waitForElementToBeClickable(ADD_TO_CART_FIRST_PRODUCT_LOC, 30);
+		driver.moveToElement(ADD_TO_CART_FIRST_PRODUCT_LOC);
+		//driver.moveToElementByJS(ADD_TO_CART_FIRST_PRODUCT_LOC);
 		driver.click(ADD_TO_CART_FIRST_PRODUCT_LOC);
 		logger.info("Added first product to the bag");
 		driver.pauseExecutionFor(2000);
@@ -405,5 +423,231 @@ public class StoreFrontShopSkinCarePage extends StoreFrontWebsiteBasePage{
 		}
 		else
 			return false;
+	}
+
+	/**
+	 * This method click on the Add more items Button on the popup on the cart.
+	 * @return StoreFrontShopSkinCarePage object
+	 */
+	public StoreFrontShopSkinCarePage clickOnAddMoreItemsOnCheckoutPopUp(){
+		driver.click(ADD_MORE_ITEMS_BUTTON_ON_CHCKOUT_POPUP_LOC);
+		logger.info("Clicked on Add more items Button on the checkout popup");
+		return this;
+	}
+
+	/**
+	 * This method click on close Button for the checkout popup.
+	 * @return StoreFrontShopSkinCarePage object
+	 */
+	public StoreFrontShopSkinCarePage clickOnCloseButtonForCheckoutPopUp(){
+		driver.click(CLOSE_BUTTON_FOR_CHCKOUT_POPUP_LOC);
+		logger.info("Clicked on close btn for checkout popup");
+		return this;
+	}
+
+	/**
+	 * This method get the name of product from checkout pop up.
+	 * @return String - productName
+	 */
+	public String getProductNameFromCheckoutPopup(){
+		driver.pauseExecutionFor(2000);
+		return driver.getText(PRODUCT_NAME_ON_CHECKOUT_POPUP_LOC);
+	}
+
+	/**
+	 * This method validates the Quantity of Product to be 1 on checkout popup.
+	 * @return boolean
+	 */
+	public boolean isQuantityOfProductonIsPresentOnCheckoutPopUp(){
+		return driver.getText(PRODUCT_QTY_ON_CHECKOUT_POPUP_LOC).contains("1");
+	}
+
+	/**
+	 * This method get the price of product from checkout pop up.
+	 * @return String - productPrice
+	 */
+	public String getProductPriceFromCheckoutPopup(){
+		driver.pauseExecutionFor(2000);
+		return driver.getText(PRODUCT_PRICE_ON_CEHCKOUT_POPUP).replace("$","");
+	}
+
+	/***
+	 * This method validates the presence of Add more items Button
+	 * 
+	 * @param 
+	 * @return boolean
+	 * 
+	 */
+	public boolean isAddMoreItemsButtonPresentOnCheckoutPopup(){
+		return driver.isElementVisible(ADD_MORE_ITEMS_BUTTON_ON_CHCKOUT_POPUP_LOC);
+	}
+
+	/***
+	 * This method validates the presence of Checkout Button
+	 * 
+	 * @param 
+	 * @return boolean
+	 * 
+	 */
+	public boolean isCheckoutButtonPresentOnCheckoutPopup(){
+		return driver.isElementVisible(CHECKOUT_BUTTON_POPUP_LOC);
+	}
+
+	/***
+	 * This method validates the presence of Close Button on Popup
+	 * 
+	 * @param 
+	 * @return boolean
+	 * 
+	 */
+	public boolean isCloseButtonPresentForCheckoutPopup(){
+		return driver.isElementVisible(CLOSE_BUTTON_FOR_CHCKOUT_POPUP_LOC);
+	}
+
+	/***
+	 * This method click add to bag for one time order for Specific product and return the price
+	 * 
+	 * @param
+	 * @return string price
+	 * 
+	 */
+	public String addProductToBagForSpecificOrderType(int productNumber,String orderType){
+		String priceToAssert = null;
+		driver.click(By.xpath(String.format(addToCartButtonThroughProductNumber, productNumber)));
+		if(orderType.equals("One Time Order")){
+			priceToAssert = driver.getText(By.xpath(String.format(productPriceThroughProductNumberLoc,"One Time Order",productNumber))).replace("$","");
+			driver.click(By.xpath(String.format(addToBagButtonForSpecificOrderTypeThroughProductNumberLoc,"One Time Order",productNumber)));
+			logger.info("Clicked add to bag button for one time order");
+		}
+		else{
+			priceToAssert = driver.getText(By.xpath(String.format(productPriceThroughProductNumberLoc,"subscribe + save",productNumber))).replace("$","");
+			driver.click(By.xpath(String.format(addToBagButtonForSpecificOrderTypeThroughProductNumberLoc,"subscribe + save",productNumber)));
+			logger.info("Clicked add to bag button for Autoship order");
+		}
+		return priceToAssert;
+	}
+
+	/***
+	 * This method validates the presence of Retail Price on Product listing page
+	 * 
+	 * @param 
+	 * @return boolean
+	 * 
+	 */
+	public boolean isRetailPricePresentForProductNumber(String productNumber){
+		return driver.getText(By.xpath(String.format(priceOfProductLoc,productNumber))).contains("$");
+	}
+
+	/***
+	 * This method validates the presence of Your Price on Quick view popup
+	 * 
+	 * @param 
+	 * @return boolean
+	 * 
+	 */
+	public boolean isPricePresentOnQuickViewPopup(){
+		return driver.getText(YOUR_PRICE_ON_QUICK_VIEW_POPUP_LOC).contains("$");
+	}
+
+	/***
+	 * This method click on view product details link on quick view popup
+	 * 
+	 * @param 
+	 * @return StoreFrontProductDetailPage object
+	 * 
+	 */
+	public StoreFrontProductDetailPage clickOnViewProductDetailsLinkOnQuickViewPopup(){
+		driver.click(VIEW_PRODUCT_DETAILS_LINK_ON_QUICK_VIEW_LOC);
+		return new StoreFrontProductDetailPage(driver);
+	}
+
+	/**
+	 * This method click on quick view link of product
+	 * @return StoreFrontShopSkinCarePage object
+	 */
+	public StoreFrontShopSkinCarePage clickOnQuickViewLinkForProduct(String productNum){
+		driver.waitForElementPresent(By.xpath(String.format(quickViewForSpecificProductLoc, productNum)));
+		driver.click(By.xpath(String.format(quickViewForSpecificProductLoc, productNum)));
+		logger.info("Clicked on quick view for product number : " + productNum);
+		return this;
+	}
+
+	/***
+	 * This method click add to CRP button through product number
+	 * 
+	 * @param product number
+	 * @return Store front Shop skincare page obj
+	 * 
+	 */
+	public StoreFrontShopSkinCarePage addProductToAdhocCart(int productNumber){
+		driver.waitForElementToBeClickable(By.xpath(String.format(addToCartButtonThroughProductNumber,productNumber)), 30);
+		driver.click(By.xpath(String.format(addToCartButtonThroughProductNumber,productNumber)));
+		logger.info("Added "+productNumber+ "product to adhoc cart");
+		driver.pauseExecutionFor(2000);
+		return this;
+	}
+	/***
+	 * This method validate all product page present
+	 * 
+	 * 
+	 * @param
+	 * @return boolean value.
+	 * 
+	 */
+	public boolean isAllProductPageDisplayed(){
+		return driver.isElementVisible(ADD_TO_CART_FIRST_PRODUCT_LOC);
+	}
+	/***
+	 * This method click add to cart button for first product after login and click add to crp
+	 * 
+	 * @param
+	 * @return store front shop skincare page object
+	 * 
+	 */
+	public StoreFrontShopSkinCarePage addFirstProductToAutoshipCart(String userType){
+		driver.moveToElementByJS(ADD_TO_CART_FIRST_PRODUCT_LOC);
+		if(userType.equalsIgnoreCase("Consultant")){
+			driver.click(ADD_TO_CRP_OF_FIRST_PRODUCT);
+		}
+		else if(userType.equalsIgnoreCase("PC")){
+			driver.click(SUBSCRIBE_PLUS_SAVE_DD_OPTIONS_LOC);	
+		}
+		return this;
+	}
+	/***
+	 * This method click add to cart button for product after login and click add to crp
+	 * 
+	 * @param
+	 * @return store front shop skincare page object
+	 * 
+	 */
+	public StoreFrontShopSkinCarePage addProductToAutoshipCart(int productNumber,String userType){
+		driver.moveToElementByJS(ADD_TO_CART_FIRST_PRODUCT_LOC);
+		if(userType.equalsIgnoreCase("Consultant")){
+			driver.click(By.xpath(String.format(addToCRPButtonThroughProductNumber, productNumber)));
+		}
+		else if(userType.equalsIgnoreCase("PC")){
+			driver.click(By.xpath(String.format(addToPCPerksButtonThroughProductNumber, productNumber)));	
+		}
+		logger.info("Added "+productNumber+ "product to the AutoShip Cart");
+		return this;
+	}
+	/***
+	 * This method click on yes button on popup saying do you want to enroll in CRP
+	 * 
+	 * @param
+	 * @return store front shop skincare page object
+	 * 
+	 */
+	public StoreFrontAutoshipCartPage acceptEnrollInCRPPopup(){
+		try{
+			driver.click(YES_ON_ENROLL_IN_CRP_POPUP_LOC);
+			driver.waitForPageLoad();
+			logger.info("Yes button on enroll in CRP popup clicked.");
+		}
+		catch(NoSuchElementException e){
+
+		}
+		return new StoreFrontAutoshipCartPage(driver);
 	}
 }

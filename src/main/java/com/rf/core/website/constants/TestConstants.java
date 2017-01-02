@@ -45,7 +45,7 @@ public class TestConstants {
 	public static final String CONSULTANT_EMAIL = "auto753120@yopmail.com";
 	public static final String CONSULTANT_ACCOUNT_ID = "";
 	public static final String CONSULTANT_ACCOUNT_NUMBER = "";
-	public static final String FIRST_NAME = "auto";
+	public static final String FIRST_NAME = "AutoCons";
 	public static final String ADDRESS_LINE_1_US = "60 Spear St";
 	public static final String ADDRESS_LINE_2_US = "#600";
 	public static final String CITY_US = "San Francisco";
@@ -56,12 +56,12 @@ public class TestConstants {
 	public static final String MONTH_OF_BIRTH = "Jun";
 	public static final String YEAR_OF_BIRTH = "1986";
 	public static final String GENDER = "MALE";
-	
-//	public static final String ADDRESS_LINE_1_CA = "5502 54th ST";
-//	public static final String CITY_CA = "bonneville";
-//	public static final String POSTAL_CODE_CA = "T5N 2N8";
-//	public static final String PHONE_NUMBER_CA = "2342342342";
-//	public static final String STATE_CA = "Alberta";
+
+	//	public static final String ADDRESS_LINE_1_CA = "5502 54th ST";
+	//	public static final String CITY_CA = "bonneville";
+	//	public static final String POSTAL_CODE_CA = "T5N 2N8";
+	//	public static final String PHONE_NUMBER_CA = "2342342342";
+	//	public static final String STATE_CA = "Alberta";
 	public static final String SPOUSE_FIRST_NAME = "FNSpouse";
 	public static final String SPOUSE_LAST_NAME = "LNSpouse";
 	public static final String PROFILE_UPDATION_MESSAGE = "Your profile has been updated";
@@ -104,6 +104,12 @@ public class TestConstants {
 	public static final String CARD_NUMBER = "4747474747474747";
 	public static final String CARD_NAME = "auto lauto";
 	public static final String CVV = "123";
+	public static final String CARD_NUMBER_2 = "4111111111111111";
+	public static final String CARD_NUMBER_MORE_THAN_16_DIGIT = "47474747474747474";
+	public static final String CARD_NUMBER_LESS_THAN_16_DIGIT = "474747474747474";
+	public static final String CVV_WITH_TWO_DIGIT = "12";
+	public static final String INVALID_CARD_EXP_MONTH = "Jan";
+	public static final String INVALID_CARD_EXP_YEAR = "2019";
 
 
 

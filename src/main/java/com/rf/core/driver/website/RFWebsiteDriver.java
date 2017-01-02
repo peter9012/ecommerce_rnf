@@ -80,7 +80,6 @@ public class RFWebsiteDriver implements RFDriver,WebDriver {
 		if(StringUtils.isEmpty(browser)){
 			browser = propertyFile.getProperty("browser");
 		}
-
 		FirefoxProfile prof = new FirefoxProfile();
 		prof.setPreference("brower.startup.homepage", "about:blank");
 		prof.setPreference("startup.homepage_welcome_url", "about:blank");

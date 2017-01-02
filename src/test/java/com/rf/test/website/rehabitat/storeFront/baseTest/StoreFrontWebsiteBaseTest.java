@@ -1,5 +1,6 @@
 package com.rf.test.website.rehabitat.storeFront.baseTest;
 
+import java.net.MalformedURLException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
@@ -15,6 +16,7 @@ import com.rf.core.driver.website.RFWebsiteDriver;
 import com.rf.core.utils.HtmlLogger;
 import com.rf.core.utils.SoftAssert;
 import com.rf.pages.website.rehabitat.storeFront.StoreFrontAccountInfoPage;
+import com.rf.pages.website.rehabitat.storeFront.StoreFrontAutoshipCartPage;
 import com.rf.pages.website.rehabitat.storeFront.StoreFrontAutoshipStatusPage;
 import com.rf.pages.website.rehabitat.storeFront.StoreFrontBillingInfoPage;
 import com.rf.pages.website.rehabitat.storeFront.StoreFrontCartPage;
@@ -56,6 +58,7 @@ public class StoreFrontWebsiteBaseTest extends RFBaseTest {
 	protected StoreFrontBillingInfoPage sfBillingInfoPage;
 	protected StoreFrontOrdersPage sfOrdersPage;
 	protected StoreFrontProductDetailPage sfProductDetailPage;
+	protected StoreFrontAutoshipCartPage sfAutoshipCartPage;
 
 	StringBuilder verificationErrors = new StringBuilder();
 	protected String password = null;
@@ -104,6 +107,22 @@ public class StoreFrontWebsiteBaseTest extends RFBaseTest {
 
 	public void navigateToStoreFrontBaseURL(){
 		driver.get(driver.getURL()+"/"+country.toUpperCase());
+	}
+	
+	public void closeCurrentWindow(){
+		driver.close();
+		logger.info("Current widow closed");
+	}
+	
+	public void openTheBrowserAndApplication(){
+		try {
+			driver.loadApplication();
+			navigateToStoreFrontBaseURL();
+		} catch (MalformedURLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		logger.info("Application launched");
 	}
 
 //	public void logout(){

@@ -27,6 +27,9 @@ public class StoreFrontProductDetailPage extends StoreFrontWebsiteBasePage{
 	private final By CONTENT_UNDER_INGREDIENTS_TAB_LOC = By.xpath("//div[@class='productIngredientsText']");
 	private final By RECENTLY_VIEW_TAB_LOC = By.xpath("//div[@id='pdp_page']//following::li/a[contains(text(),'Recently Viewed')]");
 	private final By FORWARD_ARROW_OF_CAROUSEL_ON_PRODUCT_DETAIL_LOC = By.xpath("//div[@id='pdp_page']//following::div[@class='owl-next']/span");
+	private final By ADD_TO_CART_BUTTON_AT_PRODUCT_DETAIL_PAGE_LOGIN_LOC = By.xpath("//button[text()='Add to cart']");
+	private final By ADD_PRODUCT_TO_BAG_PRODUCT_DETAIL_LOGIN_LOC = By.xpath("//button[@id='addToCartButton']/span[contains(text(),'One Time Order')]");
+	private final By PRODUCT_PRICE_ON_PDP_LOC = By.xpath("//div[@class='product-details']//span[@id='cust_price']");
 
 	private String productUnderRecentlyViewTabLoc = "//div[@id='pdp_page']//div[@class='content']//following::div[@class='owl-item active']//a[contains(text(),'%s')]";
 	private String tabOnProductDetailPageLoc = "//div[@id='pdp_page']//following::li/a[contains(text(),'%s')]";
@@ -212,5 +215,34 @@ public class StoreFrontProductDetailPage extends StoreFrontWebsiteBasePage{
 		logger.info("Tab "+tabName+ " Clicked on product detail page");
 		driver.pauseExecutionFor(2000);
 		return this;
+	}
+
+	/***
+	 * This method Add  the product to cart from product detail page after clicking
+	 * add to cart button after login
+	 * 
+	 * @param
+	 * @return 
+	 * 
+	 */
+	public StoreFrontProductDetailPage addProductToCartFromProductDetailPageAfterLogin(){
+		String productName = driver.findElement(PRODUCT_NAME_AT_PRODUCT_DETAIL_PAGE_LOC).getText().trim();
+		driver.moveToElement(ADD_TO_CART_BUTTON_AT_PRODUCT_DETAIL_PAGE_LOGIN_LOC);
+		//driver.quickWaitForElementPresent(ADD_TO_CART_BUTTON_AT_PRODUCT_DETAIL_PAGE_LOC);
+		driver.clickByJS(RFWebsiteDriver.driver, driver.findElement(ADD_PRODUCT_TO_BAG_PRODUCT_DETAIL_LOGIN_LOC));
+		logger.info("product "+productName+" is added to cart from product detail page");
+		return this;
+	}
+
+	/***
+	 * This method verify the presence of price on PDP
+	 * 
+	 * 
+	 * @param
+	 * @return boolean value.
+	 * 
+	 */
+	public boolean isPricePresentOnPDPAsExpected(){
+		return driver.getText(PRODUCT_PRICE_ON_PDP_LOC).contains("Your Price : $");
 	}
 }

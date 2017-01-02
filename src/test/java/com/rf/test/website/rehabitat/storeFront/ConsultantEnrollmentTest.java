@@ -48,11 +48,11 @@ public class ConsultantEnrollmentTest extends StoreFrontWebsiteBaseTest{
 	 */
 	@Test
 	public void testConsultantEnrollment_231(){
-		int randomNum = CommonUtils.getRandomNum(10000, 1000000);
+		String timeStamp = CommonUtils.getCurrentTimeStamp();
 		String socialInsuranceNumber = String.valueOf(CommonUtils.getRandomNum(100000000, 999999999));
 		String firstName = TestConstants.FIRST_NAME;
 		String lastName = TestConstants.LAST_NAME;
-		String emailID = TestConstants.FIRST_NAME+randomNum+TestConstants.EMAIL_SUFFIX;
+		String emailID = TestConstants.FIRST_NAME+timeStamp+TestConstants.EMAIL_SUFFIX;
 		String addressLine1 = TestConstants.ADDRESS_LINE_1_US;
 		String addressLine2 = TestConstants.ADDRESS_LINE_2_US;
 		String city = TestConstants.CITY_US;
@@ -95,7 +95,7 @@ public class ConsultantEnrollmentTest extends StoreFrontWebsiteBaseTest{
 	 * consultant enrollment
 	 * 				
 	 */
-	@Test //TODO
+	@Test
 	public void testRequestSponsorConsultantEnrollment_261(){
 		String fieldName;
 		sfHomePage.clickEnrollNow();
@@ -121,6 +121,7 @@ public class ConsultantEnrollmentTest extends StoreFrontWebsiteBaseTest{
 		sfHomePage.clickSubmitBtnOnRequiredConsultantSponsorPopUp();
 		s_assert.assertTrue(sfHomePage.isThanksMessageAfterSponsorRequestPresent(),"Thank msg not displayed after sponsor request submit");
 		sfHomePage.clickBackToHomePageBtn();
+		s_assert.assertTrue(sfHomePage.isConnectBtnPresentOnHomePage(), "User is not on Home Page");
 		s_assert.assertAll();
 	}
 
@@ -168,11 +169,11 @@ public class ConsultantEnrollmentTest extends StoreFrontWebsiteBaseTest{
 	 */
 	@Test
 	public void testConsultantEnrollmentPersonalBusinessPortfolio_290(){
-		int randomNum = CommonUtils.getRandomNum(10000, 1000000);
+		String timeStamp = CommonUtils.getCurrentTimeStamp();
 		String socialInsuranceNumber = String.valueOf(CommonUtils.getRandomNum(100000000, 999999999));
 		String firstName = TestConstants.FIRST_NAME;
 		String lastName = TestConstants.LAST_NAME;
-		String emailID = TestConstants.FIRST_NAME+randomNum+TestConstants.EMAIL_SUFFIX;
+		String emailID = TestConstants.FIRST_NAME+timeStamp+TestConstants.EMAIL_SUFFIX;
 		String addressLine1 = TestConstants.ADDRESS_LINE_1_US;
 		String addressLine2 = TestConstants.ADDRESS_LINE_2_US;
 		String city = TestConstants.CITY_US;
@@ -216,11 +217,11 @@ public class ConsultantEnrollmentTest extends StoreFrontWebsiteBaseTest{
 	 */
 	@Test//TODO
 	public void testViewHideCTADetailsInEnrollmentKit_291(){
-		int randomNum = CommonUtils.getRandomNum(10000, 1000000);
+		String timeStamp = CommonUtils.getCurrentTimeStamp();
 		String socialInsuranceNumber = String.valueOf(CommonUtils.getRandomNum(100000000, 999999999));
 		String firstName = TestConstants.FIRST_NAME;
 		String lastName = TestConstants.LAST_NAME;
-		String emailID = TestConstants.FIRST_NAME+randomNum+TestConstants.EMAIL_SUFFIX;
+		String emailID = TestConstants.FIRST_NAME+timeStamp+TestConstants.EMAIL_SUFFIX;
 		sfHomePage.clickEnrollNow();
 		sfHomePage.searchSponsor(TestConstants.SPONSOR);
 		s_assert.assertTrue(sfHomePage.isSponsorResultDisplayed(),"No result found after searching the sponsor with name "+TestConstants.SPONSOR);
@@ -288,11 +289,11 @@ public class ConsultantEnrollmentTest extends StoreFrontWebsiteBaseTest{
 	 */
 	@Test
 	public void testLinksToPoliciesAndProcedures_393(){
-		int randomNum = CommonUtils.getRandomNum(10000, 1000000);
+		String timeStamp = CommonUtils.getCurrentTimeStamp();
 		String socialInsuranceNumber = String.valueOf(CommonUtils.getRandomNum(100000000, 999999999));
 		String firstName = TestConstants.FIRST_NAME;
 		String lastName = TestConstants.LAST_NAME;
-		String emailID = TestConstants.FIRST_NAME+randomNum+TestConstants.EMAIL_SUFFIX;
+		String emailID = TestConstants.FIRST_NAME+timeStamp+TestConstants.EMAIL_SUFFIX;
 		String policiesAndProceduresPdfUrl = "Policies_Procedures_CANADA.pdf";
 		String pulseProTCUrl = "Pulse_Terms_and_Conditions_CANADA.pdf";
 		String crpTCPdfUrl = "CRP_Terms_and_Conditions_CANADA.pdf";
@@ -350,11 +351,11 @@ public class ConsultantEnrollmentTest extends StoreFrontWebsiteBaseTest{
 	 */
 	@Test
 	public void testConsultantEnrollmentNorthDakotaChecked_492(){
-		int randomNum = CommonUtils.getRandomNum(10000, 1000000);
+		String timeStamp = CommonUtils.getCurrentTimeStamp();
 		String socialInsuranceNumber = String.valueOf(CommonUtils.getRandomNum(100000000, 999999999));
 		String firstName = TestConstants.FIRST_NAME;
 		String lastName = TestConstants.LAST_NAME;
-		String emailID = TestConstants.FIRST_NAME+randomNum+TestConstants.EMAIL_SUFFIX;
+		String emailID = TestConstants.FIRST_NAME+timeStamp+TestConstants.EMAIL_SUFFIX;
 		String addressLine1 = TestConstants.ADDRESS_LINE_1_US;
 		String addressLine2 = TestConstants.ADDRESS_LINE_2_US;
 		String city = TestConstants.CITY_US;
@@ -431,10 +432,11 @@ public class ConsultantEnrollmentTest extends StoreFrontWebsiteBaseTest{
 	@Test
 	public void testConsultantEnrollmengtWithPulseSubscription_467(){
 		int randomNum = CommonUtils.getRandomNum(10000, 1000000);
+		String timeStamp = CommonUtils.getCurrentTimeStamp();
 		String socialInsuranceNumber = String.valueOf(CommonUtils.getRandomNum(100000000, 999999999));
 		String firstName = TestConstants.FIRST_NAME;
 		String lastName = TestConstants.LAST_NAME;
-		String emailID = TestConstants.FIRST_NAME+randomNum+TestConstants.EMAIL_SUFFIX;
+		String emailID = TestConstants.FIRST_NAME+timeStamp+TestConstants.EMAIL_SUFFIX;
 		String addressLine1 = TestConstants.ADDRESS_LINE_1_US;
 		String addressLine2 = TestConstants.ADDRESS_LINE_2_US;
 		String city = TestConstants.CITY_US;
@@ -484,10 +486,11 @@ public class ConsultantEnrollmentTest extends StoreFrontWebsiteBaseTest{
 	@Test
 	public void testConsultantEnrollmengtWithoutPulseSubscription_468(){
 		int randomNum = CommonUtils.getRandomNum(10000, 1000000);
+		String timeStamp = CommonUtils.getCurrentTimeStamp();
 		String socialInsuranceNumber = String.valueOf(CommonUtils.getRandomNum(100000000, 999999999));
 		String firstName = TestConstants.FIRST_NAME;
 		String lastName = TestConstants.LAST_NAME;
-		String emailID = TestConstants.FIRST_NAME+randomNum+TestConstants.EMAIL_SUFFIX;
+		String emailID = TestConstants.FIRST_NAME+timeStamp+TestConstants.EMAIL_SUFFIX;
 		String addressLine1 = TestConstants.ADDRESS_LINE_1_US;
 		String addressLine2 = TestConstants.ADDRESS_LINE_2_US;
 		String city = TestConstants.CITY_US;

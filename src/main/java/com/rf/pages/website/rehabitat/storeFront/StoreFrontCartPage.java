@@ -28,8 +28,14 @@ public class StoreFrontCartPage extends StoreFrontWebsiteBasePage{
 	private final By DELIVERY_LOC = By.xpath("//td[text()='Delivery:']/following::td[1]");
 	private final By TOTAL_NO_OF_ITEMS_IN_CART_LOC = By.xpath("//ul[contains(@class,'cart__list')]/descendant::li[@class='item-list-item']");
 	private final By CHECKOUT_CONFIRMATION_MSG_LOC=By.xpath("//div[@id='cartCheckoutModal']/p");
+	private final By PC_TERMS_AND_CONDITIONS_LINK_LOC = By.xpath("//a[contains(text(),'PC Perks Terms & Conditions')]");
+	private final By SHOPPING_CART_TOTAL_PRODUCTS_LOC = By.xpath("//h1[contains(text(),'Your Shopping Cart')]/span");
+	private final By CART_PRODUCT_LOC = By.xpath("//ul[contains(@class,'item-list cart')]/li[@class='item-list-item']");
+	private final By ADD_MORE_ITEMS_BTN_PC_AUTOSHIP_CART_LOC = By.xpath("//div[@class='cart-container']/descendant::button[contains(text(),'Add More Items')]");
 
 	private String recentlyViewProductOnCartPageLoc = "//div[@id='recentlyViewedTitle']/following::div[@class='owl-item active']//a[contains(text(),'%s')]";
+	private String removeLinkForProductOnCartLoc = "removeEntry_";
+
 	/***
 	 * This method get product quantity 
 	 * 
@@ -103,7 +109,12 @@ public class StoreFrontCartPage extends StoreFrontWebsiteBasePage{
 	 * @return
 	 */
 	public void clickAddMoreItemsBtn(){
-		driver.click(ADD_MORE_ITEMS_BTN_LOC);
+		if(driver.isElementPresent(ADD_MORE_ITEMS_BTN_LOC)){
+			driver.click(ADD_MORE_ITEMS_BTN_LOC);
+		}
+		else{
+			driver.click(ADD_MORE_ITEMS_BTN_PC_AUTOSHIP_CART_LOC);
+		}
 		logger.info("clicked on add more items button");
 		driver.waitForPageLoad();
 	}
@@ -235,6 +246,99 @@ public class StoreFrontCartPage extends StoreFrontWebsiteBasePage{
 		driver.clickByJS(RFWebsiteDriver.driver, driver.findElement(By.xpath(String.format(recentlyViewProductOnCartPageLoc, productName))));
 		logger.info("Product"+productName+"is clicked under recently view on cart page");
 		return new StoreFrontProductDetailPage(driver);
+	}
+
+	/***
+	 * This method click pc terms and conditions link 
+	 * 
+	 * @param
+	 * @return StoreFrontCartPage object
+	 */
+	public StoreFrontCartPage clickPCTermsAndConditionsLink(){
+		driver.click(PC_TERMS_AND_CONDITIONS_LINK_LOC);
+		logger.info("PC Terms and Conditions link Clicked");
+		return this;
+	}
+
+	/***
+	 * This method calculate subtotal as per quantity change 
+	 * 
+	 * @param itemNumber
+	 * @return updated subtotal
+	 * 
+	 */
+	public String getCalculatedSubtotalValueAfterUpdatingQuantity(String previousSubtotal,String previousQty, String updatedQty){
+		previousSubtotal = previousSubtotal.split("\\$")[1];
+		double prevSubtotal = Double.parseDouble(previousSubtotal);
+		int prevQty = Integer.parseInt(previousQty);
+		int updatedQuantity = Integer.parseInt(updatedQty);
+		double individualPrice = (prevSubtotal/prevQty);
+		String calculatedValue = Double.toString((individualPrice*updatedQuantity));
+		calculatedValue = "$"+calculatedValue;
+		logger.info("calculated subtotal is "+calculatedValue);
+		return calculatedValue;
+	}
+	/***
+	 * This method reduce product quantity by one. 
+	 * 
+	 * @param quantity
+	 * @return Reduce quantity by 1
+	 * 
+	 */
+	public String updateAndReduceProductQuantityByOne(String quantity){
+		quantity = ""+(Integer.parseInt(quantity)-1);
+		logger.info("Updated reduced quantity is "+quantity);
+		return quantity;
+	}
+	/***
+	 * This method verifies that there is no product present in cart 
+	 * 
+	 * @return
+	 */
+	public boolean isProductPresentInCart(){
+		return driver.isElementVisible(CART_PRODUCT_LOC);
+	}
+	/***
+	 * This method get number of products on adhoc cart s
+	 * 
+	 * @param 
+	 * @return product count in adhoc cart.
+	 * 
+	 */
+	public int getProductCountInAdhocCart(){
+		int totalProducts=0;
+		try{
+			String ahhocProductCount = driver.findElement(SHOPPING_CART_TOTAL_PRODUCTS_LOC).getText();
+			ahhocProductCount =ahhocProductCount.split("\\(")[1].split("ITEMS")[0].trim();
+			totalProducts = Integer.parseInt(ahhocProductCount);
+			logger.info("Products counts in adhoc cart is "+totalProducts);
+		}
+		catch(NoSuchElementException e){
+			logger.info("No products are present in adhoc cart.");
+		}
+		return totalProducts;
+	}
+	/***
+	 * This method removes all product from cart
+	 * 
+	 * @param itemNumber
+	 * @return store front Cart page object 
+	 * 
+	 */
+	public StoreFrontCartPage removeAllProductsFromCart(){
+		int count = getProductCountInAdhocCart();
+		if(count>0){
+			for(int i=0;i<count;i++){
+				String removalLink = removeLinkForProductOnCartLoc+"0";
+				driver.click(By.id(removalLink));
+				driver.waitForPageLoad();
+				logger.info("Remove link of "+i+" is clicked");
+			}
+		}
+		else{
+			logger.info("There are no products in cart to remove.");
+		}
+		return this;
 	}
 }
 

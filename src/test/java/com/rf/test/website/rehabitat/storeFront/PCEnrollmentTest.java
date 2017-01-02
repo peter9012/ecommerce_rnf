@@ -22,13 +22,13 @@ public class PCEnrollmentTest extends StoreFrontWebsiteBaseTest{
 	String cardNumber = null;
 	String cardName = null;
 	String CVV = null;
-	int randomNum; 
+	String timeStamp; 
 
 	public PCEnrollmentTest() {
-		randomNum = CommonUtils.getRandomNum(10000, 1000000);
+		timeStamp = CommonUtils.getCurrentTimeStamp();
 		firstName=TestConstants.PC_FIRST_NAME;
 		lastName = TestConstants.LAST_NAME;
-		email = firstName+randomNum+TestConstants.EMAIL_SUFFIX;
+		email = firstName+timeStamp+TestConstants.EMAIL_SUFFIX;
 		addressLine1 = TestConstants.ADDRESS_LINE_1_US;
 		addressLine2 = TestConstants.ADDRESS_LINE_2_US;
 		city = TestConstants.CITY_US;
@@ -178,6 +178,44 @@ public class PCEnrollmentTest extends StoreFrontWebsiteBaseTest{
 		s_assert.assertFalse(sfCheckoutPage.isSelectedConsultantBoxDisplayed(), "consultant box of the selected sponsor has NOT removed");
 		sfCheckoutPage.searchForConsultant(existingConsultant);
 		s_assert.assertTrue(sfCheckoutPage.isSponsorResultDisplayed(),"No result found after searching the sponsor with name "+TestConstants.SPONSOR);
+		s_assert.assertAll();
+	}
+	
+	/***
+	 * qTest : TC-573 Choose a Consultant- Auto-Assign (Checkout)
+	 * Description : This test validates the assigned sponsor to PC after enrollment
+	 * 
+	 *     
+	 */
+	@Test
+	public void testAutoAssignConsultantPcEnrollment_573(){
+		String existingConsultant = TestConstants.SPONSOR;
+		sfCartPage = new StoreFrontCartPage(driver);
+		sfShopSkinCarePage = new StoreFrontShopSkinCarePage(driver);
+		sfHomePage.clickLoginIcon();
+		sfCheckoutPage=sfHomePage.clickSignUpNowLink();
+		sfCheckoutPage.fillNewUserDetails(TestConstants.USER_TYPE_PC, firstName, lastName, email, password);
+		sfCheckoutPage.clickCreateAccountButton();
+		s_assert.assertTrue(sfCartPage.isPcOneTimeFeeMsgDisplayed(),"PC one time joining fee msg has not displayed");
+		sfCartPage.clickAddMoreItemsBtn();
+		sfShopSkinCarePage.selectFirstProduct();
+		sfCartPage = sfShopSkinCarePage.checkoutTheCartFromPopUp();
+		sfCartPage.enterQuantityOfProductAtCart("1", "10");
+		sfCartPage.clickOnUpdateLinkThroughItemNumber("1");
+		sfCartPage.clickCheckoutBtn();
+		sfCheckoutPage.searchForConsultant(existingConsultant);
+		s_assert.assertTrue(sfCheckoutPage.isSponsorResultDisplayed(),"No result found after searching the sponsor with name "+TestConstants.SPONSOR);
+		sfCheckoutPage.selectFirstSponsorFromList();
+		sfCheckoutPage.clickSaveButton();
+		sfCheckoutPage.enterShippingDetails(firstName+" "+lastName, addressLine1, addressLine2, city, state, postalCode, phoneNumber);
+		sfCheckoutPage.clickShippingDetailsNextbutton();
+		sfCheckoutPage.enterUserBillingDetails(cardType, cardNumber, cardName, CVV);
+		sfCheckoutPage.checkUseMyDeliveryAddressChkBox();
+		sfCheckoutPage.clickBillingDetailsNextbutton();
+		sfCheckoutPage.selectTermsAndConditionsChkBox();
+		sfCheckoutPage.selectPoliciesAndProceduresChkBox();
+		sfCheckoutPage.clickPlaceOrderButton();
+		s_assert.assertTrue(sfHomePage.hasPCEnrolledSuccessfully(), "PC has not been enrolled successfully");
 		s_assert.assertAll();
 	}
 	

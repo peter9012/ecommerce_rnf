@@ -87,6 +87,12 @@ public class CommonUtils {
 		return new Random().nextInt((max - min) + 1) + min;
 	} 
 
+	public static String getCurrentTimeStamp(){
+		String timeStamp = new SimpleDateFormat("yyyy.MM.dd.HH.mm.ss").format(new Date());
+		timeStamp = timeStamp.replace('.', '_').replaceAll("_", "");
+		return timeStamp;
+	}
+
 	public static String getRandomWord(int length) {
 		String r = "";
 		for(int i = 0; i < length; i++) {

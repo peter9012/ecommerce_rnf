@@ -2,6 +2,7 @@ package com.rf.test.website.rehabitat.storeFront.homePage;
 
 import org.testng.annotations.Test;
 
+import com.rf.core.website.constants.TestConstants;
 import com.rf.test.website.rehabitat.storeFront.baseTest.StoreFrontWebsiteBaseTest;
 
 public class AccessLoginFromHomePageTest extends StoreFrontWebsiteBaseTest{
@@ -12,11 +13,13 @@ public class AccessLoginFromHomePageTest extends StoreFrontWebsiteBaseTest{
 	 * click on login link
 	 *     
 	 */
-	@Test//TODO
+	@Test
 	public void testUserClickOnTheLoginSymbolOnTheHomepage_9(){
+		s_assert.assertFalse(sfHomePage.isUsernameFieldVisible(), "Username field should NOT be visible without clicking on login icon");
+		s_assert.assertFalse(sfHomePage.isPasswordFieldVisible(), "Password field should NOT be visible without clicking on login icon");
 		sfHomePage.clickLoginIcon();
-		s_assert.assertTrue(sfHomePage.isUsernameFieldPresent(), "Username field is not present after clicked on login icon");
-		s_assert.assertTrue(sfHomePage.isPasswordFieldPresent(), "Password field is not present after clicked on login icon");
+		s_assert.assertTrue(sfHomePage.isUsernameFieldVisible(), "Username field should be visible after clicking on login icon");
+		s_assert.assertTrue(sfHomePage.isPasswordFieldVisible(), "Password field should be visible after clicking on login icon");
 		s_assert.assertAll();
 	}
 
@@ -26,14 +29,14 @@ public class AccessLoginFromHomePageTest extends StoreFrontWebsiteBaseTest{
 	 * reclick on login link
 	 *     
 	 */
-	@Test//TODO
+	@Test
 	public void testUserSelectsLoginSymbolToCloseTheLoginProvision_10(){
 		sfHomePage.clickLoginIcon();
-		s_assert.assertTrue(sfHomePage.isUsernameFieldPresent(), "Username field is not present after clicked on login icon");
-		s_assert.assertTrue(sfHomePage.isPasswordFieldPresent(), "Password field is not present after clicked on login icon");
+		s_assert.assertTrue(sfHomePage.isUsernameFieldVisible(), "Username field should be visible after clicking on login icon");
+		s_assert.assertTrue(sfHomePage.isPasswordFieldVisible(), "Password field should be visible after clicking on login icon");
 		sfHomePage.clickLoginIcon();
-		s_assert.assertFalse(sfHomePage.isUsernameFieldPresent(), "Username field is present after clicked on login icon for close provision");
-		s_assert.assertFalse(sfHomePage.isPasswordFieldPresent(), "Password field is present after clicked on login icon for close provision");
+		s_assert.assertFalse(sfHomePage.isUsernameFieldVisible(), "Username field should NOT be visible without clicking on login icon");
+		s_assert.assertFalse(sfHomePage.isPasswordFieldVisible(), "Password field should NOT be visible without clicking on login icon");
 		s_assert.assertAll();
 	}
 }

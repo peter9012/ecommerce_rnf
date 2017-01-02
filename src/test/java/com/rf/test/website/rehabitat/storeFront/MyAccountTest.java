@@ -66,25 +66,32 @@ public class MyAccountTest extends StoreFrontWebsiteBaseTest{
 	/***
 	 * qTest : TC-179 Account Information- Update username
 	 * 
-	 * Description : This test updates the username on account info page for consultant,PC and RC user.
+	 * Description : This test tests if the username on account info page is disabled for consultant,PC and RC user.
 	 * 
 	 *     
 	 */
-	@Test//TODO Username field is disbaled
-	public void testUpdateUsernameOnAccountInfoPageForUsers_179(){
-		int randomNum = CommonUtils.getRandomNum(10000, 1000000);
-		String currentURL = null;
-		String urlToAssert = "my-account";
-		String updatedUserName = "updatedUserName"+randomNum;
+	@Test
+	public void testDisabledUsernameOnAccountInfoPageForUsers_179(){
 		//Login as consultant user.
 		sfHomePage.loginToStoreFront(TestConstants.CONSULTANT_EMAIL,password);
 		sfHomePage.clickWelcomeDropdown();
 		sfAccountInfoPage = sfHomePage.navigateToAccountInfoPage();
-		currentURL = sfAccountInfoPage.getCurrentURL().toLowerCase();
-		s_assert.assertTrue(currentURL.contains(urlToAssert), "Expected URL should contain "+urlToAssert+" but actual on UI is"+currentURL);
-		//Update and verify username on account info page for consultant.
-		sfAccountInfoPage.enterUserName(updatedUserName);
-		sfAccountInfoPage.saveAccountInfo();
+		s_assert.assertTrue(sfAccountInfoPage.isUsernameFieldDisabled(),"Username is NOT disabled for consultant");
+		sfAccountInfoPage.clickWelcomeDropdown();
+		sfAccountInfoPage.logout();
+		//Login as pc user.
+		sfHomePage.loginToStoreFront(TestConstants.PC_EMAIL,password);
+		sfHomePage.clickWelcomeDropdown();
+		sfAccountInfoPage = sfHomePage.navigateToAccountInfoPage();
+		s_assert.assertTrue(sfAccountInfoPage.isUsernameFieldDisabled(),"Username is NOT disabled for PC");
+		sfAccountInfoPage.clickWelcomeDropdown();
+		sfAccountInfoPage.logout();
+		//Login as rc user.
+		sfHomePage.loginToStoreFront(TestConstants.RC_EMAIL,password);
+		sfHomePage.clickWelcomeDropdown();
+		sfAccountInfoPage = sfHomePage.navigateToAccountInfoPage();
+		s_assert.assertTrue(sfAccountInfoPage.isUsernameFieldDisabled(),"Username is NOT disabled for RC");
+
 		s_assert.assertAll();
 	}
 
@@ -228,14 +235,14 @@ public class MyAccountTest extends StoreFrontWebsiteBaseTest{
 	 */
 	@Test
 	public void testViewPulseDetails_276(){
-
 		//Login as consultant user.
 		sfHomePage.loginToStoreFront(TestConstants.CONSULTANT_USERNAME,password);
 		sfHomePage.clickWelcomeDropdown();
 		sfAutoshipStatusPage = sfHomePage.navigateToAutoshipStatusPage();
 		sfAutoshipStatusPage.clickLearnMoreAboutPulse();
-		s_assert.assertTrue(sfAutoshipStatusPage.isPulsePopupPresent(), "'Pulse popup' overlay is not displayed");
+		s_assert.assertTrue(sfAutoshipStatusPage.isPulsePopupPresentWithContent(), "'Pulse popup' overlay is not displayed");
 		sfAutoshipStatusPage.closePulsePopup();
+		s_assert.assertFalse(sfAutoshipStatusPage.isPulsePopupPresentWithContent(), "'Pulse popup' overlay is displayed after clicking on close button");
 		s_assert.assertAll();
 	}
 
@@ -322,18 +329,18 @@ public class MyAccountTest extends StoreFrontWebsiteBaseTest{
 		String email = TestConstants.CONSULTANT_EMAIL;
 		String gender = TestConstants.GENDER;
 
-//		//Login as consultant user.
-//		sfHomePage.loginToStoreFront(TestConstants.CONSULTANT_USERNAME,password);
-//		sfHomePage.clickWelcomeDropdown();
-//		sfAccountInfoPage = sfHomePage.navigateToAccountInfoPage();
-//		s_assert.assertFalse(sfAccountInfoPage.isCountryNameEditable(country), "Country filled is editable at account info page for consultant");
-//		sfAccountInfoPage.enterMainAccountInfo(firstName, lastName, addressLine1, addressLine2,city, state, postalCode, phoneNumber,phoneNumber2,email,dayOfBirth,monthOfBirth,yearOfBirth,gender);
-//		sfAccountInfoPage.saveAccountInfo();
-//		sfAccountInfoPage.clickUseAsEnteredButtonOnPopUp();
-//		profileUpdationMessage = sfAccountInfoPage.getProfileUpdationMessage();
-//		s_assert.assertTrue(profileUpdationMessage.equalsIgnoreCase(TestConstants.PROFILE_UPDATION_MESSAGE.trim()), "'Spouse details' profile updation message Expected = "+TestConstants.PROFILE_UPDATION_MESSAGE+" but Actual = "+profileUpdationMessage);
-//		sfAccountInfoPage.clickWelcomeDropdown();
-//		sfAccountInfoPage.logout();
+		//		//Login as consultant user.
+		//		sfHomePage.loginToStoreFront(TestConstants.CONSULTANT_USERNAME,password);
+		//		sfHomePage.clickWelcomeDropdown();
+		//		sfAccountInfoPage = sfHomePage.navigateToAccountInfoPage();
+		//		s_assert.assertFalse(sfAccountInfoPage.isCountryNameEditable(country), "Country filled is editable at account info page for consultant");
+		//		sfAccountInfoPage.enterMainAccountInfo(firstName, lastName, addressLine1, addressLine2,city, state, postalCode, phoneNumber,phoneNumber2,email,dayOfBirth,monthOfBirth,yearOfBirth,gender);
+		//		sfAccountInfoPage.saveAccountInfo();
+		//		sfAccountInfoPage.clickUseAsEnteredButtonOnPopUp();
+		//		profileUpdationMessage = sfAccountInfoPage.getProfileUpdationMessage();
+		//		s_assert.assertTrue(profileUpdationMessage.equalsIgnoreCase(TestConstants.PROFILE_UPDATION_MESSAGE.trim()), "'Spouse details' profile updation message Expected = "+TestConstants.PROFILE_UPDATION_MESSAGE+" but Actual = "+profileUpdationMessage);
+		//		sfAccountInfoPage.clickWelcomeDropdown();
+		//		sfAccountInfoPage.logout();
 
 		//Login as pc
 		email = TestConstants.PC_EMAIL;
@@ -369,8 +376,6 @@ public class MyAccountTest extends StoreFrontWebsiteBaseTest{
 	 * Description : This test validate error message on account info page when mandatory fields are empty
 	 * and save account info clicked.
 	 *
-	 * 
-	 * 				
 	 */
 	@Test
 	public void testUpdateAccountInfoWithInvalidDetails_289(){
@@ -390,33 +395,110 @@ public class MyAccountTest extends StoreFrontWebsiteBaseTest{
 		String expectedEmailValidationErrorMsg = TestConstants.EMAIL_VALIDATION_ERROR_VALID_EMAIL_ADDRESS;
 		sfAccountInfoPage.clearFields("firstName");
 		sfAccountInfoPage.saveAccountInfo();
-		s_assert.assertTrue(sfAccountInfoPage.isValidationMsgPresentForParticularField("First Name", expectedValidationErrorMsg),"'This field is required.' for first name");
+		s_assert.assertTrue(sfAccountInfoPage.isValidationMsgPresentForParticularField("First Name", expectedValidationErrorMsg),"'This field is required.' msg not displayed for Consultant first name ");
 		sfAccountInfoPage.enterFields("firstName", firstName);
 		sfAccountInfoPage.clearFields("lastName");
 		sfAccountInfoPage.saveAccountInfo();
-		s_assert.assertTrue(sfAccountInfoPage.isValidationMsgPresentForParticularField("Last Name", expectedValidationErrorMsg),"'This field is required.' for last name");
+		s_assert.assertTrue(sfAccountInfoPage.isValidationMsgPresentForParticularField("Last Name", expectedValidationErrorMsg),"'This field is required.' msg not displayed for Consultant last name");
 		sfAccountInfoPage.enterFields("lastName", lastName);
 		sfAccountInfoPage.clearFields("addressLine");
 		sfAccountInfoPage.saveAccountInfo();
-		s_assert.assertTrue(sfAccountInfoPage.isValidationMsgPresentForParticularField("address1", expectedValidationErrorMsg),"'This field is required.' for address line");
+		s_assert.assertTrue(sfAccountInfoPage.isValidationMsgPresentForParticularField("address1", expectedValidationErrorMsg),"'This field is required.' msg not displayed for Consultant address line");
 		sfAccountInfoPage.enterFields("addressLine", addressLine1);
 		sfAccountInfoPage.clearFields("city");
 		sfAccountInfoPage.saveAccountInfo();
-		s_assert.assertTrue(sfAccountInfoPage.isValidationMsgPresentForParticularField("city", expectedValidationErrorMsg),"'This field is required.' for city");
+		s_assert.assertTrue(sfAccountInfoPage.isValidationMsgPresentForParticularField("city", expectedValidationErrorMsg),"'This field is required.' msg not displayed for Consultant city");
 		sfAccountInfoPage.enterFields("city", city);
 		sfAccountInfoPage.clearFields("postalCode");
 		sfAccountInfoPage.saveAccountInfo();
-		s_assert.assertTrue(sfAccountInfoPage.isValidationMsgPresentForParticularField("postal", expectedValidationErrorMsg),"'This field is required.' for postal code");
+		s_assert.assertTrue(sfAccountInfoPage.isValidationMsgPresentForParticularField("postal", expectedValidationErrorMsg),"'This field is required.' msg not displayed for Consultant postal code");
 		sfAccountInfoPage.enterFields("postalCode", postalCode);
 		sfAccountInfoPage.clearFields("phone");
 		sfAccountInfoPage.saveAccountInfo();
-		s_assert.assertTrue(sfAccountInfoPage.isValidationMsgPresentForParticularField("phone", expectedValidationErrorMsg),"'This field is required.' for phone number");
+		s_assert.assertTrue(sfAccountInfoPage.isValidationMsgPresentForParticularField("phone", expectedValidationErrorMsg),"'This field is required.' msg not displayed for Consultant phone number");
 		sfAccountInfoPage.enterFields("phone", phoneNumber);
 		sfAccountInfoPage.clearFields("email");
 		sfAccountInfoPage.saveAccountInfo();
-		s_assert.assertTrue(sfAccountInfoPage.isValidationMsgPresentForParticularField("email", expectedValidationErrorMsg),"'This field is required.' for email address");
+		s_assert.assertTrue(sfAccountInfoPage.isValidationMsgPresentForParticularField("email", expectedValidationErrorMsg),"'This field is required.' msg not displayed for Consultant email address");
 		sfAccountInfoPage.enterFields("email", emailAddress);
-		s_assert.assertTrue(sfAccountInfoPage.isValidationMsgPresentForParticularField("email", expectedEmailValidationErrorMsg),"Please enter a valid email address.");
+		s_assert.assertTrue(sfAccountInfoPage.isValidationMsgPresentForParticularField("email", expectedEmailValidationErrorMsg),"Please enter a valid email address. msg not displayed for Consultant");
+		sfAccountInfoPage.clickWelcomeDropdown();
+		sfAccountInfoPage.logout();
+
+		//Login as PC user.
+		sfHomePage.loginToStoreFront(TestConstants.PC_EMAIL,password);
+		sfHomePage.clickWelcomeDropdown();
+		sfAccountInfoPage = sfHomePage.navigateToAccountInfoPage();
+		expectedValidationErrorMsg = TestConstants.VALIDATION_ERROR_THIS_FIELD_IS_REQUIRED;
+		expectedEmailValidationErrorMsg = TestConstants.EMAIL_VALIDATION_ERROR_VALID_EMAIL_ADDRESS;
+		sfAccountInfoPage.clearFields("firstName");
+		sfAccountInfoPage.saveAccountInfo();
+		s_assert.assertTrue(sfAccountInfoPage.isValidationMsgPresentForParticularField("First Name", expectedValidationErrorMsg),"'This field is required.' msg not displayed for PC first name");
+		sfAccountInfoPage.enterFields("firstName", firstName);
+		sfAccountInfoPage.clearFields("lastName");
+		sfAccountInfoPage.saveAccountInfo();
+		s_assert.assertTrue(sfAccountInfoPage.isValidationMsgPresentForParticularField("Last Name", expectedValidationErrorMsg),"'This field is required.' msg not displayed for PC last name");
+		sfAccountInfoPage.enterFields("lastName", lastName);
+		sfAccountInfoPage.clearFields("addressLine");
+		sfAccountInfoPage.saveAccountInfo();
+		s_assert.assertTrue(sfAccountInfoPage.isValidationMsgPresentForParticularField("address1", expectedValidationErrorMsg),"'This field is required.' msg not displayed for PC address line");
+		sfAccountInfoPage.enterFields("addressLine", addressLine1);
+		sfAccountInfoPage.clearFields("city");
+		sfAccountInfoPage.saveAccountInfo();
+		s_assert.assertTrue(sfAccountInfoPage.isValidationMsgPresentForParticularField("city", expectedValidationErrorMsg),"'This field is required.' msg not displayed for PC city");
+		sfAccountInfoPage.enterFields("city", city);
+		sfAccountInfoPage.clearFields("postalCode");
+		sfAccountInfoPage.saveAccountInfo();
+		s_assert.assertTrue(sfAccountInfoPage.isValidationMsgPresentForParticularField("postal", expectedValidationErrorMsg),"'This field is required.' msg not displayed for PC postal code");
+		sfAccountInfoPage.enterFields("postalCode", postalCode);
+		sfAccountInfoPage.clearFields("phone");
+		sfAccountInfoPage.saveAccountInfo();
+		s_assert.assertTrue(sfAccountInfoPage.isValidationMsgPresentForParticularField("phone", expectedValidationErrorMsg),"'This field is required.' msg not displayed for PC phone number");
+		sfAccountInfoPage.enterFields("phone", phoneNumber);
+		sfAccountInfoPage.clearFields("email");
+		sfAccountInfoPage.saveAccountInfo();
+		s_assert.assertTrue(sfAccountInfoPage.isValidationMsgPresentForParticularField("email", expectedValidationErrorMsg),"'This field is required.' msg not displayed for PC email address");
+		sfAccountInfoPage.enterFields("email", emailAddress);
+		s_assert.assertTrue(sfAccountInfoPage.isValidationMsgPresentForParticularField("email", expectedEmailValidationErrorMsg),"Please enter a valid email address. msg not displayed for PC");
+		sfAccountInfoPage.clickWelcomeDropdown();
+		sfAccountInfoPage.logout();
+
+		//Login as RC user.
+		sfHomePage.loginToStoreFront(TestConstants.RC_EMAIL,password);
+		sfHomePage.clickWelcomeDropdown();
+		sfAccountInfoPage = sfHomePage.navigateToAccountInfoPage();
+		expectedValidationErrorMsg = TestConstants.VALIDATION_ERROR_THIS_FIELD_IS_REQUIRED;
+		expectedEmailValidationErrorMsg = TestConstants.EMAIL_VALIDATION_ERROR_VALID_EMAIL_ADDRESS;
+		sfAccountInfoPage.clearFields("firstName");
+		sfAccountInfoPage.saveAccountInfo();
+		s_assert.assertTrue(sfAccountInfoPage.isValidationMsgPresentForParticularField("First Name", expectedValidationErrorMsg),"'This field is required.' msg not displayed for RC first name");
+		sfAccountInfoPage.enterFields("firstName", firstName);
+		sfAccountInfoPage.clearFields("lastName");
+		sfAccountInfoPage.saveAccountInfo();
+		s_assert.assertTrue(sfAccountInfoPage.isValidationMsgPresentForParticularField("Last Name", expectedValidationErrorMsg),"'This field is required.' msg not displayed for RC last name");
+		sfAccountInfoPage.enterFields("lastName", lastName);
+		sfAccountInfoPage.clearFields("addressLine");
+		sfAccountInfoPage.saveAccountInfo();
+		s_assert.assertTrue(sfAccountInfoPage.isValidationMsgPresentForParticularField("address1", expectedValidationErrorMsg),"'This field is required.' msg not displayed for RC address line");
+		sfAccountInfoPage.enterFields("addressLine", addressLine1);
+		sfAccountInfoPage.clearFields("city");
+		sfAccountInfoPage.saveAccountInfo();
+		s_assert.assertTrue(sfAccountInfoPage.isValidationMsgPresentForParticularField("city", expectedValidationErrorMsg),"'This field is required.' msg not displayed for RC city");
+		sfAccountInfoPage.enterFields("city", city);
+		sfAccountInfoPage.clearFields("postalCode");
+		sfAccountInfoPage.saveAccountInfo();
+		s_assert.assertTrue(sfAccountInfoPage.isValidationMsgPresentForParticularField("postal", expectedValidationErrorMsg),"'This field is required.' msg not displayed for RC postal code");
+		sfAccountInfoPage.enterFields("postalCode", postalCode);
+		sfAccountInfoPage.clearFields("phone");
+		sfAccountInfoPage.saveAccountInfo();
+		s_assert.assertTrue(sfAccountInfoPage.isValidationMsgPresentForParticularField("phone", expectedValidationErrorMsg),"'This field is required.' msg not displayed for RC phone number");
+		sfAccountInfoPage.enterFields("phone", phoneNumber);
+		sfAccountInfoPage.clearFields("email");
+		sfAccountInfoPage.saveAccountInfo();
+		s_assert.assertTrue(sfAccountInfoPage.isValidationMsgPresentForParticularField("email", expectedValidationErrorMsg),"'This field is required.' msg not displayed for RC email address");
+		sfAccountInfoPage.enterFields("email", emailAddress);
+		s_assert.assertTrue(sfAccountInfoPage.isValidationMsgPresentForParticularField("email", expectedEmailValidationErrorMsg),"Please enter a valid email address. msg not displayed for RC");
+
 		s_assert.assertAll();
 	}
 
@@ -426,8 +508,6 @@ public class MyAccountTest extends StoreFrontWebsiteBaseTest{
 	 * Description : This test validate error message on account info page when mandatory fields are filled with
 	 * Invalid details and save account info clicked.
 	 *
-	 * 
-	 * 				
 	 */
 	@Test//Issue numbers are not accepted in first and last name fields and phone number with special char not accepted.
 	public void testUpdateAccountInfoWithInvalidDetails_301(){
@@ -768,7 +848,7 @@ public class MyAccountTest extends StoreFrontWebsiteBaseTest{
 	/***
 	 * qTest : TC-281 Account Information- Reset password - All valid details
 	 * 
-	 * Description : //TODO
+	 * Description : this tests validates the password reset functionality for PC user
 	 * 
 	 *     
 	 */

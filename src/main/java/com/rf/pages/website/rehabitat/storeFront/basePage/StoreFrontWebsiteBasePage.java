@@ -20,6 +20,7 @@ import com.rf.pages.RFBasePage;
 import com.rf.pages.website.rehabitat.storeFront.StoreFrontAccountInfoPage;
 import com.rf.pages.website.rehabitat.storeFront.StoreFrontAutoshipStatusPage;
 import com.rf.pages.website.rehabitat.storeFront.StoreFrontBillingInfoPage;
+import com.rf.pages.website.rehabitat.storeFront.StoreFrontCartPage;
 import com.rf.pages.website.rehabitat.storeFront.StoreFrontCheckoutPage;
 import com.rf.pages.website.rehabitat.storeFront.StoreFrontConsultantEnrollNowPage;
 import com.rf.pages.website.rehabitat.storeFront.StoreFrontHomePage;
@@ -37,7 +38,7 @@ public class StoreFrontWebsiteBasePage extends RFBasePage{
 		super(driver);
 		this.driver = driver;
 	}
-	String topNavigationLoc = "//div[contains(@class,'navbar-inverse')]";
+	protected String topNavigationLoc = "//div[contains(@class,'navbar-inverse')]";
 
 	/**
 	 * Top Navigation Links
@@ -48,6 +49,7 @@ public class StoreFrontWebsiteBasePage extends RFBasePage{
 	private final By SHOP_SKINCARE_LOC = By.xpath(topNavigationLoc+"//a[@title='SHOP SKINCARE']");
 	private final By ALL_PRODUCTS_LOC = By.xpath(topNavigationLoc+"//a[@title='ALL PRODUCTS']");
 	private final By RODAN_AND_FIELDS_LOGO_LOC = By.id("header-logo");
+	private final By RODAN_AND_FIELDS_IMAGE_LOC = By.xpath("//div[@class='navbar-inverse']/following::img[@title='Rodan and Fields']");
 	private final By FIND_A_CONSULTANT_LINK_LOC = By.xpath("//a[@title='FIND A CONSULTANT']");
 	protected final By SPONSOR_SEARCH_FIELD_LOC = By.id("sponserparam");
 	protected final By PRODUCTS_NAME_LINK_LOC = By.xpath("//div[@id='product_listing']/descendant::div[@class='details'][1]//a");
@@ -68,6 +70,7 @@ public class StoreFrontWebsiteBasePage extends RFBasePage{
 	private final By SEARCH_ICON_LOC = By.xpath("//span[@class='icon-search']");
 	private final By LOGIN_ICON_LOC = By.xpath("//div[@class='loginBlock']//a");
 	private final By USERNAME_TXTFLD_LOC = By.id("username");
+	private final By USERNAME_DISABLED_LOC = By.xpath("//input[@class='text-input valid' and @disabled='']");
 	private final By PASSWORD_TXTFLD_LOC = By.id("password");
 	private final By LOGIN_BTN_LOC = By.xpath("//input[@value='LOG IN']");
 	private final By CLOSE_ICON_OF_SEARCH_TEXT_BOX_IN_HEADER_NAVIGATION_LOC = By.xpath("//div[@class='yCmsComponent']//span[contains(@class,'icon-close')]");
@@ -116,15 +119,15 @@ public class StoreFrontWebsiteBasePage extends RFBasePage{
 	private final By CITY_FOR_ADDRESS_DETAILS_LOC = By.id("address.townCity");
 	private final By POSTAL_CODE_FOR_ADDRESS_DETAILS_LOC = By.id("address.postcode");
 	private final By PHONE_NUMBER_FOR_ADDRESS_DETAILS_LOC = By.id("address.phone");
-	private final By CARD_TYPE_DD_LOC = By.xpath("//*[@id='c-ct']");
-	private final By CARD_NUMBER_LOC= By.id("c-cn");
-	private final By NAME_ON_CARD_LOC= By.id("c-chn");
-	private final By EXP_MONTH_DD_LOC= By.id("c-exmth");
-	private final By EXP_MONTH_LOC= By.xpath("//select[@id='c-exmth']//option[11]");
-	private final By EXP_YEAR_DD_LOC= By.id("c-exyr");
-	private final By EXP_YEAR_LOC= By.xpath("//select[@id='c-exyr']//option[11]");
-	private final By CVV_LOC= By.id("c-cvv");
-	private final By IFRAME_LOC= By.id("IFrame");
+	protected final By CARD_TYPE_DD_LOC = By.xpath("//*[@id='c-ct']");
+	protected final By CARD_NUMBER_LOC= By.id("c-cn");
+	protected final By NAME_ON_CARD_LOC= By.id("c-chn");
+	protected final By EXP_MONTH_DD_LOC= By.id("c-exmth");
+	protected final By EXP_MONTH_LOC= By.xpath("//select[@id='c-exmth']//option[11]");
+	protected final By EXP_YEAR_DD_LOC= By.id("c-exyr");
+	protected final By EXP_YEAR_LOC= By.xpath("//select[@id='c-exyr']//option[11]");
+	protected final By CVV_LOC= By.id("c-cvv");
+	protected final By IFRAME_LOC= By.id("IFrame");
 	private final By USE_MY_DELIVERY_ADDRESS_CHK_BOX_LOC= By.xpath("//label[contains(@class,'useDeliveryAddress')]");
 	private final By POLICIES_AND_PROCEDURES_CHK_BOX_LOC = By.xpath("//div[contains(@class,'checkout-steps')]/descendant::label[2]");
 	private final By TERMS_AND_CONDITIONS_CHK_BOX_LOC = By.xpath("//div[contains(@class,'checkout-steps')]/descendant::label[1]");
@@ -140,7 +143,13 @@ public class StoreFrontWebsiteBasePage extends RFBasePage{
 	private final By FIRST_PRODUCT_NAME_LOC=By.xpath("//div[@id='product_listing']/descendant::a[@class='name'][1]");
 	private final By FIRST_PRODUCT_IMAGE_LOC=By.xpath("//div[@class='product__listing product__grid']/div[1]/a");
 	protected final By ADD_TO_CART_FIRST_PRODUCT_LOC = By.xpath("//div[@id='product_listing']/descendant::button[text()='Add to cart'][1]");
-	
+	private final By REMEMBER_ME_LOC = By.xpath("//label[contains(text(),'Remember me')]");
+	private final By PC_PERKS_CART_HEADER_LOC = By.xpath("//h2[contains(text(),'YOUR NEXT PC PERKS CART')]");
+	private final By YOUR_SHOPPING_CART_HEADER_LOC = By.xpath("//h1[@class='urcart-header' and contains(text(),'Your Shopping Cart')]");
+	protected final By BILLING_ADDRESS_DD_LOC = By.xpath("//select[@id='billingAddress.addressId']");
+	private final By INVALID_EXP_YEAR_LOC= By.xpath("//select[@id='c-exyr']//option[2]");
+
+	private String expMonthLoc= "//select[@id='c-exmth']//option[contains(text(),'%s')]";
 	private String textLoc = "//*[contains(text(),'%s')]";
 	private String stateForShippingDetails = "//select[@id='address.region']//option[text()='%s']";
 	private String topNavigationSublinksWithTextLoc  = topNavigationLoc+"//a[text()='%s']";
@@ -177,6 +186,7 @@ public class StoreFrontWebsiteBasePage extends RFBasePage{
 			driver.moveToElement(ABOUT_RF_LOC);
 			logger.info("mouseHovered on 'About R+F'"); 
 		}
+		driver.pauseExecutionFor(500);
 		return this;
 	}
 
@@ -230,6 +240,7 @@ public class StoreFrontWebsiteBasePage extends RFBasePage{
 		mouseHoverOn(TestConstants.SHOP_SKINCARE);
 		driver.click(ALL_PRODUCTS_LOC);
 		logger.info("clicked on 'All Products'");
+		driver.waitForPageLoad();
 		return new StoreFrontShopSkinCarePage(driver);
 	}
 
@@ -268,8 +279,14 @@ public class StoreFrontWebsiteBasePage extends RFBasePage{
 	 * 
 	 */
 	public StoreFrontWebsiteBasePage clickRodanAndFieldsLogo(){
-		driver.click(RODAN_AND_FIELDS_LOGO_LOC);
+		if(driver.isElementPresent(RODAN_AND_FIELDS_LOGO_LOC)){
+			driver.click(RODAN_AND_FIELDS_LOGO_LOC);
+		}
+		else {
+			driver.click(RODAN_AND_FIELDS_IMAGE_LOC); 
+		}
 		logger.info("Rodan and Fields logo clicked");
+		driver.waitForPageLoad();
 		return this;
 	}
 
@@ -543,6 +560,29 @@ public class StoreFrontWebsiteBasePage extends RFBasePage{
 	}
 
 	/***
+	 * This method clicks on the login icon,enter the username and password,check the 
+	 * Remember Me checkbox and click on 'LOG IN' button
+	 * 
+	 * @param username ,password
+	 * @return StoreFrontWebsiteBasePage
+	 * 
+	 */
+
+	public StoreFrontWebsiteBasePage loginToStoreFrontWithRememberMe(String username,String password){
+		clickLoginIcon();
+		driver.type(USERNAME_TXTFLD_LOC, username);
+		logger.info("username entered as "+username);
+		driver.type(PASSWORD_TXTFLD_LOC, password);
+		logger.info("password entered as  "+password);
+		driver.clickByJS(RFWebsiteDriver.driver,driver.findElement(REMEMBER_ME_LOC));
+		driver.pauseExecutionFor(1000);
+		logger.info("Remember me checkbox checked");
+		driver.click(LOGIN_BTN_LOC);
+		logger.info("login button clicked");
+		return this;
+	}
+
+	/***
 	 * This method verifies the display of footer links on homepage. 
 	 * search result. 
 	 * @return boolean
@@ -632,8 +672,31 @@ public class StoreFrontWebsiteBasePage extends RFBasePage{
 		return this;
 	}
 
+
 	/***
-	 * This method verify the username filed is present or not
+	 * This method verifies the visibility of the login icon
+	 * 
+	 * @param
+	 * @return boolean
+	 * 
+	 */
+	public Boolean isLoginIconVisible(){
+		// driver.isElementVisible(LOGIN_ICON_LOC);
+		// The above code is not working for visiblity so taking a work around
+		try{
+			driver.turnOffImplicitWaits();
+			driver.findElement(LOGIN_ICON_LOC).click();
+			return true;
+		}catch(Exception ex){
+			return false;
+		}
+		finally {
+			driver.turnOnImplicitWaits();
+		}
+	}
+
+	/***
+	 * This method verify the username field is present or not
 	 * 
 	 * @param 
 	 * @return boolean value
@@ -644,7 +707,40 @@ public class StoreFrontWebsiteBasePage extends RFBasePage{
 	}
 
 	/***
-	 * This method verify the password filed is present or not
+	 * This method verify the username field is visible or not
+	 * 
+	 * @param 
+	 * @return boolean value
+	 * 
+	 */
+	public boolean isUsernameFieldVisible(){
+		//driver.isElementVisible(USERNAME_TXTFLD_LOC);
+		// The above code is not working for visiblity so taking a work around
+		try{
+			driver.turnOffImplicitWaits();
+			driver.findElement(USERNAME_TXTFLD_LOC).sendKeys("");
+			return true;
+		}catch(Exception ex){
+			return false;
+		}
+		finally {
+			driver.turnOnImplicitWaits();
+		}
+	}
+
+	/***
+	 * This method verify the username field is disabled or not
+	 * 
+	 * @param 
+	 * @return boolean value
+	 * 
+	 */
+	public boolean isUsernameFieldDisabled(){
+		return driver.isElementPresent(USERNAME_DISABLED_LOC);
+	}
+
+	/***
+	 * This method verify the password field is present or not
 	 * 
 	 * @param 
 	 * @return boolean value
@@ -654,6 +750,27 @@ public class StoreFrontWebsiteBasePage extends RFBasePage{
 		return driver.isElementPresent(PASSWORD_TXTFLD_LOC);
 	}
 
+
+	/***
+	 * This method verify the password field is visible or not
+	 * 
+	 * @param 
+	 * @return boolean value
+	 * 
+	 */
+	public boolean isPasswordFieldVisible(){
+		//driver.isElementVisible(PASSWORD_TXTFLD_LOC);
+		// The above code is not working for visiblity so taking a work around
+		try{
+			driver.turnOffImplicitWaits();
+			driver.findElement(PASSWORD_TXTFLD_LOC).sendKeys("");
+			return true;
+		}catch(Exception ex){
+			return false;
+		}finally{
+			driver.turnOnImplicitWaits();
+		}
+	}
 
 	/***
 	 * This method verify mini cart is present or not 
@@ -1295,17 +1412,13 @@ public class StoreFrontWebsiteBasePage extends RFBasePage{
 	}	
 
 	/***
-	 * This method launch the baseurl
+	 * This method will return the base URL
 	 *  
 	 * @param 
-	 * @return store front base page object
+	 * @return String
 	 */
-	public StoreFrontWebsiteBasePage getBaseUrl(){
-		String url = driver.getURL()+"/"+driver.getCountry().toUpperCase();
-		driver.get(url);
-		logger.info("Url launched as "+url);
-		return this;
-	}	
+	public String getBaseUrl(){
+		return driver.getURL();	}	
 
 	/***
 	 * This method enter the consultant Address details
@@ -1365,6 +1478,40 @@ public class StoreFrontWebsiteBasePage extends RFBasePage{
 		logger.info("Entered CVV as"+CVV);
 		driver.switchTo().defaultContent();
 		logger.info("Switched to default content");			
+		return this;
+	}
+	/***
+	 * This method enter the user billing details
+	 * 
+	 * @param Card type, card number, card name, CVV, Exp month
+	 * @return store front Home page object
+	 * 
+	 */
+	public StoreFrontWebsiteBasePage enterUserBillingDetails(String cardType, String cardNumber, String nameOnCard,String CVV, String month, String year){
+		driver.switchTo().frame(driver.findElement(IFRAME_LOC));
+		logger.info("Switched into iframe");
+		driver.clickByJS(RFWebsiteDriver.driver, driver.findElement(CARD_TYPE_DD_LOC));
+		logger.info("Card type dropdown clicked");
+		driver.click(By.xpath(String.format(cardTypeLoc, cardType)));
+		logger.info("Card type selected as "+cardType);
+		driver.type(CARD_NUMBER_LOC, cardNumber);
+		logger.info("Entered card number as"+cardNumber);
+		driver.type(NAME_ON_CARD_LOC, nameOnCard);
+		logger.info("Entered card name as"+nameOnCard);
+		Actions actions = new Actions(RFWebsiteDriver.driver);
+		actions.doubleClick(driver.findElement(EXP_MONTH_DD_LOC)).build().perform();
+		logger.info("Exp month dropdown clicked");
+		driver.click(By.xpath(String.format(expMonthLoc, month)));
+		logger.info("Exp month selected as "+month);
+		driver.pauseExecutionFor(2000);
+		actions.doubleClick(driver.findElement(EXP_YEAR_DD_LOC)).build().perform();
+		logger.info("Exp year dropdown clicked");
+		driver.click(INVALID_EXP_YEAR_LOC);
+		logger.info("Exp year selected as"+year);
+		driver.type(CVV_LOC, CVV);
+		logger.info("Entered CVV as"+CVV);
+		driver.switchTo().defaultContent();
+		logger.info("Switched to default content");   
 		return this;
 	}
 
@@ -1514,10 +1661,10 @@ public class StoreFrontWebsiteBasePage extends RFBasePage{
 	 * @return boolean value
 	 * 
 	 */
-	public StoreFrontWebsiteBasePage clickMiniCartBagLink(){
+	public StoreFrontCartPage clickMiniCartBagLink(){
 		driver.click(MINI_CART_ICON_LOC);
 		logger.info("Mini cart bag link clicked");
-		return this;
+		return new StoreFrontCartPage(driver);
 	}
 
 	/***
@@ -1573,7 +1720,7 @@ public class StoreFrontWebsiteBasePage extends RFBasePage{
 		driver.waitForPageLoad();
 		return this;
 	}
-	
+
 	/***
 	 * This method click PC Perks status link from welcome dropdown.
 	 * 
@@ -1588,7 +1735,7 @@ public class StoreFrontWebsiteBasePage extends RFBasePage{
 		driver.waitForPageLoad();
 		return this;
 	}
-	
+
 	/***
 	 * This method click PC Perks status link from welcome dropdown.
 	 * 
@@ -1603,7 +1750,7 @@ public class StoreFrontWebsiteBasePage extends RFBasePage{
 		driver.waitForPageLoad();
 		return this;
 	}
-	
+
 	/***
 	 * This method get and return current page title
 	 * 
@@ -1616,7 +1763,7 @@ public class StoreFrontWebsiteBasePage extends RFBasePage{
 		logger.info("Current Page title is "+currentPageTitle);
 		return currentPageTitle;
 	}
-	
+
 	/***
 	 * This method click Quick view button of first product on all product page and return product name
 	 * 
@@ -1631,7 +1778,7 @@ public class StoreFrontWebsiteBasePage extends RFBasePage{
 		driver.click(FIRST_PRODUCT_IMAGE_LOC);
 		return productName.split("\\.")[0];
 	}
-	
+
 	/***
 	 * This method performs mouse hover on add to cart button on all product page
 	 * 
@@ -1643,5 +1790,27 @@ public class StoreFrontWebsiteBasePage extends RFBasePage{
 		Actions build = new Actions(RFWebsiteDriver.driver);
 		build.moveToElement(driver.findElement(ADD_TO_CART_FIRST_PRODUCT_LOC)).build().perform();
 		return this;
+	}
+
+	/***
+	 * This method validates the header when redirect to checkout page after clicking checkout button from checkout popup.
+	 * 
+	 * @param 
+	 * @return boolean
+	 * 
+	 */
+	public boolean isPCPerksCartHeaderPresentOnCartPage(){
+		return driver.isElementVisible(PC_PERKS_CART_HEADER_LOC);
+	}
+
+	/***
+	 * This method validates the header when redirect to checkout page after clicking checkout button from checkout popup.
+	 * 
+	 * @param 
+	 * @return boolean
+	 * 
+	 */
+	public boolean isYourShoppingCartHeaderPresentOnCartPage(){
+		return driver.isElementVisible(YOUR_SHOPPING_CART_HEADER_LOC);
 	}
 }

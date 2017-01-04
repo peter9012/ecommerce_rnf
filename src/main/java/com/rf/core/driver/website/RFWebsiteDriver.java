@@ -144,9 +144,9 @@ public class RFWebsiteDriver implements RFDriver,WebDriver {
 	}
 
 	public String getURL() {
-		baseURL=System.getProperty("baseURL");
+		baseURL=System.getProperty("baseUrl");
 		if(StringUtils.isEmpty(baseURL)){
-			baseURL = propertyFile.getProperty("baseUrl");
+			baseURL = propertyFile.getProperty("baseURL");
 		}
 		return baseURL;
 	}

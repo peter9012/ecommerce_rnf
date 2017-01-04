@@ -871,4 +871,266 @@ public class ProductsAndCartDetailsTest extends StoreFrontWebsiteBaseTest{
 		s_assert.assertAll();
 	}
 
+	/***
+	 * qTest : TC-157 Product Details page- Qty
+	 * Description : This test validates quantity with different values
+	 *     
+	 */
+	@Test//Incomplete as no quantity update link present on overlay.
+	public void testProductDetailsPageQty_157(){
+		String productQty=null;
+		String updatedQty=null;
+
+		sfShopSkinCarePage=sfHomePage.clickAllProducts();
+		sfShopSkinCarePage.clickOnFirstProductQuickViewButtonAndReturnProductName();
+		productQty=sfShopSkinCarePage.getProductQuantityFromQuickViewOption();
+		updatedQty = sfCartPage.updateQuantityByOne(productQty);
+		s_assert.assertAll();
+	}
+
+	/***
+	 * qTest : TC-158 Product Details Page- Product Pricing (Consultant)
+	 * Description : This test validates product price for different country
+	 *     
+	 */
+	@Test
+	public void testProductDetailsPageProductPricingConsultant_158(){
+		sfHomePage.loginToStoreFront(TestConstants.CONSULTANT_EMAIL, password);
+		sfShopSkinCarePage=sfHomePage.clickAllProducts();
+		String consultantPrice=sfShopSkinCarePage.getFirstProductPrice();
+		String retailAndSvPrice=sfShopSkinCarePage.getFirstProductRetailAndSVPrice();
+		s_assert.assertTrue(consultantPrice.contains("$") && consultantPrice.contains("Your Price:") && retailAndSvPrice.contains("Retail:") && retailAndSvPrice.contains("$") && retailAndSvPrice.contains("Total SV"),"Expected price should contain '$' , 'Retail', 'Your Price' and 'Total SV'");
+		s_assert.assertAll();
+	}
+
+	/***
+	 * qTest : TC-159 Product Details Page- Product Pricing (PC)
+	 * Description : This test validates product price for different country
+	 *     
+	 */
+	@Test
+	public void testProductDetailsPageProductPricingPC_159(){
+		sfHomePage.loginToStoreFront(TestConstants.PC_EMAIL, password);
+		sfShopSkinCarePage=sfHomePage.clickAllProducts();
+		String consultantPrice=sfShopSkinCarePage.getFirstProductPrice();
+		String retailAndSvPrice=sfShopSkinCarePage.getFirstProductRetailAndSVPrice();
+		s_assert.assertTrue(consultantPrice.contains("$") && consultantPrice.contains("Your Price:") && retailAndSvPrice.contains("Retail:"),"Expected price should contain '$' ,'Your Price' and 'Retail'");
+		s_assert.assertAll();
+	}
+
+	/***
+	 * qTest : TC-160 Featured Products Category Landing Page
+	 * Description : This test validates click on featured products category and validate page
+	 *     
+	 */
+	@Test
+	public void testFeaturedProductsCategoryLandingPage_160(){
+		String category="FEATURED";
+		sfShopSkinCarePage = sfHomePage.navigateToShopSkincareLink(category);
+		String pageTitle=sfShopSkinCarePage.getCurrentpageTitle();
+		s_assert.assertTrue(sfShopSkinCarePage.isProductsDisplayedOnPage() && pageTitle.contains(category),"Expected featured products not displayed for selected category or Expected page title contains:"+category+" But actual on UI is: "+pageTitle);
+		s_assert.assertAll();
+	}
+
+	/***
+	 * qTest : TC-165 Cart Page- PC Perks Promotion Message/Link - Anonymous user
+	 * Description : This test validates PC Perks Promotion Message/Link should be displayed
+	 *     
+	 */
+	@Test//Incomplete PC perks Promo message not displayed on cart page.
+	public void testCartPagePCPerksPromotionMessageLinkAnonymousUser_165(){
+		String cart="cart";
+		String pageTile = null;
+		String pageUrl = null;
+		sfShopSkinCarePage=sfHomePage.clickAllProducts();
+		sfShopSkinCarePage.addFirstProductToBag();
+		sfShopSkinCarePage.checkoutTheCartFromPopUp();
+		pageTile=sfShopSkinCarePage.getCurrentpageTitle().toLowerCase();
+		pageUrl=sfShopSkinCarePage.getCurrentURL().toLowerCase();
+		s_assert.assertTrue(pageTile.contains(cart) && pageUrl.contains(cart),"Expected page title should contains:"+cart+"But actual on UI is:"+pageTile+" Expected page url should contain:"+cart+" But actual url on UI is:"+pageUrl);
+		s_assert.assertAll();
+	}
+
+	/***
+	 * qTest : TC-166 Cart Page- PC Perks Promotion Message/Link - Retail user
+	 * Description : This test validates PC Perks Promotion Message/Link should be displayed
+	 *     
+	 */
+	@Test//Incomplete PC perks Promo message not displayed on cart page.
+	public void testCartPagePCPerksPromotionMessageLinkRetailUser_166(){
+		String cart="cart";
+		String pageTile=null;
+		String pageUrl=null;
+		sfHomePage.loginToStoreFront(TestConstants.RC_EMAIL, password);
+		sfShopSkinCarePage=sfHomePage.clickAllProducts();
+		sfShopSkinCarePage.addFirstProductToBag();
+		sfShopSkinCarePage.checkoutTheCartFromPopUp();
+		pageTile=sfShopSkinCarePage.getCurrentpageTitle().toLowerCase();
+		pageUrl=sfShopSkinCarePage.getCurrentURL().toLowerCase();
+		s_assert.assertTrue(pageTile.contains(cart) && pageUrl.contains(cart),"Expected page title should contains:"+cart+"But actual on UI is:"+pageTile+" Expected page url should contain:"+cart+" But actual url on UI is:"+pageUrl);
+		s_assert.assertAll();	
+	}
+
+	/***
+	 * qTest : TC-167 Cart Page- PC Perks Promotion Message/Link - Preferred Customer
+	 * Description : This test validates PC Perks Promotion Message/Link should not be displayed
+	 *     
+	 */
+	@Test//Incomplete PC perks Promo message assertion.
+	public void testCartPagePCPerksPromotionMessageLinkPreferredCustomer_167(){
+		String cart="cart";
+		String pageTile=null;
+		String pageUrl=null;
+		sfHomePage.loginToStoreFront(TestConstants.PC_EMAIL, password);
+		sfShopSkinCarePage=sfHomePage.clickAllProducts();
+		sfShopSkinCarePage.selectFirstProduct();
+		sfShopSkinCarePage.checkoutTheCartFromPopUp();
+		pageTile=sfShopSkinCarePage.getCurrentpageTitle().toLowerCase();
+		pageUrl=sfShopSkinCarePage.getCurrentURL().toLowerCase();
+		s_assert.assertTrue(pageTile.contains(cart) && pageUrl.contains(cart),"Expected page title should contains:"+cart+"But actual on UI is:"+pageTile+" Expected page url should contain:"+cart+" But actual url on UI is:"+pageUrl);
+		s_assert.assertAll();	
+	}
+
+	/***
+	 * qTest : TC-168 Cart Page- PC Perks Promotion Message/Link - Consultant User
+	 * Description : This test validates PC Perks Promotion Message/Link should not be displayed
+	 *     
+	 */
+	@Test//Incomplete PC perks Promo message assertion.
+	public void testCartPagePCPerksPromotionMessageLinkConsultantUser_168(){
+		String cart="cart";
+		String pageTile=null;
+		String pageUrl=null;
+		sfHomePage.loginToStoreFront(TestConstants.CONSULTANT_EMAIL, password);
+		sfShopSkinCarePage=sfHomePage.clickAllProducts();
+		sfShopSkinCarePage.selectFirstProduct();
+		sfShopSkinCarePage.checkoutTheCartFromPopUp();
+		pageTile=sfShopSkinCarePage.getCurrentpageTitle().toLowerCase();
+		pageUrl=sfShopSkinCarePage.getCurrentURL().toLowerCase();
+		s_assert.assertTrue(pageTile.contains(cart) && pageUrl.contains(cart),"Expected page title should contains:"+cart+"But actual on UI is:"+pageTile+" Expected page url should contain:"+cart+" But actual url on UI is:"+pageUrl);
+		s_assert.assertAll();	
+	}
+
+	/***
+	 * qTest : TC-161 Cart Page- Anonymous User - Ad Hoc Cart
+	 * Description : This test validates adhoc product is added to the cart and verifies from product popup
+	 *     
+	 */
+	@Test
+	public void testCartPageAnonymousUserAdHocCart_161(){
+		String allProduct = "ALL PRODUCTS";
+		int numberOfProductInCart;
+		int newProductCount;
+		String itemsOfProduct = null;
+		String newItemsOfProduct = null;
+		String updatedQuantity = null;
+
+		sfShopSkinCarePage = sfHomePage.navigateToShopSkincareLink(allProduct);
+		sfShopSkinCarePage.addFirstProductToBag();
+		sfCartPage=sfShopSkinCarePage.checkoutTheCartFromPopUp();
+		numberOfProductInCart=sfCartPage.getProductCountInAdhocCart();
+		sfCartPage.clickRodanAndFieldsLogo();
+		//View cart page through mini cart.
+		sfHomePage.clickMiniCartBagLink();
+		newProductCount = sfCartPage.getProductCountInAdhocCart();
+		itemsOfProduct = sfCartPage.getQuantityOfProductFromCart("1");
+		updatedQuantity = sfCartPage.updateQuantityByOne(itemsOfProduct);
+		s_assert.assertTrue(newProductCount==numberOfProductInCart,"Expected product count"+numberOfProductInCart+" while actual on UI "+newProductCount);
+		sfCartPage.clickRodanAndFieldsLogo();
+		//Navigate to cart page through product popup.
+		sfShopSkinCarePage=sfHomePage.clickAllProducts();
+		sfShopSkinCarePage.addFirstProductToBag();
+		sfCartPage = sfShopSkinCarePage.checkoutTheCartFromPopUp();
+		newItemsOfProduct = sfCartPage.getQuantityOfProductFromCart("1");
+		s_assert.assertTrue(newItemsOfProduct.equalsIgnoreCase(updatedQuantity),"Expected items in cart"+updatedQuantity+" but actual in UI"+newItemsOfProduct);
+		s_assert.assertAll();	
+	}
+
+	/***
+	 * qTest : TC-162 Cart Page- Retail User - Ad Hoc Cart
+	 * Description : This test validates adhoc product is added to the cart and verifies from product popup
+	 *     
+	 */
+	@Test
+	public void testCartPageRetailUserAdHocCart_162(){
+		int numberOfProductInCart;
+		String itemsOfProduct = null;
+		String newItemsOfProduct = null;
+		String updatedQuantity = null;
+		int newProductCount;
+		sfHomePage.loginToStoreFront(TestConstants.RC_EMAIL, password);
+		//Remove all products from cart.
+		sfCartPage = sfHomePage.clickMiniCartBagLink();
+		sfCartPage.removeAllProductsFromCart();
+		s_assert.assertFalse(sfCartPage.isProductPresentInCart(),"No product expected in cart but product are present in cart");
+		sfHomePage.clickRodanAndFieldsLogo();
+		//Add new product to cart page.
+		sfShopSkinCarePage=sfHomePage.clickAllProducts();
+		sfShopSkinCarePage.addFirstProductToBag();
+		sfCartPage = sfShopSkinCarePage.checkoutTheCartFromPopUp();
+		s_assert.assertTrue(sfCartPage.isProductPresentInCart(),"Newly Added product not present in adhoc cart");
+		numberOfProductInCart = sfCartPage.getProductCountInAdhocCart();
+		sfCartPage.clickRodanAndFieldsLogo();
+		//Access cart page via mini cart.
+		sfHomePage.clickMiniCartBagLink();
+		newProductCount = sfCartPage.getProductCountInAdhocCart();
+		itemsOfProduct = sfCartPage.getQuantityOfProductFromCart("1");
+		updatedQuantity = sfCartPage.updateQuantityByOne(itemsOfProduct);
+		s_assert.assertTrue(newProductCount==numberOfProductInCart,"Expected product count"+numberOfProductInCart+" while actual on UI "+newProductCount);
+		sfCartPage.clickRodanAndFieldsLogo();
+		//Access cart page via product popup.
+		sfShopSkinCarePage=sfHomePage.clickAllProducts();
+		sfShopSkinCarePage.addFirstProductToBag();
+		sfCartPage = sfShopSkinCarePage.checkoutTheCartFromPopUp();
+		newItemsOfProduct = sfCartPage.getQuantityOfProductFromCart("1");
+		s_assert.assertTrue(newItemsOfProduct.equalsIgnoreCase(updatedQuantity),"Expected items in cart"+updatedQuantity+" but actual in UI"+newItemsOfProduct);
+		s_assert.assertAll();	
+	}
+	
+	/***
+	  * qTest : TC-503 Product Pricing - PC
+	  * Description : This test validates the presence of price of product for PC User
+	  * 
+	  */
+	 @Test
+	 public void testProductPricingPC_503(){
+	  sfHomePage.loginToStoreFront(TestConstants.PC_USERNAME, password);
+	  sfShopSkinCarePage = sfHomePage.clickOnCategoryFromShopSkinCare("REDEFINE");
+	  s_assert.assertTrue(sfShopSkinCarePage.isRetailPricePresentForProductNumber("1"),"Retail price is not present for Product on category Page for PC User");
+	  s_assert.assertTrue(sfShopSkinCarePage.isSpecificPricePresentForProductNumber("1"),"Specific price is not present for Product on category Page for PC User");
+	  sfHomePage.clickAllProducts();
+	  s_assert.assertTrue(sfShopSkinCarePage.isRetailPricePresentForProductNumber("1"),"Retail price is not present for Product on All Products listing Page for PC User");
+	  s_assert.assertTrue(sfShopSkinCarePage.isSpecificPricePresentForProductNumber("1"),"Specific price is not present for Product on All Products listing Page for PC User");
+	  sfShopSkinCarePage.clickOnQuickViewLinkForProduct("1");
+	  s_assert.assertTrue(sfShopSkinCarePage.isRetailPricePresentOnQuickViewPopUp(),"Retail Price is not present for Product on Quick view popup for PC User");
+	  s_assert.assertTrue(sfShopSkinCarePage.isPricePresentOnQuickViewPopup(),"Specific Price is not present for Product on Quick view popup for PC User");
+	  sfProductDetailPage = sfShopSkinCarePage.clickOnViewProductDetailsLinkOnQuickViewPopup();
+	  s_assert.assertTrue(sfProductDetailPage.isRetailPricePresentOnPDPPage(),"Retail Price is not present for Product on Product detail Page for PC User");
+	  s_assert.assertTrue(sfProductDetailPage.isPricePresentOnPDPAsExpected(),"Specific Price is not present for Product on Product detail Page for PC User");
+	  s_assert.assertAll();
+	 }
+	 
+	 /***
+	  * qTest : TC-504 Product Pricing - Consultant
+	  * Description : This test validates the presence of price of product for Consultant User
+	  * 
+	  */
+	 @Test
+	 public void testProductPricingConsultant_504(){
+	  sfHomePage.loginToStoreFront(TestConstants.CONSULTANT_USERNAME, password);
+	  sfShopSkinCarePage = sfHomePage.clickOnCategoryFromShopSkinCare("REDEFINE");
+	  s_assert.assertTrue(sfShopSkinCarePage.isRetailPricePresentForProductNumber("1"),"Retail price is not present for Product on category Page for Consultant");
+	  s_assert.assertTrue(sfShopSkinCarePage.isSpecificPricePresentForProductNumber("1"),"Specific price is not present for Product on category Page for Consultant");
+	  sfHomePage.clickAllProducts();
+	  s_assert.assertTrue(sfShopSkinCarePage.isRetailPricePresentForProductNumber("1"),"Retail price is not present for Product on All Products listing Page for Consultant");
+	  s_assert.assertTrue(sfShopSkinCarePage.isSpecificPricePresentForProductNumber("1"),"Specific price is not present for Product on All Products listing Page for Consultant");
+	  sfShopSkinCarePage.clickOnQuickViewLinkForProduct("1");
+	  s_assert.assertTrue(sfShopSkinCarePage.isRetailPricePresentOnQuickViewPopUp(),"Retail Price is not present for Product on Quick view popup for Consultant");
+	  s_assert.assertTrue(sfShopSkinCarePage.isPricePresentOnQuickViewPopup(),"Specific Price is not present for Product on Quick view popup for Consultant");
+	  sfProductDetailPage = sfShopSkinCarePage.clickOnViewProductDetailsLinkOnQuickViewPopup();
+	  s_assert.assertTrue(sfProductDetailPage.isRetailPricePresentOnPDPPage(),"Retail Price is not present for Product on Product detail Page for Consultant");
+	  s_assert.assertTrue(sfProductDetailPage.isPricePresentOnPDPAsExpected(),"Specific Price is not present for Product on Product detail Page for Consultant");
+	  s_assert.assertAll();
+	 }
+
 }

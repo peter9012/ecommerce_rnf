@@ -68,6 +68,9 @@ public class TestConstants {
 	public static final String STATE_US_ABBREVIATION = "CA";
 	public static final String BILLING_PROFILE_UPDATION_MESSAGE = "Successfully updated Payment Details.";
 	public static final String BILLING_PROFILE_ADDED_MESSAGE = "Card details are added successfully.";
+	public static final String PASSWORD_RECOVERY_SUBMIT_SUCCESS_MESSAGE = "Password reset instructions have been sent to your e-mail address. Please contact customer support if you require additional assistance";
+	public static final String PASSWORD_RECOVERY_SUBMIT_EMAIL_NOT_REGISTERED_MESSAGE = "You do not have account with us. Please create your account";
+	
 	//PO address details
 	public static final String PO_ADDRESS_LINE_1_US = "P.O. Box 283 8562 Fusce Rd";
 

@@ -18,6 +18,7 @@ import com.rf.core.driver.website.RFWebsiteDriver;
 import com.rf.core.website.constants.TestConstants;
 import com.rf.pages.RFBasePage;
 import com.rf.pages.website.rehabitat.storeFront.StoreFrontAccountInfoPage;
+import com.rf.pages.website.rehabitat.storeFront.StoreFrontAutoshipCartPage;
 import com.rf.pages.website.rehabitat.storeFront.StoreFrontAutoshipStatusPage;
 import com.rf.pages.website.rehabitat.storeFront.StoreFrontBillingInfoPage;
 import com.rf.pages.website.rehabitat.storeFront.StoreFrontCartPage;
@@ -148,7 +149,26 @@ public class StoreFrontWebsiteBasePage extends RFBasePage{
 	private final By YOUR_SHOPPING_CART_HEADER_LOC = By.xpath("//h1[@class='urcart-header' and contains(text(),'Your Shopping Cart')]");
 	protected final By BILLING_ADDRESS_DD_LOC = By.xpath("//select[@id='billingAddress.addressId']");
 	private final By INVALID_EXP_YEAR_LOC= By.xpath("//select[@id='c-exyr']//option[2]");
-
+	private final By FORGET_PASSWORD_LINK_LOC = By.id("show-recover-pass");
+	private final By FORGET_PASSWORD_LINK_CHECKOUT_LOC = By.id("show-recover-pass-inner");
+	private final By RECOVER_PASSWORD_EMAIL_TXTFIELD_LOC = By.xpath("//input[@name='email']");
+	private final By RECOVER_PASSWORD_EMAIL_TXTFIELD_CHECKOUT_LOC = By.xpath("//div[@class='page-container']/descendant::input[@name='email'][1]");
+	private final By RECOVER_PASSWORD_SEND_BTN_LOC = By.xpath("//input[@value='send']");
+	private final By RECOVER_PASSWORD_SEND_BTN_CHECKOUT_LOC = By.xpath("//div[@class='page-container']/descendant::input[@value='send'][1]");
+	private final By TOTAL_NO_OF_ITEMS_IN_MINI_CART_LOC = By.xpath("//ol/li[@class='mini-cart-item']");
+	private final By FIRST_ITEM_PRODUCT_NAME_IN_MINI_CART_LOC = By.xpath("//ol/descendant::li[@class='mini-cart-item'][1]//a[@class='name']");
+	private final By QUANTITY_OF_FIRST_PRODUCT_IN_MINI_CART_LOC = By.xpath("//ol/descendant::li[@class='mini-cart-item'][1]//div[@class='qty']");
+	private final By SUBTOTAL_IN_MINI_CART_LOC = By.xpath("//div[text()='Subtotal']/following::div[1]");
+	private final By YOUR_NEXT_PC_PERKS_CART_TEXT_IN_AUTOSHIP_POPUP_LOC = By.xpath("//div[contains(text(),'YOUR NEXT PC PERKS CART')]");
+	private final By TOTAL_NO_OF_ITEMS_IN_AUTOSHIP_CART_LOC = By.xpath("//div[contains(@class,'autoship-cart-popup')]//li[@class='mini-cart-item']");
+	private final By VIEW_PC_PERKS_CART_BUTTON_LOC = By.xpath("//a[contains(text(),'VIEW PC PERKS CART')]");
+	protected final By MINI_CART_NUMBER_OF_ITEMS_LOC = By.xpath("//span[@class='nav-items-total']");
+	protected final By AUTOSHIP_TEXT_LOC = By.xpath("//span[text()='AutoShip']");
+	private final By PRODUCT_NAME_ON_CHECKOUT_POPUP_LOC = By.xpath("//div[@class='add-to-cart-item']//div[@class='details']/a[@class='name']");
+	protected final By CHECKOUT_BUTTON_POPUP_LOC = By.xpath("//div[@id='addToCartLayer']/a[contains(text(),'Checkout')]");
+	private final By SHOPPING_CART_HEADLINE_ON_CHCKOUT_POPUP_LOC = By.xpath("//div[@id='colorbox']//div[@class='headline']/span[@class='headline-text' and contains(text(),'Added to Your Shopping Cart')]");
+	
+	private String passwordRecoverySubmitMsgLoc = "//div[@id='validEmail'][contains(text(),'%s')]"; 
 	private String expMonthLoc= "//select[@id='c-exmth']//option[contains(text(),'%s')]";
 	private String textLoc = "//*[contains(text(),'%s')]";
 	private String stateForShippingDetails = "//select[@id='address.region']//option[text()='%s']";
@@ -1812,5 +1832,327 @@ public class StoreFrontWebsiteBasePage extends RFBasePage{
 	 */
 	public boolean isYourShoppingCartHeaderPresentOnCartPage(){
 		return driver.isElementVisible(YOUR_SHOPPING_CART_HEADER_LOC);
+	}
+
+	/***
+	 * This method clicks on the forget password link
+	 * @return
+	 */
+	public StoreFrontWebsiteBasePage clickForgetPasswordLink(){
+		driver.click(FORGET_PASSWORD_LINK_LOC);
+		logger.info("Forget Password link clicked");
+		return this;		
+	}
+
+	/***
+	 * This method clicks on the forget password link at checkout page
+	 * @return
+	 */
+	public StoreFrontWebsiteBasePage clickForgetPasswordLinkAtCheckout(){
+		driver.click(FORGET_PASSWORD_LINK_CHECKOUT_LOC);
+		logger.info("Forget Password link at checkout page clicked");
+		return this;		
+	}
+
+	/***
+	 * This method enters the Password recover email
+	 * @param email
+	 * @return
+	 */
+	public StoreFrontWebsiteBasePage enterPasswordRecoverEmail(String email){
+		driver.type(RECOVER_PASSWORD_EMAIL_TXTFIELD_LOC, email);
+		logger.info("Password recover email entered is "+email);
+		return this;
+	}
+
+	/***
+	 * This method enters the Password recover email at checkout page
+	 * @param email
+	 * @return
+	 */
+	public StoreFrontWebsiteBasePage enterPasswordRecoverEmailAtCheckout(String email){
+		driver.type(RECOVER_PASSWORD_EMAIL_TXTFIELD_CHECKOUT_LOC, email);
+		logger.info("Password recover email entered at checkout is "+email);
+		return this;
+	}
+
+	/***
+	 * This method clicks on Submit btn for Password Recover email
+	 * @return
+	 */
+	public StoreFrontWebsiteBasePage clickSubmitBtnForPasswordRecovery(){
+		driver.click(RECOVER_PASSWORD_SEND_BTN_LOC);
+		logger.info("clicked on Submit btn for Password Recover email");
+		return this;
+	}
+
+	/***
+	 * This method clicks on Submit btn for Password Recover email at checkout page
+	 * @return
+	 */
+	public StoreFrontWebsiteBasePage clickSubmitBtnForPasswordRecoveryAtCheckout(){
+		driver.click(RECOVER_PASSWORD_SEND_BTN_CHECKOUT_LOC);
+		logger.info("clicked on Submit btn for Password Recover email at checkout page");
+		return this;
+	}
+
+	/***
+	 * This method verifies if the success msg for password recovery email submit
+	 * has displayed or not
+	 * @return
+	 */
+	public boolean isPasswordRecoveryEmailMsgDisplayed(String msg){
+		return driver.isElementPresent(By.xpath(String.format(passwordRecoverySubmitMsgLoc, msg)));
+	}
+
+	/***
+	 * This method validates the header is present on all pages.
+	 * 
+	 * @param 
+	 * @return boolean
+	 * 
+	 */
+	public boolean isHeaderIsConsistentOnAllPages(){
+		boolean flag = false;
+		boolean shopSkinCareOption = false;
+		boolean becomeConsultantOption = false;
+		boolean aboutRFOption = false;
+		if(driver.isElementPresent(SHOP_SKINCARE_LOC) && driver.isElementPresent(BECOME_A_CONSULTANT_LOC) && driver.isElementPresent(ABOUT_RF_LOC) && driver.isElementPresent(RODAN_AND_FIELDS_LOGO_LOC)){
+			mouseHoverOn(TestConstants.SHOP_SKINCARE);
+			shopSkinCareOption = driver.isElementVisible(ALL_PRODUCTS_LOC);
+			mouseHoverOn(TestConstants.BECOME_A_CONSULTANT);
+			becomeConsultantOption = driver.isElementVisible(MEET_OUR_COMMUNITY_LOC);
+			mouseHoverOn(TestConstants.ABOUT_RF);
+			aboutRFOption = driver.isElementVisible(EXECUTIVE_TEAM_LOC);
+			flag = shopSkinCareOption && becomeConsultantOption && aboutRFOption;
+		}else{
+			logger.info("Header is not present.");
+		}
+		return flag;
+	}
+
+	/***
+	 * This method get total no of itme in mini cart
+	 * 
+	 * @param
+	 * @return no of item
+	 * 
+	 */
+	public String getNumberOfItemFromMiniCart(){
+		String noOfItem = driver.findElement(MINI_CART_NUMBER_OF_ITEMS_LOC).getText(); 
+		logger.info("error is: "+noOfItem);
+		return noOfItem;
+	}
+
+	/***
+	 * This method hover on Mini cart icon
+	 * 
+	 * @param 
+	 * @return order total
+	 * 
+	 */
+	public StoreFrontWebsiteBasePage hoverOnMiniCartBagIcon(){
+		driver.moveToElementByJS(MINI_CART_ICON_LOC);
+		logger.info("hover on mini cart icon");
+		return this;
+	}
+
+	/***
+	 * This method get total no of itme in mini cart
+	 * 
+	 * @param
+	 * @return no of item
+	 * 
+	 */
+	public int getTotalNumberOfItemsInMiniCart(){
+		int noOfItem = driver.findElements(TOTAL_NO_OF_ITEMS_IN_MINI_CART_LOC).size(); 
+		logger.info("total no of items are: "+noOfItem);
+		return noOfItem;
+	}
+
+	/***
+	 * This method get product name of first item in mini cart
+	 * 
+	 * @param itemNumber
+	 * @return product name
+	 * 
+	 */
+	public String getProductNameFromMiniCart(String itemNumber){
+		String productName = null;
+		if(itemNumber.equalsIgnoreCase("1")){
+			productName = driver.findElement(FIRST_ITEM_PRODUCT_NAME_IN_MINI_CART_LOC).getText();
+		}
+		logger.info("product name of "+itemNumber+" is "+productName);
+		return productName;
+	}
+
+	/***
+	 * This method get product quantity from mini cart
+	 * 
+	 * @param itemNumber
+	 * @return product quantity
+	 * 
+	 */
+	public String getQuantityOfProductFromMiniCart(String itemNumber){
+		String productQuantity = null;
+		if(itemNumber.equalsIgnoreCase("1")){
+			productQuantity = driver.findElement(QUANTITY_OF_FIRST_PRODUCT_IN_MINI_CART_LOC).getText();
+		}
+		logger.info("Quantity of "+itemNumber+" is "+productQuantity);
+		return productQuantity;
+	}
+
+	/***
+	 * This method get subtotal from mini cart 
+	 * 
+	 * @param 
+	 * @return subtotal
+	 * 
+	 */
+	public String getSubtotalofItemsFromMiniCart(){
+		String subtotal = driver.findElement(SUBTOTAL_IN_MINI_CART_LOC).getText();
+		logger.info("Subtotal of product is "+subtotal);
+		return subtotal;
+	}
+
+	/***
+	 * This method verify the R+F logo
+	 * 
+	 * @param 
+	 * @return boolean value
+	 */
+	public boolean isRodanAndFieldsLogoPresent(){
+		return driver.isElementVisible(RODAN_AND_FIELDS_LOGO_LOC);
+	}
+
+	/***
+	 * This method verify welcome dropdown
+	 * 
+	 * @param 
+	 * @return boolean value
+	 */
+	public boolean isWelcomeDropdownPresent(){
+		return driver.isElementVisible(WELCOME_DROPDOWN_LOC);
+	}
+
+	/***
+	 * This method verify autoship text link
+	 * 
+	 * @param 
+	 * @return boolean value
+	 */
+	public boolean isAutoshipLinkPresent(){
+		return driver.isElementVisible(AUTOSHIP_TEXT_LOC);
+	}
+
+	/***
+	 * This method verify shop skincare text
+	 * 
+	 * @param 
+	 * @return boolean value
+	 */
+
+	public boolean isShopSkincareTextPresent(){
+		return driver.isElementVisible(SHOP_SKINCARE_LOC);
+	}
+
+	/***
+	 * This method hover on Mini cart icon
+	 * 
+	 * @param 
+	 * @return Store front website base page obj
+	 * 
+	 */
+
+	public StoreFrontWebsiteBasePage hoverOnAutoshipLink(){
+		driver.moveToElementByJS(AUTOSHIP_TEXT_LOC);
+		logger.info("hover on autoship link");
+		return this;
+	}
+
+	/***
+	 * This method hover on Mini cart icon
+	 * 
+	 * @param 
+	 * @return boolean value
+	 * 
+	 */
+	public boolean isYourNextPCPerksCartTextPresentAtAutoshipLinkPopup(){
+		return driver.isElementVisible(YOUR_NEXT_PC_PERKS_CART_TEXT_IN_AUTOSHIP_POPUP_LOC);
+	}
+
+	/***
+	 * This method verify the items are present in autoshi cart popup
+	 * 
+	 * @param
+	 * @return boolean value
+	 * 
+	 */
+	public boolean isItemPresentInAutoshipCart(){
+		return driver.isElementVisible(TOTAL_NO_OF_ITEMS_IN_AUTOSHIP_CART_LOC);
+	}
+
+	/***
+	 * This method click on autoship text present at autoship popup
+	 * 
+	 * @param 
+	 * @return Store front website base page obj
+	 * 
+	 */
+	public StoreFrontAutoshipCartPage clickViewPCPerksCartButton(){
+		driver.click(VIEW_PC_PERKS_CART_BUTTON_LOC);
+		return new StoreFrontAutoshipCartPage(driver);
+	}
+
+	/***
+	 * This method validates the header of checkout popup when product added tom cart.
+	 * 
+	 * @param 
+	 * @return boolean
+	 * 
+	 */
+	public boolean isAddedToYourShoppingCartHeadlinePresentOnCheckoutPopup(){
+		return driver.isElementVisible(SHOPPING_CART_HEADLINE_ON_CHCKOUT_POPUP_LOC);
+	}
+
+
+	/***
+	 * This method enter the username and password
+	 * and click on 'LOG IN' button
+	 * 
+	 * @param username ,password
+	 * @return StoreFrontWebsiteBasePage
+	 * 
+	 */
+
+	public StoreFrontWebsiteBasePage loginToStoreFrontExcludingClickOnLoginIcon(String username,String password){
+		driver.type(USERNAME_TXTFLD_LOC, username);
+		logger.info("username entered as "+username);
+		driver.type(PASSWORD_TXTFLD_LOC, password);
+		logger.info("password entered as  "+password);
+		driver.click(LOGIN_BTN_LOC);
+		logger.info("login button clicked");
+		return this;
+	}
+
+	/**
+	 * This method get the name of product from checkout pop up.
+	 * @return String - productName
+	 */
+	public String getProductNameFromCheckoutPopup(){
+		driver.pauseExecutionFor(2000);
+		return driver.getText(PRODUCT_NAME_ON_CHECKOUT_POPUP_LOC);
+	}
+
+	/**
+	 * This method click on the checkOut Button on the popup on the cart.
+	 * @return
+	 */
+	public StoreFrontCartPage checkoutTheCartFromPopUp(){
+		driver.click(CHECKOUT_BUTTON_POPUP_LOC);
+		logger.info("Clicked on checkout button on the popup");
+		driver.waitForPageLoad();
+		driver.waitForLoadingImageToDisappear();
+		return new StoreFrontCartPage(driver);
 	}
 }

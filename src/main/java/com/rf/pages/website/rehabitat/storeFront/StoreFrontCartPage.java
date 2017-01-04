@@ -32,7 +32,10 @@ public class StoreFrontCartPage extends StoreFrontWebsiteBasePage{
 	private final By SHOPPING_CART_TOTAL_PRODUCTS_LOC = By.xpath("//h1[contains(text(),'Your Shopping Cart')]/span");
 	private final By CART_PRODUCT_LOC = By.xpath("//ul[contains(@class,'item-list cart')]/li[@class='item-list-item']");
 	private final By ADD_MORE_ITEMS_BTN_PC_AUTOSHIP_CART_LOC = By.xpath("//div[@class='cart-container']/descendant::button[contains(text(),'Add More Items')]");
+	private final By CART_LOGIN_LOC = By.xpath("//div[@class='cartLogin']//a[text()='Log in']");
 
+	private String productNameInAllItemsInCartLoc = "//ul[@class='item-list cart__list']//div[@class='item-info']//span[@class='item-name' and contains(text(),'%s')]";
+	private String productPriceInAllItemsInCart = "//ul[@class='item-list cart__list']//div[@class='item-info']//span[@class='item-name' and contains(text(),'%s')]/ancestor::div[1]/following-sibling::div[@class='item-price']";
 	private String recentlyViewProductOnCartPageLoc = "//div[@id='recentlyViewedTitle']/following::div[@class='owl-item active']//a[contains(text(),'%s')]";
 	private String removeLinkForProductOnCartLoc = "removeEntry_";
 
@@ -340,5 +343,50 @@ public class StoreFrontCartPage extends StoreFrontWebsiteBasePage{
 		}
 		return this;
 	}
+
+	/***
+	 * This method click pc terms and conditions link 
+	 * 
+	 * @param
+	 * @return StoreFrontCartPage object
+	 */
+	public boolean isProductAddedToCartPresentOnCartPage(String productName){
+		return driver.isElementVisible(By.xpath(String.format(productNameInAllItemsInCartLoc,productName)));
+	}
+
+
+	/***
+	 * This method click on the cart login button
+	 * 
+	 * @param
+	 * @return StoreFrontCartPage object
+	 */
+	public StoreFrontCartPage clickOnCartLoginLink(){
+		driver.click(CART_LOGIN_LOC);
+		logger.info("Clicked on login link from top navigation");
+		return this;
+	}
+
+	/***
+	 * This method get the price of product for a product present in cart
+	 * 
+	 * @param String prodName
+	 * @return String price
+	 */
+	public String getPriceOfProductFromAllItemsInCart(String productName){
+		String price = driver.getText(By.xpath(String.format(productPriceInAllItemsInCart,productName))).replace("$","").trim();
+		return price;
+	}
+
+	/***
+	 * This method validates the presence of spefic price in cart
+	 * 
+	 * @param String expected price , String actual price
+	 * @return boolean
+	 */
+	public boolean isProductPriceUpdatedInCartAsPerUser(String specificPrice, String priceOnCart){
+		return priceOnCart.contains(specificPrice);
+	}
+
 }
 

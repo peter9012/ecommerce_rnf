@@ -237,4 +237,190 @@ public class TopNavigationTest extends StoreFrontWebsiteBaseTest{
 		sfHomePage.closeMemberDetailsPopup();
 		s_assert.assertAll();
 	}
+	
+	/***
+	 * qTest : TC-345 As a PC, Consultant, Retail/Anon User, I will be able to view a search text box
+	 * Description : This test validates search text box in header navigation
+	 *  
+	 *     
+	 */
+	@Test
+	public void testViewSearchTextBox_345(){
+		
+		sfHomePage.loginToStoreFront(TestConstants.CONSULTANT_EMAIL, password);
+		sfHomePage.clickSearchIcon();
+		s_assert.assertTrue(sfHomePage.isSearchTextBoxDisplayed(),"Search text box not present after clicking search");
+		sfHomePage.closeSearchTextBox();
+		s_assert.assertFalse(sfHomePage.isSearchTextBoxDisplayed(),"Search text box is present after clicking close icon");
+		s_assert.assertAll();
+	}
+	
+	/***
+	 * qTest : TC-346 As a user, I will be able to access various content pages under the About R+F
+	 * Description : This test validates content pages under about RF.
+	 *  
+	 *     
+	 */
+	@Test
+	public void testViewContentPagesUnderAboutRF_346(){
+		String currentURL = null;
+		String executiveTeamURL = "executive-team";
+		String whoWeAreURL = "who-we-are";
+		String givingBackURL ="giving-back";
+		
+		sfHomePage.loginToStoreFront(TestConstants.PC_EMAIL, password);
+		//Verify meet the doctors link.
+		sfHomePage.clickMeetTheDoctorsLink();
+		s_assert.assertTrue(sfHomePage.isMeetTheDoctorsPagePresent(),"'Meet the Doctors' page either doesn't have the URL as 'meet-the-doctors' or meet the doctor Text is not present on page");
+		//Verify giving back link.
+		sfHomePage.clickGivingBackLink();
+		currentURL = sfHomePage.getCurrentURL().toLowerCase();
+		s_assert.assertTrue(currentURL.contains(givingBackURL), "Expected URL should contain "+givingBackURL+ "but actual on UI is"+currentURL);
+		//Verify executive team link.
+		sfHomePage.clickExecutiveTeam();
+		currentURL = sfHomePage.getCurrentURL().toLowerCase();
+		s_assert.assertTrue(currentURL.contains(executiveTeamURL), "Expected URL should contain "+executiveTeamURL+ "but actual on UI is"+currentURL);
+		//Verify who we are link.
+		sfHomePage.clickWhoWeAreLink();
+		currentURL = sfHomePage.getCurrentURL().toLowerCase();
+		s_assert.assertTrue(currentURL.contains(whoWeAreURL), "Expected URL should contain "+whoWeAreURL+ "but actual on UI is"+currentURL);
+		s_assert.assertAll();
+	}
+	
+	/***
+	 * qTest : TC-347 As a PC, Retail/Anon User, and Consultant I will be able to access the featured products
+	 * Description : This test validates featured product section under shop skincare.
+	 *  
+	 *     
+	 */
+	@Test
+	public void testVerifyFeaturedProductSectionUnderShopSkinCare_347(){
+		String category="FEATURED";
+		
+		sfHomePage.loginToStoreFront(TestConstants.PC_EMAIL, password);
+		sfShopSkinCarePage = sfHomePage.navigateToShopSkincareLink(category);
+		String pageTitle=sfShopSkinCarePage.getCurrentpageTitle();
+		s_assert.assertTrue(sfShopSkinCarePage.isProductsDisplayedOnPage() && pageTitle.contains(category),"Expected featured products not displayed for selected category or Expected page title contains:"+category+" But actual on UI is: "+pageTitle);
+		s_assert.assertAll();
+	}
+	
+	/***
+	 * qTest : TC-348 As a PC, Retail/Anon User, and Consultant I will be able to access the PLP
+	 * Description : This test validates product list page under shop skincare.
+	 *  
+	 *     
+	 */
+	@Test
+	public void testVerifyPLPUnderShopSkinCare_348(){
+		
+		sfHomePage.loginToStoreFront(TestConstants.RC_EMAIL, password);
+		sfShopSkinCarePage=sfHomePage.clickAllProducts();
+		s_assert.assertTrue(sfShopSkinCarePage.isAllProductPageDisplayed(),"All product page not present after clicking continue shopping.");
+		s_assert.assertAll();
+	}
+	
+	/***
+	 * qTest : TC-349 As a PC, Retail/Anon User, Consultant, I will be able to access category specific Results
+	 * Description : This test validates results link under categories page under shop skincare.
+	 *  
+	 *     
+	 */
+	@Test
+	public void testVerifyResultsLinkForCategoryUnderShopSkincare_349(){
+		String currentURL = null;
+		String sootheLinkUnderShopSkincare = "SOOTHE";
+		String reverseLinkUnderShopSkincare = "REVERSE";
+		String redefineLinkUnderShopSkincare = "REDEFINE";
+		String unblemishLinkUnderShopSkincare = "UNBLEMISH";
+		String sublinkNameUnderShopSkincare = "RESULTS";
+		String expectedURLForSootheResults = "soothe-results";
+		String expectedURLForReverseResults = "reverse-results";
+		String expectedURLForRedefineResults = "redefine-results";
+		String expectedURLForUnblemishResults = "unblemish-results";
+		
+		sfHomePage.loginToStoreFront(TestConstants.PC_EMAIL, password);
+		//Verify FAQ page for soothe regimen.
+		sfHomePage.navigateToShopSkinCareSubLinks(sootheLinkUnderShopSkincare, sublinkNameUnderShopSkincare);
+		currentURL = sfHomePage.getCurrentURL().toLowerCase();
+		s_assert.assertTrue(currentURL.contains(expectedURLForSootheResults), "Expected URL should contain" +expectedURLForSootheResults+ ". but actual on UI is"+currentURL);
+		//Verify FAQ page for Reverse regimen.
+		sfHomePage.navigateToShopSkinCareSubLinks(reverseLinkUnderShopSkincare, sublinkNameUnderShopSkincare);
+		currentURL = sfHomePage.getCurrentURL().toLowerCase();
+		s_assert.assertTrue(currentURL.contains(expectedURLForReverseResults), "Expected URL should contain" +expectedURLForReverseResults+ ". but actual on UI is"+currentURL);
+		//Verify FAQ page for Redefine regimen.
+		sfHomePage.navigateToShopSkinCareSubLinks(redefineLinkUnderShopSkincare, sublinkNameUnderShopSkincare);
+		currentURL = sfHomePage.getCurrentURL().toLowerCase();
+		s_assert.assertTrue(currentURL.contains(expectedURLForRedefineResults), "Expected URL should contain" +expectedURLForRedefineResults+ ". but actual on UI is"+currentURL);
+		//Verify FAQ page for Unblemish regimen.
+		sfHomePage.navigateToShopSkinCareSubLinks(unblemishLinkUnderShopSkincare, sublinkNameUnderShopSkincare);
+		currentURL = sfHomePage.getCurrentURL().toLowerCase();
+		s_assert.assertTrue(currentURL.contains(expectedURLForUnblemishResults), "Expected URL should contain" +expectedURLForUnblemishResults+ ". but actual on UI is"+currentURL);
+		s_assert.assertAll();
+	}
+	
+	/***
+	 * qTest : TC-350 As a PC, Retail/Anon user, Consultant, I will be able to access category specific FAQ
+	 * Description : This test validates 'FAQs' links for all category under shop skincare.
+	 * 
+	 *     
+	 */
+	@Test
+	public void testVerifyFAQLinkForCategoryUnderShopSkincare_350(){
+		String currentURL = null;
+		String sootheLinkUnderShopSkincare = "SOOTHE";
+		String reverseLinkUnderShopSkincare = "REVERSE";
+		String redefineLinkUnderShopSkincare = "REDEFINE";
+		String unblemishLinkUnderShopSkincare = "UNBLEMISH";
+		String sublinkNameUnderShopSkincare = "FAQS";
+		String expectedURLForSootheFAQ = "soothe-faq";
+		String expectedURLForReverseFAQ = "reverse-faq";
+		String expectedURLForRedefineFAQ = "redefine-faq";
+		String expectedURLForUnblemishFAQ = "unblemish-faq";
+
+		sfHomePage.loginToStoreFront(TestConstants.RC_EMAIL, password);
+		//Verify FAQ page for soothe regimen.
+		sfHomePage.navigateToShopSkinCareSubLinks(sootheLinkUnderShopSkincare, sublinkNameUnderShopSkincare);
+		currentURL = sfHomePage.getCurrentURL().toLowerCase();
+		s_assert.assertTrue(currentURL.contains(expectedURLForSootheFAQ), "Expected URL should contain" +expectedURLForSootheFAQ+ ". but actual on UI is"+currentURL);
+		//Verify FAQ page for Reverse regimen.
+		sfHomePage.navigateToShopSkinCareSubLinks(reverseLinkUnderShopSkincare, sublinkNameUnderShopSkincare);
+		currentURL = sfHomePage.getCurrentURL().toLowerCase();
+		s_assert.assertTrue(currentURL.contains(expectedURLForReverseFAQ), "Expected URL should contain" +expectedURLForReverseFAQ+ ". but actual on UI is"+currentURL);
+		//Verify FAQ page for Redefine regimen.
+		sfHomePage.navigateToShopSkinCareSubLinks(redefineLinkUnderShopSkincare, sublinkNameUnderShopSkincare);
+		currentURL = sfHomePage.getCurrentURL().toLowerCase();
+		s_assert.assertTrue(currentURL.contains(expectedURLForRedefineFAQ), "Expected URL should contain" +expectedURLForRedefineFAQ+ ". but actual on UI is"+currentURL);
+		//Verify FAQ page for Unblemish regimen.
+		sfHomePage.navigateToShopSkinCareSubLinks(unblemishLinkUnderShopSkincare, sublinkNameUnderShopSkincare);
+		currentURL = sfHomePage.getCurrentURL().toLowerCase();
+		s_assert.assertTrue(currentURL.contains(expectedURLForUnblemishFAQ), "Expected URL should contain" +expectedURLForUnblemishFAQ+ ". but actual on UI is"+currentURL);
+		s_assert.assertAll();
+	}
+	
+	/***
+	 * qTest : TC-351 As a user, I will be able to view a header that will remain through the site experience
+	 * Description : This test validates 'Header' view same on all pages except cart and checkout page.
+	 * 
+	 *     
+	 */
+	@Test
+	public void testVerifyHeaderViewIsConsistentThroughAllPagesExceptCartAndCheckout_351(){
+		String reverseLinkUnderShopSkincare = "REVERSE";
+		String allProductLinkUnderShopSkincare = "ALL PRODUCTS";
+		
+		//Login to application.
+		sfHomePage.loginToStoreFront(TestConstants.RC_EMAIL, password);
+		sfHomePage.navigateToShopSkincareLink(reverseLinkUnderShopSkincare);
+		s_assert.assertTrue(sfHomePage.isHeaderIsConsistentOnAllPages(),"Header is not present on reverse product category page.");
+		sfShopSkinCarePage = sfHomePage.navigateToShopSkincareLink(allProductLinkUnderShopSkincare);
+		s_assert.assertTrue(sfShopSkinCarePage.isHeaderIsConsistentOnAllPages(),"Header is not present on All product page.");
+		sfProductDetailPage = sfShopSkinCarePage.clickNameOfFirstProduct();
+		s_assert.assertTrue(sfProductDetailPage.isHeaderIsConsistentOnAllPages(),"Header is not present on product detail page.");
+		sfProductDetailPage.addProductToCartFromProductDetailPageAfterLogin();
+		sfCartPage = sfShopSkinCarePage.checkoutTheCartFromPopUp();
+		s_assert.assertFalse(sfCartPage.isHeaderIsConsistentOnAllPages(),"Header is present on cart detail page.");
+		sfCheckoutPage = sfCartPage.clickCheckoutBtn();
+		s_assert.assertFalse(sfCheckoutPage.isHeaderIsConsistentOnAllPages(),"Header is present on checkout detail page.");
+		s_assert.assertAll();
+	}
 }

@@ -1,4 +1,4 @@
-package com.rf.test.website.rehabitat.storeFront.homePage;
+package com.rf.test.website.rehabitat.storeFront.homePage.shopSkincareHeaderNavigation;
 
 import org.testng.annotations.Test;
 
@@ -20,8 +20,7 @@ public class FeatureProductTest extends StoreFrontWebsiteBaseTest{
 		//Click featured link under shopskincare.
 		sfHomePage.navigateToShopSkincareLink(category_Featured);
 		currentURL = sfHomePage.getCurrentURL().toLowerCase();
-		s_assert.assertTrue(currentURL.contains(featuredRegimenURL), "Expected URL should contain" +featuredRegimenURL+" . but actual on UI is"+currentURL);
+		s_assert.assertTrue(sfShopSkinCarePage.isProductsDisplayedOnPage() && currentURL.contains(featuredRegimenURL),"Expected featured products not displayed for selected category or Expected page URL"+featuredRegimenURL+" But actual on UI is: "+currentURL);
 		s_assert.assertAll();
 	}
-
 }

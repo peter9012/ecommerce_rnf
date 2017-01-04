@@ -43,7 +43,15 @@ public class StoreFrontShopSkinCarePage extends StoreFrontWebsiteBasePage{
 	private final By CLOSE_BUTTON_FOR_CHCKOUT_POPUP_LOC = By.xpath("//button[@id='cboxClose']") ;
 	private final By YES_ON_ENROLL_IN_CRP_POPUP_LOC = By.xpath("//div[@id='enrollCRPModal'][1]//input[@value='Yes']");
 	private final By ADD_TO_CRP_OF_FIRST_PRODUCT = By.xpath("//div[@id='product_listing']/descendant::span[contains(text(),'Add to CRP')][1]");
+	private final By QUANTITY_AT_QUICK_VIEW_OPTION_LOC=By.id("qty");
+	private final By CONSULTANT_PRICE_LOC=By.xpath("//div[@class='product-item'][1]//span[@id='retail']");
+	private final By RETAIL_AND_SV_PRICE_LOC=By.xpath("//div[@class='product-item'][1]//span[@class='totalSV']");
+	private final By PRODUCT_POPUP_LOC=By.id("cboxClose");
+	private final By SPECIFIC_PRICE_QUICK_VIEW_POPUP_LOC = By.xpath("//div[@id='myModal']//span[@id='cust_price' and contains(text(),'Your Price')]");
+	private final By RETAIL_PRICE_QUICK_VIEW_POPUP_LOC = By.xpath("//div[@id='myModal']//span[@id='retail' and contains(text(),'Retail')]");
 
+	private String specificPriceForProductLoc = "//div[contains(@class,'product__listing')]//div[@class='product-item'][%s]//em[@class='priceLabel' and contains(text(),'Your Price:')]/ancestor::span";
+	private String productLinkThroughProductNameLoc = "//div[@id='product_listing']/descendant::a[@class='name' and contains(text(),'%s')]";
 	private String addToCRPButtonThroughProductNumber = "//div[@id='product_listing']/descendant::span[contains(text(),'Add to CRP')][%s]";
 	private String addToPCPerksButtonThroughProductNumber = "//div[@class='product-item'][%s]//span[contains(text(),'subscribe + save')]";
 	private String quickViewForSpecificProductLoc = "//div[@class='product__listing product__grid']//div[@class='product-item'][%s]/a[@class='thumb']";
@@ -58,18 +66,6 @@ public class StoreFrontShopSkinCarePage extends StoreFrontWebsiteBasePage{
 	private String yourPriceOfProductLoc = "//div[contains(@class,'product__listing')]//div[@class='product-item'][%s]//span[@id='retail']";
 	private String productPriceThroughProductNumberLoc = "//div[@id='product_listing']/descendant::span[contains(text(),'%s')][%s]/following-sibling::span[contains(@class,'productPrice')]";
 	private String addToBagButtonForSpecificOrderTypeThroughProductNumberLoc = "//div[@id='product_listing']/descendant::span[contains(text(),'%s')][%s]";
-
-	/**
-	 * This method click on the checkOut Button on the popup on the cart.
-	 * @return
-	 */
-	public StoreFrontCartPage checkoutTheCartFromPopUp(){
-		driver.click(CHECKOUT_BUTTON_POPUP_LOC);
-		logger.info("Clicked on checkout button on the popup");
-		driver.waitForPageLoad();
-		driver.waitForLoadingImageToDisappear();
-		return new StoreFrontCartPage(driver);
-	}
 
 	/***
 	 * This method click add to bag button for first product
@@ -446,15 +442,6 @@ public class StoreFrontShopSkinCarePage extends StoreFrontWebsiteBasePage{
 	}
 
 	/**
-	 * This method get the name of product from checkout pop up.
-	 * @return String - productName
-	 */
-	public String getProductNameFromCheckoutPopup(){
-		driver.pauseExecutionFor(2000);
-		return driver.getText(PRODUCT_NAME_ON_CHECKOUT_POPUP_LOC);
-	}
-
-	/**
 	 * This method validates the Quantity of Product to be 1 on checkout popup.
 	 * @return boolean
 	 */
@@ -650,4 +637,135 @@ public class StoreFrontShopSkinCarePage extends StoreFrontWebsiteBasePage{
 		}
 		return new StoreFrontAutoshipCartPage(driver);
 	}
+
+	//---
+
+
+	/***
+	 * This method return product quantity from quick view option
+	 * 
+	 * @param 
+	 * @return quantity of product
+	 * 
+	 */
+	public String getProductQuantityFromQuickViewOption(){
+		return driver.findElement(QUANTITY_AT_QUICK_VIEW_OPTION_LOC).getAttribute("value");
+	}
+
+	/***
+	 * This method return consultant price
+	 * 
+	 * @param 
+	 * @return consultant price
+	 * 
+	 */
+	public String getFirstProductPrice(){
+		return driver.findElement(CONSULTANT_PRICE_LOC).getText();
+	}
+
+	/***
+	 * This method return retail and SV price
+	 * 
+	 * @param 
+	 * @return Retail and SV price
+	 * 
+	 */
+	public String getFirstProductRetailAndSVPrice(){
+		logger.info("Retail values are "+driver.findElement(RETAIL_AND_SV_PRICE_LOC).getText());
+		return driver.findElement(RETAIL_AND_SV_PRICE_LOC).getText(); 
+	}
+	/***
+	 * This method validates products displayed for selected category
+	 * 
+	 * @param 
+	 * @return Boolean
+	 * 
+	 */
+	public boolean isProductsDisplayedOnPage(){
+		return driver.isElementVisible(ADD_TO_CART_FIRST_PRODUCT_LOC);
+	}
+
+	/***
+	 * This method close product popup
+	 * 
+	 * @param 
+	 * @return StoreFrontShopSkinCarePage object
+	 * 
+	 */
+	public StoreFrontShopSkinCarePage closeProductPopup(){
+		driver.findElement(PRODUCT_POPUP_LOC).click();
+		return this;
+	}
+
+	/***
+	 * This method validates the presence of Specific Price on Product listing page
+	 * 
+	 * @param 
+	 * @return boolean
+	 * 
+	 */
+
+	public boolean isSpecificPricePresentForProductNumber(String productNumber){
+		return driver.getText(By.xpath(String.format(specificPriceForProductLoc,productNumber))).contains("$");
+	}
+
+
+	/***
+	 * This method validates the presence of Specific Price on Quick View popup for PC, Consultant user
+	 * 
+	 * @param 
+	 * @return boolean
+	 * 
+	 */
+
+	public boolean isSpecificPricePresentOnQuickViewPopUp(){
+		driver.waitForElementToBeVisible(SPECIFIC_PRICE_QUICK_VIEW_POPUP_LOC, 20);
+		return driver.getText(SPECIFIC_PRICE_QUICK_VIEW_POPUP_LOC).contains("$");
+	}
+
+
+	/***
+	 * This method validates the presence of Retail Price on on Quick View popup for PC, Consultant user
+	 * 
+	 * @param 
+	 * @return boolean
+	 * 
+	 */
+
+	public boolean isRetailPricePresentOnQuickViewPopUp(){
+		driver.waitForElementToBeVisible(RETAIL_PRICE_QUICK_VIEW_POPUP_LOC, 20);
+		return driver.getText(RETAIL_PRICE_QUICK_VIEW_POPUP_LOC).contains("$");
+	}
+
+
+	/***
+	 * This method get splitted product middle name for search purpose
+	 * 
+	 * @param
+	 * @return search entity.
+	 * 
+	 */
+
+	public String getSplittedProductNameForSearchPurpose(String productName){
+		String searchEntity = productName.split(" ")[1];
+		logger.info("Entity to serch : " + searchEntity);
+		return searchEntity;
+	}
+
+
+	/***
+	 * This method click on the productName link from list using product name
+	 * 
+	 * @param
+	 * @return search entity.
+	 * 
+	 */
+
+	public StoreFrontProductDetailPage clickOnProductNameLink(String productName){
+		driver.waitForElementToBeClickable(By.xpath(String.format(productLinkThroughProductNameLoc,productName)),20);
+		driver.click(By.xpath(String.format(productLinkThroughProductNameLoc,productName)));
+		logger.info("Product Link clicked : " + productName);
+		return new StoreFrontProductDetailPage(driver);
+	}
+
 }

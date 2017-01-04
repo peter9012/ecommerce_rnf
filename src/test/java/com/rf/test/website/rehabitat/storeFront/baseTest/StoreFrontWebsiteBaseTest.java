@@ -61,9 +61,9 @@ public class StoreFrontWebsiteBaseTest extends RFBaseTest {
 	protected StoreFrontAutoshipCartPage sfAutoshipCartPage;
 
 	StringBuilder verificationErrors = new StringBuilder();
-	protected String password = null;
-	protected String countryId = null;
-	protected String country = null;
+	protected String password=null;
+	protected String countryId=null;
+	protected String country=null;
 	protected boolean runBaseURLOrLogoutExecutionCode = true;
 	
 	protected RFWebsiteDriver driver = new RFWebsiteDriver(propertyFile);
@@ -80,14 +80,17 @@ public class StoreFrontWebsiteBaseTest extends RFBaseTest {
 	public void setUp() throws Exception {
 		driver.loadApplication();
 		driver.setDBConnectionString();
-		setCountry();
-		setCountryId();
-		setStoreFrontPassword(driver.getStoreFrontUserPassword());
+//		setCountry();
+//		setCountryId();
+//		setStoreFrontPassword(driver.getStoreFrontUserPassword());
 	}
 
 	@BeforeMethod(alwaysRun=true)
 	public void beforeMethod(){
 		s_assert = new SoftAssert();
+		setStoreFrontPassword(driver.getStoreFrontUserPassword());
+		setCountry();
+		setCountryId();
 		navigateToStoreFrontBaseURL();
 		if(sfHomePage.isWelcomeUserElementDisplayed()==true){
 			sfHomePage.logout();
@@ -96,6 +99,10 @@ public class StoreFrontWebsiteBaseTest extends RFBaseTest {
 
 	public void setCountry(){
 		country = driver.getCountry();
+	}
+	
+	public String getCountry(){
+		return country;
 	}
 
 	public void setCountryId(){

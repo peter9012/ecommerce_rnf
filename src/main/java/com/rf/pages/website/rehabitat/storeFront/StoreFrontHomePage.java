@@ -11,7 +11,9 @@ import java.util.List;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.openqa.selenium.By;
+import org.openqa.selenium.Keys;
 import org.openqa.selenium.WebElement;
+import org.openqa.selenium.interactions.Actions;
 
 public class StoreFrontHomePage extends StoreFrontWebsiteBasePage{
 
@@ -55,7 +57,6 @@ public class StoreFrontHomePage extends StoreFrontWebsiteBasePage{
 	private final By SHOP_BY_PRICE_FILTER_OPTION_0_TO_49$_AFTER_CHECKED_LOC = By.xpath("//input[@id='$0-$49.99ID'][@checked = 'checked']");
 	private final By SHOP_BY_PRICE_FILTER_OPTION_200_TO_499$_LOC = By.xpath("//input[@id='$200-$499.99ID']/..");
 	private final By SHOP_BY_PRICE_FILTER_OPTION_200_TO_499$_AFTER_CHECKED_LOC = By.xpath("//input[@id='$200-$499.99ID'][@checked = 'checked']");
-	private final By MINI_CART_NUMBER_OF_ITEMS_LOC = By.xpath("//span[@class='nav-items-total']");
 	private final By WELCOME_USER_LOC = By.xpath("//div[@class='loginBlock']/div");
 	private final By CONFIRMATION_MSG_OF_CONSULTANT_ENROLLMENT_LOC = By.xpath("//div[@class='global-alerts']/div");
 	private final By POLICIES_AND_PROCEDURES_LINK_LOC = By.xpath("//a[contains(text(),'Rodan+Fields Policies and Procedure')]");
@@ -70,13 +71,16 @@ public class StoreFrontHomePage extends StoreFrontWebsiteBasePage{
 	private final By SUBSCRIBE_TO_PULSE_CHKBOX_LOC = By.xpath("//label[@for='pulse-check']");
 	private final By PREFIX_FIELD_LOC = By.id("prefixId"); 
 	private final By PREFIX_AVAILABLE_LOC = By.xpath("//div[@class='available-dispaly available' or text()='Available']");
-	private final By AUTOSHIP_TEXT_LOC = By.xpath("//span[text()='AutoShip']");
+	private final By CLOSE_ICON_SEARCH_TEXT_BOX = By.xpath("//div[@class='yCmsComponent']//span[contains(@class,'icon-close')]");
 
+	private String searchResultTextAsPerEntity = "//h1[contains(text(),'Search Results for \"%s\"')]";
+	private final By SEARCH_RESULT_PRODUCTS_LOC = By.xpath("//div[@class='product__listing product__grid']//div[@class='product-item']//a[@class='name']");
 	private String kitNameLoc = "//label[text()='%s']/preceding::input[1]";
 	private String priceOfProductLoc = "//div[contains(@class,'product__listing')]//div[@class='product-item'][%s]//span[@id='cust_price']";
 	private String socialMediaIconLoc = "//div[@class='container']//a[contains(@href,'%s')]";
 	private String teamMemberNameLoc = "//div[@id='modal_front']/div[%s]//div[@class='title']/h4";
 	private String categoryUnderShopSkinCareLoc = topNavigationLoc+"//a[@title='%s']";
+
 
 	public boolean isFindAConsultantPagePresent(){
 		String findAConsultantURL = "/find-consultant";
@@ -504,19 +508,19 @@ public class StoreFrontHomePage extends StoreFrontWebsiteBasePage{
 		String price = driver.findElement(By.xpath(String.format(priceOfProductLoc, productNumber))).getText().split("\\$")[1].trim();
 		double priceFromUI = Double.parseDouble(price);
 		if(priceRange.equalsIgnoreCase("0To49")){
-			if(priceFromUI>0.00 & priceFromUI<49.99){
+			if(priceFromUI>=0.00 & priceFromUI<=49.99){
 				return true;
 			}else{
 				return false;
 			}
 		}else if(priceRange.equalsIgnoreCase("50To199")){
-			if(priceFromUI>50.00 & priceFromUI<199.99){
+			if(priceFromUI>=50.00 & priceFromUI<=199.99){
 				return true;
 			}else{
 				return false;
 			}
 		}else if(priceRange.equalsIgnoreCase("200To499")){
-			if(priceFromUI>200.00 & priceFromUI<499.99){
+			if(priceFromUI>=200.00 & priceFromUI<=499.99){
 				return true;
 			}else{
 				return false;
@@ -615,20 +619,6 @@ public class StoreFrontHomePage extends StoreFrontWebsiteBasePage{
 	public boolean isShopByPriceThirdFilterChecked(){
 		return driver.isElementPresent(SHOP_BY_PRICE_FILTER_OPTION_200_TO_499$_AFTER_CHECKED_LOC);
 	}
-
-	/***
-	 * This method get total no of itme in mini cart
-	 * 
-	 * @param
-	 * @return no of item
-	 * 
-	 */
-	public String getNumberOfItemFromMiniCart(){
-		String noOfItem = driver.findElement(MINI_CART_NUMBER_OF_ITEMS_LOC).getText(); 
-		logger.info("error is: "+noOfItem);
-		return noOfItem;
-	}
-
 
 	/***
 	 * This method click on place order button
@@ -782,6 +772,77 @@ public class StoreFrontHomePage extends StoreFrontWebsiteBasePage{
 		driver.click(By.xpath(String.format(categoryUnderShopSkinCareLoc, catTitle)));
 		logger.info("clicked on " + catTitle);
 		return new StoreFrontShopSkinCarePage(driver);
+	}
+
+	/***
+	 * This method verifies search text box is displayed or not
+	 * 
+	 * 
+	 * @return boolean
+	 */
+	public boolean isSearchTextBoxDisplayed(){
+		driver.pauseExecutionFor(2000);
+		return driver.isElementVisible(SEARCH_BOX);
+	}
+	/***
+	 * This method clicks on the Cross(X) button of 'Applying as Business Entity' popup on sponsor page
+	 * @return storeFront home page object
+	 */
+	public StoreFrontHomePage closeSearchTextBox(){
+		driver.click(CLOSE_ICON_SEARCH_TEXT_BOX);
+		logger.info("closed the 'search text box' overlay");
+		return this;
+	}
+
+	/***
+	 * This method enter search text in search textfield and click enter
+	 * 
+	 * @param String textToSearch
+	 * @return store front Home page object
+	 * 
+	 */
+	public StoreFrontHomePage searchEntityAndHitEnter(String textToSearch){
+		driver.type(SEARCH_BOX, textToSearch);
+		Actions action = new Actions(RFWebsiteDriver.driver);
+		action.sendKeys(Keys.ENTER);
+		action.perform();
+		logger.info("Hit enter for searching entity");
+		driver.pauseExecutionFor(5000);
+		return this;
+	}
+
+
+	/***
+	 * This method validates the search results text
+	 * 
+	 * @param String searchEntity
+	 * @return boolean
+	 * 
+	 */
+	public boolean isSearchResultsTextAppearedAsExpected(String searchEntity){
+		return driver.isElementVisible(By.xpath(String.format(searchResultTextAsPerEntity, searchEntity)));
+	}
+
+
+	/***
+	 * This method validates the search result products with that of search entity
+	 * 
+	 * @param String productName
+	 * @return boolean
+	 * 
+	 */
+	public boolean isExpecetedProductPresentInSearchResults(String expectedProductName){
+		List<WebElement> searchResultsProducts = driver.findElements(SEARCH_RESULT_PRODUCTS_LOC);
+		for(WebElement product : searchResultsProducts){
+			String productName = null;
+			productName = product.getText().trim();
+			if(productName.contains(expectedProductName)){
+				logger.info("Expected product name found in search list");
+				return true;
+			}
+		}
+		logger.info("Expected product name not found in search list");
+		return false;
 	}
 
 }

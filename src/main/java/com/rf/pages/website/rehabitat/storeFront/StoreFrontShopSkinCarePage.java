@@ -31,7 +31,6 @@ public class StoreFrontShopSkinCarePage extends StoreFrontWebsiteBasePage{
 	private final By ADD_TO_CART_BUTTON_FROM_QUICK_VIEW_POPUP_LOC=By.xpath("//div[@class='addToCartBtn-wrapper']/button");
 	private final By CLOSE_QUICK_VIEW_OPTION_POPUP_LOC=By.xpath("//button[@class='close']");
 	private final By PRODUCT_IMAGE_QUICK_VIEW_POPUP_LOC=By.xpath(".//*[@id='myModal']//div[@class='quick-view-popup']");
-	private final By ONE_TIME_ORDER_DD_OPTION_LOC=By.xpath("//form[@id='addToCartFormAAPM030_237']//span[contains(text(),'One Time Order :')]");
 	private final By SUBSCRIBE_PLUS_SAVE_DD_OPTIONS_LOC=By.xpath("//div[@class='product-item'][1]//span[contains(text(),'subscribe + save')]");
 	private final By ADD_TO_CRP_DD_OPTIONS_LOC=By.xpath("//div[@class='product-item'][1]//span[contains(text(),'Add to CRP')]");
 	private final By PRODUCT_NAME_ON_CHECKOUT_POPUP_LOC = By.xpath("//div[@class='add-to-cart-item']//div[@class='details']/a[@class='name']");
@@ -49,7 +48,15 @@ public class StoreFrontShopSkinCarePage extends StoreFrontWebsiteBasePage{
 	private final By PRODUCT_POPUP_LOC=By.id("cboxClose");
 	private final By SPECIFIC_PRICE_QUICK_VIEW_POPUP_LOC = By.xpath("//div[@id='myModal']//span[@id='cust_price' and contains(text(),'Your Price')]");
 	private final By RETAIL_PRICE_QUICK_VIEW_POPUP_LOC = By.xpath("//div[@id='myModal']//span[@id='retail' and contains(text(),'Retail')]");
+	private final By ADD_TO_CART_BTN_ON_QUICK_VIEW_POPUP_LOC = By.xpath("//div[@id='myModal' and contains(@style,'display')]//button[contains(text(),'Add to cart')]");
+	private final By PC_PERKS_ORDER_BTN_ON_QUICK_VIEW_POPUP_LOC = By.xpath("//div[@id='myModal' and contains(@style,'display')]//button[contains(text(),'Add to cart')]/following-sibling::div//button[contains(@class,'addToCartButton_perks')]");
+	private final By ONE_TIME_ORDER_BTN_ON_QUICK_VIEW_POPUP_LOC = By.xpath("//div[@id='myModal' and contains(@style,'display')]//button[contains(text(),'Add to cart')]/following-sibling::div//span[contains(text(),'One Time Order')]/ancestor::button");
+	private final By PDP_DETAILS_ON_QUICK_VIEW_POPUP_LOC = By.xpath("//div[@id='myModal' and contains(@style,'display')]//div[@id='quickViewPDP']");
+	private final By PRODUCT_IMG_ON_QUICK_VIEW_POPUP_LOC = By.xpath("//div[@id='myModal' and contains(@style,'display')]//div[contains(@class,'product-image')]//img");
+	private final By PC_PERKS_PROMO_MSG_LOC = By.xpath("//div[@id='pc_perks_comp']/div[@class='content']/div[contains(text(),'Subscribe + Save 10% on this order Preferred Customer pricing offers up to')]");
 
+	private String productNameOnQuickViewPopupLoc = "//div[@id='myModal' and contains(@style,'display')]//div[contains(@class,'product-details')]/div[@class='name']/a[contains(text(),'%s')]";
+	private String regimenNameInShopByCategoryDD = "//div[@id='product-facet']//descendant::ul[2]//span[contains(text(),'%s')]";
 	private String specificPriceForProductLoc = "//div[contains(@class,'product__listing')]//div[@class='product-item'][%s]//em[@class='priceLabel' and contains(text(),'Your Price:')]/ancestor::span";
 	private String productLinkThroughProductNameLoc = "//div[@id='product_listing']/descendant::a[@class='name' and contains(text(),'%s')]";
 	private String addToCRPButtonThroughProductNumber = "//div[@id='product_listing']/descendant::span[contains(text(),'Add to CRP')][%s]";
@@ -412,10 +419,10 @@ public class StoreFrontShopSkinCarePage extends StoreFrontWebsiteBasePage{
 	 */
 	public boolean isAddToCartDDOptionsDisplayed(String userType){
 		if(userType.equalsIgnoreCase("PC")){
-			return driver.findElement(ONE_TIME_ORDER_DD_OPTION_LOC).isDisplayed() && driver.findElement(SUBSCRIBE_PLUS_SAVE_DD_OPTIONS_LOC).isDisplayed();
+			return driver.findElement(ADD_TO_BAG_OF_FIRST_PRODUCT).isDisplayed() && driver.findElement(SUBSCRIBE_PLUS_SAVE_DD_OPTIONS_LOC).isDisplayed();
 		}
 		else if(userType.equalsIgnoreCase("Consultant")){
-			return driver.findElement(ONE_TIME_ORDER_DD_OPTION_LOC).isDisplayed() && driver.findElement(ADD_TO_CRP_DD_OPTIONS_LOC).isDisplayed();
+			return driver.findElement(ADD_TO_BAG_OF_FIRST_PRODUCT).isDisplayed() && driver.findElement(ADD_TO_CRP_DD_OPTIONS_LOC).isDisplayed();
 		}
 		else
 			return false;
@@ -767,5 +774,142 @@ public class StoreFrontShopSkinCarePage extends StoreFrontWebsiteBasePage{
 		logger.info("Product Link clicked : " + productName);
 		return new StoreFrontProductDetailPage(driver);
 	}
+
+	/***
+	 * This method clickthe shop by category DD
+	 * 
+	 * @param
+	 * @return StoreFrontShopSkincarePage obj
+	 * 
+	 */
+	public StoreFrontWebsiteBasePage clickShopByCategoryDD(){
+		driver.click(REFINE_PRODUCT_CATEGORY_FILTER_DD_LOC);
+		logger.info("Refine category filter dropdown clicked");
+		return this;
+	}
+
+	/***
+	 * This method validates the category name is shop by category DD
+	 * 
+	 * @param 
+	 * @return boolean
+	 * 
+	 */
+	public boolean isCategoryNameVisibleInShopByCategoryDD(String categoryName){
+		return driver.isElementVisible(By.xpath(String.format(regimenNameInShopByCategoryDD, categoryName)));
+	}
+
+	/***
+	 * This method validates the presence of image on Quick view popup.
+	 * 
+	 * @param 
+	 * @return boolean
+	 * 
+	 */
+	public boolean isProductImagePresentAtQuickViewPopup(){
+		return driver.isElementVisible(PRODUCT_IMG_ON_QUICK_VIEW_POPUP_LOC);
+	}
+
+	/***
+	 * This method validates the presence of product name on quick view poup
+	 * 
+	 * @param 
+	 * @return boolean
+	 * 
+	 */
+	public boolean isProductNamePresentAtQuickViewPopupAsExpected(String productName){
+		driver.pauseExecutionFor(3000);
+		return driver.isElementVisible(By.xpath(String.format(productNameOnQuickViewPopupLoc, productName)));
+	}
+
+
+	/***
+	 * This method validates the presence of quantity text field  on quick view poup
+	 * 
+	 * @param 
+	 * @return boolean
+	 * 
+	 */
+	public boolean isQuantityTextFieldPresentAtQuickViewPopup(){
+		return driver.isElementVisible(QUANTITY_AT_QUICK_VIEW_OPTION_LOC);
+	}
+
+
+	/***
+	 * This method validates the presence of add to PC Perks button 
+	 * 
+	 * @param 
+	 * @return boolean
+	 * 
+	 */
+	public boolean isAddToPCPerksButtonPresentAtQuickViewPopup(){
+		driver.moveToElement(ADD_TO_CART_BTN_ON_QUICK_VIEW_POPUP_LOC);
+		return driver.isElementVisible(PC_PERKS_ORDER_BTN_ON_QUICK_VIEW_POPUP_LOC);
+	}
+
+
+	/***
+	 * This method validates the presence of one time order button 
+	 * 
+	 * @param 
+	 * @return boolean
+	 * 
+	 */
+	public boolean isOneTimeOrderButtonPresentAtQuickViewPopup(){
+		driver.moveToElement(ADD_TO_CART_BTN_ON_QUICK_VIEW_POPUP_LOC);
+		return driver.isElementVisible(ONE_TIME_ORDER_BTN_ON_QUICK_VIEW_POPUP_LOC);
+	}
+
+
+	/***
+	 * This method clicks the PC Perks button on Quick view popup 
+	 * 
+	 * @param 
+	 * @return boolean
+	 * 
+	 */
+	public StoreFrontShopSkinCarePage clickPCPerksButtonFromQuickViewPopup(){
+		driver.moveToElement(ADD_TO_CART_BTN_ON_QUICK_VIEW_POPUP_LOC);
+		driver.click(PC_PERKS_ORDER_BTN_ON_QUICK_VIEW_POPUP_LOC);
+		logger.info("PC perks button clicked from quick view popup");
+		return this;
+	}
+
+	/***
+	 * This method validates the presence of PC Perks promo message on quick view popup 
+	 * 
+	 * @param 
+	 * @return boolean
+	 * 
+	 */
+	public boolean isPCPerksPromoMessagePresentOnQuickViewPopup(){
+		return driver.isElementVisible(PC_PERKS_PROMO_MSG_LOC);
+	}
+
+	/***
+	 * This method clicks the Add to cart button on Quick view popup 
+	 * 
+	 * @param 
+	 * @return StoreFrontShopSkinCarePage object
+	 * 
+	 */
+	public StoreFrontShopSkinCarePage clickAddToCartButtonOnQuickViewPopup(){
+		driver.click(ADD_TO_CART_BTN_ON_QUICK_VIEW_POPUP_LOC);
+		logger.info("Add to Cart button clicked from quick view popup");
+		return this;
+	}
+
+	/***
+	 * This method enters the quantity of product on quick view popup
+	 * 
+	 * @param 
+	 * @return StoreFrontShopSkinCarePage object
+	 * 
+	 */
+	public StoreFrontShopSkinCarePage enterQuantityOfProductOnQuickViewPopup(){
+		driver.type(QUANTITY_AT_QUICK_VIEW_OPTION_LOC,"$$");
+		return this;
+	}
+
 
 }

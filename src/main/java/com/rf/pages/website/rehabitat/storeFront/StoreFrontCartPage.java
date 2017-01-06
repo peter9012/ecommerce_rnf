@@ -20,22 +20,21 @@ public class StoreFrontCartPage extends StoreFrontWebsiteBasePage{
 	private final By QUANTITY_OF_FIRST_PRODUCT_LOC = By.xpath("//div[@class='qty']//input[@id='quantity_0']");
 	private final By UPDATE_LINK_OF_FIRST_PRODUCT_LOC = By.xpath("//div[@class='qty']/descendant::input[@value='update'][1]");
 	private final By PC_ONE_TIME_FEE_MSG_LOC = By.xpath("//span[contains(text(),'PC PERKS ONE-TIME ENROLLMENT FEE')]");
-	private final By ADD_MORE_ITEMS_BTN_LOC = By.xpath("//div[@class='cart-container']/descendant::button[contains(text(),'Add More Items')][2]"); 
 	private final By CHECKOUT_BTN_LOC = By.xpath("//div[@class='cart-container']/descendant::button[contains(text(),'Checkout')][2]");
 	private final By FIRST_ITEM_CODE_LOC = By.xpath("//ul[contains(@class,'cart__list')]/descendant::li[@class='item-list-item'][1]//div[@class='item-code']");
 	private final By FIRST_ITEM_PRODUCT_NAME_LOC = By.xpath("//ul[contains(@class,'cart__list')]/descendant::li[@class='item-list-item'][1]//span[@class='item-name']");
-	private final By SUBTOTAL_LOC = By.xpath("//td[text()='Subtotal:']/following::td[1]");
 	private final By DELIVERY_LOC = By.xpath("//td[text()='Delivery:']/following::td[1]");
 	private final By TOTAL_NO_OF_ITEMS_IN_CART_LOC = By.xpath("//ul[contains(@class,'cart__list')]/descendant::li[@class='item-list-item']");
 	private final By CHECKOUT_CONFIRMATION_MSG_LOC=By.xpath("//div[@id='cartCheckoutModal']/p");
 	private final By PC_TERMS_AND_CONDITIONS_LINK_LOC = By.xpath("//a[contains(text(),'PC Perks Terms & Conditions')]");
 	private final By SHOPPING_CART_TOTAL_PRODUCTS_LOC = By.xpath("//h1[contains(text(),'Your Shopping Cart')]/span");
 	private final By CART_PRODUCT_LOC = By.xpath("//ul[contains(@class,'item-list cart')]/li[@class='item-list-item']");
-	private final By ADD_MORE_ITEMS_BTN_PC_AUTOSHIP_CART_LOC = By.xpath("//div[@class='cart-container']/descendant::button[contains(text(),'Add More Items')]");
 	private final By CART_LOGIN_LOC = By.xpath("//div[@class='cartLogin']//a[text()='Log in']");
+	private final By SHIPPING_METHOD_AFTER_ORDER_PLACED = By.xpath("//div[contains(text(),'Shipping Method')]");
+	private final By FIRST_ITEM_PRODUCT_PRICE_LOC = By.xpath("//ul[contains(@class,'cart__list')]/descendant::li[@class='item-list-item'][1]//div[@class='item-price'][1]");
+	private final By ORDER_TOTAL_LOC = By.xpath("//td[text()='Order Total']/following::td[1]");
 
-	private String productNameInAllItemsInCartLoc = "//ul[@class='item-list cart__list']//div[@class='item-info']//span[@class='item-name' and contains(text(),'%s')]";
-	private String productPriceInAllItemsInCart = "//ul[@class='item-list cart__list']//div[@class='item-info']//span[@class='item-name' and contains(text(),'%s')]/ancestor::div[1]/following-sibling::div[@class='item-price']";
+	private String productPriceInAllItemsInCartLoc = "//ul[@class='item-list cart__list']//div[@class='item-info']//span[@class='item-name' and contains(text(),'%s')]/ancestor::div[1]/following-sibling::div[@class='item-price']";
 	private String recentlyViewProductOnCartPageLoc = "//div[@id='recentlyViewedTitle']/following::div[@class='owl-item active']//a[contains(text(),'%s')]";
 	private String removeLinkForProductOnCartLoc = "removeEntry_";
 
@@ -108,21 +107,6 @@ public class StoreFrontCartPage extends StoreFrontWebsiteBasePage{
 	}
 
 	/***
-	 * This method clicks on the Add More Items button
-	 * @return
-	 */
-	public void clickAddMoreItemsBtn(){
-		if(driver.isElementPresent(ADD_MORE_ITEMS_BTN_LOC)){
-			driver.click(ADD_MORE_ITEMS_BTN_LOC);
-		}
-		else{
-			driver.click(ADD_MORE_ITEMS_BTN_PC_AUTOSHIP_CART_LOC);
-		}
-		logger.info("clicked on add more items button");
-		driver.waitForPageLoad();
-	}
-
-	/***
 	 * This method click checkout button 
 	 * 
 	 * @param
@@ -164,19 +148,6 @@ public class StoreFrontCartPage extends StoreFrontWebsiteBasePage{
 		}
 		logger.info("product name of "+itemNumber+" is "+productName);
 		return productName;
-	}
-
-	/***
-	 * This method get get subtotal 
-	 * 
-	 * @param 
-	 * @return subtotal
-	 * 
-	 */
-	public String getSubtotalofItems(){
-		String subtotal = driver.findElement(SUBTOTAL_LOC).getText();
-		logger.info("Subtotal of product is "+subtotal);
-		return subtotal;
 	}
 
 	/***
@@ -345,17 +316,6 @@ public class StoreFrontCartPage extends StoreFrontWebsiteBasePage{
 	}
 
 	/***
-	 * This method click pc terms and conditions link 
-	 * 
-	 * @param
-	 * @return StoreFrontCartPage object
-	 */
-	public boolean isProductAddedToCartPresentOnCartPage(String productName){
-		return driver.isElementVisible(By.xpath(String.format(productNameInAllItemsInCartLoc,productName)));
-	}
-
-
-	/***
 	 * This method click on the cart login button
 	 * 
 	 * @param
@@ -374,7 +334,7 @@ public class StoreFrontCartPage extends StoreFrontWebsiteBasePage{
 	 * @return String price
 	 */
 	public String getPriceOfProductFromAllItemsInCart(String productName){
-		String price = driver.getText(By.xpath(String.format(productPriceInAllItemsInCart,productName))).replace("$","").trim();
+		String price = driver.getText(By.xpath(String.format(productPriceInAllItemsInCartLoc,productName))).replace("$","").trim();
 		return price;
 	}
 
@@ -386,6 +346,90 @@ public class StoreFrontCartPage extends StoreFrontWebsiteBasePage{
 	 */
 	public boolean isProductPriceUpdatedInCartAsPerUser(String specificPrice, String priceOnCart){
 		return priceOnCart.contains(specificPrice);
+	}
+
+	/***
+	 * This method get the shipping Profile on Confirmation Page 
+	 * 
+	 * @param 
+	 * @return Shipping Profile Name
+	 * 
+	 */
+	public String getShippingProfileFromConfirmationPage(){
+		String profileNameAtConfirmation=driver.findElement(By.xpath("//div[@class='orderShippingAddress']//li[1]")).getText();
+		logger.info("Shipping Profile name at Confimation Page : "+profileNameAtConfirmation);
+		return profileNameAtConfirmation;
+	}
+
+	/***
+	 * This method get the shipping method after Successful Checkout 
+	 * 
+	 * @param 
+	 * @return Shipping method
+	 * 
+	 */
+	public String getShippingMethodAfterPlacedOrder(){
+		String shippingMethod = driver.getText(SHIPPING_METHOD_AFTER_ORDER_PLACED).replaceAll("[^-?0-9]+","");
+		logger.info("Shipping method at order confirmation page : "+shippingMethod);
+		return shippingMethod;
+	}
+
+	/***
+	 * This method get the Last four Digits of Credit Card from Confirmation Page 
+	 * 
+	 * @param 
+	 * @return 4 Digits
+	 * 
+	 */
+
+	public String getLastFourNumbersOfBillingDetailsOnConFirmationPage(){
+		String ccNumber=driver.findElement(By.xpath("//div[@class='orderBillingDetails']/div[2]")).getText();
+		String lastFourNumbers=ccNumber.substring(ccNumber.lastIndexOf(' ') + 1);
+		logger.info("Last Four Numbers of Billing Profile at Confimation Page : "+lastFourNumbers);
+		return lastFourNumbers;
+	}
+
+	/***
+	 * This method get the Last four Digits of Credit Card from Confirmation Page 
+	 * 
+	 * @param 
+	 * @return 4 Digits
+	 * 
+	 */
+	public String getTotalChargeOnConFirmationPage(){
+		String charge=driver.findElement(By.xpath("//div[@class='orderBillingDetails']/div[2]")).getText();
+		String totalCharge=charge.substring(charge.lastIndexOf('$') + 1);
+		logger.info("Total Charge with Billing Information at Confimation Page : "+totalCharge);
+		return totalCharge;
+	}
+
+	/***
+	 * This method get Product Price
+	 * 
+	 * @param 
+	 * @return orderTotal
+	 * 
+	 */
+	public String getProductPrice(String itemNumber){
+		String productPrice = null;
+		if(itemNumber.equalsIgnoreCase("1")){
+			productPrice = driver.findElement(FIRST_ITEM_PRODUCT_PRICE_LOC).getText();
+		}
+		logger.info("product price of "+itemNumber+" is "+productPrice);
+		return productPrice;
+	}
+
+	/***
+	 * This method get Order Total
+	 * 
+	 * @param 
+	 * @return orderTotal
+	 * 
+	 */
+	public String getOrderTotal(){
+		String orderTotal=driver.findElement(ORDER_TOTAL_LOC).getText();
+		logger.info("Subtotal of product is "+orderTotal);
+		return orderTotal;
 	}
 
 }

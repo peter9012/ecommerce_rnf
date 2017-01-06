@@ -135,158 +135,176 @@ public class MiniCartTest extends StoreFrontWebsiteBaseTest{
 	public void testPCAbleToViewMiniAutoshipCart_343(){
 		//duplicate as TC-325 Mini Cart- Autoship
 	}
-	
-	/***
-	  * qTest : TC-563 Anonymous user adds products to the cart for adhoc order
-	  * Description : This test validates that the product added by a anonymous user should 
-	  * be present in the cart for the valid user if it login in the same session.  
-	  * 
-	  *     
-	  */
 
-	 @Test
-	 public void testAnonymousUserAddsProductsToTheCartForAdhocOrder_563(){
-	  String productName = null;
-	  String productNameOnCheckoutPopup = null;
-	  sfHomePage.loginToStoreFront(TestConstants.CONSULTANT_USERNAME, password);
-	  sfCartPage = sfHomePage.clickMiniCartBagLink();
-	  sfCartPage.removeAllProductsFromCart();
-	  sfCartPage.clickWelcomeDropdown();
-	  sfCartPage.logout();
-	  sfShopSkinCarePage = sfHomePage.clickAllProducts();
-	  productName = sfShopSkinCarePage.getProductNameFromAllProductPage("1");
-	  sfShopSkinCarePage.addFirstProductToBag();
-	  productNameOnCheckoutPopup = sfShopSkinCarePage.getProductNameFromCheckoutPopup();
-	  s_assert.assertTrue(sfShopSkinCarePage.isAddedToYourShoppingCartHeadlinePresentOnCheckoutPopup(),"Added to ypur shopping cart header is not present on checkout popup");
-	  s_assert.assertTrue(productNameOnCheckoutPopup.contains(productName),"Name of Product added to Bag does not matches with the product name on checkout popup. Expeced : " + productName + ". Actual : " + productNameOnCheckoutPopup);
-	  sfShopSkinCarePage.checkoutTheCartFromPopUp();
-	  s_assert.assertTrue(sfCartPage.isYourShoppingCartHeaderPresentOnCartPage(),"Your Shopping cart header is not present when redirected after clicking the checkout button from checkout pop up");
-	  s_assert.assertTrue(sfCartPage.isProductAddedToCartPresentOnCartPage(productNameOnCheckoutPopup),"Product added to cart : "+productName+" is not present on the cart page");
-	  sfCartPage.clickOnCartLoginLink();
-	  sfCartPage.loginToStoreFrontExcludingClickOnLoginIcon(TestConstants.CONSULTANT_USERNAME, password);
-	  sfCartPage.clickMiniCartBagLink();
-	  s_assert.assertTrue(sfCartPage.isProductAddedToCartPresentOnCartPage(productNameOnCheckoutPopup),"Product added to cart : "+productName+" is not present on the cart page");
-	  s_assert.assertAll();
-	 }
 	/***
-	  * qTest : TC-564 User has previously added items to the cart
-	  * Description : Description : This test validates that the product added by a anonymous user
-	  *  should be present in the cart along with the items added by the valid user if it login in the same session.  
-	  * 
-	  *     
-	  */
+	 * qTest : TC-563 Anonymous user adds products to the cart for adhoc order
+	 * Description : This test validates that the product added by a anonymous user should 
+	 * be present in the cart for the valid user if it login in the same session.  
+	 * 
+	 *     
+	 */
 
-	 @Test
-	 public void testUserHasPreviouslyAddedItemsToTheCart_564(){
-	  String productName = null;
-	  String productNameToAddByUser = null;
-	  String productNameOnCheckoutPopup = null;
-	  String productNameAddedByUser = null;
-	  sfHomePage.loginToStoreFront(TestConstants.CONSULTANT_USERNAME, password);
-	  sfCartPage = sfHomePage.clickMiniCartBagLink();
-	  sfCartPage.removeAllProductsFromCart();
-	  sfCartPage.clickWelcomeDropdown();
-	  sfCartPage.logout();
-	  sfShopSkinCarePage = sfHomePage.clickAllProducts();
-	  productName = sfShopSkinCarePage.getProductNameFromAllProductPage("1");
-	  sfShopSkinCarePage.addFirstProductToBag();
-	  productNameOnCheckoutPopup = sfShopSkinCarePage.getProductNameFromCheckoutPopup();
-	  s_assert.assertTrue(sfShopSkinCarePage.isAddedToYourShoppingCartHeadlinePresentOnCheckoutPopup(),"Added to ypur shopping cart header is not present on checkout popup");
-	  s_assert.assertTrue(productNameOnCheckoutPopup.contains(productName),"Name of Product added to Bag does not matches with the product name on checkout popup. Expeced : " + productName + ". Actual : " + productNameOnCheckoutPopup);
-	  sfShopSkinCarePage.checkoutTheCartFromPopUp();
-	  s_assert.assertTrue(sfCartPage.isYourShoppingCartHeaderPresentOnCartPage(),"Your Shopping cart header is not present when redirected after clicking the checkout button from checkout pop up");
-	  s_assert.assertTrue(sfCartPage.isProductAddedToCartPresentOnCartPage(productNameOnCheckoutPopup),"Product added to cart : "+productName+" is not present on the cart page");
-	  sfCartPage.clickOnCartLoginLink();
-	  sfCartPage.loginToStoreFrontExcludingClickOnLoginIcon(TestConstants.CONSULTANT_USERNAME, password);
-	  sfCartPage.clickMiniCartBagLink();
-	  s_assert.assertTrue(sfCartPage.isProductAddedToCartPresentOnCartPage(productNameOnCheckoutPopup),"Product added to cart : "+productName+" is not present on the cart page");
-	  sfCartPage.clickRodanAndFieldsLogo();
-	  sfCartPage.clickAllProducts();
-	  productNameToAddByUser = sfShopSkinCarePage.getProductNameFromAllProductPage("2");
-	  sfShopSkinCarePage.addProductToBag(2);
-	  productNameAddedByUser = sfShopSkinCarePage.getProductNameFromCheckoutPopup();
-	  s_assert.assertTrue(sfShopSkinCarePage.isAddedToYourShoppingCartHeadlinePresentOnCheckoutPopup(),"Added to ypur shopping cart header is not present on checkout popup");
-	  s_assert.assertTrue(productNameAddedByUser.contains(productNameToAddByUser),"Name of Product added to Bag does not matches with the product name on checkout popup. Expeced : " + productNameToAddByUser + ". Actual : " + productNameAddedByUser);
-	  sfShopSkinCarePage.checkoutTheCartFromPopUp();
-	  s_assert.assertTrue(sfCartPage.isProductAddedToCartPresentOnCartPage(productNameOnCheckoutPopup),"Product added to cart : "+productName+" as Anonymous user is not present on the cart page");
-	  s_assert.assertTrue(sfCartPage.isProductAddedToCartPresentOnCartPage(productNameAddedByUser),"Product added to cart : "+productNameToAddByUser+" as valid user is not present on the cart page");
-	  s_assert.assertAll();
-	 }
+	@Test
+	public void testAnonymousUserAddsProductsToTheCartForAdhocOrder_563(){
+		String productName = null;
+		String productNameOnCheckoutPopup = null;
+		sfHomePage.loginToStoreFront(TestConstants.CONSULTANT_USERNAME, password);
+		sfCartPage = sfHomePage.clickMiniCartBagLink();
+		sfCartPage.removeAllProductsFromCart();
+		sfCartPage.clickWelcomeDropdown();
+		sfCartPage.logout();
+		sfShopSkinCarePage = sfHomePage.clickAllProducts();
+		productName = sfShopSkinCarePage.getProductNameFromAllProductPage("1");
+		sfShopSkinCarePage.addFirstProductToBag();
+		productNameOnCheckoutPopup = sfShopSkinCarePage.getProductNameFromCheckoutPopup();
+		s_assert.assertTrue(sfShopSkinCarePage.isAddedToYourShoppingCartHeadlinePresentOnCheckoutPopup(),"Added to ypur shopping cart header is not present on checkout popup");
+		s_assert.assertTrue(productNameOnCheckoutPopup.contains(productName),"Name of Product added to Bag does not matches with the product name on checkout popup. Expeced : " + productName + ". Actual : " + productNameOnCheckoutPopup);
+		sfShopSkinCarePage.checkoutTheCartFromPopUp();
+		s_assert.assertTrue(sfCartPage.isYourShoppingCartHeaderPresentOnCartPage(),"Your Shopping cart header is not present when redirected after clicking the checkout button from checkout pop up");
+		s_assert.assertTrue(sfCartPage.isProductAddedToCartPresentOnCartPage(productNameOnCheckoutPopup),"Product added to cart : "+productName+" is not present on the cart page");
+		sfCartPage.clickOnCartLoginLink();
+		sfCartPage.loginToStoreFrontExcludingClickOnLoginIcon(TestConstants.CONSULTANT_USERNAME, password);
+		sfCartPage.clickMiniCartBagLink();
+		s_assert.assertTrue(sfCartPage.isProductAddedToCartPresentOnCartPage(productNameOnCheckoutPopup),"Product added to cart : "+productName+" is not present on the cart page");
+		s_assert.assertAll();
+	}
 	/***
-	  * qTest : TC-565 PC or Consultant user adds products to the cart anonymously
-	  * Description : Description : This test validates that the product added by a anonymous user should be present
-	  *  and price should get updated in the cart for the same product for the valid user if it login in the same session.  
-	  * 
-	  *     
-	  */
+	 * qTest : TC-564 User has previously added items to the cart
+	 * Description : Description : This test validates that the product added by a anonymous user
+	 *  should be present in the cart along with the items added by the valid user if it login in the same session.  
+	 * 
+	 *     
+	 */
 
-	 @Test
-	 public void testPCOrConsultantUserAddsProductsToTheCartAnonymously_565(){
-	  String productName = null;
-	  String productNameOnCheckoutPopup = null;
-	  String priceForAnonymousUser = null;
-	  String specificPriceForValidUser = null;
-	  String priceOnCartPageForValidUser = null;
-	  sfHomePage.loginToStoreFront(TestConstants.CONSULTANT_USERNAME, password);
-	  sfCartPage = sfHomePage.clickMiniCartBagLink();
-	  sfCartPage.removeAllProductsFromCart();
-	  sfCartPage.clickWelcomeDropdown();
-	  sfCartPage.logout();
-	  sfShopSkinCarePage = sfHomePage.clickAllProducts();
-	  productName = sfShopSkinCarePage.getProductNameFromAllProductPage("1");
-	  sfShopSkinCarePage.addFirstProductToBag();
-	  productNameOnCheckoutPopup = sfShopSkinCarePage.getProductNameFromCheckoutPopup();
-	  s_assert.assertTrue(sfShopSkinCarePage.isAddedToYourShoppingCartHeadlinePresentOnCheckoutPopup(),"Added to ypur shopping cart header is not present on checkout popup");
-	  s_assert.assertTrue(productNameOnCheckoutPopup.contains(productName),"Name of Product added to Bag does not matches with the product name on checkout popup. Expeced : " + productName + ". Actual : " + productNameOnCheckoutPopup);
-	  sfShopSkinCarePage.checkoutTheCartFromPopUp();
-	  priceForAnonymousUser = sfCartPage.getPriceOfProductFromAllItemsInCart(productName);
-	  s_assert.assertTrue(sfCartPage.isYourShoppingCartHeaderPresentOnCartPage(),"Your Shopping cart header is not present when redirected after clicking the checkout button from checkout pop up");
-	  s_assert.assertTrue(sfCartPage.isProductAddedToCartPresentOnCartPage(productNameOnCheckoutPopup),"Product added to cart : "+productName+" is not present on the cart page");
-	  sfCartPage.clickOnCartLoginLink();
-	  sfCartPage.loginToStoreFrontExcludingClickOnLoginIcon(TestConstants.CONSULTANT_USERNAME, password);
-	  sfCartPage.clickAllProducts();
-	  sfProductDetailPage = sfShopSkinCarePage.clickOnProductNameLink(productName);
-	  specificPriceForValidUser = sfProductDetailPage.getSpecificPricePresentOnPDPPage();
-	  sfCartPage.clickMiniCartBagLink();
-	  priceOnCartPageForValidUser = sfCartPage.getPriceOfProductFromAllItemsInCart(productName);
-	  s_assert.assertTrue(sfCartPage.isProductAddedToCartPresentOnCartPage(productNameOnCheckoutPopup),"Product added to cart : "+productName+" is not present on the cart page for Consutant");
-	  s_assert.assertFalse(sfCartPage.isProductPriceUpdatedInCartAsPerUser(priceForAnonymousUser,priceOnCartPageForValidUser),"Price of product on cart page is still the same as of anonymous user when logged in as Consultant");
-	  s_assert.assertTrue(sfCartPage.isProductPriceUpdatedInCartAsPerUser(specificPriceForValidUser,priceOnCartPageForValidUser),"Specific price do not get updated as per consultant user on Cart page . Expected : " + specificPriceForValidUser + ". Actual : " + priceOnCartPageForValidUser);
-	  
-	  // For PC User
-	  sfCartPage.clickWelcomeDropdown();
-	  sfCartPage.logout();
-	  sfHomePage.loginToStoreFront(TestConstants.PC_USERNAME, password);
-	  sfCartPage = sfHomePage.clickMiniCartBagLink();
-	  sfCartPage.removeAllProductsFromCart();
-	  sfCartPage.clickWelcomeDropdown();
-	  sfCartPage.logout();
-	  sfShopSkinCarePage = sfHomePage.clickAllProducts();
-	  productName = null;
-	  productName = sfShopSkinCarePage.getProductNameFromAllProductPage("1");
-	  sfShopSkinCarePage.addFirstProductToBag();
-	  productNameOnCheckoutPopup = null;
-	  productNameOnCheckoutPopup = sfShopSkinCarePage.getProductNameFromCheckoutPopup();
-	  s_assert.assertTrue(sfShopSkinCarePage.isAddedToYourShoppingCartHeadlinePresentOnCheckoutPopup(),"Added to ypur shopping cart header is not present on checkout popup");
-	  s_assert.assertTrue(productNameOnCheckoutPopup.contains(productName),"Name of Product added to Bag does not matches with the product name on checkout popup. Expeced : " + productName + ". Actual : " + productNameOnCheckoutPopup);
-	  sfShopSkinCarePage.checkoutTheCartFromPopUp();
-	  priceForAnonymousUser = null;
-	  priceForAnonymousUser = sfCartPage.getPriceOfProductFromAllItemsInCart(productName);
-	  s_assert.assertTrue(sfCartPage.isYourShoppingCartHeaderPresentOnCartPage(),"Your Shopping cart header is not present when redirected after clicking the checkout button from checkout pop up");
-	  s_assert.assertTrue(sfCartPage.isProductAddedToCartPresentOnCartPage(productNameOnCheckoutPopup),"Product added to cart : "+productName+" is not present on the cart page");
-	  sfCartPage.clickOnCartLoginLink();
-	  sfCartPage.loginToStoreFrontExcludingClickOnLoginIcon(TestConstants.PC_USERNAME, password);
-	  sfCartPage.clickAllProducts();
-	  sfProductDetailPage = sfShopSkinCarePage.clickOnProductNameLink(productName);
-	  specificPriceForValidUser = null;
-	  specificPriceForValidUser = sfProductDetailPage.getSpecificPricePresentOnPDPPage();
-	  sfCartPage.clickMiniCartBagLink();
-	  priceOnCartPageForValidUser = null;
-	  priceOnCartPageForValidUser = sfCartPage.getPriceOfProductFromAllItemsInCart(productName);
-	  s_assert.assertTrue(sfCartPage.isProductAddedToCartPresentOnCartPage(productNameOnCheckoutPopup),"Product added to cart : "+productName+" is not present on the cart page for PC User");
-	  s_assert.assertFalse(sfCartPage.isProductPriceUpdatedInCartAsPerUser(priceForAnonymousUser,priceOnCartPageForValidUser),"Price of product on cart page is still the same as of anonymous user when logged in as PC User");
-	  s_assert.assertTrue(sfCartPage.isProductPriceUpdatedInCartAsPerUser(specificPriceForValidUser,priceOnCartPageForValidUser),"Specific price do not get updated as per PC user on Cart page . Expected : " + specificPriceForValidUser + ". Actual : " + priceOnCartPageForValidUser);
-	  s_assert.assertAll();
-	 }
+	@Test
+	public void testUserHasPreviouslyAddedItemsToTheCart_564(){
+		String productName = null;
+		String productNameToAddByUser = null;
+		String productNameOnCheckoutPopup = null;
+		String productNameAddedByUser = null;
+		sfHomePage.loginToStoreFront(TestConstants.CONSULTANT_USERNAME, password);
+		sfCartPage = sfHomePage.clickMiniCartBagLink();
+		sfCartPage.removeAllProductsFromCart();
+		sfCartPage.clickWelcomeDropdown();
+		sfCartPage.logout();
+		sfShopSkinCarePage = sfHomePage.clickAllProducts();
+		productName = sfShopSkinCarePage.getProductNameFromAllProductPage("1");
+		sfShopSkinCarePage.addFirstProductToBag();
+		productNameOnCheckoutPopup = sfShopSkinCarePage.getProductNameFromCheckoutPopup();
+		s_assert.assertTrue(sfShopSkinCarePage.isAddedToYourShoppingCartHeadlinePresentOnCheckoutPopup(),"Added to ypur shopping cart header is not present on checkout popup");
+		s_assert.assertTrue(productNameOnCheckoutPopup.contains(productName),"Name of Product added to Bag does not matches with the product name on checkout popup. Expeced : " + productName + ". Actual : " + productNameOnCheckoutPopup);
+		sfShopSkinCarePage.checkoutTheCartFromPopUp();
+		s_assert.assertTrue(sfCartPage.isYourShoppingCartHeaderPresentOnCartPage(),"Your Shopping cart header is not present when redirected after clicking the checkout button from checkout pop up");
+		s_assert.assertTrue(sfCartPage.isProductAddedToCartPresentOnCartPage(productNameOnCheckoutPopup),"Product added to cart : "+productName+" is not present on the cart page");
+		sfCartPage.clickOnCartLoginLink();
+		sfCartPage.loginToStoreFrontExcludingClickOnLoginIcon(TestConstants.CONSULTANT_USERNAME, password);
+		sfCartPage.clickMiniCartBagLink();
+		s_assert.assertTrue(sfCartPage.isProductAddedToCartPresentOnCartPage(productNameOnCheckoutPopup),"Product added to cart : "+productName+" is not present on the cart page");
+		sfCartPage.clickRodanAndFieldsLogo();
+		sfCartPage.clickAllProducts();
+		productNameToAddByUser = sfShopSkinCarePage.getProductNameFromAllProductPage("2");
+		sfShopSkinCarePage.addProductToBag(2);
+		productNameAddedByUser = sfShopSkinCarePage.getProductNameFromCheckoutPopup();
+		s_assert.assertTrue(sfShopSkinCarePage.isAddedToYourShoppingCartHeadlinePresentOnCheckoutPopup(),"Added to ypur shopping cart header is not present on checkout popup");
+		s_assert.assertTrue(productNameAddedByUser.contains(productNameToAddByUser),"Name of Product added to Bag does not matches with the product name on checkout popup. Expeced : " + productNameToAddByUser + ". Actual : " + productNameAddedByUser);
+		sfShopSkinCarePage.checkoutTheCartFromPopUp();
+		s_assert.assertTrue(sfCartPage.isProductAddedToCartPresentOnCartPage(productNameOnCheckoutPopup),"Product added to cart : "+productName+" as Anonymous user is not present on the cart page");
+		s_assert.assertTrue(sfCartPage.isProductAddedToCartPresentOnCartPage(productNameAddedByUser),"Product added to cart : "+productNameToAddByUser+" as valid user is not present on the cart page");
+		s_assert.assertAll();
+	}
+	/***
+	 * qTest : TC-565 PC or Consultant user adds products to the cart anonymously
+	 * Description : Description : This test validates that the product added by a anonymous user should be present
+	 *  and price should get updated in the cart for the same product for the valid user if it login in the same session.  
+	 * 
+	 *     
+	 */
+
+	@Test
+	public void testPCOrConsultantUserAddsProductsToTheCartAnonymously_565(){
+		String productName = null;
+		String productNameOnCheckoutPopup = null;
+		String priceForAnonymousUser = null;
+		String specificPriceForValidUser = null;
+		String priceOnCartPageForValidUser = null;
+		sfHomePage.loginToStoreFront(TestConstants.CONSULTANT_USERNAME, password);
+		sfCartPage = sfHomePage.clickMiniCartBagLink();
+		sfCartPage.removeAllProductsFromCart();
+		sfCartPage.clickWelcomeDropdown();
+		sfCartPage.logout();
+		sfShopSkinCarePage = sfHomePage.clickAllProducts();
+		productName = sfShopSkinCarePage.getProductNameFromAllProductPage("1");
+		sfShopSkinCarePage.addFirstProductToBag();
+		productNameOnCheckoutPopup = sfShopSkinCarePage.getProductNameFromCheckoutPopup();
+		s_assert.assertTrue(sfShopSkinCarePage.isAddedToYourShoppingCartHeadlinePresentOnCheckoutPopup(),"Added to ypur shopping cart header is not present on checkout popup");
+		s_assert.assertTrue(productNameOnCheckoutPopup.contains(productName),"Name of Product added to Bag does not matches with the product name on checkout popup. Expeced : " + productName + ". Actual : " + productNameOnCheckoutPopup);
+		sfShopSkinCarePage.checkoutTheCartFromPopUp();
+		priceForAnonymousUser = sfCartPage.getPriceOfProductFromAllItemsInCart(productName);
+		s_assert.assertTrue(sfCartPage.isYourShoppingCartHeaderPresentOnCartPage(),"Your Shopping cart header is not present when redirected after clicking the checkout button from checkout pop up");
+		s_assert.assertTrue(sfCartPage.isProductAddedToCartPresentOnCartPage(productNameOnCheckoutPopup),"Product added to cart : "+productName+" is not present on the cart page");
+		sfCartPage.clickOnCartLoginLink();
+		sfCartPage.loginToStoreFrontExcludingClickOnLoginIcon(TestConstants.CONSULTANT_USERNAME, password);
+		sfCartPage.clickAllProducts();
+		sfProductDetailPage = sfShopSkinCarePage.clickOnProductNameLink(productName);
+		specificPriceForValidUser = sfProductDetailPage.getSpecificPricePresentOnPDPPage();
+		sfCartPage.clickMiniCartBagLink();
+		priceOnCartPageForValidUser = sfCartPage.getPriceOfProductFromAllItemsInCart(productName);
+		s_assert.assertTrue(sfCartPage.isProductAddedToCartPresentOnCartPage(productNameOnCheckoutPopup),"Product added to cart : "+productName+" is not present on the cart page for Consutant");
+		s_assert.assertFalse(sfCartPage.isProductPriceUpdatedInCartAsPerUser(priceForAnonymousUser,priceOnCartPageForValidUser),"Price of product on cart page is still the same as of anonymous user when logged in as Consultant");
+		s_assert.assertTrue(sfCartPage.isProductPriceUpdatedInCartAsPerUser(specificPriceForValidUser,priceOnCartPageForValidUser),"Specific price do not get updated as per consultant user on Cart page . Expected : " + specificPriceForValidUser + ". Actual : " + priceOnCartPageForValidUser);
+
+		// For PC User
+		sfCartPage.clickWelcomeDropdown();
+		sfCartPage.logout();
+		sfHomePage.loginToStoreFront(TestConstants.PC_USERNAME, password);
+		sfCartPage = sfHomePage.clickMiniCartBagLink();
+		sfCartPage.removeAllProductsFromCart();
+		sfCartPage.clickWelcomeDropdown();
+		sfCartPage.logout();
+		sfShopSkinCarePage = sfHomePage.clickAllProducts();
+		productName = null;
+		productName = sfShopSkinCarePage.getProductNameFromAllProductPage("1");
+		sfShopSkinCarePage.addFirstProductToBag();
+		productNameOnCheckoutPopup = null;
+		productNameOnCheckoutPopup = sfShopSkinCarePage.getProductNameFromCheckoutPopup();
+		s_assert.assertTrue(sfShopSkinCarePage.isAddedToYourShoppingCartHeadlinePresentOnCheckoutPopup(),"Added to ypur shopping cart header is not present on checkout popup");
+		s_assert.assertTrue(productNameOnCheckoutPopup.contains(productName),"Name of Product added to Bag does not matches with the product name on checkout popup. Expeced : " + productName + ". Actual : " + productNameOnCheckoutPopup);
+		sfShopSkinCarePage.checkoutTheCartFromPopUp();
+		priceForAnonymousUser = null;
+		priceForAnonymousUser = sfCartPage.getPriceOfProductFromAllItemsInCart(productName);
+		s_assert.assertTrue(sfCartPage.isYourShoppingCartHeaderPresentOnCartPage(),"Your Shopping cart header is not present when redirected after clicking the checkout button from checkout pop up");
+		s_assert.assertTrue(sfCartPage.isProductAddedToCartPresentOnCartPage(productNameOnCheckoutPopup),"Product added to cart : "+productName+" is not present on the cart page");
+		sfCartPage.clickOnCartLoginLink();
+		sfCartPage.loginToStoreFrontExcludingClickOnLoginIcon(TestConstants.PC_USERNAME, password);
+		sfCartPage.clickAllProducts();
+		sfProductDetailPage = sfShopSkinCarePage.clickOnProductNameLink(productName);
+		specificPriceForValidUser = null;
+		specificPriceForValidUser = sfProductDetailPage.getSpecificPricePresentOnPDPPage();
+		sfCartPage.clickMiniCartBagLink();
+		priceOnCartPageForValidUser = null;
+		priceOnCartPageForValidUser = sfCartPage.getPriceOfProductFromAllItemsInCart(productName);
+		s_assert.assertTrue(sfCartPage.isProductAddedToCartPresentOnCartPage(productNameOnCheckoutPopup),"Product added to cart : "+productName+" is not present on the cart page for PC User");
+		s_assert.assertFalse(sfCartPage.isProductPriceUpdatedInCartAsPerUser(priceForAnonymousUser,priceOnCartPageForValidUser),"Price of product on cart page is still the same as of anonymous user when logged in as PC User");
+		s_assert.assertTrue(sfCartPage.isProductPriceUpdatedInCartAsPerUser(specificPriceForValidUser,priceOnCartPageForValidUser),"Specific price do not get updated as per PC user on Cart page . Expected : " + specificPriceForValidUser + ". Actual : " + priceOnCartPageForValidUser);
+		s_assert.assertAll();
+	}
+
+	/***
+	 * qTest : TC-344 As a PC, Retail/Anon User, Consultant, I will be able to view the mini cart
+	 * Description : This test case validates mini cart
+	 */
+	@Test
+	public void testAsPCAndRCAbleToViewMiniAutoshipCart_344(){
+		sfHomePage.loginToStoreFront(TestConstants.PC_EMAIL, password);
+		sfShopSkinCarePage = sfHomePage.clickAllProducts();
+		sfShopSkinCarePage.selectFirstProduct();
+		sfCartPage = sfShopSkinCarePage.checkoutTheCartFromPopUp();
+		String productName = sfCartPage.getProductName("1").toLowerCase();
+		sfCartPage.clickRodanAndFieldsLogo();
+		sfCartPage.hoverOnMiniCartBagIcon();
+		String productNameInMiniCart = sfCartPage.getProductNameFromMiniCart("1").toLowerCase();
+		s_assert.assertTrue(productName.contains(productNameInMiniCart), "Expected first product name in mini cart is "+productName+" Actual on UI is "+productNameInMiniCart);
+		s_assert.assertAll();
+	}
 
 }

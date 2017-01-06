@@ -29,8 +29,6 @@ public class StoreFrontHomePage extends StoreFrontWebsiteBasePage{
 	private final By DIRECT_LINK_ASSOCIATION = By.xpath("//div[@class='content']//a[contains(text(),'Direct Selling Association')]");
 	private final By DSA_CODE_OF_ETHICS_LINK = By.xpath("//a[contains(text(),'DSA Code of Ethics')]");
 	private final By DONATE_NOW_BUTTON_LOC = By.xpath("//a[contains(text(),'Donate Now')]");
-	private final By SEARCH_BOX = By.id("search-box");
-	private final By SEARCH_ICON_NEAR_SEARCH_BOX = By.xpath("//input[@id='search-box']/preceding::span[1]");
 	private final By ERROR_MSG_TEXT_LOC = By.xpath("//div[@class='content']//h2");
 	private final By LOGIN_OR_REGISTER_TXT_LOC = By.xpath("//h1[contains(text(),'LOG IN OR REGISTER')]");
 	private final By INCORRECT_USERNAME_PASSOWRD_TXT_LOC = By.xpath("//div[contains(@class,'alert-danger') and contains(text(),'') or contains(text(),'Your username or password was incorrect.')]");
@@ -72,15 +70,13 @@ public class StoreFrontHomePage extends StoreFrontWebsiteBasePage{
 	private final By PREFIX_FIELD_LOC = By.id("prefixId"); 
 	private final By PREFIX_AVAILABLE_LOC = By.xpath("//div[@class='available-dispaly available' or text()='Available']");
 	private final By CLOSE_ICON_SEARCH_TEXT_BOX = By.xpath("//div[@class='yCmsComponent']//span[contains(@class,'icon-close')]");
-
-	private String searchResultTextAsPerEntity = "//h1[contains(text(),'Search Results for \"%s\"')]";
 	private final By SEARCH_RESULT_PRODUCTS_LOC = By.xpath("//div[@class='product__listing product__grid']//div[@class='product-item']//a[@class='name']");
 	private String kitNameLoc = "//label[text()='%s']/preceding::input[1]";
 	private String priceOfProductLoc = "//div[contains(@class,'product__listing')]//div[@class='product-item'][%s]//span[@id='cust_price']";
 	private String socialMediaIconLoc = "//div[@class='container']//a[contains(@href,'%s')]";
 	private String teamMemberNameLoc = "//div[@id='modal_front']/div[%s]//div[@class='title']/h4";
 	private String categoryUnderShopSkinCareLoc = topNavigationLoc+"//a[@title='%s']";
-
+	private String socialMediaLoc = "//div[contains(@class,'social-icons')]//a[contains(@href,'%s')]";
 
 	public boolean isFindAConsultantPagePresent(){
 		String findAConsultantURL = "/find-consultant";
@@ -134,7 +130,13 @@ public class StoreFrontHomePage extends StoreFrontWebsiteBasePage{
 	 * 
 	 */
 	public StoreFrontHomePage clickSocialMediaIcon(String mediaType){
-		driver.click(By.xpath(String.format(socialMediaIconLoc, mediaType)));
+		if(driver.isElementPresent(By.xpath(String.format(socialMediaIconLoc, mediaType)))){
+			driver.click(By.xpath(String.format(socialMediaIconLoc, mediaType)));
+		}
+		else{
+			driver.moveToElement(By.xpath(String.format(socialMediaLoc, mediaType)));
+			driver.click(By.xpath(String.format(socialMediaLoc, mediaType)));
+		}
 		logger.info("clicked on"+mediaType+" icon");
 		return this;
 	}
@@ -175,20 +177,6 @@ public class StoreFrontHomePage extends StoreFrontWebsiteBasePage{
 	public StoreFrontHomePage clickDonateNow(){
 		driver.click(DONATE_NOW_BUTTON_LOC);
 		logger.info("clicked on 'Donate now' button");
-		return this;
-	}
-
-	/***
-	 * This method search a product through search Icon
-	 * 
-	 * @param product name
-	 * @return store front Home page object
-	 * 
-	 */
-	public StoreFrontHomePage searchProduct(String productName){
-		driver.type(SEARCH_BOX, productName);
-		driver.click(SEARCH_ICON_NEAR_SEARCH_BOX);
-		logger.info("clicked on 'Search icon' for search a product");
 		return this;
 	}
 
@@ -801,28 +789,15 @@ public class StoreFrontHomePage extends StoreFrontWebsiteBasePage{
 	 * @return store front Home page object
 	 * 
 	 */
-	public StoreFrontHomePage searchEntityAndHitEnter(String textToSearch){
+	public StoreFrontShopSkinCarePage searchEntityAndHitEnter(String textToSearch){
 		driver.type(SEARCH_BOX, textToSearch);
 		Actions action = new Actions(RFWebsiteDriver.driver);
 		action.sendKeys(Keys.ENTER);
 		action.perform();
 		logger.info("Hit enter for searching entity");
 		driver.pauseExecutionFor(5000);
-		return this;
+		return new StoreFrontShopSkinCarePage(driver);
 	}
-
-
-	/***
-	 * This method validates the search results text
-	 * 
-	 * @param String searchEntity
-	 * @return boolean
-	 * 
-	 */
-	public boolean isSearchResultsTextAppearedAsExpected(String searchEntity){
-		return driver.isElementVisible(By.xpath(String.format(searchResultTextAsPerEntity, searchEntity)));
-	}
-
 
 	/***
 	 * This method validates the search result products with that of search entity

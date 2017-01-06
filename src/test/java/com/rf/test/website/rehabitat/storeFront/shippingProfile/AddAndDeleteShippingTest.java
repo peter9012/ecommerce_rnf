@@ -335,4 +335,45 @@ public class AddAndDeleteShippingTest extends StoreFrontWebsiteBaseTest{
 		s_assert.assertAll();
 	}
 
+	/***
+	 * qTest : TC-506 Add a Shipping Address on Update Autoship Cart
+	 * Description : This test validates the flow of adding new Shipping address while checkout for autoship cart
+	 * 
+	 *     
+	 */
+	@Test
+	public void testAddAShippingAddressOnUpdateAutoshipCart_506(){
+		String currentURL = null;
+		String randomWord = CommonUtils.getRandomWord(5);
+		String firstName = TestConstants.FIRST_NAME;
+		String lastName = TestConstants.LAST_NAME+randomWord;
+		String addressLine1 = TestConstants.ADDRESS_LINE_1_US;
+		String addressLine2 = TestConstants.ADDRESS_LINE_2_US;
+		String city = TestConstants.CITY_US;
+		String state = TestConstants.STATE_US;
+		String postalCode = TestConstants.POSTAL_CODE_US;
+		String phoneNumber = TestConstants.PHONE_NUMBER;
+		String textToAssertInURL = "autoship/cart";
+		String shippingAddressNameInAccountInfo = null;
+		//Login to application.
+		sfHomePage.loginToStoreFront(TestConstants.PC_USERNAME, password);
+		sfAutoshipCartPage = sfHomePage.clickOnAutoshipCartLink();
+		currentURL = sfAutoshipCartPage.getCurrentURL().toLowerCase();
+		s_assert.assertTrue(currentURL.contains(textToAssertInURL), "Expected URL should contain "+textToAssertInURL+" but actual on UI is "+currentURL);
+		sfCheckoutPage = sfAutoshipCartPage.clickOnPCPerksCheckoutButton();
+		sfCheckoutPage.clickSaveButton();
+		sfCheckoutPage.clickAddNewShippingAddressButton();
+		// Next button without filling Shipping address details
+		sfCheckoutPage.clickShippingDetailsNextbutton();
+		s_assert.assertTrue(sfCheckoutPage.isErrrorMsgsForAllMandatoryFieldsArePresent(),
+				"Mandatory Fields error messages are not present as expected");
+		sfCheckoutPage.selectCheckboxToSaveShippingAddress();
+		sfCheckoutPage.enterNewShippingAddressDetailsAtCheckoutPage(firstName, lastName, addressLine1, addressLine2, city, state, postalCode, phoneNumber);
+		sfCheckoutPage.clickShippingDetailsNextbutton();
+		sfCheckoutPage.clickUseAsEnteredButtonOnPopUp();
+		shippingAddressNameInAccountInfo = sfCheckoutPage.getShippingAddressNameFromShippingSection();
+		s_assert.assertTrue(shippingAddressNameInAccountInfo.contains(lastName),
+				"New Shipping Address added do not get updated on shipping section. Expected lastName : " + lastName + ".Actual Name :  " + shippingAddressNameInAccountInfo);
+		s_assert.assertAll();
+	}
 }

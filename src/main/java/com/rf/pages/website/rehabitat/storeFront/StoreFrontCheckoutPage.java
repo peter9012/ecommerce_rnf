@@ -1,10 +1,15 @@
 package com.rf.pages.website.rehabitat.storeFront;
 
 import org.openqa.selenium.By;
+import org.openqa.selenium.WebElement;
 
 import com.rf.core.driver.website.RFWebsiteDriver;
+import com.rf.core.utils.CommonUtils;
 import com.rf.core.website.constants.TestConstants;
 import com.rf.pages.website.rehabitat.storeFront.basePage.StoreFrontWebsiteBasePage;
+
+import java.util.List;
+
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
@@ -33,7 +38,18 @@ public class StoreFrontCheckoutPage extends StoreFrontWebsiteBasePage{
 	private final By STATE_DD_FOR_SHIPPING_AT_CHECKOUT_PAGE_LOC=By.xpath("//form[@id='shippingAddressForm']//select[@id='address.region']");
 	private final By POSTAL_CODE_FOR_SHIPPING_AT_CHECKOUT_PAGE_LOC=By.xpath("//form[@id='shippingAddressForm']//input[@id='address.postcode']");
 	private final By PHONE_NUMBER_FOR_SHIPPING_AT_CHECKOUT_PAGE_LOC=By.xpath("//form[@id='shippingAddressForm']//input[@id='address.phone']");
+	private final By POSTAL_CODE_ERROR_MSG_LOC = By.xpath("//label[@id='address.postcode-error']");
+	private final By FIRST_LAST_NAME_FOR_BILLING_ADDRESS_FOR_NEW_PROFILE_LOC=By.xpath("//div[contains(@id,'billingAddressForm')]//input[@id='address.firstName']");
+	private final By ADDRESS_LINE1_FOR_BILLING_ADDRESS_FOR_NEW_PROFILE_LOC=By.xpath("//div[contains(@id,'billingAddressForm')]//input[@id='address.line1']");
+	private final By ADDRESS_LINE_2_FOR_BILLING_ADDRESS_FOR_NEW_PROFILE_LOC=By.xpath("//div[contains(@id,'billingAddressForm')]//input[@id='address.line2']");
+	private final By CITY_FOR_BILLING_ADDRESS_FOR_NEW_PROFILE_LOC=By.xpath("//div[contains(@id,'billingAddressForm')]//input[@id='address.townCity']");
+	private final By STATE_DD_FOR_BILLING_ADDRESS_FOR_NEW_PROFILE_LOC=By.xpath("//div[contains(@id,'billingAddressForm')]//select[@id='address.region']");
+	private final By POSTAL_CODE_FOR_BILLING_ADDRESS_FOR_NEW_PROFILE_LOC=By.xpath("//div[contains(@id,'billingAddressForm')]//input[@id='address.postcode']");
+	private final By PHONE_NUMBER_FOR_BILLING_ADDRESS_FOR_NEW_PROFILE_LOC=By.xpath("//div[contains(@id,'billingAddressForm')]//input[@id='address.phone']");
 
+	private final By ADDRESS_NAME_ERROR_MGS_LOC =  By.xpath("//span[@id='billTo_firstName.errors' and contains(text(),'Name must contain first name and last name with no special characters.')]");
+	private final By SHIPPING_LINK_AT_CHECKOUT_PAGE_LOC = By.xpath("//div[contains(text(),'Shipping')]/ancestor::a[1]");
+	private final By BILLING_LINK_AT_CHECKOUT_PAGE_LOC = By.xpath("//div[contains(text(),'Billing')]/ancestor::a[1]");
 	private final By SHIPPING_NAME_AT_CHECKOUT_PAGE_LOC=By.id("address.firstName");
 	private final By SHIPPING_ADDRESS_LINE_1_AT_CHECKOUT_PAGE_LOC=By.id("address.line1");
 	private final By SHIPPING_ADDRESS_LINE_2_AT_CHECKOUT_PAGE_LOC=By.id("address.line2");
@@ -91,7 +107,30 @@ public class StoreFrontCheckoutPage extends StoreFrontWebsiteBasePage{
 	private final By BILLING_PROFILE_LOC = By.id("default-payment-method");
 	private final By ERROR_MSG_FOR_BILLING_ADDRESS_DETAILS_LOC = By.xpath("//div[@id='checkoutEditBillingAddressForm']//*[@id='errorMessage']");
 	private final By ERROR_MSG_FOR_INVALID_BILLING_ADDRESS_LOC = By.xpath("//div[@id='account-billing-container']//p[@id='errorMessage']");
+	private final By NOT_YOUR_SPONSOR_LINK_LOC = By.xpath("//a[contains(text(),'Continue Without a Consultant')]");
+	private final By UNCHECKED_SHIPPING_METHOD_LOC = By.xpath("//div[@id='delivery_method']//li[not(@class='checked')]/label");
+	private final By SHIPPING_METHOD_TITLE_FORM_ALL_SHIPPING_DETAILS_LOC = By.xpath("//div[contains(@class,'checkout-steps')]/descendant::div[@class='checkout-shipping-items'][2]/dl[2]/dd[1]");
+	private final By CONFIRM_CRP_ORDER_BTN_LOC = By.xpath("//button[@id='confirmCRPOrder']");
+	private final By FIRST_LAST_NAME_FOR_NEW_SHIPPING_ADDRESS_LOC = By.xpath("//form[@id='addressForm']//input[@id='address.firstName']");
+	private final By ADDRESS_LINE1_FOR_NEW_SHIPPING_ADDRESS_LOC = By.xpath("//form[@id='addressForm']//input[@id='address.line1']");
+	private final By ADDRESS_LINE_2_FOR_NEW_SHIPPING_ADDRESS_LOC = By.xpath("//form[@id='addressForm']//input[@id='address.line2']");
+	private final By CITY_FOR_NEW_SHIPPING_ADDRESS_LOC = By.xpath("//form[@id='addressForm']//input[@id='address.townCity']");
+	private final By STATE_DD_FOR_NEW_SHIPPING_ADDRESS_LOC = By.xpath("//form[@id='addressForm']//select[@id='address.region']");
+	private final By POSTAL_CODE_FOR_NEW_SHIPPING_ADDRESS_LOC = By.xpath("//form[@id='addressForm']//input[@id='address.postcode']");
+	private final By PHONE_NUMBER_FOR_NEW_SHIPPING_ADDRESS_LOC = By.xpath("//form[@id='addressForm']//input[@id='address.phone']");
+	private final By SAVE_SHIPPING_ADDRESS_CHECKBOX_LOC = By.xpath("//label[contains(@for,'saveAddressInMyAddressBook')]");
+	private final By SHIPPING_PROFILE_IN_SHIPPING_SECTION_LOC = By.xpath("//div[text()='Shipping']/ancestor::h2/following-sibling::div[contains(@class,'shippingAddWrap')]//div[@class='checkout-shipping-items']/dl[1]/dd[1]");
+	private final By SPONSOR_INFO_LOC = By.xpath("//div[@id='sponsorInfo']/span");
+	private final By NOT_YOUR_CONSULTANT_LINK_LOC = By.id("not-your-sponsor");
 
+	private String stateForNewShippingAddressDetailsLoc = "//form[@id='addressForm']//select[@id='address.region']//option[text()='%s']";
+	private String mandatoryFieldErrorMsgForNewAddressLoc  = "//label[contains(@id,'%s-error') and contains(text(),'This field is required.')]";
+	private String stateForShippingDetailsForNewProfileLoc = "//div[contains(@id,'illingAddressForm')]//select[@id='address.region']//option[text()='%s']";
+	private String mandatoryFieldErrorMsgOfAddressForNewBillingProfileLoc = "//div[@id='billingAddressForm']//label[contains(@id,'%s-error') and contains(text(),'This field is required.')]";
+	private String mandatoryFieldErrorMsgOfAddressForExistingBillingProfileLoc = "//span[contains(@id,'%s.errors')]";
+	private String errorMessageForBillingProfileDetails = "//div[contains(text(),'%s')]";
+	private String shippingMethodCheckboxUsingLabel = "//div[@id='delivery_method']//label[@for='%s']/preceding-sibling::input";
+	private String mandatoryFieldErrorMsg = "//div[@id='billingAddressForm']//label[contains(@id,'%s-error')]";
 	private String stateForBillingAddressDetails = "//div[@id='checkoutEditBillingAddressForm']//option[text()='%s']";
 	private String stateForShippingDetails = "//div[@id='checkoutEditBillingAddressForm']//option[text()='%s']";
 	private String billingInfoCardDetailsLoc = "//div[@id='default-payment-method']/ul/strong[contains(text(),'%s')]/following-sibling::span[@class='cardInfo']";
@@ -911,4 +950,444 @@ public class StoreFrontCheckoutPage extends StoreFrontWebsiteBasePage{
 		logger.info("Error message for billing address details is while add a new address "+ErrorMsg);
 		return ErrorMsg;
 	}
+
+	/***
+	 * This method verify the Continue without Sponsor link
+	 * @param
+	 * @return boolean
+	 */
+	public boolean isContinueWithoutConsultantLinkPresent(){
+		return driver.isElementVisible(CONTINUE_WITHOUT_SPONSOR_LOC);
+	}
+
+	/***
+	 * This method verify the not your Sponsor link
+	 * @param
+	 * @return boolean
+	 */
+	public boolean isNotYourSponsorLinkIsPresent(){
+		return driver.isElementVisible(NOT_YOUR_SPONSOR_LINK_LOC);
+	}
+
+	/***
+	 * This method get the shipping Profile on Confirmation Page 
+	 * 
+	 * @param 
+	 * @return Shipping Profile Name
+	 * 
+	 */
+	public String getShippingProfileFromConfirmationPage(){
+		String profileNameAtConfirmation=driver.findElement(By.xpath("//div[@class='orderShippingAddress']//li[1]")).getText();
+		logger.info("Shipping Profile name at Confimation Page : "+profileNameAtConfirmation);
+		return profileNameAtConfirmation;
+	}
+
+	private final By SHIPPING_METHOD_AFTER_ORDER_PLACED = By.xpath("//div[contains(text(),'Shipping Method')]");
+	/***
+	 * This method get the shipping method after Successful Checkout 
+	 * 
+	 * @param 
+	 * @return Shipping method
+	 * 
+	 */
+	public String getShippingMethodAfterPlacedOrder(){
+		String shippingMethod = driver.getText(SHIPPING_METHOD_AFTER_ORDER_PLACED).replaceAll("[^-?0-9]+","");
+		logger.info("Shipping method at order confirmation page : "+shippingMethod);
+		return shippingMethod;
+	}
+
+	/***
+	 * This method get the Last four Digits of Credit Card from Confirmation Page 
+	 * 
+	 * @param 
+	 * @return 4 Digits
+	 * 
+	 */
+
+	public String getLastFourNumbersOfBillingDetailsOnConFirmationPage(){
+		String ccNumber=driver.findElement(By.xpath("//div[@class='orderBillingDetails']/div[2]")).getText();
+		String lastFourNumbers=ccNumber.substring(ccNumber.lastIndexOf(' ') + 1);
+		logger.info("Last Four Numbers of Billing Profile at Confimation Page : "+lastFourNumbers);
+		return lastFourNumbers;
+	}
+
+	/***
+	 * This method get the Last four Digits of Credit Card from Confirmation Page 
+	 * 
+	 * @param 
+	 * @return 4 Digits
+	 * 
+	 */
+	public String getTotalChargeOnConFirmationPage(){
+		String charge=driver.findElement(By.xpath("//div[@class='orderBillingDetails']/div[2]")).getText();
+		String totalCharge=charge.substring(charge.lastIndexOf('$') + 1);
+		logger.info("Total Charge with Billing Information at Confimation Page : "+totalCharge);
+		return totalCharge;
+	}
+
+	/***
+	 * This method validates the presence of mandatory field msgs for billing profile
+	 * 
+	 * @param
+	 * @return boolean
+	 * 
+	 */
+	public boolean isAllErrrorMsgsForEnteringMandatoryFieldsForBillingProfileIsPresent(){
+		boolean flag = false;
+		driver.switchTo().frame(driver.findElement(IFRAME_LOC));
+		flag = driver.isElementVisible(By.xpath(String.format(errorMessageForBillingProfileDetails, TestConstants.NAME_ON_CARD_MANDATORY_MSG))) &&
+				driver.isElementVisible(By.xpath(String.format(errorMessageForBillingProfileDetails, TestConstants.CARD_NUM_MANDATORY_MSG))) &&
+				driver.isElementVisible(By.xpath(String.format(errorMessageForBillingProfileDetails, TestConstants.CARD_TYPE_MANDATORY_MSG))) &&
+				driver.isElementVisible(By.xpath(String.format(errorMessageForBillingProfileDetails, TestConstants.EXPIRY_MONTH_MANDATORY_MSG))) &&
+				driver.isElementVisible(By.xpath(String.format(errorMessageForBillingProfileDetails, TestConstants.EXPIRY_YEAR_MANDATORY_MSG))) &&
+				driver.isElementVisible(By.xpath(String.format(errorMessageForBillingProfileDetails, TestConstants.CARD_PIN_MANDATORY_MSG)));
+		driver.switchTo().defaultContent();
+		return flag;
+	}
+
+	/***
+	 * This method validates the New Billing Details using firstName of Billing Address.
+	 * 
+	 * @param String
+	 * @return boolean value
+	 * 
+	 */
+	public boolean isUpdatedDefaultBillingDetailsVisibleOnUI(String profileFirstName){
+		return driver.isElementVisible(By.xpath(String.format(billingInfoAddressNameLoc,profileFirstName)));
+	}
+
+	/**
+	 * This method update the shipping address details at checkout page
+	 * 
+	 * @param firstName, lastName, addressLine1, city, state, postal code, phone number
+	 * @return
+	 */
+	public StoreFrontCheckoutPage updateShippingAddressDetailsAtCheckoutPage(String firstName, String lastName, String addressLine1, String addressLine2, String city, String state, String postal, String phoneNumber) {
+		String completeName = firstName+" "+lastName;
+		driver.pauseExecutionFor(5000);
+		driver.type(FIRST_LAST_NAME_FOR_SHIPPING_AT_CHECKOUT_PAGE_LOC, completeName);
+		logger.info("Entered complete name as "+completeName);
+		driver.type(ADDRESS_LINE1_FOR_SHIPPING_AT_CHECKOUT_PAGE_LOC, addressLine1);
+		logger.info("Entered address line 1 as "+addressLine1);
+		driver.type(ADDRESS_LINE_2_FOR_SHIPPING_AT_CHECKOUT_PAGE_LOC, addressLine2);
+		logger.info("Entered address line 2 as "+addressLine2);
+		driver.type(CITY_FOR_SHIPPING_AT_CHECKOUT_PAGE_LOC, city);
+		logger.info("Entered city as "+city);
+		driver.click(STATE_DD_FOR_SHIPPING_AT_CHECKOUT_PAGE_LOC);
+		logger.info("State dropdown clicked");
+		driver.click(By.xpath(String.format(stateForShippingDetailsAtCheckoutPageLoc, state)));
+		logger.info("State selected as "+state);
+		driver.type(POSTAL_CODE_FOR_SHIPPING_AT_CHECKOUT_PAGE_LOC, postal);
+		logger.info("Entered postal code as "+postal);
+		driver.type(PHONE_NUMBER_FOR_SHIPPING_AT_CHECKOUT_PAGE_LOC, phoneNumber);
+		logger.info("Entered Phone number  as "+phoneNumber);
+		return this;
+	}
+
+	/***
+	 * This method select the shipping method other than the initial one and return the label of shipping method
+	 * 
+	 * @param 
+	 * @return String 
+	 * 
+	 */
+	public String changeTheShippingMethodAtCheckoutPage(){
+		List<WebElement> shippingMethods = driver.findElements(UNCHECKED_SHIPPING_METHOD_LOC);
+		int randomNum = CommonUtils.getRandomNum(0,shippingMethods.size()-1);
+		WebElement methodToSelect = shippingMethods.get(randomNum);
+		String methodLabel = methodToSelect.getAttribute("for");
+		driver.clickByJS(RFWebsiteDriver.driver, driver.findElement(By.xpath(String.format(shippingMethodCheckboxUsingLabel, methodLabel))));
+		logger.info("Clicked Shipping method : " + methodLabel);
+		return methodLabel;
+	}
+
+	/***
+	 * This method get the Title name of Selected shipping method
+	 * 
+	 * @param 
+	 * @return String 
+	 * 
+	 */
+	public String getTitleOfSelectedShippingMethod(){
+		String shippingMethodName = driver.getText(SELECTED_SHIPPING_METHOD_LOC);
+		String title = shippingMethodName.split("-")[0].trim();
+		logger.info("Title of Shipping method selected on checkout page : " + title);
+		return title;
+	}
+
+	/***
+	 * This method get the label of Selected shipping method
+	 * 
+	 * @param 
+	 * @return String 
+	 * 
+	 */
+	public String getLabelOfSelectedShippingMethod(){
+		return driver.getAttribute(SELECTED_SHIPPING_METHOD_LOC, "for").trim();
+	}
+
+	/***
+	 * This method get the Shipping title from all shipping details at checkout page
+	 * 
+	 * @param 
+	 * @return String 
+	 * 
+	 */
+	public String getTitleOfShippingMethodFromShippingDetails(){
+		return driver.getText(SHIPPING_METHOD_TITLE_FORM_ALL_SHIPPING_DETAILS_LOC).trim();
+	}
+
+	/***
+	 * This method click on the confirm crp button
+	 * 
+	 * @param 
+	 * @return StoreFrontCheckoutPage object 
+	 * 
+	 */
+	public StoreFrontCheckoutPage clickOnConfirmCRPButton(){
+		driver.click(CONFIRM_CRP_ORDER_BTN_LOC);
+		return this;
+	}
+
+	/***
+	 * This method validates the presence of mandatory field msgs for billing profile
+	 * 
+	 * @param
+	 * @return boolean
+	 * 
+	 */
+	public boolean isErrrorMsgsForAllMandatoryFieldsForBillingAddressArePresent(){
+		return isMandatoryFieldMsgPresentForTheField("firstName") &&
+				isMandatoryFieldMsgPresentForTheField("line1") &&
+				isMandatoryFieldMsgPresentForTheField("townCity") &&
+				isMandatoryFieldMsgPresentForTheField("region") &&
+				isMandatoryFieldMsgPresentForTheField("postcode") &&
+				isMandatoryFieldMsgPresentForTheField("phone");
+	}
+
+	/***
+	 * This method get the Error message for invalid postal code
+	 * 
+	 * @param 
+	 * @return String 
+	 * 
+	 */
+	public String getErrorMessageForInvalidPostalCode(){
+		return driver.getText(POSTAL_CODE_ERROR_MSG_LOC).trim();
+	}
+
+
+	/***
+	 * This method validates the presence of appropriate mandatory field msg for billing address details
+	 * 
+	 * @param String field
+	 * @return boolean 
+	 * 
+	 */
+	private boolean isErrorMsgPresentAsExpectedForTheMandatoryAddressFieldForExistingBillingProfile(String field, String expectedMsg){
+		driver.pauseExecutionFor(3000);
+		driver.waitForElementPresent(By.xpath(String.format(mandatoryFieldErrorMsgOfAddressForExistingBillingProfileLoc, field)));
+		String errorMsg = driver.getText(By.xpath(String.format(mandatoryFieldErrorMsgOfAddressForExistingBillingProfileLoc, field)));
+		if(expectedMsg.contains(errorMsg)){
+			logger.info("Error msg for billing address field " + field + " is present as expected");
+			return true;
+		}
+		logger.info("Error msg for billing address field " + field + " is NOT present as expected. Expected : " + expectedMsg + ".Actual : " + errorMsg);
+		return false;
+	}
+
+
+	/***
+	 * This method validates the presence of mandatory field msgs for billing profile
+	 * 
+	 * @param
+	 * @return boolean
+	 * 
+	 */
+	public boolean isErrrorMsgsForAllMandatoryFieldsForBillingAddressWithExistingProfileArePresent(){
+		driver.waitForElementToBeVisible(ADDRESS_NAME_ERROR_MGS_LOC,20);
+		return isErrorMsgPresentAsExpectedForTheMandatoryAddressFieldForExistingBillingProfile("firstName",TestConstants.ADDRESS_NAME_MANDATORY_MSG) &&
+				isErrorMsgPresentAsExpectedForTheMandatoryAddressFieldForExistingBillingProfile("street1",TestConstants.ADDRESS_LINE_MANDATORY_MSG) &&
+				isErrorMsgPresentAsExpectedForTheMandatoryAddressFieldForExistingBillingProfile("city",TestConstants.CITY_MANDATORY_MSG) &&
+				isErrorMsgPresentAsExpectedForTheMandatoryAddressFieldForExistingBillingProfile("state",TestConstants.PROVINCE_MANDATORY_MSG) &&
+				isErrorMsgPresentAsExpectedForTheMandatoryAddressFieldForExistingBillingProfile("postalCode",TestConstants.POSTAL_CODE_MANDATORY_MSG) &&
+				isErrorMsgPresentAsExpectedForTheMandatoryAddressFieldForExistingBillingProfile("phoneNumber",TestConstants.PHONE_NUMBER_MANDATORY_MSG);
+	}
+
+
+	/***
+	 * This method enter the billing address details after editing default billing profile
+	 * 
+	 * @param First name,Last name, address line1, city, state, postal code, phone number
+	 * @return store front Checkout page object
+	 * 
+	 */
+	public StoreFrontCheckoutPage enterBillingAddressDetailsAtCheckoutForNewBillingProfile(String firstName, String lastName, String addressLine1, String addressLine2, String city, String state, String postal, String phoneNumber){
+		String completeName = firstName+" "+lastName;
+		driver.type(FIRST_LAST_NAME_FOR_BILLING_ADDRESS_FOR_NEW_PROFILE_LOC, completeName);
+		logger.info("Entered complete name as "+completeName);
+		driver.type(ADDRESS_LINE1_FOR_BILLING_ADDRESS_FOR_NEW_PROFILE_LOC, addressLine1);
+		logger.info("Entered address line 1 as "+addressLine1);
+		driver.type(ADDRESS_LINE_2_FOR_BILLING_ADDRESS_FOR_NEW_PROFILE_LOC, addressLine2);
+		logger.info("Entered address line 2 as "+addressLine2);
+		driver.type(CITY_FOR_BILLING_ADDRESS_FOR_NEW_PROFILE_LOC, city);
+		logger.info("Entered city as "+city);
+		driver.click(STATE_DD_FOR_BILLING_ADDRESS_FOR_NEW_PROFILE_LOC);
+		logger.info("State dropdown clicked");
+		driver.click(By.xpath(String.format(stateForShippingDetailsForNewProfileLoc, state)));
+		logger.info("State selected as "+state);
+		driver.type(POSTAL_CODE_FOR_BILLING_ADDRESS_FOR_NEW_PROFILE_LOC, postal);
+		logger.info("Entered postal code as "+postal);
+		driver.type(PHONE_NUMBER_FOR_BILLING_ADDRESS_FOR_NEW_PROFILE_LOC, phoneNumber);
+		logger.info("Entered Phone number  as "+phoneNumber);
+		return this;
+	}
+
+	/***
+	 * This method validates the presence of Shipping link at checkout page
+	 * 
+	 * @param
+	 * @return boolean 
+	 * 
+	 */
+	public boolean isShippingLinkPresentAtCheckoutPage(){
+		return driver.isElementVisible(SHIPPING_LINK_AT_CHECKOUT_PAGE_LOC);
+	}
+	/***
+	 * This method validates the presence of Billing link at checkout page
+	 * 
+	 * @param
+	 * @return boolean 
+	 * 
+	 */
+	public boolean isBillingLinkPresentAtCheckoutPage(){
+		return driver.isElementVisible(BILLING_LINK_AT_CHECKOUT_PAGE_LOC);
+	}
+
+
+	/***
+	 * This method validates the presence of mandatory field msg for billing address details
+	 * 
+	 * @param String field
+	 * @return boolean 
+	 * 
+	 */
+	private boolean isMandatoryFieldMsgPresentForTheField(String field){
+		boolean isMsgPresent = driver.isElementPresent(By.xpath(String.format(mandatoryFieldErrorMsgOfAddressForNewBillingProfileLoc, field)));
+		logger.info("Is Expected Mandatory field msg is present for " + field + " : " + isMsgPresent);
+		return isMsgPresent;
+	}
+
+	/***
+	 * This method validates the presence of mandatory field msgs for billing profile
+	 * 
+	 * @param
+	 * @return boolean
+	 * 
+	 */
+	public boolean isErrrorMsgsForAllMandatoryFieldsArePresent(){
+		return isMandatoryFieldMsgPresentForTheField("firstName") &&
+				isMandatoryFieldMsgPresentForTheField("line1") &&
+				isMandatoryFieldMsgPresentForTheField("townCity") &&
+				isMandatoryFieldMsgPresentForTheField("region") &&
+				isMandatoryFieldMsgPresentForTheField("postcode") &&
+				isMandatoryFieldMsgPresentForTheField("phone");
+	}
+
+	/**
+	 * This method fill new shipping address details at checkout page
+	 * 
+	 * @param firstName, lastName, addressLine1, addressLine2 city, state, postal code, phone number
+	 * @return
+	 */
+	public StoreFrontCheckoutPage enterNewShippingAddressDetailsAtCheckoutPage(String firstName, String lastName, String addressLine1, String addressLine2, String city, String state, String postal, String phoneNumber) {
+		String completeName = firstName+" "+lastName;
+		driver.pauseExecutionFor(5000);
+		driver.type(FIRST_LAST_NAME_FOR_NEW_SHIPPING_ADDRESS_LOC, completeName);
+		logger.info("Entered complete name as "+completeName);
+		driver.type(ADDRESS_LINE1_FOR_NEW_SHIPPING_ADDRESS_LOC, addressLine1);
+		logger.info("Entered address line 1 as "+addressLine1);
+		driver.type(ADDRESS_LINE_2_FOR_NEW_SHIPPING_ADDRESS_LOC,addressLine2);
+		logger.info("Address line 2 cleared");
+		driver.type(CITY_FOR_NEW_SHIPPING_ADDRESS_LOC, city);
+		logger.info("Entered city as "+city);
+		driver.click(STATE_DD_FOR_NEW_SHIPPING_ADDRESS_LOC);
+		logger.info("State dropdown clicked");
+		driver.click(By.xpath(String.format(stateForNewShippingAddressDetailsLoc, state)));
+		logger.info("State selected as "+state);
+		driver.type(POSTAL_CODE_FOR_NEW_SHIPPING_ADDRESS_LOC, postal);
+		logger.info("Entered postal code as "+postal);
+		driver.type(PHONE_NUMBER_FOR_NEW_SHIPPING_ADDRESS_LOC, phoneNumber);
+		logger.info("Entered Phone number  as "+phoneNumber);
+		return this;
+	}
+
+	/***
+	 * This method select checkbox for saving shipping address
+	 * 
+	 * @param 
+	 * @return Store front checkout page object 
+	 * 
+	 */
+	public StoreFrontCheckoutPage selectCheckboxToSaveShippingAddress(){
+		driver.click(SAVE_SHIPPING_ADDRESS_CHECKBOX_LOC);
+		logger.info("Selected checkbox for saving shipping address in address book");
+		return this;
+	}
+
+	/***
+	 * This method get the Shipping address name present at my account section
+	 * 
+	 * @param 
+	 * @return String 
+	 * 
+	 */
+	public String getShippingAddressNameFromShippingSection(){
+		return driver.getText(SHIPPING_PROFILE_IN_SHIPPING_SECTION_LOC).trim();
+	}
+
+	/***
+	 * This method validates the shipping address first name is visible
+	 * 
+	 * @param 
+	 * @return boolean value
+	 * 
+	 */
+	public boolean isFirstLastNameFieldVisible(){
+		return driver.isElementVisible(SHIPPING_NAME_AT_CHECKOUT_PAGE_LOC);
+	}
+
+	/***
+	 * This method get the sponsor info
+	 * 
+	 * @param 
+	 * @return sponsor name
+	 * 
+	 */
+	public String getSponsorInfo(){
+		String sponsorName = driver.getText(SPONSOR_INFO_LOC);
+		logger.info("Sponsor selected as "+sponsorName);
+		return sponsorName;
+	}
+
+	/***
+	 * This method clicks on the not your sponsor link
+	 * @param
+	 * @return same page object
+	 */
+	public StoreFrontCheckoutPage clickNotYourConsultantLink(){
+		driver.click(NOT_YOUR_CONSULTANT_LINK_LOC);
+		logger.info("Not your consultant link clicked");
+		return this;
+	}
+
+	/***
+	 * This method clicks on the not your sponsor link
+	 * @param
+	 * @return boolean
+	 */
+	public boolean isSponsorSearchBoxVisible(){
+		return driver.isElementVisible(SPONSOR_SEARCH_FIELD_LOC);
+	}
+
 }

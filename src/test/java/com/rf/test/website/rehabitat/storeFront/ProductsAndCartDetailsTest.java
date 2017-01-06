@@ -1086,51 +1086,97 @@ public class ProductsAndCartDetailsTest extends StoreFrontWebsiteBaseTest{
 		s_assert.assertTrue(newItemsOfProduct.equalsIgnoreCase(updatedQuantity),"Expected items in cart"+updatedQuantity+" but actual in UI"+newItemsOfProduct);
 		s_assert.assertAll();	
 	}
+
+	/***
+	 * qTest : TC-503 Product Pricing - PC
+	 * Description : This test validates the presence of price of product for PC User
+	 * 
+	 */
+	@Test
+	public void testProductPricingPC_503(){
+		sfHomePage.loginToStoreFront(TestConstants.PC_USERNAME, password);
+		sfShopSkinCarePage = sfHomePage.clickOnCategoryFromShopSkinCare("REDEFINE");
+		s_assert.assertTrue(sfShopSkinCarePage.isRetailPricePresentForProductNumber("1"),"Retail price is not present for Product on category Page for PC User");
+		s_assert.assertTrue(sfShopSkinCarePage.isSpecificPricePresentForProductNumber("1"),"Specific price is not present for Product on category Page for PC User");
+		sfHomePage.clickAllProducts();
+		s_assert.assertTrue(sfShopSkinCarePage.isRetailPricePresentForProductNumber("1"),"Retail price is not present for Product on All Products listing Page for PC User");
+		s_assert.assertTrue(sfShopSkinCarePage.isSpecificPricePresentForProductNumber("1"),"Specific price is not present for Product on All Products listing Page for PC User");
+		sfShopSkinCarePage.clickOnQuickViewLinkForProduct("1");
+		s_assert.assertTrue(sfShopSkinCarePage.isRetailPricePresentOnQuickViewPopUp(),"Retail Price is not present for Product on Quick view popup for PC User");
+		s_assert.assertTrue(sfShopSkinCarePage.isPricePresentOnQuickViewPopup(),"Specific Price is not present for Product on Quick view popup for PC User");
+		sfProductDetailPage = sfShopSkinCarePage.clickOnViewProductDetailsLinkOnQuickViewPopup();
+		s_assert.assertTrue(sfProductDetailPage.isRetailPricePresentOnPDPPage(),"Retail Price is not present for Product on Product detail Page for PC User");
+		s_assert.assertTrue(sfProductDetailPage.isPricePresentOnPDPAsExpected(),"Specific Price is not present for Product on Product detail Page for PC User");
+		s_assert.assertAll();
+	}
+
+	/***
+	 * qTest : TC-504 Product Pricing - Consultant
+	 * Description : This test validates the presence of price of product for Consultant User
+	 * 
+	 */
+	@Test
+	public void testProductPricingConsultant_504(){
+		sfHomePage.loginToStoreFront(TestConstants.CONSULTANT_USERNAME, password);
+		sfShopSkinCarePage = sfHomePage.clickOnCategoryFromShopSkinCare("REDEFINE");
+		s_assert.assertTrue(sfShopSkinCarePage.isRetailPricePresentForProductNumber("1"),"Retail price is not present for Product on category Page for Consultant");
+		s_assert.assertTrue(sfShopSkinCarePage.isSpecificPricePresentForProductNumber("1"),"Specific price is not present for Product on category Page for Consultant");
+		sfHomePage.clickAllProducts();
+		s_assert.assertTrue(sfShopSkinCarePage.isRetailPricePresentForProductNumber("1"),"Retail price is not present for Product on All Products listing Page for Consultant");
+		s_assert.assertTrue(sfShopSkinCarePage.isSpecificPricePresentForProductNumber("1"),"Specific price is not present for Product on All Products listing Page for Consultant");
+		sfShopSkinCarePage.clickOnQuickViewLinkForProduct("1");
+		s_assert.assertTrue(sfShopSkinCarePage.isRetailPricePresentOnQuickViewPopUp(),"Retail Price is not present for Product on Quick view popup for Consultant");
+		s_assert.assertTrue(sfShopSkinCarePage.isPricePresentOnQuickViewPopup(),"Specific Price is not present for Product on Quick view popup for Consultant");
+		sfProductDetailPage = sfShopSkinCarePage.clickOnViewProductDetailsLinkOnQuickViewPopup();
+		s_assert.assertTrue(sfProductDetailPage.isRetailPricePresentOnPDPPage(),"Retail Price is not present for Product on Product detail Page for Consultant");
+		s_assert.assertTrue(sfProductDetailPage.isPricePresentOnPDPAsExpected(),"Specific Price is not present for Product on Product detail Page for Consultant");
+		s_assert.assertAll();
+	}
+
+	/***
+	 * qTest : TC-337 Product Details Page- Product images
+	 * Description : This test validates click on product name to view product details and click on product image
+	 *     
+	 */
+	@Test
+	public void testProductDetailsPageProductImages_337(){
+
+		sfShopSkinCarePage=sfHomePage.clickAllProducts();
+		sfProductDetailPage=sfShopSkinCarePage.clickNameOfProductOnAllProductPage("1");
+		s_assert.assertTrue(sfProductDetailPage.isProductImageDisplayed(),"Expected user is not redirected to product detail page");
+		sfProductDetailPage.clickToViewLargerImage();
+		s_assert.assertTrue(sfProductDetailPage.isProductImageDisplayedInLargerSize(),"Expected product image is not displayed in larger size");
+		sfProductDetailPage.closeZoomImage();
+		s_assert.assertFalse(sfProductDetailPage.isProductImageDisplayedInLargerSize(),"Expected product image overlay(X) is not closed");
+		s_assert.assertAll();
+	}
 	
 	/***
-	  * qTest : TC-503 Product Pricing - PC
-	  * Description : This test validates the presence of price of product for PC User
-	  * 
-	  */
-	 @Test
-	 public void testProductPricingPC_503(){
-	  sfHomePage.loginToStoreFront(TestConstants.PC_USERNAME, password);
-	  sfShopSkinCarePage = sfHomePage.clickOnCategoryFromShopSkinCare("REDEFINE");
-	  s_assert.assertTrue(sfShopSkinCarePage.isRetailPricePresentForProductNumber("1"),"Retail price is not present for Product on category Page for PC User");
-	  s_assert.assertTrue(sfShopSkinCarePage.isSpecificPricePresentForProductNumber("1"),"Specific price is not present for Product on category Page for PC User");
-	  sfHomePage.clickAllProducts();
-	  s_assert.assertTrue(sfShopSkinCarePage.isRetailPricePresentForProductNumber("1"),"Retail price is not present for Product on All Products listing Page for PC User");
-	  s_assert.assertTrue(sfShopSkinCarePage.isSpecificPricePresentForProductNumber("1"),"Specific price is not present for Product on All Products listing Page for PC User");
-	  sfShopSkinCarePage.clickOnQuickViewLinkForProduct("1");
-	  s_assert.assertTrue(sfShopSkinCarePage.isRetailPricePresentOnQuickViewPopUp(),"Retail Price is not present for Product on Quick view popup for PC User");
-	  s_assert.assertTrue(sfShopSkinCarePage.isPricePresentOnQuickViewPopup(),"Specific Price is not present for Product on Quick view popup for PC User");
-	  sfProductDetailPage = sfShopSkinCarePage.clickOnViewProductDetailsLinkOnQuickViewPopup();
-	  s_assert.assertTrue(sfProductDetailPage.isRetailPricePresentOnPDPPage(),"Retail Price is not present for Product on Product detail Page for PC User");
-	  s_assert.assertTrue(sfProductDetailPage.isPricePresentOnPDPAsExpected(),"Specific Price is not present for Product on Product detail Page for PC User");
-	  s_assert.assertAll();
-	 }
-	 
-	 /***
-	  * qTest : TC-504 Product Pricing - Consultant
-	  * Description : This test validates the presence of price of product for Consultant User
-	  * 
-	  */
-	 @Test
-	 public void testProductPricingConsultant_504(){
-	  sfHomePage.loginToStoreFront(TestConstants.CONSULTANT_USERNAME, password);
-	  sfShopSkinCarePage = sfHomePage.clickOnCategoryFromShopSkinCare("REDEFINE");
-	  s_assert.assertTrue(sfShopSkinCarePage.isRetailPricePresentForProductNumber("1"),"Retail price is not present for Product on category Page for Consultant");
-	  s_assert.assertTrue(sfShopSkinCarePage.isSpecificPricePresentForProductNumber("1"),"Specific price is not present for Product on category Page for Consultant");
-	  sfHomePage.clickAllProducts();
-	  s_assert.assertTrue(sfShopSkinCarePage.isRetailPricePresentForProductNumber("1"),"Retail price is not present for Product on All Products listing Page for Consultant");
-	  s_assert.assertTrue(sfShopSkinCarePage.isSpecificPricePresentForProductNumber("1"),"Specific price is not present for Product on All Products listing Page for Consultant");
-	  sfShopSkinCarePage.clickOnQuickViewLinkForProduct("1");
-	  s_assert.assertTrue(sfShopSkinCarePage.isRetailPricePresentOnQuickViewPopUp(),"Retail Price is not present for Product on Quick view popup for Consultant");
-	  s_assert.assertTrue(sfShopSkinCarePage.isPricePresentOnQuickViewPopup(),"Specific Price is not present for Product on Quick view popup for Consultant");
-	  sfProductDetailPage = sfShopSkinCarePage.clickOnViewProductDetailsLinkOnQuickViewPopup();
-	  s_assert.assertTrue(sfProductDetailPage.isRetailPricePresentOnPDPPage(),"Retail Price is not present for Product on Product detail Page for Consultant");
-	  s_assert.assertTrue(sfProductDetailPage.isPricePresentOnPDPAsExpected(),"Specific Price is not present for Product on Product detail Page for Consultant");
-	  s_assert.assertAll();
-	 }
+	 * qTest : TC-196 Product Detail Page
+	 * Description : This test validates product details page with different scenarios
+	 *     
+	 */
+	@Test //incomplete search functionality not working
+	public void testProductDetailPage_196(){
+		String productName = TestConstants.PRODUCT_NAME;
+		sfShopSkinCarePage=sfHomePage.clickAllProducts();
+		String firstProductName=sfShopSkinCarePage.getProductNameFromAllProductPage("1");
+		sfProductDetailPage=sfShopSkinCarePage.clickNameOfProductOnAllProductPage("1");
+		String productNameAtPDP=sfProductDetailPage.getProductNameFromProductDetailsPage();
+		s_assert.assertTrue(productNameAtPDP.contains(firstProductName),"Expected first product name is:"+firstProductName+" But Actual on product details page is:"+productNameAtPDP);
+		sfShopSkinCarePage=sfProductDetailPage.clickAllProducts();
+		sfProductDetailPage=sfShopSkinCarePage.clickNameOfProductOnAllProductPage("2");
+		String recentlyViewedProduct=sfProductDetailPage.clickRecentlyViewedProductNameAndReturnProductName();
+		productNameAtPDP=sfProductDetailPage.getProductNameFromProductDetailsPage();
+		s_assert.assertTrue(productNameAtPDP.toLowerCase().contains(recentlyViewedProduct.toLowerCase()),"Expected recently viewed product name is:"+recentlyViewedProduct+" But actual product name on PDP is:" +productNameAtPDP);
+		sfShopSkinCarePage=sfProductDetailPage.clickAllProducts();
+		String productNameFromAllProdutcs=sfShopSkinCarePage.clickOnFirstProductQuickViewButtonAndReturnProductName();
+		sfProductDetailPage=sfShopSkinCarePage.clickOnViewProductDetailsLinkOnQuickViewPopup();
+		productNameAtPDP=sfProductDetailPage.getProductNameFromProductDetailsPage();
+		s_assert.assertTrue(productNameAtPDP.contains(productNameFromAllProdutcs)," Expected product name at all products page is:"+productNameFromAllProdutcs+" But actual product name at PDP is:"+productNameAtPDP);
+		sfProductDetailPage.clickSearchIcon();
+		sfProductDetailPage.searchProduct(productName);
+		s_assert.assertAll();
+	}
 
 }

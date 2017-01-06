@@ -67,4 +67,36 @@ public class AddProductsViaPLPPDPAndQuickViewOptionTest extends StoreFrontWebsit
 		s_assert.assertAll();
 	}
 	
+	/***
+	  * qTest : TC-117 Add product to PC Perks Autoship Cart from Quick View
+	  * Description : This test validates the flow of adding product to PC Perks autoship for PC User
+	  *     
+	  */
+
+	 @Test
+	 public void testAddProductToPCPerksAutoshipCartFromQuickView_117(){
+	  String selectedProductName = null;
+	  String textToAssertInURL = "autoship/cart";
+	  String currentURL = null;
+	  //Login to application.
+	  sfHomePage.loginToStoreFront(TestConstants.PC_USERNAME, password);
+	  sfShopSkinCarePage = sfHomePage.clickAllProducts();
+	  selectedProductName = sfShopSkinCarePage.getFirstProductNameFromAllProductPage();
+	  sfShopSkinCarePage.clickOnQuickViewLinkForProduct("1");
+	  s_assert.assertTrue(sfShopSkinCarePage.isProductNamePresentAtQuickViewPopupAsExpected(selectedProductName),
+	    "Product name is not present as expected on quick view poup");
+	  sfShopSkinCarePage.clickPCPerksButtonFromQuickViewPopup();
+	  s_assert.assertTrue(sfShopSkinCarePage.isAddedToYourShoppingCartHeadlinePresentOnCheckoutPopup(),
+	    "Added to your shipping cart Headline is not present on Checkout popup");
+	  sfAutoshipCartPage = sfShopSkinCarePage.checkoutTheCartFromPopUpForPCPerks();
+	  currentURL = sfAutoshipCartPage.getCurrentURL().toLowerCase();
+	  s_assert.assertTrue(currentURL.contains(textToAssertInURL),
+	    "Expected URL should contain "+textToAssertInURL+" but actual on UI is "+currentURL);
+	  s_assert.assertTrue(sfAutoshipCartPage.isPCPerksCartHeaderPresentOnCartPage(),
+	    "PC Perks Cart Header is not present on Cart Page as expected");
+	  s_assert.assertTrue((sfAutoshipCartPage.isProductAddedToCartPresentOnCartPage(selectedProductName)),
+	    "Product added to PC Perks is not present on Cart page");
+	  s_assert.assertAll();
+	 } 
+	
 }

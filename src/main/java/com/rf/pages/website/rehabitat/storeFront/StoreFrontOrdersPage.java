@@ -36,11 +36,18 @@ public class StoreFrontOrdersPage extends StoreFrontWebsiteBasePage{
 	private final By EMAIL_ID_ERROR_MSG_LOC = By.id("email-error");
 	private final By PROBLEM_DD_ERROR_MSG_LOC = By.id("problemReasonCode-error");
 	private final By MESSAGE_TEXTBOX_ERROR_MSG_LOC = By.id("message-error");
-	private static final By EMAIL_ON_REPORT_PROBLEM_PAGE_TEXTFIELD_LOC = By.xpath("//input[@name='email']");
-	private static final By SELECT_CHECKBOX_OF_PRODUCT_ERROR_MSG_LOC = By.xpath("//label[@id='orderEntries-error']");
+	private final By EMAIL_ON_REPORT_PROBLEM_PAGE_TEXTFIELD_LOC = By.xpath("//input[@name='email']");
+	private final By SELECT_CHECKBOX_OF_PRODUCT_ERROR_MSG_LOC = By.xpath("//label[@id='orderEntries-error']");
+	private final By ORDER_HISTORY_SECTION_LOC = By.id("orderHistoryContentArea");
+	private final By RETURN_ORDER_AND_CREDITS_SECTION_LOC = By.xpath("//div[contains(text(),'RETURN ORDERS AND CREDITS')]");
+	private final By ACTIONS_DD_UNDER_RETURN_ORDER_SECTION_LOC = By.xpath("//div[contains(text(),'RETURN ORDERS AND CREDITS')]/../../descendant::div[contains(text(),'Actions')][1]");
+	private final By REPORT_PROBLEM_PAGE_HEADER_LOC = By.xpath("//div[contains(@class,'account-section-header')]");
+
+	private String optionsLinkUnderReturnOrderSectionLoc = "//div[contains(text(),'RETURN ORDERS AND CREDITS')]/../../descendant::a[contains(text(),'%s')]";
+	private String headerTitleInOrderHistorySection = "//div[@id='orderHistoryContentArea']//th[contains(text(),'%s')]";
+	private String headerTitleInReturnOrderSection = "//div[contains(text(),'RETURN ORDERS AND CREDITS')]/../..//th[contains(text(),'%s')]";
 	private String orderNumberInOrderHistory = "//div[@id='orderHistoryContentArea']//a[contains(@href,'my-account/order') and contains(text(),'%s')]";
 	private String statusOfOrderFromOrderHistory = "//div[@id='orderHistoryContentArea']//a[contains(@href,'my-account/order') and contains(text(),'%s')]/ancestor::td/following-sibling::td[@class='status'][1]";
-	private final By REPORT_PROBLEM_PAGE_HEADER_LOC = By.xpath("//div[contains(@class,'account-section-header')]");
 	private String detailsLinkUnderOrderHistoryLoc = "//div[@id='orderHistoryContentArea']//tr[2]//a[contains(text(),'%s')]";
 	private String problemDropdownOptionsLoc = "//select[@id='problemReasonCode']//option[contains(text(),%s)]";
 	public  String informationAtOrderReportConfirmationPage = "//div[text()='%s:']/following::div[1]";
@@ -414,5 +421,138 @@ public class StoreFrontOrdersPage extends StoreFrontWebsiteBasePage{
 		logger.info("Product Image Clicked for Selecting checkbox");
 		return this;
 	}
+
+	/***
+	 * This method validates presence of order history section 
+	 * 
+	 * @param
+	 * @return boolean
+	 * 
+	 */
+	public boolean isOrderHistorySectionPresent(){
+		return driver.isElementVisible(ORDER_HISTORY_SECTION_LOC);
+	}
+
+	/***
+	 * This method validates presence of order history section 
+	 * 
+	 * @param
+	 * @return boolean
+	 * 
+	 */
+	public boolean isReturnOrderSectionPresent(){
+		return driver.isElementVisible(RETURN_ORDER_AND_CREDITS_SECTION_LOC);
+	}
+
+	/***
+	 * This method validates presence of return order section header title 
+	 * 
+	 * @param header title
+	 * @return boolean
+	 * 
+	 */
+	public boolean isHeaderTitlePresentInReturnOrderSection(String headerTitle){
+		return driver.isElementVisible(By.xpath(String.format(headerTitleInReturnOrderSection, headerTitle)));
+	}
+
+	/***
+	 * This method validates presence of action DD in order history section 
+	 * 
+	 * @param
+	 * @return boolean
+	 * 
+	 */
+	public boolean isActionsDDPresentInOrderHistorySection(){
+		return driver.isElementVisible(FIRST_ACTIONS_DD_UNDER_ORDER_HISTORY_LOC);
+	}
+
+	/***
+	 * This method validates presence of action DD in order history section 
+	 * 
+	 * @param
+	 * @return boolean
+	 * 
+	 */
+	public boolean isOptionsPresentUnderActionsDDInOrderHistroySection(String linkName){
+		return driver.isElementVisible(By.xpath(String.format(detailsLinkUnderOrderHistoryLoc, linkName)));
+	}
+
+	/***
+	 * This method click on action DD under order history section 
+	 * 
+	 * @param link name
+	 * @return store front orders page object
+	 * 
+	 */
+	public StoreFrontOrdersPage clickFirstActionDDUnderOrderHistorySection(){
+		driver.click(FIRST_ACTIONS_DD_UNDER_ORDER_HISTORY_LOC);
+		logger.info("Actions drpdown clicked under order history");
+		driver.pauseExecutionFor(1000);
+		return this;
+	}
+
+	/***
+	 * This method validates presence of return order section header title 
+	 * 
+	 * @param header title
+	 * @return boolean
+	 * 
+	 */
+	public boolean isHeaderTitlePresentInOrderHistorySection(String headerTitle){
+		return driver.isElementVisible(By.xpath(String.format(headerTitleInOrderHistorySection, headerTitle)));
+	}
+
+	/***
+	 * This method validates presence of action DD in return order section 
+	 * 
+	 * @param
+	 * @return boolean
+	 * 
+	 */
+	public boolean isActionsDDPresentInReturnOrderSection(){
+		return driver.isElementVisible(ACTIONS_DD_UNDER_RETURN_ORDER_SECTION_LOC);
+	}
+
+	/***
+	 * This method click on first action DD under return order section 
+	 * 
+	 * @param link name
+	 * @return store front orders page object
+	 * 
+	 */
+	public StoreFrontOrdersPage clickFirstActionDDUnderReturnOrderSection(){
+		driver.click(ACTIONS_DD_UNDER_RETURN_ORDER_SECTION_LOC);
+		logger.info("Actions drpdown clicked under order history");
+		driver.pauseExecutionFor(1000);
+		return this;
+	}
+
+
+	/***
+	 * This method validates presence of action DD options in return order section 
+	 * 
+	 * @param
+	 * @return boolean
+	 * 
+	 */
+	public boolean isOptionsPresentUnderActionsDDInReturnOrderSection(String linkName){
+		return driver.isElementVisible(By.xpath(String.format(optionsLinkUnderReturnOrderSectionLoc, linkName)));
+	}
+
+	/***
+	 * This method click get first order number from order history 
+	 * 
+	 * @param
+	 * @return order number
+	 * 
+	 */
+	public String clickAndGetFirstOrderNumberFromOrderHistory(){
+		String orderNumber = driver.findElement(FIRST_ORDER_NUMBER_UNDER_ORDER_HISTORY_LOC).getText();
+		driver.click(FIRST_ORDER_NUMBER_UNDER_ORDER_HISTORY_LOC);
+		logger.info("Order number is "+orderNumber);
+		return orderNumber;
+	}
+
+
 }
 

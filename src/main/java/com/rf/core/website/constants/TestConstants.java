@@ -18,6 +18,7 @@ public class TestConstants {
 	public static final String SPONSOR_ZIP_CODE_US = "94105";
 	public static final String SPONSOR_INVALID_ZIP_CODE_US = "9410";
 	public static final String NON_EXISTING_SPONSOR = "xxxabc";
+	public static final String USER_TYPE_CONSULTANT = "Consultant";
 	public static final String USER_TYPE_PC = "PC";
 	public static final String USER_TYPE_RC = "RC";
 	public static final String PC_FIRST_NAME = "AutoPC";
@@ -70,7 +71,7 @@ public class TestConstants {
 	public static final String BILLING_PROFILE_ADDED_MESSAGE = "Card details are added successfully.";
 	public static final String PASSWORD_RECOVERY_SUBMIT_SUCCESS_MESSAGE = "Password reset instructions have been sent to your e-mail address. Please contact customer support if you require additional assistance";
 	public static final String PASSWORD_RECOVERY_SUBMIT_EMAIL_NOT_REGISTERED_MESSAGE = "You do not have account with us. Please create your account";
-	
+
 	//PO address details
 	public static final String PO_ADDRESS_LINE_1_US = "P.O. Box 283 8562 Fusce Rd";
 
@@ -114,6 +115,28 @@ public class TestConstants {
 	public static final String INVALID_CARD_EXP_MONTH = "Jan";
 	public static final String INVALID_CARD_EXP_YEAR = "2019";
 
+	// Error Messages for Billing Details
 
+	public static final String NAME_ON_CARD_MANDATORY_MSG = "Please enter the card holder name";
+	public static final String CARD_NUM_MANDATORY_MSG = "Please enter a card number";
+	public static final String CARD_TYPE_MANDATORY_MSG = "Please select the card type";
+	public static final String EXPIRY_MONTH_MANDATORY_MSG = "Please enter the expiration month";
+	public static final String EXPIRY_YEAR_MANDATORY_MSG = "Please enter the expiration year";
+	public static final String CARD_PIN_MANDATORY_MSG = "Please enter the card security code";
+	public static final String CARD_NUM_ERROR_MSG = "Please enter a valid card number";
+	public static final String CARD_PIN_FORMAT_ERROR_MSG = "Please enter digits only";
+	public static final String CARD_PIN_SHORT_ERROR_MSG = "Minimum length is 3";
+	public static final String EXPIRY_DATE_ERROR_MSG = "Please enter a valid expiration date";
+	public static final String CVV_WRONG_FORMAT_DETAILS = "abc";
+	public static final String ALREADY_EXPIRED_YEAR_INDEX = "2";
+	public static final String CARD_NUMBER_IN_WRONG_FORMAT = "474747474747$$$@";
+	public static final String INVALID_POSTAL_CODE_MSG = "Please enter valid postal code."; 
+	public static final String INVALID_POSTAL_CODE = "$$$&&";
+	public static final String ADDRESS_NAME_MANDATORY_MSG = "Name must contain first name and last name with no special characters.";
+	public static final String ADDRESS_LINE_MANDATORY_MSG = "Please enter valid address.";
+	public static final String CITY_MANDATORY_MSG = "Please enter valid city.";
+	public static final String PROVINCE_MANDATORY_MSG = "Please select a Province.";
+	public static final String POSTAL_CODE_MANDATORY_MSG = "Please enter valid postal code.";
+	public static final String PHONE_NUMBER_MANDATORY_MSG = "Please specify a valid phone number.";
 
 }

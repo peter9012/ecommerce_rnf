@@ -19,7 +19,7 @@ public class StoreFrontAutoshipCartPage extends StoreFrontWebsiteBasePage{
 	private final By CLOSE_ICON_PULSE_OVERLAY_LOC = By.id("cboxClose");
 	private final By LEARN_MORE_ABOUT_PULSE_LOC = By.xpath("//a[contains(text(),'Learn more about Pulse')]");
 	private final By PULSE_POPUP_LOC = By.xpath("//h1[contains(text(),'Pulse Business Management')]");
-	//private final By PULSE_POPUP_CONTENT_LOC = By.xpath("//div[contains(@class,'simple-banner')]//h1[contains(text(),'Pulse')]");
+	private final By PC_PERKS_CHECKOUT_LOC = By.xpath("//a[contains(text(),'PC Perks Checkout')]");
 	private String socialMediaIconLoc = "//div[@class='container']//a[contains(@href,'%s')]";
 
 	/***
@@ -44,7 +44,7 @@ public class StoreFrontAutoshipCartPage extends StoreFrontWebsiteBasePage{
 	 */
 	public boolean isPulsePopupPresentWithContent(){
 		return driver.isElementPresent(PULSE_POPUP_LOC);
-				
+
 	}
 
 	/***
@@ -59,6 +59,18 @@ public class StoreFrontAutoshipCartPage extends StoreFrontWebsiteBasePage{
 		logger.info("clicked X of 'pulse overlay'");
 		driver.pauseExecutionFor(2000);
 		return this;
+	}
+
+	/***
+	 * This method click on the pc perks checkout button
+	 * 
+	 * @param
+	 * @return StoreFrontCheckoutPage object
+	 */
+	public StoreFrontCheckoutPage clickOnPCPerksCheckoutButton(){
+		driver.click(PC_PERKS_CHECKOUT_LOC);
+		logger.info("Clicked on pc perks checkout button");
+		return new StoreFrontCheckoutPage(driver);
 	}
 
 }

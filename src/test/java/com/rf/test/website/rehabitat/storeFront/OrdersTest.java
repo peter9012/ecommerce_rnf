@@ -964,6 +964,7 @@ public class OrdersTest extends StoreFrontWebsiteBaseTest{
 	public void testShippingToPORRWithPONumberAsAddressDetail_368(){
 
 	}
+
 	/***
 	 * qTest : TC-409 Order Confirmation for AdHoc Orders
 	 * Description : //TODO
@@ -971,29 +972,107 @@ public class OrdersTest extends StoreFrontWebsiteBaseTest{
 	 *     
 	 */
 	@Test
-	public void testOrderConfirmationForAdHocOrders_409(){
+	public void testOrderConfirmationForAdhocOrders_409(){
+		String productName=null;
+		String productQuantity=null;
+		String productPrice=null;
+		String subTotal=null;
+		String orderTotal=null;
+		String shippingProfile=null;
+		String shippingCharges=null;
+		String shippingMethodAfterOrderPlaced=null;
+		String ccfourDigits  = null;
+		String ccExpiryDate = null;
+		String billingProfileName  = null;
 
+		String shippingProfileFromOrderConfirmationPage = null;
+		String shippingMethodFromOrderConfirmationPage = null;
+		String billingProfileNameFromOrderConfirmationPage = null;
+		String lastFourDigitOfCCFromOrderConfirmationPage = null;
+		String expDateOfCCFromOrderConfirmationPage = null;
+		String totalChhargesFromOrderConfirmationPage = null;
+
+		sfHomePage.loginToStoreFront(TestConstants.CONSULTANT_EMAIL, password);
+		sfShopSkinCarePage = sfHomePage.clickAllProducts();
+		sfShopSkinCarePage.selectFirstProduct();
+		sfCartPage=sfShopSkinCarePage.checkoutTheCartFromPopUp();
+
+		productName = sfCartPage.getProductName("1");
+		productQuantity = sfCartPage.getQuantityOfProductFromCart("1");
+		productPrice = sfCartPage.getProductPrice("1");
+		subTotal = sfCartPage.getSubtotalofItems();
+		orderTotal = sfCartPage.getOrderTotal();
+
+		sfCheckoutPage=sfCartPage.checkoutTheCart();
+		sfCheckoutPage.clickSaveButton();
+
+		sfCheckoutPage.clickShippingDetailsNextbutton();
+		sfCheckoutPage.clickAddNewBillingProfileButton();
+		sfCheckoutPage.enterUserBillingDetails(TestConstants.CARD_TYPE, TestConstants.CARD_NUMBER, TestConstants.CARD_NAME, TestConstants.CVV);
+		sfCheckoutPage.checkUseMyDeliveryAddressChkBox();
+		sfCheckoutPage.clickBillingDetailsNextbutton();
+		shippingProfile = sfCheckoutPage.getDefaultShippingAddressNameAtCheckoutPage();
+		shippingCharges = sfCheckoutPage.getDeliveryChargesAtOrderReviewPage();
+		shippingMethodAfterOrderPlaced =  sfCheckoutPage.getSelectedShippingMethodName();
+		ccfourDigits = sfCheckoutPage.getLastFourDigitsOfCardNumberInBillingDetails();
+		ccExpiryDate = sfCheckoutPage.getExpiryDateOfCardNumberInBillingDetails();
+		billingProfileName = sfCheckoutPage.getBillingProfileDetailsFromBillingProfile();
+		sfCheckoutPage.selectTermsAndConditionsChkBox();
+		sfCheckoutPage.clickPlaceOrderButton();
+		shippingProfileFromOrderConfirmationPage = sfCheckoutPage.getShippingProfileFromConfirmationPage();
+		shippingMethodFromOrderConfirmationPage = sfCheckoutPage.getShippingMethodAfterPlacedOrder();
+		billingProfileNameFromOrderConfirmationPage = sfCheckoutPage.getBillingProfileDetailsFromBillingProfile();
+		lastFourDigitOfCCFromOrderConfirmationPage = sfCheckoutPage.getLastFourNumbersOfBillingDetailsOnConFirmationPage();
+		expDateOfCCFromOrderConfirmationPage = sfCheckoutPage.getExpiryDateOfCardNumberInBillingDetails();
+		totalChhargesFromOrderConfirmationPage = sfCheckoutPage.getTotalChargeOnConFirmationPage();
+
+		s_assert.assertTrue(sfCheckoutPage.isOrderPlacedSuccessfully(),"Order not placed. Thank you message is not displayed");
+		s_assert.assertTrue(sfCheckoutPage.isTextPresent("Order #"),"Order Number is not present on the confirmation page");
+		s_assert.assertTrue(shippingProfileFromOrderConfirmationPage.equals(shippingProfile), "Shipping Profile is not matching on confirmation page. Expected is :"+shippingProfile+" But found is :"+shippingProfileFromOrderConfirmationPage);
+		s_assert.assertTrue(shippingMethodFromOrderConfirmationPage.equals(shippingMethodAfterOrderPlaced), "Shipping Method is not matching on confirmation page. Expected is :"+shippingMethodAfterOrderPlaced+" But found is :"+shippingMethodFromOrderConfirmationPage);
+		s_assert.assertTrue(billingProfileNameFromOrderConfirmationPage.equals(billingProfileName),"Billing Profile is not matching on confirmation page. Expected is :"+billingProfileName+" But found is :"+billingProfileNameFromOrderConfirmationPage);
+		s_assert.assertTrue(lastFourDigitOfCCFromOrderConfirmationPage.equals(ccfourDigits), "Credit Card Last 4 digits are not matching. Expected is :"+ccfourDigits+" But found is :"+lastFourDigitOfCCFromOrderConfirmationPage);
+		s_assert.assertTrue(expDateOfCCFromOrderConfirmationPage.equals(ccExpiryDate), "Credit Card Expiry Date is not matching. Expected is :"+ccExpiryDate+" But found is :"+expDateOfCCFromOrderConfirmationPage);
+		s_assert.assertTrue(totalChhargesFromOrderConfirmationPage.equals(orderTotal),"Order total is not matching. Expected is:"+orderTotal+"But found is "+totalChhargesFromOrderConfirmationPage);
+		s_assert.assertAll();
 	}
+
 	/***
 	 * qTest : TC-414 User shouldn't able to change the sponsor after consultant account created
-	 * Description : //TODO
-	 * 
+	 * Description : This test case validates consultant can not change the sponsor after creation of account
+	 * through continue without a consultant and not your sponsor link
 	 *     
 	 */
 	@Test
 	public void testUserShouldntAbleToChangeTheSponsorAfterConsultantAccountCreated_414(){
-
+		sfHomePage.loginToStoreFront(TestConstants.CONSULTANT_EMAIL, password);
+		sfShopSkinCarePage = sfHomePage.clickAllProducts();
+		sfShopSkinCarePage.selectFirstProduct();
+		sfCartPage = sfShopSkinCarePage.checkoutTheCartFromPopUp();
+		sfCheckoutPage = sfCartPage.checkoutTheCart();
+		s_assert.assertFalse(sfCheckoutPage.isContinueWithoutConsultantLinkPresent(), "Continue without consultant link is present for consultant's sponsor");
+		s_assert.assertFalse(sfCheckoutPage.isNotYourSponsorLinkIsPresent(), "Not your sponsor link is present for consultant's sponsor");
+		s_assert.assertAll();
 	}
+
 	/***
 	 * qTest : TC-415 User shouldn't able to change the sponsor after PC account created
-	 * Description : //TODO
-	 * 
+	 *Description : This test case validates PC can not change the sponsor after creation of account
+	 * through continue without a consultant and not your sponsor link
 	 *     
 	 */
 	@Test
 	public void testUserShouldntAbleToChangeTheSponsorAfterPCAccountCreated_415(){
-
+		sfHomePage.loginToStoreFront(TestConstants.PC_EMAIL, password);
+		sfShopSkinCarePage = sfHomePage.clickAllProducts();
+		sfShopSkinCarePage.selectFirstProduct();
+		sfCartPage = sfShopSkinCarePage.checkoutTheCartFromPopUp();
+		sfCheckoutPage = sfCartPage.checkoutTheCart();
+		s_assert.assertFalse(sfCheckoutPage.isContinueWithoutConsultantLinkPresent(), "Continue without consultant link is present for consultant's sponsor");
+		s_assert.assertFalse(sfCheckoutPage.isNotYourSponsorLinkIsPresent(), "Not your sponsor link is present for consultant's sponsor");
+		s_assert.assertAll();
 	}
+
 	/***
 	 * qTest : TC-365 Order Details and Return Order Details- Link to Pulse
 	 * Description : //TODO
@@ -1357,6 +1436,135 @@ public class OrdersTest extends StoreFrontWebsiteBaseTest{
 		s_assert.assertTrue(sfOrdersPage.isErrorMsgForProblemDDPresent(),"Error message is not present for problem dropdown details");
 		s_assert.assertTrue(sfOrdersPage.isErrorMsgForReportProblemMessageTextFieldPresent(),"Error message is not present for report problem message details");
 		s_assert.assertAll();
+	}
+
+	/***
+	 * qTest : TC-476 Retail User Checkout- Choose a Consultant - single search
+	 * Description : This test case  placed adhoc order through RC selecting a sponsor in a single search
+	 * 
+	 */
+	@Test
+	public void testRetailUserCheckoutChooseAConsultantSingleSearch_476(){
+		String firstName = TestConstants.FIRST_NAME;
+		String lastName = TestConstants.LAST_NAME;
+		String addressLine1 = TestConstants.ADDRESS_LINE_1_US;
+		String addressLine2 = TestConstants.ADDRESS_LINE_2_US;
+		String city = TestConstants.CITY_US;
+		String state = TestConstants.STATE_US;
+		String postalCode = TestConstants.POSTAL_CODE_US;
+		String phoneNumber = TestConstants.PHONE_NUMBER;
+		String cardType = TestConstants.CARD_TYPE;
+		String cardNumber = TestConstants.CARD_NUMBER;
+		String cardName = TestConstants.CARD_NAME;
+		String CVV = TestConstants.CVV;
+		sfHomePage.loginToStoreFront(TestConstants.RC_EMAIL, password);
+		sfShopSkinCarePage = sfHomePage.clickAllProducts();
+		sfShopSkinCarePage.clickAddToCartOfFirstProduct();
+		sfCartPage = sfShopSkinCarePage.checkoutTheCartFromPopUp();
+		sfCheckoutPage = sfCartPage.checkoutTheCart();
+		sfCheckoutPage.searchSponsor(TestConstants.SPONSOR);
+		s_assert.assertTrue(sfHomePage.isSponsorResultDisplayed(),"No result found after searching the sponsor with name "+TestConstants.SPONSOR);
+		sfCheckoutPage.selectFirstSponsorFromList();
+		sfCheckoutPage.clickSaveButton();
+		if(sfCheckoutPage.isFirstLastNameFieldVisible()){
+			sfCheckoutPage.enterShippingDetails(firstName+" "+lastName, addressLine1, addressLine2, city, state, postalCode, phoneNumber);
+		}
+		sfCheckoutPage.clickShippingDetailsNextbutton();
+		sfCheckoutPage.clickUseAsEnteredButtonOnPopUp();
+		sfCheckoutPage.enterUserBillingDetails(cardType, cardNumber, cardName, CVV);
+		sfCheckoutPage.checkUseMyDeliveryAddressChkBox();
+		sfCheckoutPage.clickBillingDetailsNextbutton();
+		sfHomePage.selectTermsAndConditionsChkBox();
+		sfCheckoutPage.clickPlaceOrderButton();
+		s_assert.assertTrue(sfCheckoutPage.isOrderPlacedSuccessfully(), "Adhoc order is not placed successfully by RC");
+	}
+
+	/***
+	 * qTest : TC-478 Retail User Checkout- Choose a Consultant - Change selected sponsor
+	 * Description : This test case  placed adhoc order through RC change the selected sponsor
+	 * 
+	 */
+	@Test
+	public void testRetailUserCheckoutChooseAConsultantChangeSelectedSponsor_478(){
+		String firstName = TestConstants.FIRST_NAME;
+		String lastName = TestConstants.LAST_NAME;
+		String addressLine1 = TestConstants.ADDRESS_LINE_1_US;
+		String addressLine2 = TestConstants.ADDRESS_LINE_2_US;
+		String city = TestConstants.CITY_US;
+		String state = TestConstants.STATE_US;
+		String postalCode = TestConstants.POSTAL_CODE_US;
+		String phoneNumber = TestConstants.PHONE_NUMBER;
+		String cardType = TestConstants.CARD_TYPE;
+		String cardNumber = TestConstants.CARD_NUMBER;
+		String cardName = TestConstants.CARD_NAME;
+		String CVV = TestConstants.CVV;
+		sfHomePage.loginToStoreFront(TestConstants.RC_EMAIL, password);
+		sfShopSkinCarePage = sfHomePage.clickAllProducts();
+		sfShopSkinCarePage.clickAddToCartOfFirstProduct();
+		sfCartPage = sfShopSkinCarePage.checkoutTheCartFromPopUp();
+		sfCheckoutPage = sfCartPage.checkoutTheCart();
+		sfCheckoutPage.searchSponsor(TestConstants.SPONSOR);
+		s_assert.assertTrue(sfHomePage.isSponsorResultDisplayed(),"No result found after searching the sponsor with name "+TestConstants.SPONSOR);
+		sfCheckoutPage.selectFirstSponsorFromList();
+		sfCheckoutPage.clickRemoveLink();
+		sfCheckoutPage.searchSponsor(TestConstants.SPONSOR);
+		s_assert.assertTrue(sfHomePage.isSponsorResultDisplayed(),"No result found after searching the sponsor with name "+TestConstants.SPONSOR);
+		sfCheckoutPage.selectFirstSponsorFromList();
+		sfCheckoutPage.clickSaveButton();
+		if(sfCheckoutPage.isFirstLastNameFieldVisible()){
+			sfCheckoutPage.enterShippingDetails(firstName+" "+lastName, addressLine1, addressLine2, city, state, postalCode, phoneNumber);
+		}
+		sfCheckoutPage.clickShippingDetailsNextbutton();
+		sfCheckoutPage.clickUseAsEnteredButtonOnPopUp();
+		sfCheckoutPage.enterUserBillingDetails(cardType, cardNumber, cardName, CVV);
+		sfCheckoutPage.checkUseMyDeliveryAddressChkBox();
+		sfCheckoutPage.clickBillingDetailsNextbutton();
+		sfHomePage.selectTermsAndConditionsChkBox();
+		sfCheckoutPage.clickPlaceOrderButton();
+		s_assert.assertTrue(sfCheckoutPage.isOrderPlacedSuccessfully(), "Adhoc order is not placed successfully by RC");
+	}
+
+	/***
+	 * qTest : TC-479 Retail User Checkout- Choose a Consultant - Checkout with Corporate
+	 * Description : This test case  placed adhoc order through RC continue without a consultant
+	 * 
+	 */
+	@Test
+	public void testRetailUserCheckoutChooseAConsultantCheckoutWithCorporate_479(){
+		String firstName = TestConstants.FIRST_NAME;
+		String lastName = TestConstants.LAST_NAME;
+		String addressLine1 = TestConstants.ADDRESS_LINE_1_US;
+		String addressLine2 = TestConstants.ADDRESS_LINE_2_US;
+		String city = TestConstants.CITY_US;
+		String state = TestConstants.STATE_US;
+		String postalCode = TestConstants.POSTAL_CODE_US;
+		String phoneNumber = TestConstants.PHONE_NUMBER;
+		String cardType = TestConstants.CARD_TYPE;
+		String cardNumber = TestConstants.CARD_NUMBER;
+		String cardName = TestConstants.CARD_NAME;
+		String CVV = TestConstants.CVV;
+		String sponsorName = "RF Corporate";
+		String sponsorNameFromUI = null;
+		sfHomePage.loginToStoreFront(TestConstants.RC_EMAIL, password);
+		sfShopSkinCarePage = sfHomePage.clickAllProducts();
+		sfShopSkinCarePage.clickAddToCartOfFirstProduct();
+		sfCartPage = sfShopSkinCarePage.checkoutTheCartFromPopUp();
+		sfCheckoutPage = sfCartPage.checkoutTheCart();
+		sfCheckoutPage.clickContinueWithoutConsultantLink();
+		sponsorNameFromUI = sfCheckoutPage.getSponsorInfo();
+		s_assert.assertTrue(sponsorNameFromUI.contains(sponsorName), "Expected sponsor name is "+sponsorName+" but actual on UI is "+sponsorNameFromUI);
+		sfCheckoutPage.clickSaveButton();
+		if(sfCheckoutPage.isFirstLastNameFieldVisible()){
+			sfCheckoutPage.enterShippingDetails(firstName+" "+lastName, addressLine1, addressLine2, city, state, postalCode, phoneNumber);
+		}
+		sfCheckoutPage.clickShippingDetailsNextbutton();
+		sfCheckoutPage.clickUseAsEnteredButtonOnPopUp();
+		sfCheckoutPage.enterUserBillingDetails(cardType, cardNumber, cardName, CVV);
+		sfCheckoutPage.checkUseMyDeliveryAddressChkBox();
+		sfCheckoutPage.clickBillingDetailsNextbutton();
+		sfHomePage.selectTermsAndConditionsChkBox();
+		sfCheckoutPage.clickPlaceOrderButton();
+		s_assert.assertTrue(sfCheckoutPage.isOrderPlacedSuccessfully(), "Adhoc order is not placed successfully by RC");
 	}
 
 }

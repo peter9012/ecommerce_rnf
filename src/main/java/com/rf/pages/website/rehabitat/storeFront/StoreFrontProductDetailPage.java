@@ -33,7 +33,11 @@ public class StoreFrontProductDetailPage extends StoreFrontWebsiteBasePage{
 	private final By ADD_TO_CART_BTN_AT_PDP_PAGE = By.xpath("//div[@class='addtocart-component']//button[contains(text(),'Add to cart')]");
 	private final By ONE_TIME_ORDER_BTN_LOC = By.xpath("//span[contains(text(),'One Time Order')]/ancestor::button[1]");
 	private final By PRODUCT_PRICE_ON_PDP_LOC = By.xpath("//div[@class='product-details']//span[@id='cust_price']");
-	
+	private final By PRODUCT_IMAGE_LOC=By.xpath("//div[@id='pdp_page']//img");
+	private final By VIEW_LARGER_IMAGE_LOC=By.xpath("//span[contains(text(),'View Larger')]");
+	private final By CLOSE_ZOOM_LOC=By.xpath("//a[@class='closeZoom']");
+	private final By RECENTLY_VIEWED_PRODUCT_NAME_LOC=By.xpath("//div[@class='autoship-recentlyViewed']//div[@class='owl-item active'][1]//h3//a");
+
 	private String productUnderRecentlyViewTabLoc = "//div[@id='pdp_page']//div[@class='content']//following::div[@class='owl-item active']//a[contains(text(),'%s')]";
 	private String tabOnProductDetailPageLoc = "//div[@id='pdp_page']//following::li/a[contains(text(),'%s')]";
 
@@ -238,57 +242,116 @@ public class StoreFrontProductDetailPage extends StoreFrontWebsiteBasePage{
 	}
 
 	/***
-	  * This method verify the presence of price on PDP
-	  * 
-	  * 
-	  * @param
-	  * @return boolean value.
-	  * 
-	  */
+	 * This method verify the presence of price on PDP
+	 * 
+	 * 
+	 * @param
+	 * @return boolean value.
+	 * 
+	 */
 
-	 public boolean isPricePresentOnPDPAsExpected(){
-	  return driver.getText(PRODUCT_PRICE_ON_PDP_LOC).contains("Your Price : $");
-	 }
-	 
-	 
-	 /***
-	  * This method validates the presence of Retail Price on PDP for PC, Consultant user
-	  * 
-	  * @param 
-	  * @return boolean
-	  * 
-	  */
+	public boolean isPricePresentOnPDPAsExpected(){
+		return driver.getText(PRODUCT_PRICE_ON_PDP_LOC).contains("Your Price : $");
+	}
 
-	 public boolean isRetailPricePresentOnPDPPage(){
-	  return driver.getText(RETAIL_PRICE_ON_PDP_LOC).contains("$");
-	 }
-	 
-	 
-	 /***
-	  * This method clicked on add to cart button and select one time order on product detail Page
-	  * 
-	  * @param 
-	  * @return boolean
-	  * 
-	  */
 
-	 public StoreFrontProductDetailPage clickOnAddToCartButton(){
-	  driver.moveToElement(ADD_TO_CART_BTN_AT_PDP_PAGE);
-	  driver.click(ONE_TIME_ORDER_BTN_LOC);
-	  logger.info("Clicked on one time order button");
-	  return this;
-	 }
-	 
-	 /***
-	  * This method get specific price for the user
-	  * 
-	  * @param 
-	  * @return String
-	  * 
-	  */
+	/***
+	 * This method validates the presence of Retail Price on PDP for PC, Consultant user
+	 * 
+	 * @param 
+	 * @return boolean
+	 * 
+	 */
 
-	 public String getSpecificPricePresentOnPDPPage(){
-	  driver.waitForElementToBeVisible(PRODUCT_PRICE_ON_PDP_LOC, 20);
-	  return driver.getText(PRODUCT_PRICE_ON_PDP_LOC).split("\\$")[1].trim();
-	 }
+	public boolean isRetailPricePresentOnPDPPage(){
+		return driver.getText(RETAIL_PRICE_ON_PDP_LOC).contains("$");
+	}
+
+
+	/***
+	 * This method clicked on add to cart button and select one time order on product detail Page
+	 * 
+	 * @param 
+	 * @return boolean
+	 * 
+	 */
+
+	public StoreFrontProductDetailPage clickOnAddToCartButton(){
+		driver.moveToElement(ADD_TO_CART_BTN_AT_PDP_PAGE);
+		driver.click(ONE_TIME_ORDER_BTN_LOC);
+		logger.info("Clicked on one time order button");
+		return this;
+	}
+
+	/***
+	 * This method get specific price for the user
+	 * 
+	 * @param 
+	 * @return String
+	 * 
+	 */
+
+	public String getSpecificPricePresentOnPDPPage(){
+		driver.waitForElementToBeVisible(PRODUCT_PRICE_ON_PDP_LOC, 20);
+		return driver.getText(PRODUCT_PRICE_ON_PDP_LOC).split("\\$")[1].trim();
+	}
+
+	/***
+	 * This method validates product image displayed on product details page or not
+	 * 
+	 * @return Boolean
+	 * 
+	 */
+	public Boolean isProductImageDisplayed(){
+		return driver.isElementVisible(PRODUCT_IMAGE_LOC);
+	}
+	
+	/***
+	 * This method click on view larger image link
+	 * 
+	 * @return StoreFrontProductDetailPage object
+	 * 
+	 */
+	public StoreFrontProductDetailPage clickToViewLargerImage(){
+		driver.click(VIEW_LARGER_IMAGE_LOC);
+		logger.info("clicked on view larger image link");
+		return this;
+	}
+	
+	/***
+	 * This method validates product image displayed in larger size or not
+	 * 
+	 * @return Boolean
+	 * 
+	 */
+	public boolean isProductImageDisplayedInLargerSize(){
+		return driver.isElementVisible(CLOSE_ZOOM_LOC);
+	}
+	
+	/***
+	 * This method close zoom image popup
+	 * 
+	 * @return StoreFrontProductDetailPage object
+	 * 
+	 */
+	public StoreFrontProductDetailPage closeZoomImage(){
+		driver.click(CLOSE_ZOOM_LOC);
+		logger.info("clicked on close(X) zoom image");
+		return this;
+	}
+	
+	/***
+	 * This method click on recently viewed product name and returned product name
+	 * 
+	 * @return recently viewed product name.
+	 * 
+	 */
+	public String clickRecentlyViewedProductNameAndReturnProductName(){
+		String productName= driver.getText(RECENTLY_VIEWED_PRODUCT_NAME_LOC);
+		driver.click(RECENTLY_VIEWED_PRODUCT_NAME_LOC);
+		logger.info("clicked on recently viewed product name");
+		return productName;
+	}
+
+
 }

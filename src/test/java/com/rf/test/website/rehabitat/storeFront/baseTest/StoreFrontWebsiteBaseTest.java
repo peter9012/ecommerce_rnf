@@ -65,9 +65,9 @@ public class StoreFrontWebsiteBaseTest extends RFBaseTest {
 	protected String countryId=null;
 	protected String country=null;
 	protected boolean runBaseURLOrLogoutExecutionCode = true;
-	
+
 	protected RFWebsiteDriver driver = new RFWebsiteDriver(propertyFile);
-	
+
 	private static final Logger logger = LogManager
 			.getLogger(StoreFrontWebsiteBaseTest.class.getName());
 
@@ -80,9 +80,9 @@ public class StoreFrontWebsiteBaseTest extends RFBaseTest {
 	public void setUp() throws Exception {
 		driver.loadApplication();
 		driver.setDBConnectionString();
-//		setCountry();
-//		setCountryId();
-//		setStoreFrontPassword(driver.getStoreFrontUserPassword());
+		//		setCountry();
+		//		setCountryId();
+		//		setStoreFrontPassword(driver.getStoreFrontUserPassword());
 	}
 
 	@BeforeMethod(alwaysRun=true)
@@ -93,6 +93,7 @@ public class StoreFrontWebsiteBaseTest extends RFBaseTest {
 		setCountryId();
 		navigateToStoreFrontBaseURL();
 		if(sfHomePage.isWelcomeUserElementDisplayed()==true){
+			sfHomePage.clickWelcomeDropdown();
 			sfHomePage.logout();
 		}
 	}
@@ -100,7 +101,7 @@ public class StoreFrontWebsiteBaseTest extends RFBaseTest {
 	public void setCountry(){
 		country = driver.getCountry();
 	}
-	
+
 	public String getCountry(){
 		return country;
 	}
@@ -115,12 +116,12 @@ public class StoreFrontWebsiteBaseTest extends RFBaseTest {
 	public void navigateToStoreFrontBaseURL(){
 		driver.get(driver.getURL()+"/"+country.toUpperCase());
 	}
-	
+
 	public void closeCurrentWindow(){
 		driver.close();
 		logger.info("Current widow closed");
 	}
-	
+
 	public void openTheBrowserAndApplication(){
 		try {
 			driver.loadApplication();
@@ -132,13 +133,13 @@ public class StoreFrontWebsiteBaseTest extends RFBaseTest {
 		logger.info("Application launched");
 	}
 
-//	public void logout(){
-//		driver.click(WELCOME_DROPDOWN_LOC);
-//		logger.info("Welcome dropdown clicked");
-//		driver.pauseExecutionFor(2000);
-//		driver.click(SIGN_OUT_LOC);
-//		driver.waitForPageLoad();
-//	}
+	//	public void logout(){
+	//		driver.click(WELCOME_DROPDOWN_LOC);
+	//		logger.info("Welcome dropdown clicked");
+	//		driver.pauseExecutionFor(2000);
+	//		driver.click(SIGN_OUT_LOC);
+	//		driver.waitForPageLoad();
+	//	}
 
 	/**
 	 * @throws Exception

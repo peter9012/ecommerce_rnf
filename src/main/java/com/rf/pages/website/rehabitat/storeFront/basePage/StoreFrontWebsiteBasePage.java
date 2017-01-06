@@ -114,7 +114,8 @@ public class StoreFrontWebsiteBasePage extends RFBasePage{
 	private final By SPONSOR_ZIPCODE_LOC = By.xpath("//div[@class='enroll-page']/descendant::input[@id='sponsor.zipcode'][1]");
 	private final By THANKS_MSG_ON_SPONSOR_REQUEST_LOC = By.xpath("//div[@id='sponsor-entire-form-display'][@style='display: block;']//div[@id='sponsor-success-data']");
 	private final By BACK_TO_HOMEPAGE_LOC = By.xpath("//div[@id='sponsor-entire-form-display'][@style='display: block;']//input[@id='consultant-backhome']");
-	private final By FIRST_LAST_NAME_FOR_ADDRESS_DETAILS_LOC = By.id("address.firstName");
+	private final By FIRST_NAME_FOR_ADDRESS_DETAILS_LOC = By.id("address.firstName");
+	private final By LAST_NAME_FOR_ADDRESS_DETAILS_LOC = By.id("address.lastName");
 	private final By ADDRESS_LINE_1_FOR_ADDRESS_DETAILS_LOC = By.id("address.line1");
 	private final By ADDRESS_LINE_2_FOR_ADDRESS_DETAILS_LOC = By.id("address.line2");
 	private final By CITY_FOR_ADDRESS_DETAILS_LOC = By.id("address.townCity");
@@ -167,7 +168,25 @@ public class StoreFrontWebsiteBasePage extends RFBasePage{
 	private final By PRODUCT_NAME_ON_CHECKOUT_POPUP_LOC = By.xpath("//div[@class='add-to-cart-item']//div[@class='details']/a[@class='name']");
 	protected final By CHECKOUT_BUTTON_POPUP_LOC = By.xpath("//div[@id='addToCartLayer']/a[contains(text(),'Checkout')]");
 	private final By SHOPPING_CART_HEADLINE_ON_CHCKOUT_POPUP_LOC = By.xpath("//div[@id='colorbox']//div[@class='headline']/span[@class='headline-text' and contains(text(),'Added to Your Shopping Cart')]");
-	
+	private final By AUTOSHIP_CART_LINK_LOC = By.xpath("//span[text()='AutoShip']/ancestor::a[contains(@class,'auto-ship-cart')]");
+	private final By RETURN_AUTHORIZATION_FORM_LINK = By.xpath("//div[@class='container']/following::ul//a[text()='Return Authorization Form']");
+	private final By POLICY_AND_PROCEDURE_LINK_ON_SATISFACTION_GUARANTEE_LOC = By.xpath("//div[@class='container']//a[text()='Policies and Procedures']");
+	private final By PRESS_MENTION_TAB_ITEMS_LOC=By.xpath("//div[@id='press-mentions']");
+	private final By COMPANY_PRESS_RELEASES_TAB_ITEMS_LOC=By.xpath("//div[@id='company-press-releases']");
+	private final By PRODUCT_PRESS_RELEASES_TAB_ITEMS_LOC=By.xpath("//div[@id='product-press-releases']");
+	private final By FORBES_PRESS_LINK_LOC=By.xpath("//div[@class='yCmsComponent pressRoomNews'][1]/div[2]/div[1]/a");
+	protected final By SEARCH_BOX = By.id("search-box");
+	protected final By SEARCH_ICON_NEAR_SEARCH_BOX = By.xpath("//input[@id='search-box']/preceding::span[1]");
+	private final By ADD_MORE_ITEMS_BTN_LOC = By.xpath("//div[@class='cart-container']/descendant::button[contains(text(),'Add More Items')][2]");
+	private final By SUBTOTAL_LOC = By.xpath("//td[text()='Subtotal:']/following::td[1]");
+	private final By ADD_MORE_ITEMS_BTN_PC_AUTOSHIP_CART_LOC = By.xpath("//div[@class='cart-container']/descendant::button[contains(text(),'Add More Items')]");
+
+	private String productNameInAllItemsInCartLoc = "//ul[@class='item-list cart__list']//div[@class='item-info']//span[@class='item-name' and contains(text(),'%s')]";
+	private String pageHeaderLoc = "//div[contains(text(),'%s')]";
+	private String disclaimerPageLinkLoc = "//a[contains(text(),'%s')]";
+	private String pressRoomTabsLoc="//ul[@class='tabs']//li/a[contains(text(),'%s')]";
+	private String specificExpYearLoc = "//select[@id='c-exyr']//option[%s]";
+	private String searchResultTextAsPerEntity = "//h1[contains(text(),'Search Results for \"%s\"')]";
 	private String passwordRecoverySubmitMsgLoc = "//div[@id='validEmail'][contains(text(),'%s')]"; 
 	private String expMonthLoc= "//select[@id='c-exmth']//option[contains(text(),'%s')]";
 	private String textLoc = "//*[contains(text(),'%s')]";
@@ -216,6 +235,16 @@ public class StoreFrontWebsiteBasePage extends RFBasePage{
 	 */
 	public boolean isConsultantOnlyProductsLinkDisplayed(){
 		return driver.isElementVisible(CONSULTANT_ONLY_PRODUCTS_LINK_LOC);
+	}
+
+	/***
+	 * This method clicks on CONSULTANT ONLY link under ShopSkincare
+	 * @return boolean
+	 */
+	public StoreFrontShopSkinCarePage clickConsultantOnlyProductsLink(){
+		driver.click(CONSULTANT_ONLY_PRODUCTS_LINK_LOC);
+		logger.info("Clicked on Consultant Only link");
+		return new StoreFrontShopSkinCarePage(driver);
 	}
 
 	/***
@@ -851,22 +880,6 @@ public class StoreFrontWebsiteBasePage extends RFBasePage{
 	}
 
 	/***
-	 * This method hover on shopSkincare  and click link mentioned in argument.
-	 * 
-	 * @param
-	 * @return store front website base page object
-	 * 
-	 */
-	public StoreFrontShopSkinCarePage navigateToShopSkincareLink(String linkName){
-		mouseHoverOn(TestConstants.SHOP_SKINCARE);
-		driver.click(By.xpath(String.format(topNavigationSublinksWithTextLoc, linkName)));
-		logger.info("clicked on"+ "'"+linkName+"'" +"under shopskincare");
-		driver.waitForLoadingImageToDisappear();
-		driver.waitForPageLoad();
-		return new StoreFrontShopSkinCarePage(driver);
-	}
-
-	/***
 	 * This method click Account info link from welcome dropdown.
 	 * 
 	 * @param
@@ -919,7 +932,7 @@ public class StoreFrontWebsiteBasePage extends RFBasePage{
 	 */
 	public StoreFrontWebsiteBasePage enterConsultantShippingDetails(String firstName, String lastName, String addressLine1, String addressLine2, String city, String state, String postal, String phoneNumber){
 		String completeName = firstName+" "+lastName;
-		driver.type(FIRST_LAST_NAME_FOR_ADDRESS_DETAILS_LOC, completeName);
+		driver.type(FIRST_NAME_FOR_ADDRESS_DETAILS_LOC, completeName);
 		logger.info("Entered complete name as "+completeName);
 		driver.type(ADDRESS_LINE_1_FOR_ADDRESS_DETAILS_LOC, addressLine1);
 		logger.info("Entered address line 1 as "+addressLine1);
@@ -1068,6 +1081,22 @@ public class StoreFrontWebsiteBasePage extends RFBasePage{
 		logger.info("Edit link clicked next to main account info");
 		driver.waitForPageLoad();
 		return this;
+	}
+
+	/***
+	 * This method returns the main first name of the user
+	 * @return
+	 */
+	public String getMainFirstNameOfUser(){
+		return driver.getAttribute(FIRST_NAME_FOR_ADDRESS_DETAILS_LOC, "value");
+	}
+
+	/***
+	 * This method returns the main last name of the user
+	 * @return
+	 */
+	public String getMainLastNameOfUser(){
+		return driver.getAttribute(LAST_NAME_FOR_ADDRESS_DETAILS_LOC, "value");
 	}
 
 	/***
@@ -1449,7 +1478,7 @@ public class StoreFrontWebsiteBasePage extends RFBasePage{
 	 */
 	public StoreFrontWebsiteBasePage enterConsultantAddressDetails(String firstName, String lastName, String addressLine1, String addressLine2, String city, String state, String postal, String phoneNumber){
 		String completeName = firstName+" "+lastName;
-		driver.type(FIRST_LAST_NAME_FOR_ADDRESS_DETAILS_LOC, completeName);
+		driver.type(FIRST_NAME_FOR_ADDRESS_DETAILS_LOC, completeName); //this will put first and last name
 		logger.info("Entered complete name as "+completeName);
 		driver.type(ADDRESS_LINE_1_FOR_ADDRESS_DETAILS_LOC, addressLine1);
 		logger.info("Entered address line 1 as "+addressLine1);
@@ -1712,20 +1741,22 @@ public class StoreFrontWebsiteBasePage extends RFBasePage{
 		driver.waitForPageLoad();
 		return this;
 	}
+
 	/***
-	 * This method click edit pc perks link from welcome dropdown.
+	 * This method click PC Perks Edit link from welcome dropdown.
 	 * 
 	 * @param
-	 * @return store front billing info page object
+	 * @return StoreFrontAutoshipCartPage object
 	 * 
 	 */
-	public StoreFrontWebsiteBasePage navigateToEditPCPerksPage(){
+	public StoreFrontAutoshipCartPage navigateToEditPCPerksPage(){
 		driver.click(WELCOME_DD_EDIT_PC_PERKS_LOC);
 		logger.info("Edit PC perks clicked from welcome dropdown");
 		driver.waitForLoadingImageToDisappear();
 		driver.waitForPageLoad();
-		return this;
+		return new StoreFrontAutoshipCartPage(driver);
 	}
+
 	/***
 	 * This method click PC Perks FAQ link from welcome dropdown.
 	 * 
@@ -1736,21 +1767,6 @@ public class StoreFrontWebsiteBasePage extends RFBasePage{
 	public StoreFrontWebsiteBasePage navigateToPCPerksFAQPage(){
 		driver.click(WELCOME_DD_PC_PERKS_FAQ_LOC);
 		logger.info("PC perks FAQ clicked from welcome dropdown");
-		driver.waitForLoadingImageToDisappear();
-		driver.waitForPageLoad();
-		return this;
-	}
-
-	/***
-	 * This method click PC Perks status link from welcome dropdown.
-	 * 
-	 * @param
-	 * @return store front billing info page object
-	 * 
-	 */
-	public StoreFrontWebsiteBasePage navigateToPCPerksStatusPage(){
-		driver.click(WELCOME_DD_PC_PERKS_STATUS_LOC);
-		logger.info("PC perks status clicked from welcome dropdown");
 		driver.waitForLoadingImageToDisappear();
 		driver.waitForPageLoad();
 		return this;
@@ -2155,4 +2171,280 @@ public class StoreFrontWebsiteBasePage extends RFBasePage{
 		driver.waitForLoadingImageToDisappear();
 		return new StoreFrontCartPage(driver);
 	}
+
+	/***
+	 * This method validates the search results text
+	 * 
+	 * @param String searchEntity
+	 * @return boolean
+	 * 
+	 */
+	public boolean isSearchResultsTextAppearedAsExpected(String searchEntity){
+		return driver.isElementVisible(By.xpath(String.format(searchResultTextAsPerEntity, searchEntity)));
+	}
+
+	/***
+	 * This method enter the user billing details
+	 * 
+	 * @param Card type, card number, card name, CVV, yearIndex
+	 * @return store front Home page object
+	 * 
+	 */
+	public StoreFrontWebsiteBasePage enterUserBillingDetailsWithSpecificYear(String cardType, String cardNumber, String nameOnCard,String CVV,String yearIndex){
+		driver.switchTo().frame(driver.findElement(IFRAME_LOC));
+		logger.info("Switched into iframe");
+		driver.clickByJS(RFWebsiteDriver.driver, driver.findElement(CARD_TYPE_DD_LOC));
+		logger.info("Card type dropdown clicked");
+		driver.click(By.xpath(String.format(cardTypeLoc, cardType)));
+		logger.info("Card type selected as "+cardType);
+		driver.type(CARD_NUMBER_LOC, cardNumber);
+		logger.info("Entered card number as"+cardNumber);
+		driver.type(NAME_ON_CARD_LOC, nameOnCard);
+		logger.info("Entered card name as"+nameOnCard);
+		driver.clickByJS(RFWebsiteDriver.driver, driver.findElement(EXP_MONTH_DD_LOC));
+		logger.info("Exp month dropdown clicked");
+		driver.click(EXP_MONTH_LOC);
+		logger.info("Exp month selected");
+		driver.clickByJS(RFWebsiteDriver.driver, driver.findElement(EXP_YEAR_DD_LOC));
+		logger.info("Exp year dropdown clicked");
+		driver.click(By.xpath(String.format(specificExpYearLoc,yearIndex)));
+		logger.info("Exp year selected");
+		driver.type(CVV_LOC, CVV);
+		logger.info("Entered CVV as"+CVV);
+		driver.switchTo().defaultContent();
+		logger.info("Switched to default content");   
+		return this;
+	}
+
+	/***
+	 * This method will click on return authorization form link on satisfaction guarantee. 
+	 *  
+	 * @return store front website base page object
+	 */
+	public StoreFrontWebsiteBasePage clickReturnAuthorizationFormLinkOnSatisfactionPage(){
+		driver.click(RETURN_AUTHORIZATION_FORM_LINK);
+		logger.info("clicked on return authorization link on satisfaction guarantee page");
+		return this;
+	}
+	/***
+	 * This method will click on policies and procedures link on Satisfaction guarantee page. 
+	 *  
+	 * @return store front website base page object
+	 */
+	public StoreFrontWebsiteBasePage clickPoliciesAndProceduresLinkOnSatisfactionPage(){
+		driver.click(POLICY_AND_PROCEDURE_LINK_ON_SATISFACTION_GUARANTEE_LOC);
+		logger.info("clicked on policy and procedures link on satisfaction guarantee page");
+		return this;
+	}
+	/**
+	 * This method validates press mention tab content on press room page.
+	 * @return boolean
+	 */
+	public boolean isPressMentionTabItemsDisplayed(){
+		driver.pauseExecutionFor(5000);
+		return driver.isElementVisible(PRESS_MENTION_TAB_ITEMS_LOC);
+	}
+
+	/**
+	 * This method click on tab name mentioned in argument on press room page
+	 * @return StoreFrontWebsiteBasePage object
+	 */
+	public StoreFrontWebsiteBasePage clickPressRoomTabs(String tabName){
+		driver.click(By.xpath(String.format(pressRoomTabsLoc, tabName)));
+		return this;
+	}
+
+	/**
+	 * This method validates tabs on press room page.
+	 * @return boolean
+	 */
+	public boolean isCompanyOrProductPressReleasesTabItemsDisplayed(String tabType){
+		driver.pauseExecutionFor(5000);
+		if(tabType.equalsIgnoreCase("COMPANY PRESS RELEASES")){
+			return driver.isElementVisible(COMPANY_PRESS_RELEASES_TAB_ITEMS_LOC);}
+		else if (tabType.equalsIgnoreCase("PRODUCT PRESS RELEASES")) {
+			return driver.isElementVisible(PRODUCT_PRESS_RELEASES_TAB_ITEMS_LOC);
+		}else {
+			return false;
+		} 
+	}
+	/**
+	 * This method click on forbes press link in press mention tab on press room page
+	 * @return StoreFrontWebsiteBasePage object
+	 */
+	public StoreFrontWebsiteBasePage clickForbesPressLink(){
+		driver.click(FORBES_PRESS_LINK_LOC);
+		logger.info("clicked on forbes press link");
+		return this;
+	}
+	/**
+	 * This method validates selected page header displayed on selected page or not
+	 * @return boolean
+	 */
+	public boolean isPageHeaderDisplayed(String pageHeader){
+		return driver.isElementVisible(By.xpath(String.format(pageHeaderLoc, pageHeader)));
+	}
+	/**
+	 * This method click on links on disclaimer page.
+	 * @return StoreFrontWebsiteBasePage object
+	 */
+	public StoreFrontWebsiteBasePage clickDisclaimerPageLinks(String links){
+		driver.click(By.xpath(String.format(disclaimerPageLinkLoc, links)));
+		return this;
+	}
+
+	/***
+	 * This method search a product through search Icon
+	 * 
+	 * @param product name
+	 * @return store front Home page object
+	 * 
+	 */
+	public StoreFrontWebsiteBasePage searchProduct(String productName){
+		driver.type(SEARCH_BOX, productName);
+		driver.click(SEARCH_ICON_NEAR_SEARCH_BOX);
+		logger.info("clicked on 'Search icon' for search a product");
+		return this;
+	}
+
+	/**
+	 * This method click on the checkOut Button on the popup PC Perks order
+	 * @return
+	 */
+	public StoreFrontAutoshipCartPage checkoutTheCartFromPopUpForPCPerks(){
+		driver.click(CHECKOUT_BUTTON_POPUP_LOC);
+		logger.info("Clicked on checkout button on the popup");
+		driver.waitForPageLoad();
+		driver.waitForLoadingImageToDisappear();
+		return new StoreFrontAutoshipCartPage(driver);
+	}
+
+	/***
+	 * This method click pc terms and conditions link 
+	 * 
+	 * @param
+	 * @return StoreFrontCartPage object
+	 */
+	public boolean isProductAddedToCartPresentOnCartPage(String productName){
+		return driver.isElementVisible(By.xpath(String.format(productNameInAllItemsInCartLoc,productName)));
+	}
+
+	/***
+	 * This method get subtotal of items in double data type
+	 * 
+	 * @param 
+	 * @return subtotal
+	 * 
+	 */
+	public Double getSubtotalofItemsAtCart(){
+		String subtotal = driver.findElement(SUBTOTAL_LOC).getText().split("\\$")[1];
+		double valueSubtotal = Double.parseDouble(subtotal);
+		logger.info("Subtotal of product is "+valueSubtotal);
+		return valueSubtotal;
+	}
+
+	/**
+	 * This method click on the Autoship cart Link locator in top navigation.
+	 * @return
+	 */
+	public StoreFrontAutoshipCartPage clickOnAutoshipCartLink(){
+		driver.click(AUTOSHIP_CART_LINK_LOC);
+		logger.info("Clicked on autoship cart link in top navigation");
+		driver.waitForPageLoad();
+		return new StoreFrontAutoshipCartPage(driver);
+	}
+
+	/***
+	 * This method hover on shopSkincare  and click link mentioned in argument.
+	 * 
+	 * @param
+	 * @return store front website base page object
+	 * 
+	 */
+	public StoreFrontShopSkinCarePage navigateToShopSkincareLink(String linkName){
+		mouseHoverOn(TestConstants.SHOP_SKINCARE);
+		if(driver.isElementVisible(By.xpath(String.format(topNavigationSublinksWithTextLoc, linkName)))==false){
+			driver.pauseExecutionFor(2000);
+			mouseHoverOn(TestConstants.SHOP_SKINCARE);
+		}
+		driver.click(By.xpath(String.format(topNavigationSublinksWithTextLoc, linkName)));
+		logger.info("clicked on"+ "'"+linkName+"'" +"under shopskincare");
+		driver.waitForLoadingImageToDisappear();
+		driver.waitForPageLoad();
+		return new StoreFrontShopSkinCarePage(driver);
+	}
+
+	/***
+	 * This method click PC Perks status link from welcome dropdown.
+	 * 
+	 * @param
+	 * @return store front billing info page object
+	 * 
+	 */
+	public StoreFrontAutoshipStatusPage navigateToPCPerksStatusPage(){
+		driver.click(WELCOME_DD_PC_PERKS_STATUS_LOC);
+		logger.info("PC perks status clicked from welcome dropdown");
+		driver.waitForLoadingImageToDisappear();
+		driver.waitForPageLoad();
+		return new StoreFrontAutoshipStatusPage(driver);
+	}
+
+	//--
+
+	/***
+	 * This method clicks on the Add More Items button
+	 * @return
+	 */
+	public StoreFrontShopSkinCarePage clickAddMoreItemsBtn(){
+		if(driver.isElementPresent(ADD_MORE_ITEMS_BTN_LOC)){
+			driver.click(ADD_MORE_ITEMS_BTN_LOC);
+		}
+		else{
+			driver.click(ADD_MORE_ITEMS_BTN_PC_AUTOSHIP_CART_LOC);
+		}
+		logger.info("clicked on add more items button");
+		driver.waitForPageLoad();
+		return new StoreFrontShopSkinCarePage(driver);
+	}
+	/***
+	 * This method get get subtotal 
+	 * 
+	 * @param 
+	 * @return subtotal
+	 * 
+	 */
+	public String getSubtotalofItems(){
+		String subtotal = driver.findElement(SUBTOTAL_LOC).getText();
+		logger.info("Subtotal of product is "+subtotal);
+		return subtotal;
+	}
+
+	/***
+	 * This method clicked on autoship link
+	 * 
+	 * @param 
+	 * @return Store front website base page obj
+	 * 
+	 */
+
+	public StoreFrontAutoshipCartPage clickAutoshipLink(){
+		driver.click(AUTOSHIP_TEXT_LOC);
+		logger.info("clicked on autoship link");
+		return new StoreFrontAutoshipCartPage(driver);
+	}
+
+	/***
+	 * This method click on add to cart button on all product page
+	 * 
+	 * @param
+	 * @return base page object
+	 * 
+	 */
+	public StoreFrontWebsiteBasePage clickAddToCartOfFirstProduct(){
+		Actions actions = new Actions(RFWebsiteDriver.driver);
+		actions.click(driver.findElement(ADD_TO_CART_FIRST_PRODUCT_LOC)).build().perform();
+		return this;
+	}
+
+
 }

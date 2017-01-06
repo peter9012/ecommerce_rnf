@@ -237,7 +237,7 @@ public class TopNavigationTest extends StoreFrontWebsiteBaseTest{
 		sfHomePage.closeMemberDetailsPopup();
 		s_assert.assertAll();
 	}
-	
+
 	/***
 	 * qTest : TC-345 As a PC, Consultant, Retail/Anon User, I will be able to view a search text box
 	 * Description : This test validates search text box in header navigation
@@ -246,7 +246,7 @@ public class TopNavigationTest extends StoreFrontWebsiteBaseTest{
 	 */
 	@Test
 	public void testViewSearchTextBox_345(){
-		
+
 		sfHomePage.loginToStoreFront(TestConstants.CONSULTANT_EMAIL, password);
 		sfHomePage.clickSearchIcon();
 		s_assert.assertTrue(sfHomePage.isSearchTextBoxDisplayed(),"Search text box not present after clicking search");
@@ -254,7 +254,7 @@ public class TopNavigationTest extends StoreFrontWebsiteBaseTest{
 		s_assert.assertFalse(sfHomePage.isSearchTextBoxDisplayed(),"Search text box is present after clicking close icon");
 		s_assert.assertAll();
 	}
-	
+
 	/***
 	 * qTest : TC-346 As a user, I will be able to access various content pages under the About R+F
 	 * Description : This test validates content pages under about RF.
@@ -267,7 +267,7 @@ public class TopNavigationTest extends StoreFrontWebsiteBaseTest{
 		String executiveTeamURL = "executive-team";
 		String whoWeAreURL = "who-we-are";
 		String givingBackURL ="giving-back";
-		
+
 		sfHomePage.loginToStoreFront(TestConstants.PC_EMAIL, password);
 		//Verify meet the doctors link.
 		sfHomePage.clickMeetTheDoctorsLink();
@@ -286,7 +286,7 @@ public class TopNavigationTest extends StoreFrontWebsiteBaseTest{
 		s_assert.assertTrue(currentURL.contains(whoWeAreURL), "Expected URL should contain "+whoWeAreURL+ "but actual on UI is"+currentURL);
 		s_assert.assertAll();
 	}
-	
+
 	/***
 	 * qTest : TC-347 As a PC, Retail/Anon User, and Consultant I will be able to access the featured products
 	 * Description : This test validates featured product section under shop skincare.
@@ -296,14 +296,14 @@ public class TopNavigationTest extends StoreFrontWebsiteBaseTest{
 	@Test
 	public void testVerifyFeaturedProductSectionUnderShopSkinCare_347(){
 		String category="FEATURED";
-		
+
 		sfHomePage.loginToStoreFront(TestConstants.PC_EMAIL, password);
 		sfShopSkinCarePage = sfHomePage.navigateToShopSkincareLink(category);
 		String pageTitle=sfShopSkinCarePage.getCurrentpageTitle();
 		s_assert.assertTrue(sfShopSkinCarePage.isProductsDisplayedOnPage() && pageTitle.contains(category),"Expected featured products not displayed for selected category or Expected page title contains:"+category+" But actual on UI is: "+pageTitle);
 		s_assert.assertAll();
 	}
-	
+
 	/***
 	 * qTest : TC-348 As a PC, Retail/Anon User, and Consultant I will be able to access the PLP
 	 * Description : This test validates product list page under shop skincare.
@@ -312,13 +312,13 @@ public class TopNavigationTest extends StoreFrontWebsiteBaseTest{
 	 */
 	@Test
 	public void testVerifyPLPUnderShopSkinCare_348(){
-		
+
 		sfHomePage.loginToStoreFront(TestConstants.RC_EMAIL, password);
 		sfShopSkinCarePage=sfHomePage.clickAllProducts();
 		s_assert.assertTrue(sfShopSkinCarePage.isAllProductPageDisplayed(),"All product page not present after clicking continue shopping.");
 		s_assert.assertAll();
 	}
-	
+
 	/***
 	 * qTest : TC-349 As a PC, Retail/Anon User, Consultant, I will be able to access category specific Results
 	 * Description : This test validates results link under categories page under shop skincare.
@@ -337,7 +337,7 @@ public class TopNavigationTest extends StoreFrontWebsiteBaseTest{
 		String expectedURLForReverseResults = "reverse-results";
 		String expectedURLForRedefineResults = "redefine-results";
 		String expectedURLForUnblemishResults = "unblemish-results";
-		
+
 		sfHomePage.loginToStoreFront(TestConstants.PC_EMAIL, password);
 		//Verify FAQ page for soothe regimen.
 		sfHomePage.navigateToShopSkinCareSubLinks(sootheLinkUnderShopSkincare, sublinkNameUnderShopSkincare);
@@ -357,7 +357,7 @@ public class TopNavigationTest extends StoreFrontWebsiteBaseTest{
 		s_assert.assertTrue(currentURL.contains(expectedURLForUnblemishResults), "Expected URL should contain" +expectedURLForUnblemishResults+ ". but actual on UI is"+currentURL);
 		s_assert.assertAll();
 	}
-	
+
 	/***
 	 * qTest : TC-350 As a PC, Retail/Anon user, Consultant, I will be able to access category specific FAQ
 	 * Description : This test validates 'FAQs' links for all category under shop skincare.
@@ -396,7 +396,7 @@ public class TopNavigationTest extends StoreFrontWebsiteBaseTest{
 		s_assert.assertTrue(currentURL.contains(expectedURLForUnblemishFAQ), "Expected URL should contain" +expectedURLForUnblemishFAQ+ ". but actual on UI is"+currentURL);
 		s_assert.assertAll();
 	}
-	
+
 	/***
 	 * qTest : TC-351 As a user, I will be able to view a header that will remain through the site experience
 	 * Description : This test validates 'Header' view same on all pages except cart and checkout page.
@@ -407,7 +407,7 @@ public class TopNavigationTest extends StoreFrontWebsiteBaseTest{
 	public void testVerifyHeaderViewIsConsistentThroughAllPagesExceptCartAndCheckout_351(){
 		String reverseLinkUnderShopSkincare = "REVERSE";
 		String allProductLinkUnderShopSkincare = "ALL PRODUCTS";
-		
+
 		//Login to application.
 		sfHomePage.loginToStoreFront(TestConstants.RC_EMAIL, password);
 		sfHomePage.navigateToShopSkincareLink(reverseLinkUnderShopSkincare);
@@ -421,6 +421,52 @@ public class TopNavigationTest extends StoreFrontWebsiteBaseTest{
 		s_assert.assertFalse(sfCartPage.isHeaderIsConsistentOnAllPages(),"Header is present on cart detail page.");
 		sfCheckoutPage = sfCartPage.clickCheckoutBtn();
 		s_assert.assertFalse(sfCheckoutPage.isHeaderIsConsistentOnAllPages(),"Header is present on checkout detail page.");
+		s_assert.assertAll();
+	}
+
+	/***
+	 * qTest : TC-542 As a user, I will be able to access the PLP from the Shop Skincare section 
+	 * Description : This test validates team member details on executive team page.
+	 *  
+	 *     
+	 */
+	@Test
+	public void testAsAUserIWillBeAbleToAccessThePLPFromTheShopSkincareSection_542(){
+		String category="ALL PRODUCTS";
+		sfShopSkinCarePage=sfHomePage.navigateToShopSkincareLink(category);
+		s_assert.assertTrue(sfShopSkinCarePage.isAllProductPageDisplayed(),"Expected user is not redirected to all products page");
+		s_assert.assertAll();
+	}
+	
+	/***
+	 * qTest : TC-362 Press Room 
+	 * Description : This test validates press room details on press room details page
+	 *  
+	 *     
+	 */
+	@Test
+	public void testPressRoom_362(){
+		String currentURL = null;
+		String currentWindowID = null;
+		String pressRoom = "Press Room";
+		String pressMentions="PRESS MENTIONS";
+		String companyPressRelease="COMPANY PRESS RELEASES";
+		String productPressRelease="PRODUCT PRESS RELEASES";
+		sfHomePage.clickFooterLink(pressRoom);
+		//sfHomePage.clickPressRoomTabs(pressMentions);
+		s_assert.assertTrue(sfHomePage.isPressMentionTabItemsDisplayed(),"Expected details related to press mention tab not displayed");
+		sfHomePage.clickPressRoomTabs(companyPressRelease);
+		s_assert.assertTrue(sfHomePage.isCompanyOrProductPressReleasesTabItemsDisplayed(companyPressRelease),"Expected details related to company press release tab not displayed");
+		sfHomePage.clickPressRoomTabs(productPressRelease);
+		s_assert.assertTrue(sfHomePage.isCompanyOrProductPressReleasesTabItemsDisplayed(productPressRelease),"Expected details related to product press release tab not displayed");
+		sfHomePage.clickPressRoomTabs(pressMentions);
+		s_assert.assertTrue(sfHomePage.isPressMentionTabItemsDisplayed(),"Expected various links related to press mention tab not displayed");
+		currentWindowID = CommonUtils.getCurrentWindowHandle();
+		sfHomePage.clickForbesPressLink();
+		sfHomePage.switchToChildWindow(currentWindowID);
+		currentURL = sfHomePage.getCurrentURL().toLowerCase();
+		s_assert.assertTrue(currentURL.contains("forbes"), "Expected URL should contain 'forbes' but actual on UI is"+currentURL);
+		sfHomePage.switchToParentWindow(currentWindowID);
 		s_assert.assertAll();
 	}
 }

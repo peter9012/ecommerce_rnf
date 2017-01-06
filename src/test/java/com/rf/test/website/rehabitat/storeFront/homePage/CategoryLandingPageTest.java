@@ -1,6 +1,8 @@
 package com.rf.test.website.rehabitat.storeFront.homePage;
 
 import org.testng.annotations.Test;
+
+import com.rf.core.website.constants.TestConstants;
 import com.rf.test.website.rehabitat.storeFront.baseTest.StoreFrontWebsiteBaseTest;
 
 public class CategoryLandingPageTest extends StoreFrontWebsiteBaseTest{
@@ -147,10 +149,27 @@ public class CategoryLandingPageTest extends StoreFrontWebsiteBaseTest{
 	 * Description : //TODO
 	 *     
 	 */
-	@Test(enabled=false)
+	@Test
 	public void testConsultantOnlyCategoryAppearsForTheConsultantUser_90(){
-
+		sfHomePage.loginToStoreFront(TestConstants.PC_EMAIL, password);
+		sfHomePage.mouseHoverOn(TestConstants.SHOP_SKINCARE);
+		s_assert.assertFalse(sfHomePage.isConsultantOnlyProductsLinkDisplayed(), "Consultant Only Link should NOT be present for PC user");
+		sfHomePage.clickWelcomeDropdown();
+		sfHomePage.logout();
+		sfHomePage.loginToStoreFront(TestConstants.RC_EMAIL, password);
+		sfHomePage.mouseHoverOn(TestConstants.SHOP_SKINCARE);
+		s_assert.assertFalse(sfHomePage.isConsultantOnlyProductsLinkDisplayed(), "Consultant Only Link should NOT be present for RC user");
+		sfHomePage.clickWelcomeDropdown();
+		sfHomePage.logout();
+		sfHomePage.loginToStoreFront(TestConstants.CONSULTANT_EMAIL, password);
+		sfHomePage.mouseHoverOn(TestConstants.SHOP_SKINCARE);
+		s_assert.assertTrue(sfHomePage.isConsultantOnlyProductsLinkDisplayed(), "Consultant Only Link should NOT be present for PC user");
+		sfShopSkinCarePage = sfHomePage.clickConsultantOnlyProductsLink();
+		s_assert.assertTrue(sfShopSkinCarePage.getCurrentURL().contains("consultant-only"), "Consultant only page has not displayed");
+		sfShopSkinCarePage.isAddToCartDDOptionsDisplayed(TestConstants.USER_TYPE_CONSULTANT);
+		sfShopSkinCarePage.clickOnQuickViewLinkForProduct("1");
+		s_assert.assertTrue(sfShopSkinCarePage.isPricePresentOnQuickViewPopup(),"Price is not present for Product on Quick view popup for consultant Only products");
+		s_assert.assertAll();
 	}
-
 
 }

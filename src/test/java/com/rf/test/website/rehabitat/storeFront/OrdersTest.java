@@ -1232,6 +1232,7 @@ public class OrdersTest extends StoreFrontWebsiteBaseTest{
 		sfCheckoutPage.clickSaveButton();
 		sfCheckoutPage.clickAddNewShippingAddressButton();
 		sfCheckoutPage.enterConsultantShippingDetails(firstName, lastName, addressLine1, addressLine2 ,city, state, postalCode, phoneNumber);
+		sfHomePage.clickUseAsEnteredButtonOnPopUp();
 		sfCheckoutPage.clickShippingDetailsNextbutton();
 		s_assert.assertTrue(sfCheckoutPage.isUseAsEnteredPopupDisplayed(), "Use As Entered Confirmation Popup is Not Displayed after added new shipping profile");
 		s_assert.assertAll();

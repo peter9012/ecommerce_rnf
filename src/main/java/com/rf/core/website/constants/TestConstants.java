@@ -42,8 +42,8 @@ public class TestConstants {
 	public static final String TITLE_OF_ORDER_DETAILS_PAGE = "Order Details | Rodan and Fields";
 
 	//Consultant user details
-	public static final String CONSULTANT_USERNAME = "auto753120@yopmail.com";
-	public static final String CONSULTANT_EMAIL = "auto753120@yopmail.com";
+	public static final String CONSULTANT_USERNAME = "laks.con8@mail.com";
+	public static final String CONSULTANT_EMAIL = "laks.con8@mail.com";
 	public static final String CONSULTANT_ACCOUNT_ID = "";
 	public static final String CONSULTANT_ACCOUNT_NUMBER = "";
 	public static final String FIRST_NAME = "AutoCons";
@@ -94,12 +94,12 @@ public class TestConstants {
 	public static final String DPO_STATE_US = "AP Armed Forces";
 
 	//PC User Details
-	public static final String PC_USERNAME = "AutoPC384456@yopmail.com";
-	public static final String PC_EMAIL = "AutoPC384456@yopmail.com";
+	public static final String PC_USERNAME = "autopc20170106101026@yopmail.com";
+	public static final String PC_EMAIL = "autopc20170106101026@yopmail.com";
 
 	//RC User Details
-	public static final String RC_USERNAME = "AutoRC263891@yopmail.com";
-	public static final String RC_EMAIL = "AutoRC263891@yopmail.com";
+	public static final String RC_USERNAME = "autorc20170106101026@yopmail.com";
+	public static final String RC_EMAIL = "autorc20170106101026@yopmail.com";
 
 	public static final String SHIPPING_METHOD_UPS_2DAY = "UPS 2 Days";
 	public static final String SHIPPING_METHOD_UPS_GROUND = "UPS Ground";

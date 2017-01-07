@@ -91,7 +91,6 @@ public class MyAccountTest extends StoreFrontWebsiteBaseTest{
 		sfHomePage.clickWelcomeDropdown();
 		sfAccountInfoPage = sfHomePage.navigateToAccountInfoPage();
 		s_assert.assertTrue(sfAccountInfoPage.isUsernameFieldDisabled(),"Username is NOT disabled for RC");
-
 		s_assert.assertAll();
 	}
 

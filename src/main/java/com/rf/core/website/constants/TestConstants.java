@@ -24,7 +24,7 @@ public class TestConstants {
 	public static final String PC_FIRST_NAME = "AutoPC";
 	public static final String RC_FIRST_NAME = "AutoRC";
 	public static final String LAST_NAME = "lName";
-	public static final String EMAIL_SUFFIX = "@yopmail.com";
+	public static final String EMAIL_SUFFIX = "@mailinator.com";
 	public static final String ABOUT_RF = "ABOUT R+F";
 	public static final String PRODUCT_NAME = "Aging REDEFINED Special";
 	public static final String VALIDATION_ERROR_THIS_FIELD_IS_REQUIRED = "This field is required";

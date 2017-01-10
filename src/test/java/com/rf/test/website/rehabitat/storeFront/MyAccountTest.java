@@ -103,9 +103,9 @@ public class MyAccountTest extends StoreFrontWebsiteBaseTest{
 	 */
 	@Test
 	public void testEmailIDFormatErrorValidation_249(){
-		String emailAddressWithoutAtAndDot = "autocon12xyzcom";
-		String emailAddressWithoutAt = "autocon12xyzcom.com";
-		String emailAddressWithoutDot = "autocon12@xyzcom";
+		String emailAddressWithoutAtAndDot = "autocon12mailinatorcom";
+		String emailAddressWithoutAt = "autocon12mailinator.com";
+		String emailAddressWithoutDot = "autocon12@mailinator";
 		//Login as consultant user.
 		sfHomePage.loginToStoreFront(TestConstants.CONSULTANT_USERNAME,password);
 		sfHomePage.clickWelcomeDropdown();
@@ -753,7 +753,7 @@ public class MyAccountTest extends StoreFrontWebsiteBaseTest{
 		sfHomePage.clickWelcomeDropdown();
 		sfAccountInfoPage = sfHomePage.navigateToAccountInfoPage();
 		sfAccountInfoPage.clickEmailYourConsultantLink();
-		sfAccountInfoPage.enterEmailYourConsultantDetailsAndSubmit("testName", "testEmail@rf.com", "test email");
+		sfAccountInfoPage.enterEmailYourConsultantDetailsAndSubmit("testName", "testEmail@mailinator.com", "test email");
 
 	}
 

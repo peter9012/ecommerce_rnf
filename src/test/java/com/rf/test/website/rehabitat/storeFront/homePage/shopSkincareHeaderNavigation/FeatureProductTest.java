@@ -18,7 +18,7 @@ public class FeatureProductTest extends StoreFrontWebsiteBaseTest{
 		String featuredRegimenURL = "/c/featured";
 		String category_Featured = "FEATURED";
 		//Click featured link under shopskincare.
-		sfHomePage.navigateToShopSkincareLink(category_Featured);
+		sfShopSkinCarePage = sfHomePage.navigateToShopSkincareLink(category_Featured);
 		currentURL = sfHomePage.getCurrentURL().toLowerCase();
 		s_assert.assertTrue(sfShopSkinCarePage.isProductsDisplayedOnPage() && currentURL.contains(featuredRegimenURL),"Expected featured products not displayed for selected category or Expected page URL"+featuredRegimenURL+" But actual on UI is: "+currentURL);
 		s_assert.assertAll();

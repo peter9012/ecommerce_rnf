@@ -176,12 +176,12 @@ public class StoreFrontWebsiteBasePage extends RFBasePage{
 	private final By PRODUCT_PRESS_RELEASES_TAB_ITEMS_LOC=By.xpath("//div[@id='product-press-releases']");
 	private final By FORBES_PRESS_LINK_LOC=By.xpath("//div[@class='yCmsComponent pressRoomNews'][1]/div[2]/div[1]/a");
 	protected final By SEARCH_BOX = By.id("search-box");
-	protected final By SEARCH_ICON_NEAR_SEARCH_BOX = By.xpath("//input[@id='search-box']/preceding::span[1]");
+	protected final By SEARCH_ICON_NEAR_SEARCH_BOX = By.xpath("//*[@id='header']//following::button[contains(@class,'icon-search')]");
 	private final By ADD_MORE_ITEMS_BTN_LOC = By.xpath("//div[@class='cart-container']/descendant::button[contains(text(),'Add More Items')][2]");
 	private final By SUBTOTAL_LOC = By.xpath("//td[text()='Subtotal:']/following::td[1]");
 	private final By ADD_MORE_ITEMS_BTN_PC_AUTOSHIP_CART_LOC = By.xpath("//div[@class='cart-container']/descendant::button[contains(text(),'Add More Items')]");
 
-	private String productNameInAllItemsInCartLoc = "//ul[@class='item-list cart__list']//div[@class='item-info']//span[@class='item-name' and contains(text(),'%s')]";
+	private String productNameInAllItemsInCartLoc = "//ul[contains(@class,'item-list cart__list')]//div[@class='item-info']//span[@class='item-name' and contains(text(),'%s')]";
 	private String pageHeaderLoc = "//div[contains(text(),'%s')]";
 	private String disclaimerPageLinkLoc = "//a[contains(text(),'%s')]";
 	private String pressRoomTabsLoc="//ul[@class='tabs']//li/a[contains(text(),'%s')]";
@@ -507,6 +507,7 @@ public class StoreFrontWebsiteBasePage extends RFBasePage{
 		mouseHoverOn(TestConstants.ABOUT_RF);
 		driver.click(WHO_WE_ARE_LINK_LOC);
 		logger.info("clicked on 'WHO WE ARE' link");
+		driver.pauseExecutionFor(2000);
 		return this;
 	}
 

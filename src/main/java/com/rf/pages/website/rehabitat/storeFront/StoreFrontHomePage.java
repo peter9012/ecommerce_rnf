@@ -149,8 +149,9 @@ public class StoreFrontHomePage extends StoreFrontWebsiteBasePage{
 	 * 
 	 */
 	public StoreFrontHomePage clickDirectLinkAssociationLink(){
-		driver.click(DIRECT_LINK_ASSOCIATION);
+		driver.clickByJS(RFWebsiteDriver.driver,driver.findElement(DIRECT_LINK_ASSOCIATION));
 		logger.info("clicked on 'direct link association' link");
+		driver.pauseExecutionFor(2000);
 		return this;
 	}
 
@@ -164,6 +165,7 @@ public class StoreFrontHomePage extends StoreFrontWebsiteBasePage{
 	public StoreFrontHomePage clickDsaCodeOfEthicsLink(){
 		driver.click(DSA_CODE_OF_ETHICS_LINK);
 		logger.info("clicked on 'DSA code of ethics' link");
+		driver.pauseExecutionFor(2000);
 		return this;
 	}
 
@@ -257,6 +259,7 @@ public class StoreFrontHomePage extends StoreFrontWebsiteBasePage{
 		String memberName = driver.findElement(By.xpath(String.format(teamMemberNameLoc, randomNum))).getText();
 		driver.click(By.xpath(String.format(teamMemberNameLoc, randomNum)));
 		logger.info("clicked on 'TEAM MEMBER NAME' link = "+memberName);
+		driver.pauseExecutionFor(2000);
 		return memberName;
 	}
 

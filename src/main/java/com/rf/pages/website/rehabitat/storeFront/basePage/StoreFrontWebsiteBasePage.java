@@ -137,6 +137,8 @@ public class StoreFrontWebsiteBasePage extends RFBasePage{
 	private final By TERMS_AND_CONDITIONS_CHK_BOX_LOC = By.xpath("//div[contains(@class,'checkout-steps')]/descendant::label[3]");
 	//private final By E_SIGN_CONSENT_FORM_CHK_BOX_LOC = By.xpath("//div[contains(@class,'checkout-steps')]/descendant::label[4]");
 	private final By E_SIGN_CONSENT_FORM_CHK_BOX_LOC = By.xpath("//input[@id='Terms4']");
+	private final By I_ACKNOWLEDGE_PC_CHK_BOX_LOC = By.xpath("//input[@id='Terms2']");
+	private final By PC_TERMS_AND_CONDITIONS_CHK_BOX_LOC = By.xpath("//input[@id='Terms1']/following::label[1]");
 	private final By BILLING_NEXT_BUTTON_LOC = By.id("cmdSubmit");
 	private final By BECOME_A_CONSULTANT_BTN_LOC = By.id("placeOrder");
 	private final By ENROLLMENT_SUCCESSFUL_MSG_LOC = By.xpath("//*[contains(text(),'ENROLLMENT SUCCESSFUL')]");
@@ -1249,7 +1251,6 @@ public class StoreFrontWebsiteBasePage extends RFBasePage{
 
 	public void clickUseAsEnteredButtonOnPopUp(){
 		if(driver.isElementVisible(USE_AS_ENTERED_BUTTON_LOC)==true){
-			System.out.println("************8");
 			driver.click(USE_AS_ENTERED_BUTTON_LOC);
 			logger.info("'Used as entered' button clicked");
 		}
@@ -1628,6 +1629,19 @@ public class StoreFrontWebsiteBasePage extends RFBasePage{
 		logger.info("I acknowledge checkbox selected");
 		return this;
 	}
+	
+	/***
+	 * This method select the I acknowledge checkbox
+	 * for PC
+	 * @param
+	 * @return store front Base page object
+	 * 
+	 */
+	public StoreFrontWebsiteBasePage selectIAcknowledgePCChkBox(){
+		driver.clickByJS(RFWebsiteDriver.driver, driver.findElement(I_ACKNOWLEDGE_PC_CHK_BOX_LOC));
+		logger.info("PC,I acknowledge checkbox selected");
+		return this;
+	}
 
 	/***
 	 * This method select the terms & conditions checkbox
@@ -1643,6 +1657,22 @@ public class StoreFrontWebsiteBasePage extends RFBasePage{
 		driver.pauseExecutionFor(2000);
 		return this;
 	}
+	
+	/***
+	 * This method select the terms & conditions checkbox
+	 * for PC
+	 * @param
+	 * @return store front Base page object
+	 * 
+	 */
+	public StoreFrontWebsiteBasePage selectPCTermsAndConditionsChkBox(){
+		//driver.pauseExecutionFor(2000);
+		driver.clickByJS(RFWebsiteDriver.driver, driver.findElement(PC_TERMS_AND_CONDITIONS_CHK_BOX_LOC));
+		logger.info("PC Terms & condition checkbox selected");
+		driver.pauseExecutionFor(2000);
+		return this;
+	}
+
 
 	/***
 	 * This method select the E Sign Consent Form checkbox

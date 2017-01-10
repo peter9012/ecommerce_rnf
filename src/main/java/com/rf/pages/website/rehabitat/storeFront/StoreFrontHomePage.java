@@ -788,7 +788,6 @@ public class StoreFrontHomePage extends StoreFrontWebsiteBasePage{
 	 */
 	public boolean hasPCEnrolledSuccessfully(){
 		return driver.isElementVisible(WELCOME_DROPDOWN_LOC)
-				&& driver.getCurrentUrl().contains("/orderConfirmation")
 				&& driver.isElementVisible(AUTOSHIP_TEXT_LOC);		
 	}
 

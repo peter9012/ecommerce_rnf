@@ -57,9 +57,10 @@ public class PCEnrollmentTest extends StoreFrontWebsiteBaseTest{
 		sfCheckoutPage.clickCreateAccountButton();
 		s_assert.assertTrue(sfCartPage.isPcOneTimeFeeMsgDisplayed(),"PC one time joining fee msg has not displayed");
 		sfCartPage.clickAddMoreItemsBtn();
+		sfShopSkinCarePage=sfCartPage.clickAllProducts();// this is a temperoray patch
 		sfShopSkinCarePage.selectFirstProduct();
 		sfCartPage = sfShopSkinCarePage.checkoutTheCartFromPopUp();
-		sfCartPage.enterQuantityOfProductAtCart("1", "10");
+		sfCartPage.enterQuantityOfProductAtCart("1", "2");
 		sfCartPage.clickOnUpdateLinkThroughItemNumber("1");
 		sfCartPage.clickCheckoutBtn();
 		sfCheckoutPage.clickContinueWithoutConsultantLink();
@@ -67,11 +68,12 @@ public class PCEnrollmentTest extends StoreFrontWebsiteBaseTest{
 		sfCheckoutPage.enterShippingDetails(firstName+" "+lastName, addressLine1, addressLine2, city, state, postalCode, phoneNumber);
 		sfCheckoutPage.clickShippingDetailsNextbutton();
 		sfCheckoutPage.enterUserBillingDetails(cardType, cardNumber, cardName, CVV);
-		sfCheckoutPage.checkUseMyDeliveryAddressChkBox();
+//		sfCheckoutPage.checkUseMyDeliveryAddressChkBox();
 		sfCheckoutPage.clickBillingDetailsNextbutton();
-		sfCheckoutPage.selectTermsAndConditionsChkBox();
-		sfCheckoutPage.selectPoliciesAndProceduresChkBox();
+		sfCheckoutPage.selectIAcknowledgePCChkBox();
+		sfCheckoutPage.selectPCTermsAndConditionsChkBox();
 		sfCheckoutPage.clickPlaceOrderButton();
+		sfCheckoutPage.clickRodanAndFieldsLogo();
 		s_assert.assertTrue(sfHomePage.hasPCEnrolledSuccessfully(), "PC has not been enrolled successfully");
 		s_assert.assertAll();
 	}

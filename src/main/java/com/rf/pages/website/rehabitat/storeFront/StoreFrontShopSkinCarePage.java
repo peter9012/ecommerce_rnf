@@ -83,8 +83,8 @@ public class StoreFrontShopSkinCarePage extends StoreFrontWebsiteBasePage{
 	 */
 	public StoreFrontShopSkinCarePage selectFirstProduct(){
 		driver.pauseExecutionFor(5000);
-		driver.moveToElementByJS(ADD_TO_CART_FIRST_PRODUCT_LOC);
-		driver.click(ADD_TO_BAG_OF_FIRST_PRODUCT);
+		driver.click(ADD_TO_CART_FIRST_PRODUCT_LOC);
+		logger.info("First product added to the cart");
 		return this;
 	}
 
@@ -563,6 +563,7 @@ public class StoreFrontShopSkinCarePage extends StoreFrontWebsiteBasePage{
 		driver.waitForElementPresent(By.xpath(String.format(quickViewForSpecificProductLoc, productNum)));
 		driver.click(By.xpath(String.format(quickViewForSpecificProductLoc, productNum)));
 		logger.info("Clicked on quick view for product number : " + productNum);
+		driver.waitForLoadingImageToDisappear();
 		return this;
 	}
 

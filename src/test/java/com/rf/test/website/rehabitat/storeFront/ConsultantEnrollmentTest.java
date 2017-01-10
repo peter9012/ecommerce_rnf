@@ -15,7 +15,7 @@ public class ConsultantEnrollmentTest extends StoreFrontWebsiteBaseTest{
 	 * should be searched and valid but inactive sponsor should not be searched.
 	 * 				
 	 */ 
-	@Test  //TODO Inactive sponsor search is pending
+	@Test(enabled=false)  //TODO Inactive sponsor search is pending
 	public void testFindAConsultantBySearchCID_223(){
 		sfHomePage.clickEnrollNow();
 		sfHomePage.searchSponsor(TestConstants.SPONSOR);
@@ -32,7 +32,7 @@ public class ConsultantEnrollmentTest extends StoreFrontWebsiteBaseTest{
 	 * Partial Prefix with active PWS = Sponsor should be available
 	 * Partial Prefix with Inactive PWS = Sponsor should NOT be available
 	 */
-	@Test //TODO The entire test
+	@Test(enabled=false) //TODO The entire test
 	public void testFindAConsultantByPrefix_224(){
 		sfHomePage.clickEnrollNow();
 		sfHomePage.searchSponsor(TestConstants.SPONSOR);
@@ -78,12 +78,15 @@ public class ConsultantEnrollmentTest extends StoreFrontWebsiteBaseTest{
 		sfHomePage.clickShippingDetailsNextbutton();
 		sfHomePage.enterUserBillingDetails(cardType, cardNumber, cardName, CVV);
 		//sfHomePage.selectBillingAddressFromDD();
-		sfHomePage.checkUseMyDeliveryAddressChkBox();
+		//sfHomePage.checkUseMyDeliveryAddressChkBox();
 		sfHomePage.clickBillingDetailsNextbutton();
-		sfHomePage.selectTermsAndConditionsChkBox();
 		sfHomePage.selectPoliciesAndProceduresChkBox();
+		sfHomePage.selectIAcknowledgeChkBox();
+		sfHomePage.selectTermsAndConditionsChkBox();
+		sfHomePage.selectConsentFormChkBox();
 		sfHomePage.clickBecomeAConsultant();
-		//s_assert.assertTrue(confirmationMessageFromUI.contains(expectedConfirmationMessage), "Expected confirmation message is"+expectedConfirmationMessage+" but actual on UI is "+confirmationMessageFromUI); 
+		s_assert.assertTrue(sfHomePage.isEnrollemntSuccessfulMsgDisplayed(), "Expected 'ENROLLMENT SUCCESSFUL' msg has NOT displayed"); 
+		sfHomePage.clickRodanAndFieldsLogo();
 		s_assert.assertTrue(sfHomePage.isWelcomeUserElementDisplayed(), "Welcome user locator has not displayed after consultant enrollment");
 		s_assert.assertAll();
 	}
@@ -195,16 +198,19 @@ public class ConsultantEnrollmentTest extends StoreFrontWebsiteBaseTest{
 		sfHomePage.clickNextButton();
 		sfHomePage.clickSaveButton();
 		sfHomePage.enterConsultantShippingDetails(firstName, lastName, addressLine1, addressLine2 ,city, state, postalCode, phoneNumber);
+		sfHomePage.clickUseAsEnteredButtonOnPopUp();
 		sfHomePage.clickShippingDetailsNextbutton();
 		sfHomePage.enterUserBillingDetails(cardType, cardNumber, cardName, CVV);
 		//sfHomePage.selectBillingAddressFromDD();
-		sfHomePage.checkUseMyDeliveryAddressChkBox();
+		//sfHomePage.checkUseMyDeliveryAddressChkBox();
 		sfHomePage.clickBillingDetailsNextbutton();
-		sfHomePage.selectTermsAndConditionsChkBox();
 		sfHomePage.selectPoliciesAndProceduresChkBox();
+		sfHomePage.selectIAcknowledgeChkBox();
+		sfHomePage.selectTermsAndConditionsChkBox();
+		sfHomePage.selectConsentFormChkBox();
 		sfHomePage.clickBecomeAConsultant();
-		//confirmationMessageFromUI = sfHomePage.getConfirmationMsgOfConsultantEnrollment();
-		//s_assert.assertTrue(confirmationMessageFromUI.contains(expectedConfirmationMessage), "Expected confirmation message is"+expectedConfirmationMessage+" but actual on UI is "+confirmationMessageFromUI); 
+		s_assert.assertTrue(sfHomePage.isEnrollemntSuccessfulMsgDisplayed(), "Expected 'ENROLLMENT SUCCESSFUL' msg has NOT displayed"); 
+		sfHomePage.clickRodanAndFieldsLogo();
 		s_assert.assertTrue(sfHomePage.isWelcomeUserElementDisplayed(), "Welcome user locator has not displayed after consultant enrollment");
 		s_assert.assertAll();
 	}
@@ -212,11 +218,14 @@ public class ConsultantEnrollmentTest extends StoreFrontWebsiteBaseTest{
 	/***
 	 * qTest : TC-291 User selects View/hid details CTA in the enrollment kit selected
 	 * 
-	 * Description : //todo
+	 * Description : This test verifies the functionality of
+	 * View Details link of Kits during consultant enrollment
 	 * 				
 	 */
-	@Test//TODO
+	@Test
 	public void testViewHideCTADetailsInEnrollmentKit_291(){
+		int totalKits = 0;
+		int randomKit = 0;
 		String timeStamp = CommonUtils.getCurrentTimeStamp();
 		String socialInsuranceNumber = String.valueOf(CommonUtils.getRandomNum(100000000, 999999999));
 		String firstName = TestConstants.FIRST_NAME;
@@ -228,6 +237,12 @@ public class ConsultantEnrollmentTest extends StoreFrontWebsiteBaseTest{
 		sfHomePage.selectFirstSponsorFromList();
 		sfHomePage.enterConsultantEnrollmentDetails(firstName, lastName, emailID, password, socialInsuranceNumber);
 		sfHomePage.clickNextButton();
+		totalKits = sfHomePage.getTotalKitsDisplayedDuringConsultantEnrollment();
+		randomKit = CommonUtils.getRandomNum(1, totalKits);
+		sfHomePage.clickAnyViewDetailsLink(String.valueOf(randomKit));
+		s_assert.assertTrue(sfHomePage.isKitDetailsDisplayed(String.valueOf(randomKit)), "click View details link has NOT expanded the kit");
+		sfHomePage.closeTheExpandedKitDetails(String.valueOf(randomKit));
+		s_assert.assertFalse(sfHomePage.isKitDetailsDisplayed(String.valueOf(randomKit)), "close expanded button has NOT closed the kit details");
 		s_assert.assertAll();
 	}
 
@@ -238,7 +253,7 @@ public class ConsultantEnrollmentTest extends StoreFrontWebsiteBaseTest{
 	 * enrollment
 	 *     
 	 */
-	@Test
+	@Test(enabled=false)
 	public void testNortDakotaConsultantEnrollmentValidBillingAddress_485(){
 		int randomNum = CommonUtils.getRandomNum(10000, 1000000);
 		String socialInsuranceNumber = String.valueOf(CommonUtils.getRandomNum(100000000, 999999999));
@@ -255,8 +270,6 @@ public class ConsultantEnrollmentTest extends StoreFrontWebsiteBaseTest{
 		String cardNumber = TestConstants.CARD_NUMBER;
 		String cardName = TestConstants.CARD_NAME;
 		String CVV = TestConstants.CVV;
-		//		String confirmationMessageFromUI = null;
-		//		String expectedConfirmationMessage = "Your enrollment kit order number is";   
 		sfHomePage.clickEnrollNow();
 		sfHomePage.searchSponsor(TestConstants.SPONSOR);
 		s_assert.assertTrue(sfHomePage.isSponsorResultDisplayed(),"No result found after searching the sponsor with name "+TestConstants.SPONSOR);
@@ -267,16 +280,17 @@ public class ConsultantEnrollmentTest extends StoreFrontWebsiteBaseTest{
 		sfHomePage.clickNextButton();
 		sfHomePage.clickSaveButton();
 		sfHomePage.enterConsultantShippingDetails(firstName, lastName, addressLine1, addressLine2 ,city, state, postalCode, phoneNumber);
+		sfHomePage.clickUseAsEnteredButtonOnPopUp();
 		sfHomePage.clickShippingDetailsNextbutton();
 		sfHomePage.enterUserBillingDetails(cardType, cardNumber, cardName, CVV);
-		//sfHomePage.selectBillingAddressFromDD();
-		sfHomePage.checkUseMyDeliveryAddressChkBox();
 		sfHomePage.clickBillingDetailsNextbutton();
-		sfHomePage.selectTermsAndConditionsChkBox();
 		sfHomePage.selectPoliciesAndProceduresChkBox();
+		sfHomePage.selectIAcknowledgeChkBox();
+		sfHomePage.selectTermsAndConditionsChkBox();
+		sfHomePage.selectConsentFormChkBox();
 		sfHomePage.clickBecomeAConsultant();
-		//confirmationMessageFromUI = sfHomePage.getConfirmationMsgOfConsultantEnrollment();
-		//s_assert.assertTrue(confirmationMessageFromUI.contains(expectedConfirmationMessage), "Expected confirmation message is"+expectedConfirmationMessage+" but actual on UI is "+confirmationMessageFromUI); 
+		s_assert.assertTrue(sfHomePage.isEnrollemntSuccessfulMsgDisplayed(), "Expected 'ENROLLMENT SUCCESSFUL' msg has NOT displayed"); 
+		sfHomePage.clickRodanAndFieldsLogo();
 		s_assert.assertTrue(sfHomePage.isWelcomeUserElementDisplayed(), "Welcome user locator has not displayed after consultant enrollment");
 		s_assert.assertAll();
 	}
@@ -366,8 +380,6 @@ public class ConsultantEnrollmentTest extends StoreFrontWebsiteBaseTest{
 		String cardNumber = TestConstants.CARD_NUMBER;
 		String cardName = TestConstants.CARD_NAME;
 		String CVV = TestConstants.CVV;
-		//		String confirmationMessageFromUI = null;
-		//		String expectedConfirmationMessage = "Your enrollment kit order number is";   
 		sfHomePage.clickEnrollNow();
 		sfHomePage.searchSponsor(TestConstants.SPONSOR);
 		s_assert.assertTrue(sfHomePage.isSponsorResultDisplayed(),"No result found after searching the sponsor with name "+TestConstants.SPONSOR);
@@ -379,20 +391,20 @@ public class ConsultantEnrollmentTest extends StoreFrontWebsiteBaseTest{
 		sfHomePage.clickNextButton();
 		sfHomePage.clickSaveButton();
 		sfHomePage.enterConsultantShippingDetails(firstName, lastName, addressLine1, addressLine2 ,city, state, postalCode, phoneNumber);
+		sfHomePage.clickUseAsEnteredButtonOnPopUp();
 		sfHomePage.clickShippingDetailsNextbutton();
 		sfHomePage.enterUserBillingDetails(cardType, cardNumber, cardName, CVV);
-		//sfHomePage.selectBillingAddressFromDD();
-		sfHomePage.checkUseMyDeliveryAddressChkBox();
 		sfHomePage.clickBillingDetailsNextbutton();
-		sfHomePage.selectTermsAndConditionsChkBox();
 		sfHomePage.selectPoliciesAndProceduresChkBox();
+		sfHomePage.selectIAcknowledgeChkBox();
+		sfHomePage.selectTermsAndConditionsChkBox();
+		sfHomePage.selectConsentFormChkBox();
 		sfHomePage.clickBecomeAConsultant();
-		//confirmationMessageFromUI = sfHomePage.getConfirmationMsgOfConsultantEnrollment();
-		//s_assert.assertTrue(confirmationMessageFromUI.contains(expectedConfirmationMessage), "Expected confirmation message is"+expectedConfirmationMessage+" but actual on UI is "+confirmationMessageFromUI); 
+		s_assert.assertTrue(sfHomePage.isEnrollemntSuccessfulMsgDisplayed(), "Expected 'ENROLLMENT SUCCESSFUL' msg has NOT displayed"); 
+		sfHomePage.clickRodanAndFieldsLogo();
 		s_assert.assertTrue(sfHomePage.isWelcomeUserElementDisplayed(), "Welcome user locator has not displayed after consultant enrollment");
 		s_assert.assertAll();
 	}
-
 
 	/***
 	 * qTest : TC-493 Consultant Enrollment- Page 2- North Dakota Checkbox-Unchecked
@@ -430,7 +442,7 @@ public class ConsultantEnrollmentTest extends StoreFrontWebsiteBaseTest{
 	 *     
 	 */
 	@Test
-	public void testConsultantEnrollmengtWithPulseSubscription_467(){
+	public void testConsultantEnrollmentWithPulseSubscription_467(){
 		int randomNum = CommonUtils.getRandomNum(10000, 1000000);
 		String timeStamp = CommonUtils.getCurrentTimeStamp();
 		String socialInsuranceNumber = String.valueOf(CommonUtils.getRandomNum(100000000, 999999999));
@@ -462,16 +474,17 @@ public class ConsultantEnrollmentTest extends StoreFrontWebsiteBaseTest{
 		sfHomePage.clickNextButton();
 		sfHomePage.clickSaveButton();
 		sfHomePage.enterConsultantShippingDetails(firstName, lastName, addressLine1, addressLine2 ,city, state, postalCode, phoneNumber);
+		sfHomePage.clickUseAsEnteredButtonOnPopUp();
 		sfHomePage.clickShippingDetailsNextbutton();
 		sfHomePage.enterUserBillingDetails(cardType, cardNumber, cardName, CVV);
-		//sfHomePage.selectBillingAddressFromDD();
-		sfHomePage.checkUseMyDeliveryAddressChkBox();
 		sfHomePage.clickBillingDetailsNextbutton();
-		sfHomePage.selectTermsAndConditionsChkBox();
 		sfHomePage.selectPoliciesAndProceduresChkBox();
+		sfHomePage.selectIAcknowledgeChkBox();
+		sfHomePage.selectTermsAndConditionsChkBox();
+		sfHomePage.selectConsentFormChkBox();
 		sfHomePage.clickBecomeAConsultant();
-		//confirmationMessageFromUI = sfHomePage.getConfirmationMsgOfConsultantEnrollment();
-		//s_assert.assertTrue(confirmationMessageFromUI.contains(expectedConfirmationMessage), "Expected confirmation message is"+expectedConfirmationMessage+" but actual on UI is "+confirmationMessageFromUI); 
+		s_assert.assertTrue(sfHomePage.isEnrollemntSuccessfulMsgDisplayed(), "Expected 'ENROLLMENT SUCCESSFUL' msg has NOT displayed"); 
+		sfHomePage.clickRodanAndFieldsLogo();
 		s_assert.assertTrue(sfHomePage.isWelcomeUserElementDisplayed(), "Welcome user locator has not displayed after consultant enrollment");
 		s_assert.assertAll();
 
@@ -513,16 +526,17 @@ public class ConsultantEnrollmentTest extends StoreFrontWebsiteBaseTest{
 		sfHomePage.clickNextButton();
 		sfHomePage.clickSaveButton();
 		sfHomePage.enterConsultantShippingDetails(firstName, lastName, addressLine1, addressLine2 ,city, state, postalCode, phoneNumber);
+		sfHomePage.clickUseAsEnteredButtonOnPopUp();
 		sfHomePage.clickShippingDetailsNextbutton();
 		sfHomePage.enterUserBillingDetails(cardType, cardNumber, cardName, CVV);
-		//sfHomePage.selectBillingAddressFromDD();
-		sfHomePage.checkUseMyDeliveryAddressChkBox();
 		sfHomePage.clickBillingDetailsNextbutton();
-		sfHomePage.selectTermsAndConditionsChkBox();
 		sfHomePage.selectPoliciesAndProceduresChkBox();
+		sfHomePage.selectIAcknowledgeChkBox();
+		sfHomePage.selectTermsAndConditionsChkBox();
+		sfHomePage.selectConsentFormChkBox();
 		sfHomePage.clickBecomeAConsultant();
-		//confirmationMessageFromUI = sfHomePage.getConfirmationMsgOfConsultantEnrollment();
-		//s_assert.assertTrue(confirmationMessageFromUI.contains(expectedConfirmationMessage), "Expected confirmation message is"+expectedConfirmationMessage+" but actual on UI is "+confirmationMessageFromUI); 
+		s_assert.assertTrue(sfHomePage.isEnrollemntSuccessfulMsgDisplayed(), "Expected 'ENROLLMENT SUCCESSFUL' msg has NOT displayed"); 
+		sfHomePage.clickRodanAndFieldsLogo();
 		s_assert.assertTrue(sfHomePage.isWelcomeUserElementDisplayed(), "Welcome user locator has not displayed after consultant enrollment");
 		s_assert.assertAll();
 

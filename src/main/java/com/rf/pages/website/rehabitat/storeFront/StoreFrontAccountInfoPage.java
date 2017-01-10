@@ -63,6 +63,7 @@ public class StoreFrontAccountInfoPage extends StoreFrontWebsiteBasePage{
 	private String postalValidationErrorLoc = "//*[@id='profile.postcode']/following::label[contains(text(),'%s')][1]";
 	private String phoneNumberValidationErrorLoc = "//*[@id='profile.phone1']/following::label[contains(text(),'%s')][1]";
 	private String genderRadioBtnLoc = "//input[@name='gender'][@value='%s']/..";
+	private String emailYourConsultantValidationMsgLoc = "//label[@id='emailToConsultantForm.%s-error'][contains(text(),'%s')]";
 
 	/***
 	 * This method verify first Name field on account info page. 
@@ -515,16 +516,46 @@ public class StoreFrontAccountInfoPage extends StoreFrontWebsiteBasePage{
 		return this;
 	}
 
+	/***
+	 * This method enters the details to the "Email Your Consultant" fields.
+	 * @param name
+	 * @param email
+	 * @param emailContent
+	 * @return
+	 */
 	public StoreFrontAccountInfoPage enterEmailYourConsultantDetailsAndSubmit(String name,String email,String emailContent){
 		driver.type(EMAIL_TO_CONSULTANT_NAME_LOC, name);
 		logger.info("Email to consultant, name entered as "+name);
 		driver.type(EMAIL_TO_CONSULTANT_EMAIL_LOC, email);
 		logger.info("Email to consultant, email entered as "+email);
-		driver.type(EMAIL_TO_CONSULTANT_EMAIL_CONTENT_LOC, emailContent);
-		logger.info("Email to consultant, email content entered as "+emailContent);
+		enterEmailContentAtEmailYourConsultantFields(emailContent);
 		driver.click(EMAIL_TO_CONSULTANT_EMAIL_SUBMIT_BTN_LOC);
 		logger.info("Email to consultant, submit button clicked");
 		return this;
+	}
+
+	/***
+	 * This method enters the email content to the "Email Your Consultant" fields
+	 * @param emailContent
+	 * @return
+	 */
+	public StoreFrontAccountInfoPage enterEmailContentAtEmailYourConsultantFields(String emailContent){
+		driver.type(EMAIL_TO_CONSULTANT_EMAIL_CONTENT_LOC, emailContent);
+		logger.info("Email to consultant, email content entered as "+emailContent);
+		return this;
+	}
+
+	/***
+	 * This method verifies if the email your consultant validation is 
+	 * displayed or not.
+	 * 
+	 * @param field
+	 * @param msg
+	 * @return
+	 */
+	public boolean isEmailYourValidationDisplayed(String field,String msg){
+		return driver.isElementVisible(By.xpath(String.format(emailYourConsultantValidationMsgLoc,field,msg)));
+
 	}
 
 }

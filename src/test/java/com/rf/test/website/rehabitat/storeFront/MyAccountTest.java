@@ -743,11 +743,12 @@ public class MyAccountTest extends StoreFrontWebsiteBaseTest{
 	/***
 	 * qTest : TC-285 Account Information- Email Your Consultant - Valid
 	 * 
-	 * Description : This test logins with a PC and
+	 * Description : This test logins with a PC and validates the 
+	 * Email your consultant function -  Valid case
 	 * 
 	 *     
 	 */
-	@Test
+	@Test//TODO
 	public void testEmailYourConsultantValid_285(){
 		sfHomePage.loginToStoreFront(TestConstants.PC_EMAIL, password);
 		sfHomePage.clickWelcomeDropdown();
@@ -755,6 +756,39 @@ public class MyAccountTest extends StoreFrontWebsiteBaseTest{
 		sfAccountInfoPage.clickEmailYourConsultantLink();
 		sfAccountInfoPage.enterEmailYourConsultantDetailsAndSubmit("testName", "testEmail@mailinator.com", "test email");
 
+	}
+	
+	/***
+	 * qTest : TC-286 Account Information- Email Your Consultant - Invalid
+	 * 
+	 * Description : This test logins with a PC and validates the 
+	 * Email your consultant function -  Invalid case
+	 * 
+	 *     
+	 */
+	@Test
+	public void testEmailYourConsultantInvalid_286(){
+		String moreThan200Chars  = TestConstants.MORE_THAN_200_CHARS;
+		String name = "name";
+		String emailId = "emailId";
+		String emailContent = "emailContent";
+		sfHomePage.loginToStoreFront(TestConstants.PC_EMAIL, password);
+		sfHomePage.clickWelcomeDropdown();
+		sfAccountInfoPage = sfHomePage.navigateToAccountInfoPage();
+		sfAccountInfoPage.clickEmailYourConsultantLink();
+		sfAccountInfoPage.enterEmailYourConsultantDetailsAndSubmit(TestConstants.FIRST_NAME, TestConstants.CONSULTANT_EMAIL, moreThan200Chars);
+		s_assert.assertTrue(sfAccountInfoPage.isEmailYourValidationDisplayed(emailContent, TestConstants.VALIDATION_ERROR_LESS_THAN_200_CHARS),"validation of more than 200 chars not displayed");
+		
+		sfAccountInfoPage.enterEmailYourConsultantDetailsAndSubmit(TestConstants.FIRST_NAME, "", "test msg");
+		s_assert.assertTrue(sfAccountInfoPage.isEmailYourValidationDisplayed(emailId, TestConstants.VALIDATION_ERROR_THIS_FIELD_IS_REQUIRED),"validation of field required not displayed for "+emailId);
+		
+		sfAccountInfoPage.enterEmailYourConsultantDetailsAndSubmit("", TestConstants.CONSULTANT_EMAIL, "test msg");
+		s_assert.assertTrue(sfAccountInfoPage.isEmailYourValidationDisplayed(name, TestConstants.VALIDATION_ERROR_THIS_FIELD_IS_REQUIRED),"validation of field required not displayed for "+name);
+		
+		sfAccountInfoPage.enterEmailYourConsultantDetailsAndSubmit(TestConstants.FIRST_NAME, TestConstants.CONSULTANT_EMAIL, "");
+		s_assert.assertTrue(sfAccountInfoPage.isEmailYourValidationDisplayed(emailContent, TestConstants.VALIDATION_ERROR_THIS_FIELD_IS_REQUIRED),"validation of field required not displayed for "+emailContent);
+
+		s_assert.assertAll();
 	}
 
 	/***

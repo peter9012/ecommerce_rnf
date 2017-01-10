@@ -30,7 +30,7 @@ public class StoreFrontHomePage extends StoreFrontWebsiteBasePage{
 	private final By DSA_CODE_OF_ETHICS_LINK = By.xpath("//a[contains(text(),'DSA Code of Ethics')]");
 	private final By DONATE_NOW_BUTTON_LOC = By.xpath("//a[contains(text(),'Donate Now')]");
 	private final By ERROR_MSG_TEXT_LOC = By.xpath("//div[@class='content']//h2");
-	private final By LOGIN_OR_REGISTER_TXT_LOC = By.xpath("//h1[contains(text(),'LOG IN OR REGISTER')]");
+	private final By LOGIN_OR_REGISTER_TXT_LOC = By.xpath("//h1[contains(text(),'LOG IN OR REGISTER')]|| contains(text(),'Log in')]");
 	private final By INCORRECT_USERNAME_PASSOWRD_TXT_LOC = By.xpath("//div[contains(@class,'alert-danger') and contains(text(),'') or contains(text(),'Your username or password was incorrect.')]");
 	private final By MEET_THE_DOCTORS_TXT_LOC = By.xpath("//h1[text()=' Meet the Doctors']");
 	private final By MEET_RF_EXECUTIVE_TEAM_LINK_LOC = By.xpath("//a[@href='/executive-team']");
@@ -40,7 +40,8 @@ public class StoreFrontHomePage extends StoreFrontWebsiteBasePage{
 	private final By BILLING_ADDRESS_DD_LOC= By.id("default-address");
 	private final By BILLING_ADDRESS_OPTION_VALUE_LOC= By.xpath("//select[@id='default-address']//option[2]");
 	private final By SAVE_BUTTON_LOC = By.id("deliveryAccountSubmit");
-	private final By FIRST_PRODUCT_AT_KIT_PAGE_LOC = By.xpath("//input[@id='ENROLL_KIT_0002']");
+	private final By BIG_BUSNINESS_KIT_PAGE_LOC = By.xpath("//input[@id='ENROLL_KIT_0002']");
+	private final By PERSONAL_RESULTS_KIT_PAGE_LOC = By.xpath("//input[@id='ENROLL_KIT_0003']");
 	private final By FIRST_NAME_FOR_REGISTRATION_LOC = By.id("register.firstName");
 	private final By LAST_NAME_FOR_REGISTRATION_LOC = By.id("register.lastName");
 	private final By EMAIL_ID_FOR_REGISTRATION_LOC = By.id("register.email");
@@ -71,12 +72,19 @@ public class StoreFrontHomePage extends StoreFrontWebsiteBasePage{
 	private final By PREFIX_AVAILABLE_LOC = By.xpath("//div[@class='available-dispaly available' or text()='Available']");
 	private final By CLOSE_ICON_SEARCH_TEXT_BOX = By.xpath("//div[@class='yCmsComponent']//span[contains(@class,'icon-close')]");
 	private final By SEARCH_RESULT_PRODUCTS_LOC = By.xpath("//div[@class='product__listing product__grid']//div[@class='product-item']//a[@class='name']");
+	private final By TOTAL_KITS_LOC = By.xpath("//div[contains(@class,'enrollmentKit-wrapper')]/div");
+	
+	private String viewDetailsLinkLoc = "//div[contains(@class,'enrollmentKit-wrapper')]/descendant::a[contains(text(),'View Details')][%s]";
+	private String expandedKitDescriptionLoc = "//div[contains(@class,'enrollmentKit-wrapper')]/div[%s]//div[@class='detailed-description']";
+	private String closeBtnForKitDetailsLoc = "//div[contains(@class,'enrollmentKit-wrapper')]/div[%s]//a[@class='enrollKit-close']";
 	private String kitNameLoc = "//label[text()='%s']/preceding::input[1]";
 	private String priceOfProductLoc = "//div[contains(@class,'product__listing')]//div[@class='product-item'][%s]//span[@id='cust_price']";
 	private String socialMediaIconLoc = "//div[@class='container']//a[contains(@href,'%s')]";
 	private String teamMemberNameLoc = "//div[@id='modal_front']/div[%s]//div[@class='title']/h4";
 	private String categoryUnderShopSkinCareLoc = topNavigationLoc+"//a[@title='%s']";
 	private String socialMediaLoc = "//div[contains(@class,'social-icons')]//a[contains(@href,'%s')]";
+
+	private int randomLink =0;
 
 	public boolean isFindAConsultantPagePresent(){
 		String findAConsultantURL = "/find-consultant";
@@ -326,7 +334,49 @@ public class StoreFrontHomePage extends StoreFrontWebsiteBasePage{
 		driver.waitForLoadingImageToDisappear();
 		return this;
 	}
+	
+	/***
+	 * This method will return the total number of
+	 * kits displayed during consultant enrollment
+	 * @return
+	 */
+	public int getTotalKitsDisplayedDuringConsultantEnrollment(){
+		return driver.findElements(TOTAL_KITS_LOC).size();
+	}
 
+	/***
+	 * This method randomly clicks on any of the kit's view details link
+	 * @return
+	 */
+	public StoreFrontHomePage clickAnyViewDetailsLink(String kitNumber){
+		driver.click(By.xpath(String.format(viewDetailsLinkLoc, kitNumber)));
+		logger.info("clicked on link "+kitNumber);
+		return this;
+	}
+	
+	/***
+	 * This method verifies if the kit description is
+	 * visible or NOT after expanding it
+	 * @param link
+	 * @return
+	 */
+	public boolean isKitDetailsDisplayed(String kitNumber){
+		return driver.isElementVisible(By.xpath(String.format(expandedKitDescriptionLoc, kitNumber)));
+	}
+	
+	/***
+	 * This method clicks on the close btn of the
+	 * expanded kit details
+	 * @param kitNumber
+	 * @return
+	 */
+	public StoreFrontHomePage closeTheExpandedKitDetails(String kitNumber){
+		driver.pauseExecutionFor(1000);
+		driver.clickByJS(RFWebsiteDriver.driver, driver.findElement((By.xpath(String.format(closeBtnForKitDetailsLoc, kitNumber)))));
+		logger.info("clicked on the close btn of the expanded kit details for kitNumber "+kitNumber);
+		return this;
+	}
+	
 	/***
 	 * This method verifies if Next button on kit page is enabled or not
 	 * @return boolean
@@ -346,15 +396,15 @@ public class StoreFrontHomePage extends StoreFrontWebsiteBasePage{
 	}
 
 	/***
-	 * This method choose first product at kit page
+	 * This method chooses personal result kit
 	 * 
 	 * @param
 	 * @return store front Home page object
 	 * 
 	 */
 	public StoreFrontHomePage chooseProductFromKitPage(){
-		driver.clickByJS(RFWebsiteDriver.driver, driver.findElement(FIRST_PRODUCT_AT_KIT_PAGE_LOC));
-		logger.info("Choose first product at kit page");
+		driver.clickByJS(RFWebsiteDriver.driver, driver.findElement(PERSONAL_RESULTS_KIT_PAGE_LOC));
+		logger.info("selected the personal result kit");
 		return this;
 	}
 

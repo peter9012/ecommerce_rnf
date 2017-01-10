@@ -251,9 +251,9 @@ public class StoreFrontProductDetailPage extends StoreFrontWebsiteBasePage{
 	 */
 
 	public boolean isPricePresentOnPDPAsExpected(){
-		return driver.getText(PRODUCT_PRICE_ON_PDP_LOC).contains("Your Price : $");
+		return driver.getText(PRODUCT_PRICE_ON_PDP_LOC).contains("Your Price")
+				&&driver.getText(PRODUCT_PRICE_ON_PDP_LOC).contains("$");
 	}
-
 
 	/***
 	 * This method validates the presence of Retail Price on PDP for PC, Consultant user

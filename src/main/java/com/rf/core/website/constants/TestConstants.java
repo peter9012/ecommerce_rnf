@@ -33,6 +33,7 @@ public class TestConstants {
 	public static final String PASSWORD_VALIDATION_ERROR_DO_NOT_MATCH = "Current Password do not match";
 	public static final String CONFIRM_PASSWORD_VALIDATION_ERROR_SAME_VALUE = "Please enter the same value";
 	public static final String POSTAL_VALIDATION_ERROR_VALID_POSTAL_CODE = "Please enter valid postal code";
+	public static final String VALIDATION_ERROR_LESS_THAN_200_CHARS = "Please enter no more than 200 characters";
 	public static final String SHIPPING_ADDRESS_UPDATE_MESSAGE = "Your address was updated.";
 	public static final String ADD_TO_BAG = "Add to Bag";
 	public static final String WRONG_ADDRESS_LINE_1_US = "BAJCAC";
@@ -42,8 +43,8 @@ public class TestConstants {
 	public static final String TITLE_OF_ORDER_DETAILS_PAGE = "Order Details | Rodan and Fields";
 
 	//Consultant user details
-	public static final String CONSULTANT_USERNAME = "laks.con8@mail.com";
-	public static final String CONSULTANT_EMAIL = "laks.con8@mail.com";
+	public static final String CONSULTANT_USERNAME = "AutoCons20170110140338@mailinator.com";
+	public static final String CONSULTANT_EMAIL = "AutoCons20170110140338@mailinator.com";
 	public static final String CONSULTANT_ACCOUNT_ID = "";
 	public static final String CONSULTANT_ACCOUNT_NUMBER = "";
 	public static final String FIRST_NAME = "AutoCons";
@@ -94,8 +95,8 @@ public class TestConstants {
 	public static final String DPO_STATE_US = "AP Armed Forces";
 
 	//PC User Details
-	public static final String PC_USERNAME = "autopc20170106101026@yopmail.com";
-	public static final String PC_EMAIL = "autopc20170106101026@yopmail.com";
+	public static final String PC_USERNAME = "autopc121213@xyz.com";
+	public static final String PC_EMAIL = "autopc121213@xyz.com";
 
 	//RC User Details
 	public static final String RC_USERNAME = "autorc20170106101026@yopmail.com";
@@ -104,7 +105,7 @@ public class TestConstants {
 	public static final String SHIPPING_METHOD_UPS_2DAY = "UPS 2 Days";
 	public static final String SHIPPING_METHOD_UPS_GROUND = "UPS Ground";
 	public static final String SHIPPING_METHOD_UPS_OVERNIGHT = "UPS Overnight";
-	public static final String CARD_TYPE = "VISA";
+	public static final String CARD_TYPE = "Visa";
 	public static final String CARD_NUMBER = "4747474747474747";
 	public static final String CARD_NAME = "auto lauto";
 	public static final String CVV = "123";
@@ -139,4 +140,6 @@ public class TestConstants {
 	public static final String POSTAL_CODE_MANDATORY_MSG = "Please enter valid postal code.";
 	public static final String PHONE_NUMBER_MANDATORY_MSG = "Please specify a valid phone number.";
 
+	public static final String MORE_THAN_200_CHARS = "This is the test message This is the test message This is the test message This is the test message "+
+													 "This is the test message This is the test message This is the test message This is the test message T";
 }

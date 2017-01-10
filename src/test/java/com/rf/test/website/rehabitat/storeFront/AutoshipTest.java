@@ -331,7 +331,9 @@ public class AutoshipTest extends StoreFrontWebsiteBaseTest{
 		double newSubtotalAtAutoshipCart;
 		//Login to application.
 		sfHomePage.loginToStoreFront(TestConstants.PC_EMAIL, password);
-		sfAutoshipCartPage = sfHomePage.clickOnAutoshipCartLink();
+		//sfAutoshipCartPage = sfHomePage.clickOnAutoshipCartLink();
+		sfHomePage.clickWelcomeDropdown();
+		sfAutoshipCartPage = sfHomePage.navigateToEditPCPerksPage();
 		currentURL = sfAutoshipCartPage.getCurrentURL().toLowerCase();
 		s_assert.assertTrue(currentURL.contains(textToAssertInURL), "Expected URL should contain "+textToAssertInURL+" on Autoship cart page but actual on UI is "+currentURL);
 		subtotalAtAutoshipCart = sfAutoshipCartPage.getSubtotalofItemsAtCart();

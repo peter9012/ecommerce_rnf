@@ -307,4 +307,17 @@ public class MiniCartTest extends StoreFrontWebsiteBaseTest{
 		s_assert.assertAll();
 	}
 
+	/***
+	 * qTest : TC-372 Mini Cart- Autoship - not visible to consultant not enrolled in CRP
+	 * Description : This test validates that mini cart is empty
+	 * after placed an order
+	 *     
+	 */
+	@Test
+	public void testAutoshipNotVisibleToConsultantNotEnrolledInCRP_372(){
+		sfHomePage.loginToStoreFront(TestConstants.CONSULTANT_EMAIL, password);
+		s_assert.assertFalse(sfHomePage.isAutoshipLinkPresent(), "Autoship link is not present for consultant who is not enrolled in pulse");
+		s_assert.assertAll();
+	}
+
 }

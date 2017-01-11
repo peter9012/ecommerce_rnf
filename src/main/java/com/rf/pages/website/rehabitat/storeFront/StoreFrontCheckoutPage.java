@@ -122,6 +122,11 @@ public class StoreFrontCheckoutPage extends StoreFrontWebsiteBasePage{
 	private final By SHIPPING_PROFILE_IN_SHIPPING_SECTION_LOC = By.xpath("//div[text()='Shipping']/ancestor::h2/following-sibling::div[contains(@class,'shippingAddWrap')]//div[@class='checkout-shipping-items']/dl[1]/dd[1]");
 	private final By SPONSOR_INFO_LOC = By.xpath("//div[@id='sponsorInfo']/span");
 	private final By NOT_YOUR_CONSULTANT_LINK_LOC = By.id("not-your-sponsor");
+	private final By FIRST_NAME_ERROR_FIELD_LOC = By.id("first-name-error");
+	private final By LAST_NAME_ERROR_FIELD_LOC = By.id("last-name-error");
+	private final By EMAIL_ERROR_FIELD_LOC = By.id("email-account-error");
+	private final By PASSWORD_ERROR_FIELD_LOC = By.id("password-error");
+	private final By CONFIRM_PASSWORD_ERROR_FIELD_LOC = By.id("the-password-again-error");
 
 	private String stateForNewShippingAddressDetailsLoc = "//form[@id='addressForm']//select[@id='address.region']//option[text()='%s']";
 	private String mandatoryFieldErrorMsgForNewAddressLoc  = "//label[contains(@id,'%s-error') and contains(text(),'This field is required.')]";
@@ -1388,6 +1393,35 @@ public class StoreFrontCheckoutPage extends StoreFrontWebsiteBasePage{
 	 */
 	public boolean isSponsorSearchBoxVisible(){
 		return driver.isElementVisible(SPONSOR_SEARCH_FIELD_LOC);
+	}
+
+	/***
+	 * This method validates all error fields are present or not
+	 * 
+	 * @param
+	 * @return boolean value
+	 * 
+	 */
+	public boolean isAllErrorFieldsPresent(){
+		boolean flag = driver.isElementVisible(FIRST_NAME_ERROR_FIELD_LOC)&&
+				driver.isElementVisible(LAST_NAME_ERROR_FIELD_LOC)&&
+				driver.isElementVisible(EMAIL_ERROR_FIELD_LOC)&&
+				driver.isElementVisible(PASSWORD_ERROR_FIELD_LOC)&&
+				driver.isElementVisible(CONFIRM_PASSWORD_ERROR_FIELD_LOC); 
+		return flag;
+	}
+
+	/***
+	 * This method get the error message of email field 
+	 * 
+	 * @param 
+	 * @return error message
+	 * 
+	 */
+	public String getErrorMessageOfEmailField(){
+		String errorMessage = driver.getText(EMAIL_ERROR_FIELD_LOC);
+		logger.info("error message of email field : "+errorMessage);
+		return errorMessage;
 	}
 
 }

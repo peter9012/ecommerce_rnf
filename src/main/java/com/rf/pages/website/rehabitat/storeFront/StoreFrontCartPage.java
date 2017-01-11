@@ -19,7 +19,6 @@ public class StoreFrontCartPage extends StoreFrontWebsiteBasePage{
 
 	private final By QUANTITY_OF_FIRST_PRODUCT_LOC = By.xpath("//div[@class='qty']//input[@id='quantity_0']");
 	private final By UPDATE_LINK_OF_FIRST_PRODUCT_LOC = By.xpath("//div[@class='qty']/descendant::input[@value='update'][1]");
-	private final By PC_ONE_TIME_FEE_MSG_LOC = By.xpath("//span[contains(text(),'PC PERKS ONE-TIME ENROLLMENT FEE')]");
 	private final By CHECKOUT_BTN_LOC = By.xpath("//div[@class='cart-container']/descendant::button[contains(text(),'Checkout')][2]");
 	private final By FIRST_ITEM_CODE_LOC = By.xpath("//ul[contains(@class,'cart__list')]/descendant::li[@class='item-list-item'][1]//div[@class='item-code']");
 	private final By FIRST_ITEM_PRODUCT_NAME_LOC = By.xpath("//ul[contains(@class,'cart__list')]/descendant::li[@class='item-list-item'][1]//span[@class='item-name']");
@@ -34,7 +33,7 @@ public class StoreFrontCartPage extends StoreFrontWebsiteBasePage{
 	private final By FIRST_ITEM_PRODUCT_PRICE_LOC = By.xpath("//ul[contains(@class,'cart__list')]/descendant::li[@class='item-list-item'][1]//div[@class='item-price'][1]");
 	private final By ORDER_TOTAL_LOC = By.xpath("//td[text()='Order Total']/following::td[1]");
 
-	private String productPriceInAllItemsInCartLoc = "//ul[@class='item-list cart__list']//div[@class='item-info']//span[@class='item-name' and contains(text(),'%s')]/ancestor::div[1]/following-sibling::div[@class='item-price']";
+	private String productPriceInAllItemsInCartLoc = "//li[@class='item-list-item']//div[@class='item-info']//span[@class='item-name' and contains(text(),'%s')]/ancestor::div[1]/following-sibling::div[@class='item-price-info']";
 	private String recentlyViewProductOnCartPageLoc = "//div[@id='recentlyViewedTitle']/following::div[@class='owl-item active']//a[contains(text(),'%s')]";
 	private String removeLinkForProductOnCartLoc = "removeEntry_";
 
@@ -95,15 +94,6 @@ public class StoreFrontCartPage extends StoreFrontWebsiteBasePage{
 		}
 		logger.info("Update link of "+itemNumber+" is clicked");
 		return this;
-	}
-
-	/***
-	 * This method verifies if the PC one time joining fee msg 
-	 * is displayed or not
-	 * @return
-	 */
-	public boolean isPcOneTimeFeeMsgDisplayed(){
-		return driver.isElementVisible(PC_ONE_TIME_FEE_MSG_LOC);
 	}
 
 	/***

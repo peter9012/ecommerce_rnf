@@ -322,9 +322,9 @@ public class StoreFrontShopSkinCarePage extends StoreFrontWebsiteBasePage{
 	public StoreFrontShopSkinCarePage addProductToBag(int productNumber){
 		driver.click(By.xpath(String.format(addToCartButtonThroughProductNumber, productNumber)));
 		logger.info("Added first product to the bag");
-		driver.pauseExecutionFor(2000);
 		return this;
 	}
+
 	/***
 	 * This method get second product name from all product page
 	 * 

@@ -187,8 +187,9 @@ public class StoreFrontWebsiteBasePage extends RFBasePage{
 	private final By ADD_MORE_ITEMS_BTN_LOC = By.xpath("//div[@class='cart-container']/descendant::button[contains(text(),'Add More Items')][2]");
 	private final By SUBTOTAL_LOC = By.xpath("//td[text()='Subtotal:']/following::td[1]");
 	private final By ADD_MORE_ITEMS_BTN_PC_AUTOSHIP_CART_LOC = By.xpath("//div[@class='cart-container']/descendant::button[contains(text(),'Add More Items')]");
+	private final By PC_ONE_TIME_FEE_MSG_LOC = By.xpath("//span[contains(text(),'PC PERKS ONE-TIME ENROLLMENT FEE')]");
 
-	private String productNameInAllItemsInCartLoc = "//ul[contains(@class,'item-list cart__list')]//div[@class='item-info']//span[@class='item-name' and contains(text(),'%s')]";
+	private String productNameInAllItemsInCartLoc = "//li[@class='item-list-item']//div[@class='item-info']//span[@class='item-name' and contains(text(),'%s')]";
 	private String pageHeaderLoc = "//div[contains(text(),'%s')]";
 	private String disclaimerPageLinkLoc = "//a[contains(text(),'%s')]";
 	private String pressRoomTabsLoc="//ul[@class='tabs']//li/a[contains(text(),'%s')]";
@@ -1610,9 +1611,8 @@ public class StoreFrontWebsiteBasePage extends RFBasePage{
 	 * 
 	 */
 	public StoreFrontWebsiteBasePage selectPoliciesAndProceduresChkBox(){
-		//driver.pauseExecutionFor(2000);
+		driver.pauseExecutionFor(1000);
 		driver.clickByJS(RFWebsiteDriver.driver, driver.findElement(POLICIES_AND_PROCEDURES_CHK_BOX_LOC));
-		//click(POLICIES_AND_PROCEDURES_CHK_BOX_LOC);
 		logger.info("Policies & procedures checkbox selected");
 		return this;
 	}
@@ -1625,11 +1625,12 @@ public class StoreFrontWebsiteBasePage extends RFBasePage{
 	 * 
 	 */
 	public StoreFrontWebsiteBasePage selectIAcknowledgeChkBox(){
+		driver.pauseExecutionFor(1000);
 		driver.click(I_ACKNOWLEDGE_CHK_BOX_LOC);
 		logger.info("I acknowledge checkbox selected");
 		return this;
 	}
-	
+
 	/***
 	 * This method select the I acknowledge checkbox
 	 * for PC
@@ -1638,6 +1639,7 @@ public class StoreFrontWebsiteBasePage extends RFBasePage{
 	 * 
 	 */
 	public StoreFrontWebsiteBasePage selectIAcknowledgePCChkBox(){
+		driver.pauseExecutionFor(1000);
 		driver.clickByJS(RFWebsiteDriver.driver, driver.findElement(I_ACKNOWLEDGE_PC_CHK_BOX_LOC));
 		logger.info("PC,I acknowledge checkbox selected");
 		return this;
@@ -1651,13 +1653,12 @@ public class StoreFrontWebsiteBasePage extends RFBasePage{
 	 * 
 	 */
 	public StoreFrontWebsiteBasePage selectTermsAndConditionsChkBox(){
-		//driver.pauseExecutionFor(2000);
+		driver.pauseExecutionFor(1000);
 		driver.clickByJS(RFWebsiteDriver.driver, driver.findElement(TERMS_AND_CONDITIONS_CHK_BOX_LOC));
 		logger.info("Terms & condition checkbox selected");
-		driver.pauseExecutionFor(2000);
 		return this;
 	}
-	
+
 	/***
 	 * This method select the terms & conditions checkbox
 	 * for PC
@@ -1666,7 +1667,7 @@ public class StoreFrontWebsiteBasePage extends RFBasePage{
 	 * 
 	 */
 	public StoreFrontWebsiteBasePage selectPCTermsAndConditionsChkBox(){
-		//driver.pauseExecutionFor(2000);
+		driver.pauseExecutionFor(1000);
 		driver.clickByJS(RFWebsiteDriver.driver, driver.findElement(PC_TERMS_AND_CONDITIONS_CHK_BOX_LOC));
 		logger.info("PC Terms & condition checkbox selected");
 		driver.pauseExecutionFor(2000);
@@ -1682,10 +1683,9 @@ public class StoreFrontWebsiteBasePage extends RFBasePage{
 	 * 
 	 */
 	public StoreFrontWebsiteBasePage selectConsentFormChkBox(){
-		//driver.pauseExecutionFor(1000);
+		driver.pauseExecutionFor(1000);
 		driver.clickByJS(RFWebsiteDriver.driver, driver.findElement(E_SIGN_CONSENT_FORM_CHK_BOX_LOC));
 		logger.info("E Sign Consent Form checkbox selected");
-		driver.pauseExecutionFor(2000);
 		return this;
 	}
 
@@ -2532,6 +2532,16 @@ public class StoreFrontWebsiteBasePage extends RFBasePage{
 		actions.click(driver.findElement(ADD_TO_CART_FIRST_PRODUCT_LOC)).build().perform();
 		return this;
 	}
+
+	/***
+	 * This method verifies if the PC one time joining fee msg 
+	 * is displayed or not
+	 * @return
+	 */
+	public boolean isPcOneTimeFeeMsgDisplayed(){
+		return driver.isElementVisible(PC_ONE_TIME_FEE_MSG_LOC);
+	}
+
 
 
 }

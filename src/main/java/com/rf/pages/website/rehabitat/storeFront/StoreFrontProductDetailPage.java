@@ -277,9 +277,8 @@ public class StoreFrontProductDetailPage extends StoreFrontWebsiteBasePage{
 	 */
 
 	public StoreFrontProductDetailPage clickOnAddToCartButton(){
-		driver.moveToElement(ADD_TO_CART_BTN_AT_PDP_PAGE);
-		driver.click(ONE_TIME_ORDER_BTN_LOC);
-		logger.info("Clicked on one time order button");
+		driver.click(ADD_TO_CART_BTN_AT_PDP_PAGE);
+		logger.info("Clicked on add to cart button");
 		return this;
 	}
 
@@ -305,7 +304,7 @@ public class StoreFrontProductDetailPage extends StoreFrontWebsiteBasePage{
 	public Boolean isProductImageDisplayed(){
 		return driver.isElementVisible(PRODUCT_IMAGE_LOC);
 	}
-	
+
 	/***
 	 * This method click on view larger image link
 	 * 
@@ -317,7 +316,7 @@ public class StoreFrontProductDetailPage extends StoreFrontWebsiteBasePage{
 		logger.info("clicked on view larger image link");
 		return this;
 	}
-	
+
 	/***
 	 * This method validates product image displayed in larger size or not
 	 * 
@@ -327,7 +326,7 @@ public class StoreFrontProductDetailPage extends StoreFrontWebsiteBasePage{
 	public boolean isProductImageDisplayedInLargerSize(){
 		return driver.isElementVisible(CLOSE_ZOOM_LOC);
 	}
-	
+
 	/***
 	 * This method close zoom image popup
 	 * 
@@ -339,7 +338,7 @@ public class StoreFrontProductDetailPage extends StoreFrontWebsiteBasePage{
 		logger.info("clicked on close(X) zoom image");
 		return this;
 	}
-	
+
 	/***
 	 * This method click on recently viewed product name and returned product name
 	 * 

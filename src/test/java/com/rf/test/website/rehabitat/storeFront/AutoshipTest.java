@@ -300,7 +300,7 @@ public class AutoshipTest extends StoreFrontWebsiteBaseTest{
 	 *     
 	 */
 	@Test(enabled=false)
-	public void testEditPCPerks_333(){
+	public void testCartPageUpdateBillingShippingAddressLinkPC_333(){
 		String currentURL = null;
 		String textToAssertInURL = "autoship/cart";
 		//Login to application.
@@ -347,5 +347,118 @@ public class AutoshipTest extends StoreFrontWebsiteBaseTest{
 		s_assert.assertTrue(currentURL.contains(checkoutPageURL), "Expected URL should contain "+checkoutPageURL+" on checkout page but actual on UI is "+currentURL);
 		s_assert.assertAll();
 	}	
+
+	/***
+	 * qTest : TC-398 Update Autoship Cart- Edit Ship Address - Consultant
+	 * Description : This test validates the updates in shipping address  on checkout page
+	 * 
+	 *     
+	 */
+	@Test(enabled=false)
+	public void testUpdateAutoshipCartEditShipAddressConsultant_398(){
+		String currentURL = null;
+		String randomWord = CommonUtils.getRandomWord(5);
+		String firstName = TestConstants.FIRST_NAME;
+		String lastName = TestConstants.LAST_NAME+randomWord;
+		String updatedLastName = TestConstants.FIRST_NAME +  CommonUtils.getRandomWord(5);
+		String addressLine1 = TestConstants.ADDRESS_LINE_1_US;
+		String addressLine2 = TestConstants.ADDRESS_LINE_2_US;
+		String city = TestConstants.CITY_US;
+		String state = TestConstants.STATE_US;
+		String postalCode = TestConstants.POSTAL_CODE_US;
+		String phoneNumber = TestConstants.PHONE_NUMBER;
+		String textToAssertInURL = "autoship/cart";
+		String defaultShippingAddress = null;
+		//Login to application.
+		sfHomePage.loginToStoreFront(TestConstants.CONSULTANT_WITH_CRP_USERNAME, password);
+		sfAutoshipCartPage = sfHomePage.clickOnAutoshipCartLink();
+		currentURL = sfAutoshipCartPage.getCurrentURL().toLowerCase();
+		s_assert.assertTrue(currentURL.contains(textToAssertInURL), "Expected URL should contain "+textToAssertInURL+" but actual on UI is "+currentURL);
+		sfCheckoutPage = sfAutoshipCartPage.clickOnCRPCheckoutButton();
+		sfCheckoutPage.clickSaveButton();
+		sfCheckoutPage.clickEditLinkOfShippingProfile();
+		sfCheckoutPage.updateShippingAddressDetailsAtCheckoutPage(firstName, lastName, addressLine1,addressLine2, city, state, postalCode, phoneNumber);
+		sfCheckoutPage.clickSaveButtonOfShippingAddress();
+		sfCheckoutPage.clickUseAsEnteredButtonOnPopUp();
+		defaultShippingAddress = sfCheckoutPage.getDefaultShippingAddressNameAtCheckoutPage();
+		s_assert.assertTrue(defaultShippingAddress.contains(lastName),
+				"Shipping profile does not get updated at checkout page. Expected : " + lastName + " . Actual on UI : " + defaultShippingAddress);
+		sfCheckoutPage.clickEditLinkOfShippingProfile();
+		sfCheckoutPage.updateShippingAddressDetailsAtCheckoutPage(firstName, updatedLastName, addressLine1,addressLine2, city, state, postalCode, phoneNumber);
+		sfCheckoutPage.clickCancelButton();
+		s_assert.assertFalse(sfCheckoutPage.getDefaultShippingAddressNameAtCheckoutPage().contains(updatedLastName),
+				"Shipping profile get updated at checkout page even after clicking cancel button at checkout page");
+		s_assert.assertAll();
+	}
+
+
+	/***
+	 * qTest : TC-400 Update Autoship Cart- Edit a Billing Profile - Consultant
+	 * Description : This method validates the change in billing profile on checkout page for Consultant
+	 * 
+	 *     
+	 */
+	@Test(enabled=false)
+	public void testUpdateAutoshipCartEditABillingProfileConsultant_400(){
+		String currentURL = null;
+		String randomWord = CommonUtils.getRandomWord(5);
+		String textToAssertInURL = "autoship/cart";
+		String firstName = TestConstants.FIRST_NAME + randomWord;
+		String updatedFirstName = TestConstants.FIRST_NAME +  CommonUtils.getRandomWord(5);
+		String lastName = TestConstants.LAST_NAME;
+		String addressLine1 = TestConstants.ADDRESS_LINE_1_US;
+		String addressLine2 = TestConstants.ADDRESS_LINE_2_US;
+		String city = TestConstants.CITY_US;
+		String state = TestConstants.STATE_US;
+		String postalCode = TestConstants.POSTAL_CODE_US;
+		String phoneNumber = TestConstants.PHONE_NUMBER;
+		//Login to application.
+		sfHomePage.loginToStoreFront(TestConstants.CONSULTANT_WITH_CRP_USERNAME, password);
+		sfAutoshipCartPage = sfHomePage.clickOnAutoshipCartLink();
+		currentURL = sfAutoshipCartPage.getCurrentURL().toLowerCase();
+		s_assert.assertTrue(currentURL.contains(textToAssertInURL), "Expected URL should contain "+textToAssertInURL+" but actual on UI is "+currentURL);
+		sfCheckoutPage = sfAutoshipCartPage.clickOnCRPCheckoutButton();
+		sfCheckoutPage.clickSaveButton();
+		sfCheckoutPage.clickShippingDetailsNextbutton();
+		sfCheckoutPage.clickEditLinkOfBillingProfile();
+		sfCheckoutPage.checkUseMyDeliveryAddressChkBoxForExistingBillingProfile();
+		sfCheckoutPage.enterBillingAddressDetailsAtCheckout(firstName, lastName, addressLine1, addressLine2, city, state, postalCode, phoneNumber);
+		sfCheckoutPage.clickSavePaymentButton();
+		sfCheckoutPage.clickUseAsEnteredButtonOnPopUp();
+		s_assert.assertTrue(sfCheckoutPage.isUpdatedDefaultBillingDetailsVisibleOnUI(firstName),
+				"Billing Details do not get updated on Checkout Page");
+		sfCheckoutPage.clickEditLinkOfBillingProfile();
+		sfCheckoutPage.checkUseMyDeliveryAddressChkBoxForExistingBillingProfile();
+		sfCheckoutPage.enterBillingAddressDetailsAtCheckout(updatedFirstName, lastName, addressLine1, addressLine2, city, state, postalCode, phoneNumber);
+		sfCheckoutPage.clickCancelButton();
+		s_assert.assertFalse(sfCheckoutPage.isUpdatedDefaultBillingDetailsVisibleOnUI(updatedFirstName),
+				"Billing Details get updated after clicking cancel on Checkout Page");
+		s_assert.assertAll();
+	}
+
+	/***
+	 * qTest : TC-334 Cart Page- Update Billing/Shipping Address link - Consultant
+	 * Description : This test validates the presence of updating billing/shipping Address link after clicking Autoship cart
+	 * Note : For Updating billing/shipping Address, No direct link is present after Autoship cart. 
+	 *        Need to click on pc perks checkout and then the link are available for Billing and shipping updation
+	 * 
+	 *     
+	 */
+	@Test(enabled=false)
+	public void testCartPageUpdateBillingShippingAddressLinkConsultant_334(){
+		String currentURL = null;
+		String textToAssertInURL = "autoship/cart";
+		//Login to application.
+		sfHomePage.loginToStoreFront(TestConstants.CONSULTANT_WITH_CRP_USERNAME, password);
+		sfHomePage.clickWelcomeDropdown();
+		sfAutoshipCartPage = sfHomePage.navigateToEditCRPPage();
+		currentURL = sfAutoshipCartPage.getCurrentURL().toLowerCase();
+		s_assert.assertTrue(currentURL.contains(textToAssertInURL), "Expected URL should contain "+textToAssertInURL+" but actual on UI is "+currentURL);
+		s_assert.assertTrue(sfAutoshipCartPage.isCRPAutoshipHeaderPresentOnCartPage(),"CRP Autoship header is not present");
+		sfCheckoutPage = sfAutoshipCartPage.clickOnCRPCheckoutButton();
+		s_assert.assertTrue(sfCheckoutPage.isShippingLinkPresentAtCheckoutPage(),"Shipping link is not present at checkout page");
+		s_assert.assertTrue(sfCheckoutPage.isBillingLinkPresentAtCheckoutPage(),"Billing link is not present at checkout page");
+		s_assert.assertAll();
+	}
 
 }

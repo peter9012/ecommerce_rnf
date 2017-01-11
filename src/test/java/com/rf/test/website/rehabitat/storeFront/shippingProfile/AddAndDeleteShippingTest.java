@@ -213,8 +213,8 @@ public class AddAndDeleteShippingTest extends StoreFrontWebsiteBaseTest{
 		sfShippingInfoPage.checkMakeThisMyDefaultAddressChkBox();
 		sfShippingInfoPage.clickSaveButtonOfShippingAddress();
 		sfShippingInfoPage.clickUseAsEnteredButtonOnPopUp();
-		defaultShippingAddressName = sfShippingInfoPage.getDefaultShippingAddressName();
-		s_assert.assertTrue(defaultShippingAddressName.contains(lastName), "Expected default shipping address name is "+lastName+" but actual on UI is "+defaultShippingAddressName);
+		defaultShippingAddressName = sfShippingInfoPage.getDefaultShippingAddressName().toLowerCase();
+		s_assert.assertTrue(defaultShippingAddressName.contains(lastName.toLowerCase()), "Expected default shipping address name is "+lastName.toLowerCase()+" but actual on UI is "+defaultShippingAddressName);
 		sfShippingInfoPage.clickRodanAndFieldsLogo();
 		sfShopSkinCarePage = sfShippingInfoPage.clickAllProducts();
 		sfShopSkinCarePage.selectFirstProduct();
@@ -222,7 +222,7 @@ public class AddAndDeleteShippingTest extends StoreFrontWebsiteBaseTest{
 		sfCheckoutPage = sfShopSkinCarePage.checkoutTheCart();
 		sfCheckoutPage.clickSaveButton();
 		defaultShippingAddressName = sfCheckoutPage.getDefaultShippingAddressNameAtCheckoutPage();
-		s_assert.assertTrue(defaultShippingAddressName.contains(lastName), "Expected default shipping address name at checkout page is "+lastName+" but actual on UI is "+defaultShippingAddressName);
+		s_assert.assertTrue(defaultShippingAddressName.contains(lastName.toLowerCase()), "Expected default shipping address name at checkout page is "+lastName.toLowerCase()+" but actual on UI is "+defaultShippingAddressName);
 		s_assert.assertAll();
 	}
 
@@ -356,18 +356,17 @@ public class AddAndDeleteShippingTest extends StoreFrontWebsiteBaseTest{
 		String textToAssertInURL = "autoship/cart";
 		String shippingAddressNameInAccountInfo = null;
 		//Login to application.
-		sfHomePage.loginToStoreFront(TestConstants.PC_USERNAME, password);
+		sfHomePage.loginToStoreFront(TestConstants.CONSULTANT_WITH_CRP_USERNAME, password);
 		sfAutoshipCartPage = sfHomePage.clickOnAutoshipCartLink();
 		currentURL = sfAutoshipCartPage.getCurrentURL().toLowerCase();
 		s_assert.assertTrue(currentURL.contains(textToAssertInURL), "Expected URL should contain "+textToAssertInURL+" but actual on UI is "+currentURL);
-		sfCheckoutPage = sfAutoshipCartPage.clickOnPCPerksCheckoutButton();
+		sfCheckoutPage = sfAutoshipCartPage.clickOnCRPCheckoutButton();
 		sfCheckoutPage.clickSaveButton();
 		sfCheckoutPage.clickAddNewShippingAddressButton();
 		// Next button without filling Shipping address details
 		sfCheckoutPage.clickShippingDetailsNextbutton();
-		s_assert.assertTrue(sfCheckoutPage.isErrrorMsgsForAllMandatoryFieldsArePresent(),
+		s_assert.assertTrue(sfCheckoutPage.isErrrorMsgsForAllMandatoryFieldsOfShippingAddressArePresent(),
 				"Mandatory Fields error messages are not present as expected");
-		sfCheckoutPage.selectCheckboxToSaveShippingAddress();
 		sfCheckoutPage.enterNewShippingAddressDetailsAtCheckoutPage(firstName, lastName, addressLine1, addressLine2, city, state, postalCode, phoneNumber);
 		sfCheckoutPage.clickShippingDetailsNextbutton();
 		sfCheckoutPage.clickUseAsEnteredButtonOnPopUp();
@@ -376,4 +375,5 @@ public class AddAndDeleteShippingTest extends StoreFrontWebsiteBaseTest{
 				"New Shipping Address added do not get updated on shipping section. Expected lastName : " + lastName + ".Actual Name :  " + shippingAddressNameInAccountInfo);
 		s_assert.assertAll();
 	}
+
 }

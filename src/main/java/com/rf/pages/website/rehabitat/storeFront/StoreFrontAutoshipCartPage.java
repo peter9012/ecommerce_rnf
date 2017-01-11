@@ -20,6 +20,7 @@ public class StoreFrontAutoshipCartPage extends StoreFrontWebsiteBasePage{
 	private final By LEARN_MORE_ABOUT_PULSE_LOC = By.xpath("//a[contains(text(),'Learn more about Pulse')]");
 	private final By PULSE_POPUP_LOC = By.xpath("//h1[contains(text(),'Pulse Business Management')]");
 	private final By PC_PERKS_CHECKOUT_LOC = By.xpath("//a[contains(text(),'PC Perks Checkout')]");
+	private final By CRP_CHECKOUT_LOC = By.xpath("//a[contains(text(),'CRP Checkout')]");
 	private String socialMediaIconLoc = "//div[@class='container']//a[contains(@href,'%s')]";
 
 	/***
@@ -70,6 +71,18 @@ public class StoreFrontAutoshipCartPage extends StoreFrontWebsiteBasePage{
 	public StoreFrontCheckoutPage clickOnPCPerksCheckoutButton(){
 		driver.click(PC_PERKS_CHECKOUT_LOC);
 		logger.info("Clicked on pc perks checkout button");
+		return new StoreFrontCheckoutPage(driver);
+	}
+
+	/***
+	 * This method click on the CRP Checkout button
+	 * 
+	 * @param
+	 * @return StoreFrontCheckoutPage object
+	 */
+	public StoreFrontCheckoutPage clickOnCRPCheckoutButton(){
+		driver.click(CRP_CHECKOUT_LOC);
+		logger.info("Clicked on CRP checkout button");
 		return new StoreFrontCheckoutPage(driver);
 	}
 

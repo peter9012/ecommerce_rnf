@@ -13,7 +13,7 @@ public class ViewAreasOfSiteFromHomePageTest extends StoreFrontWebsiteBaseTest{
 	 * Mini cart, social media icon at footer
 	 *     
 	 */
-	@Test(enabled=false) //TODO Incomplete
+	@Test(enabled=true)
 	public void testHomePageNavigateAndViewAreaOfTheSite_4(){
 		String category_Unblemish = "UNBLEMISH";
 		String category_Featured = "FEATURED";
@@ -40,39 +40,46 @@ public class ViewAreasOfSiteFromHomePageTest extends StoreFrontWebsiteBaseTest{
 		s_assert.assertTrue(sfHomePage.isTopNavigationSublinkDisplayed(topNavigationLink,category_Redefine), category_Redefine +" category is not present under shop skincare as anonymous user");
 		//Verify Category landing pages
 		//Unblemish
-		sfHomePage.navigateToShopSkincareLink(category_Unblemish);
+		sfShopSkinCarePage = sfHomePage.navigateToShopSkincareLink(category_Unblemish);
 		currentURL = sfHomePage.getCurrentURL().toUpperCase();
 		s_assert.assertTrue(currentURL.contains(category_Unblemish), " as anonymous user expected URL should contain "+category_Unblemish+" but actual on UI is"+currentURL);
+		s_assert.assertTrue(sfShopSkinCarePage.isProductsDisplayedOnPage(), " as anonymous user for category "+category_Unblemish+" no products are present");
 		sfHomePage.clickRodanAndFieldsLogo();
 		//FEATURED
 		sfHomePage.navigateToShopSkincareLink(category_Featured);
 		currentURL = sfHomePage.getCurrentURL().toUpperCase();
 		s_assert.assertTrue(currentURL.contains(category_Featured), " as anonymous user expected URL should contain "+category_Featured+" but actual on UI is"+currentURL);
+		s_assert.assertTrue(sfShopSkinCarePage.isProductsDisplayedOnPage(), " as anonymous user for category "+category_Featured+" no products are present");
 		sfHomePage.clickRodanAndFieldsLogo();
 		//ESSENTIALS
 		sfHomePage.navigateToShopSkincareLink(category_Essentials);
 		currentURL = sfHomePage.getCurrentURL().toUpperCase();
 		s_assert.assertTrue(currentURL.contains(category_Essentials), " as anonymous user expected URL should contain "+category_Essentials+" but actual on UI is"+currentURL);
+		s_assert.assertTrue(sfShopSkinCarePage.isProductsDisplayedOnPage(), " as anonymous user for category "+category_Essentials+" no products are present");
 		sfHomePage.clickRodanAndFieldsLogo();
 		//REVERSE
 		sfHomePage.navigateToShopSkincareLink(category_Reverse);
 		currentURL = sfHomePage.getCurrentURL().toUpperCase();
 		s_assert.assertTrue(currentURL.contains(category_Reverse), " as anonymous user expected URL should contain "+category_Reverse+" but actual on UI is"+currentURL);
+		s_assert.assertTrue(sfShopSkinCarePage.isProductsDisplayedOnPage(), " as anonymous user for category "+category_Reverse+" no products are present");
 		sfHomePage.clickRodanAndFieldsLogo();
 		//ENHANCEMENT
 		sfHomePage.navigateToShopSkincareLink(category_Enhancement);
 		currentURL = sfHomePage.getCurrentURL().toUpperCase();
 		s_assert.assertTrue(currentURL.contains(category_Enhancement), " as anonymous user expected URL should contain "+category_Enhancement+" but actual on UI is"+currentURL);
+		s_assert.assertTrue(sfShopSkinCarePage.isProductsDisplayedOnPage(), " as anonymous user for category "+category_Enhancement+" no products are present");
 		sfHomePage.clickRodanAndFieldsLogo();
 		//SOOTHE
 		sfHomePage.navigateToShopSkincareLink(category_Soothe);
 		currentURL = sfHomePage.getCurrentURL().toUpperCase();
 		s_assert.assertTrue(currentURL.contains(category_Soothe), " as anonymous user expected URL should contain "+category_Soothe+" but actual on UI is"+currentURL);
+		s_assert.assertTrue(sfShopSkinCarePage.isProductsDisplayedOnPage(), " as anonymous user for category "+category_Soothe+" no products are present");
 		sfHomePage.clickRodanAndFieldsLogo();
 		//REDEFINE
 		sfHomePage.navigateToShopSkincareLink(category_Redefine);
 		currentURL = sfHomePage.getCurrentURL().toUpperCase();
 		s_assert.assertTrue(currentURL.contains(category_Redefine), " as anonymous user expected URL should contain "+category_Redefine+" but actual on UI is"+currentURL);
+		s_assert.assertTrue(sfShopSkinCarePage.isProductsDisplayedOnPage(), " as anonymous user for category "+category_Redefine+" no products are present");
 		sfHomePage.clickRodanAndFieldsLogo();
 		s_assert.assertTrue(sfHomePage.isMiniCartPresent(), "Mini cart icon is not present at homepage as anonymous user");
 		s_assert.assertTrue(sfHomePage.isToggleButtonPresent(), "Country toggle button is not present at homepage as anonymous user");
@@ -94,39 +101,46 @@ public class ViewAreasOfSiteFromHomePageTest extends StoreFrontWebsiteBaseTest{
 		s_assert.assertTrue(sfHomePage.isTopNavigationSublinkDisplayed(topNavigationLink,category_Redefine), category_Redefine +"category is not present under shop skincare as consultant user");
 		//Verify Category landing pages
 		//Unblemish
-		sfHomePage.navigateToShopSkincareLink(category_Unblemish);
+		sfShopSkinCarePage = sfHomePage.navigateToShopSkincareLink(category_Unblemish);
 		currentURL = sfHomePage.getCurrentURL().toUpperCase();
 		s_assert.assertTrue(currentURL.contains(category_Unblemish), " as consultant user expected URL should contain "+category_Unblemish+" but actual on UI is"+currentURL);
+		s_assert.assertTrue(sfShopSkinCarePage.isProductsDisplayedOnPage(), " as consultant user for category "+category_Unblemish+" no products are present");
 		sfHomePage.clickRodanAndFieldsLogo();
 		//FEATURED
 		sfHomePage.navigateToShopSkincareLink(category_Featured);
 		currentURL = sfHomePage.getCurrentURL().toUpperCase();
 		s_assert.assertTrue(currentURL.contains(category_Featured), " as consultant user expected URL should contain "+category_Featured+" but actual on UI is"+currentURL);
+		s_assert.assertTrue(sfShopSkinCarePage.isProductsDisplayedOnPage(), " as consultant user for category "+category_Featured+" no products are present");
 		sfHomePage.clickRodanAndFieldsLogo();
 		//ESSENTIALS
 		sfHomePage.navigateToShopSkincareLink(category_Essentials);
 		currentURL = sfHomePage.getCurrentURL().toUpperCase();
 		s_assert.assertTrue(currentURL.contains(category_Essentials), " as consultant user expected URL should contain "+category_Essentials+" but actual on UI is"+currentURL);
+		s_assert.assertTrue(sfShopSkinCarePage.isProductsDisplayedOnPage(), " as consultant user for category "+category_Essentials+" no products are present");
 		sfHomePage.clickRodanAndFieldsLogo();
 		//REVERSE
 		sfHomePage.navigateToShopSkincareLink(category_Reverse);
 		currentURL = sfHomePage.getCurrentURL().toUpperCase();
 		s_assert.assertTrue(currentURL.contains(category_Reverse), " as consultant user expected URL should contain "+category_Reverse+" but actual on UI is"+currentURL);
+		s_assert.assertTrue(sfShopSkinCarePage.isProductsDisplayedOnPage(), " as consultant user for category "+category_Reverse+" no products are present");
 		sfHomePage.clickRodanAndFieldsLogo();
 		//ENHANCEMENT
 		sfHomePage.navigateToShopSkincareLink(category_Enhancement);
 		currentURL = sfHomePage.getCurrentURL().toUpperCase();
 		s_assert.assertTrue(currentURL.contains(category_Enhancement), " as consultant user expected URL should contain "+category_Enhancement+" but actual on UI is"+currentURL);
+		s_assert.assertTrue(sfShopSkinCarePage.isProductsDisplayedOnPage(), " as consultant user for category "+category_Enhancement+" no products are present");
 		sfHomePage.clickRodanAndFieldsLogo();
 		//SOOTHE
 		sfHomePage.navigateToShopSkincareLink(category_Soothe);
 		currentURL = sfHomePage.getCurrentURL().toUpperCase();
 		s_assert.assertTrue(currentURL.contains(category_Soothe), " as consultant user expected URL should contain "+category_Soothe+" but actual on UI is"+currentURL);
+		s_assert.assertTrue(sfShopSkinCarePage.isProductsDisplayedOnPage(), " as consultant user for category "+category_Soothe+" no products are present");
 		sfHomePage.clickRodanAndFieldsLogo();
 		//REDEFINE
 		sfHomePage.navigateToShopSkincareLink(category_Redefine);
 		currentURL = sfHomePage.getCurrentURL().toUpperCase();
 		s_assert.assertTrue(currentURL.contains(category_Redefine), " as consultant user expected URL should contain "+category_Redefine+" but actual on UI is"+currentURL);
+		s_assert.assertTrue(sfShopSkinCarePage.isProductsDisplayedOnPage(), " as consultant user for category "+category_Redefine+" no products are present");
 		sfHomePage.clickRodanAndFieldsLogo();
 		s_assert.assertTrue(sfHomePage.isMiniCartPresent(), "Mini cart icon is not present at homepage as consultant user");
 		s_assert.assertTrue(sfHomePage.isToggleButtonPresent(), "Country toggle button is not present at homepage as consultant user");
@@ -150,39 +164,46 @@ public class ViewAreasOfSiteFromHomePageTest extends StoreFrontWebsiteBaseTest{
 		s_assert.assertTrue(sfHomePage.isTopNavigationSublinkDisplayed(topNavigationLink,category_Redefine), category_Redefine +"category is not present under shop skincare as rc user");
 		//Verify Category landing pages
 		//Unblemish
-		sfHomePage.navigateToShopSkincareLink(category_Unblemish);
+		sfShopSkinCarePage = sfHomePage.navigateToShopSkincareLink(category_Unblemish);
 		currentURL = sfHomePage.getCurrentURL().toUpperCase();
 		s_assert.assertTrue(currentURL.contains(category_Unblemish), " as rc user expected URL should contain "+category_Unblemish+" but actual on UI is"+currentURL);
+		s_assert.assertTrue(sfShopSkinCarePage.isProductsDisplayedOnPage(), " as rc user  for category "+category_Unblemish+" no products are present");
 		sfHomePage.clickRodanAndFieldsLogo();
 		//FEATURED
 		sfHomePage.navigateToShopSkincareLink(category_Featured);
 		currentURL = sfHomePage.getCurrentURL().toUpperCase();
 		s_assert.assertTrue(currentURL.contains(category_Featured), " as rc user expected URL should contain "+category_Featured+" but actual on UI is"+currentURL);
+		s_assert.assertTrue(sfShopSkinCarePage.isProductsDisplayedOnPage(), " as rc user  for category "+category_Featured+" no products are present");
 		sfHomePage.clickRodanAndFieldsLogo();
 		//ESSENTIALS
 		sfHomePage.navigateToShopSkincareLink(category_Essentials);
 		currentURL = sfHomePage.getCurrentURL().toUpperCase();
 		s_assert.assertTrue(currentURL.contains(category_Essentials), " as rc user expected URL should contain "+category_Essentials+" but actual on UI is"+currentURL);
+		s_assert.assertTrue(sfShopSkinCarePage.isProductsDisplayedOnPage(), " as rc user  for category "+category_Essentials+" no products are present");
 		sfHomePage.clickRodanAndFieldsLogo();
 		//REVERSE
 		sfHomePage.navigateToShopSkincareLink(category_Reverse);
 		currentURL = sfHomePage.getCurrentURL().toUpperCase();
 		s_assert.assertTrue(currentURL.contains(category_Reverse), " as rc user expected URL should contain "+category_Reverse+" but actual on UI is"+currentURL);
+		s_assert.assertTrue(sfShopSkinCarePage.isProductsDisplayedOnPage(), " as rc user  for category "+category_Reverse+" no products are present");
 		sfHomePage.clickRodanAndFieldsLogo();
 		//ENHANCEMENT
 		sfHomePage.navigateToShopSkincareLink(category_Enhancement);
 		currentURL = sfHomePage.getCurrentURL().toUpperCase();
 		s_assert.assertTrue(currentURL.contains(category_Enhancement), " as rc user expected URL should contain "+category_Enhancement+" but actual on UI is"+currentURL);
+		s_assert.assertTrue(sfShopSkinCarePage.isProductsDisplayedOnPage(), " as rc user  for category "+category_Enhancement+" no products are present");
 		sfHomePage.clickRodanAndFieldsLogo();
 		//SOOTHE
 		sfHomePage.navigateToShopSkincareLink(category_Soothe);
 		currentURL = sfHomePage.getCurrentURL().toUpperCase();
 		s_assert.assertTrue(currentURL.contains(category_Soothe), " as rc user expected URL should contain "+category_Soothe+" but actual on UI is"+currentURL);
+		s_assert.assertTrue(sfShopSkinCarePage.isProductsDisplayedOnPage(), " as rc user  for category "+category_Soothe+" no products are present");
 		sfHomePage.clickRodanAndFieldsLogo();
 		//REDEFINE
 		sfHomePage.navigateToShopSkincareLink(category_Redefine);
 		currentURL = sfHomePage.getCurrentURL().toUpperCase();
 		s_assert.assertTrue(currentURL.contains(category_Redefine), " as rc user expected URL should contain "+category_Redefine+" but actual on UI is"+currentURL);
+		s_assert.assertTrue(sfShopSkinCarePage.isProductsDisplayedOnPage(), " as rc user  for category "+category_Redefine+" no products are present");
 		sfHomePage.clickRodanAndFieldsLogo();
 		s_assert.assertTrue(sfHomePage.isMiniCartPresent(), "Mini cart icon is not present at homepage as rc user");
 		s_assert.assertTrue(sfHomePage.isToggleButtonPresent(), "Country toggle button is not present at homepage as rc user");
@@ -195,7 +216,6 @@ public class ViewAreasOfSiteFromHomePageTest extends StoreFrontWebsiteBaseTest{
 		s_assert.assertTrue(sfHomePage.isSocialMediaIconPresentAtFooter(socialIconGooglePlus), socialIconGooglePlus+" icon is not present at homepage as rc user");
 		s_assert.assertAll();
 	}
-
 	/***
 	 * qTest : TC-5 Consultant only products shouldn't be searched by anonymous user, Retail or PC user
 	 * Description : This test validates consultant only products shouldn't be searched by 

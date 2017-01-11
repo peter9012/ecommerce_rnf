@@ -36,12 +36,13 @@ public class StoreFrontOrdersPage extends StoreFrontWebsiteBasePage{
 	private final By EMAIL_ID_ERROR_MSG_LOC = By.id("email-error");
 	private final By PROBLEM_DD_ERROR_MSG_LOC = By.id("problemReasonCode-error");
 	private final By MESSAGE_TEXTBOX_ERROR_MSG_LOC = By.id("message-error");
-	private final By EMAIL_ON_REPORT_PROBLEM_PAGE_TEXTFIELD_LOC = By.xpath("//input[@name='email']");
+	private final By EMAIL_ON_REPORT_PROBLEM_PAGE_TEXTFIELD_LOC = By.xpath("//input[@data-msg-required='Please enter a valid email address']");
 	private final By SELECT_CHECKBOX_OF_PRODUCT_ERROR_MSG_LOC = By.xpath("//label[@id='orderEntries-error']");
 	private final By ORDER_HISTORY_SECTION_LOC = By.id("orderHistoryContentArea");
 	private final By RETURN_ORDER_AND_CREDITS_SECTION_LOC = By.xpath("//div[contains(text(),'RETURN ORDERS AND CREDITS')]");
 	private final By ACTIONS_DD_UNDER_RETURN_ORDER_SECTION_LOC = By.xpath("//div[contains(text(),'RETURN ORDERS AND CREDITS')]/../../descendant::div[contains(text(),'Actions')][1]");
 	private final By REPORT_PROBLEM_PAGE_HEADER_LOC = By.xpath("//div[contains(@class,'account-section-header')]");
+	private final By NEXT_BILL_SHIP_DATE_AUTOSHIP_ORDER_LOC = By.xpath("//div[contains(text(),'PENDING AUTOSHIP ORDERS')]/following::td[contains(text(),'Active')]/preceding-sibling::td[text()='Scheduled Date']/following-sibling::td[1]");
 
 	private String optionsLinkUnderReturnOrderSectionLoc = "//div[contains(text(),'RETURN ORDERS AND CREDITS')]/../../descendant::a[contains(text(),'%s')]";
 	private String headerTitleInOrderHistorySection = "//div[@id='orderHistoryContentArea']//th[contains(text(),'%s')]";
@@ -551,6 +552,25 @@ public class StoreFrontOrdersPage extends StoreFrontWebsiteBasePage{
 		driver.click(FIRST_ORDER_NUMBER_UNDER_ORDER_HISTORY_LOC);
 		logger.info("Order number is "+orderNumber);
 		return orderNumber;
+	}
+
+	/***
+	 * This method get next bill and ship date for autoship order on order detail page.
+	 * 
+	 * @param
+	 * @return String nextShipDate.
+	 * 
+	 */
+	public String getNextBillAndShipDateFromOrderDetailPage(){
+		String nextBillShipDate = null;
+		if(driver.isElementVisible(NEXT_BILL_SHIP_DATE_AUTOSHIP_ORDER_LOC)){
+			nextBillShipDate=driver.findElement(NEXT_BILL_SHIP_DATE_AUTOSHIP_ORDER_LOC).getText();
+			logger.info("Next bill and ship date "+nextBillShipDate);
+			return nextBillShipDate;
+		}else{
+			logger.info("No next bill and ship date present for user on order detail page");
+			return nextBillShipDate;
+		}
 	}
 
 

@@ -13,7 +13,7 @@ public class AccessContentPagesUnderAboutRFSectionTest extends StoreFrontWebsite
 	 * under About R+F section
 	 *     
 	 */
-	@Test
+	@Test(enabled=true)
 	public void testAccessAllLinksInAboutRFSection_37(){
 		String whoWeAreLink = "WHO WE ARE";
 		String executiveTeamLink = "EXECUTIVE TEAM";

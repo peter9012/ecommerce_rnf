@@ -130,7 +130,7 @@ public class StoreFrontWebsiteBasePage extends RFBasePage{
 	protected final By EXP_YEAR_LOC= By.xpath("//select[@id='ExpiryYear']//option[11]");
 	protected final By CVV_LOC= By.id("card_cvNumber");
 	protected final By IFRAME_LOC= By.id("IFrame");
-	private final By USE_MY_DELIVERY_ADDRESS_CHK_BOX_LOC= By.xpath("//label[contains(@class,'useDeliveryAddress')]");
+	private final By USE_MY_DELIVERY_ADDRESS_CHK_BOX_LOC= By.xpath("//div[@id='account-billing-container']//label[contains(@class,'useDeliveryAddress')]");
 	//private final By POLICIES_AND_PROCEDURES_CHK_BOX_LOC = By.xpath("//div[contains(@class,'checkout-steps')]/descendant::label[1]");
 	private final By POLICIES_AND_PROCEDURES_CHK_BOX_LOC = By.xpath("//input[@id='Terms3']");
 	private final By I_ACKNOWLEDGE_CHK_BOX_LOC = By.xpath("//div[contains(@class,'checkout-steps')]/descendant::label[2]");
@@ -188,6 +188,8 @@ public class StoreFrontWebsiteBasePage extends RFBasePage{
 	private final By SUBTOTAL_LOC = By.xpath("//td[text()='Subtotal:']/following::td[1]");
 	private final By ADD_MORE_ITEMS_BTN_PC_AUTOSHIP_CART_LOC = By.xpath("//div[@class='cart-container']/descendant::button[contains(text(),'Add More Items')]");
 	private final By PC_ONE_TIME_FEE_MSG_LOC = By.xpath("//span[contains(text(),'PC PERKS ONE-TIME ENROLLMENT FEE')]");
+	private final By PDF_VIEWER_LOC = By.xpath("//div[@id='viewer']");
+	private final By CRP_AUTOSHIP_CART_HEADER_LOC = By.xpath("//h3[contains(text(),'YOUR NEXT AUTOSHIP CART')]");
 
 	private String productNameInAllItemsInCartLoc = "//li[@class='item-list-item']//div[@class='item-info']//span[@class='item-name' and contains(text(),'%s')]";
 	private String pageHeaderLoc = "//div[contains(text(),'%s')]";
@@ -332,6 +334,14 @@ public class StoreFrontWebsiteBasePage extends RFBasePage{
 		String currentURL = driver.getCurrentUrl();
 		logger.info("Current URL is "+currentURL);
 		return currentURL;
+	}
+
+	/***
+	 * This methid verifies if the PDF viewer is visible or NOT
+	 * @return
+	 */
+	public boolean isPDFViewerDisplayed(){
+		return driver.isElementVisible(PDF_VIEWER_LOC);
 	}
 
 	/***
@@ -1253,6 +1263,7 @@ public class StoreFrontWebsiteBasePage extends RFBasePage{
 	public void clickUseAsEnteredButtonOnPopUp(){
 		if(driver.isElementVisible(USE_AS_ENTERED_BUTTON_LOC)==true){
 			driver.click(USE_AS_ENTERED_BUTTON_LOC);
+			driver.pauseExecutionFor(10000); //UI is slow, will be removed
 			logger.info("'Used as entered' button clicked");
 		}
 	}
@@ -1336,18 +1347,29 @@ public class StoreFrontWebsiteBasePage extends RFBasePage{
 	}
 
 	/***
-	 * This method click edit CRP link from welcome dropdown.
+	 * This method click PC Perks Edit link from welcome dropdown.
 	 * 
 	 * @param
-	 * @return store front base page object
+	 * @return StoreFrontAutoshipCartPage object
 	 * 
 	 */
-	public StoreFrontWebsiteBasePage navigateToEditCRPPage(){
+	public StoreFrontAutoshipCartPage navigateToEditCRPPage(){
 		driver.click(WELCOME_DD_EDIT_CRP_LOC);
 		logger.info("Edit CRP clicked from welcome dropdown");
 		driver.waitForLoadingImageToDisappear();
 		driver.waitForPageLoad();
-		return this;
+		return new StoreFrontAutoshipCartPage(driver);
+	}
+
+	/***
+	 * This method validates the header on CRP Autoship checkokut page
+	 * 
+	 * @param 
+	 * @return boolean
+	 * 
+	 */
+	public boolean isCRPAutoshipHeaderPresentOnCartPage(){
+		return driver.isElementVisible(CRP_AUTOSHIP_CART_HEADER_LOC);
 	}
 
 	/***
@@ -2544,6 +2566,33 @@ public class StoreFrontWebsiteBasePage extends RFBasePage{
 		return driver.isElementVisible(PC_ONE_TIME_FEE_MSG_LOC);
 	}
 
+	/***
+	 * This method click the next button at shipping details page
+	 * 
+	 * @param
+	 * @return store front Base page object
+	 * 
+	 */
+	public StoreFrontWebsiteBasePage clickNextbuttonOfShippingDetails(){
+		driver.waitForLoadingImageToDisappear();
+		driver.click(SHIPPING_NEXT_BUTTON_LOC);
+		logger.info("Next button clicked of shipping details");
+		return this;
+	}
 
+	/***
+	 * This method enter the user credit card
+	 * 
+	 * @param card number
+	 * @return store front Base page object
+	 * 
+	 */
+	public StoreFrontWebsiteBasePage enterUserCreditCardNumber(String cardNumber){
+		driver.clickByJS(RFWebsiteDriver.driver, driver.findElement(CARD_TYPE_DD_LOC));
+		driver.type(CARD_NUMBER_LOC, cardNumber+"\t");
+		logger.info("Entered card number as"+cardNumber);
+		driver.pauseExecutionFor(2000);
+		return this;
+	}
 
 }

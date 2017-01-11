@@ -149,7 +149,7 @@ public class CategoryLandingPageTest extends StoreFrontWebsiteBaseTest{
 	 * Description : //TODO
 	 *     
 	 */
-	@Test
+	@Test(enabled=true)
 	public void testConsultantOnlyCategoryAppearsForTheConsultantUser_90(){
 		sfHomePage.loginToStoreFront(TestConstants.PC_EMAIL, password);
 		sfHomePage.mouseHoverOn(TestConstants.SHOP_SKINCARE);

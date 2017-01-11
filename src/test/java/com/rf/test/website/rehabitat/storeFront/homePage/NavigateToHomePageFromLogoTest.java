@@ -20,7 +20,7 @@ public class NavigateToHomePageFromLogoTest extends StoreFrontWebsiteBaseTest{
 		s_assert.assertTrue(currentURL.contains("shopskincare"), "Expected URL should contain shopskincare but actual on UI is"+currentURL);
 		sfShopSkinCarePage.clickRodanAndFieldsLogo();
 		currentURL = sfHomePage.getCurrentURL().toLowerCase();
-		s_assert.assertTrue(sfHomePage.getCurrentURL().contains("/US")&& sfHomePage.isConnectBtnPresentOnHomePage(), "Not redirected to US home page");
+		s_assert.assertTrue(sfHomePage.getCurrentURL().contains("/US")&& sfHomePage.isHomePageBannerDisplayed(), "Not redirected to US home page");
 //		sfShopSkinCarePage = sfHomePage.clickAllProducts();
 //		sfProductDetailPage= sfShopSkinCarePage.clickNameOfFirstProduct();
 //		s_assert.assertTrue(sfProductDetailPage.isAddToCartButtonIsPresentAtProductDetailsPage(),"User is not redirecting to product details page after clicking on product name");

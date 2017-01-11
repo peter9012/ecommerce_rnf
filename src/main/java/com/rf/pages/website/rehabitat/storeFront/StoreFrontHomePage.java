@@ -73,6 +73,8 @@ public class StoreFrontHomePage extends StoreFrontWebsiteBasePage{
 	private final By CLOSE_ICON_SEARCH_TEXT_BOX = By.xpath("//div[@class='yCmsComponent']//span[contains(@class,'icon-close')]");
 	private final By SEARCH_RESULT_PRODUCTS_LOC = By.xpath("//div[@class='product__listing product__grid']//div[@class='product-item']//a[@class='name']");
 	private final By TOTAL_KITS_LOC = By.xpath("//div[contains(@class,'enrollmentKit-wrapper')]/div");
+	private final By SHOP_BY_PRICE_FILTER_OPTION_50_TO_199$_LOC = By.xpath("//input[@id='$50-$199.99ID']/..");
+	private final By SHOP_BY_PRICE_FILTER_OPTION_50_TO_199$_AFTER_CHECKED_LOC = By.xpath("//input[@id='$50-$199.99ID'][@checked = 'checked']");
 	
 	private String viewDetailsLinkLoc = "//div[contains(@class,'enrollmentKit-wrapper')]/descendant::a[contains(text(),'View Details')][%s]";
 	private String expandedKitDescriptionLoc = "//div[contains(@class,'enrollmentKit-wrapper')]/div[%s]//div[@class='detailed-description']";
@@ -603,9 +605,6 @@ public class StoreFrontHomePage extends StoreFrontWebsiteBasePage{
 		return false;
 	}
 
-	private final By SHOP_BY_PRICE_FILTER_OPTION_50_TO_199$_LOC = By.xpath("//input[@id='$50-$199.99ID']/..");
-	private final By SHOP_BY_PRICE_FILTER_OPTION_50_TO_199$_AFTER_CHECKED_LOC = By.xpath("//input[@id='$50-$199.99ID'][@checked = 'checked']");
-
 	/***
 	 * This method select the second filter option under shop by price filter
 	 * 
@@ -713,12 +712,23 @@ public class StoreFrontHomePage extends StoreFrontWebsiteBasePage{
 		return this;
 	}
 
+//	/***
+//	 * This method verifies whether the Connect btn present on the home page or not
+//	 * @return boolean
+//	 */
+//	public boolean isConnectBtnPresentOnHomePage(){
+//		return driver.isElementVisible(CONNECT_BTN_LOC);		
+//	}
+	
 	/***
-	 * This method verifies whether the Connect btn present on the home page or not
-	 * @return boolean
+	 * This method verifies whether or NOT
+	 * Home page banner displayed or not
+	 * 
+	 * This method can  be used to verify that user is on Home Page
+	 * @return
 	 */
-	public boolean isConnectBtnPresentOnHomePage(){
-		return driver.isElementVisible(CONNECT_BTN_LOC);		
+	public boolean isHomePageBannerDisplayed(){
+		return driver.isElementVisible(By.xpath("//div[@class='hpage-banner-box']"));
 	}
 
 	/***

@@ -15,7 +15,7 @@ public class AddProductsViaPLPPDPAndQuickViewOptionTest extends StoreFrontWebsit
 	 * category listing page for SOOTHE Category.
 	 *     
 	 */
-	@Test(enabled=false)
+	@Test(enabled=true)
 	public void testAddProductToCartFromPLP_113(){
 		String category_soothe = "SOOTHE";
 		String productName = null;
@@ -42,7 +42,7 @@ public class AddProductsViaPLPPDPAndQuickViewOptionTest extends StoreFrontWebsit
 	 * PDP Page for REDEFINE Category Product
 	 *     
 	 */
-	@Test(enabled=false)
+	@Test(enabled=true)
 	public void testAddProductToCartFromPDP_114(){
 		String category_redefine = "REDEFINE";
 		String productName = null;
@@ -72,7 +72,7 @@ public class AddProductsViaPLPPDPAndQuickViewOptionTest extends StoreFrontWebsit
 	  * Description : This test validates the flow of adding product to PC Perks autoship for PC User
 	  *     
 	  */
-	 @Test(enabled=false)
+	 @Test(enabled=true)
 	 public void testAddProductToPCPerksAutoshipCartFromQuickView_117(){
 	  String selectedProductName = null;
 	  String textToAssertInURL = "autoship/cart";

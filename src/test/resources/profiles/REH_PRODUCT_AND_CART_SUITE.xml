@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<suite name="storeFrontProductAndCartDetailsSuite">
+	<listeners>
+		<listener class-name="org.uncommons.reportng.HTMLReporter" />
+		<listener class-name="org.uncommons.reportng.JUnitXMLReporter" />
+		<listener class-name="com.rf.core.listeners.RetryListener" />
+		<listener class-name="com.rf.core.listeners.TestListner" />
+	</listeners>
+	<test name="storeFrontProductAndCartDetailstest">
+		<classes>
+			<class
+				name="com.rf.test.website.rehabitat.storeFront.ProductsAndCartDetailsTest">
+			</class>
+		</classes>
+	</test>
+</suite>
+
+
+					

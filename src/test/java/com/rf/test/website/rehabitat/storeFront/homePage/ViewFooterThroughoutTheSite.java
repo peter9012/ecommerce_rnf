@@ -13,7 +13,7 @@ public class ViewFooterThroughoutTheSite extends StoreFrontWebsiteBaseTest{
 	 * 
 	 *     
 	 */
-	@Test(enabled=false)
+	@Test(enabled=true)
 	public void testVerifyFooterSectionThroughAllPages_38(){
 		String currentURL = null;
 		String currentWindowID =null;

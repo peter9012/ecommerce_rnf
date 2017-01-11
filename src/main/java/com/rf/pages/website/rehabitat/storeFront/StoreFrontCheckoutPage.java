@@ -1,5 +1,6 @@
 package com.rf.pages.website.rehabitat.storeFront;
 
+import org.openqa.selenium.Alert;
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebElement;
 
@@ -46,6 +47,13 @@ public class StoreFrontCheckoutPage extends StoreFrontWebsiteBasePage{
 	private final By STATE_DD_FOR_BILLING_ADDRESS_FOR_NEW_PROFILE_LOC=By.xpath("//div[contains(@id,'billingAddressForm')]//select[@id='address.region']");
 	private final By POSTAL_CODE_FOR_BILLING_ADDRESS_FOR_NEW_PROFILE_LOC=By.xpath("//div[contains(@id,'billingAddressForm')]//input[@id='address.postcode']");
 	private final By PHONE_NUMBER_FOR_BILLING_ADDRESS_FOR_NEW_PROFILE_LOC=By.xpath("//div[contains(@id,'billingAddressForm')]//input[@id='address.phone']");
+	private final By FIRST_LAST_NAME_FOR_BILLING_ADDRESS_LOC=By.xpath("//div[@id='account-billing-container']//input[@id='address.firstName']");
+	private final By ADDRESS_LINE1_FOR_BILLING_ADDRESS_LOC=By.xpath("//div[@id='account-billing-container']//input[@id='address.line1']");
+	private final By ADDRESS_LINE_2_FOR_BILLING_ADDRESS_LOC=By.xpath("//div[@id='account-billing-container']//input[@id='address.line2']");
+	private final By CITY_FOR_BILLING_ADDRESS_LOC=By.xpath("//div[@id='account-billing-container']//input[@id='address.townCity']");
+	private final By STATE_DD_FOR_BILLING_ADDRESS_LOC=By.xpath("//div[@id='account-billing-container']//select[@id='address.region']");
+	private final By POSTAL_CODE_FOR_BILLING_ADDRESS_LOC=By.xpath("//div[@id='account-billing-container']//input[@id='address.postcode']");
+	private final By PHONE_NUMBER_FOR_BILLING_ADDRESS_LOC=By.xpath("//div[@id='account-billing-container']//input[@id='address.phone']");
 
 	private final By ADDRESS_NAME_ERROR_MGS_LOC =  By.xpath("//span[@id='billTo_firstName.errors' and contains(text(),'Name must contain first name and last name with no special characters.')]");
 	private final By SHIPPING_LINK_AT_CHECKOUT_PAGE_LOC = By.xpath("//div[contains(text(),'Shipping')]/ancestor::a[1]");
@@ -68,7 +76,6 @@ public class StoreFrontCheckoutPage extends StoreFrontWebsiteBasePage{
 	private final By NEXT_BTN_AFTER_BILLING_LOC = By.id("reviewOrder");
 	private final By POPUP_FOR_TERMS_AND_CONDITIONS_LOC = By.id("city_popup");
 	private final By EDIT_LINK_OF_SHIPPING_PROFILE_LOC=By.xpath("//span[@id='defaultShippingAddress']/a");
-	private final By ADD_NEW_BILLING_PROFILE_BUTTON_LOC = By.xpath("//button[text()='Add New Billing Profile']");
 	private final By CONSULTANT_NAME_ID_FIELD_LOC = By.id("sponserparam");
 	private final By CONSULTANT_SEARCH_BTN_LOC = By.id("search-sponsor-button");
 	private final By REQUEST_A_CONSULTANT_LOC = By.xpath("//a[contains(text(),'Request a Consultant')]");
@@ -91,12 +98,13 @@ public class StoreFrontCheckoutPage extends StoreFrontWebsiteBasePage{
 	private final By STATE_DD_FOR_BILLING_ADDRESS_AT_CHECKOUT_PAGE_LOC=By.xpath("//div[@id='checkoutEditBillingAddressForm']//select[@id='address.region']");
 	private final By POSTAL_CODE_FOR_BILLING_ADDRESS_AT_CHECKOUT_PAGE_LOC=By.xpath("//div[@id='checkoutEditBillingAddressForm']//input[@id='address.postcode']");
 	private final By PHONE_NUMBER_FOR_BILLING_ADDRESS_AT_CHECKOUT_PAGE_LOC=By.xpath("//div[@id='checkoutEditBillingAddressForm']//input[@id='address.phone']");
-	private final By EDIT_LINK_OF_BILLING_ADDRESS_LOC=By.xpath("//div[text()='Billing Info']/following::a[1]");
+	private final By EDIT_LINK_OF_BILLING_ADDRESS_LOC=By.xpath("//div[contains(text(),'Billing Info')]/following::a[1]");
 	private final By CREDIT_CARD_DETAILS_LOC = By.xpath("//div[@id='default-payment-method']//span[@class='cardInfo']");
 	private final By INVALID_EXP_DATE_ERROR_MSG_LOC = By.id("valmsg-c-exyr");
-	private final By CVV_ERROR_MSG_LOC = By.id("valmsg-c-cvv");
+	private final By CVV_ERROR_MSG_LOC = By.id("card_cvNumber-error");
 	private final By CREDIT_CARD_ERROR_MSG_LOC = By.id("valmsg-c-cn");
 	private final By SAVE_PAYMENT_BUTTON_LOC = By.id("updateBillingAddress");
+	private final By ADD_NEW_BILLING_PROFILE_BUTTON_LOC = By.xpath("//button[contains(text(),'Add New Billing Profile')]");
 	private final By FIRST_LAST_NAME_FOR_EDIT_BILLING_ADDRESS_LOC=By.xpath("//div[@id='checkoutEditBillingAddressForm']//input[@id='address.firstName']");
 	private final By ADDRESS_LINE1_FOR_EDIT_BILLING_ADDRESS_LOC=By.xpath("//div[@id='checkoutEditBillingAddressForm']//input[@id='address.line1']");
 	private final By ADDRESS_LINE_2_FOR_EDIT_BILLING_ADDRESS_LOC=By.xpath("//div[@id='checkoutEditBillingAddressForm']//input[@id='address.line2']");
@@ -119,7 +127,6 @@ public class StoreFrontCheckoutPage extends StoreFrontWebsiteBasePage{
 	private final By POSTAL_CODE_FOR_NEW_SHIPPING_ADDRESS_LOC = By.xpath("//form[@id='addressForm']//input[@id='address.postcode']");
 	private final By PHONE_NUMBER_FOR_NEW_SHIPPING_ADDRESS_LOC = By.xpath("//form[@id='addressForm']//input[@id='address.phone']");
 	private final By SAVE_SHIPPING_ADDRESS_CHECKBOX_LOC = By.xpath("//label[contains(@for,'saveAddressInMyAddressBook')]");
-	private final By SHIPPING_PROFILE_IN_SHIPPING_SECTION_LOC = By.xpath("//div[text()='Shipping']/ancestor::h2/following-sibling::div[contains(@class,'shippingAddWrap')]//div[@class='checkout-shipping-items']/dl[1]/dd[1]");
 	private final By SPONSOR_INFO_LOC = By.xpath("//div[@id='sponsorInfo']/span");
 	private final By NOT_YOUR_CONSULTANT_LINK_LOC = By.id("not-your-sponsor");
 	private final By FIRST_NAME_ERROR_FIELD_LOC = By.id("first-name-error");
@@ -127,7 +134,18 @@ public class StoreFrontCheckoutPage extends StoreFrontWebsiteBasePage{
 	private final By EMAIL_ERROR_FIELD_LOC = By.id("email-account-error");
 	private final By PASSWORD_ERROR_FIELD_LOC = By.id("password-error");
 	private final By CONFIRM_PASSWORD_ERROR_FIELD_LOC = By.id("the-password-again-error");
+	private final By SHIPPING_PROFILE_IN_SHIPPING_SECTION_LOC = By.xpath("//div[contains(text(),'Shipping')]/ancestor::h2/following-sibling::div/descendant::dd[1]");
+	private final By USE_MY_DELIVERY_ADDRESS_CHK_BOX_FOR_EXISTING_PROFILE_LOC= By.xpath("//label[contains(@class,'useDeliveryAddress') and contains(@class,'editUseAddressLabel')]");
+	private final By CARD_TYPE_DD_AFTER_EDIT_PROFILE_LOC = By.xpath("//div[@id='account-billing-container']//select[@id='card_cardType']");
+	private final By CARD_NUMBER_AFTER_EDIT_PROFILE_LOC= By.xpath("//div[@id='account-billing-container']//input[@id='card_accountNumber']");
+	private final By NAME_ON_CARD_AFTER_EDIT_PROFILE_LOC= By.xpath("//div[@id='account-billing-container']//input[@id='card_nameOnCard']");
+	private final By EXP_MONTH_DD_AFTER_EDIT_PROFILE_LOC= By.xpath("//div[@id='account-billing-container']//select[@id='ExpiryMonth']");
+	private final By EXP_MONTH_AFTER_EDIT_PROFILE_LOC= By.xpath("//div[@id='account-billing-container']//select[@id='ExpiryMonth']//option[11]");
+	private final By EXP_YEAR_DD_AFTER_EDIT_PROFILE_LOC= By.xpath("//div[@id='account-billing-container']//select[@id='ExpiryYear']");
+	private final By EXP_YEAR_AFTER_EDIT_PROFILE_LOC= By.xpath("//div[@id='account-billing-container']//select[@id='ExpiryYear']//option[11]");
+	private final By CVV_AFTER_EDIT_PROFILE_LOC= By.xpath("//div[@id='account-billing-container']//input[@id='card_cvNumber']");
 
+	private String mandatoryFieldErrorMsgOfAddressForNewShippingProfileLoc = "//form[@id='addressForm']//label[contains(@id,'%s-error') and contains(text(),'This field is required.')]";
 	private String stateForNewShippingAddressDetailsLoc = "//form[@id='addressForm']//select[@id='address.region']//option[text()='%s']";
 	private String mandatoryFieldErrorMsgForNewAddressLoc  = "//label[contains(@id,'%s-error') and contains(text(),'This field is required.')]";
 	private String stateForShippingDetailsForNewProfileLoc = "//div[contains(@id,'illingAddressForm')]//select[@id='address.region']//option[text()='%s']";
@@ -144,6 +162,8 @@ public class StoreFrontCheckoutPage extends StoreFrontWebsiteBasePage{
 	private String stateForShippingDetailsAtCheckoutPageLoc = "//form[@id='shippingAddressForm']//select[@id='address.region']//option[text()='%s']";
 	private String shippingMethodLoc = "//label[contains(text(),'%s')]";
 	private String billingAddressFieldsErrorMessageLoc = "//span[contains(text(),'%s')]";
+	private String stateForBillingAddress = "//div[@id='account-billing-container']//select[@id='address.region']//option[text()='%s']";
+	private String cardTypeAfterEditProfileLoc= "//div[@id='account-billing-container']//select[@id='card_cardType']//option[text()='%s']";
 
 	private String[] cardDetails;
 
@@ -501,8 +521,10 @@ public class StoreFrontCheckoutPage extends StoreFrontWebsiteBasePage{
 	 */
 	public StoreFrontCheckoutPage clickAddNewBillingProfileButton(){
 		driver.waitForElementToBeClickable(ADD_NEW_BILLING_PROFILE_BUTTON_LOC, 20);
-		driver.click(ADD_NEW_BILLING_PROFILE_BUTTON_LOC);
+		driver.clickByJS(RFWebsiteDriver.driver, driver.findElement(ADD_NEW_BILLING_PROFILE_BUTTON_LOC));
+		//driver.click(ADD_NEW_BILLING_PROFILE_BUTTON_LOC);
 		logger.info("Add New Billing Profile Button clicked");
+		driver.pauseExecutionFor(2000);
 		return this;
 	}
 
@@ -818,12 +840,8 @@ public class StoreFrontCheckoutPage extends StoreFrontWebsiteBasePage{
 	 * 
 	 */
 	public String getCVVErrorMessage(){
-		driver.switchTo().frame(driver.findElement(IFRAME_LOC));
-		logger.info("Switched into iframe");
 		String ErrorMsg = driver.findElement(CVV_ERROR_MSG_LOC).getText();
 		logger.info("CVV error message is "+ErrorMsg);
-		driver.switchTo().defaultContent();
-		logger.info("Switched to default content");
 		return ErrorMsg;
 	}
 
@@ -835,12 +853,8 @@ public class StoreFrontCheckoutPage extends StoreFrontWebsiteBasePage{
 	 * 
 	 */
 	public String getExpDateErrorMessage(){
-		driver.switchTo().frame(driver.findElement(IFRAME_LOC));
-		logger.info("Switched into iframe");
 		String ErrorMsg = driver.findElement(INVALID_EXP_DATE_ERROR_MSG_LOC).getText();
 		logger.info("Exp date error message is "+ErrorMsg);
-		driver.switchTo().defaultContent();
-		logger.info("Switched to default content");
 		return ErrorMsg;
 	}
 
@@ -852,16 +866,12 @@ public class StoreFrontCheckoutPage extends StoreFrontWebsiteBasePage{
 	 * 
 	 */
 	public boolean isCardDetailsFieldsEnabled(){
-		driver.switchTo().frame(driver.findElement(IFRAME_LOC));
-		logger.info("Switched into iframe");
 		boolean flag = driver.findElement(NAME_ON_CARD_LOC).isEnabled() &&
 				driver.findElement(CARD_NUMBER_LOC).isEnabled() &&
 				driver.findElement(CARD_TYPE_DD_LOC).isEnabled() &&
 				driver.findElement(EXP_MONTH_DD_LOC).isEnabled() &&
 				driver.findElement(EXP_YEAR_DD_LOC).isEnabled() &&
 				driver.findElement(CVV_LOC).isEnabled();
-		driver.switchTo().defaultContent();
-		logger.info("Switched to default content");
 		return flag;
 	}
 
@@ -1424,4 +1434,134 @@ public class StoreFrontCheckoutPage extends StoreFrontWebsiteBasePage{
 		return errorMessage;
 	}
 
+	/***
+	 * This method validates the presence of mandatory field msg for Shipping address details
+	 * 
+	 * @param String field
+	 * @return boolean 
+	 * 
+	 */
+	private boolean isMandatoryMsgPresentForField(String field){
+		boolean isMsgPresent = driver.isElementPresent(By.xpath(String.format(mandatoryFieldErrorMsgOfAddressForNewShippingProfileLoc, field)));
+		logger.info("Is Expected Mandatory field msg is present for " + field + " : " + isMsgPresent);
+		return isMsgPresent;
+	}
+
+	/***
+	 * This method validates the presence of mandatory field msgs for billing profile
+	 * 
+	 * @param
+	 * @return boolean
+	 * 
+	 */
+	public boolean isErrrorMsgsForAllMandatoryFieldsOfShippingAddressArePresent(){
+		return isMandatoryMsgPresentForField("firstName") &&
+				isMandatoryMsgPresentForField("line1") &&
+				isMandatoryMsgPresentForField("townCity") &&
+				isMandatoryMsgPresentForField("region") &&
+				isMandatoryMsgPresentForField("postcode") &&
+				isMandatoryMsgPresentForField("phone");
+	}
+
+	/***
+	 * This method check the checkbox of Use my delivery address check box for existing billing profile
+	 * 
+	 * @param
+	 * @return store front checkout page object
+	 * 
+	 */
+	public StoreFrontCheckoutPage checkUseMyDeliveryAddressChkBoxForExistingBillingProfile(){
+		driver.click(USE_MY_DELIVERY_ADDRESS_CHK_BOX_FOR_EXISTING_PROFILE_LOC);
+		logger.info("Use My delivery address check box checked");
+		driver.pauseExecutionFor(3000);
+		return this;
+	}
+
+	/***
+	 * This method enter the billing address details after click on add a new billing profile
+	 * 
+	 * @param First name,Last name, address line1, city, state, postal code, phone number
+	 * @return store front Checkout page object
+	 * 
+	 */
+	public StoreFrontCheckoutPage enterBillingAddressDetails(String firstName, String lastName, String addressLine1, String addressLine2, String city, String state, String postal, String phoneNumber){
+		String completeName = firstName+" "+lastName;
+		driver.type(FIRST_LAST_NAME_FOR_BILLING_ADDRESS_LOC, completeName);
+		logger.info("Entered complete name as "+completeName);
+		driver.type(ADDRESS_LINE1_FOR_BILLING_ADDRESS_LOC, addressLine1);
+		logger.info("Entered address line 1 as "+addressLine1);
+		driver.type(ADDRESS_LINE_2_FOR_BILLING_ADDRESS_LOC, addressLine2);
+		logger.info("Entered address line 2 as "+addressLine2);
+		driver.type(CITY_FOR_BILLING_ADDRESS_LOC, city);
+		logger.info("Entered city as "+city);
+		driver.click(STATE_DD_FOR_BILLING_ADDRESS_LOC);
+		logger.info("State dropdown clicked");
+		driver.click(By.xpath(String.format(stateForBillingAddress, state)));
+		logger.info("State selected as "+state);
+		driver.type(POSTAL_CODE_FOR_BILLING_ADDRESS_LOC, postal);
+		logger.info("Entered postal code as "+postal);
+		driver.type(PHONE_NUMBER_FOR_BILLING_ADDRESS_LOC, phoneNumber);
+		logger.info("Entered Phone number  as "+phoneNumber);
+		return this;
+	}
+
+	/***
+	 * This method enter the user billing details
+	 * 
+	 * @param Card type, card number, card name, CVV
+	 * @return store front Home page object
+	 * 
+	 */
+	public StoreFrontWebsiteBasePage enterUserBillingDetailsAfterEditTheProfile(String cardType, String cardNumber, String nameOnCard,String CVV){
+		driver.clickByJS(RFWebsiteDriver.driver, driver.findElement(CARD_TYPE_DD_AFTER_EDIT_PROFILE_LOC));
+		logger.info("Card type dropdown clicked");
+		driver.click(By.xpath(String.format(cardTypeAfterEditProfileLoc, cardType)));
+		logger.info("Card type selected as "+cardType);
+		driver.type(CARD_NUMBER_AFTER_EDIT_PROFILE_LOC, cardNumber);
+		logger.info("Entered card number as"+cardNumber);
+		driver.type(NAME_ON_CARD_AFTER_EDIT_PROFILE_LOC, nameOnCard);
+		logger.info("Entered card name as"+nameOnCard);
+		driver.clickByJS(RFWebsiteDriver.driver, driver.findElement(EXP_MONTH_DD_AFTER_EDIT_PROFILE_LOC));
+		//driver.click(EXP_MONTH_DD_AFTER_EDIT_PROFILE_LOC);
+		logger.info("Exp month dropdown clicked");
+		driver.click(EXP_MONTH_AFTER_EDIT_PROFILE_LOC);
+		logger.info("Exp month selected");
+		driver.clickByJS(RFWebsiteDriver.driver, driver.findElement(EXP_YEAR_DD_AFTER_EDIT_PROFILE_LOC));
+		//driver.click(EXP_YEAR_DD_AFTER_EDIT_PROFILE_LOC);
+		logger.info("Exp year dropdown clicked");
+		driver.click(EXP_YEAR_AFTER_EDIT_PROFILE_LOC);
+		logger.info("Exp year selected");
+		driver.type(CVV_AFTER_EDIT_PROFILE_LOC, CVV);
+		logger.info("Entered CVV as"+CVV);
+		return this;
+	}
+
+	/***
+	 * This method get the error message of alert 
+	 * 
+	 * @param 
+	 * @return error message
+	 * 
+	 */
+	public String getErrorMessageOfAlert(){
+		Alert alert = driver.switchTo().alert();
+		String errorMessage = alert.getText();
+		//String errorMessage = driver.getText(EMAIL_ERROR_FIELD_LOC);
+		logger.info("error message of alert : "+errorMessage);
+		return errorMessage;
+	}
+
+	/***
+	 * This method click on 'OK' button on the alert popup 
+	 * 
+	 * @param 
+	 * @return error message
+	 * 
+	 */
+	public StoreFrontCheckoutPage acceptAlertPopup(){
+		Alert alert = driver.switchTo().alert();
+		alert.accept();
+		logger.info("Alert popup accepted");
+		return this;
+	}
 }

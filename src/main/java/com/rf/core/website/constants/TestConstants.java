@@ -45,6 +45,7 @@ public class TestConstants {
 	//Consultant user details
 	public static final String CONSULTANT_USERNAME = "AutoCons20170110140338@mailinator.com";
 	public static final String CONSULTANT_EMAIL = "AutoCons20170110140338@mailinator.com";
+	public static final String CONSULTANT_WITH_CRP_USERNAME = "AutoCons20170111165549@mailinator.com";
 	public static final String CONSULTANT_ACCOUNT_ID = "";
 	public static final String CONSULTANT_ACCOUNT_NUMBER = "";
 	public static final String FIRST_NAME = "AutoCons";
@@ -97,7 +98,8 @@ public class TestConstants {
 	//PC User Details
 	public static final String PC_USERNAME = "autopc121213@xyz.com";
 	public static final String PC_EMAIL = "autopc121213@xyz.com";
-
+	public static final String PC_EMAIL_HAVING_AUTOSHIP = "AutoPC20170111130257@mailinator.com";
+	
 	//RC User Details
 	public static final String RC_USERNAME = "autorc20170106101026@yopmail.com";
 	public static final String RC_EMAIL = "autorc20170106101026@yopmail.com";
@@ -141,5 +143,5 @@ public class TestConstants {
 	public static final String PHONE_NUMBER_MANDATORY_MSG = "Please specify a valid phone number.";
 
 	public static final String MORE_THAN_200_CHARS = "This is the test message This is the test message This is the test message This is the test message "+
-													 "This is the test message This is the test message This is the test message This is the test message T";
+			"This is the test message This is the test message This is the test message This is the test message T";
 }

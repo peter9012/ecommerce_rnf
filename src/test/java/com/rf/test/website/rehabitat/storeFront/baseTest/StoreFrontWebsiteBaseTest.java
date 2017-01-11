@@ -4,6 +4,7 @@ import java.net.MalformedURLException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
@@ -91,11 +92,26 @@ public class StoreFrontWebsiteBaseTest extends RFBaseTest {
 		setStoreFrontPassword(driver.getStoreFrontUserPassword());
 		setCountry();
 		setCountryId();
+		checkAndCloseMoreThanOneWindows();
 		navigateToStoreFrontBaseURL();
 		if(sfHomePage.isWelcomeUserElementDisplayed()==true){
 			sfHomePage.clickWelcomeDropdown();
 			sfHomePage.logout();
 		}
+	}
+
+	public void checkAndCloseMoreThanOneWindows(){
+		Set<String> allWindows = driver.getWindowHandles();
+		String currentWin = driver.getWindowHandle();
+		for(String win:allWindows){
+			if(win.equals(currentWin)==false && allWindows.size()>1){
+				driver.switchTo().window(win);
+				driver.close();
+				driver.switchTo().window(currentWin);
+				allWindows = driver.getWindowHandles();							
+			}	
+		}
+
 	}
 
 	public void setCountry(){

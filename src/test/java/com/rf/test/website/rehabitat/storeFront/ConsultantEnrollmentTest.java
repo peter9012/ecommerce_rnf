@@ -124,7 +124,7 @@ public class ConsultantEnrollmentTest extends StoreFrontWebsiteBaseTest{
 		sfHomePage.clickSubmitBtnOnRequiredConsultantSponsorPopUp();
 		s_assert.assertTrue(sfHomePage.isThanksMessageAfterSponsorRequestPresent(),"Thank msg not displayed after sponsor request submit");
 		sfHomePage.clickBackToHomePageBtn();
-		s_assert.assertTrue(sfHomePage.isConnectBtnPresentOnHomePage(), "User is not on Home Page");
+		s_assert.assertTrue(sfHomePage.isHomePageBannerDisplayed(), "User is not on Home Page as home page banner is not displayed");
 		s_assert.assertAll();
 	}
 
@@ -135,16 +135,16 @@ public class ConsultantEnrollmentTest extends StoreFrontWebsiteBaseTest{
 	 * and also validates the pagination in the sponsor search results.
 	 * 				
 	 */
-	@Test(enabled=true)
+	@Test(enabled=true)//TODO No COnnect To COnsultant on home page
 	public void testSponsorSearchFromFindAConsultantAndPagination_275(){
 		sfHomePage.clickFindAConsultantLinkOnHomePage().searchSponsor(TestConstants.SPONSOR_3_CHARS);
 		s_assert.assertTrue(sfHomePage.isSponsorResultDisplayed(),"No result found after searching the sponsor with name "+TestConstants.SPONSOR_3_CHARS);
 		s_assert.assertTrue(sfHomePage.isTheUserOnNavigationPage("1"),"user is not on navigation page 1");
 		sfHomePage.navigateToPaginationInSponsorSearchResult("2");
 		s_assert.assertTrue(sfHomePage.isTheUserOnNavigationPage("2"),"user is not on navigation page 2");
-		sfHomePage.clickRodanAndFieldsLogo();
-		sfHomePage.clickConnectBtn().searchSponsor(TestConstants.SPONSOR_3_CHARS);
-		s_assert.assertTrue(sfHomePage.isSponsorResultDisplayed(),"No result found after searching the sponsor with name after navigating from Connect with Consultant button "+TestConstants.SPONSOR_3_CHARS);
+//		sfHomePage.clickRodanAndFieldsLogo();
+//		sfHomePage.selectFirstSponsorFromList();
+//		s_assert.assertTrue(sfHomePage.isSponsorResultDisplayed(),"No result found after searching the sponsor with name after navigating from Connect with Consultant button "+TestConstants.SPONSOR_3_CHARS);
 		s_assert.assertAll();
 	}
 
@@ -308,7 +308,7 @@ public class ConsultantEnrollmentTest extends StoreFrontWebsiteBaseTest{
 		String firstName = TestConstants.FIRST_NAME;
 		String lastName = TestConstants.LAST_NAME;
 		String emailID = TestConstants.FIRST_NAME+timeStamp+TestConstants.EMAIL_SUFFIX;
-		String policiesAndProceduresPdfUrl = "Policies_Procedures_CANADA.pdf";
+		String policiesAndProceduresPdfUrl = "Policies_Procedures_USA.pdf";
 		String pulseProTCUrl = "Pulse_Terms_and_Conditions_CANADA.pdf";
 		String crpTCPdfUrl = "CRP_Terms_and_Conditions_CANADA.pdf";
 		sfHomePage.clickEnrollNow();
@@ -317,18 +317,21 @@ public class ConsultantEnrollmentTest extends StoreFrontWebsiteBaseTest{
 		String parentWindowID = CommonUtils.getCurrentWindowHandle();
 		sfHomePage.switchToChildWindow(parentWindowID);
 		s_assert.assertTrue(sfHomePage.getCurrentURL().contains(policiesAndProceduresPdfUrl), "Policies And Procedures PDF has not opened at search sponsor page");
+		s_assert.assertTrue(sfHomePage.isPDFViewerDisplayed(), "PDF viewer not displayed for Policies And Procedures at search sponsor page");
 		sfHomePage.switchToParentWindow(parentWindowID);
 
 		sfHomePage.clickPulseProTermsAndConditionsLink();
 		parentWindowID = CommonUtils.getCurrentWindowHandle();
 		sfHomePage.switchToChildWindow(parentWindowID);
 		s_assert.assertTrue(sfHomePage.getCurrentURL().contains(pulseProTCUrl), "Pulse Pro Terms And Conditions PDF has not opened at search sponsor page");
+		s_assert.assertTrue(sfHomePage.isPDFViewerDisplayed(), "PDF viewer not displayed for Pulse Pro Terms And Conditions at search sponsor page");
 		sfHomePage.switchToParentWindow(parentWindowID);
 
 		sfHomePage.clickCRPTermsAndConditionsLink();
 		parentWindowID = CommonUtils.getCurrentWindowHandle();
 		sfHomePage.switchToChildWindow(parentWindowID);
 		s_assert.assertTrue(sfHomePage.getCurrentURL().contains(crpTCPdfUrl), "CRP Terms And Conditions PDF has not opened at search sponsor page");
+		s_assert.assertTrue(sfHomePage.isPDFViewerDisplayed(), "PDF viewer not displayed for CRP Terms And Conditions at search sponsor page");
 		sfHomePage.switchToParentWindow(parentWindowID);
 
 		sfHomePage.searchSponsor(TestConstants.SPONSOR);
@@ -340,18 +343,21 @@ public class ConsultantEnrollmentTest extends StoreFrontWebsiteBaseTest{
 		parentWindowID = CommonUtils.getCurrentWindowHandle();
 		sfHomePage.switchToChildWindow(parentWindowID);
 		s_assert.assertTrue(sfHomePage.getCurrentURL().contains(policiesAndProceduresPdfUrl), "Policies And Procedures PDF has not opened at consultant details page");
+		s_assert.assertTrue(sfHomePage.isPDFViewerDisplayed(), "PDF viewer not displayed for Policies And Procedures at consultant details page");
 		sfHomePage.switchToParentWindow(parentWindowID);
 
 		sfHomePage.clickPulseProTermsAndConditionsLink();
 		parentWindowID = CommonUtils.getCurrentWindowHandle();
 		sfHomePage.switchToChildWindow(parentWindowID);
 		s_assert.assertTrue(sfHomePage.getCurrentURL().contains(pulseProTCUrl), "Pulse Pro Terms And Conditions PDF has not opened at consultant details page");
+		s_assert.assertTrue(sfHomePage.isPDFViewerDisplayed(), "PDF viewer not displayed for Pulse Pro Terms And Conditions at consultant details page");
 		sfHomePage.switchToParentWindow(parentWindowID);
 
 		sfHomePage.clickCRPTermsAndConditionsLink();
 		parentWindowID = CommonUtils.getCurrentWindowHandle();
 		sfHomePage.switchToChildWindow(parentWindowID);
 		s_assert.assertTrue(sfHomePage.getCurrentURL().contains(crpTCPdfUrl), "CRP Terms And Conditions PDF has not opened at consultant details page ");
+		s_assert.assertTrue(sfHomePage.isPDFViewerDisplayed(), "PDF viewer not displayed for CRP Terms And Conditions at consultant details page");
 		sfHomePage.switchToParentWindow(parentWindowID);
 		s_assert.assertAll();
 	}

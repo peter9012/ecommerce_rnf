@@ -757,7 +757,7 @@ public class MyAccountTest extends StoreFrontWebsiteBaseTest{
 		sfAccountInfoPage.enterEmailYourConsultantDetailsAndSubmit("testName", "testEmail@mailinator.com", "test email");
 
 	}
-	
+
 	/***
 	 * qTest : TC-286 Account Information- Email Your Consultant - Invalid
 	 * 
@@ -778,13 +778,13 @@ public class MyAccountTest extends StoreFrontWebsiteBaseTest{
 		sfAccountInfoPage.clickEmailYourConsultantLink();
 		sfAccountInfoPage.enterEmailYourConsultantDetailsAndSubmit(TestConstants.FIRST_NAME, TestConstants.CONSULTANT_EMAIL, moreThan200Chars);
 		s_assert.assertTrue(sfAccountInfoPage.isEmailYourValidationDisplayed(emailContent, TestConstants.VALIDATION_ERROR_LESS_THAN_200_CHARS),"validation of more than 200 chars not displayed");
-		
+
 		sfAccountInfoPage.enterEmailYourConsultantDetailsAndSubmit(TestConstants.FIRST_NAME, "", "test msg");
 		s_assert.assertTrue(sfAccountInfoPage.isEmailYourValidationDisplayed(emailId, TestConstants.VALIDATION_ERROR_THIS_FIELD_IS_REQUIRED),"validation of field required not displayed for "+emailId);
-		
+
 		sfAccountInfoPage.enterEmailYourConsultantDetailsAndSubmit("", TestConstants.CONSULTANT_EMAIL, "test msg");
 		s_assert.assertTrue(sfAccountInfoPage.isEmailYourValidationDisplayed(name, TestConstants.VALIDATION_ERROR_THIS_FIELD_IS_REQUIRED),"validation of field required not displayed for "+name);
-		
+
 		sfAccountInfoPage.enterEmailYourConsultantDetailsAndSubmit(TestConstants.FIRST_NAME, TestConstants.CONSULTANT_EMAIL, "");
 		s_assert.assertTrue(sfAccountInfoPage.isEmailYourValidationDisplayed(emailContent, TestConstants.VALIDATION_ERROR_THIS_FIELD_IS_REQUIRED),"validation of field required not displayed for "+emailContent);
 
@@ -961,6 +961,104 @@ public class MyAccountTest extends StoreFrontWebsiteBaseTest{
 		sfAccountInfoPage.clickUseAsEnteredButtonOnPopUp();
 		profileUpdationMessage = sfAccountInfoPage.getProfileUpdationMessage();
 		s_assert.assertTrue(profileUpdationMessage.equalsIgnoreCase(TestConstants.PROFILE_UPDATION_MESSAGE.trim()), "'New Password' profile updation message Expected = "+TestConstants.PROFILE_UPDATION_MESSAGE+" but Actual = "+profileUpdationMessage);
+		s_assert.assertAll();
+	}
+
+	/***
+	 * qTest : TC-440 PC Perks Status- Delay Autoship - 30 Days
+	 * 
+	 * Description : This tests delay autoship for PC user by 30 days.
+	 * 
+	 *     
+	 */
+	@Test(enabled=false)
+	public void testDelayPCAutoshipBy30Days_440(){
+		String currentNextBillShipDate = null;
+		String nextBillShipDateAfterOneMonth = null;
+		String nextBillShipDateUIFormat = null;
+		String nextBillShipDateFromUI = null;
+		String nextBillShipDateUnderAutoshipOrder = null;
+		//Login as pc user
+		sfHomePage.loginToStoreFront(TestConstants.PC_EMAIL_HAVING_AUTOSHIP,password);
+		sfHomePage.clickWelcomeDropdown();
+		sfAutoshipStatusPage = sfHomePage.navigateToPCPerksStatusPage();
+		currentNextBillShipDate = sfAutoshipStatusPage.getNextBillAndShipDateFromAutoship();
+		nextBillShipDateAfterOneMonth = sfAutoshipStatusPage.delayedNextBillShipDate(currentNextBillShipDate,"1");
+		nextBillShipDateUIFormat =sfAutoshipStatusPage.delayedNextBillShipDateInUIFormat(nextBillShipDateAfterOneMonth);
+		sfAutoshipStatusPage.delayOrCancelPCPerks();
+		sfAutoshipStatusPage.selectDelayPCPerksOnPopup();
+		//Update next bill ship date by 30 days.
+		sfAutoshipStatusPage.fillNextBillAndShipdate(nextBillShipDateAfterOneMonth);
+		sfAutoshipStatusPage.selectSubmitQueryButton();
+		nextBillShipDateFromUI = sfAutoshipStatusPage.getNextBillAndShipDateFromAutoship();
+		s_assert.assertTrue(nextBillShipDateFromUI.equalsIgnoreCase(nextBillShipDateUIFormat),"Expected next autoship bill ship date on autoship status page "+nextBillShipDateUIFormat+" but actual in UI"+nextBillShipDateFromUI);
+		sfAutoshipStatusPage.clickWelcomeDropdown();
+		sfOrdersPage = sfAutoshipStatusPage.navigateToOrdersPage();
+		nextBillShipDateUnderAutoshipOrder = sfOrdersPage.getNextBillAndShipDateFromOrderDetailPage();
+		s_assert.assertTrue(nextBillShipDateUnderAutoshipOrder.contains(nextBillShipDateFromUI),"Expected next autoship bill ship date for autoship order"+nextBillShipDateUIFormat+" but actual in UI"+nextBillShipDateFromUI);
+		s_assert.assertAll();
+
+	}
+	/***
+	 * qTest : TC-441 PC Perks Status- Delay Autoship - 60 Days
+	 * 
+	 * Description : This tests delay autoship for PC user by 60 days.
+	 * 
+	 *     
+	 */
+	@Test(enabled=false)
+	public void testDelayPCAutoshipBy60Days_441(){
+		String currentNextBillShipDate = null;
+		String nextBillShipDateAfterOneMonth = null;
+		String nextBillShipDateUIFormat = null;
+		String nextBillShipDateFromUI = null;
+		String nextBillShipDateUnderAutoshipOrder = null;
+		//Login as pc user
+		sfHomePage.loginToStoreFront(TestConstants.PC_EMAIL_HAVING_AUTOSHIP,password);
+		sfHomePage.clickWelcomeDropdown();
+		sfAutoshipStatusPage = sfHomePage.navigateToPCPerksStatusPage();
+		currentNextBillShipDate = sfAutoshipStatusPage.getNextBillAndShipDateFromAutoship();
+		nextBillShipDateAfterOneMonth = sfAutoshipStatusPage.delayedNextBillShipDate(currentNextBillShipDate,"2");
+		nextBillShipDateUIFormat =sfAutoshipStatusPage.delayedNextBillShipDateInUIFormat(nextBillShipDateAfterOneMonth);
+		sfAutoshipStatusPage.delayOrCancelPCPerks();
+		sfAutoshipStatusPage.selectDelayPCPerksOnPopup();
+		//Update next bill ship date by 60 days.
+		sfAutoshipStatusPage.fillNextBillAndShipdate(nextBillShipDateAfterOneMonth);
+		sfAutoshipStatusPage.selectSubmitQueryButton();
+		nextBillShipDateFromUI = sfAutoshipStatusPage.getNextBillAndShipDateFromAutoship();
+		s_assert.assertTrue(nextBillShipDateFromUI.equalsIgnoreCase(nextBillShipDateUIFormat),"Expected next autoship bill ship date"+nextBillShipDateUIFormat+" but actual in UI"+nextBillShipDateFromUI);
+		sfAutoshipStatusPage.clickWelcomeDropdown();
+		sfOrdersPage = sfAutoshipStatusPage.navigateToOrdersPage();
+		nextBillShipDateUnderAutoshipOrder = sfOrdersPage.getNextBillAndShipDateFromOrderDetailPage();
+		s_assert.assertTrue(nextBillShipDateUnderAutoshipOrder.contains(nextBillShipDateFromUI),"Expected next autoship bill ship date for autoship order"+nextBillShipDateUIFormat+" but actual in UI"+nextBillShipDateFromUI);
+		s_assert.assertAll();
+
+	}
+	/***
+	 * qTest : TC-442 PC Perks Status- Delay Autoship - Cancel delay
+	 * 
+	 * Description : This tests validates PC autoship date not get updated 
+	 * when date is updated and submit querry not clicked.
+	 *     
+	 */
+	@Test(enabled=false)
+	public void testDelayPCAutoshipBy30DaysWithoutClickUpdate_442(){
+		String currentNextBillShipDate = null;
+		String nextBillShipDateAfterOneMonth = null;
+		String nextBillShipDateFromUI = null;
+		//Login as pc user
+		sfHomePage.loginToStoreFront(TestConstants.PC_EMAIL_HAVING_AUTOSHIP,password);
+		sfHomePage.clickWelcomeDropdown();
+		sfAutoshipStatusPage = sfHomePage.navigateToPCPerksStatusPage();
+		currentNextBillShipDate = sfAutoshipStatusPage.getNextBillAndShipDateFromAutoship();
+		nextBillShipDateAfterOneMonth = sfAutoshipStatusPage.delayedNextBillShipDate(currentNextBillShipDate,"1");
+		sfAutoshipStatusPage.delayOrCancelPCPerks();
+		sfAutoshipStatusPage.selectDelayPCPerksOnPopup();
+		//Update next bill ship date by 60 days.
+		sfAutoshipStatusPage.fillNextBillAndShipdate(nextBillShipDateAfterOneMonth);
+		sfAutoshipStatusPage.pageRefresh();
+		nextBillShipDateFromUI = sfAutoshipStatusPage.getNextBillAndShipDateFromAutoship();
+		s_assert.assertTrue(nextBillShipDateFromUI.equalsIgnoreCase(currentNextBillShipDate),"Expected next autoship bill ship date on autoship status page "+currentNextBillShipDate+" but actual in UI"+nextBillShipDateFromUI);
 		s_assert.assertAll();
 
 	}

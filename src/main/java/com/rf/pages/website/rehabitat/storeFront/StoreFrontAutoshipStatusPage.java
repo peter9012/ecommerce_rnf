@@ -30,6 +30,10 @@ public class StoreFrontAutoshipStatusPage extends StoreFrontWebsiteBasePage{
 	private final By SEND_EMAIL_TO_CANCEL_ACCOUNT_BUTTON_LOC = By.xpath("//form[@id='pcperkscancellationform']/descendant::button[text()='SEND E-MAIL TO CANCEL ACCOUNT']");
 	private final By ACCOUNT_TERMINATION_CONFIRMATION_POPUP_LOC = By.xpath("//div[@class='modal-content']/descendant::h2[text()='CONFIRM ACCOUNT TERMINATION']");
 	private final By POPUP_CONFIRM_TERMINATION_BUTTON = By.id("cancel-pc-perks-confirm");
+	private final By NEXT_BILL_SHIP_DATE_LOC = By.id("strtDate");
+	private final By NEXT_BILL_SHIP_DATE_TEXTBOX_LOC = By.xpath("//*[@id='command']//input[@type='text']");
+	private final By SUBMIT_QUERY_BUTTON = By.xpath("//*[@id='command']/input[@type='submit']");
+
 	private String socialMediaIconLoc = "//div[@class='container']//a[contains(@href,'%s')]";
 
 	/***
@@ -146,11 +150,247 @@ public class StoreFrontAutoshipStatusPage extends StoreFrontWebsiteBasePage{
 			return false;
 		}
 	}
+
+	/***
+	 * TODO
+	 */
 	public void clickOnConfirmTerminationPopup(){
 		driver.quickWaitForElementPresent(POPUP_CONFIRM_TERMINATION_BUTTON);
 		driver.click(POPUP_CONFIRM_TERMINATION_BUTTON);
 		logger.info("Confirm popup clicked");
 		driver.waitForPageLoad();
+	}
+
+	/***
+	 * This method get next bill and ship date fron autship status page.
+	 * 
+	 * @param
+	 * @return String nextShipDate.
+	 * 
+	 */
+	public String getNextBillAndShipDateFromAutoship(){
+		String nextBillShipDate = null;
+		if(driver.isElementVisible(NEXT_BILL_SHIP_DATE_LOC)){
+			nextBillShipDate=driver.findElement(NEXT_BILL_SHIP_DATE_LOC).getText();
+			logger.info("Next bill and ship date "+nextBillShipDate);
+			return nextBillShipDate;
+		}else{
+			logger.info("No next bill and ship date present for user.");
+			return nextBillShipDate;
+		}
+	}
+	/***
+	 * This method convert and delay UI next bill ship date to enter in textbox 
+	 * and delay by month mention in argument.
+	 * @param
+	 * @return String nextShipDate.
+	 * 
+	 */
+	public String delayedNextBillShipDateInUIFormat(String updatedNextBillShipdate){
+		String completeDate[] = updatedNextBillShipdate.split("\\-");
+		String day =completeDate[2];
+		String year =completeDate[0];
+		String month=completeDate[1];
+		int a = 0;
+		int b = 0;
+		String UIMonth = null;
+		switch (Integer.parseInt(month)) {  
+		case 1:
+			UIMonth="Jan";
+			break;
+		case 2:
+			UIMonth="Feb";
+			break;
+		case 3:
+			UIMonth="Mar";
+			break;
+		case 4:
+			UIMonth="Apr";
+			break;
+		case 5:
+			UIMonth="May";
+			break;
+		case 6:
+			UIMonth="Jun";
+			break;
+		case 7:
+			UIMonth="Jul";
+			break;
+		case 8:
+			UIMonth="Aug";
+			break;
+		case 9:
+			UIMonth="Sep";
+			break;
+		case 10:
+			UIMonth="Oct";
+			break;
+		case 11:
+			UIMonth="Nov";
+			break;
+		case 12:
+			UIMonth="Dec";
+			break;  
+		}
+		String UIFormatDate=UIMonth+" "+day+","+" "+year;
+		logger.info("UI format created date is "+UIFormatDate);
+		return UIFormatDate;
+	}
+	/***
+	 * This method convert and delay UI next bill ship date to enter in textbox 
+	 * and delay by month mention in argument.
+	 * @param
+	 * @return String nextShipDate.
+	 * 
+	 */
+	public String delayedNextBillShipDate(String currentBillShipDate, String delayedByMonth){
+		String completeDate[] = currentBillShipDate.split(" ");
+		String []splittedDay =completeDate[1].split("\\,");
+		String day =splittedDay[0];
+		String year =completeDate[2];
+		String month=completeDate[0];
+		int a = 0;
+		int b = 0;
+		String UIMonth = null;
+		String selectedMonth = null;
+		if(month.equalsIgnoreCase("Jan")){
+			a=1;
+		}else if(month.equalsIgnoreCase("Feb")){
+			a=2;
+		}else if(month.equalsIgnoreCase("Mar")){
+			a=3;
+		}
+		else if(month.equalsIgnoreCase("Apr")){
+			a=4;
+		}
+		else if(month.equalsIgnoreCase("May")){
+			a=5;
+		}
+		else if(month.equalsIgnoreCase("Jun")){
+			a=6;
+		}
+		else if(month.equalsIgnoreCase("Jul")){
+			a=7;
+		}
+		else if(month.equalsIgnoreCase("Aug")){
+			a=8;
+		}
+		else if(month.equalsIgnoreCase("Sep")){
+			a=9;
+		}
+		else if(month.equalsIgnoreCase("Oct")){
+			a=10;
+		}
+		else if(month.equalsIgnoreCase("Nov")){
+			a=11;
+		}else if(month.equalsIgnoreCase("Dec")){
+			a=12;
+		}else{
+			a=13;
+		}
+		if(a==13){
+			a=1;
+			b=1;
+		}
+		switch (a) {  
+		case 1:
+			UIMonth="01";
+			break;
+		case 2:
+			UIMonth="02";
+			break;
+		case 3:
+			UIMonth="03";
+			break;
+		case 4:
+			UIMonth="04";
+			break;
+		case 5:
+			UIMonth="05";
+			break;
+		case 6:
+			UIMonth="06";
+			break;
+		case 7:
+			UIMonth="07";
+			break;
+		case 8:
+			UIMonth="08";
+			break;
+		case 9:
+			UIMonth="09";
+			break;
+		case 10:
+			UIMonth="10";
+			break;
+		case 11:
+			UIMonth="11";
+			break;
+		case 12:
+			UIMonth="12";
+			break;  
+		}
+		if(b==1){
+			int yearly=Integer.parseInt(year)+1;
+			year=Integer.toString(yearly);
+		}
+		selectedMonth = Integer.toString(Integer.parseInt(UIMonth)+Integer.parseInt(delayedByMonth));
+		if(selectedMonth.length()==1){
+			selectedMonth = "0"+selectedMonth;	
+		}
+		if(Integer.parseInt(selectedMonth)>12){
+			selectedMonth=Integer.toString(Integer.parseInt(selectedMonth)-Integer.parseInt(UIMonth));
+			if(selectedMonth.length()==1){
+				selectedMonth = "0"+selectedMonth;	
+			}	
+			int yearly=Integer.parseInt(year)+1;
+			year=Integer.toString(yearly);
+		}
+		String dateAfterOneMonth=year+"-"+selectedMonth+"-"+day;
+		logger.info("created date is "+dateAfterOneMonth);
+		return dateAfterOneMonth;
+	}
+
+	/***
+	 * This method clicks on delay on delay or cancel popup to delay pc perks.
+	 * 
+	 * @param
+	 * @return store front autoship status page object
+	 * 
+	 */
+	public StoreFrontAutoshipStatusPage selectDelayPCPerksOnPopup(){
+		driver.click(DELAY_OPTION_ON_CANCEL_PC_PERKS_POPUP_LOC);
+		logger.info("clicked 'Cancel PC perks' on delay or cancel popup.");
+		driver.pauseExecutionFor(2000);
+		return this;
+	}
+
+	/***
+	 * This method fill next bill and ship date for autoship.
+	 * 
+	 * @param
+	 * @return store front autoship status page object
+	 * 
+	 */
+	public StoreFrontAutoshipStatusPage fillNextBillAndShipdate(String nextBillShipDate){
+		driver.type(NEXT_BILL_SHIP_DATE_TEXTBOX_LOC,nextBillShipDate);
+		logger.info("Next bill and ship date entered as "+nextBillShipDate);
+		driver.waitForLoadingImageToDisappear(); 
+		return this;
+	}
+
+	/***
+	 * This method click submit button after entering next bill ship date on
+	 * autoship status page
+	 * @param
+	 * @return store front autoship status page object
+	 * 
+	 */
+	public StoreFrontAutoshipStatusPage selectSubmitQueryButton(){
+		driver.click(SUBMIT_QUERY_BUTTON);
+		logger.info("Submit query button clicked after entering next bill ship date.");
+		driver.waitForPageLoad();
+		return this;
 	}
 
 }

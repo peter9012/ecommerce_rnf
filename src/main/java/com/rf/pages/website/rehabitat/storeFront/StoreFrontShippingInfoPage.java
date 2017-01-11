@@ -18,9 +18,10 @@ public class StoreFrontShippingInfoPage extends StoreFrontWebsiteBasePage{
 
 	private final By ADD_NEW_SHIPPING_ADDRESS_LOC = By.xpath("//a[contains(text(),'Add new shipping address')]");
 	private final By CANCEL_BUTTON_OF_SHIPPING_ADDRESS_LOC = By.xpath("//div[@class='accountActions']//a");
-	private final By DEFAULT_SHIPPING_ADDRESS_NAME_LOC = By.xpath("//strong[contains(text(),'Default')]");
-	private final By EDIT_LINK_OF_DEFAULT_SHIPPING_ADDRESS_LOC = By.xpath("//strong[contains(text(),'Default')]/following::a[1]");
-	 private final By ADDRESS_UPDATE_SUCCESS_MSG_LOC = By.xpath("//div[contains(@class,'alert-info') and contains(@class,'alert-dismissable')]");
+	private final By DEFAULT_SHIPPING_ADDRESS_NAME_LOC = By.xpath("//a[contains(@class,'selected') and contains(text(),'Default')]/ancestor::div[1]/preceding-sibling::ul//strong");
+	private final By EDIT_LINK_OF_DEFAULT_SHIPPING_ADDRESS_LOC = By.xpath("//a[contains(@class,'selected') and contains(text(),'Default')]/ancestor::div[1]/preceding-sibling::div/a[contains(text(),'Edit')]");
+	private final By ADDRESS_UPDATE_SUCCESS_MSG_LOC = By.xpath("//div[contains(@class,'alert-info') and contains(@class,'alert-dismissable')]");
+
 	private String shippingProfileNameLoc  = "//div[contains(@class,'account-addressbook')]/descendant::strong[contains(text(),'%s')][1]";
 
 	/***

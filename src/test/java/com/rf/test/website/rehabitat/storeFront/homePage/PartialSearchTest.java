@@ -13,7 +13,7 @@ public class PartialSearchTest extends StoreFrontWebsiteBaseTest{
 	 *     
 	 */
 
-	@Test
+	@Test(enabled=false) //TODO 
 	public void testUserEnterspartOfAProductNameOrDescriptionAndHitsEnter_204(){
 		String productName = null;
 		String entityToSearch = null;

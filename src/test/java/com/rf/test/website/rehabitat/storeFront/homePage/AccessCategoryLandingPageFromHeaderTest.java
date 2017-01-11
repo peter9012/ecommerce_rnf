@@ -13,7 +13,7 @@ public class AccessCategoryLandingPageFromHeaderTest extends StoreFrontWebsiteBa
 	 * under shop skincare section 
 	 *     
 	 */
-	@Test
+	@Test(enabled=true)
 	public void testAccessCategoryLandingPagesUnderShopSkincareSection_11(){
 		String categoryUnblemish = "UNBLEMISH";
 		String categoryFeatured = "FEATURED";

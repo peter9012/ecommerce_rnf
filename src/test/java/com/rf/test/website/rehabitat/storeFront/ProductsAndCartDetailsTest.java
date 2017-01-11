@@ -15,7 +15,7 @@ public class ProductsAndCartDetailsTest extends StoreFrontWebsiteBaseTest{
 	 * and also sorting for different category based on price filter.
 	 * 				
 	 */ 
-	@Test 
+	@Test(enabled=false)//TODO 
 	public void testSortProductBaseOnPriceFilter_61(){
 		String allProduct = "ALL PRODUCTS";
 		sfShopSkinCarePage = sfHomePage.navigateToShopSkincareLink(allProduct);
@@ -30,6 +30,7 @@ public class ProductsAndCartDetailsTest extends StoreFrontWebsiteBaseTest{
 		s_assert.assertTrue(sfShopSkinCarePage.isPriceFilterHighToLowAppliedSuccessfully(),"Selected Price filter 'High To Low' is not applied to product successfully for category"+categoryName);
 		s_assert.assertAll();
 	}
+	
 	/***
 	 * qTest : TC-62 Sort/Order Removal by default option section
 	 * 
@@ -37,7 +38,7 @@ public class ProductsAndCartDetailsTest extends StoreFrontWebsiteBaseTest{
 	 * and also Unsorting of product when filter removed.
 	 * 				
 	 */ 
-	@Test //Blocked as no default value for price filter present.
+	@Test(enabled=false) //TODO Blocked as no default value for price filter present.
 	public void testSortAndUnsortProductBaseOnPriceFilter_62(){
 		String allProduct = "ALL PRODUCTS";
 
@@ -56,7 +57,7 @@ public class ProductsAndCartDetailsTest extends StoreFrontWebsiteBaseTest{
 	 * and also Unsorting of product when filter removed by clicking clear all link.
 	 * 				
 	 */ 
-	@Test //Blocked as no clear all link is present.
+	@Test(enabled=false) //TODO Blocked as no clear all link is present.
 	public void testSortAndUnsortProductBaseOnPriceFilterApplied_63(){
 		String allProduct = "ALL PRODUCTS";
 
@@ -75,7 +76,7 @@ public class ProductsAndCartDetailsTest extends StoreFrontWebsiteBaseTest{
 	 * 
 	 * 				
 	 */
-	@Test 
+	@Test(enabled=true) 
 	public void testVerifyProductDetailPageAndTabsOnProductDetailPage_64(){
 		String allProduct = "ALL PRODUCTS";
 		String productName = null;
@@ -99,6 +100,7 @@ public class ProductsAndCartDetailsTest extends StoreFrontWebsiteBaseTest{
 		s_assert.assertTrue(sfProductDetailPage.isContentUnderIngredientsTabPresentAtProductDetailsPage(),"Contents under Ingredients tab not present on product detail page");
 		s_assert.assertAll();
 	}
+	
 	/***
 	 * qTest : TC-65 Product Detail Page- Recently Viewed Products
 	 * 
@@ -106,7 +108,7 @@ public class ProductsAndCartDetailsTest extends StoreFrontWebsiteBaseTest{
 	 * 
 	 * 				
 	 */
-	@Test 
+	@Test(enabled=true) 
 	public void testVerifyProductDetailPageAndRecentlyViewTabsOnProductDetailPage_65(){
 		String allProduct = "ALL PRODUCTS";
 		String firstProductName = null;
@@ -158,6 +160,7 @@ public class ProductsAndCartDetailsTest extends StoreFrontWebsiteBaseTest{
 		s_assert.assertTrue(sfProductDetailPage.isProductUnderRecentlyViewTabPresentAtProductDetailsPage(firstProductName),"Fourth Product is not present under recently view tab on product detail page.");
 		s_assert.assertAll();			
 	}
+	
 	/***
 	 * qTest : TC-66 As a PC user, I will be able to navigate to the account pages from the account drop down in the header
 	 * 
@@ -165,7 +168,7 @@ public class ProductsAndCartDetailsTest extends StoreFrontWebsiteBaseTest{
 	 * 
 	 * 				
 	 */
-	@Test //Incomplete as shipping profile page is not visible.
+	@Test(enabled=false) //TODO Incomplete as shipping profile page is not visible.
 	public void testVerifyLinksUnderWelcomeDD_66(){
 		String currentURL = null;
 		String title = null;
@@ -238,7 +241,7 @@ public class ProductsAndCartDetailsTest extends StoreFrontWebsiteBaseTest{
 	 * Description : This test validates Quick view details of product and add a product to cart
 	 *     
 	 */
-	@Test//Incomplete as not asserted for product added to cart.
+	@Test(enabled=false) //TODO Incomplete as not asserted for product added to cart.
 	public void testQuickViewAddToCart_342(){
 		sfShopSkinCarePage=sfHomePage.clickAllProducts();
 		sfShopSkinCarePage.clickOnFirstProductQuickViewButtonAndReturnProductName();
@@ -259,7 +262,7 @@ public class ProductsAndCartDetailsTest extends StoreFrontWebsiteBaseTest{
 	 * Description : This test validates add a product to cart
 	 *     
 	 */
-	@Test
+	@Test(enabled=true)
 	public void testAddToCart_339(){
 		sfHomePage.loginToStoreFront(TestConstants.CONSULTANT_USERNAME, password);
 		sfShopSkinCarePage=sfHomePage.clickAllProducts();
@@ -273,7 +276,7 @@ public class ProductsAndCartDetailsTest extends StoreFrontWebsiteBaseTest{
 	 * Description : This test validates add a product to cart and checkout the product
 	 *     
 	 */
-	@Test
+	@Test(enabled=true)
 	public void testCartPageCheckoutCTAConsultantOrPC_497(){
 		sfHomePage.loginToStoreFront(TestConstants.CONSULTANT_USERNAME, password);
 		sfShopSkinCarePage=sfHomePage.clickAllProducts();
@@ -290,7 +293,7 @@ public class ProductsAndCartDetailsTest extends StoreFrontWebsiteBaseTest{
 	 * Description : This test validates add a product to cart and checkout the product using RC
 	 *     
 	 */
-	@Test
+	@Test(enabled=true)
 	public void testCartPageCheckoutCTARC_498(){
 		sfHomePage.loginToStoreFront(TestConstants.RC_USERNAME, password);
 		sfShopSkinCarePage=sfHomePage.clickAllProducts();
@@ -308,7 +311,7 @@ public class ProductsAndCartDetailsTest extends StoreFrontWebsiteBaseTest{
 	 * Description : This test validates add a product to cart and checkout the product
 	 *     
 	 */
-	@Test//Unable to login at checkout page
+	@Test(enabled=false)//TODO Unable to login at checkout page
 	public void testCartPageCheckoutCTAAnonymousLogin_499(){
 		sfShopSkinCarePage=sfHomePage.clickAllProducts();
 		sfShopSkinCarePage.addFirstProductToBag();
@@ -326,7 +329,7 @@ public class ProductsAndCartDetailsTest extends StoreFrontWebsiteBaseTest{
 	 * Description : This test validates add a product to cart and enter details to create an account
 	 *     
 	 */
-	@Test
+	@Test(enabled=true)
 	public void testCartPageCheckoutCTAAnonymousCreateAccount_500(){
 		String userType=TestConstants.USER_TYPE_PC;
 		String firstName=TestConstants.FIRST_NAME;
@@ -349,7 +352,7 @@ public class ProductsAndCartDetailsTest extends StoreFrontWebsiteBaseTest{
 	 * Description : This test validates login with pc and observe the products w.r.t the options
 	 *     
 	 */
-	@Test
+	@Test(enabled=true)
 	public void testProductListingPagePC_340(){
 		String userType=TestConstants.USER_TYPE_PC;
 		sfHomePage.loginToStoreFront(TestConstants.PC_USERNAME, password);
@@ -363,7 +366,7 @@ public class ProductsAndCartDetailsTest extends StoreFrontWebsiteBaseTest{
 	 * Description : This test validates login with consultant and observe the products w.r.t the options
 	 *     
 	 */
-	@Test
+	@Test(enabled=true)
 	public void testProductListingPageConsultant_341(){
 		String userType="Consultant";
 		sfHomePage.loginToStoreFront(TestConstants.CONSULTANT_USERNAME, password);
@@ -378,7 +381,7 @@ public class ProductsAndCartDetailsTest extends StoreFrontWebsiteBaseTest{
 	 * 
 	 * 
 	 */
-	@Test
+	@Test(enabled=true)
 	public void testLoginPriorToCheckoutLoginAsExistingUser_185(){
 		//Duplicate TestCase same as TC-499 Cart Page- Checkout CTA - Anonymous - Login
 	}
@@ -388,7 +391,7 @@ public class ProductsAndCartDetailsTest extends StoreFrontWebsiteBaseTest{
 	 * 
 	 * 
 	 */
-	@Test
+	@Test(enabled=true)
 	public void testLoginPriorToCheckoutNewUser_186(){
 		//Duplicate TestCase same as TC-500 Cart Page- Checkout CTA - Anonymous - Create account  
 	}
@@ -398,7 +401,7 @@ public class ProductsAndCartDetailsTest extends StoreFrontWebsiteBaseTest{
 	 * Description : This test validates PC Perks Terms and Conditions Link for Anonymous user
 	 * 
 	 */
-	@Test
+	@Test(enabled=false)
 	public void testCartPagePCPerksTermsAndConditionsAnonymousUser_220(){
 		String currentWindowID = null; 
 		String currentURL = null;
@@ -421,7 +424,7 @@ public class ProductsAndCartDetailsTest extends StoreFrontWebsiteBaseTest{
 	 * Description : This test validates PC Perks Terms and Conditions Link for PC User
 	 * 
 	 */
-	@Test
+	@Test(enabled=false)
 	public void testCartPagePCPerksTermsAndConditionsPCUser_222(){
 		String currentWindowID = null; 
 		String currentURL = null;
@@ -439,13 +442,12 @@ public class ProductsAndCartDetailsTest extends StoreFrontWebsiteBaseTest{
 		s_assert.assertAll();
 	}
 
-
 	/***
 	 * qTest : TC-221 Cart Page- PC Perks Terms and Conditions - RC User
 	 * Description : This test validates PC Perks Terms and Conditions Link for PC User
 	 * 
 	 */
-	@Test
+	@Test(enabled=false)
 	public void testCartPagePCPerksTermsAndConditionsPCUser_221(){
 		String currentWindowID = null; 
 		String currentURL = null;
@@ -468,7 +470,7 @@ public class ProductsAndCartDetailsTest extends StoreFrontWebsiteBaseTest{
 	 * Description : This test validates the 'Add more items' and 'checkout' funtionality of checkout popup for One time order
 	 * 
 	 */
-	@Test // Need to modify once functionality starts working
+	@Test(enabled=false) //TODO Need to modify once functionality starts working
 	public void testAddedToYourShoppingCartPopupForAdhocFlow_256(){
 		String firstProductName = null;
 		String secondProductName = null;
@@ -525,7 +527,7 @@ public class ProductsAndCartDetailsTest extends StoreFrontWebsiteBaseTest{
 	 * Description : This test validates the 'Add more items' and 'checkout' funtionality of checkout popup for PC User and PC perks order
 	 * 
 	 */
-	@Test
+	@Test(enabled=false)
 	public void testAddedToYourPCPerksAutoshipPopupForPCAutoshipFlow_258(){
 		String firstProductName = null;
 		String secondProductName = null;
@@ -566,7 +568,7 @@ public class ProductsAndCartDetailsTest extends StoreFrontWebsiteBaseTest{
 	 * Description : This test validates add a product to cart and check total by updating 
 	 *  quantity of product   
 	 */
-	@Test
+	@Test(enabled=false)
 	public void testAddProductToCartAndUpdateQuantity_67(){
 		String subTotalFromCart = null;
 		String quantityOfProduct = null;
@@ -606,10 +608,8 @@ public class ProductsAndCartDetailsTest extends StoreFrontWebsiteBaseTest{
 	 * Description : This test validates add multiple product to cart and remove product from cart functionality
 	 *   
 	 */
-	@Test
+	@Test(enabled=false)
 	public void testAddMultipleProductToCartAndRemoveTillCartEmpty_68(){
-
-
 		sfShopSkinCarePage=sfHomePage.clickAllProducts();
 		sfShopSkinCarePage.addFirstProductToBag();
 		sfCartPage = sfShopSkinCarePage.checkoutTheCartFromPopUp();
@@ -633,7 +633,7 @@ public class ProductsAndCartDetailsTest extends StoreFrontWebsiteBaseTest{
 	 * Description : This test validates login with consultant,PC and RC and observe the products
 	 *     are added to cart successfully.
 	 */
-	@Test//Pending for consultant autoship cart page
+	@Test(enabled=false) //TODO Pending for consultant autoship cart page
 	public void testAddMultipleProductsToCartAfterLogin_69(){
 		String usertype = "Consultant";
 		String pcUsertype = TestConstants.USER_TYPE_PC;
@@ -678,12 +678,13 @@ public class ProductsAndCartDetailsTest extends StoreFrontWebsiteBaseTest{
 		s_assert.assertTrue(sfShopSkinCarePage.isAllProductPageDisplayed(),"All product page not present after clicking continue shopping.");
 		s_assert.assertAll();
 	}
+	
 	/***
 	 * qTest : TC-70 Persistent Cart on Same device
 	 * Description : This test validates login with consultant,PC and RC and observe the products
 	 *     are added to cart successfully and remain persisent when cart is visited again.
 	 */
-	@Test
+	@Test(enabled=false)
 	public void testAddProductToCartAndVerifyAfterRELogin_70(){
 		int productInAdhocCart;
 		int newProductCount;
@@ -745,12 +746,13 @@ public class ProductsAndCartDetailsTest extends StoreFrontWebsiteBaseTest{
 		s_assert.assertTrue(newProductCount==productInAdhocCart,"Expected product count"+productInAdhocCart+" while actual on UI "+newProductCount);
 		s_assert.assertAll();
 	}
+	
 	/***
 	 * qTest : TC-163 Cart Page- Preferred Customer - Ad Hoc Cart
 	 * Description : This test validates PC user details on cart page accessed via all products and mini cart..
 	 *   
 	 */
-	@Test
+	@Test(enabled=false)
 	public void testVerifyPCUserProductDetailsOnCartPage_163(){
 		String allProduct = "ALL PRODUCTS";
 		String  productName = null;
@@ -789,12 +791,13 @@ public class ProductsAndCartDetailsTest extends StoreFrontWebsiteBaseTest{
 		s_assert.assertTrue(newItemsOfProduct.equalsIgnoreCase(updatedQuantity),"Expected items in cart"+updatedQuantity+" but actual in UI"+newItemsOfProduct);
 		s_assert.assertAll();		
 	}
+	
 	/***
 	 * qTest : TC-164 Cart Page- Consultant Customer - Ad Hoc Cart
 	 * Description : This test validates consultant user details on cart page accessed via all products and mini cart..
 	 *   
 	 */
-	@Test
+	@Test(enabled=false)
 	public void testVerifyConsultantUserProductDetailsOnCartPage_163(){
 		String allProduct = "ALL PRODUCTS";
 		String  productName = null;
@@ -838,7 +841,7 @@ public class ProductsAndCartDetailsTest extends StoreFrontWebsiteBaseTest{
 	 * Description : This test validates the presence of price of product
 	 * 
 	 */
-	@Test
+	@Test(enabled=true)
 	public void testProductPricingAnonymous_501(){
 		sfShopSkinCarePage = sfHomePage.clickOnCategoryFromShopSkinCare("REDEFINE");
 		s_assert.assertTrue(sfShopSkinCarePage.isRetailPricePresentForProductNumber("1"),"Retail price is not present for Product on category Page");
@@ -857,7 +860,7 @@ public class ProductsAndCartDetailsTest extends StoreFrontWebsiteBaseTest{
 	 * Description : This test validates the presence of price of product for RC User
 	 * 
 	 */
-	@Test
+	@Test(enabled=true)
 	public void testProductPricingRC_502(){
 		sfHomePage.loginToStoreFront(TestConstants.RC_USERNAME, password);
 		sfShopSkinCarePage = sfHomePage.clickOnCategoryFromShopSkinCare("REDEFINE");
@@ -876,7 +879,7 @@ public class ProductsAndCartDetailsTest extends StoreFrontWebsiteBaseTest{
 	 * Description : This test validates quantity with different values
 	 *     
 	 */
-	@Test//Incomplete as no quantity update link present on overlay.
+	@Test(enabled=false) //TODO Incomplete as no quantity update link present on overlay.
 	public void testProductDetailsPageQty_157(){
 		String productQty=null;
 		String updatedQty=null;
@@ -893,7 +896,7 @@ public class ProductsAndCartDetailsTest extends StoreFrontWebsiteBaseTest{
 	 * Description : This test validates product price for different country
 	 *     
 	 */
-	@Test
+	@Test(enabled=true)
 	public void testProductDetailsPageProductPricingConsultant_158(){
 		sfHomePage.loginToStoreFront(TestConstants.CONSULTANT_EMAIL, password);
 		sfShopSkinCarePage=sfHomePage.clickAllProducts();
@@ -908,7 +911,7 @@ public class ProductsAndCartDetailsTest extends StoreFrontWebsiteBaseTest{
 	 * Description : This test validates product price for different country
 	 *     
 	 */
-	@Test
+	@Test(enabled=true)
 	public void testProductDetailsPageProductPricingPC_159(){
 		sfHomePage.loginToStoreFront(TestConstants.PC_EMAIL, password);
 		sfShopSkinCarePage=sfHomePage.clickAllProducts();
@@ -923,7 +926,7 @@ public class ProductsAndCartDetailsTest extends StoreFrontWebsiteBaseTest{
 	 * Description : This test validates click on featured products category and validate page
 	 *     
 	 */
-	@Test
+	@Test(enabled=true)
 	public void testFeaturedProductsCategoryLandingPage_160(){
 		String category="FEATURED";
 		sfShopSkinCarePage = sfHomePage.navigateToShopSkincareLink(category);
@@ -937,7 +940,7 @@ public class ProductsAndCartDetailsTest extends StoreFrontWebsiteBaseTest{
 	 * Description : This test validates PC Perks Promotion Message/Link should be displayed
 	 *     
 	 */
-	@Test//Incomplete PC perks Promo message not displayed on cart page.
+	@Test(enabled=false)//TODO Incomplete PC perks Promo message not displayed on cart page.
 	public void testCartPagePCPerksPromotionMessageLinkAnonymousUser_165(){
 		String cart="cart";
 		String pageTile = null;
@@ -956,7 +959,7 @@ public class ProductsAndCartDetailsTest extends StoreFrontWebsiteBaseTest{
 	 * Description : This test validates PC Perks Promotion Message/Link should be displayed
 	 *     
 	 */
-	@Test//Incomplete PC perks Promo message not displayed on cart page.
+	@Test(enabled=false)//TODO Incomplete PC perks Promo message not displayed on cart page.
 	public void testCartPagePCPerksPromotionMessageLinkRetailUser_166(){
 		String cart="cart";
 		String pageTile=null;
@@ -976,7 +979,7 @@ public class ProductsAndCartDetailsTest extends StoreFrontWebsiteBaseTest{
 	 * Description : This test validates PC Perks Promotion Message/Link should not be displayed
 	 *     
 	 */
-	@Test//Incomplete PC perks Promo message assertion.
+	@Test(enabled=false)//TODO Incomplete PC perks Promo message assertion.
 	public void testCartPagePCPerksPromotionMessageLinkPreferredCustomer_167(){
 		String cart="cart";
 		String pageTile=null;
@@ -996,7 +999,7 @@ public class ProductsAndCartDetailsTest extends StoreFrontWebsiteBaseTest{
 	 * Description : This test validates PC Perks Promotion Message/Link should not be displayed
 	 *     
 	 */
-	@Test//Incomplete PC perks Promo message assertion.
+	@Test(enabled=false)//TODO Incomplete PC perks Promo message assertion.
 	public void testCartPagePCPerksPromotionMessageLinkConsultantUser_168(){
 		String cart="cart";
 		String pageTile=null;
@@ -1016,7 +1019,7 @@ public class ProductsAndCartDetailsTest extends StoreFrontWebsiteBaseTest{
 	 * Description : This test validates adhoc product is added to the cart and verifies from product popup
 	 *     
 	 */
-	@Test
+	@Test(enabled=false)
 	public void testCartPageAnonymousUserAdHocCart_161(){
 		String allProduct = "ALL PRODUCTS";
 		int numberOfProductInCart;
@@ -1051,7 +1054,7 @@ public class ProductsAndCartDetailsTest extends StoreFrontWebsiteBaseTest{
 	 * Description : This test validates adhoc product is added to the cart and verifies from product popup
 	 *     
 	 */
-	@Test
+	@Test(enabled=false)
 	public void testCartPageRetailUserAdHocCart_162(){
 		int numberOfProductInCart;
 		String itemsOfProduct = null;
@@ -1092,7 +1095,7 @@ public class ProductsAndCartDetailsTest extends StoreFrontWebsiteBaseTest{
 	 * Description : This test validates the presence of price of product for PC User
 	 * 
 	 */
-	@Test
+	@Test(enabled=true)
 	public void testProductPricingPC_503(){
 		sfHomePage.loginToStoreFront(TestConstants.PC_USERNAME, password);
 //		sfShopSkinCarePage = sfHomePage.clickOnCategoryFromShopSkinCare("REDEFINE");
@@ -1115,7 +1118,7 @@ public class ProductsAndCartDetailsTest extends StoreFrontWebsiteBaseTest{
 	 * Description : This test validates the presence of price of product for Consultant User
 	 * 
 	 */
-	@Test
+	@Test(enabled=true)
 	public void testProductPricingConsultant_504(){
 		sfHomePage.loginToStoreFront(TestConstants.CONSULTANT_USERNAME, password);
 //		sfShopSkinCarePage = sfHomePage.clickOnCategoryFromShopSkinCare("REDEFINE");
@@ -1138,9 +1141,8 @@ public class ProductsAndCartDetailsTest extends StoreFrontWebsiteBaseTest{
 	 * Description : This test validates click on product name to view product details and click on product image
 	 *     
 	 */
-	@Test
+	@Test(enabled=false)
 	public void testProductDetailsPageProductImages_337(){
-
 		sfShopSkinCarePage=sfHomePage.clickAllProducts();
 		sfProductDetailPage=sfShopSkinCarePage.clickNameOfProductOnAllProductPage("1");
 		s_assert.assertTrue(sfProductDetailPage.isProductImageDisplayed(),"Expected user is not redirected to product detail page");
@@ -1156,7 +1158,7 @@ public class ProductsAndCartDetailsTest extends StoreFrontWebsiteBaseTest{
 	 * Description : This test validates product details page with different scenarios
 	 *     
 	 */
-	@Test //incomplete search functionality not working
+	@Test(enabled=false)//TODO incomplete search functionality not working
 	public void testProductDetailPage_196(){
 		String productName = TestConstants.PRODUCT_NAME;
 		sfShopSkinCarePage=sfHomePage.clickAllProducts();

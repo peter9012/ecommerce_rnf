@@ -17,7 +17,7 @@ public class MyAccountTest extends StoreFrontWebsiteBaseTest{
 	 * 
 	 *     
 	 */
-	@Test
+	@Test(enabled=true)
 	public void testVerifyAccountInfoPageForUsers_178(){
 		String currentURL = null;
 		String urlToAssert = "my-account";
@@ -70,7 +70,7 @@ public class MyAccountTest extends StoreFrontWebsiteBaseTest{
 	 * 
 	 *     
 	 */
-	@Test
+	@Test(enabled=true)
 	public void testDisabledUsernameOnAccountInfoPageForUsers_179(){
 		//Login as consultant user.
 		sfHomePage.loginToStoreFront(TestConstants.CONSULTANT_EMAIL,password);
@@ -101,7 +101,7 @@ public class MyAccountTest extends StoreFrontWebsiteBaseTest{
 	 * 
 	 *     
 	 */
-	@Test
+	@Test(enabled=true)
 	public void testEmailIDFormatErrorValidation_249(){
 		String emailAddressWithoutAtAndDot = "autocon12mailinatorcom";
 		String emailAddressWithoutAt = "autocon12mailinator.com";
@@ -142,7 +142,7 @@ public class MyAccountTest extends StoreFrontWebsiteBaseTest{
 	 * 
 	 *     
 	 */
-	@Test
+	@Test(enabled=true)
 	public void testPasswordFormatErrorValidation_250(){
 		String passwordLessThan5Chars = "111M";
 		//Login as consultant user.
@@ -176,7 +176,7 @@ public class MyAccountTest extends StoreFrontWebsiteBaseTest{
 	 * 
 	 *     
 	 */
-	@Test//Incomplete flow is not as per test case in qtest
+	@Test(enabled=false)//TODOD Incomplete flow is not as per test case in qtest
 	public void testUpdateFirstAndLastNameOnCheckoutPageForUser_230(){
 		String category_AllProduct = "ALL PRODUCTS";
 		String randomWord = CommonUtils.getRandomWord(4);
@@ -210,7 +210,7 @@ public class MyAccountTest extends StoreFrontWebsiteBaseTest{
 	 * 
 	 *     
 	 */
-	@Test
+	@Test(enabled=true)
 	public void testAccountInfoPageMandatoryFieldValidation_248(){
 		//Login as consultant user.
 		sfHomePage.loginToStoreFront(TestConstants.CONSULTANT_EMAIL,password);
@@ -237,7 +237,7 @@ public class MyAccountTest extends StoreFrontWebsiteBaseTest{
 	 * 
 	 *     
 	 */
-	@Test
+	@Test(enabled=true)
 	public void testViewPulseDetails_276(){
 		//Login as consultant user.
 		sfHomePage.loginToStoreFront(TestConstants.CONSULTANT_USERNAME,password);
@@ -258,7 +258,7 @@ public class MyAccountTest extends StoreFrontWebsiteBaseTest{
 	 * 
 	 * 				
 	 */
-	@Test//TODO Incomplete as on spouse details confirmation popup cancel button not present.
+	@Test(enabled=false) //TODO Incomplete as on spouse details confirmation popup cancel button not present.
 	public void testUpdateSpouseInformation_284(){
 		String spouseFirstName = TestConstants.SPOUSE_FIRST_NAME;
 		String spouseLastName = TestConstants.SPOUSE_LAST_NAME;
@@ -286,7 +286,7 @@ public class MyAccountTest extends StoreFrontWebsiteBaseTest{
 	 * 
 	 * 				
 	 */
-	@Test
+	@Test(enabled=true)
 	public void testUpdateInvalidSpouseInformation_370(){
 		String spouseFirstName = "";
 		String spouseLastName = "";
@@ -313,7 +313,7 @@ public class MyAccountTest extends StoreFrontWebsiteBaseTest{
 	 * 
 	 * 				
 	 */
-	@Test
+	@Test(enabled=true)
 	public void testUpdateAccountInfoWithValidDetails_288(){
 		String country="USA";
 		String profileUpdationMessage = null;
@@ -381,7 +381,7 @@ public class MyAccountTest extends StoreFrontWebsiteBaseTest{
 	 * and save account info clicked.
 	 *
 	 */
-	@Test
+	@Test(enabled=true)
 	public void testUpdateAccountInfoWithInvalidDetails_289(){
 		String randomWord = CommonUtils.getRandomWord(5);
 		String firstName = TestConstants.FIRST_NAME;
@@ -513,7 +513,7 @@ public class MyAccountTest extends StoreFrontWebsiteBaseTest{
 	 * Invalid details and save account info clicked.
 	 *
 	 */
-	@Test//Issue numbers are not accepted in first and last name fields and phone number with special char not accepted.
+	@Test(enabled=false) //TODO Issue numbers are not accepted in first and last name fields and phone number with special char not accepted.
 	public void testUpdateAccountInfoWithInvalidDetails_301(){
 		String profileUpdationMessage = null;
 		String randomWord = CommonUtils.getRandomWord(5);
@@ -600,7 +600,7 @@ public class MyAccountTest extends StoreFrontWebsiteBaseTest{
 	 * 
 	 * 				
 	 */
-	@Test//TODO assert the successful log msg as well
+	@Test(enabled=true)
 	public void testVerifyLogoutFunctionality_329(){
 		//Login as consultant user.
 		sfHomePage.loginToStoreFront(TestConstants.CONSULTANT_USERNAME,password);
@@ -618,7 +618,7 @@ public class MyAccountTest extends StoreFrontWebsiteBaseTest{
 	 * 
 	 * 				
 	 */
-	@Test
+	@Test(enabled=true)
 	public void testVerifyLoginFunctionalityInMultipleTabs_330() throws AWTException{
 		String currentURL = null;
 		String currentWindowID = null; 
@@ -648,7 +648,7 @@ public class MyAccountTest extends StoreFrontWebsiteBaseTest{
 	 * 
 	 * 				
 	 */
-	@Test
+	@Test(enabled=true)
 	public void testVerifyCRPAutoShipPage_331(){
 		String currentURL = null;
 		String urlToAssert = "autoship/cart";
@@ -668,7 +668,7 @@ public class MyAccountTest extends StoreFrontWebsiteBaseTest{
 	 * 
 	 * 				
 	 */
-	@Test//Incomplete as pulse functionality not implemented yet.
+	@Test(enabled=false)//TODO Incomplete as pulse functionality not implemented yet.
 	public void testVerifyCheckMyPulsePage_357(){
 		String currentURL = null;
 		String currentWindowID = null;
@@ -692,7 +692,7 @@ public class MyAccountTest extends StoreFrontWebsiteBaseTest{
 	 * 
 	 *     
 	 */
-	@Test
+	@Test(enabled=true)
 	public void testUpdateAndVerifyPasswordForUser_392(){
 		String emptyNewPassword = "";
 		String passwordLessThanSixChar = "Maide";
@@ -748,7 +748,7 @@ public class MyAccountTest extends StoreFrontWebsiteBaseTest{
 	 * 
 	 *     
 	 */
-	@Test//TODO
+	@Test(enabled=false)//TODO
 	public void testEmailYourConsultantValid_285(){
 		sfHomePage.loginToStoreFront(TestConstants.PC_EMAIL, password);
 		sfHomePage.clickWelcomeDropdown();
@@ -766,7 +766,7 @@ public class MyAccountTest extends StoreFrontWebsiteBaseTest{
 	 * 
 	 *     
 	 */
-	@Test
+	@Test(enabled=true)
 	public void testEmailYourConsultantInvalid_286(){
 		String moreThan200Chars  = TestConstants.MORE_THAN_200_CHARS;
 		String name = "name";
@@ -799,7 +799,7 @@ public class MyAccountTest extends StoreFrontWebsiteBaseTest{
 	 * 
 	 *     
 	 */
-	@Test
+	@Test(enabled=true)
 	public void testReportAProblemOrderHistory_358(){
 		String reportProblemsLink = "Report Problems";
 		sfHomePage.loginToStoreFront(TestConstants.CONSULTANT_USERNAME, password);
@@ -820,7 +820,7 @@ public class MyAccountTest extends StoreFrontWebsiteBaseTest{
 	 * Description : This test validates order history section, Return order section, order details page
 	 *     
 	 */
-	@Test
+	@Test(enabled=true)
 	public void testOrderHistory_387(){
 		String orderNumberTitle = "Order Number";
 		String orderDateTitle = "Order Date";
@@ -868,7 +868,7 @@ public class MyAccountTest extends StoreFrontWebsiteBaseTest{
 	 * 
 	 *     
 	 */
-	@Test
+	@Test(enabled=true)
 	public void testPasswordResetIncorrectCurrentPwd_282(){
 		String incorrectCurrentPassword = "111Maiden";
 		//Login as consultant user.
@@ -890,7 +890,7 @@ public class MyAccountTest extends StoreFrontWebsiteBaseTest{
 	 * 
 	 *     
 	 */
-	@Test
+	@Test(enabled=true)
 	public void testPasswordResetInvalidScenrios_283(){
 		String incorrectCurrentPassword = "111Maiden";
 		//Login as consultant user.
@@ -921,7 +921,7 @@ public class MyAccountTest extends StoreFrontWebsiteBaseTest{
 	 * 
 	 *     
 	 */
-	@Test
+	@Test(enabled=true)
 	public void testResetPasswordValidDetails_281(){
 		String newValidPassword = "111Maiden";
 		String profileUpdationMessage = null;

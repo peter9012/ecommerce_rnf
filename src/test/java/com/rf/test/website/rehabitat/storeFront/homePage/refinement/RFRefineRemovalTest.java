@@ -11,7 +11,7 @@ public class RFRefineRemovalTest extends StoreFrontWebsiteBaseTest{
 	 * Description : This test validates shop by price filter at products page
 	 *     
 	 */
-	@Test
+	@Test(enabled=false)
 	public void testRemovingAllFilters_54(){
 		int totalNoOfProduct = 0;
 		String priceRange0to49 = "0To49";
@@ -56,7 +56,7 @@ public class RFRefineRemovalTest extends StoreFrontWebsiteBaseTest{
 	 * Description : This test remove one filter and validates remiaing are same
 	 *     
 	 */
-	@Test
+	@Test(enabled=false)
 	public void testRemovingOneFilter_55(){
 		int totalNoOfProduct = 0;
 		String priceRange0to49 = "0To49";

@@ -12,7 +12,7 @@ public class TermsAndConditionsTest extends StoreFrontWebsiteBaseTest{
 	 * 
 	 *     
 	 */
-	@Test 
+	@Test(enabled=true) 
 	public void testVerifyTermsAndConditionsLinkInFooter_20(){
 		String termsAndConditions = "Terms & Condition";
 		String currentURL = null;
@@ -30,7 +30,7 @@ public class TermsAndConditionsTest extends StoreFrontWebsiteBaseTest{
 	 * 
 	 * Description : This test verify Privacy policy link from terms and conditions Page.	 
 	 */
-	@Test 
+	@Test(enabled=true) 
 	public void testVerifyPrivacyPolicyLinkFromTermsAndConditionsPage_21(){
 		String termsAndConditions = "Terms & Condition";
 		String PrivacyPolicy = "Privacy Policy";

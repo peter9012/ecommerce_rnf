@@ -15,7 +15,7 @@ public class SuccessfulUserLoginTest extends StoreFrontWebsiteBaseTest{
 	 * login icon on home page
 	 * 				
 	 */
-	@Test
+	@Test(enabled=true)
 	public void testUserloginFromCorp_27(){
 		sfHomePage.loginToStoreFront(TestConstants.CONSULTANT_EMAIL, password);
 		s_assert.assertTrue(sfHomePage.isWelcomeUserElementDisplayed(),"user is NOT successfully logged in");
@@ -53,7 +53,7 @@ public class SuccessfulUserLoginTest extends StoreFrontWebsiteBaseTest{
 	 * 
 	 * THIS TEST DOESN'T VERIFY THE PASSWORD RESET FROM EMAIL FUNCTIONALITY			
 	 */
-	@Test
+	@Test(enabled=true)
 	public void testResetPasswordFromLogin_536(){
 		sfHomePage.clickLoginIcon().clickForgetPasswordLink();
 		sfHomePage.enterPasswordRecoverEmail(TestConstants.CONSULTANT_EMAIL).clickSubmitBtnForPasswordRecovery();
@@ -69,7 +69,7 @@ public class SuccessfulUserLoginTest extends StoreFrontWebsiteBaseTest{
 	 * 
 	 * THIS TEST DOESN'T VERIFY THE PASSWORD RESET FROM EMAIL FUNCTIONALITY			
 	 */
-	@Test
+	@Test(enabled=true)
 	public void testResetPasswordFromCreateAccountPage_537(){
 		String allProduct = "ALL PRODUCTS";
 		sfCartPage = new StoreFrontCartPage(driver);
@@ -91,7 +91,7 @@ public class SuccessfulUserLoginTest extends StoreFrontWebsiteBaseTest{
 	 * 
 	 * THIS TEST DOESN'T VERIFY THE PASSWORD RESET FROM EMAIL FUNCTIONALITY			
 	 */
-	@Test//TODO for terminated users
+	@Test(enabled=true)//TODO for terminated users
 	public void testResetPasswordFromLoginUnRegisteredEmail_538(){
 		String unRegisteredEmail = "abc@xyz.com";
 		sfHomePage.clickLoginIcon().clickForgetPasswordLink();

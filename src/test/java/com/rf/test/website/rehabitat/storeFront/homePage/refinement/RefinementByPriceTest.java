@@ -13,7 +13,7 @@ public class RefinementByPriceTest extends StoreFrontWebsiteBaseTest{
 	 * while logged in through PC
 	 *     
 	 */
-	@Test
+	@Test(enabled=false)
 	public void testRefinmentByPriceShouldBeWorkingOnPLP_120(){
 		sfHomePage.loginToStoreFront(TestConstants.PC_EMAIL, password);
 		int totalNoOfProduct = 0;
@@ -53,14 +53,14 @@ public class RefinementByPriceTest extends StoreFrontWebsiteBaseTest{
 		s_assert.assertTrue(sfHomePage.isShopByPriceFilterRemovedSuccessfully(totalNoOfProduct, priceRange200to499), "200 to 499 Filter not removed successfully");
 		s_assert.assertAll();
 	}
-	
+
 	/***
 	 * qTest : TC-121 Refinement by Price should working on the Search page
 	 * Description : This test validates shop by price filter at products search page
 	 * while logged in through PC
 	 *     
 	 */
-	@Test
+	@Test(enabled=false)
 	public void testRefinmentByPriceShouldBeWorkingOnSearchPage_121(){
 		int totalNoOfProduct = 0;
 		String priceRange0to49 = "0To49";

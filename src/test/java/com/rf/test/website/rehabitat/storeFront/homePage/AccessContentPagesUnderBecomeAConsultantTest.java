@@ -13,7 +13,7 @@ public class AccessContentPagesUnderBecomeAConsultantTest extends StoreFrontWebs
 	 * under Become a consultant section
 	 *     
 	 */
-	@Test
+	@Test(enabled=true)
 	public void testAccessSpecificContentPagesUnderBecomeAConsultantSection_12(){
 		String meetOurCommunityLink = "MEET OUR COMMUNITY";
 		String whyRFLink = "WHY R+F";

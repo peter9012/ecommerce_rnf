@@ -47,7 +47,7 @@ public class PCEnrollmentTest extends StoreFrontWebsiteBaseTest{
 	 * 
 	 *     
 	 */
-	@Test
+	@Test(enabled=true)
 	public void testPCEnrollment_452(){
 		sfCartPage = new StoreFrontCartPage(driver);
 		sfShopSkinCarePage = new StoreFrontShopSkinCarePage(driver);
@@ -84,7 +84,7 @@ public class PCEnrollmentTest extends StoreFrontWebsiteBaseTest{
 	 * 
 	 *     
 	 */
-	@Test
+	@Test(enabled=true)
 	public void testPCIncompleteEnrollment_451(){
 		sfCartPage = new StoreFrontCartPage(driver);
 		sfShopSkinCarePage = new StoreFrontShopSkinCarePage(driver);
@@ -108,7 +108,7 @@ public class PCEnrollmentTest extends StoreFrontWebsiteBaseTest{
 	 * 
 	 *     
 	 */
-	@Test
+	@Test(enabled=true)
 	public void testPCEnrollmentTCCheckboxSelected_480(){
 		//duplicate test,same as testPCEnrollment_452
 	}
@@ -120,7 +120,7 @@ public class PCEnrollmentTest extends StoreFrontWebsiteBaseTest{
 	 * 
 	 *     
 	 */
-	@Test
+	@Test(enabled=true)
 	public void testPCEnrollmentTCCheckboxNotSelected_481(){
 		sfCartPage = new StoreFrontCartPage(driver);
 		sfShopSkinCarePage = new StoreFrontShopSkinCarePage(driver);
@@ -154,7 +154,7 @@ public class PCEnrollmentTest extends StoreFrontWebsiteBaseTest{
 	 * 
 	 *     
 	 */
-	@Test
+	@Test(enabled=true)
 	public void testPCEnrollmentSelectSponsor_495(){
 		String allProduct = "ALL PRODUCTS";
 		String dummyConsultant = "xxx";
@@ -189,7 +189,7 @@ public class PCEnrollmentTest extends StoreFrontWebsiteBaseTest{
 	 * 
 	 *     
 	 */
-	@Test
+	@Test(enabled=false)//TODO
 	public void testAutoAssignConsultantPcEnrollment_573(){
 		String existingConsultant = TestConstants.SPONSOR;
 		sfCartPage = new StoreFrontCartPage(driver);

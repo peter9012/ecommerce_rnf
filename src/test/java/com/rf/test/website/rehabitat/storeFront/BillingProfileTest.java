@@ -8,7 +8,10 @@ import com.rf.test.website.rehabitat.storeFront.baseTest.StoreFrontWebsiteBaseTe
 
 public class BillingProfileTest extends StoreFrontWebsiteBaseTest{
 
-	@Test
+	/***
+	 * 
+	 */
+	@Test(enabled=true)
 	public void testAddNewBillingAddressToExistingBillingProfile_385(){
 		String currentURL = null;
 		String randomWord = CommonUtils.getRandomWord(5);
@@ -56,7 +59,10 @@ public class BillingProfileTest extends StoreFrontWebsiteBaseTest{
 		s_assert.assertAll();
 	}
 
-	@Test
+	/***
+	 * 
+	 */
+	@Test(enabled=true)
 	public void testAddNewBillingAddressToNewlyCreatedBillingProfile_386(){
 		String currentURL = null;
 		String randomWord = CommonUtils.getRandomWord(5);
@@ -115,7 +121,7 @@ public class BillingProfileTest extends StoreFrontWebsiteBaseTest{
 	 * 
 	 *     
 	 */
-	@Test
+	@Test(enabled=true)
 	public void testBillingProfileSelectAnBillingAddressNewProfile_426(){
 		String currentURL = null;
 		int initialCountOfProfiles;
@@ -151,7 +157,7 @@ public class BillingProfileTest extends StoreFrontWebsiteBaseTest{
 	 * 
 	 *     
 	 */
-	@Test
+	@Test(enabled=true)
 	public void testBillingInformation_505(){
 		String currentURL = null;
 		String urlToAssert = "payment-details";
@@ -199,7 +205,7 @@ public class BillingProfileTest extends StoreFrontWebsiteBaseTest{
 	 * 
 	 *     
 	 */
-	@Test
+	@Test(enabled=true)
 	public void testTokenizationMyAccount_453(){
 		String currentURL = null;
 		String lastFourDigitOfCard = null;
@@ -248,7 +254,7 @@ public class BillingProfileTest extends StoreFrontWebsiteBaseTest{
 	 * 
 	 *     
 	 */
-	@Test
+	@Test(enabled=true)
 	public void testTokenizationCheckout_454(){
 		String currentURL = null;
 		String lastFourDigitOfCard = null;
@@ -299,7 +305,7 @@ public class BillingProfileTest extends StoreFrontWebsiteBaseTest{
 	 * 
 	 *     
 	 */
-	@Test
+	@Test(enabled=true)
 	public void testBillingInformationDefaultPaymentProfilesMultipleProfiles_475(){
 		String currentURL = null;
 		String randomWord = CommonUtils.getRandomWord(5);

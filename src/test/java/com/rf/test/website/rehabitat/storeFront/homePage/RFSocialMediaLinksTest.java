@@ -12,7 +12,7 @@ public class RFSocialMediaLinksTest  extends StoreFrontWebsiteBaseTest{
 	 * 
 	 * Description : This test validates social icons on home page. 
 	 */
-	@Test
+	@Test(enabled=false)
 	public void testVerifySocialIconsOnHomePage_88(){
 		String currentWindowID = null;
 		String currentURL = null;

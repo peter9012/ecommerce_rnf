@@ -14,7 +14,7 @@ public class AutoshipTest extends StoreFrontWebsiteBaseTest{
 	 * 
 	 *     
 	 */
-	@Test
+	@Test(enabled=false)
 	public void testUpdateAutoshipCartEditShipAddressPC_399(){
 		String currentURL = null;
 		String randomWord = CommonUtils.getRandomWord(5);
@@ -55,7 +55,7 @@ public class AutoshipTest extends StoreFrontWebsiteBaseTest{
 	 * 
 	 *     
 	 */
-	@Test
+	@Test(enabled=false)
 	public void testUpdateAutoshipAddABillingProfileInvalid_418(){
 		String currentURL = null;
 		String textToAssertInURL = "autoship/cart";
@@ -112,7 +112,7 @@ public class AutoshipTest extends StoreFrontWebsiteBaseTest{
 	 * 
 	 *     
 	 */
-	@Test
+	@Test(enabled=false)
 	public void testUpdateAutoshipCartEditABillingProfilePC_401(){
 		String currentURL = null;
 		String randomWord = CommonUtils.getRandomWord(5);
@@ -156,7 +156,7 @@ public class AutoshipTest extends StoreFrontWebsiteBaseTest{
 	 * 
 	 *     
 	 */
-	@Test
+	@Test(enabled=false)
 	public void testUpdateAutoshipCartShippingMethodAllFutureShipments_407(){
 		String currentURL = null;
 		String textToAssertInURL = "autoship/cart";
@@ -195,7 +195,7 @@ public class AutoshipTest extends StoreFrontWebsiteBaseTest{
 	 * 
 	 *     
 	 */
-	@Test
+	@Test(enabled=false)
 	public void testUpdateAutoshipAddABillingProfileInvalid_422(){
 		String currentURL = null;
 		String randomWord = CommonUtils.getRandomWord(5);
@@ -238,7 +238,7 @@ public class AutoshipTest extends StoreFrontWebsiteBaseTest{
 	 * 
 	 *     
 	 */
-	@Test
+	@Test(enabled=false)
 	public void testEditPCPerks_450(){
 		String currentURL = null;
 		String textToAssertInURL = "autoship/cart";
@@ -258,7 +258,7 @@ public class AutoshipTest extends StoreFrontWebsiteBaseTest{
 	 * 
 	 *     
 	 */
-	@Test
+	@Test(enabled=false)
 	public void testUpdateAutoshipAddABillingAddressToExistingProfileInvalid_425(){
 		String currentURL = null;
 		String randomWord = CommonUtils.getRandomWord(5);
@@ -299,7 +299,7 @@ public class AutoshipTest extends StoreFrontWebsiteBaseTest{
 	 * 
 	 *     
 	 */
-	@Test
+	@Test(enabled=false)
 	public void testEditPCPerks_333(){
 		String currentURL = null;
 		String textToAssertInURL = "autoship/cart";
@@ -322,7 +322,7 @@ public class AutoshipTest extends StoreFrontWebsiteBaseTest{
 	 * 
 	 *     
 	 */
-	@Test
+	@Test(enabled=false)
 	public void testVerifyCartAndCheckoutPageForuser_484(){
 		String currentURL = null;
 		String textToAssertInURL = "autoship/cart";

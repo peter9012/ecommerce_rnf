@@ -12,7 +12,7 @@ public class FeatureProductTest extends StoreFrontWebsiteBaseTest{
 	 * 
 	 *     
 	 */
-	@Test//Incomplete for com and biz site.
+	@Test(enabled=false) //TODO Incomplete for com and biz site.
 	public void testVerifyFeaturedProductCategoryUnderShopSkincareOnCorpComAndBizSite_81(){
 		String currentURL = null;
 		String featuredRegimenURL = "/c/featured";

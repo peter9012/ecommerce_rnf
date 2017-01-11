@@ -13,7 +13,7 @@ public class MiniCartTest extends StoreFrontWebsiteBaseTest{
 	 * after placed an order
 	 *     
 	 */
-	@Test//Incomplete(need to com & biz url)
+	@Test(enabled=false)//TODO Incomplete(need to com & biz url)
 	public void testMiniCartClearedAfterCheckout_419(){
 		String cardType = TestConstants.CARD_TYPE;
 		String cardNumber = TestConstants.CARD_NUMBER;
@@ -44,7 +44,7 @@ public class MiniCartTest extends StoreFrontWebsiteBaseTest{
 	 * Description : This test validates product name, quantity ,subtotal, no of item
 	 * In mini cart    
 	 */
-	@Test
+	@Test(enabled=false)
 	public void testViewMiniShippingBag_147(){
 		sfShopSkinCarePage = sfHomePage.clickAllProducts();
 		sfShopSkinCarePage.addFirstProductToBag();
@@ -78,7 +78,7 @@ public class MiniCartTest extends StoreFrontWebsiteBaseTest{
 	 * Description : This test validates R+F logo, welcome dropdown,autoship link, mini cart icon & top navigation bar 
 	 * at mini cart page    
 	 */
-	@Test
+	@Test(enabled=false)
 	public void testPCUserAbleToSeeLogoUsernameDropdownAndMiniCartAtCartPage_147(){
 		sfHomePage.loginToStoreFront(TestConstants.PC_EMAIL, password);
 		sfShopSkinCarePage = sfHomePage.clickAllProducts();
@@ -97,7 +97,7 @@ public class MiniCartTest extends StoreFrontWebsiteBaseTest{
 	 * Description : This test validates R+F logo, welcome dropdown,autoship link, mini cart icon & top navigation bar 
 	 * at mini cart page    
 	 */
-	@Test
+	@Test(enabled=false)
 	public void testConsultantUserAbleToSeeLogoUsernameDropdownAndMiniCartAtCartPage_149(){
 		sfHomePage.loginToStoreFront(TestConstants.CONSULTANT_EMAIL, password);
 		sfShopSkinCarePage = sfHomePage.clickAllProducts();
@@ -115,7 +115,7 @@ public class MiniCartTest extends StoreFrontWebsiteBaseTest{
 	 * qTest : TC-325 Mini Cart- Autoship
 	 * Description : This test validates autoship link and view pc perks cart button
 	 */
-	@Test
+	@Test(enabled=false)
 	public void testMiniCartAutoship_325(){
 		sfHomePage.loginToStoreFront(TestConstants.PC_EMAIL, password);
 		sfHomePage.hoverOnAutoshipLink();
@@ -131,7 +131,7 @@ public class MiniCartTest extends StoreFrontWebsiteBaseTest{
 	 * qTest : TC-343 As a PC or Consultant, I will be able to able to view a mini autoship cart
 	 * Description : This test case validates mini autoship cart link
 	 */
-	@Test
+	@Test(enabled=false)
 	public void testPCAbleToViewMiniAutoshipCart_343(){
 		//duplicate as TC-325 Mini Cart- Autoship
 	}
@@ -143,8 +143,7 @@ public class MiniCartTest extends StoreFrontWebsiteBaseTest{
 	 * 
 	 *     
 	 */
-
-	@Test
+	@Test(enabled=false)
 	public void testAnonymousUserAddsProductsToTheCartForAdhocOrder_563(){
 		String productName = null;
 		String productNameOnCheckoutPopup = null;
@@ -168,6 +167,7 @@ public class MiniCartTest extends StoreFrontWebsiteBaseTest{
 		s_assert.assertTrue(sfCartPage.isProductAddedToCartPresentOnCartPage(productNameOnCheckoutPopup),"Product added to cart : "+productName+" is not present on the cart page");
 		s_assert.assertAll();
 	}
+	
 	/***
 	 * qTest : TC-564 User has previously added items to the cart
 	 * Description : Description : This test validates that the product added by a anonymous user
@@ -175,8 +175,7 @@ public class MiniCartTest extends StoreFrontWebsiteBaseTest{
 	 * 
 	 *     
 	 */
-
-	@Test
+	@Test(enabled=false)
 	public void testUserHasPreviouslyAddedItemsToTheCart_564(){
 		String productName = null;
 		String productNameToAddByUser = null;
@@ -219,8 +218,7 @@ public class MiniCartTest extends StoreFrontWebsiteBaseTest{
 	 * 
 	 *     
 	 */
-
-	@Test
+	@Test(enabled=false)
 	public void testPCOrConsultantUserAddsProductsToTheCartAnonymously_565(){
 		String productName = null;
 		String productNameOnCheckoutPopup = null;
@@ -293,7 +291,7 @@ public class MiniCartTest extends StoreFrontWebsiteBaseTest{
 	 * qTest : TC-344 As a PC, Retail/Anon User, Consultant, I will be able to view the mini cart
 	 * Description : This test case validates mini cart
 	 */
-	@Test
+	@Test(enabled=false)
 	public void testAsPCAndRCAbleToViewMiniAutoshipCart_344(){
 		sfHomePage.loginToStoreFront(TestConstants.PC_EMAIL, password);
 		sfShopSkinCarePage = sfHomePage.clickAllProducts();
@@ -313,7 +311,7 @@ public class MiniCartTest extends StoreFrontWebsiteBaseTest{
 	 * after placed an order
 	 *     
 	 */
-	@Test
+	@Test(enabled=false)
 	public void testAutoshipNotVisibleToConsultantNotEnrolledInCRP_372(){
 		sfHomePage.loginToStoreFront(TestConstants.CONSULTANT_EMAIL, password);
 		s_assert.assertFalse(sfHomePage.isAutoshipLinkPresent(), "Autoship link is not present for consultant who is not enrolled in pulse");

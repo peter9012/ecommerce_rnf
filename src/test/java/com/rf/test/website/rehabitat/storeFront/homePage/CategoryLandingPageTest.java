@@ -13,7 +13,7 @@ public class CategoryLandingPageTest extends StoreFrontWebsiteBaseTest{
 	 * and add to bag button is present or not 
 	 *     
 	 */
-	@Test
+	@Test(enabled=true)
 	public void testRedefineCategoryLandingPage_94(){
 		String category_Redefine = "REDEFINE";
 		String currentURL = null;
@@ -30,7 +30,7 @@ public class CategoryLandingPageTest extends StoreFrontWebsiteBaseTest{
 	 * and add to bag button is present or not 
 	 *     
 	 */
-	@Test
+	@Test(enabled=true)
 	public void testReverseCategoryLandingPage_91(){
 		String category_Reverse = "REVERSE";
 		String currentURL = null;
@@ -47,7 +47,7 @@ public class CategoryLandingPageTest extends StoreFrontWebsiteBaseTest{
 	 * and add to bag button is present or not 
 	 *     
 	 */
-	@Test
+	@Test(enabled=true)
 	public void testUnblemishCategoryLandingPage_93(){
 		String category_Unblemish = "UNBLEMISH";
 		String currentURL = null;
@@ -64,7 +64,7 @@ public class CategoryLandingPageTest extends StoreFrontWebsiteBaseTest{
 	 * and add to bag button is present or not 
 	 *     
 	 */
-	@Test
+	@Test(enabled=true)
 	public void testSootheCategoryLandingPage_92(){
 		String category_Soothe = "SOOTHE";
 		String currentURL = null;
@@ -81,7 +81,7 @@ public class CategoryLandingPageTest extends StoreFrontWebsiteBaseTest{
 	 * and add to bag button is present or not 
 	 *     
 	 */
-	@Test
+	@Test(enabled=true)
 	public void testEssentialsCategoryLandingPage_89(){
 		String category_Essentials = "ESSENTIALS";
 		String currentURL = null;
@@ -98,7 +98,7 @@ public class CategoryLandingPageTest extends StoreFrontWebsiteBaseTest{
 	 * and add to bag button is present or not 
 	 *     
 	 */
-	@Test
+	@Test(enabled=true)
 	public void testEnhancementsCategoryLandingPage_96(){
 		String category_Enhancements = "ENHANCEMENT";
 		String currentURL = null;
@@ -115,7 +115,7 @@ public class CategoryLandingPageTest extends StoreFrontWebsiteBaseTest{
 	 * and add to bag button is present or not 
 	 *     
 	 */
-	@Test
+	@Test(enabled=true)
 	public void testAllProductsLandingPage_95(){
 		String category_AllProducts = "ALL PRODUCTS";
 		String currentURL = null;
@@ -133,7 +133,7 @@ public class CategoryLandingPageTest extends StoreFrontWebsiteBaseTest{
 	 * and add to bag button is present or not 
 	 *     
 	 */
-	@Test
+	@Test(enabled=true)
 	public void testFeaturedCategoryLandingPage_97(){
 		String category_Featured = "FEATURED";
 		String currentURL = null;

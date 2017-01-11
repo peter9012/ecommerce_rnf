@@ -13,7 +13,7 @@ public class OrdersTest extends StoreFrontWebsiteBaseTest{
 	 * Description : This test validates Details link under Actions drop down
 	 *     
 	 */
-	@Test
+	@Test(enabled=true)
 	public void testOrderHistoryLinkToOrderDetails_180(){
 		String detailsLink = "Details";
 		String orderNumber = null;
@@ -59,7 +59,7 @@ public class OrdersTest extends StoreFrontWebsiteBaseTest{
 	 * Description : This test validates report problems page & field validations
 	 *     
 	 */
-	@Test//incomplete
+	@Test(enabled=false)//TODO incomplete
 	public void testOrderHistoryReportAProblemFieldValidations_227(){
 		String reportProblemsLink = "Report Problems";
 		String name = TestConstants.FIRST_NAME;
@@ -80,7 +80,7 @@ public class OrdersTest extends StoreFrontWebsiteBaseTest{
 	 * Description : This test validates return order request & details
 	 *     
 	 */
-	@Test//incomplete
+	@Test(enabled=true)//TODO incomplete
 	public void testOrderHistoryReportAProblemConfirmationPage_228(){
 		String reportProblemsLink = "Report Problems";
 		String expectedConfirmationMessage = "Thank you. We have sent your problem to our customer service and they will review the issue and respond within 48 hours";
@@ -103,7 +103,7 @@ public class OrdersTest extends StoreFrontWebsiteBaseTest{
 	 * 
 	 *     
 	 */
-	@Test
+	@Test(enabled=true)
 	public void testCheckoutPageEditsEditShippingInformation_298(){
 		String randomWord = CommonUtils.getRandomWord(5);
 		String firstName = TestConstants.FIRST_NAME;
@@ -136,7 +136,7 @@ public class OrdersTest extends StoreFrontWebsiteBaseTest{
 	 * for consultant
 	 *     
 	 */
-	@Test
+	@Test(enabled=false) //CA specific test
 	public void testConsultantCanNotShipToQuebec_316(){
 		if(country.equalsIgnoreCase("ca")){
 			sfHomePage.loginToStoreFront(TestConstants.CONSULTANT_USERNAME, password);
@@ -158,7 +158,7 @@ public class OrdersTest extends StoreFrontWebsiteBaseTest{
 	 * 
 	 *     
 	 */
-	@Test
+	@Test(enabled=true)
 	public void testEditAShipAddressCheckoutInvalidDetails_322(){
 		String randomWord = CommonUtils.getRandomWord(5);
 		String firstName = TestConstants.FIRST_NAME;
@@ -193,7 +193,7 @@ public class OrdersTest extends StoreFrontWebsiteBaseTest{
 	 * 
 	 *     
 	 */
-	@Test
+	@Test(enabled=false)//TODO
 	public void testAddAShipAddressCheckoutFirstTime_323(){
 
 	}
@@ -204,7 +204,7 @@ public class OrdersTest extends StoreFrontWebsiteBaseTest{
 	 * 
 	 *     
 	 */
-	@Test
+	@Test(enabled=false)//TODO
 	public void testCheckoutViewingMainAccountInfo_323(){
 
 	}
@@ -215,7 +215,7 @@ public class OrdersTest extends StoreFrontWebsiteBaseTest{
 	 * 
 	 *     
 	 */
-	@Test
+	@Test(enabled=false)//TODO
 	public void testShippingMethodCostShouldReduceForConsultantAdhocOrderWithMoreThanHundredSVValue_233(){
 
 	}
@@ -226,7 +226,7 @@ public class OrdersTest extends StoreFrontWebsiteBaseTest{
 	 * 
 	 *     
 	 */
-	@Test
+	@Test(enabled=true)
 	public void testCheckoutPageEditsCheckEditOptions_295(){
 		String currentURL = null;
 		String accountInfo = "delivery-account";
@@ -254,7 +254,7 @@ public class OrdersTest extends StoreFrontWebsiteBaseTest{
 	 * 
 	 *     
 	 */
-	@Test
+	@Test(enabled=true)
 	public void testCheckoutPageEditsEditShippingMethod_299(){
 		String shippingMethod = null;
 		String shippingMethodNameFromUI = null;
@@ -280,7 +280,7 @@ public class OrdersTest extends StoreFrontWebsiteBaseTest{
 	 * 
 	 *     
 	 */
-	@Test
+	@Test(enabled=true)
 	public void testCheckoutPageEditsEditCart_300(){
 		String productQuantityFromUI = null;
 		String updatedQuantity = null;
@@ -309,7 +309,7 @@ public class OrdersTest extends StoreFrontWebsiteBaseTest{
 	 * 
 	 *     
 	 */
-	@Test
+	@Test(enabled=true)
 	public void testBillingProfileAddAnAddressToExistingProfile_302(){
 		String randomWord = CommonUtils.getRandomWord(5);
 		String firstName = TestConstants.FIRST_NAME;
@@ -344,7 +344,7 @@ public class OrdersTest extends StoreFrontWebsiteBaseTest{
 	 * 
 	 *     
 	 */
-	@Test
+	@Test(enabled=true)
 	public void testBillingProfileAddAnAddressToNewProfile_303(){
 		String cardType = TestConstants.CARD_TYPE;
 		String cardNumber = TestConstants.CARD_NUMBER;
@@ -388,7 +388,7 @@ public class OrdersTest extends StoreFrontWebsiteBaseTest{
 	 * 
 	 *     
 	 */
-	@Test
+	@Test(enabled=true)
 	public void testBillingProfileAddAProfileWithSameShippingAddress_304(){
 		String cardType = TestConstants.CARD_TYPE;
 		String cardNumber = TestConstants.CARD_NUMBER;
@@ -428,7 +428,7 @@ public class OrdersTest extends StoreFrontWebsiteBaseTest{
 	 * Description : This test cases verify the validation of Card details fields 
 	 *     
 	 */
-	@Test
+	@Test(enabled=true)
 	public void testAddingAPaymentMethodErrors_305(){
 		String cardType = TestConstants.CARD_TYPE;
 		String cardNumber = TestConstants.CARD_NUMBER;
@@ -493,7 +493,7 @@ public class OrdersTest extends StoreFrontWebsiteBaseTest{
 	 * 
 	 *     
 	 */
-	@Test
+	@Test(enabled=false)//TODO
 	public void testTaxRulesConsultantUSAAdhocOrder_306(){
 
 	}
@@ -504,7 +504,7 @@ public class OrdersTest extends StoreFrontWebsiteBaseTest{
 	 * 
 	 *     
 	 */
-	@Test
+	@Test(enabled=false)//TODO
 	public void testTaxRulesConsultantUSAAutoshipOrder_307(){
 
 	}
@@ -515,7 +515,7 @@ public class OrdersTest extends StoreFrontWebsiteBaseTest{
 	 * 
 	 *     
 	 */
-	@Test
+	@Test(enabled=false)//TODO
 	public void testDisplayTaxOrderHistoryDetails_308(){
 
 	}
@@ -526,7 +526,7 @@ public class OrdersTest extends StoreFrontWebsiteBaseTest{
 	 * 
 	 *     
 	 */
-	@Test
+	@Test(enabled=false)//TODO
 	public void testDisplayTaxCheckout_309(){
 
 	}
@@ -537,7 +537,7 @@ public class OrdersTest extends StoreFrontWebsiteBaseTest{
 	 * 
 	 *     
 	 */
-	@Test
+	@Test(enabled=true)
 	public void testAddAPaymentMethodCheckout_310(){
 		int randomNum = CommonUtils.getRandomNum(10000, 1000000);
 		String firstName = TestConstants.FIRST_NAME;
@@ -572,7 +572,7 @@ public class OrdersTest extends StoreFrontWebsiteBaseTest{
 	 * 
 	 *     
 	 */
-	@Test
+	@Test(enabled=true)
 	public void testShippingMethodPCDirectPCEnrollment_311(){
 		String timeStamp = CommonUtils.getCurrentTimeStamp();
 		String firstName = TestConstants.FIRST_NAME;
@@ -600,7 +600,7 @@ public class OrdersTest extends StoreFrontWebsiteBaseTest{
 	 * 
 	 *     
 	 */
-	@Test
+	@Test(enabled=false)//TODO
 	public void testShippingMethodPCSelectPCCheckboxOnCheckout_312(){
 
 	}
@@ -611,7 +611,7 @@ public class OrdersTest extends StoreFrontWebsiteBaseTest{
 	 * 
 	 *     
 	 */
-	@Test
+	@Test(enabled=false)//TODO
 	public void testShipMethodPCExistingPCChangesShippingMethod_313(){
 
 	}
@@ -622,7 +622,7 @@ public class OrdersTest extends StoreFrontWebsiteBaseTest{
 	 * During Adhoc order
 	 *     
 	 */
-	@Test
+	@Test(enabled=true)
 	public void testShipMethodPCExistingPCPlaceAdhocOrder_314(){
 		String shippingMethodWithCost = null;
 		String shippingMethodName = TestConstants.SHIPPING_METHOD_UPS_GROUND;
@@ -644,17 +644,18 @@ public class OrdersTest extends StoreFrontWebsiteBaseTest{
 	 * 
 	 *     
 	 */
-	@Test
+	@Test(enabled=false)//TODO
 	public void testShipMethodAdhocCarts(){
 
 	}
+	
 	/***
 	 * qTest : TC-316 Consultants Cannot Ship to Quebec
 	 * Description : //TODO
 	 * 
 	 *     
 	 */
-	@Test
+	@Test(enabled=false)//TODO
 	public void testConsultantsCannotShipToQuebec_316(){
 
 	}
@@ -665,7 +666,7 @@ public class OrdersTest extends StoreFrontWebsiteBaseTest{
 	 * 
 	 *     
 	 */
-	@Test
+	@Test(enabled=false)//TODO
 	public void testAddressVerificationBillingProfile_318(){
 
 	}
@@ -677,7 +678,7 @@ public class OrdersTest extends StoreFrontWebsiteBaseTest{
 	 * 
 	 *     
 	 */
-	@Test
+	@Test(enabled=false)//TODO
 	public void testShippingToPORRboxes_319(){
 		String randomWord = CommonUtils.getRandomWord(5);
 		String firstName = TestConstants.FIRST_NAME;
@@ -748,7 +749,7 @@ public class OrdersTest extends StoreFrontWebsiteBaseTest{
 	 * 
 	 *     
 	 */
-	@Test
+	@Test(enabled=true)
 	public void testEditAShipAddressCheckoutValidDetails_321(){
 		String randomWord = CommonUtils.getRandomWord(5);
 		String firstName = TestConstants.FIRST_NAME;
@@ -781,17 +782,18 @@ public class OrdersTest extends StoreFrontWebsiteBaseTest{
 	 * 
 	 *     
 	 */
-	@Test
+	@Test(enabled=false)//TODO
 	public void testCartPageProductMessagingForNonReplenishableProducts_332(){
 
 	}
+	
 	/***
 	 * qTest : TC-335 Cart Page- PC Perks Terms and Conditions
 	 * Description : //TODO
 	 * 
 	 *     
 	 */
-	@Test
+	@Test(enabled=false)//TODO
 	public void testCartPagePCPerksTermsAndConditions_335(){
 
 	}
@@ -802,7 +804,7 @@ public class OrdersTest extends StoreFrontWebsiteBaseTest{
 	 *  at cart page
 	 *     
 	 */
-	@Test
+	@Test(enabled=false)//TODO
 	public void testPCUserIsInTheProcessOfPlacingAnAdhocOrderLessThan90_354(){
 		String errorMessage = "more to your cart to qualify for FREE shipping";
 		sfHomePage.loginToStoreFront(TestConstants.PC_USERNAME, password);
@@ -825,7 +827,7 @@ public class OrdersTest extends StoreFrontWebsiteBaseTest{
 	 * 
 	 *     
 	 */
-	@Test
+	@Test(enabled=false)//TODO
 	public void testPCUserIsInTheProcessOfPlacingAnAdhocOrderMoreThan90$_355(){
 
 	}
@@ -836,7 +838,7 @@ public class OrdersTest extends StoreFrontWebsiteBaseTest{
 	 * while editing
 	 *     
 	 */
-	@Test
+	@Test(enabled=true)
 	public void testBillingProfileAddAnAddressWithInvalidDetailsToExistingProfile_366(){
 		String cardType = TestConstants.CARD_TYPE;
 		String cardNumber = TestConstants.CARD_NUMBER;
@@ -902,7 +904,7 @@ public class OrdersTest extends StoreFrontWebsiteBaseTest{
 	 * while adding a new profile
 	 *     
 	 */
-	@Test
+	@Test(enabled=true)
 	public void testBillingProfileAddAnAddressWithInvalidDetailsToNewProfile_367(){
 		String cardType = TestConstants.CARD_TYPE;
 		String cardNumber = TestConstants.CARD_NUMBER;
@@ -961,7 +963,7 @@ public class OrdersTest extends StoreFrontWebsiteBaseTest{
 	 * 
 	 *     
 	 */
-	@Test
+	@Test(enabled=false)//TODO
 	public void testShippingToPORRWithPONumberAsAddressDetail_368(){
 
 	}
@@ -972,7 +974,7 @@ public class OrdersTest extends StoreFrontWebsiteBaseTest{
 	 * 
 	 *     
 	 */
-	@Test
+	@Test(enabled=false)//TODO
 	public void testOrderConfirmationForAdhocOrders_409(){
 		String productName=null;
 		String productQuantity=null;
@@ -1044,7 +1046,7 @@ public class OrdersTest extends StoreFrontWebsiteBaseTest{
 	 * through continue without a consultant and not your sponsor link
 	 *     
 	 */
-	@Test
+	@Test(enabled=false)
 	public void testUserShouldntAbleToChangeTheSponsorAfterConsultantAccountCreated_414(){
 		sfHomePage.loginToStoreFront(TestConstants.CONSULTANT_EMAIL, password);
 		sfShopSkinCarePage = sfHomePage.clickAllProducts();
@@ -1062,7 +1064,7 @@ public class OrdersTest extends StoreFrontWebsiteBaseTest{
 	 * through continue without a consultant and not your sponsor link
 	 *     
 	 */
-	@Test
+	@Test(enabled=false)
 	public void testUserShouldntAbleToChangeTheSponsorAfterPCAccountCreated_415(){
 		sfHomePage.loginToStoreFront(TestConstants.PC_EMAIL, password);
 		sfShopSkinCarePage = sfHomePage.clickAllProducts();
@@ -1080,27 +1082,29 @@ public class OrdersTest extends StoreFrontWebsiteBaseTest{
 	 * 
 	 *     
 	 */
-	@Test
+	@Test(enabled=false)
 	public void testOrderDetailsAndReturnOrderDetailsLinkToPulse_365(){
 
 	}
+	
 	/***
 	 * qTest : TC-457 Choose a consultant- R+F Corporate sponsor - PC First checkout from Corp
 	 * Description : //TODO
 	 * 
 	 *     
 	 */
-	@Test
+	@Test(enabled=false)
 	public void testChooseAConsultantRFCorporateSponsorPCFirstCheckoutFromCorp_457(){
 
 	}
+	
 	/***
 	 * qTest : TC-458 Choose a consultant- R+F Corporate sponsor - PC First checkout from PWS
 	 * Description : //TODO
 	 * 
 	 *     
 	 */
-	@Test
+	@Test(enabled=false)
 	public void testChooseAConsultantRFCorporateSponsorPCFirstCheckoutFromPWS_458(){
 
 	}
@@ -1111,7 +1115,7 @@ public class OrdersTest extends StoreFrontWebsiteBaseTest{
 	 * 
 	 *     
 	 */
-	@Test
+	@Test(enabled=false)
 	public void testChooseAConsultantRFCorporateSponsorRCCheckoutFromCorporate_459(){
 
 	}
@@ -1122,7 +1126,7 @@ public class OrdersTest extends StoreFrontWebsiteBaseTest{
 	 * 
 	 *     
 	 */
-	@Test
+	@Test(enabled=false)//TODO
 	public void testReviewAndPlaceOrder_470(){
 		String cardType = TestConstants.CARD_TYPE;
 		String cardNumber = TestConstants.CARD_NUMBER;
@@ -1176,7 +1180,7 @@ public class OrdersTest extends StoreFrontWebsiteBaseTest{
 	 * Description : This test case validates Edit link of cart at order review page
 	 *     
 	 */
-	@Test
+	@Test(enabled=true)
 	public void testReviewAndPlaceOrderEditCart_471(){
 		String productQuantityFromUI = null;
 		String updatedQuantity = null;
@@ -1214,7 +1218,7 @@ public class OrdersTest extends StoreFrontWebsiteBaseTest{
 	 * Description : This test add a new shipping address for existing user
 	 *     
 	 */
-	@Test
+	@Test(enabled=true)
 	public void testAddAShipAddressCheckoutExistingUser_324(){
 		String randomWord = CommonUtils.getRandomWord(5);
 		String firstName = TestConstants.FIRST_NAME;
@@ -1244,7 +1248,7 @@ public class OrdersTest extends StoreFrontWebsiteBaseTest{
 	 * Description : This test add a new shipping address for existing user and validates it
 	 *     
 	 */
-	@Test// Incomplete
+	@Test(enabled=false)// TODO Incomplete
 	public void testAddressVerificationShippingProfile_317(){
 		String randomWord = CommonUtils.getRandomWord(5);
 		String firstName = TestConstants.FIRST_NAME;
@@ -1279,7 +1283,7 @@ public class OrdersTest extends StoreFrontWebsiteBaseTest{
 	 * Description : This test validates report problem and report confirmation page 
 	 *     
 	 */
-	@Test
+	@Test(enabled=true)
 	public void testOrderHistoryReportAProlemOrderLevelAllFieldsFilled_482(){
 		String reportProblemsLink = "Report Problems";
 		String reasonWhereIsTheShipment = "\"Where's the shipment\"";
@@ -1345,7 +1349,7 @@ public class OrdersTest extends StoreFrontWebsiteBaseTest{
 	 * Description : This test validates the action - order details and Report a problem for order.
 	 *     
 	 */
-	@Test
+	@Test(enabled=true)
 	public void testOrderDetailsActionDetailslink_521(){
 		String currentUrlOfOrdersPage = null;
 		String currentUrlOfReportProblemPagePage = null;
@@ -1380,7 +1384,7 @@ public class OrdersTest extends StoreFrontWebsiteBaseTest{
 	 * Description : This test validates the status of newly placed order on orders page
 	 *     
 	 */
-	@Test
+	@Test(enabled=true)
 	public void testOrderDetailsTrackOrderStatusForNewOrder_543(){
 		String cardType = TestConstants.CARD_TYPE;
 		String cardNumber = TestConstants.CARD_NUMBER;
@@ -1417,7 +1421,7 @@ public class OrdersTest extends StoreFrontWebsiteBaseTest{
 	 * Description : 
 	 *     
 	 */
-	@Test
+	@Test(enabled=true)
 	public void testOrderHistoryReportAProblemProductLevelWithEmptyFields_483(){
 		String currentUrlOfReportProblemPagePage = null;
 		sfHomePage.loginToStoreFront(TestConstants.CONSULTANT_USERNAME, password);
@@ -1445,7 +1449,7 @@ public class OrdersTest extends StoreFrontWebsiteBaseTest{
 	 * Description : This test case  placed adhoc order through RC selecting a sponsor in a single search
 	 * 
 	 */
-	@Test
+	@Test(enabled=true)
 	public void testRetailUserCheckoutChooseAConsultantSingleSearch_476(){
 		String firstName = TestConstants.FIRST_NAME;
 		String lastName = TestConstants.LAST_NAME;
@@ -1486,7 +1490,7 @@ public class OrdersTest extends StoreFrontWebsiteBaseTest{
 	 * Description : This test case  placed adhoc order through RC change the selected sponsor
 	 * 
 	 */
-	@Test
+	@Test(enabled=true)
 	public void testRetailUserCheckoutChooseAConsultantChangeSelectedSponsor_478(){
 		String firstName = TestConstants.FIRST_NAME;
 		String lastName = TestConstants.LAST_NAME;
@@ -1531,7 +1535,7 @@ public class OrdersTest extends StoreFrontWebsiteBaseTest{
 	 * Description : This test case  placed adhoc order through RC continue without a consultant
 	 * 
 	 */
-	@Test
+	@Test(enabled=true)
 	public void testRetailUserCheckoutChooseAConsultantCheckoutWithCorporate_479(){
 		String firstName = TestConstants.FIRST_NAME;
 		String lastName = TestConstants.LAST_NAME;

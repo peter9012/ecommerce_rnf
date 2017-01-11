@@ -12,7 +12,7 @@ public class ViewSearchBoxInHeaderNavigationTest extends StoreFrontWebsiteBaseTe
 	 * 
 	 *     
 	 */
-	@Test
+	@Test(enabled=true)
 	public void testViewSearchTextBoxInHeaderNavigation_35(){
 		sfHomePage.clickSearchIcon();
 		s_assert.assertTrue(sfHomePage.isSearchBoxPresent(),"'Search box' is not present after clicking search icon in header navigation");
@@ -25,7 +25,7 @@ public class ViewSearchBoxInHeaderNavigationTest extends StoreFrontWebsiteBaseTe
 	 * 
 	 *     
 	 */
-	@Test
+	@Test(enabled=true)
 	public void testViewSearchTextBoxInHeaderNavigationAndClose_36(){
 		sfHomePage.clickSearchIcon();
 		s_assert.assertTrue(sfHomePage.isSearchBoxPresent(),"'Search box' is not present after clicking search icon in header navigation");

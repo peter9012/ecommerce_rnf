@@ -1709,6 +1709,8 @@ public class StoreFrontWebsiteBasePage extends RFBasePage{
 	 * @return
 	 */
 	public boolean isEnrollemntSuccessfulMsgDisplayed(){
+		driver.pauseExecutionFor(2000);
+		driver.waitForElementPresent(ENROLLMENT_SUCCESSFUL_MSG_LOC);
 		return driver.isElementVisible(ENROLLMENT_SUCCESSFUL_MSG_LOC);
 	}
 

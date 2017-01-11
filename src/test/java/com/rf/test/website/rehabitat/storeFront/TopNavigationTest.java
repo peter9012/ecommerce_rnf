@@ -15,7 +15,7 @@ public class TopNavigationTest extends StoreFrontWebsiteBaseTest{
 	 * sponsor search page
 	 *     
 	 */
-	@Test //Incomplete
+	@Test(enabled=false) //TODO Incomplete
 	public void testBecomeAConsultantAtWhyRFPage_72(){
 		sfHomePage.clickWhyRF();
 		sfHomePage.clickEnrollNowButton();
@@ -28,7 +28,7 @@ public class TopNavigationTest extends StoreFrontWebsiteBaseTest{
 	 * new tab which contain calendar
 	 *     
 	 */
-	@Test
+	@Test(enabled=false)
 	public void testBecomeAConsultantEvents_73(){
 		String currentWindowID = null; 
 		String currentURL = null;
@@ -49,19 +49,18 @@ public class TopNavigationTest extends StoreFrontWebsiteBaseTest{
 	 * sponsor search page through Programs and Incentives Page
 	 *     
 	 */
-	@Test //Incomplete
+	@Test(enabled=false) //TODO Incomplete
 	public void testBecomeAConsultantProgramsAndIncentives_74(){
 		sfHomePage.clickProgramsAndIncentives();
 		sfHomePage.clickEnrollNowButton();
 	}
-
 
 	/***
 	 * qTest : TC-134 Becoming a Consultant- Meet our Community
 	 * 
 	 * Description : This test validates Meet our community link and social icons	  
 	 */
-	@Test
+	@Test(enabled=false)
 	public void testBecomeAConsultantMeetOurCommunity_134(){
 		String currentWindowID = null;
 		String currentURL = null;
@@ -132,7 +131,7 @@ public class TopNavigationTest extends StoreFrontWebsiteBaseTest{
 	 * Through Who we are page 
 	 *     
 	 */
-	@Test
+	@Test(enabled=false)//TODO
 	public void testAboutRFWhoWeAre_75(){
 		String currentWindowID = null;
 		String currentURL = null;
@@ -160,7 +159,7 @@ public class TopNavigationTest extends StoreFrontWebsiteBaseTest{
 	 * Through Giving Back page 
 	 *     
 	 */
-	@Test//Incomplete
+	@Test(enabled=false)//TODO Incomplete
 	public void testAboutRFGivingBack_75(){
 		if(country.equalsIgnoreCase("us")){
 			String currentWindowID = null;
@@ -178,7 +177,7 @@ public class TopNavigationTest extends StoreFrontWebsiteBaseTest{
 	 * Description : This test validates search icon functionality using product name
 	 *     
 	 */
-	@Test//Incomplete(need a product name for search)
+	@Test(enabled=false)//Incomplete(need a product name for search)
 	public void testProductSearchName_183(){
 		String productName = TestConstants.PRODUCT_NAME;
 		String productNameFromUI = null;
@@ -197,7 +196,7 @@ public class TopNavigationTest extends StoreFrontWebsiteBaseTest{
 	 * using product name
 	 *     
 	 */
-	@Test//Incomplete(need a product name of 3 letters)
+	@Test(enabled=false) //TODO Incomplete(need a product name of 3 letters)
 	public void testProductSearchAutoComplete_184(){
 		String productName = TestConstants.PRODUCT_NAME;
 		String productNameLessThanThreeLetters = "AB";
@@ -220,7 +219,7 @@ public class TopNavigationTest extends StoreFrontWebsiteBaseTest{
 	 *  
 	 *     
 	 */
-	@Test
+	@Test(enabled=false)
 	public void testAboutRFExecutiveTeam_76(){
 		String currentURL = null;
 		String teamMemberName = null;
@@ -244,9 +243,8 @@ public class TopNavigationTest extends StoreFrontWebsiteBaseTest{
 	 *  
 	 *     
 	 */
-	@Test
+	@Test(enabled=false)
 	public void testViewSearchTextBox_345(){
-
 		sfHomePage.loginToStoreFront(TestConstants.CONSULTANT_EMAIL, password);
 		sfHomePage.clickSearchIcon();
 		s_assert.assertTrue(sfHomePage.isSearchTextBoxDisplayed(),"Search text box not present after clicking search");
@@ -261,7 +259,7 @@ public class TopNavigationTest extends StoreFrontWebsiteBaseTest{
 	 *  
 	 *     
 	 */
-	@Test
+	@Test(enabled=false)
 	public void testViewContentPagesUnderAboutRF_346(){
 		String currentURL = null;
 		String executiveTeamURL = "executive-team";
@@ -293,7 +291,7 @@ public class TopNavigationTest extends StoreFrontWebsiteBaseTest{
 	 *  
 	 *     
 	 */
-	@Test
+	@Test(enabled=false)
 	public void testVerifyFeaturedProductSectionUnderShopSkinCare_347(){
 		String category="FEATURED";
 
@@ -310,9 +308,8 @@ public class TopNavigationTest extends StoreFrontWebsiteBaseTest{
 	 *  
 	 *     
 	 */
-	@Test
+	@Test(enabled=false)
 	public void testVerifyPLPUnderShopSkinCare_348(){
-
 		sfHomePage.loginToStoreFront(TestConstants.RC_EMAIL, password);
 		sfShopSkinCarePage=sfHomePage.clickAllProducts();
 		s_assert.assertTrue(sfShopSkinCarePage.isAllProductPageDisplayed(),"All product page not present after clicking continue shopping.");
@@ -325,7 +322,7 @@ public class TopNavigationTest extends StoreFrontWebsiteBaseTest{
 	 *  
 	 *     
 	 */
-	@Test
+	@Test(enabled=false)
 	public void testVerifyResultsLinkForCategoryUnderShopSkincare_349(){
 		String currentURL = null;
 		String sootheLinkUnderShopSkincare = "SOOTHE";
@@ -364,7 +361,7 @@ public class TopNavigationTest extends StoreFrontWebsiteBaseTest{
 	 * 
 	 *     
 	 */
-	@Test
+	@Test(enabled=false)
 	public void testVerifyFAQLinkForCategoryUnderShopSkincare_350(){
 		String currentURL = null;
 		String sootheLinkUnderShopSkincare = "SOOTHE";
@@ -403,7 +400,7 @@ public class TopNavigationTest extends StoreFrontWebsiteBaseTest{
 	 * 
 	 *     
 	 */
-	@Test
+	@Test(enabled=false)
 	public void testVerifyHeaderViewIsConsistentThroughAllPagesExceptCartAndCheckout_351(){
 		String reverseLinkUnderShopSkincare = "REVERSE";
 		String allProductLinkUnderShopSkincare = "ALL PRODUCTS";
@@ -430,7 +427,7 @@ public class TopNavigationTest extends StoreFrontWebsiteBaseTest{
 	 *  
 	 *     
 	 */
-	@Test
+	@Test(enabled=false)
 	public void testAsAUserIWillBeAbleToAccessThePLPFromTheShopSkincareSection_542(){
 		String category="ALL PRODUCTS";
 		sfShopSkinCarePage=sfHomePage.navigateToShopSkincareLink(category);
@@ -444,7 +441,7 @@ public class TopNavigationTest extends StoreFrontWebsiteBaseTest{
 	 *  
 	 *     
 	 */
-	@Test
+	@Test(enabled=false)
 	public void testPressRoom_362(){
 		String currentURL = null;
 		String currentWindowID = null;

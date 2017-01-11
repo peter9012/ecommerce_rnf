@@ -46,7 +46,7 @@ public class ConsultantEnrollmentTest extends StoreFrontWebsiteBaseTest{
 	 * enrollment
 	 *     
 	 */
-	@Test
+	@Test(enabled=true)
 	public void testConsultantEnrollment_231(){
 		String timeStamp = CommonUtils.getCurrentTimeStamp();
 		String socialInsuranceNumber = String.valueOf(CommonUtils.getRandomNum(100000000, 999999999));
@@ -98,7 +98,7 @@ public class ConsultantEnrollmentTest extends StoreFrontWebsiteBaseTest{
 	 * consultant enrollment
 	 * 				
 	 */
-	@Test
+	@Test(enabled=true)
 	public void testRequestSponsorConsultantEnrollment_261(){
 		String fieldName;
 		sfHomePage.clickEnrollNow();
@@ -135,7 +135,7 @@ public class ConsultantEnrollmentTest extends StoreFrontWebsiteBaseTest{
 	 * and also validates the pagination in the sponsor search results.
 	 * 				
 	 */
-	@Test
+	@Test(enabled=true)
 	public void testSponsorSearchFromFindAConsultantAndPagination_275(){
 		sfHomePage.clickFindAConsultantLinkOnHomePage().searchSponsor(TestConstants.SPONSOR_3_CHARS);
 		s_assert.assertTrue(sfHomePage.isSponsorResultDisplayed(),"No result found after searching the sponsor with name "+TestConstants.SPONSOR_3_CHARS);
@@ -155,7 +155,7 @@ public class ConsultantEnrollmentTest extends StoreFrontWebsiteBaseTest{
 	 * doesn't exist in R+F system then the 'No Search Results' message should be displayed
 	 * 				
 	 */
-	@Test
+	@Test(enabled=true)
 	public void testSearchNonExistingSponsor_273(){
 		sfHomePage.clickEnrollNow();
 		sfHomePage.searchSponsor(TestConstants.NON_EXISTING_SPONSOR);
@@ -170,7 +170,7 @@ public class ConsultantEnrollmentTest extends StoreFrontWebsiteBaseTest{
 	 * Personal Business Potfolio
 	 * 				
 	 */
-	@Test
+	@Test(enabled=true)
 	public void testConsultantEnrollmentPersonalBusinessPortfolio_290(){
 		String timeStamp = CommonUtils.getCurrentTimeStamp();
 		String socialInsuranceNumber = String.valueOf(CommonUtils.getRandomNum(100000000, 999999999));
@@ -222,7 +222,7 @@ public class ConsultantEnrollmentTest extends StoreFrontWebsiteBaseTest{
 	 * View Details link of Kits during consultant enrollment
 	 * 				
 	 */
-	@Test
+	@Test(enabled=true)
 	public void testViewHideCTADetailsInEnrollmentKit_291(){
 		int totalKits = 0;
 		int randomKit = 0;
@@ -301,7 +301,7 @@ public class ConsultantEnrollmentTest extends StoreFrontWebsiteBaseTest{
 	 * Description : //TODO
 	 * 				
 	 */
-	@Test
+	@Test(enabled=true)
 	public void testLinksToPoliciesAndProcedures_393(){
 		String timeStamp = CommonUtils.getCurrentTimeStamp();
 		String socialInsuranceNumber = String.valueOf(CommonUtils.getRandomNum(100000000, 999999999));
@@ -363,7 +363,7 @@ public class ConsultantEnrollmentTest extends StoreFrontWebsiteBaseTest{
 	 * enrollment on selecting North Dakota Checkbox
 	 *     
 	 */
-	@Test
+	@Test(enabled=true)
 	public void testConsultantEnrollmentNorthDakotaChecked_492(){
 		String timeStamp = CommonUtils.getCurrentTimeStamp();
 		String socialInsuranceNumber = String.valueOf(CommonUtils.getRandomNum(100000000, 999999999));
@@ -413,7 +413,7 @@ public class ConsultantEnrollmentTest extends StoreFrontWebsiteBaseTest{
 	 * enrollment without selecting North Dakota checkbox
 	 *     
 	 */
-	@Test
+	@Test(enabled=true)
 	public void testConsultantEnrollmentNorthDakotaUnchecked_493(){
 		//Duplicate test, same as testConsultantEnrollment_231
 	}
@@ -425,7 +425,7 @@ public class ConsultantEnrollmentTest extends StoreFrontWebsiteBaseTest{
 	 * on sponsor page during consultant enrollment
 	 *     
 	 */
-	@Test
+	@Test(enabled=true)
 	public void testConsultantEnrollmentApplyAsBusinessEntityLink_373(){
 		sfHomePage.clickEnrollNow();
 		sfHomePage.clickApplyingAsBusinessEntityLink();
@@ -441,7 +441,7 @@ public class ConsultantEnrollmentTest extends StoreFrontWebsiteBaseTest{
 	 * Description : This method completes the consultant enrollment by selecting pulse
 	 *     
 	 */
-	@Test
+	@Test(enabled=false)//TODO
 	public void testConsultantEnrollmentWithPulseSubscription_467(){
 		int randomNum = CommonUtils.getRandomNum(10000, 1000000);
 		String timeStamp = CommonUtils.getCurrentTimeStamp();
@@ -496,7 +496,7 @@ public class ConsultantEnrollmentTest extends StoreFrontWebsiteBaseTest{
 	 * Description : This method completes the consultant enrollment without selecting pulse
 	 *     
 	 */
-	@Test
+	@Test(enabled=false)//TODO
 	public void testConsultantEnrollmengtWithoutPulseSubscription_468(){
 		int randomNum = CommonUtils.getRandomNum(10000, 1000000);
 		String timeStamp = CommonUtils.getCurrentTimeStamp();

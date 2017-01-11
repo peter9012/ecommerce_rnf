@@ -13,7 +13,7 @@ public class ViewAreasOfSiteFromHomePageTest extends StoreFrontWebsiteBaseTest{
 	 * Mini cart, social media icon at footer
 	 *     
 	 */
-	@Test //Incomplete
+	@Test(enabled=false) //TODO Incomplete
 	public void testHomePageNavigateAndViewAreaOfTheSite_4(){
 		String category_Unblemish = "UNBLEMISH";
 		String category_Featured = "FEATURED";
@@ -204,7 +204,7 @@ public class ViewAreasOfSiteFromHomePageTest extends StoreFrontWebsiteBaseTest{
 	 * click on login link
 	 *     
 	 */
-	@Test //Incomplete 
+	@Test(enabled=true) //TODO search via search button
 	public void testSearchConsultantOnlyProductByAnonymousRCPCUser_5(){
 		sfHomePage.mouseHoverOn(TestConstants.SHOP_SKINCARE);
 		s_assert.assertFalse(sfHomePage.isConsultantOnlyProductsLinkDisplayed(), "Consultant Only Link should NOT be present for anonymous user");

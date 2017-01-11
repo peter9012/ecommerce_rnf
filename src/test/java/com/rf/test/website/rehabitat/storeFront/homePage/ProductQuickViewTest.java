@@ -14,7 +14,7 @@ public class ProductQuickViewTest extends StoreFrontWebsiteBaseTest{
 	 *     
 	 */
 
-	@Test//Incomplete 
+	@Test(enabled=false)//TODO Incomplete 
 	public void testPCProductQuickView_151(){
 		String selectedProductName = null;
 		String productNameOnPDPPage = null;
@@ -70,7 +70,7 @@ public class ProductQuickViewTest extends StoreFrontWebsiteBaseTest{
 	 *     
 	 */
 
-	@Test//Incomplete 
+	@Test(enabled=false) //TODO Incomplete 
 	public void testProductQtyFieldShouldnotAllowAnyCharactersExceptADigitsOnTheQuickView_194(){
 		String selectedProductName = null;
 		//Login to application.

@@ -12,7 +12,7 @@ public class AccessFooterLinksTest extends StoreFrontWebsiteBaseTest{
 	 * 
 	 *     
 	 */
-	@Test 
+	@Test(enabled=true)
 	public void testVerifyFooterLinksOfSite_13(){
 		String disclaimer = "Disclaimer";
 		String satisfactionGuarantee = "Satisfaction Guarantee";
@@ -47,7 +47,7 @@ public class AccessFooterLinksTest extends StoreFrontWebsiteBaseTest{
 	 * 
 	 *     
 	 */
-	@Test 
+	@Test(enabled=true) 
 	public void testVerifyFooterLinksOfSiteOpensInSameWindow_14(){
 		String currentURL = null;
 		String disclaimer = "Disclaimer";

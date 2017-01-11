@@ -11,7 +11,7 @@ public class SwitchCountryTogglesTest extends StoreFrontWebsiteBaseTest{
 	 * Description : This test switch the countries from toggle button and verify
 	 *     
 	 */
-	@Test//Incomplete(need to com & biz url)
+	@Test(enabled=false)//TODO Incomplete(need to com & biz url)
 	public void testOnTheUSWebsiteSwitchCountriesUsingToggleSelector_2(){
 		String country_CA = "CAN";
 		String country_AU ="AUS";
@@ -44,7 +44,7 @@ public class SwitchCountryTogglesTest extends StoreFrontWebsiteBaseTest{
 	 * logged into their account
 	 *     
 	 */
-	@Test //Incomplete
+	@Test(enabled=false) //TODO Incomplete
 	public void testToggleShouldBeDeactivatedIfUserIsLoggedIn_3(){
 		//need a valid user for logged in 
 	}

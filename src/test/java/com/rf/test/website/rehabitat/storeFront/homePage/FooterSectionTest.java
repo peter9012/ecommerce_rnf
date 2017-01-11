@@ -12,14 +12,14 @@ public class FooterSectionTest extends StoreFrontWebsiteBaseTest{
 	 * 
 	 * Description : This test validates contact us link on all pages except checkout page. 
 	 */
-	@Test
+	@Test(enabled=false)
 	public void testVerifyContactUSLinkOnAllPagesExceptCheckout_82(){
 		String currentURL = null;
 		String reverseLinkUnderShopSkincare = "REVERSE";
 		String allProductLinkUnderShopSkincare = "ALL PRODUCTS";
 		String contactUS = "Contact Us";
 		String contactUsURL = "contact";
-        
+
 		//Verify contact us link on product category page
 		sfShopSkinCarePage = sfHomePage.navigateToShopSkincareLink(reverseLinkUnderShopSkincare);
 		s_assert.assertTrue(sfShopSkinCarePage.isTheFooterLinkDisplayed(contactUS),"Contact us link is not present in footer section on reverse category page");
@@ -46,14 +46,14 @@ public class FooterSectionTest extends StoreFrontWebsiteBaseTest{
 	 * 
 	 * Description : This test validates Careers link on all pages except checkout page. 
 	 */
-	@Test
+	@Test(enabled=false)
 	public void testVerifyCareersLinkOnAllPagesExceptCheckout_83(){
 		String currentURL = null;
 		String reverseLinkUnderShopSkincare = "REVERSE";
 		String allProductLinkUnderShopSkincare = "ALL PRODUCTS";
 		String careers = "Careers";
 		String careersURL = "careers";
-        
+
 		//Verify careers link on product category page
 		sfShopSkinCarePage = sfHomePage.navigateToShopSkincareLink(reverseLinkUnderShopSkincare);
 		s_assert.assertTrue(sfShopSkinCarePage.isTheFooterLinkDisplayed(careers),"Careers link is not present in footer section on reverse category page");
@@ -80,14 +80,14 @@ public class FooterSectionTest extends StoreFrontWebsiteBaseTest{
 	 * 
 	 * Description : This test validates DSA link on all pages except checkout page. 
 	 */
-	@Test
+	@Test(enabled=false)
 	public void testVerifyDSALinkOnAllPagesExceptCheckout_84(){
 		String currentURL = null;
 		String reverseLinkUnderShopSkincare = "REVERSE";
 		String allProductLinkUnderShopSkincare = "ALL PRODUCTS";
 		String directSellingAssociation= "Direct Selling Association";
 		String directSellingAssociationURL = "who-we-are";
-        
+
 		//Verify DSA  link on product category page
 		sfShopSkinCarePage = sfHomePage.navigateToShopSkincareLink(reverseLinkUnderShopSkincare);
 		s_assert.assertTrue(sfShopSkinCarePage.isTheFooterLinkDisplayed(directSellingAssociation),"DSA link is not present in footer section on reverse category page");
@@ -114,7 +114,7 @@ public class FooterSectionTest extends StoreFrontWebsiteBaseTest{
 	 * 
 	 * Description : This test validates satisfaction guarantee link on all pages except checkout page. 
 	 */
-	@Test
+	@Test(enabled=false)
 	public void testVerifySatisfactionGuaranteeLinkOnAllPagesExceptCheckout_98(){
 		String currentWindowID = null;
 		String currentURL = null;
@@ -124,7 +124,7 @@ public class FooterSectionTest extends StoreFrontWebsiteBaseTest{
 		String satisfactionGuaranteeURL = "satisfaction-guarantee";
 		String returnAuthorizationFormPage = "Return_Authorization_Form";
 		String policyAndProcedurePage = "Policies_Procedures";
-        
+
 		//Verify satisfaction guarantee link on product category page
 		sfShopSkinCarePage = sfHomePage.navigateToShopSkincareLink(reverseLinkUnderShopSkincare);
 		s_assert.assertTrue(sfShopSkinCarePage.isTheFooterLinkDisplayed(satisfactionGuarantee),"Satisfaction guarantee link is not present in footer section on reverse category page");
@@ -158,96 +158,97 @@ public class FooterSectionTest extends StoreFrontWebsiteBaseTest{
 		sfCheckoutPage.switchToParentWindow(currentWindowID);
 		s_assert.assertAll();
 	}
+
 	/***
-	  * qTest : TC-23 Verify "Privacy Policy" link from the footer
-	  * 
-	  * Description : This test validates "Privacy Policy" link in footer
-	  * 
-	  */ 
-	 @Test 
-	 public void testVerifyPrivacyPolicyLinkFromTheFooter_23(){
-	  String privacyPolicy = "Privacy Policy";
-	  String pageHeader="PRIVACY POLICY";
-	  String privacyPolicyURL = "privacy-policy";
-	  
-	  s_assert.assertTrue(sfHomePage.isTheFooterLinkDisplayed(privacyPolicy),"'Privacy Policy' link is not present in footer section");
-	  sfHomePage.clickFooterLink(privacyPolicy);
-	  String currentUrl=sfHomePage.getCurrentURL().toLowerCase();
-	  s_assert.assertTrue(sfHomePage.isPageHeaderDisplayed(pageHeader) && currentUrl.contains(privacyPolicyURL)," Expected 'Privacy Policy' page header not displayed or page url should contains: 'privacy-policy'"+" But actual url is:"+currentUrl);
-	  s_assert.assertAll();
-	 }
-	 
-	 /***
-	  * qTest : TC-24 Verify "Terms and Conditions" link within the the Privacy Policy page
-	  * 
-	  * Description : This test validates "Terms and Conditions" link within the the Privacy Policy page
-	  * 
-	  */ 
-	 @Test 
-	 public void testVerifyTermsAndConditionsLinkWithinThePrivacyPolicyPage_24(){
-	  String privacyPolicy = "Privacy Policy";
-	  String pageHeaderPrivacyPolicy="PRIVACY POLICY";
-	  String pageHeaderTermsAndCondition="TERMS & CONDITIONS";
-	  String termsAndCondition="Terms & Condition";
-	  String privacyPolicyURL = "privacy-policy";
-	  String termsAndConditionURL = "terms-conditions";
-	  
-	  s_assert.assertTrue(sfHomePage.isTheFooterLinkDisplayed(privacyPolicy),"'Privacy Policy' link is not present in footer section");
-	  sfHomePage.clickFooterLink(privacyPolicy);
-	  String currentUrl=sfHomePage.getCurrentURL().toLowerCase();
-	  s_assert.assertTrue(sfHomePage.isPageHeaderDisplayed(pageHeaderPrivacyPolicy) && currentUrl.contains(privacyPolicyURL)," Expected 'Privacy Policy' page header not displayed or page url should contains: 'privacy-policy'"+" But actual url is:"+currentUrl);
-	  s_assert.assertTrue(sfHomePage.isTheFooterLinkDisplayed(termsAndCondition),"'Terms & Condition' link is not present in footer section");
-	  sfHomePage.clickFooterLink(termsAndCondition);
-	  currentUrl=sfHomePage.getCurrentURL().toLowerCase();
-	  s_assert.assertTrue(sfHomePage.isPageHeaderDisplayed(pageHeaderTermsAndCondition) && currentUrl.contains(termsAndConditionURL)," Expected 'TERMS & CONDITIONS' page header not displayed or page url should contains: 'terms-conditions'"+" But actual url is:"+currentUrl);
-	  s_assert.assertAll();
-	 }
-	 
-	 /***
-	  * qTest : TC-25 Verify Disclaimer link in footer
-	  * 
-	  * Description : This test validates Disclaimer link in footer
-	  * 
-	  */ 
-	 @Test 
-	 public void testVerifyDisclaimerLinkInFooter_25(){
-	  String disclaimer = "Disclaimer";
-	  String disclaimerURL = "disclaimer";
-	  s_assert.assertTrue(sfHomePage.isTheFooterLinkDisplayed(disclaimer),"Disclaimer link is not present in footer section");
-	  sfHomePage.clickFooterLink(disclaimer);
-	  String currentUrl=sfHomePage.getCurrentURL().toLowerCase();
-	  s_assert.assertTrue(sfHomePage.isPageHeaderDisplayed(disclaimer) && currentUrl.contains(disclaimerURL)," Expected 'disclaimer' page header not displayed or page url should contains: 'disclaimer'"+" But actual url is:"+currentUrl);
-	  s_assert.assertAll();
-	 }
-	 
-	 /***
-	  * qTest : TC-26 Verify the links in the Disclaimer page
-	  * 
-	  * Description : This test validates the links in the Disclaimer page
-	  * 
-	  */ 
-	 @Test 
-	 public void testVerifyTheLinksInTheDisclaimerPage_26(){
-	  String disclaimer = "Disclaimer";
-	  String rodanAndFieldPolicies="Rodan + Fields Policies & Procedures";
-	  String incomeDisclosureStatement="Income Disclosure Statement";
-	  String policyUrl="Policies_Procedures_CANADA.pdf";
-	  String incomeDisclosureUrl="IncomeDisclosure.pdf";
-	  String currentWindowID =null;
-	  s_assert.assertTrue(sfHomePage.isTheFooterLinkDisplayed(disclaimer),"Disclaimer link is not present in footer section");
-	  sfHomePage.clickFooterLink(disclaimer);
-	  String currentUrl=sfHomePage.getCurrentURL().toLowerCase();
-	  s_assert.assertTrue(sfHomePage.isPageHeaderDisplayed(disclaimer) && currentUrl.contains("disclaimer")," Expected 'disclaimer' page header not displayed or page url should contains: 'disclaimer'"+" But actual url is:"+currentUrl);
-	  currentWindowID = CommonUtils.getCurrentWindowHandle();
-	  sfHomePage.clickDisclaimerPageLinks(rodanAndFieldPolicies);
-	  sfHomePage.switchToChildWindow(currentWindowID);
-	  currentUrl=sfHomePage.getCurrentURL();
-	  s_assert.assertTrue(currentUrl.contains(policyUrl),"Expected 'Rodan + Fields Policies & Procedures' pdf url should contain: "+policyUrl+" But actual on UI is:"+currentUrl);
-	  sfHomePage.switchToParentWindow(currentWindowID);
-	  sfHomePage.clickDisclaimerPageLinks(incomeDisclosureStatement);
-	  sfHomePage.switchToChildWindow(currentWindowID);
-	  currentUrl=sfHomePage.getCurrentURL();
-	  s_assert.assertTrue(currentUrl.contains(incomeDisclosureUrl),"Expected ' Income Disclosure Statement' pdf url should contain: "+incomeDisclosureUrl+" But actual on UI is:"+currentUrl);
-	  s_assert.assertAll();
-	 }
+	 * qTest : TC-23 Verify "Privacy Policy" link from the footer
+	 * 
+	 * Description : This test validates "Privacy Policy" link in footer
+	 * 
+	 */ 
+	@Test(enabled=true) 
+	public void testVerifyPrivacyPolicyLinkFromTheFooter_23(){
+		String privacyPolicy = "Privacy Policy";
+		String pageHeader="PRIVACY POLICY";
+		String privacyPolicyURL = "privacy-policy";
+
+		s_assert.assertTrue(sfHomePage.isTheFooterLinkDisplayed(privacyPolicy),"'Privacy Policy' link is not present in footer section");
+		sfHomePage.clickFooterLink(privacyPolicy);
+		String currentUrl=sfHomePage.getCurrentURL().toLowerCase();
+		s_assert.assertTrue(sfHomePage.isPageHeaderDisplayed(pageHeader) && currentUrl.contains(privacyPolicyURL)," Expected 'Privacy Policy' page header not displayed or page url should contains: 'privacy-policy'"+" But actual url is:"+currentUrl);
+		s_assert.assertAll();
+	}
+
+	/***
+	 * qTest : TC-24 Verify "Terms and Conditions" link within the the Privacy Policy page
+	 * 
+	 * Description : This test validates "Terms and Conditions" link within the the Privacy Policy page
+	 * 
+	 */ 
+	@Test(enabled=true) 
+	public void testVerifyTermsAndConditionsLinkWithinThePrivacyPolicyPage_24(){
+		String privacyPolicy = "Privacy Policy";
+		String pageHeaderPrivacyPolicy="PRIVACY POLICY";
+		String pageHeaderTermsAndCondition="TERMS & CONDITIONS";
+		String termsAndCondition="Terms & Condition";
+		String privacyPolicyURL = "privacy-policy";
+		String termsAndConditionURL = "terms-conditions";
+
+		s_assert.assertTrue(sfHomePage.isTheFooterLinkDisplayed(privacyPolicy),"'Privacy Policy' link is not present in footer section");
+		sfHomePage.clickFooterLink(privacyPolicy);
+		String currentUrl=sfHomePage.getCurrentURL().toLowerCase();
+		s_assert.assertTrue(sfHomePage.isPageHeaderDisplayed(pageHeaderPrivacyPolicy) && currentUrl.contains(privacyPolicyURL)," Expected 'Privacy Policy' page header not displayed or page url should contains: 'privacy-policy'"+" But actual url is:"+currentUrl);
+		s_assert.assertTrue(sfHomePage.isTheFooterLinkDisplayed(termsAndCondition),"'Terms & Condition' link is not present in footer section");
+		sfHomePage.clickFooterLink(termsAndCondition);
+		currentUrl=sfHomePage.getCurrentURL().toLowerCase();
+		s_assert.assertTrue(sfHomePage.isPageHeaderDisplayed(pageHeaderTermsAndCondition) && currentUrl.contains(termsAndConditionURL)," Expected 'TERMS & CONDITIONS' page header not displayed or page url should contains: 'terms-conditions'"+" But actual url is:"+currentUrl);
+		s_assert.assertAll();
+	}
+
+	/***
+	 * qTest : TC-25 Verify Disclaimer link in footer
+	 * 
+	 * Description : This test validates Disclaimer link in footer
+	 * 
+	 */ 
+	@Test(enabled=true) 
+	public void testVerifyDisclaimerLinkInFooter_25(){
+		String disclaimer = "Disclaimer";
+		String disclaimerURL = "disclaimer";
+		s_assert.assertTrue(sfHomePage.isTheFooterLinkDisplayed(disclaimer),"Disclaimer link is not present in footer section");
+		sfHomePage.clickFooterLink(disclaimer);
+		String currentUrl=sfHomePage.getCurrentURL().toLowerCase();
+		s_assert.assertTrue(sfHomePage.isPageHeaderDisplayed(disclaimer) && currentUrl.contains(disclaimerURL)," Expected 'disclaimer' page header not displayed or page url should contains: 'disclaimer'"+" But actual url is:"+currentUrl);
+		s_assert.assertAll();
+	}
+
+	/***
+	 * qTest : TC-26 Verify the links in the Disclaimer page
+	 * 
+	 * Description : This test validates the links in the Disclaimer page
+	 * 
+	 */ 
+	@Test(enabled=true) 
+	public void testVerifyTheLinksInTheDisclaimerPage_26(){
+		String disclaimer = "Disclaimer";
+		String rodanAndFieldPolicies="Rodan + Fields Policies & Procedures";
+		String incomeDisclosureStatement="Income Disclosure Statement";
+		String policyUrl="Policies_Procedures_CANADA.pdf";
+		String incomeDisclosureUrl="IncomeDisclosure.pdf";
+		String currentWindowID =null;
+		s_assert.assertTrue(sfHomePage.isTheFooterLinkDisplayed(disclaimer),"Disclaimer link is not present in footer section");
+		sfHomePage.clickFooterLink(disclaimer);
+		String currentUrl=sfHomePage.getCurrentURL().toLowerCase();
+		s_assert.assertTrue(sfHomePage.isPageHeaderDisplayed(disclaimer) && currentUrl.contains("disclaimer")," Expected 'disclaimer' page header not displayed or page url should contains: 'disclaimer'"+" But actual url is:"+currentUrl);
+		currentWindowID = CommonUtils.getCurrentWindowHandle();
+		sfHomePage.clickDisclaimerPageLinks(rodanAndFieldPolicies);
+		sfHomePage.switchToChildWindow(currentWindowID);
+		currentUrl=sfHomePage.getCurrentURL();
+		s_assert.assertTrue(currentUrl.contains(policyUrl),"Expected 'Rodan + Fields Policies & Procedures' pdf url should contain: "+policyUrl+" But actual on UI is:"+currentUrl);
+		sfHomePage.switchToParentWindow(currentWindowID);
+		sfHomePage.clickDisclaimerPageLinks(incomeDisclosureStatement);
+		sfHomePage.switchToChildWindow(currentWindowID);
+		currentUrl=sfHomePage.getCurrentURL();
+		s_assert.assertTrue(currentUrl.contains(incomeDisclosureUrl),"Expected ' Income Disclosure Statement' pdf url should contain: "+incomeDisclosureUrl+" But actual on UI is:"+currentUrl);
+		s_assert.assertAll();
+	}
 }

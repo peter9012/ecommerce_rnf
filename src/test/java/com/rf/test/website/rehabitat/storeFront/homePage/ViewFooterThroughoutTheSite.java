@@ -13,7 +13,7 @@ public class ViewFooterThroughoutTheSite extends StoreFrontWebsiteBaseTest{
 	 * 
 	 *     
 	 */
-	@Test
+	@Test(enabled=false)
 	public void testVerifyFooterSectionThroughAllPages_38(){
 		String currentURL = null;
 		String currentWindowID =null;
@@ -27,8 +27,6 @@ public class ViewFooterThroughoutTheSite extends StoreFrontWebsiteBaseTest{
 		String careersURL = "careers";
 		String dermRFURL = "dermrf";
 		String rfConnectionURL= "rfconnection";
-
-
 		//Verify footer links on product category page
 		sfShopSkinCarePage = sfHomePage.navigateToShopSkincareLink(reverseLinkUnderShopSkincare);
 		s_assert.assertTrue(sfShopSkinCarePage.isTheFooterLinkDisplayed(contactUS),"Contact us link is not present in footer section on reverse category page");

@@ -1,9 +1,6 @@
 package com.rf.test.website.rehabitat.storeFront;
 
-import java.awt.AWTException;
-
 import org.testng.annotations.Test;
-
 import com.rf.core.utils.CommonUtils;
 import com.rf.core.website.constants.TestConstants;
 import com.rf.test.website.rehabitat.storeFront.baseTest.StoreFrontWebsiteBaseTest;
@@ -17,7 +14,7 @@ public class UserRegistrationTest extends StoreFrontWebsiteBaseTest{
 	 * 
 	 *     
 	 */
-	@Test
+	@Test(enabled=false)
 	public void testUserRegistrationValidations_390(){
 		String timeStamp = CommonUtils.getCurrentTimeStamp();
 		String firstName = TestConstants.FIRST_NAME;

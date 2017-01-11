@@ -15,7 +15,7 @@ public class UnsuccessfulUserLoginTest extends StoreFrontWebsiteBaseTest{
 	 * login/create an account page with an error- " Your username or password was incorrect."
 	 * 				
 	 */
-	@Test
+	@Test(enabled=true)
 	public void testLoginUnregisteredUsernamepassword_29(){
 		String unRegisteredUsername = "invalidUser1008@rf.com";
 		sfHomePage.loginToStoreFront(unRegisteredUsername, password);
@@ -32,7 +32,7 @@ public class UnsuccessfulUserLoginTest extends StoreFrontWebsiteBaseTest{
 	 * login/create an account page with an error- " Your username or password was incorrect."
 	 * 				
 	 */
-	@Test
+	@Test(enabled=true)
 	public void testUnsuccessfulUserLogin_30(){
 		String incorrectUsername = "invalidUser1008@rf.com";
 		sfHomePage.loginToStoreFront(incorrectUsername, password);
@@ -49,7 +49,7 @@ public class UnsuccessfulUserLoginTest extends StoreFrontWebsiteBaseTest{
 	 * login/create an account page with an error- " Your username or password was incorrect."
 	 * 				
 	 */
-	@Test
+	@Test(enabled=true)
 	public void testUnsuccessfulUserLogin_31(){
 		String validUsername = TestConstants.CONSULTANT_USERNAME;
 		String incorrectpassword = "111maiden";
@@ -67,7 +67,7 @@ public class UnsuccessfulUserLoginTest extends StoreFrontWebsiteBaseTest{
 	 * login/create an account page with an error- " Your username or password was incorrect."
 	 * 				
 	 */
-	@Test
+	@Test(enabled=true)
 	public void testUnsuccessfulUserLogin_32(){
 		String invalidUsername = "invalidUser1008@rf.com";
 		String incorrectpassword = "111maiden";
@@ -85,7 +85,7 @@ public class UnsuccessfulUserLoginTest extends StoreFrontWebsiteBaseTest{
 	 * login/create an account page with an error- " Your username or password was incorrect."
 	 * 				
 	 */
-	@Test
+	@Test(enabled=true)
 	public void testUnsuccessfulUserLogin_33(){
 		String invalidUsername = "invalidUser1008@rf.com";
 		sfHomePage.loginToStoreFront(invalidUsername, password);
@@ -106,7 +106,7 @@ public class UnsuccessfulUserLoginTest extends StoreFrontWebsiteBaseTest{
 	 * login/create an account page with an error- " Your username or password was incorrect."
 	 * 				
 	 */
-	@Test
+	@Test(enabled=true)
 	public void testUnsuccessfulUserLogin_34(){
 		String invalidUsername = "invalidUser1008@rf.com";
 		sfHomePage.loginToStoreFront(invalidUsername, password);

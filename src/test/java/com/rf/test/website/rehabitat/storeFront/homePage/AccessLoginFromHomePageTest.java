@@ -13,7 +13,7 @@ public class AccessLoginFromHomePageTest extends StoreFrontWebsiteBaseTest{
 	 * click on login link
 	 *     
 	 */
-	@Test
+	@Test(enabled=true)
 	public void testUserClickOnTheLoginSymbolOnTheHomepage_9(){
 		s_assert.assertFalse(sfHomePage.isUsernameFieldVisible(), "Username field should NOT be visible without clicking on login icon");
 		s_assert.assertFalse(sfHomePage.isPasswordFieldVisible(), "Password field should NOT be visible without clicking on login icon");
@@ -29,7 +29,7 @@ public class AccessLoginFromHomePageTest extends StoreFrontWebsiteBaseTest{
 	 * reclick on login link
 	 *     
 	 */
-	@Test
+	@Test(enabled=true)
 	public void testUserSelectsLoginSymbolToCloseTheLoginProvision_10(){
 		sfHomePage.clickLoginIcon();
 		s_assert.assertTrue(sfHomePage.isUsernameFieldVisible(), "Username field should be visible after clicking on login icon");

@@ -12,7 +12,7 @@ public class MeetTheDoctorsTest extends StoreFrontWebsiteBaseTest{
 	 *  
 	 *     
 	 */
-	@Test
+	@Test(enabled=true)
 	public void testHoverAboutRFAndClickMeetTheDoctors_18(){
 		sfHomePage.clickMeetTheDoctorsLink();
 		s_assert.assertTrue(sfHomePage.isMeetTheDoctorsPagePresent(),"'Meet the Doctors' page either doesn't have the URL as 'meet-the-doctors' or meet the doctor Text is not present on page");
@@ -25,7 +25,7 @@ public class MeetTheDoctorsTest extends StoreFrontWebsiteBaseTest{
 	 *  
 	 *     
 	 */
-	@Test
+	@Test(enabled=true)
 	public void testVerifyMeetTheExecutivePageFromMeetTheDoctorsPage_19(){
 		String currentURL = null;
 		String urlToAssert = "executive-team";

@@ -12,7 +12,7 @@ public class NavigateToHomePageFromLogoTest extends StoreFrontWebsiteBaseTest{
 	 * shopskinCare page,product detail page and cart page.
 	 * 				
 	 */
-	@Test
+	@Test(enabled=true)
 	public void testRFLogoRedirectsToHomePage_6(){
 		String currentURL = null;
 		sfShopSkinCarePage = sfHomePage.clickAllProducts();

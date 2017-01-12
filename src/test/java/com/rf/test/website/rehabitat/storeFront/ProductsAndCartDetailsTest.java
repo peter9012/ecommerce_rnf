@@ -4,6 +4,8 @@ import org.testng.annotations.Test;
 
 import com.rf.core.utils.CommonUtils;
 import com.rf.core.website.constants.TestConstants;
+import com.rf.pages.website.rehabitat.storeFront.StoreFrontCartPage;
+import com.rf.pages.website.rehabitat.storeFront.StoreFrontCheckoutPage;
 import com.rf.test.website.rehabitat.storeFront.baseTest.StoreFrontWebsiteBaseTest;
 
 public class ProductsAndCartDetailsTest extends StoreFrontWebsiteBaseTest{
@@ -30,7 +32,7 @@ public class ProductsAndCartDetailsTest extends StoreFrontWebsiteBaseTest{
 		s_assert.assertTrue(sfShopSkinCarePage.isPriceFilterHighToLowAppliedSuccessfully(),"Selected Price filter 'High To Low' is not applied to product successfully for category"+categoryName);
 		s_assert.assertAll();
 	}
-	
+
 	/***
 	 * qTest : TC-62 Sort/Order Removal by default option section
 	 * 
@@ -100,7 +102,7 @@ public class ProductsAndCartDetailsTest extends StoreFrontWebsiteBaseTest{
 		s_assert.assertTrue(sfProductDetailPage.isContentUnderIngredientsTabPresentAtProductDetailsPage(),"Contents under Ingredients tab not present on product detail page");
 		s_assert.assertAll();
 	}
-	
+
 	/***
 	 * qTest : TC-65 Product Detail Page- Recently Viewed Products
 	 * 
@@ -160,7 +162,7 @@ public class ProductsAndCartDetailsTest extends StoreFrontWebsiteBaseTest{
 		s_assert.assertTrue(sfProductDetailPage.isProductUnderRecentlyViewTabPresentAtProductDetailsPage(firstProductName),"Fourth Product is not present under recently view tab on product detail page.");
 		s_assert.assertAll();			
 	}
-	
+
 	/***
 	 * qTest : TC-66 As a PC user, I will be able to navigate to the account pages from the account drop down in the header
 	 * 
@@ -401,7 +403,7 @@ public class ProductsAndCartDetailsTest extends StoreFrontWebsiteBaseTest{
 	 * Description : This test validates PC Perks Terms and Conditions Link for Anonymous user
 	 * 
 	 */
-	@Test(enabled=false)
+	@Test(enabled=true)
 	public void testCartPagePCPerksTermsAndConditionsAnonymousUser_220(){
 		String currentWindowID = null; 
 		String currentURL = null;
@@ -409,12 +411,13 @@ public class ProductsAndCartDetailsTest extends StoreFrontWebsiteBaseTest{
 		sfShopSkinCarePage = sfHomePage.clickAllProducts();
 		sfShopSkinCarePage.addFirstProductToBag();
 		sfCartPage = sfShopSkinCarePage.checkoutTheCartFromPopUp();
+		sfCheckoutPage = sfCartPage.clickCheckoutBtn();
 		currentWindowID = CommonUtils.getCurrentWindowHandle();
-		sfCartPage.clickPCTermsAndConditionsLink();
-		sfCartPage.switchToChildWindow(currentWindowID);
-		currentURL = sfCartPage.getCurrentURL();
+		sfCheckoutPage.clickPCTermsAndConditionsLink();
+		sfCheckoutPage.switchToChildWindow(currentWindowID);
+		currentURL = sfCheckoutPage.getCurrentURL();
 		s_assert.assertTrue(currentURL.contains(utlToAssertForTCDetailsPage),"Current URL : " + currentURL + " does not contain : " + utlToAssertForTCDetailsPage);
-		sfCartPage.switchToParentWindow(currentWindowID);
+		sfCheckoutPage.switchToParentWindow(currentWindowID);
 		s_assert.assertAll();
 	}
 
@@ -470,7 +473,7 @@ public class ProductsAndCartDetailsTest extends StoreFrontWebsiteBaseTest{
 	 * Description : This test validates the 'Add more items' and 'checkout' funtionality of checkout popup for One time order
 	 * 
 	 */
-	@Test(enabled=false) //TODO Need to modify once functionality starts working
+	@Test(enabled=true)
 	public void testAddedToYourShoppingCartPopupForAdhocFlow_256(){
 		String firstProductName = null;
 		String secondProductName = null;
@@ -484,11 +487,12 @@ public class ProductsAndCartDetailsTest extends StoreFrontWebsiteBaseTest{
 		sfHomePage.loginToStoreFront(TestConstants.CONSULTANT_USERNAME, password);
 		sfShopSkinCarePage = sfHomePage.clickAllProducts();
 		firstProductName = sfShopSkinCarePage.getFirstProductNameFromAllProductPage();
-		productPriceOnListingPage = sfShopSkinCarePage.addProductToBagForSpecificOrderType(1,"One Time Order");
+		//productPriceOnListingPage = sfShopSkinCarePage.addProductToBagForSpecificOrderType(1,"One Time Order");
+		productPriceOnListingPage=sfShopSkinCarePage.addProductTocartAndReturnProductPriceForProduct(1);
 		productNameOnCheckoutPopup = sfShopSkinCarePage.getProductNameFromCheckoutPopup();
 		productPriceOnCheckoutPopup = sfShopSkinCarePage.getProductPriceFromCheckoutPopup();
 		s_assert.assertTrue(productNameOnCheckoutPopup.contains(firstProductName),"Name of Product added to Bag does not matches with the product name on checkout popup. Expeced : " + firstProductName + ". Actual : " + productNameOnCheckoutPopup);
-		s_assert.assertTrue(productPriceOnCheckoutPopup.equals(productPriceOnListingPage),"Price of Product added to Bag does not matches with the product price on checkout popup for Product : " + firstProductName + ". Expeced : " + productPriceOnListingPage + ". Actual : " + productPriceOnCheckoutPopup);
+		s_assert.assertTrue(productPriceOnListingPage.trim().equals(productPriceOnCheckoutPopup.trim()),"Price of Product added to Bag does not matches with the product price on checkout popup for Product : " + firstProductName + ". Expeced : " + productPriceOnListingPage + ". Actual : " + productPriceOnCheckoutPopup);
 		s_assert.assertTrue(sfShopSkinCarePage.isQuantityOfProductonIsPresentOnCheckoutPopUp(),"Quantity of Product is not present on checkout pop up when added Product : " + firstProductName);
 		s_assert.assertTrue(sfShopSkinCarePage.isCheckoutButtonPresentOnCheckoutPopup(),"Checkout Button is not present on checkout pop up when added Product : " + firstProductName);
 		s_assert.assertTrue(sfShopSkinCarePage.isAddMoreItemsButtonPresentOnCheckoutPopup(),"Add more Items Button is not present on checkout pop up when added Product : " + firstProductName);
@@ -498,11 +502,12 @@ public class ProductsAndCartDetailsTest extends StoreFrontWebsiteBaseTest{
 		sfShopSkinCarePage.clickOnCloseButtonForCheckoutPopUp();
 		secondProductName = sfShopSkinCarePage.getProductNameFromAllProductPage("2");
 		productPriceOnListingPage = null;
-		productPriceOnListingPage = sfShopSkinCarePage.addProductToBagForSpecificOrderType(2,"One Time Order");
+		//productPriceOnListingPage = sfShopSkinCarePage.addProductToBagForSpecificOrderType(2,"One Time Order");
+		productPriceOnListingPage=sfShopSkinCarePage.addProductTocartAndReturnProductPriceForProduct(2);
 		productNameOnCheckoutPopup = null;
 		productNameOnCheckoutPopup = sfShopSkinCarePage.getProductNameFromCheckoutPopup();
 		s_assert.assertTrue(productNameOnCheckoutPopup.contains(secondProductName),"Name of Product added to Bag does not matches with the product name on checkout popup. Expeced : " + secondProductName + ". Actual : " + productNameOnCheckoutPopup);
-		s_assert.assertTrue(productPriceOnCheckoutPopup.equals(productPriceOnListingPage),"Price of Product added to Bag does not matches with the product price on checkout popup for Product : " + secondProductName + ". Expeced : " + productPriceOnListingPage + ". Actual : " + productPriceOnCheckoutPopup);
+		s_assert.assertTrue(productPriceOnListingPage.trim().equals(productNameOnCheckoutPopup.trim()),"Price of Product added to Bag does not matches with the product price on checkout popup for Product : " + secondProductName + ". Expeced : " + productPriceOnListingPage + ". Actual : " + productPriceOnCheckoutPopup);
 		s_assert.assertTrue(sfShopSkinCarePage.isQuantityOfProductonIsPresentOnCheckoutPopUp(),"Quantity of Product is not present on checkout pop up when added Product : " + secondProductName);
 		s_assert.assertTrue(sfShopSkinCarePage.isCheckoutButtonPresentOnCheckoutPopup(),"Checkout Button is not present on checkout pop up when added Product : " + secondProductName);
 		s_assert.assertTrue(sfShopSkinCarePage.isAddMoreItemsButtonPresentOnCheckoutPopup(),"Add more Items Button is not present on checkout pop up when added Product : " + secondProductName);
@@ -514,7 +519,7 @@ public class ProductsAndCartDetailsTest extends StoreFrontWebsiteBaseTest{
 		sfCheckoutPage.clickShippingDetailsNextbutton();
 		sfCheckoutPage.clickAddNewBillingProfileButton();
 		sfCheckoutPage.enterUserBillingDetails(cardType, cardNumber, cardName, CVV);
-		sfCheckoutPage.checkUseMyDeliveryAddressChkBox();
+		//sfCheckoutPage.checkUseMyDeliveryAddressChkBox();
 		sfCheckoutPage.clickBillingDetailsNextbutton();
 		sfCheckoutPage.selectTermsAndConditionsChkBox();
 		sfCheckoutPage.clickPlaceOrderButton();
@@ -527,7 +532,7 @@ public class ProductsAndCartDetailsTest extends StoreFrontWebsiteBaseTest{
 	 * Description : This test validates the 'Add more items' and 'checkout' funtionality of checkout popup for PC User and PC perks order
 	 * 
 	 */
-	@Test(enabled=false)
+	@Test(enabled=true)
 	public void testAddedToYourPCPerksAutoshipPopupForPCAutoshipFlow_258(){
 		String firstProductName = null;
 		String secondProductName = null;
@@ -537,11 +542,12 @@ public class ProductsAndCartDetailsTest extends StoreFrontWebsiteBaseTest{
 		sfHomePage.loginToStoreFront(TestConstants.PC_USERNAME, password);
 		sfShopSkinCarePage = sfHomePage.clickAllProducts();
 		firstProductName = sfShopSkinCarePage.getFirstProductNameFromAllProductPage();
-		productPriceOnListingPage = sfShopSkinCarePage.addProductToBagForSpecificOrderType(1,"PC Perks Order");
+		//productPriceOnListingPage = sfShopSkinCarePage.addProductToBagForSpecificOrderType(1,"PC Perks Order");
+		productPriceOnListingPage=sfShopSkinCarePage.addProductTocartAndReturnProductPriceForProduct(1);
 		productNameOnCheckoutPopup = sfShopSkinCarePage.getProductNameFromCheckoutPopup();
 		productPriceOnCheckoutPopup = sfShopSkinCarePage.getProductPriceFromCheckoutPopup();
 		s_assert.assertTrue(productNameOnCheckoutPopup.contains(firstProductName),"Name of Product added to Bag does not matches with the product name on checkout popup. Expeced : " + firstProductName + ". Actual : " + productNameOnCheckoutPopup);
-		s_assert.assertTrue(productPriceOnCheckoutPopup.equals(productPriceOnListingPage),"Price of Product added to Bag does not matches with the product price on checkout popup for Product : " + firstProductName + ". Expeced : " + productPriceOnListingPage + ". Actual : " + productPriceOnCheckoutPopup);
+		s_assert.assertTrue(productPriceOnListingPage.trim().contains(productPriceOnCheckoutPopup.trim()),"Price of Product added to Bag does not matches with the product price on checkout popup for Product : " + firstProductName + ". Expeced : " + productPriceOnListingPage + ". Actual : " + productPriceOnCheckoutPopup);
 		s_assert.assertTrue(sfShopSkinCarePage.isQuantityOfProductonIsPresentOnCheckoutPopUp(),"Quantity of Product is not present on checkout pop up when added Product : " + firstProductName);
 		s_assert.assertTrue(sfShopSkinCarePage.isCheckoutButtonPresentOnCheckoutPopup(),"Checkout Button is not present on checkout pop up when added Product : " + firstProductName);
 		s_assert.assertTrue(sfShopSkinCarePage.isAddMoreItemsButtonPresentOnCheckoutPopup(),"Add more Items Button is not present on checkout pop up when added Product : " + firstProductName);
@@ -549,11 +555,13 @@ public class ProductsAndCartDetailsTest extends StoreFrontWebsiteBaseTest{
 		sfShopSkinCarePage.clickOnAddMoreItemsOnCheckoutPopUp();
 		secondProductName = sfShopSkinCarePage.getProductNameFromAllProductPage("2");
 		productPriceOnListingPage = null;
-		productPriceOnListingPage = sfShopSkinCarePage.addProductToBagForSpecificOrderType(2,"PC Perks Order");
+		//productPriceOnListingPage = sfShopSkinCarePage.addProductToBagForSpecificOrderType(2,"PC Perks Order");
+		productPriceOnListingPage=sfShopSkinCarePage.addProductTocartAndReturnProductPriceForProduct(2);
 		productNameOnCheckoutPopup = null;
 		productNameOnCheckoutPopup = sfShopSkinCarePage.getProductNameFromCheckoutPopup();
+		productPriceOnCheckoutPopup = sfShopSkinCarePage.getProductPriceFromCheckoutPopup();
 		s_assert.assertTrue(productNameOnCheckoutPopup.contains(secondProductName),"Name of Product added to Bag does not matches with the product name on checkout popup. Expeced : " + secondProductName + ". Actual : " + productNameOnCheckoutPopup);
-		s_assert.assertTrue(productPriceOnCheckoutPopup.equals(productPriceOnListingPage),"Price of Product added to Bag does not matches with the product price on checkout popup for Product : " + secondProductName + ". Expeced : " + productPriceOnListingPage + ". Actual : " + productPriceOnCheckoutPopup);
+		s_assert.assertTrue(productPriceOnListingPage.trim().equalsIgnoreCase(productPriceOnCheckoutPopup.trim()),"Price of Product added to Bag does not matches with the product price on checkout popup for Product : " + secondProductName + ". Expeced : " + productPriceOnListingPage + ". Actual : " + productPriceOnCheckoutPopup);
 		s_assert.assertTrue(sfShopSkinCarePage.isQuantityOfProductonIsPresentOnCheckoutPopUp(),"Quantity of Product is not present on checkout pop up when added Product : " + secondProductName);
 		s_assert.assertTrue(sfShopSkinCarePage.isCheckoutButtonPresentOnCheckoutPopup(),"Checkout Button is not present on checkout pop up when added Product : " + secondProductName);
 		s_assert.assertTrue(sfShopSkinCarePage.isAddMoreItemsButtonPresentOnCheckoutPopup(),"Add more Items Button is not present on checkout pop up when added Product : " + secondProductName);
@@ -568,7 +576,7 @@ public class ProductsAndCartDetailsTest extends StoreFrontWebsiteBaseTest{
 	 * Description : This test validates add a product to cart and check total by updating 
 	 *  quantity of product   
 	 */
-	@Test(enabled=false)
+	@Test(enabled=true)
 	public void testAddProductToCartAndUpdateQuantity_67(){
 		String subTotalFromCart = null;
 		String quantityOfProduct = null;
@@ -603,12 +611,13 @@ public class ProductsAndCartDetailsTest extends StoreFrontWebsiteBaseTest{
 		s_assert.assertFalse(sfCartPage.isProductPresentInCart(),"No product expected in cart but product are present in cart");
 		s_assert.assertAll();
 	}
+
 	/***
 	 * qTest : TC-68 Cart Page- Remove a product
 	 * Description : This test validates add multiple product to cart and remove product from cart functionality
 	 *   
 	 */
-	@Test(enabled=false)
+	@Test(enabled=true)
 	public void testAddMultipleProductToCartAndRemoveTillCartEmpty_68(){
 		sfShopSkinCarePage=sfHomePage.clickAllProducts();
 		sfShopSkinCarePage.addFirstProductToBag();
@@ -678,17 +687,16 @@ public class ProductsAndCartDetailsTest extends StoreFrontWebsiteBaseTest{
 		s_assert.assertTrue(sfShopSkinCarePage.isAllProductPageDisplayed(),"All product page not present after clicking continue shopping.");
 		s_assert.assertAll();
 	}
-	
+
 	/***
 	 * qTest : TC-70 Persistent Cart on Same device
 	 * Description : This test validates login with consultant,PC and RC and observe the products
 	 *     are added to cart successfully and remain persisent when cart is visited again.
 	 */
-	@Test(enabled=false)
+	@Test(enabled=true)
 	public void testAddProductToCartAndVerifyAfterRELogin_70(){
 		int productInAdhocCart;
 		int newProductCount;
-
 		//Add product to consultant adhoc cart.
 		sfHomePage.loginToStoreFront(TestConstants.CONSULTANT_EMAIL, password);
 		sfCartPage = sfHomePage.clickMiniCartBagLink();
@@ -746,13 +754,13 @@ public class ProductsAndCartDetailsTest extends StoreFrontWebsiteBaseTest{
 		s_assert.assertTrue(newProductCount==productInAdhocCart,"Expected product count"+productInAdhocCart+" while actual on UI "+newProductCount);
 		s_assert.assertAll();
 	}
-	
+
 	/***
 	 * qTest : TC-163 Cart Page- Preferred Customer - Ad Hoc Cart
 	 * Description : This test validates PC user details on cart page accessed via all products and mini cart..
 	 *   
 	 */
-	@Test(enabled=false)
+	@Test(enabled=false)//TODO
 	public void testVerifyPCUserProductDetailsOnCartPage_163(){
 		String allProduct = "ALL PRODUCTS";
 		String  productName = null;
@@ -791,7 +799,7 @@ public class ProductsAndCartDetailsTest extends StoreFrontWebsiteBaseTest{
 		s_assert.assertTrue(newItemsOfProduct.equalsIgnoreCase(updatedQuantity),"Expected items in cart"+updatedQuantity+" but actual in UI"+newItemsOfProduct);
 		s_assert.assertAll();		
 	}
-	
+
 	/***
 	 * qTest : TC-164 Cart Page- Consultant Customer - Ad Hoc Cart
 	 * Description : This test validates consultant user details on cart page accessed via all products and mini cart..
@@ -1019,7 +1027,7 @@ public class ProductsAndCartDetailsTest extends StoreFrontWebsiteBaseTest{
 	 * Description : This test validates adhoc product is added to the cart and verifies from product popup
 	 *     
 	 */
-	@Test(enabled=false)
+	@Test(enabled=true)
 	public void testCartPageAnonymousUserAdHocCart_161(){
 		String allProduct = "ALL PRODUCTS";
 		int numberOfProductInCart;
@@ -1054,7 +1062,7 @@ public class ProductsAndCartDetailsTest extends StoreFrontWebsiteBaseTest{
 	 * Description : This test validates adhoc product is added to the cart and verifies from product popup
 	 *     
 	 */
-	@Test(enabled=false)
+	@Test(enabled=true)
 	public void testCartPageRetailUserAdHocCart_162(){
 		int numberOfProductInCart;
 		String itemsOfProduct = null;
@@ -1098,9 +1106,9 @@ public class ProductsAndCartDetailsTest extends StoreFrontWebsiteBaseTest{
 	@Test(enabled=true)
 	public void testProductPricingPC_503(){
 		sfHomePage.loginToStoreFront(TestConstants.PC_USERNAME, password);
-//		sfShopSkinCarePage = sfHomePage.clickOnCategoryFromShopSkinCare("REDEFINE");
-//		s_assert.assertTrue(sfShopSkinCarePage.isRetailPricePresentForProductNumber("1"),"Retail price is not present for Product on category Page for PC User");
-//		s_assert.assertTrue(sfShopSkinCarePage.isSpecificPricePresentForProductNumber("1"),"Specific price is not present for Product on category Page for PC User");
+		//		sfShopSkinCarePage = sfHomePage.clickOnCategoryFromShopSkinCare("REDEFINE");
+		//		s_assert.assertTrue(sfShopSkinCarePage.isRetailPricePresentForProductNumber("1"),"Retail price is not present for Product on category Page for PC User");
+		//		s_assert.assertTrue(sfShopSkinCarePage.isSpecificPricePresentForProductNumber("1"),"Specific price is not present for Product on category Page for PC User");
 		sfShopSkinCarePage=sfHomePage.clickAllProducts();
 		s_assert.assertTrue(sfShopSkinCarePage.isRetailPricePresentForProductNumber("1"),"Retail price is not present for Product on All Products listing Page for PC User");
 		s_assert.assertTrue(sfShopSkinCarePage.isSpecificPricePresentForProductNumber("1"),"Specific price is not present for Product on All Products listing Page for PC User");
@@ -1121,9 +1129,9 @@ public class ProductsAndCartDetailsTest extends StoreFrontWebsiteBaseTest{
 	@Test(enabled=true)
 	public void testProductPricingConsultant_504(){
 		sfHomePage.loginToStoreFront(TestConstants.CONSULTANT_USERNAME, password);
-//		sfShopSkinCarePage = sfHomePage.clickOnCategoryFromShopSkinCare("REDEFINE");
-//		s_assert.assertTrue(sfShopSkinCarePage.isRetailPricePresentForProductNumber("1"),"Retail price is not present for Product on category Page for Consultant");
-//		s_assert.assertTrue(sfShopSkinCarePage.isSpecificPricePresentForProductNumber("1"),"Specific price is not present for Product on category Page for Consultant");
+		//		sfShopSkinCarePage = sfHomePage.clickOnCategoryFromShopSkinCare("REDEFINE");
+		//		s_assert.assertTrue(sfShopSkinCarePage.isRetailPricePresentForProductNumber("1"),"Retail price is not present for Product on category Page for Consultant");
+		//		s_assert.assertTrue(sfShopSkinCarePage.isSpecificPricePresentForProductNumber("1"),"Specific price is not present for Product on category Page for Consultant");
 		sfShopSkinCarePage=sfHomePage.clickAllProducts();
 		s_assert.assertTrue(sfShopSkinCarePage.isRetailPricePresentForProductNumber("1"),"Retail price is not present for Product on All Products listing Page for Consultant");
 		s_assert.assertTrue(sfShopSkinCarePage.isSpecificPricePresentForProductNumber("1"),"Specific price is not present for Product on All Products listing Page for Consultant");
@@ -1141,7 +1149,7 @@ public class ProductsAndCartDetailsTest extends StoreFrontWebsiteBaseTest{
 	 * Description : This test validates click on product name to view product details and click on product image
 	 *     
 	 */
-	@Test(enabled=false)
+	@Test(enabled=true)
 	public void testProductDetailsPageProductImages_337(){
 		sfShopSkinCarePage=sfHomePage.clickAllProducts();
 		sfProductDetailPage=sfShopSkinCarePage.clickNameOfProductOnAllProductPage("1");
@@ -1152,7 +1160,7 @@ public class ProductsAndCartDetailsTest extends StoreFrontWebsiteBaseTest{
 		s_assert.assertFalse(sfProductDetailPage.isProductImageDisplayedInLargerSize(),"Expected product image overlay(X) is not closed");
 		s_assert.assertAll();
 	}
-	
+
 	/***
 	 * qTest : TC-196 Product Detail Page
 	 * Description : This test validates product details page with different scenarios

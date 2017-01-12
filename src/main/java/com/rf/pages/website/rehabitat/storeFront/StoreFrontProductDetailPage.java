@@ -336,6 +336,7 @@ public class StoreFrontProductDetailPage extends StoreFrontWebsiteBasePage{
 	public StoreFrontProductDetailPage closeZoomImage(){
 		driver.click(CLOSE_ZOOM_LOC);
 		logger.info("clicked on close(X) zoom image");
+		driver.pauseExecutionFor(2000);
 		return this;
 	}
 

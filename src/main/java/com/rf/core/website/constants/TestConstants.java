@@ -101,8 +101,8 @@ public class TestConstants {
 	public static final String PC_EMAIL_HAVING_AUTOSHIP = "AutoPC20170111130257@mailinator.com";
 	
 	//RC User Details
-	public static final String RC_USERNAME = "autorc20170106101026@yopmail.com";
-	public static final String RC_EMAIL = "autorc20170106101026@yopmail.com";
+	public static final String RC_USERNAME = "AutoRC20170112171350@mailinator.com";
+	public static final String RC_EMAIL = "AutoRC20170112171350@mailinator.com";
 
 	public static final String SHIPPING_METHOD_UPS_2DAY = "UPS 2 Days";
 	public static final String SHIPPING_METHOD_UPS_GROUND = "UPS Ground";

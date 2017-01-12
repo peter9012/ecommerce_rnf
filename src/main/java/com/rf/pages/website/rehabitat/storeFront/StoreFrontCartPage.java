@@ -24,10 +24,8 @@ public class StoreFrontCartPage extends StoreFrontWebsiteBasePage{
 	private final By FIRST_ITEM_PRODUCT_NAME_LOC = By.xpath("//ul[contains(@class,'cart__list')]/descendant::li[@class='item-list-item'][1]//span[@class='item-name']");
 	private final By DELIVERY_LOC = By.xpath("//td[text()='Delivery:']/following::td[1]");
 	private final By TOTAL_NO_OF_ITEMS_IN_CART_LOC = By.xpath("//ul[contains(@class,'cart__list')]/descendant::li[@class='item-list-item']");
-	private final By CHECKOUT_CONFIRMATION_MSG_LOC=By.xpath("//div[@id='cartCheckoutModal']/p");
-	private final By PC_TERMS_AND_CONDITIONS_LINK_LOC = By.xpath("//a[contains(text(),'PC Perks Terms & Conditions')]");
+	private final By CHECKOUT_CONFIRMATION_MSG_LOC=By.xpath("//div[@id='cartCheckoutModal']/p");	
 	private final By SHOPPING_CART_TOTAL_PRODUCTS_LOC = By.xpath("//h1[contains(text(),'Your Shopping Cart')]/span");
-	private final By CART_PRODUCT_LOC = By.xpath("//ul[contains(@class,'item-list cart')]/li[@class='item-list-item']");
 	private final By CART_LOGIN_LOC = By.xpath("//div[@class='cartLogin']//a[text()='Log in']");
 	private final By SHIPPING_METHOD_AFTER_ORDER_PLACED = By.xpath("//div[contains(text(),'Shipping Method')]");
 	private final By FIRST_ITEM_PRODUCT_PRICE_LOC = By.xpath("//ul[contains(@class,'cart__list')]/descendant::li[@class='item-list-item'][1]//div[@class='item-price'][1]");
@@ -105,6 +103,7 @@ public class StoreFrontCartPage extends StoreFrontWebsiteBasePage{
 	public StoreFrontCheckoutPage clickCheckoutBtn(){
 		driver.click(CHECKOUT_BTN_LOC);
 		logger.info("Checkout button clicked after registration");
+		driver.waitForPageLoad();
 		return new StoreFrontCheckoutPage(driver);
 	}
 
@@ -212,17 +211,6 @@ public class StoreFrontCartPage extends StoreFrontWebsiteBasePage{
 		return new StoreFrontProductDetailPage(driver);
 	}
 
-	/***
-	 * This method click pc terms and conditions link 
-	 * 
-	 * @param
-	 * @return StoreFrontCartPage object
-	 */
-	public StoreFrontCartPage clickPCTermsAndConditionsLink(){
-		driver.click(PC_TERMS_AND_CONDITIONS_LINK_LOC);
-		logger.info("PC Terms and Conditions link Clicked");
-		return this;
-	}
 
 	/***
 	 * This method calculate subtotal as per quantity change 

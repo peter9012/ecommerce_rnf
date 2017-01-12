@@ -301,9 +301,9 @@ public class StoreFrontWebsiteBasePage extends RFBasePage{
 	 * @return
 	 */
 	public StoreFrontShopSkinCarePage clickAllProducts(){
-		//		mouseHoverOn(TestConstants.SHOP_SKINCARE);
-		//		driver.click(ALL_PRODUCTS_LOC);
-		clickCategoryLink("ESSENTIALS");
+		mouseHoverOn(TestConstants.SHOP_SKINCARE);
+		driver.click(ALL_PRODUCTS_LOC);
+		//clickCategoryLink("ESSENTIALS");
 		logger.info("clicked on 'All Products'");
 		driver.waitForPageLoad();
 		return new StoreFrontShopSkinCarePage(driver);

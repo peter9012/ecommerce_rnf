@@ -23,7 +23,7 @@ public class StoreFrontAutoshipStatusPage extends StoreFrontWebsiteBasePage{
 	private final By DELAY_OR_CANCEL_PC_PERKS_LOC = By.xpath("//a[text()='Delay or Cancel PC Perks']");
 	private final By DELAY_OR_CANCEL_PC_PERKS_POPUP_LOC = By.xpath("//h2[text()='Delay or Cancel PC Perks']");
 	private final By CANCEL_OPTION_ON_CANCEL_PC_PERKS_POPUP_LOC = By.xpath("//h2[text()='Delay or Cancel PC Perks']");
-	private final By DELAY_OPTION_ON_CANCEL_PC_PERKS_POPUP_LOC = By.xpath("//h2[text()='Delay or Cancel PC Perks']");
+	private final By DELAY_OPTION_ON_CANCEL_PC_PERKS_POPUP_LOC = By.xpath("//a[text()='Delay']");
 	private final By REASON_DD_LOC = By.id("//select[@id='code']");
 	private final By REASON_DD_VALUE_OTHER_LOC = By.id("//select[@id='code']/option[text()='Other']");
 	private final By MESSAGE_BOX_LOC = By.id("reasonMessage");
@@ -33,6 +33,8 @@ public class StoreFrontAutoshipStatusPage extends StoreFrontWebsiteBasePage{
 	private final By NEXT_BILL_SHIP_DATE_LOC = By.id("strtDate");
 	private final By NEXT_BILL_SHIP_DATE_TEXTBOX_LOC = By.xpath("//*[@id='command']//input[@type='text']");
 	private final By SUBMIT_QUERY_BUTTON = By.xpath("//*[@id='command']/input[@type='submit']");
+	private final By VIEW_DETAILS_LINK_AUTOSHIP_STATUS_LOC = By.xpath("//a[text()='view details']");
+	private final By PC_PERKS_STATUS_ON_AUTOSHIP_STATUS_PAGE = By.xpath("//div[contains(text(),'Current PC Perks Status')]/following::div[1]");
 
 	private String socialMediaIconLoc = "//div[@class='container']//a[contains(@href,'%s')]";
 
@@ -391,6 +393,50 @@ public class StoreFrontAutoshipStatusPage extends StoreFrontWebsiteBasePage{
 		logger.info("Submit query button clicked after entering next bill ship date.");
 		driver.waitForPageLoad();
 		return this;
+	}
+
+	/***
+	 * This method click on view details link on
+	 * autoship status page
+	 * @param
+	 * @return store front autoship status page object
+	 * 
+	 */
+	public StoreFrontAutoshipCartPage viewDetailsOfAutoship(){
+		driver.click(VIEW_DETAILS_LINK_AUTOSHIP_STATUS_LOC);
+		logger.info("view details link clicked on autoship status page");
+		driver.waitForPageLoad();
+		return new StoreFrontAutoshipCartPage(driver);
+	}
+
+	/***
+	 * This method validates next Bill ship date on autoship status page
+	 * 
+	 * @param
+	 * @return boolean value
+	 * 
+	 */
+	public boolean isNextAutoshipBillShipDatePresent(){
+		return driver.isElementVisible(NEXT_BILL_SHIP_DATE_LOC);
+	}
+
+	/***
+	 * This method get current PC perks status from autoship status page.
+	 * 
+	 * @param
+	 * @return String PC perks status.
+	 * 
+	 */
+	public String getCurrentPCPerksStatusFromAutoshipStatusPage(){
+		String pcPerksStatus = null;
+		if(driver.isElementVisible(PC_PERKS_STATUS_ON_AUTOSHIP_STATUS_PAGE)){
+			pcPerksStatus=driver.findElement(PC_PERKS_STATUS_ON_AUTOSHIP_STATUS_PAGE).getText();
+			logger.info("PC Perks status on autoship Status page "+pcPerksStatus);
+			return pcPerksStatus;
+		}else{
+			logger.info("No PC Perks Status present for user on autoship Status page.");
+			return pcPerksStatus;
+		}
 	}
 
 }

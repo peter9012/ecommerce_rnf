@@ -93,7 +93,6 @@ public class StoreFrontWebsiteBasePage extends RFBasePage{
 	private final By COUNTRY_NAME_LOC = By.xpath("//span[@class='selected-country']");
 	protected final By SAVE_BUTTON_LOC = By.id("deliveryAccountSubmit");
 	private final By WELCOME_DD_AUTOSHIP_STATUS_LOC = By.xpath("//a[text()='Autoship Status']");
-	private final By EDIT_LINK_NEXT_TO_MAIN_ACCOUNT_LOC = By.xpath("//div[@class='checkout-steps']/descendant::a[1]");
 	private final By WELCOME_DD_ORDERS_LOC = By.xpath("//a[text()='Orders']");
 	private final By SAVE_BUTTON_OF_SHIPPING_ADDRESS_LOC = By.xpath("//button[contains(text(),'Save')]");
 	protected final By ERROR_MESSAGE_FOR_ADDRESS_LINE_1_LOC = By.id("address.line1-error");
@@ -153,7 +152,6 @@ public class StoreFrontWebsiteBasePage extends RFBasePage{
 	private final By FIRST_PRODUCT_IMAGE_LOC=By.xpath("//div[@class='product__listing product__grid']/div[1]/a");
 	protected final By ADD_TO_CART_FIRST_PRODUCT_LOC = By.xpath("//div[@id='product_listing']/descendant::button[text()='Add to cart'][1]");
 	private final By REMEMBER_ME_LOC = By.xpath("//label[contains(text(),'Remember me')]");
-	private final By PC_PERKS_CART_HEADER_LOC = By.xpath("//h2[contains(text(),'YOUR NEXT PC PERKS CART')]");
 	private final By YOUR_SHOPPING_CART_HEADER_LOC = By.xpath("//h1[@class='urcart-header' and contains(text(),'Your Shopping Cart')]");
 	protected final By BILLING_ADDRESS_DD_LOC = By.xpath("//select[@id='billingAddress.addressId']");
 	private final By INVALID_EXP_YEAR_LOC= By.xpath("//select[@id='c-exyr']//option[2]");
@@ -185,14 +183,22 @@ public class StoreFrontWebsiteBasePage extends RFBasePage{
 	protected final By SEARCH_BOX = By.id("search-box");
 	protected final By SEARCH_ICON_NEAR_SEARCH_BOX = By.xpath("//*[@id='header']//following::button[contains(@class,'icon-search')]");
 	private final By ADD_MORE_ITEMS_BTN_LOC = By.xpath("//div[@class='cart-container']/descendant::button[contains(text(),'Add More Items')][2]");
-	private final By SUBTOTAL_LOC = By.xpath("//td[text()='Subtotal:']/following::td[1]");
+	private final By SUBTOTAL_LOC = By.xpath("//td[contains(text(),'Subtotal')]/following::td[1]");
 	private final By ADD_MORE_ITEMS_BTN_PC_AUTOSHIP_CART_LOC = By.xpath("//div[@class='cart-container']/descendant::button[contains(text(),'Add More Items')]");
 	private final By PC_ONE_TIME_FEE_MSG_LOC = By.xpath("//span[contains(text(),'PC PERKS ONE-TIME ENROLLMENT FEE')]");
 	private final By PDF_VIEWER_LOC = By.xpath("//div[@id='viewer']");
 	private final By CRP_AUTOSHIP_CART_HEADER_LOC = By.xpath("//h3[contains(text(),'YOUR NEXT AUTOSHIP CART')]");
+	private final By PC_TERMS_AND_CONDITIONS_LINK_LOC = By.xpath("//a[contains(text(),'PC Perks Terms & Conditions')]");
+	private final By POLICIES_AND_PROCEDURES_CHK_BOX_PC_LOC = By.xpath("//input[@id='Terms2']");
+	private final By TERMS_AND_CONDITIONS_CHK_BOX_PC_LOC = By.xpath("//input[@id='Terms1']");
+	private final By SELECT_AND_CONTINUE_FIRST_SPONSER_LOC= By.xpath("//div[@id='findConsultantResultArea']/descendant::div[contains(@class,'consultant-box')][1]//span[@id='selectd-consultant']");
+	protected final By CART_PRODUCT_LOC = By.xpath("//ul[contains(@class,'item-list cart')]/li[@class='item-list-item']");
+	private final By EDIT_LINK_NEXT_TO_MAIN_ACCOUNT_LOC = By.xpath("//div[contains(@class,'checkout-steps')]/descendant::a[1]");
+	private final By PC_PERKS_CART_HEADER_LOC = By.xpath("//h1[contains(text(),'Your Shopping Cart')]");
 
+	private String selectAndContinueSponserLoc= "//div[@id='findConsultantResultArea']/descendant::div[contains(@class,'consultant-box')][%s]//span[@id='selectd-consultant']";
 	private String productNameInAllItemsInCartLoc = "//li[@class='item-list-item']//div[@class='item-info']//span[@class='item-name' and contains(text(),'%s')]";
-	private String pageHeaderLoc = "//div[contains(text(),'%s')]";
+	private String pageHeaderLoc = "//div[@class='page-container']//*[contains(text(),'%s')]";
 	private String disclaimerPageLinkLoc = "//a[contains(text(),'%s')]";
 	private String pressRoomTabsLoc="//ul[@class='tabs']//li/a[contains(text(),'%s')]";
 	private String specificExpYearLoc = "//select[@id='c-exyr']//option[%s]";
@@ -1252,10 +1258,7 @@ public class StoreFrontWebsiteBasePage extends RFBasePage{
 	 * 
 	 */
 	public StoreFrontWebsiteBasePage clickShippingDetailsNextbutton(){
-		driver.waitForLoadingImageToDisappear();
-		driver.pauseExecutionFor(1000);
-		driver.click(SHIPPING_NEXT_BUTTON_LOC);
-		logger.info("Next button clicked of shipping details");
+		clickNextbuttonOfShippingDetails();
 		clickUseAsEnteredButtonOnPopUp();
 		return this;
 	}
@@ -1634,7 +1637,10 @@ public class StoreFrontWebsiteBasePage extends RFBasePage{
 	 */
 	public StoreFrontWebsiteBasePage selectPoliciesAndProceduresChkBox(){
 		driver.pauseExecutionFor(1000);
-		driver.clickByJS(RFWebsiteDriver.driver, driver.findElement(POLICIES_AND_PROCEDURES_CHK_BOX_LOC));
+		if(driver.isElementVisible(POLICIES_AND_PROCEDURES_CHK_BOX_LOC))
+			driver.clickByJS(RFWebsiteDriver.driver, driver.findElement(POLICIES_AND_PROCEDURES_CHK_BOX_LOC));
+		else
+			driver.clickByJS(RFWebsiteDriver.driver,driver.findElement(POLICIES_AND_PROCEDURES_CHK_BOX_PC_LOC));
 		logger.info("Policies & procedures checkbox selected");
 		return this;
 	}
@@ -1676,7 +1682,12 @@ public class StoreFrontWebsiteBasePage extends RFBasePage{
 	 */
 	public StoreFrontWebsiteBasePage selectTermsAndConditionsChkBox(){
 		driver.pauseExecutionFor(1000);
-		driver.clickByJS(RFWebsiteDriver.driver, driver.findElement(TERMS_AND_CONDITIONS_CHK_BOX_LOC));
+		if(driver.isElementVisible(TERMS_AND_CONDITIONS_CHK_BOX_LOC)){
+			driver.clickByJS(RFWebsiteDriver.driver, driver.findElement(TERMS_AND_CONDITIONS_CHK_BOX_LOC));
+		}
+		else{
+			driver.clickByJS(RFWebsiteDriver.driver, driver.findElement(TERMS_AND_CONDITIONS_CHK_BOX_PC_LOC)); 
+		}
 		logger.info("Terms & condition checkbox selected");
 		return this;
 	}
@@ -1777,8 +1788,10 @@ public class StoreFrontWebsiteBasePage extends RFBasePage{
 	 * @return
 	 */
 	public StoreFrontWebsiteBasePage clickRemoveLink(){
-		driver.click(REMOVE_LINK_LOC);
+		driver.clickByJS(RFWebsiteDriver.driver, driver.findElement(REMOVE_LINK_LOC));
+		//driver.click(REMOVE_LINK_LOC);
 		logger.info("Remove link clicked");
+		driver.pauseExecutionFor(2000);
 		return this;
 	}
 
@@ -2594,5 +2607,61 @@ public class StoreFrontWebsiteBasePage extends RFBasePage{
 		driver.pauseExecutionFor(2000);
 		return this;
 	}
+
+	/***
+	 * This method click pc terms and conditions link 
+	 * 
+	 * @param
+	 * @return StoreFrontCartPage object
+	 */
+	public StoreFrontWebsiteBasePage clickPCTermsAndConditionsLink(){
+		driver.click(PC_TERMS_AND_CONDITIONS_LINK_LOC);
+		logger.info("PC Terms and Conditions link Clicked");
+		return this ;
+	}
+
+	/***
+	 * This method selects the first sponsor name in the search result and return sponser email.
+	 * 
+	 * @param sponsor
+	 * @return
+	 * 
+	 */
+	public String selectAndReturnFirstSponsorFromList(){
+		String sponserName = driver.findElement(SELECT_AND_CONTINUE_FIRST_SPONSER_LOC).getText();
+		driver.clickByJS(RFWebsiteDriver.driver,driver.findElement(SELECT_AND_CONTINUE_FIRST_SPONSER_LOC));
+		logger.info("Clicked on 'Select And Continue' button for first result");
+		logger.info("selected first sponser name is "+sponserName);
+		driver.pauseExecutionFor(2000);
+		return sponserName;
+	}
+
+	/***
+	 * This method selects and return the sponsor name in the search result.
+	 * 
+	 * @param sponsor
+	 * @return
+	 * 
+	 */
+	public String selectAndReturnSponsorFromList(String sponserNumber){
+		driver.pauseExecutionFor(2000);
+		String sponserName = driver.findElement(By.xpath(String.format(selectAndContinueSponserLoc, sponserNumber))).getText();
+		driver.clickByJS(RFWebsiteDriver.driver,driver.findElement(By.xpath(String.format(selectAndContinueSponserLoc, sponserNumber))));
+		//driver.click(By.xpath(String.format(selectAndContinueSponserLoc, sponserNumber)));
+		logger.info("Clicked on 'Select And Continue' button for"+sponserNumber+" result");
+		logger.info("selected sponser name is "+sponserName);
+		driver.pauseExecutionFor(2000);
+		return sponserName;
+	}
+
+	/***
+	 * This method verifies if change sponser link present on account info page
+	 * displayed or not
+	 * @return
+	 */
+	public boolean isChangeSponserLinkDisplayed(){
+		return driver.isElementVisible(REMOVE_LINK_LOC);
+	}
+
 
 }

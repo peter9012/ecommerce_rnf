@@ -96,7 +96,8 @@ public class StoreFrontShopSkinCarePage extends StoreFrontWebsiteBasePage{
 	 * 
 	 */
 	public StoreFrontShopSkinCarePage addFirstProductToBag(){
-		driver.waitForElementToBeClickable(ADD_TO_CART_FIRST_PRODUCT_LOC, 30);
+		//driver.waitForElementToBeClickable(ADD_TO_CART_FIRST_PRODUCT_LOC, 30);
+		driver.pauseExecutionFor(2000);
 		driver.moveToElement(ADD_TO_CART_FIRST_PRODUCT_LOC);
 		//driver.moveToElementByJS(ADD_TO_CART_FIRST_PRODUCT_LOC);
 		driver.click(ADD_TO_CART_FIRST_PRODUCT_LOC);
@@ -912,5 +913,20 @@ public class StoreFrontShopSkinCarePage extends StoreFrontWebsiteBasePage{
 		return this;
 	}
 
+	/***
+	 * This method click add to cart for  Specific product and return the price
+	 * 
+	 * @param
+	 * @return string price
+	 * 
+	 */
+	public String addProductTocartAndReturnProductPriceForProduct(int productNumber){
+		String priceToAssert = null;
+		priceToAssert = driver.getText(By.xpath(String.format(yourpriceOfProductLoc,productNumber))).replace("$","").split("Your Price:")[1];
+		driver.click(By.xpath(String.format(addToCartButtonThroughProductNumber, productNumber)));
+		logger.info("Clicked add to cart for"+productNumber+" product");
+		logger.info("Price to assert from PLP"+priceToAssert);
+		return priceToAssert;
+	}
 
 }

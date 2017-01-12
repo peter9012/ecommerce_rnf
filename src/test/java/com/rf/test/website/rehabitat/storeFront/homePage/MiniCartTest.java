@@ -291,7 +291,7 @@ public class MiniCartTest extends StoreFrontWebsiteBaseTest{
 	 * qTest : TC-344 As a PC, Retail/Anon User, Consultant, I will be able to view the mini cart
 	 * Description : This test case validates mini cart
 	 */
-	@Test(enabled=false)
+	@Test(enabled=false)//TODO Incomplete
 	public void testAsPCAndRCAbleToViewMiniAutoshipCart_344(){
 		sfHomePage.loginToStoreFront(TestConstants.PC_EMAIL, password);
 		sfShopSkinCarePage = sfHomePage.clickAllProducts();

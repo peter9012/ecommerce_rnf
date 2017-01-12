@@ -21,6 +21,8 @@ public class StoreFrontAutoshipCartPage extends StoreFrontWebsiteBasePage{
 	private final By PULSE_POPUP_LOC = By.xpath("//h1[contains(text(),'Pulse Business Management')]");
 	private final By PC_PERKS_CHECKOUT_LOC = By.xpath("//a[contains(text(),'PC Perks Checkout')]");
 	private final By CRP_CHECKOUT_LOC = By.xpath("//a[contains(text(),'CRP Checkout')]");
+	private final By NEXT_BILL_SHIP_DATE_ON_AUTOSHIP_CART_PAGE_LOC = By.xpath("//td[text()='Ship & Bill Date']/following::td[1]");
+
 	private String socialMediaIconLoc = "//div[@class='container']//a[contains(@href,'%s')]";
 
 	/***
@@ -84,6 +86,36 @@ public class StoreFrontAutoshipCartPage extends StoreFrontWebsiteBasePage{
 		driver.click(CRP_CHECKOUT_LOC);
 		logger.info("Clicked on CRP checkout button");
 		return new StoreFrontCheckoutPage(driver);
+	}
+
+	/***
+	 * This method validates Items on autoship cart page.
+	 * 
+	 * @param
+	 * @return boolean value
+	 * 
+	 */
+	public boolean isAutoshipItemsPresentOnCartPage(){
+		return driver.isElementVisible(CART_PRODUCT_LOC);
+	}
+
+	/***
+	 * This method get  bill and ship date from autship cart page.
+	 * 
+	 * @param
+	 * @return String nextBillAndShipDate.
+	 * 
+	 */
+	public String getBillAndShipDateFromAutoshipCartPage(){
+		String nextBillShipDate = null;
+		if(driver.isElementVisible(NEXT_BILL_SHIP_DATE_ON_AUTOSHIP_CART_PAGE_LOC)){
+			nextBillShipDate=driver.findElement(NEXT_BILL_SHIP_DATE_ON_AUTOSHIP_CART_PAGE_LOC).getText();
+			logger.info("Next bill and ship date on autoship cart page "+nextBillShipDate);
+			return nextBillShipDate;
+		}else{
+			logger.info("No bill and ship date present for user on autoship cart page.");
+			return nextBillShipDate;
+		}
 	}
 
 }

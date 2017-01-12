@@ -144,6 +144,7 @@ public class StoreFrontCheckoutPage extends StoreFrontWebsiteBasePage{
 	private final By EXP_YEAR_DD_AFTER_EDIT_PROFILE_LOC= By.xpath("//div[@id='account-billing-container']//select[@id='ExpiryYear']");
 	private final By EXP_YEAR_AFTER_EDIT_PROFILE_LOC= By.xpath("//div[@id='account-billing-container']//select[@id='ExpiryYear']//option[11]");
 	private final By CVV_AFTER_EDIT_PROFILE_LOC= By.xpath("//div[@id='account-billing-container']//input[@id='card_cvNumber']");
+	private final By SPONSOR_NAME_ACCOUNT_INFO_LOC = By.xpath("//div[contains(@id,'findConsultantResultArea')]//span[@id='selectd-consultant']");
 
 	private String mandatoryFieldErrorMsgOfAddressForNewShippingProfileLoc = "//form[@id='addressForm']//label[contains(@id,'%s-error') and contains(text(),'This field is required.')]";
 	private String stateForNewShippingAddressDetailsLoc = "//form[@id='addressForm']//select[@id='address.region']//option[text()='%s']";
@@ -429,7 +430,7 @@ public class StoreFrontCheckoutPage extends StoreFrontWebsiteBasePage{
 	 * 
 	 */
 	public Boolean isUseAsEnteredPopupDisplayed(){
-		return driver.findElement(USE_AS_ENTERED_BUTTON_LOC).isDisplayed();
+		return driver.isElementVisible(USE_AS_ENTERED_BUTTON_LOC);
 	}
 
 	/***
@@ -1564,4 +1565,18 @@ public class StoreFrontCheckoutPage extends StoreFrontWebsiteBasePage{
 		logger.info("Alert popup accepted");
 		return this;
 	}
+
+	/***
+	 * This method get the sponsor name from account info page
+	 * 
+	 * @param 
+	 * @return sponsor name
+	 * 
+	 */
+	public String getSponsorNameFromAccountInfo(){
+		String sponsorName = driver.getText(SPONSOR_NAME_ACCOUNT_INFO_LOC);
+		logger.info("Sponsor selected as "+sponsorName);
+		return sponsorName;
+	}
+
 }

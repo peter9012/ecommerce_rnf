@@ -971,7 +971,7 @@ public class MyAccountTest extends StoreFrontWebsiteBaseTest{
 	 * 
 	 *     
 	 */
-	@Test(enabled=false)
+	@Test(enabled=true)
 	public void testDelayPCAutoshipBy30Days_440(){
 		String currentNextBillShipDate = null;
 		String nextBillShipDateAfterOneMonth = null;
@@ -997,8 +997,8 @@ public class MyAccountTest extends StoreFrontWebsiteBaseTest{
 		nextBillShipDateUnderAutoshipOrder = sfOrdersPage.getNextBillAndShipDateFromOrderDetailPage();
 		s_assert.assertTrue(nextBillShipDateUnderAutoshipOrder.contains(nextBillShipDateFromUI),"Expected next autoship bill ship date for autoship order"+nextBillShipDateUIFormat+" but actual in UI"+nextBillShipDateFromUI);
 		s_assert.assertAll();
-
 	}
+
 	/***
 	 * qTest : TC-441 PC Perks Status- Delay Autoship - 60 Days
 	 * 
@@ -1006,7 +1006,7 @@ public class MyAccountTest extends StoreFrontWebsiteBaseTest{
 	 * 
 	 *     
 	 */
-	@Test(enabled=false)
+	@Test(enabled=true)
 	public void testDelayPCAutoshipBy60Days_441(){
 		String currentNextBillShipDate = null;
 		String nextBillShipDateAfterOneMonth = null;
@@ -1032,8 +1032,8 @@ public class MyAccountTest extends StoreFrontWebsiteBaseTest{
 		nextBillShipDateUnderAutoshipOrder = sfOrdersPage.getNextBillAndShipDateFromOrderDetailPage();
 		s_assert.assertTrue(nextBillShipDateUnderAutoshipOrder.contains(nextBillShipDateFromUI),"Expected next autoship bill ship date for autoship order"+nextBillShipDateUIFormat+" but actual in UI"+nextBillShipDateFromUI);
 		s_assert.assertAll();
-
 	}
+
 	/***
 	 * qTest : TC-442 PC Perks Status- Delay Autoship - Cancel delay
 	 * 
@@ -1041,7 +1041,7 @@ public class MyAccountTest extends StoreFrontWebsiteBaseTest{
 	 * when date is updated and submit querry not clicked.
 	 *     
 	 */
-	@Test(enabled=false)
+	@Test(enabled=true)
 	public void testDelayPCAutoshipBy30DaysWithoutClickUpdate_442(){
 		String currentNextBillShipDate = null;
 		String nextBillShipDateAfterOneMonth = null;
@@ -1061,5 +1061,57 @@ public class MyAccountTest extends StoreFrontWebsiteBaseTest{
 		s_assert.assertTrue(nextBillShipDateFromUI.equalsIgnoreCase(currentNextBillShipDate),"Expected next autoship bill ship date on autoship status page "+currentNextBillShipDate+" but actual in UI"+nextBillShipDateFromUI);
 		s_assert.assertAll();
 
+	}
+
+	/***
+	 * qTest : TC-279 PC Perks Status- View autoship details
+	 * 
+	 * Description : This tests validates Details on PC perks autoship cart page
+	 * from autoship detail page.
+	 *     
+	 */
+	@Test(enabled=false)
+	public void testVerifyPCPerksAutoshipCartPageFromAutoShipDetailsPage_279(){
+		String currentURL = null;
+		String autoshipCart = "autoship/cart";
+		String currentNextBillShipDate = null;
+		String billShipDateFromAutoshipCart = null;
+		//Login as pc user
+		sfHomePage.loginToStoreFront(TestConstants.PC_EMAIL_HAVING_AUTOSHIP,password);
+		sfHomePage.clickWelcomeDropdown();
+		sfAutoshipStatusPage = sfHomePage.navigateToPCPerksStatusPage();
+		s_assert.assertTrue(sfAutoshipStatusPage.isPCPerksAutoshipStatusPagePresent(),"PC Perks status page is not present.");
+		currentNextBillShipDate = sfAutoshipStatusPage.getNextBillAndShipDateFromAutoship();
+		sfAutoshipCartPage = sfAutoshipStatusPage.viewDetailsOfAutoship();
+		//Verify autoship cart page.
+		currentURL = sfAutoshipCartPage.getCurrentURL().toLowerCase();
+		s_assert.assertTrue(currentURL.contains(autoshipCart), "Expected URL should contain"+autoshipCart+" but actual on UI is"+currentURL);
+		//Verify autoship items at autoship cart page.
+		s_assert.assertTrue(sfAutoshipCartPage.isAutoshipItemsPresentOnCartPage(),"There are no autoship items present on autoship cart page.");
+		billShipDateFromAutoshipCart = sfAutoshipCartPage.getBillAndShipDateFromAutoshipCartPage();
+		s_assert.assertTrue(billShipDateFromAutoshipCart.equalsIgnoreCase(currentNextBillShipDate),"Expected next autoship bill ship date on autoship cart page "+currentNextBillShipDate+" but actual in UI"+billShipDateFromAutoshipCart);
+		s_assert.assertAll();
+	}
+
+	/***
+	 * qTest : TC-280 PC Perks Status page
+	 * 
+	 * Description : This tests validates Details on PC perks autoship details page
+	 * 
+	 *     
+	 */
+	@Test(enabled=false)
+	public void testVerifyPCPerksAutoshipDetails_280(){
+		String pcPerksStatus = null;
+		String expectedPCPerksStatus = "Enrolled";
+		//Login as pc user
+		sfHomePage.loginToStoreFront(TestConstants.PC_EMAIL_HAVING_AUTOSHIP,password);
+		sfHomePage.clickWelcomeDropdown();
+		sfAutoshipStatusPage = sfHomePage.navigateToPCPerksStatusPage();
+		s_assert.assertTrue(sfAutoshipStatusPage.isPCPerksAutoshipStatusPagePresent(),"PC Perks status page is not present.");
+		s_assert.assertTrue(sfAutoshipStatusPage.isNextAutoshipBillShipDatePresent(),"Bill ship date for next autoship order is not present on autoship status page.");
+		pcPerksStatus = sfAutoshipStatusPage.getCurrentPCPerksStatusFromAutoshipStatusPage();
+		s_assert.assertTrue(pcPerksStatus.equalsIgnoreCase(expectedPCPerksStatus),"PC Perks status expected on autoship status page "+expectedPCPerksStatus+" but actual in UI"+pcPerksStatus);
+		s_assert.assertAll();
 	}
 }

@@ -164,6 +164,7 @@ public class OrdersTest extends StoreFrontWebsiteBaseTest{
 		String firstName = TestConstants.FIRST_NAME;
 		String lastName = TestConstants.LAST_NAME+randomWord;
 		String addressLine1 = TestConstants.ADDRESS_LINE_1_US;
+		String addressLine2 = TestConstants.ADDRESS_LINE_2_US;
 		String city = TestConstants.CITY_US;
 		String state = TestConstants.STATE_US;
 		String phoneNumber = TestConstants.PHONE_NUMBER;
@@ -175,7 +176,7 @@ public class OrdersTest extends StoreFrontWebsiteBaseTest{
 		sfCheckoutPage=sfHomePage.checkoutTheCart();
 		sfCheckoutPage.clickSaveButton();
 		sfCheckoutPage.clickEditLinkOfShippingAddress();
-		sfCheckoutPage.updateShippingAddressDetailsAtCheckoutPage(firstName, lastName, addressLine1, city, state, invalidPostalCode, phoneNumber);
+		sfCheckoutPage.updateShippingAddressDetailsAtCheckoutPage(firstName, lastName, addressLine1, addressLine2, city, state, invalidPostalCode, phoneNumber);
 		s_assert.assertTrue(sfCheckoutPage.isErrorMessagePresentForPostalCode(), "Error message is not present for postal code field");
 		sfCheckoutPage.clearAllFieldsForShippingAddressAtCheckoutPage();
 		sfCheckoutPage.clickSaveButtonOfShippingAddress();
@@ -347,13 +348,15 @@ public class OrdersTest extends StoreFrontWebsiteBaseTest{
 	 */
 	@Test(enabled=true)
 	public void testBillingProfileAddAnAddressToNewProfile_303(){
+		String randomWord = CommonUtils.getRandomWord(5);
 		String cardType = TestConstants.CARD_TYPE;
 		String cardNumber = TestConstants.CARD_NUMBER;
-		String cardName = TestConstants.CARD_NAME;
 		String CVV = TestConstants.CVV;
-		String randomWord = CommonUtils.getRandomWord(5);
 		String firstName = TestConstants.FIRST_NAME;
 		String lastName = TestConstants.LAST_NAME+randomWord;
+		randomWord = CommonUtils.getRandomWord(5);
+		String billingLastName = TestConstants.LAST_NAME+randomWord;
+		String cardName = firstName+" "+billingLastName;
 		String addressLine1 = TestConstants.ADDRESS_LINE_1_US;
 		String addressLine2 = TestConstants.ADDRESS_LINE_2_US;
 		String city = TestConstants.CITY_US;
@@ -370,16 +373,10 @@ public class OrdersTest extends StoreFrontWebsiteBaseTest{
 		sfCheckoutPage.clickAddNewBillingProfileButton();
 		sfCheckoutPage.enterUserBillingDetails(cardType, cardNumber, cardName, CVV);
 		sfCheckoutPage.checkUseMyDeliveryAddressChkBox();
-		sfCheckoutPage.clickBillingDetailsNextbutton();
-		sfCheckoutPage.clickEditLinkOfBillingAddress();
-		sfCheckoutPage.clickEditLinkOfBillingProfile();
-		s_assert.assertTrue(sfCheckoutPage.isBillingAddressDropdownEnabled(), "Billing profile is not present in editable mode");
-		sfCheckoutPage.clickAddNewBillingProfileButton();
-		sfCheckoutPage.enterBillingAddressDetailsAtCheckout(firstName, lastName, addressLine1, addressLine2, city, state, postalCode, phoneNumber);
-		sfCheckoutPage.enterUserBillingDetails(cardType, cardNumber, cardName, CVV);
+		sfCheckoutPage.enterShippingDetails(firstName+" "+lastName, addressLine1, addressLine2, city, state, postalCode, phoneNumber);
 		sfCheckoutPage.clickBillingDetailsNextbutton();
 		sfCheckoutPage.clickUseAsEnteredButtonOnPopUp();
-		s_assert.assertTrue(sfCheckoutPage.isNewBillingDetailsVisibleOnUI(lastName),"New Billing Details do not get updated as Default Billing details on Checkout Page");
+		s_assert.assertTrue(sfCheckoutPage.isNewBillingDetailsVisibleOnUI(billingLastName),"New Billing Details do not get updated as Default Billing details on Checkout Page");
 		s_assert.assertAll();
 	}
 
@@ -905,7 +902,6 @@ public class OrdersTest extends StoreFrontWebsiteBaseTest{
 		sfCheckoutPage.clickShippingDetailsNextbutton();
 		sfCheckoutPage.clickAddNewBillingProfileButton();
 		sfCheckoutPage.enterUserBillingDetails(cardType, cardNumber, cardName, CVV);
-		sfCheckoutPage.checkUseMyDeliveryAddressChkBox();
 		sfCheckoutPage.clickBillingDetailsNextbutton();
 		sfCheckoutPage.clickEditLinkOfBillingAddress();
 		sfCheckoutPage.clickEditLinkOfBillingProfile();
@@ -952,7 +948,7 @@ public class OrdersTest extends StoreFrontWebsiteBaseTest{
 		String CVV = TestConstants.CVV;
 		String randomWord = CommonUtils.getRandomWord(5);
 		String firstName = TestConstants.FIRST_NAME;
-		String lastName = TestConstants.LAST_NAME+randomWord;
+		String lastName = TestConstants.LAST_NAME;
 		String addressLine1 ="address line 1";
 		String addressLine2 = TestConstants.ADDRESS_LINE_2_US;
 		String city = TestConstants.CITY_US;
@@ -962,6 +958,7 @@ public class OrdersTest extends StoreFrontWebsiteBaseTest{
 		String errorMessageFromUI = null;
 		String errorMessage= null;
 		String billingProfileDetails = null;
+		String billingLastName = null;
 		sfHomePage.loginToStoreFront(TestConstants.CONSULTANT_EMAIL, password);
 		sfShopSkinCarePage = sfHomePage.clickAllProducts();
 		sfShopSkinCarePage.selectFirstProduct();
@@ -971,10 +968,12 @@ public class OrdersTest extends StoreFrontWebsiteBaseTest{
 		sfCheckoutPage.clickShippingDetailsNextbutton();
 		sfCheckoutPage.clickAddNewBillingProfileButton();
 		sfCheckoutPage.enterUserBillingDetails(cardType, cardNumber, cardName, CVV);
-		sfCheckoutPage.checkUseMyDeliveryAddressChkBox();
 		sfCheckoutPage.clickBillingDetailsNextbutton();
 		sfCheckoutPage.clickEditLinkOfBillingAddress();
 		sfCheckoutPage.clickAddNewBillingProfileButton();
+		sfCheckoutPage.checkUseMyDeliveryAddressChkBox();
+		billingLastName = TestConstants.LAST_NAME+randomWord;
+		cardName = firstName+" "+billingLastName;
 		sfCheckoutPage.enterUserBillingDetails(cardType, cardNumber, cardName, CVV);
 		sfCheckoutPage.clickBillingDetailsNextbutton();
 		s_assert.assertTrue(sfCheckoutPage.isErrorMessagePresentForFirstAndLastName(), "Error message is not present for first and last name field");
@@ -993,7 +992,7 @@ public class OrdersTest extends StoreFrontWebsiteBaseTest{
 		sfCheckoutPage.clickBillingDetailsNextbutton();
 		sfCheckoutPage.clickUseAsEnteredButtonOnPopUp();
 		billingProfileDetails = sfCheckoutPage.getBillingProfileDetailsFromBillingProfile();
-		s_assert.assertTrue(billingProfileDetails.contains(lastName), "Billing profile name should contain "+lastName+" but actual On UI is"+billingProfileDetails);
+		s_assert.assertTrue(billingProfileDetails.contains(billingLastName), "Billing profile name should contain "+lastName+" but actual On UI is"+billingProfileDetails);
 		s_assert.assertAll();
 	}
 
@@ -1277,8 +1276,8 @@ public class OrdersTest extends StoreFrontWebsiteBaseTest{
 		sfCheckoutPage.clickSaveButton();
 		sfCheckoutPage.clickAddNewShippingAddressButton();
 		sfCheckoutPage.enterConsultantShippingDetails(firstName, lastName, addressLine1, addressLine2 ,city, state, postalCode, phoneNumber);
-		sfHomePage.clickUseAsEnteredButtonOnPopUp();
-		sfCheckoutPage.clickShippingDetailsNextbutton();
+		//sfHomePage.clickUseAsEnteredButtonOnPopUp();
+		sfCheckoutPage.clickNextbuttonOfShippingDetails();
 		s_assert.assertTrue(sfCheckoutPage.isUseAsEnteredPopupDisplayed(), "Use As Entered Confirmation Popup is Not Displayed after added new shipping profile");
 		s_assert.assertAll();
 	}

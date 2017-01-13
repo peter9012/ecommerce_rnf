@@ -10,6 +10,8 @@ import java.util.Set;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.openqa.selenium.By;
+import org.openqa.selenium.JavascriptExecutor;
+import org.openqa.selenium.Keys;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.interactions.Actions;
 import org.testng.Reporter;
@@ -1550,13 +1552,29 @@ public class StoreFrontWebsiteBasePage extends RFBasePage{
 	 * 
 	 */
 	public StoreFrontWebsiteBasePage enterUserBillingDetails(String cardType, String cardNumber, String nameOnCard,String CVV){
-		driver.clickByJS(RFWebsiteDriver.driver, driver.findElement(CARD_TYPE_DD_LOC));
-		logger.info("Card type dropdown clicked");
-		driver.click(By.xpath(String.format(cardTypeLoc, cardType)));
-		logger.info("Card type selected as "+cardType);
-		driver.type(CARD_NUMBER_LOC, cardNumber);
+		String javascript = "document.getElementById('card_accountNumber').value="+cardNumber+";"+
+							"document.getElementById('card_accountNumber').innerHTML="+cardNumber+";";
+							
+		((JavascriptExecutor)RFWebsiteDriver.driver).executeScript(javascript);
 		logger.info("Entered card number as"+cardNumber);
-		driver.type(NAME_ON_CARD_LOC, nameOnCard);
+		driver.pauseExecutionFor(1000);
+		Robot robot = null;
+		try {
+			robot = new Robot();
+		} catch (AWTException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		robot.keyPress(KeyEvent.VK_TAB);
+		robot.keyRelease(KeyEvent.VK_TAB);
+		WebElement cardNumberElement = driver.findElement(CARD_NUMBER_LOC);
+		cardNumberElement.click();
+		Actions actions = new Actions(RFWebsiteDriver.driver);
+//		driver.pauseExecutionFor(10000);
+		driver.pauseExecutionFor(2000);
+		driver.waitForPageLoad();
+		WebElement nameOnCardElement = driver.findElement(NAME_ON_CARD_LOC);
+		actions.click(nameOnCardElement).sendKeys(nameOnCardElement, nameOnCard).build().perform();
 		logger.info("Entered card name as"+nameOnCard);
 		driver.click(EXP_MONTH_DD_LOC);
 		logger.info("Exp month dropdown clicked");

@@ -130,8 +130,9 @@ public class StoreFrontWebsiteBasePage extends RFBasePage{
 	protected final By CVV_LOC= By.id("card_cvNumber");
 	protected final By IFRAME_LOC= By.id("IFrame");
 	private final By USE_MY_DELIVERY_ADDRESS_CHK_BOX_LOC= By.xpath("//div[@id='account-billing-container']//label[contains(@class,'useDeliveryAddress')]");
-	//private final By POLICIES_AND_PROCEDURES_CHK_BOX_LOC = By.xpath("//div[contains(@class,'checkout-steps')]/descendant::label[1]");
-	private final By POLICIES_AND_PROCEDURES_CHK_BOX_LOC = By.xpath("//input[@id='Terms3']");
+	private final By POLICIES_AND_PROCEDURES_CHK_BOX_LOC = By.xpath("//div[contains(@class,'checkout-steps')]/descendant::label[1]");
+	//private final By POLICIES_AND_PROCEDURES_CHK_BOX_LOC = By.xpath("//*[@id=placeOrderForm1]/div[2]/label");
+	//private final By POLICIES_AND_PROCEDURES_CHK_BOX_LOC = By.xpath("//input[@id='Terms3']");
 	private final By I_ACKNOWLEDGE_CHK_BOX_LOC = By.xpath("//div[contains(@class,'checkout-steps')]/descendant::label[2]");
 	private final By TERMS_AND_CONDITIONS_CHK_BOX_LOC = By.xpath("//div[contains(@class,'checkout-steps')]/descendant::label[3]");
 	//private final By E_SIGN_CONSENT_FORM_CHK_BOX_LOC = By.xpath("//div[contains(@class,'checkout-steps')]/descendant::label[4]");
@@ -1627,6 +1628,7 @@ public class StoreFrontWebsiteBasePage extends RFBasePage{
 	 */
 	public StoreFrontWebsiteBasePage clickBillingDetailsNextbutton(){
 		driver.click(BILLING_NEXT_BUTTON_LOC);
+		driver.pauseExecutionFor(1000);
 		logger.info("Next button clicked of billing details");
 		return this;
 	}
@@ -1639,7 +1641,7 @@ public class StoreFrontWebsiteBasePage extends RFBasePage{
 	 * 
 	 */
 	public StoreFrontWebsiteBasePage selectPoliciesAndProceduresChkBox(){
-		driver.pauseExecutionFor(1000);
+		driver.pauseExecutionFor(3000);
 		if(driver.isElementVisible(POLICIES_AND_PROCEDURES_CHK_BOX_LOC))
 			driver.clickByJS(RFWebsiteDriver.driver, driver.findElement(POLICIES_AND_PROCEDURES_CHK_BOX_LOC));
 		else
@@ -1656,7 +1658,7 @@ public class StoreFrontWebsiteBasePage extends RFBasePage{
 	 * 
 	 */
 	public StoreFrontWebsiteBasePage selectIAcknowledgeChkBox(){
-		driver.pauseExecutionFor(1000);
+		driver.pauseExecutionFor(3000);
 		driver.click(I_ACKNOWLEDGE_CHK_BOX_LOC);
 		logger.info("I acknowledge checkbox selected");
 		return this;

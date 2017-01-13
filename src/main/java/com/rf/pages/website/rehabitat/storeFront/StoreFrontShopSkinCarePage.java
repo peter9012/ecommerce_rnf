@@ -55,6 +55,7 @@ public class StoreFrontShopSkinCarePage extends StoreFrontWebsiteBasePage{
 	private final By PRODUCT_IMG_ON_QUICK_VIEW_POPUP_LOC = By.xpath("//div[@id='myModal' and contains(@style,'display')]//div[contains(@class,'product-image')]//img");
 	private final By PC_PERKS_PROMO_MSG_LOC = By.xpath("//div[@id='pc_perks_comp']/div[@class='content']/div[contains(text(),'Subscribe + Save 10% on this order Preferred Customer pricing offers up to')]");
 
+
 	private String productNameOnQuickViewPopupLoc = "//div[@id='myModal' and contains(@style,'display')]//div[contains(@class,'product-details')]/div[@class='name']/a[contains(text(),'%s')]";
 	private String regimenNameInShopByCategoryDD = "//div[@id='product-facet']//descendant::ul[2]//span[contains(text(),'%s')]";
 	private String specificPriceForProductLoc = "//div[contains(@class,'product__listing')]//div[@class='product-item'][%s]//em[@class='priceLabel' and contains(text(),'Your Price:')]/ancestor::span";
@@ -66,13 +67,13 @@ public class StoreFrontShopSkinCarePage extends StoreFrontWebsiteBasePage{
 	private String priceOfProductLoc = "//div[contains(@class,'product__listing')]//div[@class='product-item'][%s]//span[@id='cust_price']";
 	private String categoryNameLoc = "//div[@id='product-facet']//descendant::ul[2]/li/descendant::span[contains(text(),'%s')]/preceding::label[1]";
 	private String randomProductCategoryCheckbox = "//div[@id='product-facet']//descendant::ul[2]/li[%s]//descendant::label[2]";
-	private String randomCategoryName = randomProductCategoryCheckbox+"/following::span[@class='facet__list__text']";
 	private String addToCartButtonThroughProductNumber = "//div[@id='product_listing']/descendant::button[text()='Add to cart'][%s]";
 	private String addToBagButtonThroughProductNumber = "//div[@id='product_listing']/descendant::span[contains(text(),'One Time Order')][%s]";
 	private String yourpriceOfProductLoc = "//div[contains(@class,'product__listing')]//div[@class='product-item'][%s]//em[contains(text(),'Your Price')]/..";
 	private String yourPriceOfProductLoc = "//div[contains(@class,'product__listing')]//div[@class='product-item'][%s]//span[@id='retail']";
 	private String productPriceThroughProductNumberLoc = "//div[@id='product_listing']/descendant::span[contains(text(),'%s')][%s]/following-sibling::span[contains(@class,'productPrice')]";
 	private String addToBagButtonForSpecificOrderTypeThroughProductNumberLoc = "//div[@id='product_listing']/descendant::span[contains(text(),'%s')][%s]";
+	private String randomCategoryName = randomProductCategoryCheckbox+"/following::span[1]/span[2]";
 
 	/***
 	 * This method click add to bag button for first product
@@ -103,23 +104,7 @@ public class StoreFrontShopSkinCarePage extends StoreFrontWebsiteBasePage{
 		driver.waitForPageLoad();
 		return this;
 	}
-	/***
-	 * This method select sort by price filter High to low via double click
-	 * 
-	 * @param
-	 * @return store front Home page object
-	 * 
-	 */
-	public StoreFrontShopSkinCarePage productPriceFilterHighToLowSelect(){
-		Actions action=new Actions(RFWebsiteDriver.driver);
-		action.moveToElement(driver.findElement(SORT_FILTER_DD_LOC)).doubleClick().build().perform();
-		driver.pauseExecutionFor(2000);
-		logger.info("Sort filter dropdown clicked");
-		action.moveToElement(driver.findElement(SHOP_BY_PRICE_FILTER_OPTION_HIGH_TO_LOW_LOC)).doubleClick().build().perform();
-		logger.info("Price filter 'HIGH TO LOW' selected");
-		driver.waitForPageLoad();
-		return this;
-	}
+
 	/***
 	 * This method verify the product price filter High to Low applied successfully
 	 * 
@@ -165,23 +150,7 @@ public class StoreFrontShopSkinCarePage extends StoreFrontWebsiteBasePage{
 		driver.waitForPageLoad();
 		return this;
 	}
-	/***
-	 * This method select sort by price filter Low to High via double click.
-	 * 
-	 * @param
-	 * @return store front Home page object
-	 * 
-	 */
-	public StoreFrontShopSkinCarePage productPriceFilterLowToHighSelect(){
-		Actions action=new Actions(RFWebsiteDriver.driver);
-		action.moveToElement(driver.findElement(SORT_FILTER_DD_LOC)).doubleClick().build().perform();
-		driver.pauseExecutionFor(2000);
-		logger.info("Sort filter dropdown clicked");
-		action.moveToElement(driver.findElement(SHOP_BY_PRICE_FILTER_OPTION_LOW_TO_HIGH_LOC)).doubleClick().build().perform();
-		logger.info("Price filter 'LOW TO HIGH' selected");
-		driver.waitForPageLoad();
-		return this;
-	}
+
 	/***
 	 * This method verify the product price filter Low to High applied successfully
 	 * 
@@ -241,25 +210,7 @@ public class StoreFrontShopSkinCarePage extends StoreFrontWebsiteBasePage{
 		driver.waitForPageLoad();
 		return this;
 	}
-	/***
-	 * This method Refine Product by random category and return category name
-	 * 
-	 * @param
-	 * @return selected category name
-	 * 
-	 */
-	public String refineProductByCategoryAndReturnCategoryName(){
-		driver.click(REFINE_PRODUCT_CATEGORY_FILTER_DD_LOC);
-		logger.info("Refine category filter dropdown clicked");
-		int randomNum = CommonUtils.getRandomNum(2,7);
-		logger.info("Random selected category is "+(randomNum-1));
-		String categoryName=driver.findElement(By.xpath(String.format(randomCategoryName,randomNum))).getText().trim();
-		driver.click(By.xpath(String.format(randomProductCategoryCheckbox, randomNum)));
-		logger.info("Product category selected is "+categoryName);
-		driver.waitForPageLoad();
-		driver.waitForLoadingImageToDisappear();
-		return categoryName;
-	}
+
 	/***
 	 * This method get first product name from all product page
 	 * 
@@ -909,6 +860,75 @@ public class StoreFrontShopSkinCarePage extends StoreFrontWebsiteBasePage{
 		logger.info("Clicked add to cart for"+productNumber+" product");
 		logger.info("Price to assert from PLP"+priceToAssert);
 		return priceToAssert;
+	}
+
+	/***
+	 * This method Refine Product by random category and return category name
+	 * 
+	 * @param
+	 * @return selected category name
+	 * 
+	 */
+	public String refineProductByCategoryAndReturnCategoryName(){
+		String categoryName = null;
+		while(true){
+			driver.click(REFINE_PRODUCT_CATEGORY_FILTER_DD_LOC);
+			logger.info("Refine category filter dropdown clicked");
+			int randomNum = CommonUtils.getRandomNum(2,7);
+			logger.info("Random selected category is "+(randomNum-1));
+			categoryName=driver.findElement(By.xpath(String.format(randomCategoryName,randomNum))).getText().trim();
+			driver.click(By.xpath(String.format(randomProductCategoryCheckbox,randomNum)));
+			logger.info("Product category selected is "+categoryName);
+			driver.waitForPageLoad();
+			driver.waitForLoadingImageToDisappear();
+			driver.pauseExecutionFor(5000);
+			int totalProducts = driver.findElements(TOTAL_PRODUCTS_LOC).size();
+			if(totalProducts>=3)
+				break;
+			else{
+				driver.click(REFINE_PRODUCT_CATEGORY_FILTER_DD_LOC);
+				categoryName=driver.findElement(By.xpath(String.format(randomCategoryName,randomNum))).getText().trim();
+				driver.click(By.xpath(String.format(randomProductCategoryCheckbox,randomNum)));
+				driver.waitForPageLoad();
+				driver.waitForLoadingImageToDisappear();
+				logger.info("Category"+categoryName+" is deselected");
+				logger.info("Required product count not present for category"+categoryName);
+				continue;
+			}
+		}
+		return categoryName;
+	}
+
+	/***
+	 * This method select sort by price filter Low to High via JS click.
+	 * 
+	 * @param
+	 * @return store front Home page object
+	 * 
+	 */
+	public StoreFrontShopSkinCarePage productPriceFilterLowToHighSelect(){
+		driver.clickByJS(RFWebsiteDriver.driver,driver.findElement(SORT_FILTER_DD_LOC));
+		logger.info("Sort filter dropdown clicked");
+		driver.click(SHOP_BY_PRICE_FILTER_OPTION_LOW_TO_HIGH_LOC);
+		logger.info("Price filter 'LOW TO HIGH' selected");
+		driver.waitForPageLoad();
+		return this;
+	}
+
+	/***
+	 * This method select sort by price filter High to low via JS click
+	 * 
+	 * @param
+	 * @return store front Home page object
+	 * 
+	 */
+	public StoreFrontShopSkinCarePage productPriceFilterHighToLowSelect(){
+		driver.clickByJS(RFWebsiteDriver.driver, driver.findElement(SORT_FILTER_DD_LOC));
+		logger.info("Sort filter dropdown clicked");
+		driver.click(SHOP_BY_PRICE_FILTER_OPTION_HIGH_TO_LOW_LOC);
+		logger.info("Price filter 'HIGH TO LOW' selected");
+		driver.waitForPageLoad();
+		return this;
 	}
 
 }

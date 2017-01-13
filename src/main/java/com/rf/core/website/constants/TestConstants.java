@@ -43,8 +43,8 @@ public class TestConstants {
 	public static final String TITLE_OF_ORDER_DETAILS_PAGE = "Order Details | Rodan and Fields";
 
 	//Consultant user details
-	public static final String CONSULTANT_USERNAME = "AutoCons20170110140338@mailinator.com";
-	public static final String CONSULTANT_EMAIL = "AutoCons20170110140338@mailinator.com";
+	public static final String CONSULTANT_USERNAME = "autocon1515@mailinator.com";
+	public static final String CONSULTANT_EMAIL = "autocon1515@mailinator.com";
 	public static final String CONSULTANT_WITH_CRP_USERNAME = "autocon1515@mailinator.com";
 	public static final String CONSULTANT_ACCOUNT_ID = "";
 	public static final String CONSULTANT_ACCOUNT_NUMBER = "";
@@ -73,6 +73,7 @@ public class TestConstants {
 	public static final String BILLING_PROFILE_ADDED_MESSAGE = "Card details are added successfully.";
 	public static final String PASSWORD_RECOVERY_SUBMIT_SUCCESS_MESSAGE = "Password reset instructions have been sent to your e-mail address. Please contact customer support if you require additional assistance";
 	public static final String PASSWORD_RECOVERY_SUBMIT_EMAIL_NOT_REGISTERED_MESSAGE = "You do not have account with us. Please create your account";
+	public static final String CONSULTANT_PWS = "https://www.qa1.rodanandfields.com/US/pws/alnameawaw";
 
 	//PO address details
 	public static final String PO_ADDRESS_LINE_1_US = "P.O. Box 283 8562 Fusce Rd";
@@ -96,10 +97,10 @@ public class TestConstants {
 	public static final String DPO_STATE_US = "AP Armed Forces";
 
 	//PC User Details
-	public static final String PC_USERNAME = "autopc1212@mailinator.com";
-	public static final String PC_EMAIL = "autopc1212@mailinator.com";
+	public static final String PC_USERNAME = "autocon13121@mailinator.com";
+	public static final String PC_EMAIL = "autocon13121@mailinator.com";
 	public static final String PC_EMAIL_HAVING_AUTOSHIP = "autocon13121@mailinator.com";
-	
+
 	//RC User Details
 	public static final String RC_USERNAME = "AutoRC20170113140808@mailinator.com";
 	public static final String RC_EMAIL = "AutoRC20170113140808@mailinator.com";

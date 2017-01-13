@@ -25,9 +25,7 @@ public class StoreFrontBillingInfoPage extends StoreFrontWebsiteBasePage{
 	private final By SAVE_BUTTON_FOR_BILLING_DETAILS_LOC = By.xpath("//button[@id='save-account-payment-Details']");
 	private final By ADD_NEW_BILLING_INFO_HEADER_LOC = By.xpath("//form[@id='accountPaymentDetailsForm']//h3[contains(text(),'ADD NEW BILLING INFO')]");
 	private final By ADD_NEW_BILLING_ADDRESS_LINK_LOC = By.xpath("//a[@class='add-new-billing-address']");
-	private final By ADD_NEW_BILLING_ADDRESS_BLOCK_LOC = By.xpath("//div[@id='account-billing-address-form']");
 	private final By ADD_NEW_BILLING_ADDRESS_BLOCK_HEADER_LOC = By.xpath("//h3[@id='addressHeading']");
-	private final By STREET_ERROR_MSG_LOC = By.xpath("//h3[@id='addressHeading']/following-sibling::p[@id='errorMessage']");
 	private final By ADDRESS_SUGGESTION_MODAL_LOC = By.xpath("//div[@id='cboxLoadedContent']/div[@class='modal-body']");
 	private final By ADDRESS_SUGGESTION_MODAL_CLOSE_BTN_LOC = By.xpath("//button[@id='cboxClose']");
 	private final By CARD_DETAILS_SUCCESSFULLY_ADDED_MSG_LOC = By.xpath("//div[@class='global-alerts']/div[@class='alert alert-info alert-dismissable']");
@@ -47,15 +45,16 @@ public class StoreFrontBillingInfoPage extends StoreFrontWebsiteBasePage{
 	private final By DEFAULT_BILLING_PROFILE_ADDRESS_NAME_LOC = By.xpath("//div[@class='account-paymentdetails account-list']//strong[contains(text(),'Default')]/ancestor::li[1]");
 	private final By DEFAULT_PROFILE_DELETE_BTN_LOC = By.xpath("//div[@class='account-paymentdetails account-list']//strong[contains(text(),'Default')]//ancestor::ul[1]/following-sibling::div[contains(@class,'account-cards-actions')]/a[contains(text(),'Delete')]");
 	private final By SUCCESSFUL_ACTION_MSG_LOC = By.xpath("//div[@class='global-alerts']/div[@class='alert alert-info alert-dismissable']");
+	private final By ADD_NEW_BILLING_ADDRESS_BLOCK_LOC = By.xpath("//div[@id='billingAddressForm']");
+	private final By STREET_ERROR_MSG_LOC = By.xpath("//div[@id='accountBillingForm']//p[@id='errorMessage']");
 
-	private String creditCardNumberForSpecificBillingProfileLoc = "//div[@class='account-paymentdetails account-list']//li[text()='%s']/following-sibling::li[contains(text(),'Credit')]";
-	private String creditCardExpDateForSpecificBillingProfileLoc = "//div[@class='account-paymentdetails account-list']//li[text()='%s']/following-sibling::li[contains(text(),'Expiration')]";
-	private String billingAddressForSpecificBillingProfileLoc = "//div[@class='account-paymentdetails account-list']//li[text()='%s']/following-sibling::li[not(contains(text(),'Credit card') or contains(text(),'Expiration Date'))]";
 	private String billingProfileFirstNameLoc = "//div[@class='account-paymentdetails account-list']//li[contains(text(),'%s')]";
-	private String setDefaultSpecificBillingProfileRadioBtnLoc = "//div[@class='account-paymentdetails account-list']//li[text()='%s']/ancestor::ul/following-sibling::div[contains(@class,'set-default')]/a[contains(text(),'Default')]";
-	private String defaultTagForSpecficBillingProfileLoc = "//div[@class='account-paymentdetails account-list']//li[text()='%s']/strong[contains(text(),'(Default)')]";
-	private String deleteActionForSpecificBillingProfileLoc = "//div[@class='account-paymentdetails account-list']//li[text()='%s']/ancestor::ul/following-sibling::div[contains(@class,'account-cards-actions')]/a[contains(text(),'Delete')]";
-
+	private String creditCardNumberForSpecificBillingProfileLoc = "//li[contains(text(),'%s')]/following-sibling::li[contains(text(),'Credit')]";
+	private String creditCardExpDateForSpecificBillingProfileLoc = "//li[contains(text(),'%s')]/following-sibling::li[contains(text(),'Expiration')]";
+	private String billingAddressForSpecificBillingProfileLoc = "//li[contains(text(),'%s')]/following-sibling::li[not(contains(text(),'Credit card') or contains(text(),'Expiration Date'))]";
+	private String setDefaultSpecificBillingProfileRadioBtnLoc = "//li[contains(text(),'%s')]/ancestor::ul/following-sibling::div[contains(@class,'set-default')]/a[contains(text(),'Default')]";
+	private String defaultTagForSpecficBillingProfileLoc = "//li[contains(text(),'%s')]/strong[contains(text(),'(Default)')]";
+	private String deleteActionForSpecificBillingProfileLoc = "//li[contains(text(),'%s')]/ancestor::ul/following-sibling::div[contains(@class,'account-cards-actions')]/a[contains(text(),'Delete')]";
 
 	/***
 	 * This method click the save button for Billing details
@@ -79,17 +78,6 @@ public class StoreFrontBillingInfoPage extends StoreFrontWebsiteBasePage{
 	 */
 	public boolean isAddNewBillingInfoSubHeaderPresent(){
 		return driver.isElementVisible(ADD_NEW_BILLING_INFO_HEADER_LOC);
-	}
-
-	/***
-	 * This method validates the Add New Billing Address Form.
-	 * 
-	 * @param
-	 * @return boolean value
-	 * 
-	 */
-	public boolean isAddNewBillingAddressFormDisplayed(){
-		return driver.getAttribute(ADD_NEW_BILLING_ADDRESS_BLOCK_LOC, "style").contains("block");
 	}
 
 	/***
@@ -467,6 +455,17 @@ public class StoreFrontBillingInfoPage extends StoreFrontWebsiteBasePage{
 	 */
 	public int getCountOfDefaultBillingProfiles(){
 		return driver.findElements(DEFAULT_BILLING_PROFILE_ADDRESS_NAME_LOC).size();
+	}
+
+	/***
+	 * This method validates the Add New Billing Address Form.
+	 * 
+	 * @param
+	 * @return boolean value
+	 * 
+	 */
+	public boolean isAddNewBillingAddressFormDisplayed(){
+		return driver.isElementVisible(ADD_NEW_BILLING_ADDRESS_BLOCK_LOC);
 	}
 
 }

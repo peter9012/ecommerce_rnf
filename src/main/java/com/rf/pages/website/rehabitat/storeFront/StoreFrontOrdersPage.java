@@ -20,13 +20,9 @@ public class StoreFrontOrdersPage extends StoreFrontWebsiteBasePage{
 	private final By FIRST_ORDER_NUMBER_UNDER_ORDER_HISTORY_LOC = By.xpath("//div[@id='orderHistoryContentArea']//tr[2]//td[2]/a");
 	private final By FIRST_ACTIONS_DD_UNDER_ORDER_HISTORY_LOC = By.xpath("//div[@id='orderHistoryContentArea']//tr[2]//div[contains(text(),'Actions')]");
 	private final By NAME_FIELD_AT_REPORT_PROBLEM_PAGE_LOC = By.xpath("//form[@id='reportAProblemForm']/descendant::span[@class='message-content'][2]");
-	private final By EMAIL_FIELD_AT_REPORT_PROBLEM_PAGE_LOC = By.xpath("//div[contains(text(),'Email')]//input[@name='email']");
 	private final By PROBLEM_DD_LOC = By.id("problemReasonCode");
 	private final By MESSAGE_BOX_LOC = By.id("message");
-	private final By CHKBOX_OF_PRODUCT_LOC = By.id("orderEntries1");
-	private final By PROBLEM_DD_FIRST_OPTION_LOC = By.xpath("//select[@id='problemReasonCode']/option[1]");
 	private final By SUBMIT_BTN_LOC = By.id("reportProblemSubmit");
-	private final By CONFIRMATION_MSG_OF_REPORT_PROBLEM = By.xpath("//div[@class='account-section']");
 	private final By READ_OUR_RETURN_POLICY_LINK_LOC= By.xpath("//a[contains(text(),'Read our return policy')]");
 	private final By EMAIL_ID_AT_REPORT_PROBLEM_PAGE_LOC = By.xpath("//div[contains(text(),'Name')]/following::div[@class='inputValue'][1]");
 	private final By NAME_AT_REPORT_PROBLEM_PAGE_LOC = By.xpath("//div[contains(text(),'Name')]/following::div[@class='inputValue'][1]");
@@ -43,6 +39,12 @@ public class StoreFrontOrdersPage extends StoreFrontWebsiteBasePage{
 	private final By ACTIONS_DD_UNDER_RETURN_ORDER_SECTION_LOC = By.xpath("//div[contains(text(),'RETURN ORDERS AND CREDITS')]/../../descendant::div[contains(text(),'Actions')][1]");
 	private final By REPORT_PROBLEM_PAGE_HEADER_LOC = By.xpath("//div[contains(@class,'account-section-header')]");
 	private final By NEXT_BILL_SHIP_DATE_AUTOSHIP_ORDER_LOC = By.xpath("//div[contains(text(),'PENDING AUTOSHIP ORDERS')]/following::td[contains(text(),'Active')]/preceding-sibling::td[text()='Scheduled Date']/following-sibling::td[1]");
+	private final By EMAIL_FIELD_AT_REPORT_PROBLEM_PAGE_LOC = By.xpath("//div[@class='report-problem-content']//input[@name='email']");
+	private final By CONFIRMATION_MSG_OF_REPORT_PROBLEM = By.xpath("//div[@class='account-section-subHeader']");
+	private final By PROBLEM_DD_FIRST_OPTION_LOC = By.xpath("//select[@id='problemReasonCode']/option[2]");
+	private final By CHKBOX_OF_PRODUCT_LOC = By.xpath("//input[@id='orderEntries1']/..//img");
+	private final By MESSAGE_INSTRUCTIONS_TEXT_LOC = By.xpath("//span[contains(text(),'Maximum 800 characters including spaces')]");
+	private final By SELECTED_PROBLEEM_REASON_AT_ORDER_PROBLEM_PAGE_LOC = By.id("itemCodeValue");
 
 	private String optionsLinkUnderReturnOrderSectionLoc = "//div[contains(text(),'RETURN ORDERS AND CREDITS')]/../../descendant::a[contains(text(),'%s')]";
 	private String headerTitleInOrderHistorySection = "//div[@id='orderHistoryContentArea']//th[contains(text(),'%s')]";
@@ -131,25 +133,6 @@ public class StoreFrontOrdersPage extends StoreFrontWebsiteBasePage{
 	}
 
 	/***
-	 * This method enter the details for return a product  
-	 * 
-	 * @param message
-	 * @return store front orders page object
-	 * 
-	 */
-	public StoreFrontOrdersPage enterTheDetailsForReportProblem(String message){
-		driver.click(CHKBOX_OF_PRODUCT_LOC);
-		logger.info("Check box checked for product");
-		driver.click(PROBLEM_DD_LOC);
-		logger.info("Problem dropdown clicked");
-		driver.click(PROBLEM_DD_FIRST_OPTION_LOC);
-		logger.info("First option select from problem dropdown");
-		driver.type(MESSAGE_BOX_LOC, message);
-		logger.info("Message typed as: "+message);
-		return this;
-	}
-
-	/***
 	 * This method click the submit button at return order page  
 	 * 
 	 * @param message
@@ -195,15 +178,6 @@ public class StoreFrontOrdersPage extends StoreFrontWebsiteBasePage{
 	}
 
 	/***
-	 * This method validates problem dropdown reasons
-	 * @param
-	 * @return boolean
-	 */
-	public boolean isProblemDropdownOptionsPresent(String reason){
-		return driver.findElement(By.xpath(String.format(problemDropdownOptionsLoc, reason))).isDisplayed();
-	}
-
-	/***
 	 * This method get order number from order report problem page 
 	 * 
 	 * @param
@@ -240,19 +214,6 @@ public class StoreFrontOrdersPage extends StoreFrontWebsiteBasePage{
 		String name = driver.findElement(NAME_AT_REPORT_PROBLEM_PAGE_LOC).getText();
 		logger.info("Name is "+name);
 		return name;
-	}
-
-	/***
-	 * This method get email id from order report problem page 
-	 * 
-	 * @param
-	 * @return product name
-	 * 
-	 */
-	public String getEmailFromOrderReportProblemPage(){
-		String email = driver.findElement(EMAIL_ID_AT_REPORT_PROBLEM_PAGE_LOC).getText();
-		logger.info("Email is "+email);
-		return email;
 	}
 
 	/***
@@ -572,6 +533,86 @@ public class StoreFrontOrdersPage extends StoreFrontWebsiteBasePage{
 			return nextBillShipDate;
 		}
 	}
+	//---
+
+	/***
+	 * This method get email id from order report problem page 
+	 * 
+	 * @param
+	 * @return product name
+	 * 
+	 */
+	public String getEmailFromOrderReportProblemPage(){
+		String email = driver.findElement(EMAIL_FIELD_AT_REPORT_PROBLEM_PAGE_LOC).getText();
+		logger.info("Email is "+email);
+		return email;
+	}
+
+	/***
+	 * This method enter the details for return a product  
+	 * 
+	 * @param message
+	 * @return store front orders page object
+	 * 
+	 */
+	public StoreFrontOrdersPage enterTheDetailsForReportProblem(String message){
+		driver.clickByJS(RFWebsiteDriver.driver, driver.findElement(CHKBOX_OF_PRODUCT_LOC));
+		logger.info("Check box checked for product");
+		driver.click(PROBLEM_DD_LOC);
+		logger.info("Problem dropdown clicked");
+		driver.click(PROBLEM_DD_FIRST_OPTION_LOC);
+		logger.info("First option select from problem dropdown");
+		driver.type(MESSAGE_BOX_LOC, message);
+		logger.info("Message typed as: "+message);
+		return this;
+	}
+
+	/***
+	 * This method validates problem dropdown reasons
+	 * @param
+	 * @return boolean
+	 */
+	public boolean isProblemDropdownOptionsPresent(String reason){
+		return driver.isElementVisible(By.xpath(String.format(problemDropdownOptionsLoc, reason)));
+	}
+
+	/***
+	 * This method enter the email address at report problems page 
+	 * 
+	 * @param email ID
+	 * @return Store front order page obj
+	 * 
+	 */
+	public StoreFrontOrdersPage enterEmailIdAtReportProblemPage(String emailID){
+		driver.type(EMAIL_FIELD_AT_REPORT_PROBLEM_PAGE_LOC, emailID+"\t");
+		logger.info("Email address entered as "+emailID);
+		return this;
+	}
+
+	/***
+	 * This method validates the message instructions are present  
+	 * 
+	 * @param
+	 * @return boolean value
+	 * 
+	 */
+	public boolean isMessageInstructionsPresentAtReportProblemPage(){
+		return driver.isElementVisible(MESSAGE_INSTRUCTIONS_TEXT_LOC);
+	}
+
+	/***
+	 * This method enter the sponsor name and click on search button
+	 * 
+	 * @param 
+	 * @return error message
+	 * 
+	 */
+	public String getSelectedProblemReasonFromOrderReportPage(){
+		String reason = driver.findElement(SELECTED_PROBLEEM_REASON_AT_ORDER_PROBLEM_PAGE_LOC).getAttribute("value");
+		logger.info("problem reason selected as "+reason);
+		return reason;
+	}
+
 
 
 }

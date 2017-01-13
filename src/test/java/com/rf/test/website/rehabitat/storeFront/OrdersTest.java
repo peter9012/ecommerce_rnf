@@ -55,49 +55,6 @@ public class OrdersTest extends StoreFrontWebsiteBaseTest{
 	}
 
 	/***
-	 * qTest : TC-227 Order History- Report a Problem- Field Validations
-	 * Description : This test validates report problems page & field validations
-	 *     
-	 */
-	@Test(enabled=false)//TODO incomplete
-	public void testOrderHistoryReportAProblemFieldValidations_227(){
-		String reportProblemsLink = "Report Problems";
-		String name = TestConstants.FIRST_NAME;
-		sfHomePage.loginToStoreFront(TestConstants.CONSULTANT_USERNAME, password);
-		sfHomePage.clickWelcomeDropdown();
-		sfOrdersPage = sfHomePage.navigateToOrdersPage();
-		sfOrdersPage.chooselinkFromActionsDDUnderOrderHistoryForFirstOrder(reportProblemsLink);
-		s_assert.assertFalse(sfOrdersPage.isNameFieldEditableAtReportProblemPage(name), "Name fiels is editable at report problem page");
-		s_assert.assertTrue(sfOrdersPage.isEmailFieldPresentAtReportProblemPage(), "Email field is not present at report problem page");
-		s_assert.assertTrue(sfOrdersPage.isProblemDDPresentAtReportProblemPage(), "Problem DD is not present at report problem page");
-		s_assert.assertTrue(sfOrdersPage.isMessageBoxPresentAtReportProblemPage(), "Message box is not present at report problem page");
-		s_assert.assertAll();
-	}
-
-
-	/***
-	 * qTest : TC-228 Order History- Report a Problem- Confirmation page
-	 * Description : This test validates return order request & details
-	 *     
-	 */
-	@Test(enabled=true)//TODO incomplete
-	public void testOrderHistoryReportAProblemConfirmationPage_228(){
-		String reportProblemsLink = "Report Problems";
-		String expectedConfirmationMessage = "Thank you. We have sent your problem to our customer service and they will review the issue and respond within 48 hours";
-		String confirmationMessageFromUI = null;
-		String message = "For Automation";
-		sfHomePage.loginToStoreFront(TestConstants.CONSULTANT_USERNAME, password);
-		sfHomePage.clickWelcomeDropdown();
-		sfOrdersPage = sfHomePage.navigateToOrdersPage();
-		sfOrdersPage.chooselinkFromActionsDDUnderOrderHistoryForFirstOrder(reportProblemsLink);
-		sfOrdersPage.enterTheDetailsForReportProblem(message);
-		sfOrdersPage.clickSubmitBtnAtReportProblemPage();
-		confirmationMessageFromUI = sfOrdersPage.getConfirmationMsgOfReportProblem();
-		s_assert.assertTrue(confirmationMessageFromUI.contains(expectedConfirmationMessage), "Expected confirmation message is"+expectedConfirmationMessage+" but actual on UI is "+confirmationMessageFromUI);
-		s_assert.assertAll();
-	}
-
-	/***
 	 * qTest : TC-298 Checkout page edits - Edit Shipping Information
 	 * Description : This test add a new product to cart and Edit Shipping Information
 	 * 
@@ -1696,5 +1653,113 @@ public class OrdersTest extends StoreFrontWebsiteBaseTest{
 		s_assert.assertFalse(sfCheckoutPage.isNotYourConsultantLinkPresent(), "Not your sponsor link is present for consultant's sponsor");
 		s_assert.assertAll();
 	}
+	
+	//--
+	
+	/***
+	 * qTest : TC-227 Order History- Report a Problem- Field Validations
+	 * Description : This test validates report problems page & field validations
+	 *     
+	 */
+	@Test(enabled=false)
+	public void testOrderHistoryReportAProblemFieldValidations_227(){
+		String reportProblemsLink = "Report Problems";
+		String name = TestConstants.FIRST_NAME;
+		String reasonWhereIsTheShipment = "\"Where's the shipment\"";
+		String reasonOrderIsIncorrect = "\"Order is incorrect\"";
+		String reasonNeedToReturnAnItem = "\"Need to return an item or an order\"";
+		String reasonDontKnowWasEnrolledInAutoship = "\"DIdn't know was enrolled in an autoship\"";
+		String reasonShipmentWasDamaged = "\"My Shipment was damaged or missing items\"";
+		String expectedConfirmationMessage = "We have sent your problem to our customer service and they will review the issue and respond within 48 hours";
+		String confirmationMessageFromUI = null;
+		sfHomePage.navigateToUrl(TestConstants.CONSULTANT_PWS);
+		sfHomePage.loginToStoreFront(TestConstants.CONSULTANT_USERNAME, password);
+		sfHomePage.clickWelcomeDropdown();
+		sfOrdersPage = sfHomePage.navigateToOrdersPage();
+		sfOrdersPage.chooselinkFromActionsDDUnderOrderHistoryForFirstOrder(reportProblemsLink);
+		s_assert.assertFalse(sfOrdersPage.isNameFieldEditableAtReportProblemPage(name), "Name fiels is editable at report problem page");
+		s_assert.assertTrue(sfOrdersPage.isEmailFieldPresentAtReportProblemPage(), "Email field is not present at report problem page");
+		s_assert.assertTrue(sfOrdersPage.isProblemDDPresentAtReportProblemPage(), "Problem DD is not present at report problem page");
+		s_assert.assertTrue(sfOrdersPage.isMessageBoxPresentAtReportProblemPage(), "Message box is not present at report problem page");
+		s_assert.assertTrue(sfOrdersPage.isMessageInstructionsPresentAtReportProblemPage(), "Message instruction as max 800 char including spaces is not present at report problem page");
+		sfOrdersPage.clearTheDetailsEnteredForReportProblem();
+		sfOrdersPage.clickSubmitBtnAtReportProblemPage();
+		s_assert.assertTrue(sfOrdersPage.isErrorMsgPresentForNotSelectingProductCheckbox(),"Error message is not present for not selecting Product checkbox");
+		s_assert.assertTrue(sfOrdersPage.isErrorMsgForEmailPresent(),"Error message is not present for email details");
+		s_assert.assertTrue(sfOrdersPage.isErrorMsgForProblemDDPresent(),"Error message is not present for problem dropdown details");
+		s_assert.assertTrue(sfOrdersPage.isErrorMsgForReportProblemMessageTextFieldPresent(),"Error message is not present for report problem message details");
+		// verify Reason codes in problem DD
+		s_assert.assertTrue(sfOrdersPage.isProblemDropdownOptionsPresent(reasonWhereIsTheShipment), "Problem reason "+reasonWhereIsTheShipment+" is not present");
+		s_assert.assertTrue(sfOrdersPage.isProblemDropdownOptionsPresent(reasonOrderIsIncorrect), "Problem reason "+reasonOrderIsIncorrect+" is not present");
+		s_assert.assertTrue(sfOrdersPage.isProblemDropdownOptionsPresent(reasonNeedToReturnAnItem), "Problem reason "+reasonNeedToReturnAnItem+" is not present");
+		s_assert.assertTrue(sfOrdersPage.isProblemDropdownOptionsPresent(reasonDontKnowWasEnrolledInAutoship), "Problem reason "+reasonDontKnowWasEnrolledInAutoship+" is not present");
+		s_assert.assertTrue(sfOrdersPage.isProblemDropdownOptionsPresent(reasonShipmentWasDamaged), "Problem reason "+reasonShipmentWasDamaged+" is not present");
+		sfOrdersPage.enterTheDetailsForReportProblem("For Automation");
+		sfOrdersPage.enterEmailIdAtReportProblemPage(name);
+		s_assert.assertTrue(sfOrdersPage.isErrorMsgForEmailPresent(),"Error message is not present for invalid email id");
+		sfOrdersPage.enterEmailIdAtReportProblemPage(TestConstants.CONSULTANT_EMAIL);
+		sfOrdersPage.clickSubmitBtnAtReportProblemPage();
+		confirmationMessageFromUI = sfOrdersPage.getConfirmationMsgOfReportProblem().toLowerCase();
+		s_assert.assertTrue(confirmationMessageFromUI.contains(expectedConfirmationMessage.toLowerCase()), "Expected confirmation message is"+expectedConfirmationMessage+" but actual on UI is "+confirmationMessageFromUI);
+		s_assert.assertAll();
+	}
+ 
+ /***
+	 * qTest : TC-228 Order History- Report a Problem- Confirmation page
+	 * Description : This test validates return order request & details
+	 *     
+	 */
+	@Test(enabled=true)//TODO incomplete
+	public void testOrderHistoryReportAProblemConfirmationPage_228(){
+		String reportProblemsLink = "Report Problems";
+		String expectedConfirmationMessage = "We have sent your problem to our customer service and they will review the issue and respond within 48 hours";
+		String confirmationMessageFromUI = null;
+		String message = "For Automation";
+		String orderNumberAtReportProblemPage = null;
+		String productNameAtReportProblemPage = null;
+		String nameAtReportProblemPage = null;
+		String emailIDAtReportProblemPage = null;
+		String problemReasonAtReportProblemPage = null;
+		String orderNumberAtReportConfirmationPage = null;
+		String productNameAtReportConfirmationPage = null;
+		String nameAtReportConfirmationPage = null;
+		String emailIDAtReportConfirmationPage = null;
+		String ProblemReasonAtReportConfirmationPage = null;
+		String MessageAtReportConfirmationPage = null;
+		String orderNumber = "Order Number";
+		String productName = "Item # and Name";
+		String name = "Name";
+		String emailID = "E-mail Address";
+		String problemReason = "Problem Reason";
+		String messageTag = "Message";
+		sfHomePage.loginToStoreFront(TestConstants.CONSULTANT_USERNAME, password);
+		sfHomePage.clickWelcomeDropdown();
+		sfOrdersPage = sfHomePage.navigateToOrdersPage();
+		sfOrdersPage.chooselinkFromActionsDDUnderOrderHistoryForFirstOrder(reportProblemsLink);
+		orderNumberAtReportProblemPage = sfOrdersPage.getOrderNumberFromOrderReportProblemPage();
+		productNameAtReportProblemPage = sfOrdersPage.getProductNameFromOrderReportProblemPage();
+		nameAtReportProblemPage = sfOrdersPage.getNameFromOrderReportProblemPage();
+		emailIDAtReportProblemPage = sfOrdersPage.getEmailFromOrderReportProblemPage();
+		sfOrdersPage.enterTheDetailsForReportProblem(message);
+		problemReasonAtReportProblemPage = sfOrdersPage.getSelectedProblemReasonFromOrderReportPage().toLowerCase();
+		sfOrdersPage.clickSubmitBtnAtReportProblemPage();
+		confirmationMessageFromUI = sfOrdersPage.getConfirmationMsgOfReportProblem().toLowerCase();
+		s_assert.assertTrue(confirmationMessageFromUI.contains(expectedConfirmationMessage.toLowerCase()), "Expected confirmation message is"+expectedConfirmationMessage+" but actual on UI is "+confirmationMessageFromUI);
+		orderNumberAtReportConfirmationPage = sfOrdersPage.getInformationAtOrderReportConfirmationPage(orderNumber);
+		productNameAtReportConfirmationPage = sfOrdersPage.getInformationAtOrderReportConfirmationPage(productName);
+		nameAtReportConfirmationPage = sfOrdersPage.getInformationAtOrderReportConfirmationPage(name);
+		emailIDAtReportConfirmationPage = sfOrdersPage.getInformationAtOrderReportConfirmationPage(emailID);
+		ProblemReasonAtReportConfirmationPage = sfOrdersPage.getInformationAtOrderReportConfirmationPage(problemReason).toLowerCase();
+		MessageAtReportConfirmationPage = sfOrdersPage.getInformationAtOrderReportConfirmationPage(messageTag);
+		s_assert.assertTrue(nameAtReportConfirmationPage.contains(nameAtReportProblemPage), "Expected name at report confirmation page is "+nameAtReportProblemPage+" Actual on UI is "+nameAtReportConfirmationPage);
+		s_assert.assertTrue(emailIDAtReportConfirmationPage.contains(emailIDAtReportProblemPage), "Expected email address at report confirmation page is "+emailIDAtReportProblemPage+" Actual on UI is "+emailIDAtReportConfirmationPage);
+		s_assert.assertTrue(productNameAtReportConfirmationPage.contains(productNameAtReportProblemPage), "Expected product name at report confirmation page is "+productNameAtReportProblemPage+" Actual on UI is "+productNameAtReportConfirmationPage);
+		s_assert.assertTrue(orderNumberAtReportConfirmationPage.contains(orderNumberAtReportProblemPage), "Expected order number at report confirmation page is "+productNameAtReportProblemPage+" Actual on UI is "+orderNumberAtReportConfirmationPage);
+		s_assert.assertTrue(problemReasonAtReportProblemPage.contains(ProblemReasonAtReportConfirmationPage), "Expected Problem reason at report confirmation page is "+problemReasonAtReportProblemPage+" Actual on UI is "+ProblemReasonAtReportConfirmationPage);
+		s_assert.assertTrue(MessageAtReportConfirmationPage.contains(message), "Expected order number at report confirmation page is "+message+" Actual on UI is "+MessageAtReportConfirmationPage);
+		s_assert.assertAll();
+	}
+	
+
 
 }

@@ -194,16 +194,16 @@ public class StoreFrontWebsiteBasePage extends RFBasePage{
 	private final By SELECT_AND_CONTINUE_FIRST_SPONSER_LOC= By.xpath("//div[@id='findConsultantResultArea']/descendant::div[contains(@class,'consultant-box')][1]//span[@id='selectd-consultant']");
 	protected final By CART_PRODUCT_LOC = By.xpath("//ul[contains(@class,'item-list cart')]/li[@class='item-list-item']");
 	private final By EDIT_LINK_NEXT_TO_MAIN_ACCOUNT_LOC = By.xpath("//div[contains(@class,'checkout-steps')]/descendant::a[1]");
-	private final By PC_PERKS_CART_HEADER_LOC = By.xpath("//h1[contains(text(),'Your Shopping Cart')]");
 	private final By QUANTITY_OF_FIRST_PRODUCT_LOC = By.xpath("//div[@class='qty']//input[@id='quantity_0']");
 	private final By UPDATE_LINK_OF_FIRST_PRODUCT_LOC = By.xpath("//div[@class='qty']/descendant::input[@value='update'][1]");
 	protected final By BILLING_ADDRESS_DD_LOC = By.id("default-address");
 	private final By SUBTOTAL_LOC = By.xpath("//td[text()='Subtotal']/following::td[1]");
 	private final By PC_TERMS_AND_CONDITIONS_CHK_BOX_LOC = By.xpath("//div[@class='step-body']/descendant::input[@id='Terms1']/following::label[1]");
+	private final By PC_PERKS_CART_HEADER_LOC = By.xpath("//h2[contains(text(),'YOUR NEXT PC PERKS CART')]");
 
-	
+	private String productNameInAllItemsInCartLoc = "//span[@class='item-name' and contains(text(),'%s')]";
+	private String productQuantityInAllItemsLoc = "//span[@class='item-name' and contains(text(),'%s')]/following::div//div[@class='qty']//input[contains(@id,'quantity')]";
 	private String selectAndContinueSponserLoc= "//div[@id='findConsultantResultArea']/descendant::div[contains(@class,'consultant-box')][%s]//span[@id='selectd-consultant']";
-	private String productNameInAllItemsInCartLoc = "//li[@class='item-list-item']//div[@class='item-info']//span[@class='item-name' and contains(text(),'%s')]";
 	private String pageHeaderLoc = "//div[@class='page-container']//*[contains(text(),'%s')]";
 	private String disclaimerPageLinkLoc = "//a[contains(text(),'%s')]";
 	private String pressRoomTabsLoc="//ul[@class='tabs']//li/a[contains(text(),'%s')]";
@@ -291,20 +291,6 @@ public class StoreFrontWebsiteBasePage extends RFBasePage{
 		}
 		logger.info("clicked on 'Enroll Now'");
 		return new StoreFrontConsultantEnrollNowPage(driver);
-	}
-
-	/***
-	 * This method clicks on the 'Why R+F' link in Top Navigation
-	 * 
-	 * @param
-	 * @return
-	 * 
-	 */
-	public StoreFrontWebsiteBasePage clickWhyRF(){
-		mouseHoverOn(TestConstants.BECOME_A_CONSULTANT);
-		driver.click(WHY_RF_LOC);
-		logger.info("clicked on 'Why R+F'");
-		return this;
 	}
 
 	/***
@@ -501,20 +487,6 @@ public class StoreFrontWebsiteBasePage extends RFBasePage{
 				logger.info("Switched to child window");
 			}
 		}
-		return this;
-	}
-
-	/***
-	 * This method hover on become a consultant  and click on programms and incentives link
-	 * 
-	 * @param
-	 * @return store front website base page object
-	 * 
-	 */
-	public StoreFrontWebsiteBasePage clickProgramsAndIncentives(){
-		mouseHoverOn(TestConstants.BECOME_A_CONSULTANT);
-		driver.click(PROGRAMS_AND_INCENTIVES_LOC);
-		logger.info("clicked on 'PROGRAMS & INCENTIVES' link");
 		return this;
 	}
 
@@ -904,19 +876,6 @@ public class StoreFrontWebsiteBasePage extends RFBasePage{
 	}
 
 	/***
-	 * This method click the sign up now links
-	 * 
-	 * @param
-	 * @return store front checkout page object
-	 * 
-	 */
-	public StoreFrontCheckoutPage clickSignUpNowLink(){
-		driver.click(SIGN_UP_NOW_LINK_LOC);
-		logger.info("Sign up now link clicked");
-		return new StoreFrontCheckoutPage(driver);
-	}
-
-	/***
 	 * This method click Account info link from welcome dropdown.
 	 * 
 	 * @param
@@ -1269,14 +1228,6 @@ public class StoreFrontWebsiteBasePage extends RFBasePage{
 		return this;
 	}
 
-	public void clickUseAsEnteredButtonOnPopUp(){
-		if(driver.isElementVisible(USE_AS_ENTERED_BUTTON_LOC)==true){
-			driver.click(USE_AS_ENTERED_BUTTON_LOC);
-			driver.pauseExecutionFor(10000); //UI is slow, will be removed
-			logger.info("'Used as entered' button clicked");
-		}
-	}
-
 	/***
 	 * This method click the category links
 	 * 
@@ -1553,8 +1504,8 @@ public class StoreFrontWebsiteBasePage extends RFBasePage{
 	 */
 	public StoreFrontWebsiteBasePage enterUserBillingDetails(String cardType, String cardNumber, String nameOnCard,String CVV){
 		String javascript = "document.getElementById('card_accountNumber').value="+cardNumber+";"+
-							"document.getElementById('card_accountNumber').innerHTML="+cardNumber+";";
-							
+				"document.getElementById('card_accountNumber').innerHTML="+cardNumber+";";
+		driver.pauseExecutionFor(2000);			
 		((JavascriptExecutor)RFWebsiteDriver.driver).executeScript(javascript);
 		logger.info("Entered card number as"+cardNumber);
 		driver.pauseExecutionFor(1000);
@@ -1570,7 +1521,7 @@ public class StoreFrontWebsiteBasePage extends RFBasePage{
 		driver.click(CARD_NUMBER_LOC);
 		driver.pauseExecutionFor(3000);
 		Actions actions = new Actions(RFWebsiteDriver.driver);
-//		driver.pauseExecutionFor(10000);
+		//		driver.pauseExecutionFor(10000);
 		driver.pauseExecutionFor(2000);
 		driver.waitForPageLoad();
 		WebElement nameOnCardElement = driver.findElement(NAME_ON_CARD_LOC);
@@ -1746,20 +1697,6 @@ public class StoreFrontWebsiteBasePage extends RFBasePage{
 	}
 
 	/***
-	 * This method click become a consultant button
-	 * 
-	 * @param
-	 * @return store front Base page object
-	 */
-	public StoreFrontWebsiteBasePage clickBecomeAConsultant(){
-		driver.click(BECOME_A_CONSULTANT_BTN_LOC);
-		logger.info("Become a consultant button clicked");
-		driver.waitForPageLoad();
-		driver.waitForLoadingImageToDisappear();
-		return this;
-	}
-
-	/***
 	 * This method verifies if "Enrollment successful" msg 
 	 * is displayed or not after consultant enrollment
 	 * @return
@@ -1768,15 +1705,6 @@ public class StoreFrontWebsiteBasePage extends RFBasePage{
 		driver.pauseExecutionFor(2000);
 		driver.waitForElementPresent(ENROLLMENT_SUCCESSFUL_MSG_LOC);
 		return driver.isElementVisible(ENROLLMENT_SUCCESSFUL_MSG_LOC);
-	}
-
-	/**
-	 * This method clicks on the place order button
-	 * @return
-	 */
-	public StoreFrontWebsiteBasePage clickPlaceOrderButton(){
-		clickBecomeAConsultant();
-		return this;
 	}
 
 	/***
@@ -2729,7 +2657,7 @@ public class StoreFrontWebsiteBasePage extends RFBasePage{
 		logger.info("In cart"+itemNumber+" 's qunatity updated as "+quantity);
 		return this;
 	}
-	
+
 	/***
 	 * This method click on update link 
 	 * 
@@ -2744,7 +2672,7 @@ public class StoreFrontWebsiteBasePage extends RFBasePage{
 		logger.info("Update link of "+itemNumber+" is clicked");
 		return this;
 	}
-	
+
 	/***
 	 * This method add first product to bag
 	 * 
@@ -2760,6 +2688,120 @@ public class StoreFrontWebsiteBasePage extends RFBasePage{
 		logger.info("Added first product to the bag");
 		driver.pauseExecutionFor(2000);
 		return this;
+	}
+
+	/***
+	 * This method get product quantity for specific product
+	 * 
+	 * @param productName
+	 * @return product quantity
+	 * 
+	 */
+	public String getQuantityOfSpecificProductFromCart(String productName){
+		String productQty = driver.getAttribute(By.xpath(String.format(productQuantityInAllItemsLoc, productName)),"value");
+		logger.info("Quantity of "+productName+" is "+productQty);
+		return productQty;
+	}
+
+	/***
+	 * This method split the card name and provide short name to assert
+	 * 
+	 * @param String cardName
+	 * @return String
+	 * 
+	 */
+	public String getLastName(String completeName){
+		String lastName = completeName.split(" ")[1].trim();
+		logger.info("Card last name : " + lastName);
+		return lastName;
+	}
+
+	/***
+	 * This method click the sign up now links
+	 * 
+	 * @param
+	 * @return store front checkout page object
+	 * 
+	 */
+	public StoreFrontCheckoutPage clickSignUpNowLink(){
+		driver.click(SIGN_UP_NOW_LINK_LOC);
+		logger.info("Sign up now link clicked");
+		driver.waitForPageLoad();
+		return new StoreFrontCheckoutPage(driver);
+	}
+
+	/***
+	 * This method clicks on the 'Why R+F' link in Top Navigation
+	 * 
+	 * @param
+	 * @return
+	 * 
+	 */
+	public StoreFrontWebsiteBasePage clickWhyRF(){
+		mouseHoverOn(TestConstants.BECOME_A_CONSULTANT);
+		driver.click(WHY_RF_LOC);
+		driver.waitForPageLoad();
+		logger.info("clicked on 'Why R+F'");
+		return this;
+	}
+
+	/***
+	 * This method hover on become a consultant  and click on programms and incentives link
+	 * 
+	 * @param
+	 * @return store front website base page object
+	 * 
+	 */
+	public StoreFrontWebsiteBasePage clickProgramsAndIncentives(){
+		mouseHoverOn(TestConstants.BECOME_A_CONSULTANT);
+		driver.click(PROGRAMS_AND_INCENTIVES_LOC);
+		driver.waitForPageLoad();
+		logger.info("clicked on 'PROGRAMS & INCENTIVES' link");
+		return this;
+	}
+
+	/**
+	 * This method clicks on the place order button
+	 * @return
+	 */
+	public StoreFrontWebsiteBasePage clickPlaceOrderButton(){
+		clickBecomeAConsultant();
+		driver.pauseExecutionFor(2000);
+		return this;
+	}
+	/***
+	 * This method click become a consultant button
+	 * 
+	 * @param
+	 * @return store front Base page object
+	 */
+	public StoreFrontWebsiteBasePage clickBecomeAConsultant(){
+		driver.clickByJS(RFWebsiteDriver.driver, driver.findElement(BECOME_A_CONSULTANT_BTN_LOC));
+		//driver.click(BECOME_A_CONSULTANT_BTN_LOC);
+		logger.info("Become a consultant button clicked");
+		driver.waitForPageLoad();
+		driver.waitForLoadingImageToDisappear();
+		return this;
+	}
+
+	/***
+	 * This method verifies sponser search Page
+	 * 
+	 * 
+	 * @return boolean
+	 * 
+	 */
+	public boolean isSponserSearchPageDisplayed(){
+		return driver.isElementVisible(SPONSOR_SEARCH_FIELD_LOC);  
+	}
+
+	public void clickUseAsEnteredButtonOnPopUp(){
+		if(driver.isElementVisible(USE_AS_ENTERED_BUTTON_LOC)==true){
+			System.out.println("1");
+			driver.click(USE_AS_ENTERED_BUTTON_LOC);
+			driver.pauseExecutionFor(30000); //UI is slow, will be removed
+			logger.info("'Used as entered' button clicked");
+		}
 	}
 
 }

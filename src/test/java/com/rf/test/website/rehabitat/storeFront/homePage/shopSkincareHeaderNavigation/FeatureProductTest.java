@@ -2,6 +2,7 @@ package com.rf.test.website.rehabitat.storeFront.homePage.shopSkincareHeaderNavi
 
 import org.testng.annotations.Test;
 
+import com.rf.core.website.constants.TestConstants;
 import com.rf.test.website.rehabitat.storeFront.baseTest.StoreFrontWebsiteBaseTest;
 
 public class FeatureProductTest extends StoreFrontWebsiteBaseTest{
@@ -12,12 +13,18 @@ public class FeatureProductTest extends StoreFrontWebsiteBaseTest{
 	 * 
 	 *     
 	 */
-	@Test(enabled=false) //TODO Incomplete for com and biz site.
+	@Test(enabled=false)
 	public void testVerifyFeaturedProductCategoryUnderShopSkincareOnCorpComAndBizSite_81(){
+		String pwsSite = TestConstants.CONSULTANT_PWS;
 		String currentURL = null;
 		String featuredRegimenURL = "/c/featured";
 		String category_Featured = "FEATURED";
 		//Click featured link under shopskincare.
+		sfShopSkinCarePage = sfHomePage.navigateToShopSkincareLink(category_Featured);
+		currentURL = sfHomePage.getCurrentURL().toLowerCase();
+		s_assert.assertTrue(sfShopSkinCarePage.isProductsDisplayedOnPage() && currentURL.contains(featuredRegimenURL),"Expected featured products not displayed for selected category or Expected page URL"+featuredRegimenURL+" But actual on UI is: "+currentURL);
+		//Click featured link on pws site.
+		sfHomePage.navigateToUrl(pwsSite);
 		sfShopSkinCarePage = sfHomePage.navigateToShopSkincareLink(category_Featured);
 		currentURL = sfHomePage.getCurrentURL().toLowerCase();
 		s_assert.assertTrue(sfShopSkinCarePage.isProductsDisplayedOnPage() && currentURL.contains(featuredRegimenURL),"Expected featured products not displayed for selected category or Expected page URL"+featuredRegimenURL+" But actual on UI is: "+currentURL);

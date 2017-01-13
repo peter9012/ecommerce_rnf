@@ -28,24 +28,12 @@ public class StoreFrontCartPage extends StoreFrontWebsiteBasePage{
 	private final By SHIPPING_METHOD_AFTER_ORDER_PLACED = By.xpath("//div[contains(text(),'Shipping Method')]");
 	private final By FIRST_ITEM_PRODUCT_PRICE_LOC = By.xpath("//ul[contains(@class,'cart__list')]/descendant::li[@class='item-list-item'][1]//div[@class='item-price'][1]");
 	private final By ORDER_TOTAL_LOC = By.xpath("//td[text()='Order Total']/following::td[1]");
+	private final By CHECKOUT_BTN_CONSULTANT_LOC = By.id("checkoutPopup");
 
 	private String productPriceInAllItemsInCartLoc = "//li[@class='item-list-item']//div[@class='item-info']//span[@class='item-name' and contains(text(),'%s')]/ancestor::div[1]/following-sibling::div[@class='item-price-info']";
 	private String recentlyViewProductOnCartPageLoc = "//div[@id='recentlyViewedTitle']/following::div[@class='owl-item active']//a[contains(text(),'%s')]";
 	private String removeLinkForProductOnCartLoc = "removeEntry_";
 
-	
-	/***
-	 * This method click checkout button 
-	 * 
-	 * @param
-	 * @return store front checkout page object
-	 */
-	public StoreFrontCheckoutPage clickCheckoutBtn(){
-		driver.click(CHECKOUT_BTN_LOC);
-		logger.info("Checkout button clicked after registration");
-		driver.waitForPageLoad();
-		return new StoreFrontCheckoutPage(driver);
-	}
 
 	/***
 	 * This method get product item code 
@@ -348,6 +336,23 @@ public class StoreFrontCartPage extends StoreFrontWebsiteBasePage{
 		String orderTotal=driver.findElement(ORDER_TOTAL_LOC).getText();
 		logger.info("Subtotal of product is "+orderTotal);
 		return orderTotal;
+	}
+
+	/***
+	 * This method click checkout button 
+	 * 
+	 * @param
+	 * @return store front checkout page object
+	 */
+	public StoreFrontCheckoutPage clickCheckoutBtn(){
+		if(driver.isElementVisible(CHECKOUT_BTN_LOC)){
+			driver.click(CHECKOUT_BTN_LOC);	
+		}
+		else
+			driver.click(CHECKOUT_BTN_CONSULTANT_LOC);
+		logger.info("Checkout button clicked after registration");
+		driver.waitForPageLoad();
+		return new StoreFrontCheckoutPage(driver);
 	}
 
 }

@@ -54,7 +54,8 @@ public class StoreFrontCheckoutPage extends StoreFrontWebsiteBasePage{
 	private final By STATE_DD_FOR_BILLING_ADDRESS_LOC=By.xpath("//div[@id='account-billing-container']//select[@id='address.region']");
 	private final By POSTAL_CODE_FOR_BILLING_ADDRESS_LOC=By.xpath("//div[@id='account-billing-container']//input[@id='address.postcode']");
 	private final By PHONE_NUMBER_FOR_BILLING_ADDRESS_LOC=By.xpath("//div[@id='account-billing-container']//input[@id='address.phone']");
-
+	private final By CHECKOUT_BTN_CONSULTANT_LOC = By.id("checkoutPopup");
+	private final By CONFIRMATION_MSG_OF_PLACED_ORDER_LOC = By.xpath("//div[@class='orderHeading']/h1");
 	private final By ADDRESS_NAME_ERROR_MGS_LOC =  By.xpath("//span[@id='billTo_firstName.errors' and contains(text(),'Name must contain first name and last name with no special characters.')]");
 	private final By SHIPPING_LINK_AT_CHECKOUT_PAGE_LOC = By.xpath("//div[contains(text(),'Shipping')]/ancestor::a[1]");
 	private final By BILLING_LINK_AT_CHECKOUT_PAGE_LOC = By.xpath("//div[contains(text(),'Billing')]/ancestor::a[1]");
@@ -85,7 +86,6 @@ public class StoreFrontCheckoutPage extends StoreFrontWebsiteBasePage{
 	private final By SUBTOTAL_AT_ORDER_REVIEW_PAGE_LOC = By.xpath("//div[contains(text(),'Order Summary')]/following::p[text()='Subtotal:']/following::span[1]");
 	private final By DELIVERY_AT_ORDER_REVIEW_PAGE_LOC = By.xpath("//div[contains(text(),'Order Summary')]/following::p[text()='Subtotal:']/following::span[1]");
 	private final By FIRST_ITEM_PRODUCT_NAME_REVIEW_PAGE_LOC = By.xpath("//div[contains(text(),'Order Summary')]/following::li[contains(@class,'list-items')][1]//div[@class='name']/a");
-	private final By CONFIRMATION_MSG_OF_PLACED_ORDER_LOC = By.xpath("//div[@class='orderHeading']");
 	private final By LOGIN_REGISTER_TEXT_LOC=By.xpath("//div[@class='logpage']/h1");
 	private final By USER_NAME_LOC=By.xpath("//form[@id='LoginForm']//input[@id='username']");
 	private final By PASSWORD_FOR_LOGIN_LOC=By.xpath("//form[@id='LoginForm']//input[@id='password']");
@@ -146,6 +146,9 @@ public class StoreFrontCheckoutPage extends StoreFrontWebsiteBasePage{
 	private final By CVV_AFTER_EDIT_PROFILE_LOC= By.xpath("//div[@id='account-billing-container']//input[@id='card_cvNumber']");
 	private final By SPONSOR_NAME_ACCOUNT_INFO_LOC = By.xpath("//div[contains(@id,'findConsultantResultArea')]//span[@id='selectd-consultant']");
 	private final By NOT_YOUR_CONSULTAN_LINK_LOC = By.id("not-your-autoSponsor");
+	private String billingInfoAddressNameLoc = "//div[@id='default-payment-method']//strong[contains(text(),'%s')]";
+	private String billingAddressLoc = "//div[@id='default-payment-method']//strong[contains(text(),'%s')]/ancestor::div[1]";
+	private String billingInfoCardDetailsLoc = "//div[@id='default-payment-method']//strong[contains(text(),'%s')]/following-sibling::span[@class='cardInfo']";
 
 	private String mandatoryFieldErrorMsgOfAddressForNewShippingProfileLoc = "//form[@id='addressForm']//label[contains(@id,'%s-error') and contains(text(),'This field is required.')]";
 	private String stateForNewShippingAddressDetailsLoc = "//form[@id='addressForm']//select[@id='address.region']//option[text()='%s']";
@@ -158,9 +161,6 @@ public class StoreFrontCheckoutPage extends StoreFrontWebsiteBasePage{
 	private String mandatoryFieldErrorMsg = "//div[@id='billingAddressForm']//label[contains(@id,'%s-error')]";
 	private String stateForBillingAddressDetails = "//div[@id='checkoutEditBillingAddressForm']//option[text()='%s']";
 	private String stateForShippingDetails = "//div[@id='checkoutEditBillingAddressForm']//option[text()='%s']";
-	private String billingInfoCardDetailsLoc = "//div[@id='default-payment-method']/ul/strong[contains(text(),'%s')]/following-sibling::span[@class='cardInfo']";
-	private String billingInfoAddressNameLoc = "//div[@id='default-payment-method']/ul/strong[contains(text(),'%s')]";
-	private String billingAddressLoc = "//div[@id='default-payment-method']/ul/strong[contains(text(),'%s')]/ancestor::ul";
 	private String stateForShippingDetailsAtCheckoutPageLoc = "//form[@id='shippingAddressForm']//select[@id='address.region']//option[text()='%s']";
 	private String shippingMethodLoc = "//label[contains(text(),'%s')]";
 	private String billingAddressFieldsErrorMessageLoc = "//span[contains(text(),'%s')]";
@@ -684,18 +684,6 @@ public class StoreFrontCheckoutPage extends StoreFrontWebsiteBasePage{
 		}
 		logger.info("product name of "+itemNumber+" is "+productName);
 		return productName;
-	}
-
-
-	/***
-	 * This method get the confirmation message of consultant enrollment
-	 * 
-	 * @param
-	 * @return boolean
-	 * 
-	 */
-	public boolean isOrderPlacedSuccessfully(){
-		return driver.getText(CONFIRMATION_MSG_OF_PLACED_ORDER_LOC).contains("Thank you for your Order!");
 	}
 
 	/***
@@ -1588,5 +1576,22 @@ public class StoreFrontCheckoutPage extends StoreFrontWebsiteBasePage{
 	public boolean isNotYourConsultantLinkPresent(){
 		return driver.isElementVisible(NOT_YOUR_CONSULTAN_LINK_LOC);
 	}
+
+	/***
+	 * This method get the confirmation message of consultant enrollment
+	 * 
+	 * @param
+	 * @return boolean
+	 * 
+	 */
+	public boolean isOrderPlacedSuccessfully(){
+		String confirmationText= driver.getText(CONFIRMATION_MSG_OF_PLACED_ORDER_LOC);
+		if(confirmationText.toLowerCase().contains(("Thank you for your Order!").toLowerCase())){
+			return true;
+		}else
+			return false;
+	}
+
+
 
 }

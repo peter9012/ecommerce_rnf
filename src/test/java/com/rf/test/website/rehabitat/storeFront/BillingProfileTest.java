@@ -60,60 +60,6 @@ public class BillingProfileTest extends StoreFrontWebsiteBaseTest{
 	}
 
 	/***
-	 * 
-	 */
-	@Test(enabled=true)
-	public void testAddNewBillingAddressToNewlyCreatedBillingProfile_386(){
-		String currentURL = null;
-		String randomWord = CommonUtils.getRandomWord(5);
-		String suggestedBillingAddress = null;
-		String urlToAssert = "payment-details";
-		String firstName = TestConstants.FIRST_NAME + randomWord;
-		String lastName = TestConstants.LAST_NAME;
-		String addressLine1 = TestConstants.ADDRESS_LINE_1_US;
-		String addressLine2 = TestConstants.ADDRESS_LINE_2_US;
-		String city = TestConstants.CITY_US;
-		String state = TestConstants.STATE_US;
-		String postalCode = TestConstants.POSTAL_CODE_US;
-		String phoneNumber = TestConstants.PHONE_NUMBER;
-		String addressInWrongFormat = TestConstants.WRONG_ADDRESS_LINE_1_US;
-		String wrongCombinationCity = TestConstants.CITY_DALLAS_US;
-		//Login as consultant user.
-		sfHomePage.loginToStoreFront(TestConstants.CONSULTANT_USERNAME, password);
-		sfHomePage.clickWelcomeDropdown();
-		sfBillingInfoPage = sfHomePage.navigateToBillingInfoPage();
-		currentURL = sfBillingInfoPage.getCurrentURL().toLowerCase();
-		s_assert.assertTrue(currentURL.contains(urlToAssert), "Expected URL should contain "+urlToAssert+" but actual on UI is"+currentURL);
-		sfBillingInfoPage.clickAddNewBillingProfileLink();
-		s_assert.assertTrue(sfBillingInfoPage.isAddNewBillingInfoSubHeaderPresent(),"ADD NEW BILLING PROFILE Sub Header is not present");
-		sfBillingInfoPage.enterUserBillingDetails(TestConstants.CARD_TYPE, TestConstants.CARD_NUMBER, TestConstants.CARD_NAME, TestConstants.CVV);
-		sfBillingInfoPage.clickAddNewBillingAddressLink();
-		s_assert.assertTrue(sfBillingInfoPage.isAddNewBillingAddressFormDisplayed(),"ADD NEW BILLING ADDRESS form Block is not Displayed");
-		s_assert.assertTrue(sfBillingInfoPage.isAddNewBillingAddressBlockHeaderPresent(),"ADD NEW BILLING ADDRESS Sub Header is not present");
-		// Filling Address in Wrong format.
-		sfBillingInfoPage.enterConsultantAddressDetails(firstName, lastName, addressInWrongFormat, addressLine2, city, state, postalCode, phoneNumber);
-		sfBillingInfoPage.clickSaveButtonForBillingDetails();
-		s_assert.assertTrue(sfBillingInfoPage.isUnknownAddressErrorMessageIsPresentAsExpected(),"Unknown Address Error message is not present");
-		// Filling Wrong combination of City and State in Billing address
-		sfBillingInfoPage.enterConsultantAddressDetails(firstName, lastName, addressLine1, addressLine2, wrongCombinationCity, state, postalCode, phoneNumber);
-		sfBillingInfoPage.clickSaveButtonForBillingDetails();
-		suggestedBillingAddress = sfBillingInfoPage.getSuggestedBillingAddressFromBlock();
-		s_assert.assertTrue(suggestedBillingAddress.contains(city),"Suggested Address City is not found as expected. Expected City : "+city+". Actual City : "+wrongCombinationCity);
-		sfBillingInfoPage.clickOnAddressSuggestionModalCloseBtn();
-		// Filling Right Address 
-		sfBillingInfoPage.clickAddNewBillingProfileLink();
-		s_assert.assertTrue(sfBillingInfoPage.isAddNewBillingInfoSubHeaderPresent(),"ADD NEW BILLING PROFILE Sub Header is not present");
-		sfBillingInfoPage.enterUserBillingDetails(TestConstants.CARD_TYPE, TestConstants.CARD_NUMBER, TestConstants.CARD_NAME, TestConstants.CVV);
-		sfBillingInfoPage.clickAddNewBillingAddressLink();
-		sfBillingInfoPage.enterConsultantAddressDetails(firstName, lastName, addressLine1, addressLine2, city, state, postalCode, phoneNumber);
-		sfBillingInfoPage.clickSaveButtonForBillingDetails();
-		sfBillingInfoPage.clickUseAsEnteredButtonOnPopUp();
-		s_assert.assertTrue(sfBillingInfoPage.isActionSuccessfulMsgAppearedAsExpected(TestConstants.BILLING_PROFILE_ADDED_MESSAGE),"Card Details Added SuccessFul Msg is not present as Expected");
-		s_assert.assertTrue(sfBillingInfoPage.isNewBillingProfilePresentInRowList(firstName),"New Billing Profile is not present in Profiles List");
-		s_assert.assertAll();
-	}
-
-	/***
 	 * qTest : TC-426 Billing Profile- Select an Billing Address - New Profile
 	 * 
 	 * Description : This test will add an existing billing address to newly created billing profile 
@@ -199,106 +145,6 @@ public class BillingProfileTest extends StoreFrontWebsiteBaseTest{
 
 
 	/***
-	 * qTest : TC-453 Tokenization - My Account
-	 * 
-	 * Description : This test will validate the newly created Billing profile, credit card last 4 digits and expiry date of card in billing profile details.
-	 * 
-	 *     
-	 */
-	@Test(enabled=true)
-	public void testTokenizationMyAccount_453(){
-		String currentURL = null;
-		String lastFourDigitOfCard = null;
-		String billingAddressOnUI = null;
-		String cardNum = TestConstants.CARD_NUMBER;
-		String randomWord = CommonUtils.getRandomWord(5);
-		String urlToAssert = "payment-details";
-		String firstName = TestConstants.FIRST_NAME + randomWord;
-		String lastName = TestConstants.LAST_NAME;
-		String addressLine1 = TestConstants.ADDRESS_LINE_1_US;
-		String addressLine2 = TestConstants.ADDRESS_LINE_2_US;
-		String city = TestConstants.CITY_US;
-		String state = TestConstants.STATE_US;
-		String postalCode = TestConstants.POSTAL_CODE_US;
-		String phoneNumber = TestConstants.PHONE_NUMBER;
-		String stateAbbreviation = TestConstants.STATE_US_ABBREVIATION;
-		//Login as Consultant.
-		sfHomePage.loginToStoreFront(TestConstants.CONSULTANT_USERNAME, password);
-		sfHomePage.clickWelcomeDropdown();
-		sfBillingInfoPage = sfHomePage.navigateToBillingInfoPage();
-		currentURL = sfBillingInfoPage.getCurrentURL().toLowerCase();
-		s_assert.assertTrue(currentURL.contains(urlToAssert), "Expected URL should contain " + urlToAssert + " but actual on UI is " + currentURL);
-		sfBillingInfoPage.clickAddNewBillingProfileLink();
-		s_assert.assertTrue(sfBillingInfoPage.isAddNewBillingInfoSubHeaderPresent(),"ADD NEW BILLING PROFILE Sub Header is not present");
-		sfBillingInfoPage.enterUserBillingDetails(TestConstants.CARD_TYPE, TestConstants.CARD_NUMBER, TestConstants.CARD_NAME, TestConstants.CVV);
-		sfBillingInfoPage.clickAddNewBillingAddressLink();
-		s_assert.assertTrue(sfBillingInfoPage.isAddNewBillingAddressFormDisplayed(),"ADD NEW BILLING ADDRESS form Block is not Displayed");
-		s_assert.assertTrue(sfBillingInfoPage.isAddNewBillingAddressBlockHeaderPresent(),"ADD NEW BILLING ADDRESS Sub Header is not present");
-		sfBillingInfoPage.enterConsultantAddressDetails(firstName, lastName, addressLine1, addressLine2, city, state, postalCode, phoneNumber);
-		sfBillingInfoPage.clickSaveButtonForBillingDetails();
-		sfBillingInfoPage.clickUseAsEnteredButtonOnPopUp();
-		s_assert.assertTrue(sfBillingInfoPage.isCardDetailsAddedSuccessfulMsgAppearedAsExpected(TestConstants.BILLING_PROFILE_ADDED_MESSAGE),"Card Details Added SuccessFul Msg is not present as Expected");
-		s_assert.assertTrue(sfBillingInfoPage.isNewBillingProfilePresentInRowList(firstName),"New Billing Profile is not present in Profiles List");
-		lastFourDigitOfCard = sfBillingInfoPage.getLastFourDigitOfCreditCardNumberForSpecificBillingProfile(firstName);
-		s_assert.assertTrue(sfBillingInfoPage.isLastFourDigitMatchesWithSixteenDigitCardNumber(cardNum,lastFourDigitOfCard),"Last 4 Digits of Card Number on UI are not found as Expected. Card Number : " + cardNum + ". Acutal 4 Digits on UI : " +lastFourDigitOfCard);
-		s_assert.assertTrue(sfBillingInfoPage.isExpiryDateOfCardIsPresentForSpecificProfile(firstName),"Expiry Date is not found as Expected on UI");
-		billingAddressOnUI = sfBillingInfoPage.getBillingAddressForSpecificBillingProfile(firstName);
-		s_assert.assertTrue(sfBillingInfoPage.isBillingAddressOnUIIsFoundAsExpected(addressLine1, addressLine2, city, postalCode, stateAbbreviation, billingAddressOnUI),"Billing Address on UI is not found as expected");
-		s_assert.assertAll();
-	}
-
-	/***
-	 * qTest : TC-454 Tokenization - Checkout
-	 * 
-	 * Description : This test will create a new billing profile on checkout page and validate the following entities - billing address, last 4 digit of card and expiry date.   
-	 * 
-	 *     
-	 */
-	@Test(enabled=true)
-	public void testTokenizationCheckout_454(){
-		String currentURL = null;
-		String lastFourDigitOfCard = null;
-		String billingDetailsOnUI = null;
-		String expiryDate = null;
-		String cardNum = TestConstants.CARD_NUMBER;
-		String randomWord = CommonUtils.getRandomWord(5);
-		String urlToAssert = "/checkout/multi/";
-		String firstName = TestConstants.FIRST_NAME + randomWord;
-		String lastName = TestConstants.LAST_NAME;
-		String addressLine1 = TestConstants.ADDRESS_LINE_1_US;
-		String addressLine2 = TestConstants.ADDRESS_LINE_2_US;
-		String city = TestConstants.CITY_US;
-		String state = TestConstants.STATE_US;
-		String postalCode = TestConstants.POSTAL_CODE_US;
-		String phoneNumber = TestConstants.PHONE_NUMBER;
-		String stateAbbreviation = TestConstants.STATE_US_ABBREVIATION;
-		//Login as Consultant.
-		sfHomePage.loginToStoreFront(TestConstants.CONSULTANT_USERNAME, password);
-		sfShopSkinCarePage = sfHomePage.clickAllProducts();
-		sfShopSkinCarePage.selectFirstProduct();
-		sfCartPage = sfShopSkinCarePage.checkoutTheCartFromPopUp();
-		sfCheckoutPage = sfCartPage.checkoutTheCart();
-		currentURL = sfCheckoutPage.getCurrentURL().toLowerCase();
-		s_assert.assertTrue(currentURL.contains(urlToAssert), "Expected URL should contain "+urlToAssert+" but actual on UI is "+currentURL);
-		sfCheckoutPage.clickSaveButton();
-		sfCheckoutPage.clickShippingDetailsNextbutton();
-		sfCheckoutPage.clickAddNewBillingProfileButton();
-		sfCheckoutPage.enterUserBillingDetails(TestConstants.CARD_TYPE, TestConstants.CARD_NUMBER, TestConstants.CARD_NAME, TestConstants.CVV);
-		sfCheckoutPage.enterConsultantAddressDetails(firstName, lastName, addressLine1, addressLine2, city, state, postalCode, phoneNumber);
-		sfCheckoutPage.clickNextButtonAfterBillingAddress();
-		sfCheckoutPage.clickUseAsEnteredButtonOnPopUp();
-		s_assert.assertTrue(sfCheckoutPage.isNewBillingDetailsVisibleOnUI(firstName),"New Billing Details do not get updated as Default Billing details on Checkout Page");
-		billingDetailsOnUI = sfCheckoutPage.getBillingAddressForSpecificBillingProfile(firstName);
-		sfCheckoutPage.getCardDetailsFromBillingInfo(firstName);
-		lastFourDigitOfCard = sfCheckoutPage.getLastFourDigitsOfCardNumberInBillingDetails();
-		s_assert.assertTrue(cardNum.endsWith(lastFourDigitOfCard),"Last 4 Digits of Card Number on UI are not found as Expected. Card Number : " + cardNum + ". Acutal 4 Digits on UI : " +lastFourDigitOfCard);
-		expiryDate = sfCheckoutPage.getExpiryDateOfCardNumberInBillingDetails();
-		s_assert.assertTrue(sfCheckoutPage.isExpiryDateIsPresentAsExpectedInBillingDetails(expiryDate),"Expiry Date on UI is not found as Expected. Expiry Date on UI: "+expiryDate);
-		s_assert.assertTrue(sfCheckoutPage.isBillingAddressOnUIIsFoundAsExpected(addressLine1,city, postalCode, stateAbbreviation, billingDetailsOnUI),"Billing Address on UI is not found as expected");
-		s_assert.assertAll();
-	}
-
-	/***
 	 * qTest : TC-475 Billing information- Default Payment Profiles - Multiple Profiles
 	 * 
 	 * Description :  This method validates the change of Default billing profile from multiple profiles
@@ -349,4 +195,158 @@ public class BillingProfileTest extends StoreFrontWebsiteBaseTest{
 		s_assert.assertTrue(sfBillingInfoPage.isDeleteOptionAvailableForProfile(initialDefaultBillingAddressName.toLowerCase()),"Delete Option is not available for profile "+firstName);
 		s_assert.assertAll();
 	}
+	
+	//---------------------------
+	
+	@Test(enabled=true)
+	 public void testAddNewBillingAddressToNewlyCreatedBillingProfile_386(){
+	  String currentURL = null;
+	  String randomWord = CommonUtils.getRandomWord(5);
+	  String suggestedBillingAddress = null;
+	  String urlToAssert = "payment-details";
+	  String cardName = TestConstants.CARD_NAME + randomWord;
+	  String firstName = TestConstants.FIRST_NAME;
+	  String lastName = TestConstants.LAST_NAME;
+	  String addressLine1 = TestConstants.ADDRESS_LINE_1_US;
+	  String addressLine2 = TestConstants.ADDRESS_LINE_2_US;
+	  String city = TestConstants.CITY_US;
+	  String state = TestConstants.STATE_US;
+	  String postalCode = TestConstants.POSTAL_CODE_US;
+	  String phoneNumber = TestConstants.PHONE_NUMBER;
+	  String addressInWrongFormat = TestConstants.WRONG_ADDRESS_LINE_1_US;
+	  String wrongCombinationCity = TestConstants.CITY_DALLAS_US;
+	  String cardLastName = null;
+	  //Login as consultant user.
+	  sfHomePage.loginToStoreFront(TestConstants.PC_USERNAME, password);
+	  sfHomePage.clickWelcomeDropdown();
+	  sfBillingInfoPage = sfHomePage.navigateToBillingInfoPage();
+	  currentURL = sfBillingInfoPage.getCurrentURL().toLowerCase();
+	  s_assert.assertTrue(currentURL.contains(urlToAssert), "Expected URL should contain "+urlToAssert+" but actual on UI is"+currentURL);
+	  sfBillingInfoPage.clickAddNewBillingProfileLink();
+	  sfBillingInfoPage.enterUserBillingDetails(TestConstants.CARD_TYPE, TestConstants.CARD_NUMBER_2,cardName, TestConstants.CVV);
+	  s_assert.assertTrue(sfBillingInfoPage.isAddNewBillingAddressFormDisplayed(),"ADD NEW BILLING ADDRESS form Block is not Displayed");
+	  // Filling Address in Wrong format.
+	  sfBillingInfoPage.enterConsultantAddressDetails(firstName, lastName, addressInWrongFormat, addressLine2, city, state, postalCode, phoneNumber);
+	  sfBillingInfoPage.clickBillingDetailsNextbutton();
+	  s_assert.assertTrue(sfBillingInfoPage.isUnknownAddressErrorMessageIsPresentAsExpected(),"Unknown Address Error message is not present");
+	  // Filling Wrong combination of City and State in Billing address
+	  sfBillingInfoPage.enterConsultantAddressDetails(firstName, lastName, addressLine1, addressLine2, wrongCombinationCity, state, postalCode, phoneNumber);
+	  sfBillingInfoPage.clickBillingDetailsNextbutton();
+	  suggestedBillingAddress = sfBillingInfoPage.getSuggestedBillingAddressFromBlock();
+	  s_assert.assertTrue(suggestedBillingAddress.contains(city),"Suggested Address City is not found as expected. Expected City : "+city+". Actual City : "+wrongCombinationCity);
+	  sfBillingInfoPage.clickOnAddressSuggestionModalCloseBtn();
+	  // Filling Right Address 
+	  sfBillingInfoPage.clickAddNewBillingProfileLink();
+	  sfBillingInfoPage.enterUserBillingDetails(TestConstants.CARD_TYPE, TestConstants.CARD_NUMBER,cardName, TestConstants.CVV);
+	  s_assert.assertTrue(sfBillingInfoPage.isAddNewBillingAddressFormDisplayed(),"ADD NEW BILLING ADDRESS form Block is not Displayed");
+	  sfBillingInfoPage.enterConsultantAddressDetails(firstName, lastName, addressLine1, addressLine2, city, state, postalCode, phoneNumber);
+	  sfBillingInfoPage.clickBillingDetailsNextbutton();
+	  sfBillingInfoPage.clickUseAsEnteredButtonOnPopUp();
+	  cardLastName = sfBillingInfoPage.getLastName(cardName);
+	  s_assert.assertTrue(sfBillingInfoPage.isNewBillingProfilePresentInRowList(cardLastName),"New Billing Profile is not present in Profiles List");
+	  s_assert.assertAll();
+	 }
+
+
+	/***
+	  * qTest : TC-453 Tokenization - My Account
+	  * 
+	  * Description : This test will validate the newly created Billing profile, credit card last 4 digits and expiry date of card in billing profile details.
+	  * 
+	  *     
+	  */
+	 @Test(enabled=true)
+	 public void testTokenizationMyAccount_453(){
+	  String currentURL = null;
+	  String lastFourDigitOfCard = null;
+	  String billingAddressOnUI = null;
+	  String cardNum = TestConstants.CARD_NUMBER_2;
+	  String randomWord = CommonUtils.getRandomWord(5);
+	  String cardName = TestConstants.CARD_NAME +  randomWord;
+	  String urlToAssert = "payment-details";
+	  String firstName = TestConstants.FIRST_NAME;
+	  String lastName = TestConstants.LAST_NAME;
+	  String addressLine1 = TestConstants.ADDRESS_LINE_1_US;
+	  String addressLine2 = TestConstants.ADDRESS_LINE_2_US;
+	  String city = TestConstants.CITY_US;
+	  String state = TestConstants.STATE_US;
+	  String postalCode = TestConstants.POSTAL_CODE_US;
+	  String phoneNumber = TestConstants.PHONE_NUMBER;
+	  String stateAbbreviation = TestConstants.STATE_US_ABBREVIATION;
+	  String cardLastName = null;
+	  //Login as Consultant.
+	  sfHomePage.loginToStoreFront(TestConstants.CONSULTANT_USERNAME, password);
+	  sfHomePage.clickWelcomeDropdown();
+	  sfBillingInfoPage = sfHomePage.navigateToBillingInfoPage();
+	  currentURL = sfBillingInfoPage.getCurrentURL().toLowerCase();
+	  s_assert.assertTrue(currentURL.contains(urlToAssert), "Expected URL should contain " + urlToAssert + " but actual on UI is " + currentURL);
+	  sfBillingInfoPage.clickAddNewBillingProfileLink();
+	  sfBillingInfoPage.enterUserBillingDetails(TestConstants.CARD_TYPE, cardNum,cardName, TestConstants.CVV);
+	  s_assert.assertTrue(sfBillingInfoPage.isAddNewBillingAddressFormDisplayed(),"ADD NEW BILLING ADDRESS form Block is not Displayed");
+	  sfBillingInfoPage.enterConsultantAddressDetails(firstName, lastName, addressLine1, addressLine2, city, state, postalCode, phoneNumber);
+	  sfBillingInfoPage.clickBillingDetailsNextbutton();
+	  sfBillingInfoPage.clickUseAsEnteredButtonOnPopUp();
+	  cardLastName = sfBillingInfoPage.getLastName(cardName);
+	  s_assert.assertTrue(sfBillingInfoPage.isNewBillingProfilePresentInRowList(cardLastName),"New Billing Profile is not present in Profiles List");
+	  lastFourDigitOfCard = sfBillingInfoPage.getLastFourDigitOfCreditCardNumberForSpecificBillingProfile(cardLastName);
+	  s_assert.assertTrue(sfBillingInfoPage.isLastFourDigitMatchesWithSixteenDigitCardNumber(cardNum,lastFourDigitOfCard),"Last 4 Digits of Card Number on UI are not found as Expected. Card Number : " + cardNum + ". Acutal 4 Digits on UI : " +lastFourDigitOfCard);
+	  s_assert.assertTrue(sfBillingInfoPage.isExpiryDateOfCardIsPresentForSpecificProfile(cardLastName),"Expiry Date is not found as Expected on UI");
+	  billingAddressOnUI = sfBillingInfoPage.getBillingAddressForSpecificBillingProfile(cardLastName);
+	  s_assert.assertTrue(sfBillingInfoPage.isBillingAddressOnUIIsFoundAsExpected(addressLine1, addressLine2, city, postalCode, stateAbbreviation, billingAddressOnUI),"Billing Address on UI is not found as expected");
+	  s_assert.assertAll();
+	 }
+	/***
+	  * qTest : TC-454 Tokenization - Checkout
+	  * 
+	  * Description : This test will create a new billing profile on checkout page and validate the following entities - billing address, last 4 digit of card and expiry date.   
+	  * 
+	  *     
+	  */
+	 @Test(enabled=true)
+	 public void testTokenizationCheckout_454(){
+	  String currentURL = null;
+	  String lastFourDigitOfCard = null;
+	  String billingDetailsOnUI = null;
+	  String expiryDate = null;
+	  String cardNum = TestConstants.CARD_NUMBER_2;
+	  String randomWord = CommonUtils.getRandomWord(5);
+	  String cardName =  TestConstants.CARD_NAME + randomWord;
+	  String urlToAssert = "/checkout/multi/";
+	  String firstName = TestConstants.FIRST_NAME;
+	  String lastName = TestConstants.LAST_NAME;
+	  String addressLine1 = TestConstants.ADDRESS_LINE_1_US;
+	  String addressLine2 = TestConstants.ADDRESS_LINE_2_US;
+	  String city = TestConstants.CITY_US;
+	  String state = TestConstants.STATE_US;
+	  String postalCode = TestConstants.POSTAL_CODE_US;
+	  String phoneNumber = TestConstants.PHONE_NUMBER;
+	  String stateAbbreviation = TestConstants.STATE_US_ABBREVIATION;
+	  String cardLastName = null;
+	  //Login as Consultant.
+	  sfHomePage.loginToStoreFront(TestConstants.CONSULTANT_USERNAME, password);
+	  sfShopSkinCarePage = sfHomePage.clickAllProducts();
+	  sfShopSkinCarePage.addFirstProductToBag();
+	  sfCartPage = sfShopSkinCarePage.checkoutTheCartFromPopUp();
+	  sfCheckoutPage = sfCartPage.checkoutTheCart();
+	  currentURL = sfCheckoutPage.getCurrentURL().toLowerCase();
+	  s_assert.assertTrue(currentURL.contains(urlToAssert), "Expected URL should contain "+urlToAssert+" but actual on UI is "+currentURL);
+	  sfCheckoutPage.clickSaveButton();
+	  sfCheckoutPage.clickShippingDetailsNextbutton();
+	  sfCheckoutPage.clickAddNewBillingProfileButton();
+	  sfCheckoutPage.enterUserBillingDetails(TestConstants.CARD_TYPE, cardNum, cardName, TestConstants.CVV);
+	  sfCheckoutPage.checkUseMyDeliveryAddressChkBox();
+	  sfCheckoutPage.enterConsultantAddressDetails(firstName, lastName, addressLine1, addressLine2, city, state, postalCode, phoneNumber);
+	  sfCheckoutPage.clickBillingDetailsNextbutton();
+	  sfCheckoutPage.clickUseAsEnteredButtonOnPopUp();
+	  cardLastName = sfCheckoutPage.getLastName(cardName); 
+	  s_assert.assertTrue(sfCheckoutPage.isNewBillingDetailsVisibleOnUI(cardLastName),"New Billing Details do not get updated as Default Billing details on Checkout Page");
+	  billingDetailsOnUI = sfCheckoutPage.getBillingAddressForSpecificBillingProfile(cardLastName);
+	  sfCheckoutPage.getCardDetailsFromBillingInfo(cardLastName);
+	  lastFourDigitOfCard = sfCheckoutPage.getLastFourDigitsOfCardNumberInBillingDetails();
+	  s_assert.assertTrue(cardNum.endsWith(lastFourDigitOfCard),"Last 4 Digits of Card Number on UI are not found as Expected. Card Number : " + cardNum + ". Acutal 4 Digits on UI : " +lastFourDigitOfCard);
+	  expiryDate = sfCheckoutPage.getExpiryDateOfCardNumberInBillingDetails();
+	  s_assert.assertTrue(sfCheckoutPage.isExpiryDateIsPresentAsExpectedInBillingDetails(expiryDate),"Expiry Date on UI is not found as Expected. Expiry Date on UI: "+expiryDate);
+	  s_assert.assertTrue(sfCheckoutPage.isBillingAddressOnUIIsFoundAsExpected(addressLine1,city, postalCode, stateAbbreviation, billingDetailsOnUI),"Billing Address on UI is not found as expected");
+	  s_assert.assertAll();
+	 }
 }

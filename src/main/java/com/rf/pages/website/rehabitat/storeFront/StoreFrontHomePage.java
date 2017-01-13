@@ -30,7 +30,6 @@ public class StoreFrontHomePage extends StoreFrontWebsiteBasePage{
 	private final By DSA_CODE_OF_ETHICS_LINK = By.xpath("//a[contains(text(),'DSA Code of Ethics')]");
 	private final By DONATE_NOW_BUTTON_LOC = By.xpath("//a[contains(text(),'Donate Now')]");
 	private final By ERROR_MSG_TEXT_LOC = By.xpath("//div[@class='content']//h2");
-	private final By LOGIN_OR_REGISTER_TXT_LOC = By.xpath("//h1[contains(text(),'LOG IN OR REGISTER')]|| contains(text(),'Log in')]|| contains(text(),'Log in or create an account')");
 	private final By INCORRECT_USERNAME_PASSOWRD_TXT_LOC = By.xpath("//div[contains(@class,'alert-danger') and contains(text(),'') or contains(text(),'Your username or password was incorrect.')]");
 	private final By MEET_THE_DOCTORS_TXT_LOC = By.xpath("//h1[text()=' Meet the Doctors']");
 	private final By MEET_RF_EXECUTIVE_TEAM_LINK_LOC = By.xpath("//a[@href='/executive-team']");
@@ -75,7 +74,8 @@ public class StoreFrontHomePage extends StoreFrontWebsiteBasePage{
 	private final By TOTAL_KITS_LOC = By.xpath("//div[contains(@class,'enrollmentKit-wrapper')]/div");
 	private final By SHOP_BY_PRICE_FILTER_OPTION_50_TO_199$_LOC = By.xpath("//input[@id='$50-$199.99ID']/..");
 	private final By SHOP_BY_PRICE_FILTER_OPTION_50_TO_199$_AFTER_CHECKED_LOC = By.xpath("//input[@id='$50-$199.99ID'][@checked = 'checked']");
-	
+	private final By LOGIN_OR_REGISTER_TXT_LOC = By.xpath("//h1[contains(text(),'LOG IN OR REGISTER') or contains(text(),'Log in') or contains(text(),'Log in or create an account')]");
+
 	private String viewDetailsLinkLoc = "//div[contains(@class,'enrollmentKit-wrapper')]/descendant::a[contains(text(),'View Details')][%s]";
 	private String expandedKitDescriptionLoc = "//div[contains(@class,'enrollmentKit-wrapper')]/div[%s]//div[@class='detailed-description']";
 	private String closeBtnForKitDetailsLoc = "//div[contains(@class,'enrollmentKit-wrapper')]/div[%s]//a[@class='enrollKit-close']";
@@ -91,19 +91,6 @@ public class StoreFrontHomePage extends StoreFrontWebsiteBasePage{
 	public boolean isFindAConsultantPagePresent(){
 		String findAConsultantURL = "/find-consultant";
 		return driver.isElementPresent(SPONSOR_SEARCH_FIELD_LOC)&& driver.getCurrentUrl().contains(findAConsultantURL);
-	}
-
-	/***
-	 * This method click on enroll now button
-	 * 
-	 * @param 
-	 * @return store front website base page object
-	 * 
-	 */
-	public StoreFrontWebsiteBasePage clickEnrollNowButton(){
-		driver.click(ENROLL_NOW_BUTTON_LOC);
-		logger.info("clicked on 'Enroll now button'");
-		return this;
 	}
 
 	/***
@@ -336,7 +323,7 @@ public class StoreFrontHomePage extends StoreFrontWebsiteBasePage{
 		driver.waitForLoadingImageToDisappear();
 		return this;
 	}
-	
+
 	/***
 	 * This method will return the total number of
 	 * kits displayed during consultant enrollment
@@ -355,7 +342,7 @@ public class StoreFrontHomePage extends StoreFrontWebsiteBasePage{
 		logger.info("clicked on link "+kitNumber);
 		return this;
 	}
-	
+
 	/***
 	 * This method verifies if the kit description is
 	 * visible or NOT after expanding it
@@ -365,7 +352,7 @@ public class StoreFrontHomePage extends StoreFrontWebsiteBasePage{
 	public boolean isKitDetailsDisplayed(String kitNumber){
 		return driver.isElementVisible(By.xpath(String.format(expandedKitDescriptionLoc, kitNumber)));
 	}
-	
+
 	/***
 	 * This method clicks on the close btn of the
 	 * expanded kit details
@@ -378,7 +365,7 @@ public class StoreFrontHomePage extends StoreFrontWebsiteBasePage{
 		logger.info("clicked on the close btn of the expanded kit details for kitNumber "+kitNumber);
 		return this;
 	}
-	
+
 	/***
 	 * This method verifies if Next button on kit page is enabled or not
 	 * @return boolean
@@ -712,14 +699,14 @@ public class StoreFrontHomePage extends StoreFrontWebsiteBasePage{
 		return this;
 	}
 
-//	/***
-//	 * This method verifies whether the Connect btn present on the home page or not
-//	 * @return boolean
-//	 */
-//	public boolean isConnectBtnPresentOnHomePage(){
-//		return driver.isElementVisible(CONNECT_BTN_LOC);		
-//	}
-	
+	//	/***
+	//	 * This method verifies whether the Connect btn present on the home page or not
+	//	 * @return boolean
+	//	 */
+	//	public boolean isConnectBtnPresentOnHomePage(){
+	//		return driver.isElementVisible(CONNECT_BTN_LOC);		
+	//	}
+
 	/***
 	 * This method verifies whether or NOT
 	 * Home page banner displayed or not
@@ -792,13 +779,21 @@ public class StoreFrontHomePage extends StoreFrontWebsiteBasePage{
 
 	/***
 	 * This method checks whether a pc has been enrolled successfully or not by verifying 
-	 * i) order confirmation String in URL
-	 * ii) Welcome Drop Down element
-	 * iii) autoship element on the page
+	 *i) Welcome Drop Down element
+	 *ii) autoship element on the page
 	 */
 	public boolean hasPCEnrolledSuccessfully(){
 		return driver.isElementVisible(WELCOME_DROPDOWN_LOC)
 				&& driver.isElementVisible(AUTOSHIP_TEXT_LOC);		
+	}
+
+	/***
+	 * This method checks whether a pc has been enrolled partially or not by verifying 
+	 * Welcome Drop Down element
+	 * 
+	 */
+	public boolean hasPCPartiallyEnrolledSuccessfully(){
+		return driver.isElementVisible(WELCOME_DROPDOWN_LOC);
 	}
 
 	/***
@@ -880,6 +875,32 @@ public class StoreFrontHomePage extends StoreFrontWebsiteBasePage{
 		}
 		logger.info("Expected product name not found in search list");
 		return false;
+	}
+
+	/***
+	 * This method click on enroll now button
+	 * 
+	 * @param 
+	 * @return store front website base page object
+	 * 
+	 */
+	public StoreFrontWebsiteBasePage clickEnrollNowButton(){
+		driver.clickByJS(RFWebsiteDriver.driver,driver.findElement(ENROLL_NOW_BUTTON_LOC));
+		//driver.click(ENROLL_NOW_BUTTON_LOC);
+		driver.waitForPageLoad();
+		logger.info("clicked on 'Enroll now button'");
+		return this;
+	}
+
+	/***
+	 * This method will launch the url
+	 *  
+	 * @param URL
+	 * @return Store front base page obj
+	 */
+	public StoreFrontWebsiteBasePage navigateToUrl(String URL){
+		driver.get(URL);
+		return this;
 	}
 
 }

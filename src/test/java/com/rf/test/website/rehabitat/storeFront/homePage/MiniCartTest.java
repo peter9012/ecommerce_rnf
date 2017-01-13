@@ -167,7 +167,7 @@ public class MiniCartTest extends StoreFrontWebsiteBaseTest{
 		s_assert.assertTrue(sfCartPage.isProductAddedToCartPresentOnCartPage(productNameOnCheckoutPopup),"Product added to cart : "+productName+" is not present on the cart page");
 		s_assert.assertAll();
 	}
-	
+
 	/***
 	 * qTest : TC-564 User has previously added items to the cart
 	 * Description : Description : This test validates that the product added by a anonymous user
@@ -288,24 +288,6 @@ public class MiniCartTest extends StoreFrontWebsiteBaseTest{
 	}
 
 	/***
-	 * qTest : TC-344 As a PC, Retail/Anon User, Consultant, I will be able to view the mini cart
-	 * Description : This test case validates mini cart
-	 */
-	@Test(enabled=false)//TODO Incomplete
-	public void testAsPCAndRCAbleToViewMiniAutoshipCart_344(){
-		sfHomePage.loginToStoreFront(TestConstants.PC_EMAIL, password);
-		sfShopSkinCarePage = sfHomePage.clickAllProducts();
-		sfShopSkinCarePage.selectFirstProduct();
-		sfCartPage = sfShopSkinCarePage.checkoutTheCartFromPopUp();
-		String productName = sfCartPage.getProductName("1").toLowerCase();
-		sfCartPage.clickRodanAndFieldsLogo();
-		sfCartPage.hoverOnMiniCartBagIcon();
-		String productNameInMiniCart = sfCartPage.getProductNameFromMiniCart("1").toLowerCase();
-		s_assert.assertTrue(productName.contains(productNameInMiniCart), "Expected first product name in mini cart is "+productName+" Actual on UI is "+productNameInMiniCart);
-		s_assert.assertAll();
-	}
-
-	/***
 	 * qTest : TC-372 Mini Cart- Autoship - not visible to consultant not enrolled in CRP
 	 * Description : This test validates that mini cart is empty
 	 * after placed an order
@@ -315,6 +297,27 @@ public class MiniCartTest extends StoreFrontWebsiteBaseTest{
 	public void testAutoshipNotVisibleToConsultantNotEnrolledInCRP_372(){
 		sfHomePage.loginToStoreFront(TestConstants.CONSULTANT_EMAIL, password);
 		s_assert.assertFalse(sfHomePage.isAutoshipLinkPresent(), "Autoship link is not present for consultant who is not enrolled in pulse");
+		s_assert.assertAll();
+	}
+
+	/***
+	 * qTest : TC-344 As a PC, Retail/Anon User, Consultant, I will be able to view the mini cart
+	 * Description : This test case validates mini cart
+	 */
+	@Test(enabled=false)//TODO Incomplete
+	public void testAsPCAndRCAbleToViewMiniAutoshipCart_344(){
+		sfHomePage.loginToStoreFront(TestConstants.PC_EMAIL, password);
+		sfCartPage = sfHomePage.clickMiniCartBagLink();
+		sfCartPage.removeAllProductsFromCart();
+		sfCartPage.clickRodanAndFieldsLogo();
+		sfShopSkinCarePage = sfHomePage.clickAllProducts();
+		sfShopSkinCarePage.selectFirstProduct();
+		sfCartPage = sfShopSkinCarePage.checkoutTheCartFromPopUp();
+		String productName = sfCartPage.getProductName("1").toLowerCase();
+		sfCartPage.clickRodanAndFieldsLogo();
+		sfCartPage.hoverOnMiniCartBagIcon();
+		String productNameInMiniCart = sfCartPage.getProductNameFromMiniCart("1").toLowerCase();
+		s_assert.assertTrue(productName.contains(productNameInMiniCart), "Expected first product name in mini cart is "+productName+" Actual on UI is "+productNameInMiniCart);
 		s_assert.assertAll();
 	}
 

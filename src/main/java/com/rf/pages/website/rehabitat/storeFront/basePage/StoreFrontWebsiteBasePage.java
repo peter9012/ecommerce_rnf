@@ -1567,8 +1567,9 @@ public class StoreFrontWebsiteBasePage extends RFBasePage{
 		}
 		robot.keyPress(KeyEvent.VK_TAB);
 		robot.keyRelease(KeyEvent.VK_TAB);
+		driver.pauseExecutionFor(3000);
 		WebElement cardNumberElement = driver.findElement(CARD_NUMBER_LOC);
-		cardNumberElement.click();
+		cardNumberElement.click();	
 		Actions actions = new Actions(RFWebsiteDriver.driver);
 //		driver.pauseExecutionFor(10000);
 		driver.pauseExecutionFor(2000);

@@ -45,7 +45,7 @@ public class TestConstants {
 	//Consultant user details
 	public static final String CONSULTANT_USERNAME = "AutoCons20170110140338@mailinator.com";
 	public static final String CONSULTANT_EMAIL = "AutoCons20170110140338@mailinator.com";
-	public static final String CONSULTANT_WITH_CRP_USERNAME = "AutoCons20170111165549@mailinator.com";
+	public static final String CONSULTANT_WITH_CRP_USERNAME = "autocon1515@mailinator.com";
 	public static final String CONSULTANT_ACCOUNT_ID = "";
 	public static final String CONSULTANT_ACCOUNT_NUMBER = "";
 	public static final String FIRST_NAME = "AutoCons";
@@ -96,13 +96,13 @@ public class TestConstants {
 	public static final String DPO_STATE_US = "AP Armed Forces";
 
 	//PC User Details
-	public static final String PC_USERNAME = "autopc121213@xyz.com";
-	public static final String PC_EMAIL = "autopc121213@xyz.com";
-	public static final String PC_EMAIL_HAVING_AUTOSHIP = "AutoPC20170111130257@mailinator.com";
+	public static final String PC_USERNAME = "autopc1212@mailinator.com";
+	public static final String PC_EMAIL = "autopc1212@mailinator.com";
+	public static final String PC_EMAIL_HAVING_AUTOSHIP = "autocon13121@mailinator.com";
 	
 	//RC User Details
-	public static final String RC_USERNAME = "AutoRC20170112171350@mailinator.com";
-	public static final String RC_EMAIL = "AutoRC20170112171350@mailinator.com";
+	public static final String RC_USERNAME = "AutoRC20170113140808@mailinator.com";
+	public static final String RC_EMAIL = "AutoRC20170113140808@mailinator.com";
 
 	public static final String SHIPPING_METHOD_UPS_2DAY = "UPS 2 Days";
 	public static final String SHIPPING_METHOD_UPS_GROUND = "UPS Ground";

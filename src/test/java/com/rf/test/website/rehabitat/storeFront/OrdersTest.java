@@ -151,53 +151,6 @@ public class OrdersTest extends StoreFrontWebsiteBaseTest{
 		}
 	}
 
-	/***
-	 * qTest : TC-322 Edit a Ship address- Checkout - Invalid details
-	 * Description : This test validates error message for blank fields & Invalid postal code
-	 * at checkout page for consultant 
-	 * 
-	 *     
-	 */
-	@Test(enabled=true)
-	public void testEditAShipAddressCheckoutInvalidDetails_322(){
-		String randomWord = CommonUtils.getRandomWord(5);
-		String firstName = TestConstants.FIRST_NAME;
-		String lastName = TestConstants.LAST_NAME+randomWord;
-		String addressLine1 = TestConstants.ADDRESS_LINE_1_US;
-		String addressLine2 = TestConstants.ADDRESS_LINE_2_US;
-		String city = TestConstants.CITY_US;
-		String state = TestConstants.STATE_US;
-		String phoneNumber = TestConstants.PHONE_NUMBER;
-		String invalidPostalCode = "123";
-		sfHomePage.loginToStoreFront(TestConstants.CONSULTANT_USERNAME, password);
-		sfShopSkinCarePage = sfHomePage.clickAllProducts();
-		sfShopSkinCarePage.selectFirstProduct();
-		sfCartPage = sfShopSkinCarePage.checkoutTheCartFromPopUp();
-		sfCheckoutPage=sfHomePage.checkoutTheCart();
-		sfCheckoutPage.clickSaveButton();
-		sfCheckoutPage.clickEditLinkOfShippingAddress();
-		sfCheckoutPage.updateShippingAddressDetailsAtCheckoutPage(firstName, lastName, addressLine1, addressLine2, city, state, invalidPostalCode, phoneNumber);
-		s_assert.assertTrue(sfCheckoutPage.isErrorMessagePresentForPostalCode(), "Error message is not present for postal code field");
-		sfCheckoutPage.clearAllFieldsForShippingAddressAtCheckoutPage();
-		sfCheckoutPage.clickSaveButtonOfShippingAddress();
-		s_assert.assertTrue(sfCheckoutPage.isErrorMessagePresentForFirstAndLastName(), "Error message is not present for first and last name field");
-		s_assert.assertTrue(sfCheckoutPage.isErrorMessagePresentForAddressLine1(), "Error message is not present for address line 1 field");
-		s_assert.assertTrue(sfCheckoutPage.isErrorMessagePresentForCity(), "Error message is not present for city field");
-		s_assert.assertTrue(sfCheckoutPage.isErrorMessagePresentForPostalCode(), "Error message is not present for postal code field");
-		s_assert.assertTrue(sfCheckoutPage.isErrorMessagePresentForPhoneNumber(), "Error message is not present for phone number field");
-		s_assert.assertAll();
-	}
-
-	/***
-	 * qTest : TC-323 Add a ship address- Checkout - First Time
-	 * Description : //TODO
-	 * 
-	 *     
-	 */
-	@Test(enabled=false)//TODO
-	public void testAddAShipAddressCheckoutFirstTime_323(){
-
-	}
 
 	/***
 	 * qTest : TC-229 Checkout- Viewing Main Account Info
@@ -781,39 +734,6 @@ public class OrdersTest extends StoreFrontWebsiteBaseTest{
 	}
 
 	/***
-	 * qTest : TC-321 Edit a Ship address- Checkout - Valid details
-	 * Description : This test edit the ship address and validates it at checkout page 
-	 * 
-	 *     
-	 */
-	@Test(enabled=true)
-	public void testEditAShipAddressCheckoutValidDetails_321(){
-		String randomWord = CommonUtils.getRandomWord(5);
-		String firstName = TestConstants.FIRST_NAME;
-		String lastName = TestConstants.LAST_NAME+randomWord;
-		String addressLine1 = TestConstants.ADDRESS_LINE_1_US;
-		String city = TestConstants.CITY_US;
-		String state = TestConstants.STATE_US;
-		String postalCode = TestConstants.POSTAL_CODE_US;
-		String phoneNumber = TestConstants.PHONE_NUMBER;
-		String shippingProfileNameFromUI = null;
-		sfHomePage.loginToStoreFront(TestConstants.CONSULTANT_USERNAME, password);
-		sfShopSkinCarePage = sfHomePage.clickAllProducts();
-		sfShopSkinCarePage.selectFirstProduct();
-		sfCartPage = sfShopSkinCarePage.checkoutTheCartFromPopUp();
-		sfCheckoutPage=sfHomePage.checkoutTheCart();
-		sfCheckoutPage.clickSaveButton();
-		sfCheckoutPage.clickEditLinkOfShippingProfile();
-		sfCheckoutPage.updateShippingAddressDetailsAtCheckoutPage(firstName, lastName, addressLine1, city, state, postalCode, phoneNumber);
-		sfCheckoutPage.clickSaveButtonOfShippingAddress();
-		s_assert.assertTrue(sfCheckoutPage.isUseAsEnteredPopupDisplayed(), "Use As Entered Confirmation Popup is Not Displayed after added new shipping profile");
-		sfCheckoutPage.clickUseAsEnteredButtonOnPopUp();
-		shippingProfileNameFromUI = sfCheckoutPage.getDefaultShippingAddressNameAtCheckoutPage();
-		s_assert.assertTrue(shippingProfileNameFromUI.contains(lastName), "Shipping profile name should contain "+lastName+ "Actual on UI is "+shippingProfileNameFromUI);
-		s_assert.assertAll();
-	}
-
-	/***
 	 * qTest : TC-332 Cart Page- Product Messaging for Non-replenishable products
 	 * Description : //TODO
 	 * 
@@ -1127,17 +1047,6 @@ public class OrdersTest extends StoreFrontWebsiteBaseTest{
 	}
 
 	/***
-	 * qTest : TC-457 Choose a consultant- R+F Corporate sponsor - PC First checkout from Corp
-	 * Description : //TODO
-	 * 
-	 *     
-	 */
-	@Test(enabled=false)
-	public void testChooseAConsultantRFCorporateSponsorPCFirstCheckoutFromCorp_457(){
-
-	}
-
-	/***
 	 * qTest : TC-458 Choose a consultant- R+F Corporate sponsor - PC First checkout from PWS
 	 * Description : //TODO
 	 * 
@@ -1214,43 +1123,6 @@ public class OrdersTest extends StoreFrontWebsiteBaseTest{
 		s_assert.assertAll();
 	}
 
-	/***
-	 * qTest : TC-471 Review and Place Order - Edit cart
-	 * Description : This test case validates Edit link of cart at order review page
-	 *     
-	 */
-	@Test(enabled=true)
-	public void testReviewAndPlaceOrderEditCart_471(){
-		String productQuantityFromUI = null;
-		String updatedQuantity = null;
-		String checkoutPageText = "Account Info";
-		String currentURL = null;
-		String cardType = TestConstants.CARD_TYPE;
-		String cardNumber = TestConstants.CARD_NUMBER;
-		String cardName = TestConstants.CARD_NAME;
-		String CVV = TestConstants.CVV;
-		sfHomePage.loginToStoreFront(TestConstants.CONSULTANT_EMAIL, password);
-		sfShopSkinCarePage = sfHomePage.clickAllProducts();
-		sfShopSkinCarePage.selectFirstProduct();
-		sfCartPage = sfShopSkinCarePage.checkoutTheCartFromPopUp();
-		sfCheckoutPage = sfCartPage.checkoutTheCart();
-		sfCheckoutPage.clickSaveButton();
-		sfCheckoutPage.clickShippingDetailsNextbutton();
-		sfCheckoutPage.clickAddNewBillingProfileButton();
-		sfCheckoutPage.enterUserBillingDetails(cardType, cardNumber, cardName, CVV);
-		sfCheckoutPage.checkUseMyDeliveryAddressChkBox();
-		sfCheckoutPage.clickBillingDetailsNextbutton();
-		sfCheckoutPage.clickEditLinkOfOrderSummarySection();
-		s_assert.assertTrue(sfCheckoutPage.isCartPagePresent(), "Cart page is not displayed after clicked on edit link of order summary section");
-		productQuantityFromUI = sfCartPage.getQuantityOfProductFromCart("1");
-		updatedQuantity = sfCartPage.updateQuantityByOne(productQuantityFromUI);
-		sfCartPage.enterQuantityOfProductAtCart("1", updatedQuantity);
-		sfCartPage.clickOnUpdateLinkThroughItemNumber("1");
-		sfCheckoutPage = sfCartPage.checkoutTheCart();
-		currentURL = sfCartPage.getCurrentURL();
-		s_assert.assertTrue(currentURL.contains("checkout") && sfCheckoutPage.isTextPresent(checkoutPageText),"Current url should contain checkout but actual on UI is "+currentURL+" and checkout page is not present");
-		s_assert.assertAll();
-	}
 
 	/***
 	 * qTest : TC-324 Add a ship address- Checkout - existing user
@@ -1610,6 +1482,219 @@ public class OrdersTest extends StoreFrontWebsiteBaseTest{
 		sfHomePage.selectTermsAndConditionsChkBox();
 		sfCheckoutPage.clickPlaceOrderButton();
 		s_assert.assertTrue(sfCheckoutPage.isOrderPlacedSuccessfully(), "Adhoc order is not placed successfully by RC");
+	}
+
+	//----
+
+	/***
+	 * qTest : TC-322 Edit a Ship address- Checkout - Invalid details
+	 * Description : This test validates error message for blank fields & Invalid postal code
+	 * at checkout page for consultant 
+	 * 
+	 *     
+	 */
+	@Test(enabled=true)
+	public void testEditAShipAddressCheckoutInvalidDetails_322(){
+		String randomWord = CommonUtils.getRandomWord(5);
+		String firstName = TestConstants.FIRST_NAME;
+		String lastName = TestConstants.LAST_NAME+randomWord;
+		String addressLine1 = TestConstants.ADDRESS_LINE_1_US;
+		String addressLine2 = TestConstants.ADDRESS_LINE_2_US;
+		String city = TestConstants.CITY_US;
+		String state = TestConstants.STATE_US;
+		String phoneNumber = TestConstants.PHONE_NUMBER;
+		String invalidPostalCode = "123";
+		sfHomePage.loginToStoreFront(TestConstants.CONSULTANT_USERNAME, password);
+		sfShopSkinCarePage = sfHomePage.clickAllProducts();
+		sfShopSkinCarePage.selectFirstProduct();
+		sfCartPage = sfShopSkinCarePage.checkoutTheCartFromPopUp();
+		sfCheckoutPage=sfHomePage.checkoutTheCart();
+		sfCheckoutPage.clickSaveButton();
+		sfCheckoutPage.clickEditLinkOfShippingAddress();
+		sfCheckoutPage.updateShippingAddressDetailsAtCheckoutPage(firstName, lastName, addressLine1, addressLine2, city, state, invalidPostalCode, phoneNumber);
+		s_assert.assertTrue(sfCheckoutPage.isErrorMessagePresentForPostalCode(), "Error message is not present for postal code field");
+		sfCheckoutPage.clearAllFieldsForShippingAddressAtCheckoutPage();
+		sfCheckoutPage.clickSaveButtonOfShippingAddress();
+		s_assert.assertTrue(sfCheckoutPage.isErrorMessagePresentForFirstAndLastName(), "Error message is not present for first and last name field");
+		s_assert.assertTrue(sfCheckoutPage.isErrorMessagePresentForAddressLine1(), "Error message is not present for address line 1 field");
+		s_assert.assertTrue(sfCheckoutPage.isErrorMessagePresentForCity(), "Error message is not present for city field");
+		s_assert.assertTrue(sfCheckoutPage.isErrorMessagePresentForPostalCode(), "Error message is not present for postal code field");
+		s_assert.assertTrue(sfCheckoutPage.isErrorMessagePresentForPhoneNumber(), "Error message is not present for phone number field");
+		s_assert.assertAll();
+	}
+
+	/***
+	 * qTest : TC-321 Edit a Ship address- Checkout - Valid details
+	 * Description : This test edit the ship address and validates it at checkout page 
+	 * 
+	 *     
+	 */
+	@Test(enabled=true)
+	public void testEditAShipAddressCheckoutValidDetails_321(){
+		String randomWord = CommonUtils.getRandomWord(5);
+		String firstName = TestConstants.FIRST_NAME;
+		String lastName = TestConstants.LAST_NAME+randomWord;
+		String addressLine1 = TestConstants.ADDRESS_LINE_1_US;
+		String addressLine2 = TestConstants.ADDRESS_LINE_2_US;
+		String city = TestConstants.CITY_US;
+		String state = TestConstants.STATE_US;
+		String postalCode = TestConstants.POSTAL_CODE_US;
+		String phoneNumber = TestConstants.PHONE_NUMBER;
+		String shippingProfileNameFromUI = null;
+		sfHomePage.loginToStoreFront(TestConstants.CONSULTANT_USERNAME, password);
+		sfShopSkinCarePage = sfHomePage.clickAllProducts();
+		sfShopSkinCarePage.selectFirstProduct();
+		sfCartPage = sfShopSkinCarePage.checkoutTheCartFromPopUp();
+		sfCheckoutPage=sfHomePage.checkoutTheCart();
+		sfCheckoutPage.clickSaveButton();
+		sfCheckoutPage.clickEditLinkOfShippingProfile();
+		sfCheckoutPage.updateShippingAddressDetailsAtCheckoutPage(firstName, lastName, addressLine1, addressLine2, city, state, postalCode, phoneNumber);
+		sfCheckoutPage.clickSaveButtonOfShippingAddress();
+		s_assert.assertTrue(sfCheckoutPage.isUseAsEnteredPopupDisplayed(), "Use As Entered Confirmation Popup is Not Displayed after added new shipping profile");
+		sfCheckoutPage.clickUseAsEnteredButtonOnPopUp();
+		shippingProfileNameFromUI = sfCheckoutPage.getDefaultShippingAddressNameAtCheckoutPage();
+		s_assert.assertTrue(shippingProfileNameFromUI.contains(lastName), "Shipping profile name should contain "+lastName+ "Actual on UI is "+shippingProfileNameFromUI);
+		s_assert.assertAll();
+	}
+
+	/***
+	 * qTest : TC-471 Review and Place Order - Edit cart
+	 * Description : This test case validates Edit link of cart at order review page
+	 *     
+	 */
+	@Test(enabled=true)
+	public void testReviewAndPlaceOrderEditCart_471(){
+		String productQuantityFromUI = null;
+		String updatedQuantity = null;
+		String checkoutPageText = "Account Info";
+		String currentURL = null;
+		String cardType = TestConstants.CARD_TYPE;
+		String cardNumber = TestConstants.CARD_NUMBER;
+		String cardName = TestConstants.CARD_NAME;
+		String CVV = TestConstants.CVV;
+		sfHomePage.loginToStoreFront(TestConstants.CONSULTANT_EMAIL, password);
+		sfShopSkinCarePage = sfHomePage.clickAllProducts();
+		sfShopSkinCarePage.selectFirstProduct();
+		sfCartPage = sfShopSkinCarePage.checkoutTheCartFromPopUp();
+		sfCheckoutPage = sfCartPage.checkoutTheCart();
+		sfCheckoutPage.clickSaveButton();
+		sfCheckoutPage.clickShippingDetailsNextbutton();
+		sfCheckoutPage.clickAddNewBillingProfileButton();
+		sfCheckoutPage.enterUserBillingDetails(cardType, cardNumber, cardName, CVV);
+		sfCheckoutPage.clickBillingDetailsNextbutton();
+		sfCheckoutPage.clickEditLinkOfOrderSummarySection();
+		s_assert.assertTrue(sfCheckoutPage.isCartPagePresent(), "Cart page is not displayed after clicked on edit link of order summary section");
+		productQuantityFromUI = sfCartPage.getQuantityOfProductFromCart("1");
+		updatedQuantity = sfCartPage.updateQuantityByOne(productQuantityFromUI);
+		sfCartPage.enterQuantityOfProductAtCart("1", updatedQuantity);
+		sfCartPage.clickOnUpdateLinkThroughItemNumber("1");
+		sfCheckoutPage = sfCartPage.checkoutTheCart();
+		currentURL = sfCartPage.getCurrentURL();
+		s_assert.assertTrue(currentURL.contains("checkout") && sfCheckoutPage.isTextPresent(checkoutPageText),"Current url should contain checkout but actual on UI is "+currentURL+" and checkout page is not present");
+		s_assert.assertAll();
+	}
+
+	/***
+	 * qTest : TC-323 Add a ship address- Checkout - First Time
+	 * Description : This test cases login with a user who doesn't have any shipping profile
+	 * and add a shipping address and validates the next billing page
+	 * 
+	 *     
+	 */
+	@Test(enabled=false)
+	public void testAddAShipAddressCheckoutFirstTime_323(){
+		int randomNum = CommonUtils.getRandomNum(10000, 1000000);
+		String firstName = TestConstants.FIRST_NAME;
+		String lastName = TestConstants.LAST_NAME;
+		String emailID = TestConstants.FIRST_NAME+randomNum+TestConstants.EMAIL_SUFFIX;
+		String addressLine1 = TestConstants.ADDRESS_LINE_1_US;
+		String addressLine2 = TestConstants.ADDRESS_LINE_2_US;
+		String city = TestConstants.CITY_US;
+		String state = TestConstants.STATE_US;
+		String postalCode = TestConstants.POSTAL_CODE_US;
+		String phoneNumber = TestConstants.PHONE_NUMBER;
+		sfShopSkinCarePage = sfHomePage.clickAllProducts();
+		sfShopSkinCarePage.addFirstProductToBag();
+		sfCartPage = sfShopSkinCarePage.checkoutTheCartFromPopUp();
+		sfCheckoutPage = sfCartPage.checkoutTheCart();
+		sfCheckoutPage.fillNewUserDetails(TestConstants.USER_TYPE_RC,firstName, lastName, emailID, password);
+		sfCheckoutPage.clickCreateAccountButton();
+		sfCheckoutPage.clickContinueWithoutConsultantLink();
+		sfCheckoutPage.clickSaveButton();
+		sfCheckoutPage.clickRodanAndFieldsLogo();
+		s_assert.assertTrue(sfCheckoutPage.isWelcomeDropdownPresent(), "Welcome dropdown is not present at cart page & user not registered successfully");
+		sfCheckoutPage.clickWelcomeDropdown();
+		sfCheckoutPage.logout();
+		sfCheckoutPage.loginToStoreFront(emailID, password);
+		sfCheckoutPage.clickMiniCartBagLink();
+		sfCheckoutPage.checkoutTheCart();
+		sfCheckoutPage.clickContinueWithoutConsultantLink();
+		sfCheckoutPage.clickSaveButton();
+		sfCheckoutPage.enterShippingDetails(firstName+" "+lastName, addressLine1, addressLine2, city, state, postalCode, phoneNumber);
+		sfCheckoutPage.clickShippingDetailsNextbutton();
+		sfCheckoutPage.clickUseAsEnteredButtonOnPopUp();
+		s_assert.assertTrue(sfCheckoutPage.isBillingLinkPresentAtCheckoutPage(),"User successfully redirected to payment page after added a shipping address");
+		s_assert.assertAll();
+	}
+
+	/***
+	 * qTest : TC-457 Choose a consultant- R+F Corporate sponsor - PC First checkout from Corp
+	 * Description : This test case validates the sponsor functionality and before enrolled PC
+	 * & after enrollment PC can not change the sponsor 
+	 *     
+	 */
+	@Test(enabled=false)
+	public void testChooseAConsultantRFCorporateSponsorPCFirstCheckoutFromCorp_457(){
+		String timeStamp = CommonUtils.getCurrentTimeStamp();
+		String firstName = TestConstants.FIRST_NAME;
+		String lastName = TestConstants.LAST_NAME;
+		String emailID = TestConstants.FIRST_NAME+timeStamp+TestConstants.EMAIL_SUFFIX;
+		String addressLine1 = TestConstants.ADDRESS_LINE_1_US;
+		String addressLine2 = TestConstants.ADDRESS_LINE_2_US;
+		String city = TestConstants.CITY_US;
+		String state = TestConstants.STATE_US;
+		String postalCode = TestConstants.POSTAL_CODE_US;
+		String phoneNumber = TestConstants.PHONE_NUMBER;
+		String sponsorName = "RF Corporate";
+		String cardType = TestConstants.CARD_TYPE;
+		String cardNumber = TestConstants.CARD_NUMBER;
+		String cardName = TestConstants.CARD_NAME;
+		String CVV = TestConstants.CVV;
+		String sponsorNameFromUI = null;
+		sfShopSkinCarePage = sfHomePage.clickAllProducts();
+		sfShopSkinCarePage.addFirstProductToBag();
+		sfCartPage = sfShopSkinCarePage.checkoutTheCartFromPopUp();
+		sfCheckoutPage = sfCartPage.checkoutTheCart();
+		sfCheckoutPage.fillNewUserDetails(TestConstants.USER_TYPE_PC,firstName, lastName, emailID, password);
+		sfCheckoutPage.clickCreateAccountButton();
+		sfCheckoutPage.checkoutTheCart();
+		sfCheckoutPage.clickContinueWithoutConsultantLink();
+		sponsorNameFromUI = sfCheckoutPage.getSponsorInfo();
+		s_assert.assertTrue(sponsorNameFromUI.contains(sponsorName), "Expected sponsor name is "+sponsorName+" but actual on UI is "+sponsorNameFromUI);
+		sfCheckoutPage.clickNotYourConsultantLink();
+		sfCheckoutPage.clickContinueWithoutConsultantLink();
+		sponsorNameFromUI = sfCheckoutPage.getSponsorInfo();
+		s_assert.assertTrue(sponsorNameFromUI.contains(sponsorName), "Expected sponsor name is "+sponsorName+" but actual on UI is "+sponsorNameFromUI);
+		sfCheckoutPage.clickNotYourConsultantLink();
+		s_assert.assertTrue(sfCheckoutPage.isSponsorSearchBoxVisible(), "Sponsor search box is not visible after clicked on not your consultant link");
+		sfCheckoutPage.searchSponsor(TestConstants.SPONSOR);
+		s_assert.assertTrue(sfHomePage.isSponsorResultDisplayed(),"No result found after searching the sponsor with name "+TestConstants.SPONSOR);
+		sfCheckoutPage.selectFirstSponsorFromList();
+		sfCheckoutPage.clickSaveButton();
+		sfCheckoutPage.enterShippingDetails(firstName+" "+lastName, addressLine1, addressLine2, city, state, postalCode, phoneNumber);
+		sfCheckoutPage.clickShippingDetailsNextbutton();
+		sfCheckoutPage.clickUseAsEnteredButtonOnPopUp();
+		sfCheckoutPage.enterUserBillingDetails(cardType, cardNumber, cardName, CVV);
+		sfCheckoutPage.clickBillingDetailsNextbutton();
+		sfCheckoutPage.selectIAcknowledgePCChkBox();
+		sfCheckoutPage.selectPCTermsAndConditionsChkBox();
+		sfCheckoutPage.clickPlaceOrderButton();
+		sfCheckoutPage.clickRodanAndFieldsLogo();
+		sfCheckoutPage.addFirstProductToBag();
+		sfCheckoutPage.checkoutTheCartFromPopUp();
+		sfCheckoutPage.checkoutTheCart();
+		s_assert.assertFalse(sfCheckoutPage.isNotYourConsultantLinkPresent(), "Not your sponsor link is present for consultant's sponsor");
+		s_assert.assertAll();
 	}
 
 }

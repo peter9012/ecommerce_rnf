@@ -17,8 +17,6 @@ public class StoreFrontCartPage extends StoreFrontWebsiteBasePage{
 	private static final Logger logger = LogManager
 			.getLogger(StoreFrontCartPage.class.getName());
 
-	private final By QUANTITY_OF_FIRST_PRODUCT_LOC = By.xpath("//div[@class='qty']//input[@id='quantity_0']");
-	private final By UPDATE_LINK_OF_FIRST_PRODUCT_LOC = By.xpath("//div[@class='qty']/descendant::input[@value='update'][1]");
 	private final By CHECKOUT_BTN_LOC = By.xpath("//div[@class='cart-container']/descendant::button[contains(text(),'Checkout')][2]");
 	private final By FIRST_ITEM_CODE_LOC = By.xpath("//ul[contains(@class,'cart__list')]/descendant::li[@class='item-list-item'][1]//div[@class='item-code']");
 	private final By FIRST_ITEM_PRODUCT_NAME_LOC = By.xpath("//ul[contains(@class,'cart__list')]/descendant::li[@class='item-list-item'][1]//span[@class='item-name']");
@@ -35,65 +33,7 @@ public class StoreFrontCartPage extends StoreFrontWebsiteBasePage{
 	private String recentlyViewProductOnCartPageLoc = "//div[@id='recentlyViewedTitle']/following::div[@class='owl-item active']//a[contains(text(),'%s')]";
 	private String removeLinkForProductOnCartLoc = "removeEntry_";
 
-	/***
-	 * This method get product quantity 
-	 * 
-	 * @param itemNumber
-	 * @return product quantity
-	 * 
-	 */
-	public String getQuantityOfProductFromCart(String itemNumber){
-		String productQuantity = null;
-		if(itemNumber.equalsIgnoreCase("1")){
-			productQuantity = driver.findElement(QUANTITY_OF_FIRST_PRODUCT_LOC).getAttribute("value");
-		}
-		logger.info("Quantity of "+itemNumber+" is "+productQuantity);
-		return productQuantity;
-	}
-
-	/***
-	 * This method get product quantity 
-	 * 
-	 * @param quantity
-	 * @return updated quantity by 1
-	 * 
-	 */
-	public String updateQuantityByOne(String quantity){
-		quantity = ""+(Integer.parseInt(quantity)+1);
-		logger.info("Updated quantity is "+quantity);
-		return quantity;
-	}
-
-	/***
-	 * This method enter product quantity 
-	 * 
-	 * @param itemNumber, quantity
-	 * @return store front Cart page object 
-	 * 
-	 */
-	public StoreFrontCartPage enterQuantityOfProductAtCart(String itemNumber, String quantity){
-		if(itemNumber.equalsIgnoreCase("1")){
-			driver.type(QUANTITY_OF_FIRST_PRODUCT_LOC, quantity);
-		}
-		logger.info("In cart"+itemNumber+" 's qunatity updated as "+quantity);
-		return this;
-	}
-
-	/***
-	 * This method click on update link 
-	 * 
-	 * @param itemNumber
-	 * @return store front Cart page object 
-	 * 
-	 */
-	public StoreFrontCartPage clickOnUpdateLinkThroughItemNumber(String itemNumber){
-		if(itemNumber.equalsIgnoreCase("1")){
-			driver.click(UPDATE_LINK_OF_FIRST_PRODUCT_LOC);
-		}
-		logger.info("Update link of "+itemNumber+" is clicked");
-		return this;
-	}
-
+	
 	/***
 	 * This method click checkout button 
 	 * 

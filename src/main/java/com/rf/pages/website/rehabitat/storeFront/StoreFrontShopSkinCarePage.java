@@ -89,24 +89,6 @@ public class StoreFrontShopSkinCarePage extends StoreFrontWebsiteBasePage{
 	}
 
 	/***
-	 * This method add first product to bag
-	 * 
-	 * @param
-	 * @return store front shop skincare page object
-	 * 
-	 */
-	public StoreFrontShopSkinCarePage addFirstProductToBag(){
-		//driver.waitForElementToBeClickable(ADD_TO_CART_FIRST_PRODUCT_LOC, 30);
-		driver.pauseExecutionFor(2000);
-		driver.moveToElement(ADD_TO_CART_FIRST_PRODUCT_LOC);
-		//driver.moveToElementByJS(ADD_TO_CART_FIRST_PRODUCT_LOC);
-		driver.click(ADD_TO_CART_FIRST_PRODUCT_LOC);
-		logger.info("Added first product to the bag");
-		driver.pauseExecutionFor(2000);
-		return this;
-	}
-
-	/***
 	 * This method select sort by price filter High to low
 	 * 
 	 * @param

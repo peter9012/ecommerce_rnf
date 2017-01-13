@@ -137,7 +137,6 @@ public class StoreFrontWebsiteBasePage extends RFBasePage{
 	//private final By E_SIGN_CONSENT_FORM_CHK_BOX_LOC = By.xpath("//div[contains(@class,'checkout-steps')]/descendant::label[4]");
 	private final By E_SIGN_CONSENT_FORM_CHK_BOX_LOC = By.xpath("//input[@id='Terms4']");
 	private final By I_ACKNOWLEDGE_PC_CHK_BOX_LOC = By.xpath("//input[@id='Terms2']");
-	private final By PC_TERMS_AND_CONDITIONS_CHK_BOX_LOC = By.xpath("//input[@id='Terms1']/following::label[1]");
 	private final By BILLING_NEXT_BUTTON_LOC = By.id("cmdSubmit");
 	private final By BECOME_A_CONSULTANT_BTN_LOC = By.id("placeOrder");
 	private final By ENROLLMENT_SUCCESSFUL_MSG_LOC = By.xpath("//*[contains(text(),'ENROLLMENT SUCCESSFUL')]");
@@ -153,7 +152,6 @@ public class StoreFrontWebsiteBasePage extends RFBasePage{
 	protected final By ADD_TO_CART_FIRST_PRODUCT_LOC = By.xpath("//div[@id='product_listing']/descendant::button[text()='Add to cart'][1]");
 	private final By REMEMBER_ME_LOC = By.xpath("//label[contains(text(),'Remember me')]");
 	private final By YOUR_SHOPPING_CART_HEADER_LOC = By.xpath("//h1[@class='urcart-header' and contains(text(),'Your Shopping Cart')]");
-	protected final By BILLING_ADDRESS_DD_LOC = By.xpath("//select[@id='billingAddress.addressId']");
 	private final By INVALID_EXP_YEAR_LOC= By.xpath("//select[@id='c-exyr']//option[2]");
 	private final By FORGET_PASSWORD_LINK_LOC = By.id("show-recover-pass");
 	private final By FORGET_PASSWORD_LINK_CHECKOUT_LOC = By.id("show-recover-pass-inner");
@@ -183,7 +181,6 @@ public class StoreFrontWebsiteBasePage extends RFBasePage{
 	protected final By SEARCH_BOX = By.id("search-box");
 	protected final By SEARCH_ICON_NEAR_SEARCH_BOX = By.xpath("//*[@id='header']//following::button[contains(@class,'icon-search')]");
 	private final By ADD_MORE_ITEMS_BTN_LOC = By.xpath("//div[@class='cart-container']/descendant::button[contains(text(),'Add More Items')][2]");
-	private final By SUBTOTAL_LOC = By.xpath("//td[contains(text(),'Subtotal')]/following::td[1]");
 	private final By ADD_MORE_ITEMS_BTN_PC_AUTOSHIP_CART_LOC = By.xpath("//div[@class='cart-container']/descendant::button[contains(text(),'Add More Items')]");
 	private final By PC_ONE_TIME_FEE_MSG_LOC = By.xpath("//span[contains(text(),'PC PERKS ONE-TIME ENROLLMENT FEE')]");
 	private final By PDF_VIEWER_LOC = By.xpath("//div[@id='viewer']");
@@ -195,7 +192,13 @@ public class StoreFrontWebsiteBasePage extends RFBasePage{
 	protected final By CART_PRODUCT_LOC = By.xpath("//ul[contains(@class,'item-list cart')]/li[@class='item-list-item']");
 	private final By EDIT_LINK_NEXT_TO_MAIN_ACCOUNT_LOC = By.xpath("//div[contains(@class,'checkout-steps')]/descendant::a[1]");
 	private final By PC_PERKS_CART_HEADER_LOC = By.xpath("//h1[contains(text(),'Your Shopping Cart')]");
+	private final By QUANTITY_OF_FIRST_PRODUCT_LOC = By.xpath("//div[@class='qty']//input[@id='quantity_0']");
+	private final By UPDATE_LINK_OF_FIRST_PRODUCT_LOC = By.xpath("//div[@class='qty']/descendant::input[@value='update'][1]");
+	protected final By BILLING_ADDRESS_DD_LOC = By.id("default-address");
+	private final By SUBTOTAL_LOC = By.xpath("//td[text()='Subtotal']/following::td[1]");
+	private final By PC_TERMS_AND_CONDITIONS_CHK_BOX_LOC = By.xpath("//div[@class='step-body']/descendant::input[@id='Terms1']/following::label[1]");
 
+	
 	private String selectAndContinueSponserLoc= "//div[@id='findConsultantResultArea']/descendant::div[contains(@class,'consultant-box')][%s]//span[@id='selectd-consultant']";
 	private String productNameInAllItemsInCartLoc = "//li[@class='item-list-item']//div[@class='item-info']//span[@class='item-name' and contains(text(),'%s')]";
 	private String pageHeaderLoc = "//div[@class='page-container']//*[contains(text(),'%s')]";
@@ -2663,5 +2666,80 @@ public class StoreFrontWebsiteBasePage extends RFBasePage{
 		return driver.isElementVisible(REMOVE_LINK_LOC);
 	}
 
+	/***
+	 * This method get product quantity 
+	 * 
+	 * @param itemNumber
+	 * @return product quantity
+	 * 
+	 */
+	public String getQuantityOfProductFromCart(String itemNumber){
+		String productQuantity = null;
+		if(itemNumber.equalsIgnoreCase("1")){
+			productQuantity = driver.findElement(QUANTITY_OF_FIRST_PRODUCT_LOC).getAttribute("value");
+		}
+		logger.info("Quantity of "+itemNumber+" is "+productQuantity);
+		return productQuantity;
+	}
+
+	/***
+	 * This method get product quantity 
+	 * 
+	 * @param quantity
+	 * @return updated quantity by 1
+	 * 
+	 */
+	public String updateQuantityByOne(String quantity){
+		quantity = ""+(Integer.parseInt(quantity)+1);
+		logger.info("Updated quantity is "+quantity);
+		return quantity;
+	}
+
+	/***
+	 * This method enter product quantity 
+	 * 
+	 * @param itemNumber, quantity
+	 * @return store front Cart page object 
+	 * 
+	 */
+	public StoreFrontWebsiteBasePage enterQuantityOfProductAtCart(String itemNumber, String quantity){
+		if(itemNumber.equalsIgnoreCase("1")){
+			driver.type(QUANTITY_OF_FIRST_PRODUCT_LOC, quantity);
+		}
+		logger.info("In cart"+itemNumber+" 's qunatity updated as "+quantity);
+		return this;
+	}
+	
+	/***
+	 * This method click on update link 
+	 * 
+	 * @param itemNumber
+	 * @return store front Cart page object 
+	 * 
+	 */
+	public StoreFrontWebsiteBasePage clickOnUpdateLinkThroughItemNumber(String itemNumber){
+		if(itemNumber.equalsIgnoreCase("1")){
+			driver.click(UPDATE_LINK_OF_FIRST_PRODUCT_LOC);
+		}
+		logger.info("Update link of "+itemNumber+" is clicked");
+		return this;
+	}
+	
+	/***
+	 * This method add first product to bag
+	 * 
+	 * @param
+	 * @return store front shop skincare page object
+	 * 
+	 */
+	public StoreFrontWebsiteBasePage addFirstProductToBag(){
+		driver.waitForElementToBeClickable(ADD_TO_CART_FIRST_PRODUCT_LOC, 30);
+		//driver.moveToElement(ADD_TO_CART_FIRST_PRODUCT_LOC);
+		//driver.moveToElementByJS(ADD_TO_CART_FIRST_PRODUCT_LOC);
+		driver.click(ADD_TO_CART_FIRST_PRODUCT_LOC);
+		logger.info("Added first product to the bag");
+		driver.pauseExecutionFor(2000);
+		return this;
+	}
 
 }

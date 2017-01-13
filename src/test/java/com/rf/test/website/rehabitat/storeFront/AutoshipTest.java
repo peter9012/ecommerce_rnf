@@ -460,5 +460,68 @@ public class AutoshipTest extends StoreFrontWebsiteBaseTest{
 		s_assert.assertTrue(sfCheckoutPage.isBillingLinkPresentAtCheckoutPage(),"Billing link is not present at checkout page");
 		s_assert.assertAll();
 	}
+	
+	/***
+	 * qTest : TC-510 User does not select the Update CTA after making edits to autoship cart
+	 * Description : This test validates the Autoship cart page changes for PC/Consultant Autoship
+	 * page update and without click on save.
+	 *     
+	 */
+	@Test(enabled=false)
+	public void testVerifyUpdateChangesOnAutoShipCartWithoutClickSave_510(){
+		String currentURL = null;
+		String quantityOfProduct = null;
+		String updatedQuantity = null;
+		String textToAssertInURL = "autoship/cart";
+		double subtotalAtAutoshipCart;
+		double newSubtotalAtAutoshipCart;
+		//Login to application.
+		sfHomePage.loginToStoreFront(TestConstants.CONSULTANT_EMAIL, password);
+		sfHomePage.clickWelcomeDropdown();
+		sfAutoshipCartPage = sfHomePage.navigateToEditCRPPage();
+		//sfAutoshipCartPage = sfHomePage.clickOnAutoshipCartLink();
+		currentURL = sfAutoshipCartPage.getCurrentURL().toLowerCase();
+		s_assert.assertTrue(currentURL.contains(textToAssertInURL), "Expected URL should contain "+textToAssertInURL+" on Autoship cart page but actual on UI is "+currentURL);
+		subtotalAtAutoshipCart = sfAutoshipCartPage.getSubtotalofItemsAtCart();
+		quantityOfProduct = sfAutoshipCartPage.getQuantityOfProductFromCart("1");
+		//Update and increase product qty by one and assert for subtotal.
+		updatedQuantity = sfAutoshipCartPage.updateQuantityByOne(quantityOfProduct);
+		sfAutoshipCartPage.enterQuantityOfProductAtCart("1", updatedQuantity);
+		newSubtotalAtAutoshipCart = sfAutoshipCartPage.getSubtotalofItemsAtCart();
+		s_assert.assertTrue(newSubtotalAtAutoshipCart==subtotalAtAutoshipCart,"Product quantity and subtotal is updated on autoship cart without clicking update link.");
+		s_assert.assertAll();		
+	}
+	
+	/***
+	 * qTest : TC-509 User selects Update CTA after making changes in the autoship cart
+	 * Description : This test validates the Autoship cart page changes for PC/Consultant Autoship
+	 * page Update and click on save.
+	 *     
+	 */
+	@Test(enabled=false)
+	public void testVerifyUpdateChangesOnAutoShipCartAfterClickSave_510(){
+		String currentURL = null;
+		String quantityOfProduct = null;
+		String updatedQuantity = null;
+		String textToAssertInURL = "autoship/cart";
+		double subtotalAtAutoshipCart;
+		double newSubtotalAtAutoshipCart;
+		//Login to application.
+		sfHomePage.loginToStoreFront(TestConstants.CONSULTANT_EMAIL, password);
+		sfHomePage.clickWelcomeDropdown();
+		sfAutoshipCartPage=sfHomePage.navigateToEditCRPPage();
+		//sfAutoshipCartPage = sfHomePage.clickOnAutoshipCartLink();
+		currentURL = sfAutoshipCartPage.getCurrentURL().toLowerCase();
+		s_assert.assertTrue(currentURL.contains(textToAssertInURL), "Expected URL should contain "+textToAssertInURL+" on Autoship cart page but actual on UI is "+currentURL);
+		subtotalAtAutoshipCart = sfAutoshipCartPage.getSubtotalofItemsAtCart();
+		quantityOfProduct = sfAutoshipCartPage.getQuantityOfProductFromCart("1");
+		//Update and increase product qty by one and assert for subtotal.
+		updatedQuantity = sfAutoshipCartPage.updateQuantityByOne(quantityOfProduct);
+		sfAutoshipCartPage.enterQuantityOfProductAtCart("1", updatedQuantity);
+		sfAutoshipCartPage.clickOnUpdateLinkThroughItemNumber("1");
+		newSubtotalAtAutoshipCart = sfAutoshipCartPage.getSubtotalofItemsAtCart();
+		s_assert.assertTrue(newSubtotalAtAutoshipCart>subtotalAtAutoshipCart,"Product quantity and subtotal is not updated on autoship cart After clicking update link.");
+		s_assert.assertAll();
+	}
 
 }

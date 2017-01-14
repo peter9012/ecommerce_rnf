@@ -441,17 +441,22 @@ public class StoreFrontShopSkinCarePage extends StoreFrontWebsiteBasePage{
 	 */
 	public String addProductToBagForSpecificOrderType(int productNumber,String orderType){
 		String priceToAssert = null;
+		driver.pauseExecutionFor(3000);
 		driver.click(By.xpath(String.format(addToCartButtonThroughProductNumber, productNumber)));
-		if(orderType.equals("One Time Order")){
-			priceToAssert = driver.getText(By.xpath(String.format(productPriceThroughProductNumberLoc,"One Time Order",productNumber))).replace("$","");
-			driver.click(By.xpath(String.format(addToBagButtonForSpecificOrderTypeThroughProductNumberLoc,"One Time Order",productNumber)));
-			logger.info("Clicked add to bag button for one time order");
+		logger.info("Add To product button clicked");
+		if(driver.isElementVisible(By.xpath(String.format(productPriceThroughProductNumberLoc,"One Time Order",productNumber)))){
+			if(orderType.equals("One Time Order")){
+				priceToAssert = driver.getText(By.xpath(String.format(productPriceThroughProductNumberLoc,"One Time Order",productNumber))).replace("$","");
+				driver.click(By.xpath(String.format(addToBagButtonForSpecificOrderTypeThroughProductNumberLoc,"One Time Order",productNumber)));
+				logger.info("Clicked add to bag button for one time order");
+			}
+			else{
+				priceToAssert = driver.getText(By.xpath(String.format(productPriceThroughProductNumberLoc,"subscribe + save",productNumber))).replace("$","");
+				driver.click(By.xpath(String.format(addToBagButtonForSpecificOrderTypeThroughProductNumberLoc,"subscribe + save",productNumber)));
+				logger.info("Clicked add to bag button for Autoship order");
+			}
 		}
-		else{
-			priceToAssert = driver.getText(By.xpath(String.format(productPriceThroughProductNumberLoc,"subscribe + save",productNumber))).replace("$","");
-			driver.click(By.xpath(String.format(addToBagButtonForSpecificOrderTypeThroughProductNumberLoc,"subscribe + save",productNumber)));
-			logger.info("Clicked add to bag button for Autoship order");
-		}
+		
 		return priceToAssert;
 	}
 

@@ -39,11 +39,17 @@ public class TestConstants {
 	public static final String WRONG_ADDRESS_LINE_1_US = "BAJCAC";
 	public static final String CITY_DALLAS_US = "Dallas";
 	public static final String DEFAULT_PROFILE_UPDATION_MESSAGE = "Default Payment Details are updated.";
+	public static final String CONSULTANT_PWS_PREFIX =  "autocons20170114150644";
+	public static final String ABOUT_ME_PAGE_QUES_FROM_PREFIX_URL = "WHAT I LOVE MOST ABOUT R+F PRODUCTS";
+	public static final String ABOUT_ME_PAGE_QUES_FROM_JOIN_URL = "WHAT I LOVE MOST ABOUT MY R+F BUSINESS";
+	public static final String SHIPPING_ADDRESS_ADDED_MESSAGE = "Your address was created.";
+	public static final String SHIPPING_ADDRESS_REMOVED_MESSAGE = "Your address was removed.";
+
 	// Order page Details
 	public static final String TITLE_OF_ORDER_DETAILS_PAGE = "Order Details | Rodan and Fields";
 
 	//Consultant user details
-	public static final String CONSULTANT_USERNAME = "autocon1515@mailinator.com";
+	public static final String CONSULTANT_USERNAME = "AutoCons20170114192942@mailinator.com";
 	public static final String CONSULTANT_EMAIL = "autocon1515@mailinator.com";
 	public static final String CONSULTANT_WITH_CRP_USERNAME = "autocon1515@mailinator.com";
 	public static final String CONSULTANT_ACCOUNT_ID = "";

@@ -278,12 +278,40 @@ public class AddAndDeleteShippingTest extends StoreFrontWebsiteBaseTest{
 
 	/***
 	 * qTest : TC-377 Delete shipping profile
-	 * Description : This test validates delete shipping profile
+	 * Description : This test validates delete shipping profile which is not a part of autoship
 	 *     
 	 */
-	@Test(enabled=false) //TODO
+	@Test(enabled=true)
 	public void testDeleteShippingProfile_377(){
-
+		String randomWord = CommonUtils.getRandomWord(5);
+		String firstName = TestConstants.FIRST_NAME;
+		String lastName = TestConstants.LAST_NAME+randomWord;
+		String addressLine1 = TestConstants.ADDRESS_LINE_1_US;
+		String addressLine2 = TestConstants.ADDRESS_LINE_2_US;
+		String city = TestConstants.CITY_US;
+		String state = TestConstants.STATE_US;
+		String postalCode = TestConstants.POSTAL_CODE_US;
+		String phoneNumber = TestConstants.PHONE_NUMBER;
+		sfHomePage.loginToStoreFront(TestConstants.CONSULTANT_USERNAME, password);
+		sfHomePage.clickWelcomeDropdown();
+		sfShippingInfoPage = sfHomePage.navigateToShippingInfoPage();
+		sfShippingInfoPage.clickAddANewShippingAddressLink();
+		sfShippingInfoPage.enterConsultantShippingDetails(firstName, lastName, addressLine1, addressLine2,city, state, postalCode, phoneNumber);
+		sfShippingInfoPage.clickSaveButtonOfShippingAddress();
+		sfShippingInfoPage.clickUseAsEnteredButtonOnPopUp();
+		s_assert.assertTrue(sfShippingInfoPage.getActionSuccessMsgOnShippingInfoPage().contains(TestConstants.SHIPPING_ADDRESS_ADDED_MESSAGE),"Shipping Address created msg is not found as expected");
+		s_assert.assertTrue(sfShippingInfoPage.isShippingProfilePresent(lastName),
+				"Expected profile name is not present in Address list");
+		sfShippingInfoPage.clickDeleteLinkForShippingProfile(lastName);
+		sfShippingInfoPage.clickCancelButtonOnDeleteShippingPopup();
+		s_assert.assertTrue(sfShippingInfoPage.isShippingProfilePresent(lastName),
+				"Shipping profile is not present in the list after selecting cancel option from delete shipping popup");
+		sfShippingInfoPage.clickDeleteLinkForShippingProfile(lastName);
+		sfShippingInfoPage.clickDeleteButtonOnDeleteShippingPopup();
+		s_assert.assertTrue(sfShippingInfoPage.getActionSuccessMsgOnShippingInfoPage().contains(TestConstants.SHIPPING_ADDRESS_REMOVED_MESSAGE),"Shipping Address removed msg is not found as expected");
+		s_assert.assertFalse(sfShippingInfoPage.isShippingProfilePresent(lastName),
+				"Shipping profile is present in the list after selecting delete option from delete shipping popup");
+		s_assert.assertAll();
 	}
 
 	/***

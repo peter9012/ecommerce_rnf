@@ -16,6 +16,7 @@ import org.testng.annotations.BeforeSuite;
 import com.rf.core.driver.website.RFWebsiteDriver;
 import com.rf.core.utils.HtmlLogger;
 import com.rf.core.utils.SoftAssert;
+import com.rf.pages.website.rehabitat.storeFront.StoreFrontAboutMePage;
 import com.rf.pages.website.rehabitat.storeFront.StoreFrontAccountInfoPage;
 import com.rf.pages.website.rehabitat.storeFront.StoreFrontAutoshipCartPage;
 import com.rf.pages.website.rehabitat.storeFront.StoreFrontAutoshipStatusPage;
@@ -60,6 +61,7 @@ public class StoreFrontWebsiteBaseTest extends RFBaseTest {
 	protected StoreFrontOrdersPage sfOrdersPage;
 	protected StoreFrontProductDetailPage sfProductDetailPage;
 	protected StoreFrontAutoshipCartPage sfAutoshipCartPage;
+	protected StoreFrontAboutMePage sfAboutMePage;
 
 	StringBuilder verificationErrors = new StringBuilder();
 	protected String password=null;

@@ -83,8 +83,6 @@ public class StoreFrontWebsiteBasePage extends RFBasePage{
 	private final By SIGN_UP_NOW_LINK_LOC = By.xpath("//a[contains(text(),'Sign up now')]");
 	private final By WELCOME_DD_ACCOUNT_INFO_LOC = By.xpath("//a[text()='Account Info']");
 	protected final By WELCOME_DROPDOWN_LOC = By.xpath("//div[contains(text(),'Welcome')]");
-	protected final By CHECKOUT_BUTTON_LOC = By.xpath("//div[@class='cart-container']/descendant::button[contains(text(),'Checkout')][2] | //a[@id='checkoutPopup']");
-	private final By CHECKOUT_CONFIRMATION_OK_BUTTON_LOC = By.xpath("//div[@id='cartCheckoutModal']/a");
 	private final By WELCOME_DD_SHIPPING_INFO_LOC = By.xpath("//a[text()='Shipping Info']");
 	private final By WELCOME_DD_BILLING_INFO_LOC = By.xpath("//a[text()='Billing Info']");
 	protected final By FIRST_LAST_NAME_FOR_SHIPPING_DETAILS_LOC = By.id("address.firstName");
@@ -200,7 +198,14 @@ public class StoreFrontWebsiteBasePage extends RFBasePage{
 	private final By SUBTOTAL_LOC = By.xpath("//td[text()='Subtotal']/following::td[1]");
 	private final By PC_TERMS_AND_CONDITIONS_CHK_BOX_LOC = By.xpath("//div[@class='step-body']/descendant::input[@id='Terms1']/following::label[1]");
 	private final By PC_PERKS_CART_HEADER_LOC = By.xpath("//h2[contains(text(),'YOUR NEXT PC PERKS CART')]");
-
+	private final By EVENTS_PAGE_HEADER_LOC = By.xpath("//h3[contains(text(),'Business Presentations')]");
+	private final By MEET_OUR_COMMUNITY_PAGE_HEADER_LOC = By.xpath("//h1[contains(text(),'MEET OUR COMMUNITY')]");
+	private final By WHY_RF_PAGE_HEADER_LOC = By.xpath("//h1[contains(text(),'Why R+F')]");
+	private final By PROGRAMS_AND_INCENTVES_PAGE_LOC = By.xpath("//h1[contains(text(),'PROGRAMS & INCENTIVES')]");
+	private final By ENROLL_AS_CONSULTANT_PAGE_LOC = By.xpath("//h2[contains(text(),'ENROLL AS A CONSULTANT')]");
+	private final By WELCOME_DD_EDIT_PWS_LOC = By.xpath("//a[text()='Edit PWS']");
+	protected final By CHECKOUT_BUTTON_LOC = By.xpath("//div[@class='cart-container']/descendant::button[contains(text(),'Checkout')][2] | //a[@id='checkoutPopup']");
+	protected final By CHECKOUT_CONFIRMATION_OK_BUTTON_LOC = By.xpath("//div[@id='cartCheckoutModal']/a");
 	private String productNameInAllItemsInCartLoc = "//span[@class='item-name' and contains(text(),'%s')]";
 	private String productQuantityInAllItemsLoc = "//span[@class='item-name' and contains(text(),'%s')]/following::div//div[@class='qty']//input[contains(@id,'quantity')]";
 	private String selectAndContinueSponserLoc= "//div[@id='findConsultantResultArea']/descendant::div[contains(@class,'consultant-box')][%s]//span[@id='selectd-consultant']";
@@ -2704,19 +2709,6 @@ public class StoreFrontWebsiteBasePage extends RFBasePage{
 	}
 
 	/***
-	 * This method split the card name and provide short name to assert
-	 * 
-	 * @param String cardName
-	 * @return String
-	 * 
-	 */
-	public String getLastName(String completeName){
-		String lastName = completeName.split(" ")[1].trim();
-		logger.info("Card last name : " + lastName);
-		return lastName;
-	}
-
-	/***
 	 * This method click the sign up now links
 	 * 
 	 * @param
@@ -2802,6 +2794,75 @@ public class StoreFrontWebsiteBasePage extends RFBasePage{
 			driver.pauseExecutionFor(30000); //UI is slow, will be removed
 			logger.info("'Used as entered' button clicked");
 		}
+	}
+
+	/***
+	 * This method split the card name and provide short name to assert
+	 * 
+	 * @param String cardName
+	 * @return String
+	 * 
+	 */
+	public String getLastName(String completeName){
+		String[] splittedName = completeName.trim().split(" ");
+		String lastName = splittedName[splittedName.length-1];
+		logger.info("Card last name : " + lastName);
+		return lastName;
+	}
+
+	/***
+	 * This method verifies events Page
+	 * 
+	 * 
+	 * @return boolean
+	 * 
+	 */
+	public boolean isEventsPageHeaderDisplayed(){
+		return driver.isElementVisible(EVENTS_PAGE_HEADER_LOC);  
+	}
+
+	/***
+	 * This method verifies meet our community Page
+	 * 
+	 * 
+	 * @return boolean
+	 * 
+	 */
+	public boolean isMeetOurCommunityPageHeaderDisplayed(){
+		return driver.isElementVisible(MEET_OUR_COMMUNITY_PAGE_HEADER_LOC);  
+	}
+
+	/***
+	 * This method verifies why RF Page
+	 * 
+	 * 
+	 * @return boolean
+	 * 
+	 */
+	public boolean isWhyRFPageHeaderDisplayed(){
+		return driver.isElementVisible(WHY_RF_PAGE_HEADER_LOC);  
+	}
+
+	/***
+	 * This method verifies Programs and incentives page
+	 * 
+	 * 
+	 * @return boolean
+	 * 
+	 */
+	public boolean isProgramsAndIncentivesPageHeaderDisplayed(){
+		return driver.isElementVisible(PROGRAMS_AND_INCENTVES_PAGE_LOC);  
+	}
+
+	/***
+	 * This method verifies Enroll as consultant Page
+	 * 
+	 * 
+	 * @return boolean
+	 * 
+	 */
+	public boolean isEnrollAsConsultantPageHeaderDisplayed(){
+		return driver.isElementVisible(ENROLL_AS_CONSULTANT_PAGE_LOC);  
 	}
 
 }

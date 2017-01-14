@@ -29,6 +29,7 @@ public class StoreFrontCartPage extends StoreFrontWebsiteBasePage{
 	private final By FIRST_ITEM_PRODUCT_PRICE_LOC = By.xpath("//ul[contains(@class,'cart__list')]/descendant::li[@class='item-list-item'][1]//div[@class='item-price'][1]");
 	private final By ORDER_TOTAL_LOC = By.xpath("//td[text()='Order Total']/following::td[1]");
 	private final By CHECKOUT_BTN_CONSULTANT_LOC = By.id("checkoutPopup");
+	private final By CLOSE_BTN_ON_CONFIRMATION_POPUP_LOC = By.xpath("//button[@id='cboxClose']");
 
 	private String productPriceInAllItemsInCartLoc = "//li[@class='item-list-item']//div[@class='item-info']//span[@class='item-name' and contains(text(),'%s')]/ancestor::div[1]/following-sibling::div[@class='item-price-info']";
 	private String recentlyViewProductOnCartPageLoc = "//div[@id='recentlyViewedTitle']/following::div[@class='owl-item active']//a[contains(text(),'%s')]";
@@ -353,6 +354,48 @@ public class StoreFrontCartPage extends StoreFrontWebsiteBasePage{
 		logger.info("Checkout button clicked after registration");
 		driver.waitForPageLoad();
 		return new StoreFrontCheckoutPage(driver);
+	}
+
+	/***
+	 * This method click the checkout button at cart page
+	 * 
+	 * @param
+	 * @return store front cart page object
+	 * 
+	 */
+	public StoreFrontCartPage clickCheckoutTheCartFromCartPage(){
+		driver.pauseExecutionFor(2000);
+		driver.waitForElementToBeClickable(CHECKOUT_BUTTON_LOC, 20);
+		driver.clickByJS(RFWebsiteDriver.driver, driver.findElement(CHECKOUT_BUTTON_LOC));
+		logger.info("Clicked on checkout button");
+		return this;
+	}
+
+	/***
+	 * This method click on ok button on confirmation popup
+	 * 
+	 * @param
+	 * @return store front checkout page object
+	 * 
+	 */
+	public StoreFrontCheckoutPage clickOkOnCheckoutConfirmationPopup(){
+		driver.waitForElementToBeClickable(CHECKOUT_CONFIRMATION_OK_BUTTON_LOC, 20);
+		driver.click(CHECKOUT_CONFIRMATION_OK_BUTTON_LOC);
+		logger.info("Clicked on ok button on checkout confirmation pop up");
+		return new StoreFrontCheckoutPage(driver);
+	}
+
+	/***
+	 * This method click the close button of confirmation popup
+	 * 
+	 * @param
+	 * @return store front cart page object
+	 * 
+	 */
+	public StoreFrontCartPage clickCloseBtnOfCheckoutConfirmationPopup(){
+		driver.click(CLOSE_BTN_ON_CONFIRMATION_POPUP_LOC);
+		logger.info("Clicked on close button of confirmation poup");
+		return this;
 	}
 
 }

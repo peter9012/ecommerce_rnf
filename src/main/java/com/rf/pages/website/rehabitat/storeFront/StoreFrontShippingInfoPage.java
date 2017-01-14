@@ -20,8 +20,10 @@ public class StoreFrontShippingInfoPage extends StoreFrontWebsiteBasePage{
 	private final By CANCEL_BUTTON_OF_SHIPPING_ADDRESS_LOC = By.xpath("//div[@class='accountActions']//a");
 	private final By DEFAULT_SHIPPING_ADDRESS_NAME_LOC = By.xpath("//a[contains(@class,'selected') and contains(text(),'Default')]/ancestor::div[1]/preceding-sibling::ul//strong");
 	private final By EDIT_LINK_OF_DEFAULT_SHIPPING_ADDRESS_LOC = By.xpath("//a[contains(@class,'selected') and contains(text(),'Default')]/ancestor::div[1]/preceding-sibling::div/a[contains(text(),'Edit')]");
-	private final By ADDRESS_UPDATE_SUCCESS_MSG_LOC = By.xpath("//div[contains(@class,'alert-info') and contains(@class,'alert-dismissable')]");
-
+	private final By ACTION_SUCCESS_MSG_LOC = By.xpath("//div[contains(@class,'alert-info') and contains(@class,'alert-dismissable')]");
+	private final By CANCEL_BUTTON_ON_DELETE_SHIPPING_POPUP_LOC = By.xpath("//div[@id='colorbox']//a[contains(text(),'Cancel')]");
+	private final By DELETE_BUTTON_ON_DELETE_SHIPPING_POPUP_LOC = By.xpath("//div[@id='colorbox']//a[contains(text(),'Delete')]");
+	private String deleteLinkForProfileLoc = "//strong[contains(text(),'%s')]/ancestor::ul[1]/following-sibling::div[@class='account-cards-actions']//a[contains(text(),'Delete')]";
 	private String shippingProfileNameLoc  = "//div[contains(@class,'account-addressbook')]/descendant::strong[contains(text(),'%s')][1]";
 
 	/***
@@ -118,7 +120,62 @@ public class StoreFrontShippingInfoPage extends StoreFrontWebsiteBasePage{
 	 * 
 	 */
 	public String getAddressUpdateSuccessMsg(){
-		return driver.getText(ADDRESS_UPDATE_SUCCESS_MSG_LOC);
+		return driver.getText(ACTION_SUCCESS_MSG_LOC);
+	}
+
+	/***
+	 * This method clicked on cancel button on Delete shipping popup 
+	 * 
+	 * @param
+	 * @return store front shipping info page object
+	 * 
+	 */
+	public StoreFrontShippingInfoPage clickCancelButtonOnDeleteShippingPopup(){
+		driver.click(CANCEL_BUTTON_ON_DELETE_SHIPPING_POPUP_LOC);
+		logger.info("Cancel button clicked on delete shipping Address popup");
+		driver.pauseExecutionFor(2000);
+		return this;
+	}
+
+	/***
+	 * This method clicked on delete button on Delete shipping popup 
+	 * 
+	 * @param
+	 * @return store front shipping info page object
+	 * 
+	 */
+	public StoreFrontShippingInfoPage clickDeleteButtonOnDeleteShippingPopup(){
+		driver.click(DELETE_BUTTON_ON_DELETE_SHIPPING_POPUP_LOC);
+		logger.info("Delete button clicked on delete shipping Address popup");
+		driver.pauseExecutionFor(2000);
+		return this;
+	}
+
+
+	/***
+	 * This method clicked delete option for given profile
+	 * 
+	 * @param
+	 * @return store front shipping info page object
+	 * 
+	 */
+	public StoreFrontShippingInfoPage clickDeleteLinkForShippingProfile(String profile){
+		driver.clickByJS(RFWebsiteDriver.driver,driver.findElement(By.xpath(String.format(deleteLinkForProfileLoc, profile))));
+		logger.info("Delete Link clicked for profile : " + profile);
+		driver.pauseExecutionFor(3000);
+		return this;
+	}
+
+	/***
+	 * This method fetch the actionsuccess message  
+	 * 
+	 * @param
+	 * @return String
+	 * 
+	 */
+	public String getActionSuccessMsgOnShippingInfoPage(){
+		logger.info(driver.getText(ACTION_SUCCESS_MSG_LOC));
+		return driver.getText(ACTION_SUCCESS_MSG_LOC);
 	}
 
 }

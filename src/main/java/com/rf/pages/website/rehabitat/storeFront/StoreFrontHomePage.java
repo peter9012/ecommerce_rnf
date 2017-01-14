@@ -75,6 +75,8 @@ public class StoreFrontHomePage extends StoreFrontWebsiteBasePage{
 	private final By SHOP_BY_PRICE_FILTER_OPTION_50_TO_199$_LOC = By.xpath("//input[@id='$50-$199.99ID']/..");
 	private final By SHOP_BY_PRICE_FILTER_OPTION_50_TO_199$_AFTER_CHECKED_LOC = By.xpath("//input[@id='$50-$199.99ID'][@checked = 'checked']");
 	private final By LOGIN_OR_REGISTER_TXT_LOC = By.xpath("//h1[contains(text(),'LOG IN OR REGISTER') or contains(text(),'Log in') or contains(text(),'Log in or create an account')]");
+	private final By EMAIL_AVAILABLE_MSG_LOC = By.xpath("//div[@class='emailbox-available']//div[contains(text(),'Available')]");
+	private final By SPONSOR_NAME_LINK_LOC = By.xpath("//div[contains(@class,'findAConsultant')]/a[contains(@href,'/pws/') and contains(@href,'about-me')]");
 
 	private String viewDetailsLinkLoc = "//div[contains(@class,'enrollmentKit-wrapper')]/descendant::a[contains(text(),'View Details')][%s]";
 	private String expandedKitDescriptionLoc = "//div[contains(@class,'enrollmentKit-wrapper')]/div[%s]//div[@class='detailed-description']";
@@ -902,5 +904,30 @@ public class StoreFrontHomePage extends StoreFrontWebsiteBasePage{
 		driver.get(URL);
 		return this;
 	}
+	
+	/***
+	  * This method validates the 'Available' message for email when enter prefix
+	  * 
+	  * @param
+	  * @return boolean
+	  * 
+	  */
+	 public boolean isEmailAvailableMsgAppearedForPWS(){
+	  return driver.isElementVisible(EMAIL_AVAILABLE_MSG_LOC);
+	 
+	 }
+	 
+	 /***
+	  * This method clicked the sponsor link from the top
+	  * 
+	  * @param
+	  * @return store front About me page object
+	  * 
+	  */
+	 public StoreFrontAboutMePage clickSponsorNameLink(){
+	  driver.click(SPONSOR_NAME_LINK_LOC);
+	  logger.info("Sponsor name link clicked");
+	  return new StoreFrontAboutMePage(driver);
+	 }
 
 }

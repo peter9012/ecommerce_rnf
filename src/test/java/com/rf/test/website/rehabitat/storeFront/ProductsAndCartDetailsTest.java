@@ -451,7 +451,7 @@ public class ProductsAndCartDetailsTest extends StoreFrontWebsiteBaseTest{
 	 * Description : This test validates the 'Add more items' and 'checkout' funtionality of checkout popup for PC User and PC perks order
 	 * 
 	 */
-	@Test(enabled=true)
+	@Test(enabled=true)//NEEDS FIX
 	public void testAddedToYourPCPerksAutoshipPopupForPCAutoshipFlow_258(){
 		String firstProductName = null;
 		String secondProductName = null;
@@ -979,7 +979,7 @@ public class ProductsAndCartDetailsTest extends StoreFrontWebsiteBaseTest{
 		sfProductDetailPage.searchProduct(productName);
 		s_assert.assertAll();
 	}
-	
+
 	/***
 	 * qTest : TC-70 Persistent Cart on Same device
 	 * Description : This test validates login with consultant,PC and RC and observe the products
@@ -1047,7 +1047,7 @@ public class ProductsAndCartDetailsTest extends StoreFrontWebsiteBaseTest{
 		s_assert.assertAll();
 	}
 
-/***
+	/***
 	 * qTest : TC-256 Added to your Shopping Cart popup for adhoc flow
 	 * Description : This test validates the 'Add more items' and 'checkout' funtionality of checkout popup for One time order
 	 * 
@@ -1078,7 +1078,7 @@ public class ProductsAndCartDetailsTest extends StoreFrontWebsiteBaseTest{
 		s_assert.assertTrue(sfShopSkinCarePage.isCloseButtonPresentForCheckoutPopup(),"Close Button is not present for checkout pop up when added Product : " + firstProductName);
 		sfShopSkinCarePage.clickOnAddMoreItemsOnCheckoutPopUp();
 		// this step will be removed once add more items functionality start working from checkout pop up.
-		sfShopSkinCarePage.clickOnCloseButtonForCheckoutPopUp();
+		//		sfShopSkinCarePage.clickOnCloseButtonForCheckoutPopUp();
 		secondProductName = sfShopSkinCarePage.getProductNameFromAllProductPage("2");
 		productPriceOnListingPage = null;
 		//productPriceOnListingPage = sfShopSkinCarePage.addProductToBagForSpecificOrderType(2,"One Time Order");
@@ -1107,7 +1107,7 @@ public class ProductsAndCartDetailsTest extends StoreFrontWebsiteBaseTest{
 		s_assert.assertAll();
 	}
 
-/***
+	/***
 	 * qTest : TC-161 Cart Page- Anonymous User - Ad Hoc Cart
 	 * Description : This test validates adhoc product is added to the cart and verifies from product popup
 	 *     
@@ -1162,6 +1162,34 @@ public class ProductsAndCartDetailsTest extends StoreFrontWebsiteBaseTest{
 		s_assert.assertTrue(sfShopSkinCarePage.isPriceFilterLowToHighAppliedSuccessfully(),"Selected Price filter 'Low To High' is not applied to product successfully for category"+categoryName);
 		sfShopSkinCarePage.productPriceFilterHighToLowSelect();
 		s_assert.assertTrue(sfShopSkinCarePage.isPriceFilterHighToLowAppliedSuccessfully(),"Selected Price filter 'High To Low' is not applied to product successfully for category"+categoryName);
+		s_assert.assertAll();
+	}
+
+	/***
+	 * qTest : TC-602 Proceed to Checkout Confirmation alert for Ad-hoc orders - Consultant
+	 * 
+	 * Description : This test validates the checkout confirmation popup for consulatnt user.
+	 *     
+	 */ 
+	@Test(enabled=true)
+	public void testProceedToCheckoutConfirmationAlertForAdhocOrdersConsultant_602(){
+		String currentURL = null;
+		String urlToAssertForCartPage = "cart";
+		String urlToAssertForCheckoutPage = "checkout";
+		sfHomePage.loginToStoreFront(TestConstants.CONSULTANT_USERNAME, password);
+		sfShopSkinCarePage = sfHomePage.clickAllProducts();
+		sfShopSkinCarePage.addFirstProductToBag();
+		sfCartPage = sfShopSkinCarePage.checkoutTheCartFromPopUp();
+		sfCartPage.clickCheckoutTheCartFromCartPage();
+		sfCartPage.clickCloseBtnOfCheckoutConfirmationPopup();
+		currentURL = sfCartPage.getCurrentURL();
+		s_assert.assertTrue(currentURL.contains(urlToAssertForCartPage),"Expected URL should contain "+urlToAssertForCartPage+" but actual on UI is "+currentURL);
+		s_assert.assertTrue(sfCartPage.isYourShoppingCartHeaderPresentOnCartPage(),"Your Shopping cart header is not present as expected on cart page");
+		sfCartPage.clickCheckoutTheCartFromCartPage();
+		sfCheckoutPage = sfCartPage.clickOkOnCheckoutConfirmationPopup();
+		currentURL = sfCheckoutPage.getCurrentURL();
+		s_assert.assertTrue(currentURL.contains(urlToAssertForCheckoutPage),"Expected URL should contain "+urlToAssertForCheckoutPage+" but actual on UI is "+currentURL);
+		s_assert.assertTrue(sfCheckoutPage.isShippingLinkPresentAtCheckoutPage(),"Shipping Link is not present on Checkout page when clicked on Ok button on confirmation popup");
 		s_assert.assertAll();
 	}
 }

@@ -45,6 +45,8 @@ public class StoreFrontOrdersPage extends StoreFrontWebsiteBasePage{
 	private final By CHKBOX_OF_PRODUCT_LOC = By.xpath("//input[@id='orderEntries1']/..//img");
 	private final By MESSAGE_INSTRUCTIONS_TEXT_LOC = By.xpath("//span[contains(text(),'Maximum 800 characters including spaces')]");
 	private final By SELECTED_PROBLEEM_REASON_AT_ORDER_PROBLEM_PAGE_LOC = By.id("itemCodeValue");
+	private static final By AUTOSHIP_ORDER_HISTORY_TABLE_LOC = By.xpath("//div[contains(text(),'PENDING AUTOSHIP ORDERS')]/following-sibling::div//tbody");
+	private static final By FIRST_ORDER_STATUS_IN_AUTOSHIP_ORDER_HISTORY_LOC = By.xpath("//div[contains(text(),'PENDING AUTOSHIP ORDERS')]/following-sibling::div//tbody/descendant::tr[2]//td[@class='status'][1]");
 
 	private String optionsLinkUnderReturnOrderSectionLoc = "//div[contains(text(),'RETURN ORDERS AND CREDITS')]/../../descendant::a[contains(text(),'%s')]";
 	private String headerTitleInOrderHistorySection = "//div[@id='orderHistoryContentArea']//th[contains(text(),'%s')]";
@@ -613,7 +615,27 @@ public class StoreFrontOrdersPage extends StoreFrontWebsiteBasePage{
 		return reason;
 	}
 
+	/***
+	 * This method validates the presence of autoship order history table  
+	 * 
+	 * @param
+	 * @return boolean value
+	 * 
+	 */
+	public boolean isAutoshipOrderHistoryTableAppeared(){
+		return driver.isElementVisible(AUTOSHIP_ORDER_HISTORY_TABLE_LOC);
+	}
 
+	/***
+	 * This method fetch the status of first order present in the autoship orders history  
+	 * 
+	 * @param
+	 * @return String
+	 * 
+	 */
+	public String getStatusOfFirstOrderPresentInAutoshipOrderHistory(){
+		return driver.getText(FIRST_ORDER_STATUS_IN_AUTOSHIP_ORDER_HISTORY_LOC);
+	}
 
 }
 

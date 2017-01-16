@@ -4,8 +4,6 @@ import org.testng.annotations.Test;
 
 import com.rf.core.utils.CommonUtils;
 import com.rf.core.website.constants.TestConstants;
-import com.rf.pages.website.rehabitat.storeFront.StoreFrontCartPage;
-import com.rf.pages.website.rehabitat.storeFront.StoreFrontCheckoutPage;
 import com.rf.test.website.rehabitat.storeFront.baseTest.StoreFrontWebsiteBaseTest;
 
 public class ProductsAndCartDetailsTest extends StoreFrontWebsiteBaseTest{
@@ -17,7 +15,7 @@ public class ProductsAndCartDetailsTest extends StoreFrontWebsiteBaseTest{
 	 * and also Unsorting of product when filter removed.
 	 * 				
 	 */ 
-	@Test(enabled=false) //TODO Blocked as no default value for price filter present.
+	@Test(enabled=true) 
 	public void testSortAndUnsortProductBaseOnPriceFilter_62(){
 		String allProduct = "ALL PRODUCTS";
 
@@ -26,6 +24,10 @@ public class ProductsAndCartDetailsTest extends StoreFrontWebsiteBaseTest{
 		s_assert.assertTrue(sfShopSkinCarePage.isPriceFilterLowToHighAppliedSuccessfully(),"Selected Price filter 'Low To High' is not applied to product successfully");
 		sfShopSkinCarePage.productPriceFilterHighToLow();
 		s_assert.assertTrue(sfShopSkinCarePage.isPriceFilterHighToLowAppliedSuccessfully(),"Selected Price filter 'High To Low' is not applied to product successfully");
+		sfShopSkinCarePage.productPriceFilterDefault();
+		//Verify the default price filter applied.
+		s_assert.assertFalse(sfShopSkinCarePage.isPriceFilterLowToHighAppliedSuccessfully(),"Selected Price filter 'Default' is not applied but 'Low To High' applied to product successfully");
+		s_assert.assertFalse(sfShopSkinCarePage.isPriceFilterHighToLowAppliedSuccessfully(),"Selected Price filter 'Default' is not applied but 'High To Low' applied to product successfully");
 		s_assert.assertAll();
 	}
 
@@ -39,12 +41,12 @@ public class ProductsAndCartDetailsTest extends StoreFrontWebsiteBaseTest{
 	@Test(enabled=false) //TODO Blocked as no clear all link is present.
 	public void testSortAndUnsortProductBaseOnPriceFilterApplied_63(){
 		String allProduct = "ALL PRODUCTS";
-
 		sfShopSkinCarePage=sfHomePage.navigateToShopSkincareLink(allProduct);
 		sfShopSkinCarePage.productPriceFilterLowToHigh();
 		s_assert.assertTrue(sfShopSkinCarePage.isPriceFilterLowToHighAppliedSuccessfully(),"Selected Price filter 'Low To High' is not applied to product successfully");
-		sfShopSkinCarePage.productPriceFilterHighToLow();
-		s_assert.assertTrue(sfShopSkinCarePage.isPriceFilterHighToLowAppliedSuccessfully(),"Selected Price filter 'High To Low' is not applied to product successfully");
+		//Click clear all link and verify all filters are removed.
+		//sfShopSkinCarePage.selectClearAllLink(); create this method.
+		s_assert.assertFalse(sfShopSkinCarePage.isPriceFilterLowToHighAppliedSuccessfully(),"Selected Price filter 'Low To High' is still applied after clicking clear all link.");
 		s_assert.assertAll();
 	}
 
@@ -147,7 +149,7 @@ public class ProductsAndCartDetailsTest extends StoreFrontWebsiteBaseTest{
 	 * 
 	 * 				
 	 */
-	@Test(enabled=false) //TODO Incomplete as shipping profile page is not visible.
+	@Test(enabled=true)
 	public void testVerifyLinksUnderWelcomeDD_66(){
 		String currentURL = null;
 		String title = null;
@@ -155,8 +157,8 @@ public class ProductsAndCartDetailsTest extends StoreFrontWebsiteBaseTest{
 		String accountPageTitle = "My Account | Rodan and Fields";
 		String orderPage = "/orders";
 		String orderPageTitle = "Order History | Rodan and Fields";
-		String shippingPage="";
-		String shippingPageTitle = "";
+		String shippingPage="address-book";
+		String shippingPageTitle = "Address Book | Rodan and Fields";
 		String billingPage = "payment-details";
 		String billingPageTitle = "Payment Details | Rodan and Fields";
 		String editPCPerksPage = "/cart";
@@ -174,39 +176,39 @@ public class ProductsAndCartDetailsTest extends StoreFrontWebsiteBaseTest{
 		s_assert.assertTrue(currentURL.contains(accountPage), "Expected URL should contain "+accountPage+" but actual on UI is"+currentURL);
 		s_assert.assertTrue(title.contains(accountPageTitle), "Expected title should contain "+accountPageTitle+" but actual title on UI is"+title);
 		sfHomePage.clickWelcomeDropdown();
-		sfHomePage.navigateToOrdersPage();
-		currentURL = sfAccountInfoPage.getCurrentURL().toLowerCase();
-		title = sfAccountInfoPage.getCurrentpageTitle();
+		sfOrdersPage = sfHomePage.navigateToOrdersPage();
+		currentURL = sfOrdersPage.getCurrentURL().toLowerCase();
+		title = sfOrdersPage.getCurrentpageTitle();
 		s_assert.assertTrue(currentURL.contains(orderPage), "Expected URL should contain "+orderPage+" but actual on UI is"+currentURL);
 		s_assert.assertTrue(title.contains(orderPageTitle), "Expected title should contain "+orderPageTitle+" but actual title on UI is"+title);
-		//		sfHomePage.clickWelcomeDropdown();
-		//		sfHomePage.navigateToShippingInfoPage();
-		//		currentURL = sfAccountInfoPage.getCurrentURL().toLowerCase();
-		//		title = sfAccountInfoPage.getCurrentpageTitle();
-		//		s_assert.assertTrue(currentURL.contains(shippingPage), "Expected URL should contain "+shippingPage+" but actual on UI is"+currentURL);
-		//		s_assert.assertTrue(title.contains(shippingPageTitle), "Expected title should contain "+shippingPageTitle+" but actual title on UI is"+title);
 		sfHomePage.clickWelcomeDropdown();
-		sfHomePage.navigateToBillingInfoPage();
-		currentURL = sfAccountInfoPage.getCurrentURL().toLowerCase();
-		title = sfAccountInfoPage.getCurrentpageTitle();
+		sfShippingInfoPage = sfHomePage.navigateToShippingInfoPage();
+		currentURL = sfShippingInfoPage.getCurrentURL().toLowerCase();
+		title = sfShippingInfoPage.getCurrentpageTitle();
+		s_assert.assertTrue(currentURL.contains(shippingPage), "Expected URL should contain "+shippingPage+" but actual on UI is"+currentURL);
+		s_assert.assertTrue(title.contains(shippingPageTitle), "Expected title should contain "+shippingPageTitle+" but actual title on UI is"+title);
+		sfHomePage.clickWelcomeDropdown();
+		sfBillingInfoPage = sfHomePage.navigateToBillingInfoPage();
+		currentURL = sfBillingInfoPage.getCurrentURL().toLowerCase();
+		title = sfBillingInfoPage.getCurrentpageTitle();
 		s_assert.assertTrue(currentURL.contains(billingPage), "Expected URL should contain "+billingPage+" but actual on UI is"+currentURL);
 		s_assert.assertTrue(title.contains(billingPageTitle), "Expected title should contain "+billingPageTitle+" but actual title on UI is"+title);
 		sfHomePage.clickWelcomeDropdown();
-		sfHomePage.navigateToEditPCPerksPage();
-		currentURL = sfAccountInfoPage.getCurrentURL().toLowerCase();
-		title = sfAccountInfoPage.getCurrentpageTitle();
+		sfAutoshipCartPage = sfHomePage.navigateToEditPCPerksPage();
+		currentURL = sfAutoshipCartPage.getCurrentURL().toLowerCase();
+		title = sfAutoshipCartPage.getCurrentpageTitle();
 		s_assert.assertTrue(currentURL.contains(editPCPerksPage), "Expected URL should contain "+editPCPerksPage+" but actual on UI is"+currentURL);
 		s_assert.assertTrue(title.contains(editPCPerksPageTitle), "Expected title should contain "+editPCPerksPageTitle+" but actual title on UI is"+title);
 		sfHomePage.clickWelcomeDropdown();
 		sfHomePage.navigateToPCPerksFAQPage();
-		currentURL = sfAccountInfoPage.getCurrentURL().toLowerCase();
-		title = sfAccountInfoPage.getCurrentpageTitle();
+		currentURL = sfHomePage.getCurrentURL().toLowerCase();
+		title = sfHomePage.getCurrentpageTitle();
 		s_assert.assertTrue(currentURL.contains(pcPerksFAQPage), "Expected URL should contain "+pcPerksFAQPage+" but actual on UI is"+currentURL);
 		s_assert.assertTrue(title.contains(pcPerksFAQPageTitle), "Expected title should contain "+pcPerksFAQPageTitle+" but actual title on UI is"+title);
 		sfHomePage.clickWelcomeDropdown();
-		sfHomePage.navigateToPCPerksStatusPage();
-		currentURL = sfAccountInfoPage.getCurrentURL().toLowerCase();
-		title = sfAccountInfoPage.getCurrentpageTitle();
+		sfAutoshipStatusPage = sfHomePage.navigateToPCPerksStatusPage();
+		currentURL = sfAutoshipStatusPage.getCurrentURL().toLowerCase();
+		title = sfAutoshipStatusPage.getCurrentpageTitle();
 		s_assert.assertTrue(currentURL.contains(pcPerksStatusPage), "Expected URL should contain "+pcPerksStatusPage+" but actual on UI is"+currentURL);
 		s_assert.assertTrue(title.contains(pcPerksStatusPageTitle), "Expected title should contain "+pcPerksStatusPageTitle+" but actual title on UI is"+title);
 		sfHomePage.clickWelcomeDropdown();
@@ -561,10 +563,20 @@ public class ProductsAndCartDetailsTest extends StoreFrontWebsiteBaseTest{
 	 * Description : This test validates login with consultant,PC and RC and observe the products
 	 *     are added to cart successfully.
 	 */
-	@Test(enabled=false) //TODO Pending for consultant autoship cart page
+	@Test(enabled=false) //TODO Pending for consultant and PC autoship cart page
 	public void testAddMultipleProductsToCartAfterLogin_69(){
 		String usertype = "Consultant";
 		String pcUsertype = TestConstants.USER_TYPE_PC;
+		String itemInAdhocCart= "1";
+		String noOfItemFromUI = null;   
+		//Verify anonymous user cart page product.
+		sfShopSkinCarePage = sfHomePage.clickAllProducts();
+		sfShopSkinCarePage.selectFirstProduct();
+		sfCartPage = sfShopSkinCarePage.checkoutTheCartFromPopUp();
+		noOfItemFromUI = sfCartPage.getNumberOfItemFromMiniCart();
+		s_assert.assertTrue(noOfItemFromUI.equalsIgnoreCase(itemInAdhocCart), "Expected no of item is "+itemInAdhocCart+" Actual on UI is "+noOfItemFromUI);
+		sfCartPage.clickAddMoreItemsBtn();
+		s_assert.assertTrue(sfShopSkinCarePage.isAllProductPageDisplayed(),"All product page not present after clicking continue shopping for anonymous user.");
 		//Add multiple products to consultant adhoc and autoship cart.
 		//Adhoc cart
 		sfHomePage.loginToStoreFront(TestConstants.CONSULTANT_EMAIL, password);
@@ -572,13 +584,13 @@ public class ProductsAndCartDetailsTest extends StoreFrontWebsiteBaseTest{
 		sfShopSkinCarePage.selectFirstProduct();
 		sfCartPage = sfShopSkinCarePage.checkoutTheCartFromPopUp();
 		sfCartPage.clickAddMoreItemsBtn();
-		s_assert.assertTrue(sfShopSkinCarePage.isAllProductPageDisplayed(),"All product page not present after clicking continue shopping.");
+		s_assert.assertTrue(sfShopSkinCarePage.isAllProductPageDisplayed(),"All product page not present after clicking continue shopping on adhoc cart of consultant.");
 		//Autoship cart.
-		sfShopSkinCarePage.addFirstProductToAutoshipCart(usertype);
-		sfAutoshipCartPage = sfShopSkinCarePage.acceptEnrollInCRPPopup();
+		//sfShopSkinCarePage.addFirstProductToAutoshipCart(usertype);
+		//sfAutoshipCartPage = sfShopSkinCarePage.acceptEnrollInCRPPopup();
 		//sfCartPage.clickAddMoreItemsBtn();
-		//s_assert.assertTrue(sfShopSkinCarePage.isAllProductPageDisplayed(),"All product page not present after clicking continue shopping.");
-		sfAutoshipCartPage.clickRodanAndFieldsLogo();
+		//s_assert.assertTrue(sfShopSkinCarePage.isAllProductPageDisplayed(),"All product page not present after clicking continue shopping on autoship cart of consultant.");
+		sfShopSkinCarePage.clickRodanAndFieldsLogo();
 		sfHomePage.clickWelcomeDropdown();
 		sfHomePage.logout();
 		//Add multiple products to PC adhoc And Autoship cart
@@ -588,22 +600,23 @@ public class ProductsAndCartDetailsTest extends StoreFrontWebsiteBaseTest{
 		sfShopSkinCarePage.selectFirstProduct();
 		sfCartPage = sfShopSkinCarePage.checkoutTheCartFromPopUp();
 		sfCartPage.clickAddMoreItemsBtn();
-		s_assert.assertTrue(sfShopSkinCarePage.isAllProductPageDisplayed(),"All product page not present after clicking continue shopping.");
+		s_assert.assertTrue(sfShopSkinCarePage.isAllProductPageDisplayed(),"All product page not present after clicking continue shopping on adhoc cart of PC.");
 		//PC Autoship Cart
-		sfShopSkinCarePage.addFirstProductToAutoshipCart(pcUsertype);
-		sfCartPage = sfShopSkinCarePage.checkoutTheCartFromPopUp();
-		sfCartPage.clickAddMoreItemsBtn();
-		s_assert.assertTrue(sfShopSkinCarePage.isAllProductPageDisplayed(),"All product page not present after clicking continue shopping.");
+		//sfShopSkinCarePage.addFirstProductToAutoshipCart(pcUsertype);
+		//sfCartPage = sfShopSkinCarePage.checkoutTheCartFromPopUp();
+		//sfCartPage.clickAddMoreItemsBtn();
+		//s_assert.assertTrue(sfShopSkinCarePage.isAllProductPageDisplayed(),"All product page not present after clicking continue shopping on autoship cart of PC.");
+		sfShopSkinCarePage.clickRodanAndFieldsLogo();
 		sfHomePage.clickWelcomeDropdown();
 		sfHomePage.logout();
 		//Add multiple products to RC adhoc And Autoship cart
 		//RC adhoc cart
 		sfHomePage.loginToStoreFront(TestConstants.RC_EMAIL, password);
 		sfShopSkinCarePage=sfHomePage.clickAllProducts();
-		sfShopSkinCarePage.addFirstProductToBag();
+		sfShopSkinCarePage.selectFirstProduct();
 		sfCartPage = sfShopSkinCarePage.checkoutTheCartFromPopUp();
 		sfCartPage.clickAddMoreItemsBtn();
-		s_assert.assertTrue(sfShopSkinCarePage.isAllProductPageDisplayed(),"All product page not present after clicking continue shopping.");
+		s_assert.assertTrue(sfShopSkinCarePage.isAllProductPageDisplayed(),"All product page not present after clicking continue shopping on RC adhoc cart.");
 		s_assert.assertAll();
 	}
 
@@ -774,17 +787,12 @@ public class ProductsAndCartDetailsTest extends StoreFrontWebsiteBaseTest{
 	 * Description : This test validates PC Perks Promotion Message/Link should be displayed
 	 *     
 	 */
-	@Test(enabled=false)//TODO Incomplete PC perks Promo message not displayed on cart page.
+	@Test(enabled=false)
 	public void testCartPagePCPerksPromotionMessageLinkAnonymousUser_165(){
-		String cart="cart";
-		String pageTile = null;
-		String pageUrl = null;
 		sfShopSkinCarePage=sfHomePage.clickAllProducts();
 		sfShopSkinCarePage.addFirstProductToBag();
 		sfShopSkinCarePage.checkoutTheCartFromPopUp();
-		pageTile=sfShopSkinCarePage.getCurrentpageTitle().toLowerCase();
-		pageUrl=sfShopSkinCarePage.getCurrentURL().toLowerCase();
-		s_assert.assertTrue(pageTile.contains(cart) && pageUrl.contains(cart),"Expected page title should contains:"+cart+"But actual on UI is:"+pageTile+" Expected page url should contain:"+cart+" But actual url on UI is:"+pageUrl);
+		s_assert.assertTrue(sfShopSkinCarePage.isPCPerksPromoMsgDisplayed(),"PC Perks promo msg is NOT displayed for anonymous user");
 		s_assert.assertAll();
 	}
 
@@ -793,19 +801,14 @@ public class ProductsAndCartDetailsTest extends StoreFrontWebsiteBaseTest{
 	 * Description : This test validates PC Perks Promotion Message/Link should be displayed
 	 *     
 	 */
-	@Test(enabled=false)//TODO Incomplete PC perks Promo message not displayed on cart page.
+	@Test(enabled=false)
 	public void testCartPagePCPerksPromotionMessageLinkRetailUser_166(){
-		String cart="cart";
-		String pageTile=null;
-		String pageUrl=null;
 		sfHomePage.loginToStoreFront(TestConstants.RC_EMAIL, password);
 		sfShopSkinCarePage=sfHomePage.clickAllProducts();
 		sfShopSkinCarePage.addFirstProductToBag();
 		sfShopSkinCarePage.checkoutTheCartFromPopUp();
-		pageTile=sfShopSkinCarePage.getCurrentpageTitle().toLowerCase();
-		pageUrl=sfShopSkinCarePage.getCurrentURL().toLowerCase();
-		s_assert.assertTrue(pageTile.contains(cart) && pageUrl.contains(cart),"Expected page title should contains:"+cart+"But actual on UI is:"+pageTile+" Expected page url should contain:"+cart+" But actual url on UI is:"+pageUrl);
-		s_assert.assertAll();	
+		s_assert.assertTrue(sfShopSkinCarePage.isPCPerksPromoMsgDisplayed(),"PC Perks promo msg is NOT displayed for anonymous user");
+		s_assert.assertAll();
 	}
 
 	/***
@@ -813,18 +816,13 @@ public class ProductsAndCartDetailsTest extends StoreFrontWebsiteBaseTest{
 	 * Description : This test validates PC Perks Promotion Message/Link should not be displayed
 	 *     
 	 */
-	@Test(enabled=false)//TODO Incomplete PC perks Promo message assertion.
+	@Test(enabled=false)
 	public void testCartPagePCPerksPromotionMessageLinkPreferredCustomer_167(){
-		String cart="cart";
-		String pageTile=null;
-		String pageUrl=null;
-		sfHomePage.loginToStoreFront(TestConstants.PC_EMAIL, password);
+		sfHomePage.loginToStoreFront(TestConstants.PC_EMAIL, password,true);
 		sfShopSkinCarePage=sfHomePage.clickAllProducts();
-		sfShopSkinCarePage.selectFirstProduct();
+		sfShopSkinCarePage.addFirstProductToBag();
 		sfShopSkinCarePage.checkoutTheCartFromPopUp();
-		pageTile=sfShopSkinCarePage.getCurrentpageTitle().toLowerCase();
-		pageUrl=sfShopSkinCarePage.getCurrentURL().toLowerCase();
-		s_assert.assertTrue(pageTile.contains(cart) && pageUrl.contains(cart),"Expected page title should contains:"+cart+"But actual on UI is:"+pageTile+" Expected page url should contain:"+cart+" But actual url on UI is:"+pageUrl);
+		s_assert.assertFalse(sfShopSkinCarePage.isPCPerksPromoMsgDisplayed(),"PC Perks promo msg is NOT displayed for anonymous user");
 		s_assert.assertAll();	
 	}
 
@@ -833,18 +831,13 @@ public class ProductsAndCartDetailsTest extends StoreFrontWebsiteBaseTest{
 	 * Description : This test validates PC Perks Promotion Message/Link should not be displayed
 	 *     
 	 */
-	@Test(enabled=false)//TODO Incomplete PC perks Promo message assertion.
+	@Test(enabled=false)
 	public void testCartPagePCPerksPromotionMessageLinkConsultantUser_168(){
-		String cart="cart";
-		String pageTile=null;
-		String pageUrl=null;
-		sfHomePage.loginToStoreFront(TestConstants.CONSULTANT_EMAIL, password);
+		sfHomePage.loginToStoreFront(TestConstants.CONSULTANT_EMAIL, password,true);
 		sfShopSkinCarePage=sfHomePage.clickAllProducts();
-		sfShopSkinCarePage.selectFirstProduct();
+		sfShopSkinCarePage.addFirstProductToBag();
 		sfShopSkinCarePage.checkoutTheCartFromPopUp();
-		pageTile=sfShopSkinCarePage.getCurrentpageTitle().toLowerCase();
-		pageUrl=sfShopSkinCarePage.getCurrentURL().toLowerCase();
-		s_assert.assertTrue(pageTile.contains(cart) && pageUrl.contains(cart),"Expected page title should contains:"+cart+"But actual on UI is:"+pageTile+" Expected page url should contain:"+cart+" But actual url on UI is:"+pageUrl);
+		s_assert.assertFalse(sfShopSkinCarePage.isPCPerksPromoMsgDisplayed(),"PC Perks promo msg is NOT displayed for anonymous user");
 		s_assert.assertAll();	
 	}
 
@@ -1192,4 +1185,62 @@ public class ProductsAndCartDetailsTest extends StoreFrontWebsiteBaseTest{
 		s_assert.assertTrue(sfCheckoutPage.isShippingLinkPresentAtCheckoutPage(),"Shipping Link is not present on Checkout page when clicked on Ok button on confirmation popup");
 		s_assert.assertAll();
 	}
+
+	/***
+	 * qTest:TC-154 Product Detail pages- PC Perks Promo as Anonymous user
+	 * 
+	 * Description: This test verifies the PC Perks promo msg
+	 * for anonymous user and also the Learn More link
+	 */
+	@Test(enabled=false)
+	public void testPCPerksPromoMsgAnonymousUser_154(){
+		sfShopSkinCarePage = sfHomePage.clickAllProducts();
+		sfShopSkinCarePage.clickOnQuickViewLinkForProduct("1");
+		s_assert.assertTrue(sfShopSkinCarePage.isProductImagePresentAtQuickViewPopup(),
+				"Product image is not present at Quick view popup");
+		s_assert.assertTrue(sfShopSkinCarePage.isPCPerksPromoMessageAndSaveAmountPresentOnQuickViewPopup(),
+				"PC Perks Promo message is NOT present on Quick view popup for anonymous user");
+		s_assert.assertTrue(sfShopSkinCarePage.isViewProductDetailsLinkDisplayedOnQuickViewPopup(),
+				"View product Details link is not presnt on quick view poup");		
+		sfShopSkinCarePage.clickLearnMoreLinkOnQuickView();
+		s_assert.assertTrue(sfShopSkinCarePage.isLearnMoreAboutPCPromoPopupDisplayed(), "pc perks promo popup not displayed after clicking on learn more link");
+		sfShopSkinCarePage.closePCPerksPromoPopUp();
+		s_assert.assertFalse(sfShopSkinCarePage.isLearnMoreAboutPCPromoPopupDisplayed(), "pc perks promo popup has NOT closed");
+		s_assert.assertAll();
+	}
+
+	/***
+	 * qTest:TC-155 Product Detail pages- PC Perks Promo as RC user
+	 * 
+	 * Description: This test verifies the PC Perks promo msg
+	 * for RC user and also the Learn More link
+	 */
+	@Test(enabled=false)
+	public void testPCPerksPromoMsgRCUser_155(){
+		sfHomePage.loginToStoreFront(TestConstants.RC_USERNAME, password);
+		sfShopSkinCarePage = sfHomePage.clickAllProducts();
+		sfShopSkinCarePage.clickOnQuickViewLinkForProduct("1");
+		s_assert.assertTrue(sfShopSkinCarePage.isProductImagePresentAtQuickViewPopup(),
+				"Product image is not present at Quick view popup");
+		s_assert.assertTrue(sfShopSkinCarePage.isPCPerksPromoMessageAndSaveAmountPresentOnQuickViewPopup(),
+				"PC Perks Promo message is NOT present on Quick view popup for anonymous user");
+		s_assert.assertTrue(sfShopSkinCarePage.isViewProductDetailsLinkDisplayedOnQuickViewPopup(),
+				"View product Details link is not presnt on quick view poup");		
+		sfShopSkinCarePage.clickLearnMoreLinkOnQuickView();
+		s_assert.assertTrue(sfShopSkinCarePage.isLearnMoreAboutPCPromoPopupDisplayed(), "pc perks promo popup not displayed after clicking on learn more link");
+		sfShopSkinCarePage.closePCPerksPromoPopUp();
+		s_assert.assertFalse(sfShopSkinCarePage.isLearnMoreAboutPCPromoPopupDisplayed(), "pc perks promo popup has NOT closed");
+		s_assert.assertAll();
+	}
+
+	/***
+	 * qTest:TC-156 Product details page- Image gallery
+	 * 
+	 * Description: This test verifies the products's image zoom functionality 
+	 */
+	@Test(enabled=true)
+	public void testProductDetailsImageGallery_156(){
+		//Duplicate Test: same as TC-337 Product Details Page- Product images
+	}
+
 }

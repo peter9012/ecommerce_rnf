@@ -7,13 +7,40 @@ import com.rf.test.website.rehabitat.storeFront.baseTest.StoreFrontWebsiteBaseTe
 
 public class ProductQuickViewTest extends StoreFrontWebsiteBaseTest{
 
+	
+	/***
+	 * qTest: TC-150 Anonymous User: Product Quick View
+	 * 
+	 * Description: This method verifies she quick view web elements
+	 * with  anonymous user 
+	 */
+	@Test(enabled=true)
+	public void testProductQuickViewAnonymous_150(){
+		String selectedProductName = null;
+		sfShopSkinCarePage = sfHomePage.clickAllProducts();
+		selectedProductName = sfShopSkinCarePage.getFirstProductNameFromAllProductPage();
+		sfShopSkinCarePage.clickOnQuickViewLinkForProduct("1");
+		s_assert.assertTrue(sfShopSkinCarePage.isProductImagePresentAtQuickViewPopup(),
+				"Product image is not present at Quick view popup");
+		s_assert.assertTrue(sfShopSkinCarePage.isProductNamePresentAtQuickViewPopupAsExpected(selectedProductName),
+				"Product name is not present as expected on quick view poup");
+		s_assert.assertTrue(sfShopSkinCarePage.isQuantityTextFieldPresentAtQuickViewPopup(),
+				"Quantity Text field is not presnt on quick view poup");
+		s_assert.assertTrue(sfShopSkinCarePage.isAddToCartButtonDisplayedOnQuickViewPopup(),
+				"Add to cart Btn is not presnt on quick view poup");		
+		s_assert.assertTrue(sfShopSkinCarePage.isPCPerksPromoMessageAndSaveAmountPresentOnQuickViewPopup(),
+				"PC Perks Promo message is NOT present on Quick view popup for anonymous user");
+		s_assert.assertTrue(sfShopSkinCarePage.isViewProductDetailsLinkDisplayedOnQuickViewPopup(),
+				"View product Details link is not presnt on quick view poup");		
+		s_assert.assertAll();
+	}
+	
 	/***
 	 * qTest : TC-151 PC: Product Quick View
 	 * Description : This test validates the flow of options available on Quick view popup for PC User.
 	 * Note : The test is Incomplete as One time order functionality from quick view popup is not working for pc user
 	 *     
 	 */
-
 	@Test(enabled=false)//TODO Incomplete 
 	public void testPCProductQuickView_151(){
 		String selectedProductName = null;
@@ -39,7 +66,7 @@ public class ProductQuickViewTest extends StoreFrontWebsiteBaseTest{
 				"Add to pc perks button is not present on quick view popup");
 		s_assert.assertTrue(sfShopSkinCarePage.isOneTimeOrderButtonPresentAtQuickViewPopup(),
 				"One time order button is not present on quick view popup");
-		s_assert.assertFalse(sfShopSkinCarePage.isPCPerksPromoMessagePresentOnQuickViewPopup(),
+		s_assert.assertFalse(sfShopSkinCarePage.isPCPerksPromoMessageAndSaveAmountPresentOnQuickViewPopup(),
 				"PC Perks Promo message is present on Quick view popup for PC User");
 		sfShopSkinCarePage.clickPCPerksButtonFromQuickViewPopup();
 		s_assert.assertTrue(sfShopSkinCarePage.isAddedToYourShoppingCartHeadlinePresentOnCheckoutPopup(),
@@ -73,6 +100,9 @@ public class ProductQuickViewTest extends StoreFrontWebsiteBaseTest{
 	@Test(enabled=false) //TODO Incomplete 
 	public void testProductQtyFieldShouldnotAllowAnyCharactersExceptADigitsOnTheQuickView_194(){
 		String selectedProductName = null;
+		String specialChar = "@";
+		String alphabetChar = "a";
+		
 		//Login to application.
 		sfHomePage.loginToStoreFront(TestConstants.PC_USERNAME, password);
 		sfShopSkinCarePage = sfHomePage.clickAllProducts();
@@ -82,11 +112,37 @@ public class ProductQuickViewTest extends StoreFrontWebsiteBaseTest{
 				"Product name is not present as expected on quick view poup");
 		s_assert.assertTrue(sfShopSkinCarePage.isQuantityTextFieldPresentAtQuickViewPopup(),
 				"Quantity Text field is not present on quick view poup");
-		sfShopSkinCarePage.enterQuantityOfProductOnQuickViewPopup();
+		sfShopSkinCarePage.enterQuantityOfProductOnQuickViewPopup(specialChar);
 		sfShopSkinCarePage.clickAddToCartButtonOnQuickViewPopup();
 		// Need to add assertion for Warning message
 		s_assert.assertAll();
 	}
 	
+	/***
+	 * qTest: TC-195 Quick-View- Display PC perks promo message for RC user
+	 * Description: This method verifies she quick view web elements
+	 * with RC user 
+	 */
+	@Test(enabled=true)
+	public void testProductQuickViewRCUser_195(){
+		String selectedProductName = null;
+		sfHomePage.loginToStoreFront(TestConstants.RC_EMAIL, password);
+		sfShopSkinCarePage = sfHomePage.clickAllProducts();
+		selectedProductName = sfShopSkinCarePage.getFirstProductNameFromAllProductPage();
+		sfShopSkinCarePage.clickOnQuickViewLinkForProduct("1");
+		s_assert.assertTrue(sfShopSkinCarePage.isProductImagePresentAtQuickViewPopup(),
+				"Product image is not present at Quick view popup");
+		s_assert.assertTrue(sfShopSkinCarePage.isProductNamePresentAtQuickViewPopupAsExpected(selectedProductName),
+				"Product name is not present as expected on quick view poup");
+		s_assert.assertTrue(sfShopSkinCarePage.isQuantityTextFieldPresentAtQuickViewPopup(),
+				"Quantity Text field is not presnt on quick view poup");
+		s_assert.assertTrue(sfShopSkinCarePage.isAddToCartButtonDisplayedOnQuickViewPopup(),
+				"Add to cart Btn is not presnt on quick view poup");		
+		s_assert.assertTrue(sfShopSkinCarePage.isPCPerksPromoMessageAndSaveAmountPresentOnQuickViewPopup(),
+				"PC Perks Promo message is NOT present on Quick view popup for anonymous user");
+		s_assert.assertTrue(sfShopSkinCarePage.isViewProductDetailsLinkDisplayedOnQuickViewPopup(),
+				"View product Details link is not presnt on quick view poup");		
+		s_assert.assertAll();
+	}
 
 }

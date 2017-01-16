@@ -14,7 +14,7 @@ public class TerminationTest extends StoreFrontWebsiteBaseTest{
 	 * 
 	 *     
 	 */
-	@Test(enabled=false)
+	@Test(enabled=true)
 	public void testCancelPCPerksAutoship_447(){
 		String currentURL = null;
 		String pcPerksPageURL="pc-perks-status";

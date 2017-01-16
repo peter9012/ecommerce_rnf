@@ -25,6 +25,10 @@ public class StoreFrontShippingInfoPage extends StoreFrontWebsiteBasePage{
 	private final By DELETE_BUTTON_ON_DELETE_SHIPPING_POPUP_LOC = By.xpath("//div[@id='colorbox']//a[contains(text(),'Delete')]");
 	private String deleteLinkForProfileLoc = "//strong[contains(text(),'%s')]/ancestor::ul[1]/following-sibling::div[@class='account-cards-actions']//a[contains(text(),'Delete')]";
 	private String shippingProfileNameLoc  = "//div[contains(@class,'account-addressbook')]/descendant::strong[contains(text(),'%s')][1]";
+	private final By TOTAL_NO_OF_SHIPPING_PROFILE_LOC = By.xpath("//div[contains(@class,'account-addressbook')]/descendant::div[@class='set-default-addform']");
+	private final By AUTOSHIP_SHIPPING_PROFILE_NAME_LOC = By.xpath("//strong[contains(text(),'Next CRP')]/following::strong[1]");
+	private final By CANCEL_BUTTON_OF_DELETE_ADDRESS_AND_UPDATE_SHIPPING_ADDRESS_FOR_AUTOSHIP_POPUP_LOC = By.xpath("//div[@id='cboxLoadedContent']//a[contains(text(),'Cancel')]");
+	private final By UPDATE_MY_AUTOSHIP_BUTTON_OF_DELETE_ADDRESS_AND_UPDATE_SHIPPING_ADDRESS_FOR_AUTOSHIP_POPUP_LOC = By.xpath("//div[@id='cboxLoadedContent']//a[contains(text(),'Update My Autoship')]");
 
 	/***
 	 * This method clicked on add a new shipping address link 
@@ -38,7 +42,6 @@ public class StoreFrontShippingInfoPage extends StoreFrontWebsiteBasePage{
 		logger.info("Add new shipping address link clicked");
 		return this;
 	}
-
 
 	/***
 	 * This method validates that shipping profile is present or not
@@ -69,7 +72,6 @@ public class StoreFrontShippingInfoPage extends StoreFrontWebsiteBasePage{
 		}
 	}
 
-
 	/***
 	 * This method click the cancel button of shipping address
 	 * 
@@ -82,8 +84,6 @@ public class StoreFrontShippingInfoPage extends StoreFrontWebsiteBasePage{
 		logger.info("Cancel button clicked");
 		return this;
 	}
-
-
 
 	/***
 	 * This method get the default shipping profile name
@@ -151,7 +151,6 @@ public class StoreFrontShippingInfoPage extends StoreFrontWebsiteBasePage{
 		return this;
 	}
 
-
 	/***
 	 * This method clicked delete option for given profile
 	 * 
@@ -176,6 +175,68 @@ public class StoreFrontShippingInfoPage extends StoreFrontWebsiteBasePage{
 	public String getActionSuccessMsgOnShippingInfoPage(){
 		logger.info(driver.getText(ACTION_SUCCESS_MSG_LOC));
 		return driver.getText(ACTION_SUCCESS_MSG_LOC);
+	}
+
+	/***
+	 * This method fetch the total no of shipping profile  
+	 * 
+	 * @param
+	 * @return int
+	 * 
+	 */
+	public int getTotalNoOfShippingProfile(){
+		logger.info("Total no of shipping profile "+driver.findElements(TOTAL_NO_OF_SHIPPING_PROFILE_LOC).size());
+		return driver.findElements(TOTAL_NO_OF_SHIPPING_PROFILE_LOC).size();
+	}
+
+	/***
+	 * This method fetch the autoship shipping profile name  
+	 * 
+	 * @param
+	 * @return String
+	 * 
+	 */
+	public String getAutoshipShippingProfileName(){
+		logger.info("Autoship shipping profile name "+driver.getText(AUTOSHIP_SHIPPING_PROFILE_NAME_LOC));
+		return driver.getText(AUTOSHIP_SHIPPING_PROFILE_NAME_LOC);
+	}
+
+	/***
+	 * This method click the cancel button of delete address and update shipping address popup
+	 * 
+	 * @param
+	 * @return store front shipping info page object
+	 * 
+	 */
+	public StoreFrontShippingInfoPage cancelDeleteAddressAndUpdateShippingAddressForAutoshipPopup(){
+		driver.click(CANCEL_BUTTON_OF_DELETE_ADDRESS_AND_UPDATE_SHIPPING_ADDRESS_FOR_AUTOSHIP_POPUP_LOC);
+		logger.info("Cancel button clicked");
+		return this;
+	}
+
+	/***
+	 * This method click the update my autoship button of delete address and update shipping address popup
+	 * 
+	 * @param
+	 * @return store front shipping info page object
+	 * 
+	 */
+	public StoreFrontShippingInfoPage clickUpdateMyAutoshipOnDeleteAddressAndUpdateShippingAddressForAutoshipPopup(){
+		driver.click(UPDATE_MY_AUTOSHIP_BUTTON_OF_DELETE_ADDRESS_AND_UPDATE_SHIPPING_ADDRESS_FOR_AUTOSHIP_POPUP_LOC);
+		logger.info("Update my autoship button clicked");
+		return this;
+	}
+
+	/***
+	 * This method fetch validate the autoship shipping profile name  
+	 * 
+	 * @param
+	 * @return boolean
+	 * 
+	 */
+	public boolean isAutoshipShippingProfileNamePresent(){
+		logger.info("Autoship shipping profile name "+driver.getText(AUTOSHIP_SHIPPING_PROFILE_NAME_LOC));
+		return driver.getText(AUTOSHIP_SHIPPING_PROFILE_NAME_LOC).length()>0;
 	}
 
 }

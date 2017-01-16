@@ -206,6 +206,17 @@ public class StoreFrontWebsiteBasePage extends RFBasePage{
 	private final By WELCOME_DD_EDIT_PWS_LOC = By.xpath("//a[text()='Edit PWS']");
 	protected final By CHECKOUT_BUTTON_LOC = By.xpath("//div[@class='cart-container']/descendant::button[contains(text(),'Checkout')][2] | //a[@id='checkoutPopup']");
 	protected final By CHECKOUT_CONFIRMATION_OK_BUTTON_LOC = By.xpath("//div[@id='cartCheckoutModal']/a");
+	private final By PWS_PREFIX_INPUT_FIELD_LOC = By.xpath("//input[@name='prefix']");
+	private final By NEXT_BTN_LOC = By.xpath("//*[contains(text(),'NEXT')]");
+	private final By OK_BTN_LOC = By.xpath("//a[contains(text(),'OK')]");
+	private final By CONFIRM_PULSE_SUBSCRIPTION_BTN_LOC = By.id("subscriptionconfirmsubmit");
+	private final By PULSE_SUBSCRIPTION_CHKBOX_LOC = By.id("subscription-checkbox");
+	private final By PULSE_SUBSCRIBE_BTN_LOC = By.id("confirmprefixaction");
+	private final By NEW_POLICIES_PROCEDURES_POPUP_LOC = By.id("updateCondition_popup");
+	private final By ACCEPT_RDBTN_NEW_POLICIES_PROCEDURES_POPUP_LOC = By.xpath("//form[@id='updateConditionForm']//input[@id='terms-accept']");
+	private final By CONTINUE_BTN_NEW_POLICIES_PROCEDURES_POPUP_LOC = By.xpath("//form[@id='updateConditionForm']//input[@value='continue']");
+	private final By PC_PERKS_PROMO_MSG_LOC = By.xpath("//div[contains(text(),'Subscribe and Save')]");
+
 	private String productNameInAllItemsInCartLoc = "//span[@class='item-name' and contains(text(),'%s')]";
 	private String productQuantityInAllItemsLoc = "//span[@class='item-name' and contains(text(),'%s')]/following::div//div[@class='qty']//input[contains(@id,'quantity')]";
 	private String selectAndContinueSponserLoc= "//div[@id='findConsultantResultArea']/descendant::div[contains(@class,'consultant-box')][%s]//span[@id='selectd-consultant']";
@@ -354,7 +365,7 @@ public class StoreFrontWebsiteBasePage extends RFBasePage{
 	 * @return BasePage Object
 	 * 
 	 */
-	public StoreFrontWebsiteBasePage clickRodanAndFieldsLogo(){
+	public StoreFrontHomePage clickRodanAndFieldsLogo(){
 		if(driver.isElementVisible(RODAN_AND_FIELDS_LOGO_LOC)){
 			driver.click(RODAN_AND_FIELDS_LOGO_LOC);
 		}
@@ -363,7 +374,7 @@ public class StoreFrontWebsiteBasePage extends RFBasePage{
 		}
 		logger.info("Rodan and Fields logo clicked");
 		driver.waitForPageLoad();
-		return this;
+		return new StoreFrontHomePage(driver);
 	}
 
 	/***
@@ -619,6 +630,30 @@ public class StoreFrontWebsiteBasePage extends RFBasePage{
 		logger.info("password entered as  "+password);
 		driver.click(LOGIN_BTN_LOC);
 		logger.info("login button clicked");
+		if(driver.isElementVisible(NEW_POLICIES_PROCEDURES_POPUP_LOC)){
+			driver.clickByJS(RFWebsiteDriver.driver,driver.findElement(ACCEPT_RDBTN_NEW_POLICIES_PROCEDURES_POPUP_LOC));
+			driver.pauseExecutionFor(1000);
+			driver.clickByJS(RFWebsiteDriver.driver,driver.findElement(CONTINUE_BTN_NEW_POLICIES_PROCEDURES_POPUP_LOC));
+		}
+		return this;
+	}
+
+	public StoreFrontWebsiteBasePage loginToStoreFront(String username,String password,boolean closeCRPReminder){
+		clickLoginIcon();
+		driver.type(USERNAME_TXTFLD_LOC, username);
+		logger.info("username entered as "+username);
+		driver.type(PASSWORD_TXTFLD_LOC, password);
+		logger.info("password entered as  "+password);
+		driver.click(LOGIN_BTN_LOC);
+		logger.info("login button clicked");
+		if(driver.isElementVisible(NEW_POLICIES_PROCEDURES_POPUP_LOC)){
+			driver.clickByJS(RFWebsiteDriver.driver,driver.findElement(ACCEPT_RDBTN_NEW_POLICIES_PROCEDURES_POPUP_LOC));
+			driver.pauseExecutionFor(1000);
+			driver.clickByJS(RFWebsiteDriver.driver,driver.findElement(CONTINUE_BTN_NEW_POLICIES_PROCEDURES_POPUP_LOC));
+		}
+		if(closeCRPReminder==true && (driver.isElementVisible(By.xpath("//div[@class='close']")))){
+			driver.click(By.xpath("//div[@class='close']"));
+		}
 		return this;
 	}
 
@@ -1510,25 +1545,12 @@ public class StoreFrontWebsiteBasePage extends RFBasePage{
 	public StoreFrontWebsiteBasePage enterUserBillingDetails(String cardType, String cardNumber, String nameOnCard,String CVV){
 		String javascript = "document.getElementById('card_accountNumber').value="+cardNumber+";"+
 				"document.getElementById('card_accountNumber').innerHTML="+cardNumber+";";
-		driver.pauseExecutionFor(2000);			
+		driver.pauseExecutionFor(2000);   
 		((JavascriptExecutor)RFWebsiteDriver.driver).executeScript(javascript);
 		logger.info("Entered card number as"+cardNumber);
 		driver.pauseExecutionFor(1000);
-		Robot robot = null;
-		try {
-			robot = new Robot();
-		} catch (AWTException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
-		robot.keyPress(KeyEvent.VK_TAB);
-		robot.keyRelease(KeyEvent.VK_TAB);		
 		driver.click(CARD_NUMBER_LOC);
-		driver.pauseExecutionFor(3000);
 		Actions actions = new Actions(RFWebsiteDriver.driver);
-		//		driver.pauseExecutionFor(10000);
-		driver.pauseExecutionFor(2000);
-		driver.waitForPageLoad();
 		WebElement nameOnCardElement = driver.findElement(NAME_ON_CARD_LOC);
 		actions.click(nameOnCardElement).sendKeys(nameOnCardElement, nameOnCard).build().perform();
 		logger.info("Entered card name as"+nameOnCard);
@@ -1542,6 +1564,7 @@ public class StoreFrontWebsiteBasePage extends RFBasePage{
 		logger.info("Exp year selected");
 		driver.type(CVV_LOC, CVV);
 		logger.info("Entered CVV as"+CVV);
+		driver.waitForTokenizing();
 		return this;
 	}
 
@@ -2469,8 +2492,6 @@ public class StoreFrontWebsiteBasePage extends RFBasePage{
 		return new StoreFrontAutoshipStatusPage(driver);
 	}
 
-	//--
-
 	/***
 	 * This method clicks on the Add More Items button
 	 * @return
@@ -2863,6 +2884,77 @@ public class StoreFrontWebsiteBasePage extends RFBasePage{
 	 */
 	public boolean isEnrollAsConsultantPageHeaderDisplayed(){
 		return driver.isElementVisible(ENROLL_AS_CONSULTANT_PAGE_LOC);  
+	}
+
+	/***
+	 * This method enters the pws prefix
+	 * @param prefix
+	 * @return
+	 */
+	public StoreFrontWebsiteBasePage enterAvailablePrefix(String prefix){
+		driver.type(PWS_PREFIX_INPUT_FIELD_LOC, prefix);
+		logger.info("The pws prefix entered is "+prefix);
+		return this;		
+	}
+
+	/***
+	 * This method clicks on the next btn
+	 * @return
+	 */
+	public StoreFrontWebsiteBasePage clickNextBtn(){
+		driver.click(NEXT_BTN_LOC);
+		logger.info("Next btn clicked");
+		return this;
+	}
+
+	/***
+	 * This method will click on the confirm pulse subscription btn
+	 * Can also be used while cancelling the pulse subscription,also
+	 * handles the ok btn on the cancellation popup
+	 * 
+	 * @return
+	 */
+	public StoreFrontWebsiteBasePage clickConfirmSubscription(){
+		driver.click(CONFIRM_PULSE_SUBSCRIPTION_BTN_LOC);
+		logger.info("confirm sibscription btn clicked");
+		if(driver.isElementVisible(OK_BTN_LOC)){
+			driver.click(OK_BTN_LOC);
+			logger.info("OK btn on the confirm pulse subscription popup clicked");
+		}
+		return this;
+	}
+
+	/***
+	 * This method selects the checkbox at the time of pulse subscription.
+	 * Also clicks on the following subscribe btn
+	 * @return
+	 */
+	public StoreFrontCheckoutPage checkTheConfirmSubscriptionChkBoxAndSubscribe(){
+		driver.clickByJS(RFWebsiteDriver.driver, driver.findElement(PULSE_SUBSCRIPTION_CHKBOX_LOC));
+		logger.info("selected the checkbox at the time of pulse subscription");
+		driver.clickByJS(RFWebsiteDriver.driver, driver.findElement(PULSE_SUBSCRIBE_BTN_LOC));
+		logger.info("clicked on the pulse subscribe btn");
+		return new StoreFrontCheckoutPage(driver);
+	}
+
+	/***
+	 * This method verifies whether PC Perks
+	 * Promo msg is displayed or NOT
+	 * @return boolean
+	 */
+	public boolean isPCPerksPromoMsgDisplayed(){
+		return driver.isElementVisible(PC_PERKS_PROMO_MSG_LOC);
+	}
+
+	/***
+	 * This method validates text at page is visible or not
+	 * 
+	 * @param
+	 * @return boolean value
+	 * 
+	 */
+	public boolean isTextVisible(String textName){
+		return driver.isElementVisible(By.xpath(String.format(textLoc, textName)));
 	}
 
 }

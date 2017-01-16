@@ -13,27 +13,25 @@ public class MiniCartTest extends StoreFrontWebsiteBaseTest{
 	 * after placed an order
 	 *     
 	 */
-	@Test(enabled=false)//TODO Incomplete(need to com & biz url)
+	@Test(enabled=true)
 	public void testMiniCartClearedAfterCheckout_419(){
-		String cardType = TestConstants.CARD_TYPE;
-		String cardNumber = TestConstants.CARD_NUMBER;
-		String cardName = TestConstants.CARD_NAME;
-		String CVV = TestConstants.CVV;
 		String noOfItem = "0";
+		String itemInAdhocCart= "1";
 		String noOfItemFromUI = null;   
 		sfHomePage.loginToStoreFront(TestConstants.CONSULTANT_USERNAME, password);
 		sfShopSkinCarePage = sfHomePage.clickAllProducts();
 		sfShopSkinCarePage.selectFirstProduct();
-		sfShopSkinCarePage.checkoutTheCartFromPopUp();
-		sfHomePage.checkoutTheCart();
-		sfHomePage.clickSaveButton();
-		sfHomePage.clickShippingDetailsNextbutton();
-		sfHomePage.enterUserBillingDetails(cardType, cardNumber, cardName, CVV);
-		sfHomePage.selectBillingAddressFromDD();
-		sfHomePage.checkUseMyDeliveryAddressChkBox();
-		sfHomePage.clickBillingDetailsNextbutton();
-		sfHomePage.selectTermsAndConditionsChkBox();
-		sfHomePage.clickPlaceOrderButton();
+		sfCartPage = sfShopSkinCarePage.checkoutTheCartFromPopUp();
+		noOfItemFromUI = sfHomePage.getNumberOfItemFromMiniCart();
+		s_assert.assertTrue(noOfItemFromUI.equalsIgnoreCase(itemInAdhocCart), "Expected no of item is "+itemInAdhocCart+" Actual on UI is "+noOfItemFromUI);
+		sfCheckoutPage = sfCartPage.checkoutTheCart();
+		sfCheckoutPage.clickSaveButton();
+		sfCheckoutPage.clickShippingDetailsNextbutton();
+		sfCheckoutPage.clickBillingDetailsNextbutton();
+		sfCheckoutPage.selectTermsAndConditionsChkBox();
+		sfCheckoutPage.clickPlaceOrderButton();
+		s_assert.assertTrue(sfCheckoutPage.isOrderPlacedSuccessfully(), "Adhoc order is not placed successfully by consultant");
+		sfHomePage =sfCheckoutPage.clickRodanAndFieldsLogo();
 		noOfItemFromUI = sfHomePage.getNumberOfItemFromMiniCart();
 		s_assert.assertTrue(noOfItemFromUI.equalsIgnoreCase(noOfItem), "Expected no of item is "+noOfItem+" Actual on UI is "+noOfItemFromUI);
 		s_assert.assertAll();
@@ -143,7 +141,7 @@ public class MiniCartTest extends StoreFrontWebsiteBaseTest{
 	 * 
 	 *     
 	 */
-	@Test(enabled=false)
+	@Test(enabled=true)
 	public void testAnonymousUserAddsProductsToTheCartForAdhocOrder_563(){
 		String productName = null;
 		String productNameOnCheckoutPopup = null;
@@ -211,6 +209,7 @@ public class MiniCartTest extends StoreFrontWebsiteBaseTest{
 		s_assert.assertTrue(sfCartPage.isProductAddedToCartPresentOnCartPage(productNameAddedByUser),"Product added to cart : "+productNameToAddByUser+" as valid user is not present on the cart page");
 		s_assert.assertAll();
 	}
+	
 	/***
 	 * qTest : TC-565 PC or Consultant user adds products to the cart anonymously
 	 * Description : Description : This test validates that the product added by a anonymous user should be present
@@ -302,16 +301,16 @@ public class MiniCartTest extends StoreFrontWebsiteBaseTest{
 
 	/***
 	 * qTest : TC-344 As a PC, Retail/Anon User, Consultant, I will be able to view the mini cart
-	 * Description : This test case validates mini cart
+	 * Description : This test case validates product present in mini cart 
 	 */
-	@Test(enabled=false)//TODO Incomplete
+	@Test(enabled=true)
 	public void testAsPCAndRCAbleToViewMiniAutoshipCart_344(){
-		sfHomePage.loginToStoreFront(TestConstants.PC_EMAIL, password);
+		sfHomePage.loginToStoreFront(TestConstants.PC_USERNAME, password);
 		sfCartPage = sfHomePage.clickMiniCartBagLink();
 		sfCartPage.removeAllProductsFromCart();
 		sfCartPage.clickRodanAndFieldsLogo();
 		sfShopSkinCarePage = sfHomePage.clickAllProducts();
-		sfShopSkinCarePage.selectFirstProduct();
+		sfShopSkinCarePage.addFirstProductToBag();
 		sfCartPage = sfShopSkinCarePage.checkoutTheCartFromPopUp();
 		String productName = sfCartPage.getProductName("1").toLowerCase();
 		sfCartPage.clickRodanAndFieldsLogo();

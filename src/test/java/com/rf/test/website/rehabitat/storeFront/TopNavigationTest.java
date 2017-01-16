@@ -15,7 +15,7 @@ public class TopNavigationTest extends StoreFrontWebsiteBaseTest{
 	 * new tab which contain calendar
 	 *     
 	 */
-	@Test(enabled=false)
+	@Test(enabled=true)
 	public void testBecomeAConsultantEvents_73(){
 		String currentWindowID = null; 
 		String currentURL = null;
@@ -193,7 +193,7 @@ public class TopNavigationTest extends StoreFrontWebsiteBaseTest{
 	 *  
 	 *     
 	 */
-	@Test(enabled=false)
+	@Test(enabled=true)
 	public void testAboutRFExecutiveTeam_76(){
 		String currentURL = null;
 		String teamMemberName = null;
@@ -217,7 +217,7 @@ public class TopNavigationTest extends StoreFrontWebsiteBaseTest{
 	 *  
 	 *     
 	 */
-	@Test(enabled=false)
+	@Test(enabled=true)
 	public void testViewSearchTextBox_345(){
 		sfHomePage.loginToStoreFront(TestConstants.CONSULTANT_EMAIL, password);
 		sfHomePage.clickSearchIcon();
@@ -233,7 +233,7 @@ public class TopNavigationTest extends StoreFrontWebsiteBaseTest{
 	 *  
 	 *     
 	 */
-	@Test(enabled=false)
+	@Test(enabled=true)
 	public void testViewContentPagesUnderAboutRF_346(){
 		String currentURL = null;
 		String executiveTeamURL = "executive-team";
@@ -265,7 +265,7 @@ public class TopNavigationTest extends StoreFrontWebsiteBaseTest{
 	 *  
 	 *     
 	 */
-	@Test(enabled=false)
+	@Test(enabled=true)
 	public void testVerifyFeaturedProductSectionUnderShopSkinCare_347(){
 		String category="FEATURED";
 
@@ -282,7 +282,7 @@ public class TopNavigationTest extends StoreFrontWebsiteBaseTest{
 	 *  
 	 *     
 	 */
-	@Test(enabled=false)
+	@Test(enabled=true)
 	public void testVerifyPLPUnderShopSkinCare_348(){
 		sfHomePage.loginToStoreFront(TestConstants.RC_EMAIL, password);
 		sfShopSkinCarePage=sfHomePage.clickAllProducts();
@@ -296,7 +296,7 @@ public class TopNavigationTest extends StoreFrontWebsiteBaseTest{
 	 *  
 	 *     
 	 */
-	@Test(enabled=false)
+	@Test(enabled=true)
 	public void testVerifyResultsLinkForCategoryUnderShopSkincare_349(){
 		String currentURL = null;
 		String sootheLinkUnderShopSkincare = "SOOTHE";
@@ -335,7 +335,7 @@ public class TopNavigationTest extends StoreFrontWebsiteBaseTest{
 	 * 
 	 *     
 	 */
-	@Test(enabled=false)
+	@Test(enabled=true)
 	public void testVerifyFAQLinkForCategoryUnderShopSkincare_350(){
 		String currentURL = null;
 		String sootheLinkUnderShopSkincare = "SOOTHE";
@@ -448,7 +448,7 @@ public class TopNavigationTest extends StoreFrontWebsiteBaseTest{
 	 * sponsor search page
 	 *     
 	 */
-	@Test
+	@Test(enabled=true)
 	public void testBecomeAConsultantAtWhyRFPage_72(){
 		sfHomePage.clickWhyRF();
 		sfHomePage.clickEnrollNowButton();
@@ -463,7 +463,7 @@ public class TopNavigationTest extends StoreFrontWebsiteBaseTest{
 	 * sponsor search page through Programs and Incentives Page
 	 *     
 	 */
-	@Test(enabled=false)
+	@Test(enabled=true)
 	public void testBecomeAConsultantProgramsAndIncentives_74(){
 		sfHomePage.clickProgramsAndIncentives();
 		sfHomePage.clickEnrollNowButton();

@@ -53,8 +53,13 @@ public class StoreFrontShopSkinCarePage extends StoreFrontWebsiteBasePage{
 	private final By ONE_TIME_ORDER_BTN_ON_QUICK_VIEW_POPUP_LOC = By.xpath("//div[@id='myModal' and contains(@style,'display')]//button[contains(text(),'Add to cart')]/following-sibling::div//span[contains(text(),'One Time Order')]/ancestor::button");
 	private final By PDP_DETAILS_ON_QUICK_VIEW_POPUP_LOC = By.xpath("//div[@id='myModal' and contains(@style,'display')]//div[@id='quickViewPDP']");
 	private final By PRODUCT_IMG_ON_QUICK_VIEW_POPUP_LOC = By.xpath("//div[@id='myModal' and contains(@style,'display')]//div[contains(@class,'product-image')]//img");
-	private final By PC_PERKS_PROMO_MSG_LOC = By.xpath("//div[@id='pc_perks_comp']/div[@class='content']/div[contains(text(),'Subscribe + Save 10% on this order Preferred Customer pricing offers up to')]");
-
+	private final By PC_PERKS_PROMO_MSG_LOC = By.xpath("//div[@id='pc_perks_comp']/div[@class='content']/div[contains(text(),'Subscribe + Save 10%')]");
+	private final By PC_PERKS_SAVE_AMOUNT_LOC = By.xpath("//span[@class='pcli']");
+	private final By LEARN_MORE_LINK_QUICK_VIEW_LOC = By.xpath("//a[contains(text(),'Learn more')]");
+	private final By PC_PROMO_POPUP_LOC = By.id("cboxLoadedContent");
+	private final By PC_PROMO_POPUP_CLOSE_BTN_LOC = By.id("cboxClose");
+	private final By SHOP_BY_PRICE_FILTER_OPTION_DEFAULT_LOC = By.xpath("//select[@id='sortOptions1']/descendant::option[1]");
+	private final By CLEAR_ALL_LINK_LOC = By.id("clear_all");
 
 	private String productNameOnQuickViewPopupLoc = "//div[@id='myModal' and contains(@style,'display')]//div[contains(@class,'product-details')]/div[@class='name']/a[contains(text(),'%s')]";
 	private String regimenNameInShopByCategoryDD = "//div[@id='product-facet']//descendant::ul[2]//span[contains(text(),'%s')]";
@@ -163,9 +168,9 @@ public class StoreFrontShopSkinCarePage extends StoreFrontWebsiteBasePage{
 	public boolean isPriceFilterLowToHighAppliedSuccessfully(){
 		int totalProducts = driver.findElements(TOTAL_PRODUCTS_LOC).size();
 		if(totalProducts>=3){
-			String firstProductPrice = driver.findElement(By.xpath(String.format(priceOfProductLoc, "1"))).getText().split("\\$")[1].trim();
-			String secondProductPrice = driver.findElement(By.xpath(String.format(priceOfProductLoc, "2"))).getText().split("\\$")[1].trim();
-			String thirdProductPrice = driver.findElement(By.xpath(String.format(priceOfProductLoc, "3"))).getText().split("\\$")[1].trim();
+			String firstProductPrice = driver.findElement(By.xpath(String.format(priceOfProductLoc, "2"))).getText().split("\\$")[1].trim();
+			String secondProductPrice = driver.findElement(By.xpath(String.format(priceOfProductLoc, "3"))).getText().split("\\$")[1].trim();
+			String thirdProductPrice = driver.findElement(By.xpath(String.format(priceOfProductLoc, "4"))).getText().split("\\$")[1].trim();
 			double priceFirstProduct = Double.parseDouble(firstProductPrice);
 			double priceSecondProduct = Double.parseDouble(secondProductPrice);
 			double priceThirdProduct = Double.parseDouble(thirdProductPrice);
@@ -456,7 +461,7 @@ public class StoreFrontShopSkinCarePage extends StoreFrontWebsiteBasePage{
 				logger.info("Clicked add to bag button for Autoship order");
 			}
 		}
-		
+
 		return priceToAssert;
 	}
 
@@ -492,6 +497,18 @@ public class StoreFrontShopSkinCarePage extends StoreFrontWebsiteBasePage{
 	public StoreFrontProductDetailPage clickOnViewProductDetailsLinkOnQuickViewPopup(){
 		driver.click(VIEW_PRODUCT_DETAILS_LINK_ON_QUICK_VIEW_LOC);
 		return new StoreFrontProductDetailPage(driver);
+	}
+
+	/***
+	 * This method verifies whether view product details link disaplyed on quick view popup
+	 * or not
+	 * 
+	 * @param 
+	 * @return boolean
+	 * 
+	 */
+	public boolean isViewProductDetailsLinkDisplayedOnQuickViewPopup(){
+		return driver.isElementVisible(VIEW_PRODUCT_DETAILS_LINK_ON_QUICK_VIEW_LOC);
 	}
 
 	/**
@@ -816,14 +833,16 @@ public class StoreFrontShopSkinCarePage extends StoreFrontWebsiteBasePage{
 	}
 
 	/***
-	 * This method validates the presence of PC Perks promo message on quick view popup 
+	 * This method validates the presence of PC Perks promo message and
+	 * save amount on quick view popup 
 	 * 
 	 * @param 
 	 * @return boolean
 	 * 
 	 */
-	public boolean isPCPerksPromoMessagePresentOnQuickViewPopup(){
-		return driver.isElementVisible(PC_PERKS_PROMO_MSG_LOC);
+	public boolean isPCPerksPromoMessageAndSaveAmountPresentOnQuickViewPopup(){
+		return driver.isElementVisible(PC_PERKS_PROMO_MSG_LOC) &&
+				driver.isElementVisible(PC_PERKS_SAVE_AMOUNT_LOC);		
 	}
 
 	/***
@@ -840,14 +859,27 @@ public class StoreFrontShopSkinCarePage extends StoreFrontWebsiteBasePage{
 	}
 
 	/***
+	 * This method verifies the Add to cart button on Quick view popup 
+	 * 
+	 * @param 
+	 * @return boolean
+	 * 
+	 */
+	public boolean isAddToCartButtonDisplayedOnQuickViewPopup(){
+		return driver.isElementVisible(ADD_TO_CART_BTN_ON_QUICK_VIEW_POPUP_LOC);
+	}
+
+	/***
 	 * This method enters the quantity of product on quick view popup
 	 * 
 	 * @param 
 	 * @return StoreFrontShopSkinCarePage object
 	 * 
 	 */
-	public StoreFrontShopSkinCarePage enterQuantityOfProductOnQuickViewPopup(){
-		driver.type(QUANTITY_AT_QUICK_VIEW_OPTION_LOC,"$$");
+	public StoreFrontShopSkinCarePage enterQuantityOfProductOnQuickViewPopup(String qty){
+		driver.type(QUANTITY_AT_QUICK_VIEW_OPTION_LOC,qty+"\t");
+		driver.pauseExecutionFor(5000);
+		System.out.println("*** "+driver.findElement(QUANTITY_AT_QUICK_VIEW_OPTION_LOC).getText());
 		return this;
 	}
 
@@ -932,6 +964,65 @@ public class StoreFrontShopSkinCarePage extends StoreFrontWebsiteBasePage{
 		logger.info("Sort filter dropdown clicked");
 		driver.click(SHOP_BY_PRICE_FILTER_OPTION_HIGH_TO_LOW_LOC);
 		logger.info("Price filter 'HIGH TO LOW' selected");
+		driver.waitForPageLoad();
+		return this;
+	}
+
+	/***
+	 * This method clicks on the Learn View link on quick view
+	 * @return StoreFrontShopSkinCarePage
+	 */
+	public StoreFrontShopSkinCarePage clickLearnMoreLinkOnQuickView(){
+		driver.click(LEARN_MORE_LINK_QUICK_VIEW_LOC);
+		logger.info("Learn View link on quick view is clicked");
+		return this;
+	}
+
+	/***
+	 * this method verifies whether PC perks promo popup is
+	 * displayed or not after clicking on learn more link
+	 * @return
+	 */
+	public boolean isLearnMoreAboutPCPromoPopupDisplayed(){
+		return  driver.isElementVisible(PC_PROMO_POPUP_LOC);
+	}
+
+	/***
+	 * This method closes the PC Perks Promo popup
+	 * @return StoreFrontShopSkinCarePage
+	 */
+	public StoreFrontShopSkinCarePage closePCPerksPromoPopUp(){
+		driver.click(PC_PROMO_POPUP_CLOSE_BTN_LOC);
+		logger.info("closed the PC Perks promo popup");
+		return this;
+	}
+
+	/***
+	 * This method select sort by price filter Default select option
+	 * 
+	 * @param
+	 * @return store front shopSkincare page object
+	 * 
+	 */
+	public StoreFrontShopSkinCarePage productPriceFilterDefault(){
+		driver.click(SORT_FILTER_DD_LOC);
+		logger.info("Sort filter dropdown clicked");
+		driver.click(SHOP_BY_PRICE_FILTER_OPTION_DEFAULT_LOC);
+		logger.info("Price filter 'Default select is' selected");
+		driver.waitForPageLoad();
+		return this;
+	}
+
+	/***
+	 * This method click clear all link to remove all applied filters to product
+	 * 
+	 * @param
+	 * @return store front shopSkincare page object
+	 * 
+	 */
+	public StoreFrontShopSkinCarePage selectClearAllLink(){
+		driver.click(CLEAR_ALL_LINK_LOC);
+		logger.info("Clear all link clicked to remove all applied product filter.");
 		driver.waitForPageLoad();
 		return this;
 	}

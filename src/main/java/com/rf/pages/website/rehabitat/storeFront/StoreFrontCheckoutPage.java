@@ -84,7 +84,7 @@ public class StoreFrontCheckoutPage extends StoreFrontWebsiteBasePage{
 	private final By VALIDATION_MSG_FOR_SEARCHED_CONSULTANT_LOC = By.id("sponserparam-error");
 	private final By TOTAL_NO_OF_ITEMS_LOC = By.xpath("//div[contains(text(),'Order Summary')]/following::li[contains(@class,'list-items')]//div[@class='thumb']");
 	private final By SUBTOTAL_AT_ORDER_REVIEW_PAGE_LOC = By.xpath("//div[contains(text(),'Order Summary')]/following::p[text()='Subtotal:']/following::span[1]");
-	private final By DELIVERY_AT_ORDER_REVIEW_PAGE_LOC = By.xpath("//div[contains(text(),'Order Summary')]/following::p[text()='Subtotal:']/following::span[1]");
+	private final By DELIVERY_AT_ORDER_REVIEW_PAGE_LOC = By.xpath("//div[contains(text(),'Order Summary')]/following::p[text()='Delivery']/following::span[1]");
 	private final By FIRST_ITEM_PRODUCT_NAME_REVIEW_PAGE_LOC = By.xpath("//div[contains(text(),'Order Summary')]/following::li[contains(@class,'list-items')][1]//div[@class='name']/a");
 	private final By LOGIN_REGISTER_TEXT_LOC=By.xpath("//div[@class='logpage']/h1");
 	private final By USER_NAME_LOC=By.xpath("//form[@id='LoginForm']//input[@id='username']");
@@ -146,10 +146,23 @@ public class StoreFrontCheckoutPage extends StoreFrontWebsiteBasePage{
 	private final By CVV_AFTER_EDIT_PROFILE_LOC= By.xpath("//div[@id='account-billing-container']//input[@id='card_cvNumber']");
 	private final By SPONSOR_NAME_ACCOUNT_INFO_LOC = By.xpath("//div[contains(@id,'findConsultantResultArea')]//span[@id='selectd-consultant']");
 	private final By NOT_YOUR_CONSULTAN_LINK_LOC = By.id("not-your-autoSponsor");
+	private final By CLOSE_BTN_OF_POPUP_LOC = By.id("close_popup");
+	private final By USE_SAVED_CARD_BTN_LOC = By.xpath("//button[contains(text(),'Use a saved card')]");
+	private final By USE_THESE_PAYMENT_DETAILS_BTN_LOC = By.xpath("//button[contains(text(),'Use these payment details')]");
+	private final By SHIPPING_METHOD_AFTER_ORDER_PLACED = By.xpath("//div[contains(text(),'Shipping Method')]");
+	private final By DEFAULT_BILLING_PROFILE_NAME_LOC = By.xpath("//div[@id='default-payment-method']//strong");
+	private final By TERMS_AND_CONDITIONS_CHCKBOX_FOR_CONSULTANT_CRP_LOC = By.xpath("//button[@id='confirmCRPOrder']/preceding-sibling::div//input[@type='checkbox']/following-sibling::label");
+	private final By CONFIRM_CRP_ORDER_MSG_LOC = By.xpath("//h2[contains(text(),'CRP ORDER CONFIRMED')]");
+	private final By BILLING_PROFILE_AFTER_ORDER_PLACED = By.xpath("//div[@class='orderBillingAddress']");
+	private final By BILLING_PROFILE_NAME_LOC = By.xpath("//div[@id='default-payment-method']//strong");
+	private final By CREDIT_CARD_NUMBER_AT_ORDER_CONFIRMATION_PAGE = By.xpath("//div[@class='orderBillingDetails']/div[2]");
+
+	private String orderItemsTagLoc = "//li[@class='orderItemsHeading']//div[contains(text(),'%s')]";
+	private String chargesFromOrderConfirmationPage = "//div[@class='orderGrandTotal']//div[contains(text(),'%s')]/following::div[@class='orderValue'][1]";
+	private String chargesFromOrderReviewPage = "//*[contains(text(),'%s')]/following::span[1]";
 	private String billingInfoAddressNameLoc = "//div[@id='default-payment-method']//strong[contains(text(),'%s')]";
 	private String billingAddressLoc = "//div[@id='default-payment-method']//strong[contains(text(),'%s')]/ancestor::div[1]";
 	private String billingInfoCardDetailsLoc = "//div[@id='default-payment-method']//strong[contains(text(),'%s')]/following-sibling::span[@class='cardInfo']";
-
 	private String mandatoryFieldErrorMsgOfAddressForNewShippingProfileLoc = "//form[@id='addressForm']//label[contains(@id,'%s-error') and contains(text(),'This field is required.')]";
 	private String stateForNewShippingAddressDetailsLoc = "//form[@id='addressForm']//select[@id='address.region']//option[text()='%s']";
 	private String mandatoryFieldErrorMsgForNewAddressLoc  = "//label[contains(@id,'%s-error') and contains(text(),'This field is required.')]";
@@ -987,7 +1000,6 @@ public class StoreFrontCheckoutPage extends StoreFrontWebsiteBasePage{
 		return profileNameAtConfirmation;
 	}
 
-	private final By SHIPPING_METHOD_AFTER_ORDER_PLACED = By.xpath("//div[contains(text(),'Shipping Method')]");
 	/***
 	 * This method get the shipping method after Successful Checkout 
 	 * 
@@ -1008,26 +1020,11 @@ public class StoreFrontCheckoutPage extends StoreFrontWebsiteBasePage{
 	 * @return 4 Digits
 	 * 
 	 */
-
 	public String getLastFourNumbersOfBillingDetailsOnConFirmationPage(){
-		String ccNumber=driver.findElement(By.xpath("//div[@class='orderBillingDetails']/div[2]")).getText();
+		String ccNumber=driver.findElement(CREDIT_CARD_NUMBER_AT_ORDER_CONFIRMATION_PAGE).getText();
 		String lastFourNumbers=ccNumber.substring(ccNumber.lastIndexOf(' ') + 1);
 		logger.info("Last Four Numbers of Billing Profile at Confimation Page : "+lastFourNumbers);
 		return lastFourNumbers;
-	}
-
-	/***
-	 * This method get the Last four Digits of Credit Card from Confirmation Page 
-	 * 
-	 * @param 
-	 * @return 4 Digits
-	 * 
-	 */
-	public String getTotalChargeOnConFirmationPage(){
-		String charge=driver.findElement(By.xpath("//div[@class='orderBillingDetails']/div[2]")).getText();
-		String totalCharge=charge.substring(charge.lastIndexOf('$') + 1);
-		logger.info("Total Charge with Billing Information at Confimation Page : "+totalCharge);
-		return totalCharge;
 	}
 
 	/***
@@ -1140,18 +1137,6 @@ public class StoreFrontCheckoutPage extends StoreFrontWebsiteBasePage{
 	 */
 	public String getTitleOfShippingMethodFromShippingDetails(){
 		return driver.getText(SHIPPING_METHOD_TITLE_FORM_ALL_SHIPPING_DETAILS_LOC).trim();
-	}
-
-	/***
-	 * This method click on the confirm crp button
-	 * 
-	 * @param 
-	 * @return StoreFrontCheckoutPage object 
-	 * 
-	 */
-	public StoreFrontCheckoutPage clickOnConfirmCRPButton(){
-		driver.click(CONFIRM_CRP_ORDER_BTN_LOC);
-		return this;
 	}
 
 	/***
@@ -1592,6 +1577,143 @@ public class StoreFrontCheckoutPage extends StoreFrontWebsiteBasePage{
 			return false;
 	}
 
+	/***
+	 * This method clicks on the 'Use a saved card' btn on the cart
+	 * Also clicks on the 'Use these payment details' btn
+	 * @return
+	 */
+	public StoreFrontCheckoutPage clickUseSavedCardBtn(){
+		driver.click(USE_SAVED_CARD_BTN_LOC);
+		logger.info("clicked on the 'Use a saved card' btn on the cart");
+		driver.waitForElementToBeVisible(USE_THESE_PAYMENT_DETAILS_BTN_LOC, 15);
+		driver.click(USE_THESE_PAYMENT_DETAILS_BTN_LOC);
+		logger.info("clicked on the 'Use these payment details' btn on the cart");
+		return this;
+	}
 
+	/**
+	 * This method clicks on the close pop cross btn
+	 * @return
+	 */
+	public StoreFrontCheckoutPage closePopUp(){
+		driver.click(CLOSE_BTN_OF_POPUP_LOC);
+		logger.info("Clicked on the cross btn of the popup");
+		return this;
+	}
+
+	/***
+	 * This method get default BILLING PROFILE name
+	 *    
+	 * @param
+	 * @return billing profile details
+	 * 
+	 */
+	public String getDefaultBillingProfileName(){
+		String profileName = driver.findElement(DEFAULT_BILLING_PROFILE_NAME_LOC).getText().trim();
+		logger.info("Defaut Billing profile name : "+profileName);
+		return profileName;
+	}
+
+	/***
+	 * This method select terms and conditions checkbox for consultant
+	 * 
+	 * @param
+	 * @return Store front checkout page object
+	 * 
+	 */
+	public StoreFrontCheckoutPage selectTermsAndConditionsCheckBoxForConsulatntCRP(){
+		driver.click(TERMS_AND_CONDITIONS_CHCKBOX_FOR_CONSULTANT_CRP_LOC);
+		logger.info("Clicked Terms and conditions checkbox for consultant CRP checkout");
+		return this;
+	}
+
+	/***
+	 * This method click on the confirm Autoship order button
+	 * 
+	 * @param 
+	 * @return StoreFrontCheckoutPage object 
+	 * 
+	 */
+	public StoreFrontCheckoutPage clickConfirmAutoshipOrderButton(){
+		driver.click(CONFIRM_CRP_ORDER_BTN_LOC);
+		driver.waitForPageLoad();
+		logger.info("confirm CRP order btn clicked");
+		driver.pauseExecutionFor(2000);
+		return this;
+	}
+
+	/***
+	 * This method validates the presence of Confirm CRP Order Success Message
+	 * 
+	 * @param 
+	 * @return boolean
+	 * 
+	 */
+	public boolean isCRPOrderConfirmedSuccessMsgAppeared(){
+		return driver.isElementVisible(CONFIRM_CRP_ORDER_MSG_LOC);
+	}
+
+	/***
+	 * This method get the billing profile after order placed 
+	 * 
+	 * @param 
+	 * @return Shipping method
+	 * 
+	 */
+	public String getBillingProfileAfterPlacedOrder(){
+		String billingProfile = driver.getText(BILLING_PROFILE_AFTER_ORDER_PLACED);
+		logger.info("Billing profile at order confirmation page : "+billingProfile);
+		return billingProfile;
+	}
+
+	/***
+	 * This method get the only billing profile name 
+	 * 
+	 * @param 
+	 * @return String
+	 * 
+	 */
+	public String getBillingProfileName(){
+		String billingProfile = driver.getText(BILLING_PROFILE_NAME_LOC);
+		logger.info("Billing profile name: "+billingProfile);
+		return billingProfile;
+	}
+
+	/***
+	 * This method get the tag name in order item heading 
+	 * 
+	 * @param 
+	 * @return boolean
+	 * 
+	 */
+	public boolean isTagPresentInOrderItemsHeading(String tagName){
+		return driver.isElementVisible(By.xpath(String.format(orderItemsTagLoc, tagName)));
+	}
+
+	/***
+	   This method get the charges acc to their label name at order confirmation page 
+	 * 
+	 * @param label name 
+	 * @return charges
+	 * 
+	 */
+	public String getChargesAccordingToLabelAtOrderConfirmationPage(String labelName){
+		String charge=driver.findElement(By.xpath(String.format(chargesFromOrderConfirmationPage, labelName))).getText();
+		logger.info(labelName+" 's value at order confirmation page is"+charge);
+		return charge;
+	}
+
+	/***
+	  This method get the charges acc to their label name at order review page 
+	 * 
+	 * @param label name 
+	 * @return charges
+	 * 
+	 */
+	public String getChargesAccordingToLabelAtOrderReviewPage(String labelName){
+		String charge=driver.findElement(By.xpath(String.format(chargesFromOrderReviewPage, labelName))).getText();
+		logger.info(labelName+" 's value at order review page is"+charge);
+		return charge;
+	}
 
 }

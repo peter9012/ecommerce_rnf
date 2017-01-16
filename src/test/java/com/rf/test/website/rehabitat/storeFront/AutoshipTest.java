@@ -14,7 +14,7 @@ public class AutoshipTest extends StoreFrontWebsiteBaseTest{
 	 * 
 	 *     
 	 */
-	@Test(enabled=false)
+	@Test(enabled=true)
 	public void testUpdateAutoshipCartEditShipAddressPC_399(){
 		String currentURL = null;
 		String randomWord = CommonUtils.getRandomWord(5);
@@ -179,7 +179,7 @@ public class AutoshipTest extends StoreFrontWebsiteBaseTest{
 		s_assert.assertTrue(shippingMethodinShippingDetails.contains(selectedShippingMethodTitle),
 				"Shipping method do not get applied. Expected title : "+selectedShippingMethodTitle+" . Actual Title  : "+selectedShippingMethodTitle);
 		sfCheckoutPage.clickNextButtonAfterBillingAddress();
-		sfCheckoutPage.clickOnConfirmCRPButton();
+		sfCheckoutPage.clickConfirmAutoshipOrderButton();
 		sfCheckoutPage.clickRodanAndFieldsLogo();
 		sfCheckoutPage.clickOnAutoshipCartLink();
 		sfAutoshipCartPage.clickOnPCPerksCheckoutButton();
@@ -238,7 +238,7 @@ public class AutoshipTest extends StoreFrontWebsiteBaseTest{
 	 * 
 	 *     
 	 */
-	@Test(enabled=false)
+	@Test(enabled=true)
 	public void testEditPCPerks_450(){
 		String currentURL = null;
 		String textToAssertInURL = "autoship/cart";
@@ -299,7 +299,7 @@ public class AutoshipTest extends StoreFrontWebsiteBaseTest{
 	 * 
 	 *     
 	 */
-	@Test(enabled=false)
+	@Test(enabled=true)
 	public void testCartPageUpdateBillingShippingAddressLinkPC_333(){
 		String currentURL = null;
 		String textToAssertInURL = "autoship/cart";
@@ -322,7 +322,7 @@ public class AutoshipTest extends StoreFrontWebsiteBaseTest{
 	 * 
 	 *     
 	 */
-	@Test(enabled=false)
+	@Test(enabled=true)
 	public void testVerifyCartAndCheckoutPageForuser_484(){
 		String currentURL = null;
 		String textToAssertInURL = "autoship/cart";
@@ -354,7 +354,7 @@ public class AutoshipTest extends StoreFrontWebsiteBaseTest{
 	 * 
 	 *     
 	 */
-	@Test(enabled=false)
+	@Test(enabled=true)
 	public void testUpdateAutoshipCartEditShipAddressConsultant_398(){
 		String currentURL = null;
 		String randomWord = CommonUtils.getRandomWord(5);
@@ -444,7 +444,7 @@ public class AutoshipTest extends StoreFrontWebsiteBaseTest{
 	 * 
 	 *     
 	 */
-	@Test(enabled=false)
+	@Test(enabled=true)
 	public void testCartPageUpdateBillingShippingAddressLinkConsultant_334(){
 		String currentURL = null;
 		String textToAssertInURL = "autoship/cart";
@@ -460,7 +460,7 @@ public class AutoshipTest extends StoreFrontWebsiteBaseTest{
 		s_assert.assertTrue(sfCheckoutPage.isBillingLinkPresentAtCheckoutPage(),"Billing link is not present at checkout page");
 		s_assert.assertAll();
 	}
-	
+
 	/***
 	 * qTest : TC-510 User does not select the Update CTA after making edits to autoship cart
 	 * Description : This test validates the Autoship cart page changes for PC/Consultant Autoship
@@ -491,7 +491,7 @@ public class AutoshipTest extends StoreFrontWebsiteBaseTest{
 		s_assert.assertTrue(newSubtotalAtAutoshipCart==subtotalAtAutoshipCart,"Product quantity and subtotal is updated on autoship cart without clicking update link.");
 		s_assert.assertAll();		
 	}
-	
+
 	/***
 	 * qTest : TC-509 User selects Update CTA after making changes in the autoship cart
 	 * Description : This test validates the Autoship cart page changes for PC/Consultant Autoship
@@ -524,4 +524,300 @@ public class AutoshipTest extends StoreFrontWebsiteBaseTest{
 		s_assert.assertAll();
 	}
 
+	/***
+	 * qTest : TC-416 Update Autoship- Add a billing profile - Consultant
+	 * Description : This test adds and validates new Autoship billing profile for consultant user.
+	 * 
+	 *     
+	 */
+	@Test(enabled=true)
+	public void testUpdateAutoshipAddAbillingProfileConsultant_416(){
+		String currentURL = null;
+		String textToAssertInURL = "autoship/cart";
+		String randomWord = CommonUtils.getRandomWord(5);
+		String cardType = TestConstants.CARD_TYPE;
+		String cardNum = TestConstants.CARD_NUMBER_2;
+		String cardName = TestConstants.CARD_NAME + randomWord;
+		String cvv =  TestConstants.CVV;
+		String profileLastName = null;
+		String defaultBillingProfileName = null;
+		//Login to application.
+		sfHomePage.loginToStoreFront(TestConstants.CONSULTANT_USERNAME, password);
+		sfAutoshipCartPage = sfHomePage.clickOnAutoshipCartLink();
+		currentURL = sfAutoshipCartPage.getCurrentURL().toLowerCase();
+		s_assert.assertTrue(currentURL.contains(textToAssertInURL), "Expected URL should contain "+textToAssertInURL+" but actual on UI is "+currentURL);
+		sfCheckoutPage = sfAutoshipCartPage.clickOnCRPCheckoutButton();
+		sfCheckoutPage.clickSaveButton();
+		sfCheckoutPage.clickShippingDetailsNextbutton();
+		sfCheckoutPage.clickAddNewBillingProfileButton();
+		sfCheckoutPage.enterUserBillingDetails(cardType, cardNum, cardName, cvv);
+		sfCheckoutPage.clickBillingDetailsNextbutton();
+		profileLastName = sfCheckoutPage.getLastName(cardName);
+		defaultBillingProfileName = sfCheckoutPage.getDefaultBillingProfileName();
+		s_assert.assertTrue(defaultBillingProfileName.contains(profileLastName),"New Billing Profile Details do not get updated. Expected Profile Name : "+ cardName + ". Actual : " + defaultBillingProfileName);
+		sfCheckoutPage.selectTermsAndConditionsCheckBoxForConsulatntCRP();
+		sfCheckoutPage.clickConfirmAutoshipOrderButton();
+		sfCheckoutPage.clickOnAutoshipCartLink();
+		sfAutoshipCartPage.clickOnCRPCheckoutButton();
+		sfCheckoutPage.clickSaveButton();
+		sfCheckoutPage.clickShippingDetailsNextbutton();
+		defaultBillingProfileName = sfCheckoutPage.getDefaultBillingProfileName();
+		s_assert.assertTrue(defaultBillingProfileName.contains(profileLastName),"Billing details is not found as expected. Expected Profile Name : "+ cardName + ". Actual : " + defaultBillingProfileName);
+		s_assert.assertAll();
+	}
+
+	/***
+	 * qTest : TC-417 Update Autoship- Add a billing profile - PC
+	 * Description : This test adds and validates new Autoship billing profile for PC user.
+	 * 
+	 *     
+	 */
+	@Test(enabled=true)
+	public void testUpdateAutoshipAddAbillingProfilePC_417(){
+		String currentURL = null;
+		String textToAssertInURL = "autoship/cart";
+		String randomWord = CommonUtils.getRandomWord(5);
+		String cardType = TestConstants.CARD_TYPE;
+		String cardNum = TestConstants.CARD_NUMBER_2;
+		String cardName = TestConstants.CARD_NAME + randomWord;
+		String cvv =  TestConstants.CVV;
+		String profileLastName = null;
+		String defaultBillingProfileName = null;
+		//Login to application.
+		sfHomePage.loginToStoreFront(TestConstants.PC_USERNAME, password);
+		sfAutoshipCartPage = sfHomePage.clickOnAutoshipCartLink();
+		currentURL = sfAutoshipCartPage.getCurrentURL().toLowerCase();
+		s_assert.assertTrue(currentURL.contains(textToAssertInURL), "Expected URL should contain "+textToAssertInURL+" but actual on UI is "+currentURL);
+		sfCheckoutPage = sfAutoshipCartPage.clickOnPCPerksCheckoutButton();
+		sfCheckoutPage.clickSaveButton();
+		sfCheckoutPage.clickShippingDetailsNextbutton();
+		sfCheckoutPage.clickAddNewBillingProfileButton();
+		sfCheckoutPage.enterUserBillingDetails(cardType, cardNum, cardName, cvv);
+		sfCheckoutPage.clickBillingDetailsNextbutton();
+		profileLastName = sfCheckoutPage.getLastName(cardName);
+		defaultBillingProfileName = sfCheckoutPage.getDefaultBillingProfileName();
+		s_assert.assertTrue(defaultBillingProfileName.contains(profileLastName),"New Billing Profile Details do not get updated. Expected Profile Name : "+ cardName + ". Actual : " + defaultBillingProfileName);
+		// sfCheckoutPage.selectPCTermsAndConditionsChkBox();
+		sfCheckoutPage.clickConfirmAutoshipOrderButton();
+		sfCheckoutPage.clickOnAutoshipCartLink();
+		sfAutoshipCartPage.clickOnPCPerksCheckoutButton();
+		sfCheckoutPage.clickSaveButton();
+		sfCheckoutPage.clickShippingDetailsNextbutton();
+		defaultBillingProfileName = sfCheckoutPage.getDefaultBillingProfileName();
+		s_assert.assertTrue(defaultBillingProfileName.contains(profileLastName),"Billing details is not found as expected. Expected Profile Name : "+ cardName + ". Actual : " + defaultBillingProfileName);
+		s_assert.assertAll();
+	}
+
+	/***
+	 * qTest : TC-449 Consultant Autoship Status- Cancel CRP
+	 * Description : This test validates the Cancel CRP functionality for Consulatnt user.
+	 * 
+	 *     
+	 */
+	@Test(enabled=false)
+	public void testConsultantAutoshipStatusCancelCRP_449(){
+		//Login to application.
+		sfHomePage.loginToStoreFront(TestConstants.CONSULTANT_USERNAME, password);
+		sfHomePage.clickWelcomeDropdown();
+		sfAutoshipStatusPage = sfHomePage.navigateToAutoshipStatusPage();
+		s_assert.assertTrue(sfAutoshipStatusPage.getCurrentCRPStatus().contains("Enrolled"),"Consultant is not enrolled into CRP yet");
+		sfAutoshipStatusPage.clickCancelCRPLink();
+		sfAutoshipStatusPage.clickCancelCRPButton();
+		s_assert.assertTrue(sfAutoshipStatusPage.getActionSucccessMsgOnAutoshipStatusPage().contains(TestConstants.CANCELLED_CRP_ORDER_SUCCESS_MESSAGE),"Cancelled CRP Order Success Message is not present as expected");
+		s_assert.assertTrue(sfAutoshipStatusPage.isEnrollIntoCRPButtonPresent(),"Enroll in CRP Button is not present After cancelling CRP for consulatnt");
+
+		// Enrolling Consultant in CRP
+		sfAutoshipStatusPage.clickEnrollInCRPButton();
+		sfHomePage.addFirstProductForCRPCheckout();
+		sfCheckoutPage = sfHomePage.checkoutCRPBag();
+		sfCheckoutPage.clickSaveButton();
+		sfCheckoutPage.clickShippingDetailsNextbutton();
+		sfCheckoutPage.clickBillingDetailsNextbutton();
+		sfCheckoutPage.selectTermsAndConditionsCheckBoxForConsulatntCRP();
+		sfCheckoutPage.clickConfirmAutoshipOrderButton();
+		s_assert.assertTrue(sfCheckoutPage.isCRPOrderConfirmedSuccessMsgAppeared(),"CRP Order confirmed success messge is not appeared");
+		sfCheckoutPage.clickRodanAndFieldsLogo();
+		sfHomePage.clickWelcomeDropdown();
+		sfCheckoutPage.navigateToAutoshipStatusPage();
+		s_assert.assertTrue(sfAutoshipStatusPage.getCurrentCRPStatus().contains("Enrolled"),"Consultant does not get enrolled in CRP");
+		s_assert.assertAll();
+	}
+
+	/***
+	 * qTest : TC-405 Consultant Autoship Cart (CRP) Enrollment - CRP Reminder Banner
+	 * Description : This test validates the CRP enrollment from CRP Reminder banner
+	 *     
+	 */
+	@Test(enabled=false)
+	public void testConsultantAutoshipCartCRPEnrollmentCRPReminderBanner_405(){
+		String status = null;
+		String timeStamp = CommonUtils.getCurrentTimeStamp();
+		String socialInsuranceNumber = String.valueOf(CommonUtils.getRandomNum(100000000, 999999999));
+		String firstName = TestConstants.FIRST_NAME;
+		String lastName = TestConstants.LAST_NAME;
+		String emailID = TestConstants.FIRST_NAME+timeStamp+TestConstants.EMAIL_SUFFIX;
+		String addressLine1 = TestConstants.ADDRESS_LINE_1_US;
+		String addressLine2 = TestConstants.ADDRESS_LINE_2_US;
+		String city = TestConstants.CITY_US;
+		String state = TestConstants.STATE_US;
+		String postalCode = TestConstants.POSTAL_CODE_US;
+		String phoneNumber = TestConstants.PHONE_NUMBER;
+		String cardType = TestConstants.CARD_TYPE;
+		String cardNumber = TestConstants.CARD_NUMBER;
+		String cardName = TestConstants.CARD_NAME;
+		String CVV = TestConstants.CVV;
+		sfHomePage.clickEnrollNow();
+		sfHomePage.searchSponsor(TestConstants.SPONSOR);
+		s_assert.assertTrue(sfHomePage.isSponsorResultDisplayed(),"No result found after searching the sponsor with name "+TestConstants.SPONSOR);
+		sfHomePage.selectFirstSponsorFromList();
+		sfHomePage.enterConsultantEnrollmentDetails(firstName, lastName, emailID, password, socialInsuranceNumber);
+		sfHomePage.clickNextButton();
+		s_assert.assertFalse(sfHomePage.isNextButtonEnabledBeforeSelectingKit(), "Next Button is NOT disabled before selecting kit");
+		sfHomePage.chooseProductFromKitPage();
+		sfHomePage.clickNextButton();
+		sfHomePage.clickSaveButton();
+		sfHomePage.enterConsultantShippingDetails(firstName, lastName, addressLine1, addressLine2 ,city, state, postalCode, phoneNumber);
+		sfHomePage.clickUseAsEnteredButtonOnPopUp();
+		sfHomePage.clickShippingDetailsNextbutton();
+		sfHomePage.enterUserBillingDetails(cardType, cardNumber, cardName, CVV);
+		sfHomePage.clickBillingDetailsNextbutton();
+		sfHomePage.selectPoliciesAndProceduresChkBox();
+		sfHomePage.selectIAcknowledgeChkBox();
+		sfHomePage.selectTermsAndConditionsChkBox();
+		sfHomePage.selectConsentFormChkBox();
+		sfHomePage.clickBecomeAConsultant();
+		s_assert.assertTrue(sfHomePage.isEnrollemntSuccessfulMsgDisplayed(), "Expected 'ENROLLMENT SUCCESSFUL' msg has NOT displayed"); 
+		sfHomePage.clickRodanAndFieldsLogo();
+		// Click Set up CRP from Banner
+		sfHomePage.clickSetUpCRP();
+		sfHomePage.addFirstProductForCRPCheckout();
+		sfCheckoutPage = sfHomePage.checkoutCRPBag();
+		sfCheckoutPage.clickSaveButton();
+		sfCheckoutPage.clickShippingDetailsNextbutton();
+		sfCheckoutPage.clickBillingDetailsNextbutton();
+		sfCheckoutPage.selectTermsAndConditionsCheckBoxForConsulatntCRP();
+		sfCheckoutPage.clickConfirmAutoshipOrderButton();
+		s_assert.assertTrue(sfCheckoutPage.isCRPOrderConfirmedSuccessMsgAppeared(),"CRP Order confirmed success messge is not appeared");
+		sfCheckoutPage.clickRodanAndFieldsLogo();
+		sfCheckoutPage.clickWelcomeDropdown();
+		sfOrdersPage = sfCheckoutPage.navigateToOrdersPage();
+		s_assert.assertTrue(sfOrdersPage.isAutoshipOrderHistoryTableAppeared(),"Autoship Order history Table is not present on orders page");
+		status = sfOrdersPage.getStatusOfFirstOrderPresentInAutoshipOrderHistory();
+		s_assert.assertTrue(status.contains("Active"),"Status of CRP is not found as expected. Expected : Active. Actual : "+status);
+		s_assert.assertAll();
+	}
+
+	/***
+	 * qTest : TC-539 CRP Replenishment Order confirmation
+	 * 
+	 * Description : This test validates CRP order confirmation email
+	 * when a consultant enroll in CRP from crp banner.
+	 *     
+	 */
+	@Test(enabled=false)
+	public void testEnrollInCRPAfterConsultantEnrollment_539(){
+		String timeStamp = CommonUtils.getCurrentTimeStamp();
+		String socialInsuranceNumber = String.valueOf(CommonUtils.getRandomNum(100000000, 999999999));
+		String firstName = TestConstants.FIRST_NAME;
+		String lastName = TestConstants.LAST_NAME;
+		String emailID = TestConstants.FIRST_NAME+timeStamp+TestConstants.EMAIL_SUFFIX;
+		String addressLine1 = TestConstants.ADDRESS_LINE_1_US;
+		String addressLine2 = TestConstants.ADDRESS_LINE_2_US;
+		String city = TestConstants.CITY_US;
+		String state = TestConstants.STATE_US;
+		String postalCode = TestConstants.POSTAL_CODE_US;
+		String phoneNumber = TestConstants.PHONE_NUMBER;
+		String cardType = TestConstants.CARD_TYPE;
+		String cardNumber = TestConstants.CARD_NUMBER;
+		String cardName = TestConstants.CARD_NAME;
+		String CVV = TestConstants.CVV;
+		String status = null;
+
+		//Enroll a consultant.
+		sfHomePage.clickEnrollNow();
+		sfHomePage.searchSponsor(TestConstants.SPONSOR);
+		s_assert.assertTrue(sfHomePage.isSponsorResultDisplayed(),"No result found after searching the sponsor with name "+TestConstants.SPONSOR);
+		sfHomePage.selectFirstSponsorFromList();
+		sfHomePage.enterConsultantEnrollmentDetails(firstName, lastName, emailID, password, socialInsuranceNumber);
+		sfHomePage.clickNextButton();
+		s_assert.assertFalse(sfHomePage.isNextButtonEnabledBeforeSelectingKit(), "Next Button is NOT disabled before selecting kit");
+		sfHomePage.chooseProductFromKitPage();
+		sfHomePage.clickNextButton();
+		sfHomePage.clickSaveButton();
+		sfHomePage.enterConsultantShippingDetails(firstName, lastName, addressLine1, addressLine2 ,city, state, postalCode, phoneNumber);
+		sfHomePage.clickUseAsEnteredButtonOnPopUp();
+		sfHomePage.clickShippingDetailsNextbutton();
+		sfHomePage.enterUserBillingDetails(cardType, cardNumber, cardName, CVV);
+		sfHomePage.clickBillingDetailsNextbutton();
+		sfHomePage.selectPoliciesAndProceduresChkBox();
+		sfHomePage.selectIAcknowledgeChkBox();
+		sfHomePage.selectTermsAndConditionsChkBox();
+		sfHomePage.selectConsentFormChkBox();
+		sfHomePage.clickBecomeAConsultant();
+		s_assert.assertTrue(sfHomePage.isEnrollemntSuccessfulMsgDisplayed(), "Expected 'ENROLLMENT SUCCESSFUL' msg has NOT displayed"); 
+		sfHomePage.clickRodanAndFieldsLogo();
+		//Enroll consultant in CRP
+		sfHomePage.clickSetUpCRP();
+		sfHomePage.addFirstProductForCRPCheckout();
+		sfCheckoutPage = sfHomePage.checkoutCRPBag();
+		sfCheckoutPage.clickSaveButton();
+		sfCheckoutPage.clickShippingDetailsNextbutton();
+		sfCheckoutPage.clickBillingDetailsNextbutton();
+		sfCheckoutPage.selectIAcknowledgePCChkBox();
+		sfCheckoutPage.clickConfirmAutoshipOrderButton();
+		s_assert.assertTrue(sfCheckoutPage.isCRPOrderConfirmedSuccessMsgAppeared(),"CRP order confirmation text not present.");
+		sfHomePage = sfCheckoutPage.clickRodanAndFieldsLogo();
+		sfHomePage.clickWelcomeDropdown();
+		sfOrdersPage = sfHomePage.navigateToOrdersPage();
+		//Verify autoship order details.
+		s_assert.assertTrue(sfOrdersPage.isAutoshipOrderHistoryTableAppeared(),"Autoship Order history Table is not present on orders page");
+		status = sfOrdersPage.getStatusOfFirstOrderPresentInAutoshipOrderHistory();
+		s_assert.assertTrue(status.contains("Active"),"Status of CRP is not found as expected. Expected : Active. Actual : "+status);
+		s_assert.assertAll();
+	}
+
+	/***
+	 * qTest : TC-448 Consultant Autoship Status
+	 * 
+	 * Description : This tests validate the tag at autoship status page
+	 *     
+	 */
+	@Test(enabled=true)
+	public void testConsultantAutoshipStatus_448(){
+		String currentCRPStatus = "Current CRP Status";
+		String nextBillAndShipDate = "Next Bill & Ship Date";
+		String currentPulseStatus = "Current Subscription Status";
+		sfHomePage.loginToStoreFront(TestConstants.CONSULTANT_WITH_CRP_USERNAME, password);
+		sfHomePage.clickWelcomeDropdown();
+		sfAutoshipStatusPage = sfHomePage.navigateToAutoshipStatusPage();
+		s_assert.assertTrue(sfAutoshipStatusPage.isTextVisible(currentCRPStatus), currentCRPStatus+" tag is not present for CRP");
+		s_assert.assertTrue(sfAutoshipStatusPage.isTextVisible(nextBillAndShipDate), nextBillAndShipDate+" tag is not present for CRP");
+		s_assert.assertTrue(sfAutoshipStatusPage.isTextVisible(currentPulseStatus), currentPulseStatus+" tag is not present for pulse");
+		s_assert.assertTrue(sfAutoshipStatusPage.isCancelMyCrpLinkVisible(),"Cancel My CRP link is not visible");
+		s_assert.assertAll();
+	}
+
+	/***
+	 * qTest : TC-455 Pending Autoship Details- Schedule Date - 30 Days
+	 * 
+	 * Description : This tests delay autoship for PC user by 30 days.
+	 * 
+	 *     
+	 */
+	@Test(enabled=false)
+	public void testDelayPCAutoshipBy30Days_455(){
+		//same as TC-440
+	}
+
+	/***
+	 * qTest : TC-456 Pending Autoship Details- Schedule Date - 60 Days
+	 * 
+	 * Description : This tests delay autoship for PC user by 60 days.
+	 * 
+	 *     
+	 */
+	@Test(enabled=false)
+	public void testDelayPCAutoshipBy60Days_456(){
+		// same as TC-441
+	}
 }

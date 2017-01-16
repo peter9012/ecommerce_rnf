@@ -22,12 +22,14 @@ public class PCEnrollmentTest extends StoreFrontWebsiteBaseTest{
 	String cardNumber = null;
 	String cardName = null;
 	String CVV = null;
-	String timeStamp; 
+	String timeStamp=null;
+	String randomWords = null;
 
 	public PCEnrollmentTest() {
 		timeStamp = CommonUtils.getCurrentTimeStamp();
+		randomWords = CommonUtils.getRandomWord(5);
 		firstName=TestConstants.PC_FIRST_NAME;
-		lastName = TestConstants.LAST_NAME;
+		lastName = TestConstants.LAST_NAME+randomWords;
 		email = firstName+timeStamp+TestConstants.EMAIL_SUFFIX;
 		addressLine1 = TestConstants.ADDRESS_LINE_1_US;
 		addressLine2 = TestConstants.ADDRESS_LINE_2_US;

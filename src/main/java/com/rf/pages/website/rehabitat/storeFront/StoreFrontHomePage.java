@@ -38,7 +38,6 @@ public class StoreFrontHomePage extends StoreFrontWebsiteBasePage{
 	private final By CLOSE_ICON_MEMBER_DETAIL_POPUP_LOC = By.xpath("//button[@class='close']");
 	private final By BILLING_ADDRESS_DD_LOC= By.id("default-address");
 	private final By BILLING_ADDRESS_OPTION_VALUE_LOC= By.xpath("//select[@id='default-address']//option[2]");
-	private final By SAVE_BUTTON_LOC = By.id("deliveryAccountSubmit");
 	private final By BIG_BUSNINESS_KIT_PAGE_LOC = By.xpath("//input[@id='ENROLL_KIT_0002']");
 	private final By PERSONAL_RESULTS_KIT_PAGE_LOC = By.xpath("//input[@id='ENROLL_KIT_0003']");
 	private final By FIRST_NAME_FOR_REGISTRATION_LOC = By.id("register.firstName");
@@ -77,6 +76,10 @@ public class StoreFrontHomePage extends StoreFrontWebsiteBasePage{
 	private final By LOGIN_OR_REGISTER_TXT_LOC = By.xpath("//h1[contains(text(),'LOG IN OR REGISTER') or contains(text(),'Log in') or contains(text(),'Log in or create an account')]");
 	private final By EMAIL_AVAILABLE_MSG_LOC = By.xpath("//div[@class='emailbox-available']//div[contains(text(),'Available')]");
 	private final By SPONSOR_NAME_LINK_LOC = By.xpath("//div[contains(@class,'findAConsultant')]/a[contains(@href,'/pws/') and contains(@href,'about-me')]");
+	private final By FIRST_PRODUCT_ADD_TO_CRP_BTN_LOC = By.xpath("//div[@id='product_category']/following-sibling::div/descendant::span[text()='Add to CRP'][1]/..");
+	private final By CRP_CHECKOUT_BTN_LOC = By.xpath("//button[contains(text(),'Checkout')]");
+	private final By SET_UP_CRP_BTN_LOC = By.xpath("//a[contains(text(),'SET UP CRP')]");
+	private final By SET_UP_CRP_LINK_LOC = By.xpath("//a[contains(text(),'SET UP CRP')]");
 
 	private String viewDetailsLinkLoc = "//div[contains(@class,'enrollmentKit-wrapper')]/descendant::a[contains(text(),'View Details')][%s]";
 	private String expandedKitDescriptionLoc = "//div[contains(@class,'enrollmentKit-wrapper')]/div[%s]//div[@class='detailed-description']";
@@ -422,21 +425,6 @@ public class StoreFrontHomePage extends StoreFrontWebsiteBasePage{
 		logger.info("Choose "+kitName.toUpperCase()+" product at kit page");
 		return this;
 	}
-
-	/***
-	 * This method click the next button
-	 * 
-	 * @param
-	 * @return store front Home page object
-	 * 
-	 */
-	public StoreFrontHomePage clickSaveButton(){
-		driver.pauseExecutionFor(3000);
-		driver.clickByJS(RFWebsiteDriver.driver,driver.findElement(SAVE_BUTTON_LOC));
-		logger.info("Save button clicked");
-		return this;
-	}
-
 
 	/***
 	 * This method get the confirmation message of consultant enrollment
@@ -904,30 +892,70 @@ public class StoreFrontHomePage extends StoreFrontWebsiteBasePage{
 		driver.get(URL);
 		return this;
 	}
-	
+
 	/***
-	  * This method validates the 'Available' message for email when enter prefix
-	  * 
-	  * @param
-	  * @return boolean
-	  * 
-	  */
-	 public boolean isEmailAvailableMsgAppearedForPWS(){
-	  return driver.isElementVisible(EMAIL_AVAILABLE_MSG_LOC);
-	 
-	 }
-	 
-	 /***
-	  * This method clicked the sponsor link from the top
-	  * 
-	  * @param
-	  * @return store front About me page object
-	  * 
-	  */
-	 public StoreFrontAboutMePage clickSponsorNameLink(){
-	  driver.click(SPONSOR_NAME_LINK_LOC);
-	  logger.info("Sponsor name link clicked");
-	  return new StoreFrontAboutMePage(driver);
-	 }
+	 * This method validates the 'Available' message for email when enter prefix
+	 * 
+	 * @param
+	 * @return boolean
+	 * 
+	 */
+	public boolean isEmailAvailableMsgAppearedForPWS(){
+		return driver.isElementVisible(EMAIL_AVAILABLE_MSG_LOC);
+
+	}
+
+	/***
+	 * This method clicked the sponsor link from the top
+	 * 
+	 * @param
+	 * @return store front About me page object
+	 * 
+	 */
+	public StoreFrontAboutMePage clickSponsorNameLink(){
+		driver.click(SPONSOR_NAME_LINK_LOC);
+		logger.info("Sponsor name link clicked");
+		return new StoreFrontAboutMePage(driver);
+	}
+
+	/***
+	 * This method clicked the Add to CRP btton for first product
+	 * 
+	 * @param
+	 * @return store front home page object
+	 * 
+	 */
+	public StoreFrontHomePage addFirstProductForCRPCheckout(){
+		driver.click(FIRST_PRODUCT_ADD_TO_CRP_BTN_LOC);
+		logger.info("Clicked Add to CRP button of First Product");
+		return this;
+	}
+
+	/***
+	 * This method clicked the checkout button of CRP bag
+	 * 
+	 * @param
+	 * @return store front checkout page
+	 * 
+	 */
+	public StoreFrontCheckoutPage checkoutCRPBag(){
+		driver.click(CRP_CHECKOUT_BTN_LOC);
+		logger.info("Clicked CRP checkout button");
+		return new StoreFrontCheckoutPage(driver);
+	}
+
+	/***
+	 * This method clicked the Set up CRP button from Reminder banner
+	 * 
+	 * @param
+	 * @return store front home page
+	 * 
+	 */
+	public StoreFrontHomePage clickSetUpCRP(){
+		driver.click(SET_UP_CRP_BTN_LOC);
+		logger.info("Clicked Set up CRP button from Reminder banner");
+		driver.waitForPageLoad();
+		return this;
+	}
 
 }

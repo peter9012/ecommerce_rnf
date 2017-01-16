@@ -35,6 +35,14 @@ public class StoreFrontAutoshipStatusPage extends StoreFrontWebsiteBasePage{
 	private final By SUBMIT_QUERY_BUTTON = By.xpath("//*[@id='command']/input[@type='submit']");
 	private final By VIEW_DETAILS_LINK_AUTOSHIP_STATUS_LOC = By.xpath("//a[text()='view details']");
 	private final By PC_PERKS_STATUS_ON_AUTOSHIP_STATUS_PAGE = By.xpath("//div[contains(text(),'Current PC Perks Status')]/following::div[1]");
+	private final By SUBSCRIBE_TO_PULSE_BTN_LOC = By.id("asmrunnowconfirmsubmit");
+	private final By CANCEL_PULSE_SUBSCRIPTION_BTN_LOC = By.xpath("//a[contains(text(),'Cancel my Pulse subscription')]");
+	private static final By ENROLL_IN_CRP_BTN_LOC = By.xpath("//input[@value='Enroll In CRP']");
+	private static final By CANCEL_MY_CRP_LINK_LOC = By.xpath("//a[@id='cancelCRPStatus']");
+	private static final By CANCEL_CRP_BUTTON_LOC = By.xpath("//input[@value='CANCEL CRP']");
+	private static final By ACTION_SUCCESS_MSG_ON_AUTOSHIP_STATUS_PAGE_LOC = By.xpath("//div[@class='alert alert-info alert-dismissable']"); 
+	private static final By CRP_CURRENT_STATUS_LOC = By.xpath("//div[contains(text(),'Current CRP Status')]/following-sibling::div[1]");
+	private final By CANCEL_MY_CRP_LOC = By.id("cancelCRPStatus");
 
 	private String socialMediaIconLoc = "//div[@class='container']//a[contains(@href,'%s')]";
 
@@ -439,4 +447,114 @@ public class StoreFrontAutoshipStatusPage extends StoreFrontWebsiteBasePage{
 		}
 	}
 
+	/***
+	 * This method clicks on the subscribe to pulse button
+	 * @return
+	 */
+	public StoreFrontAutoshipStatusPage clickSubscribeToPulseBtn(){
+		driver.click(SUBSCRIBE_TO_PULSE_BTN_LOC);
+		logger.info("Subscribe to pulse btn clicked");
+		return this;
+	}
+
+	/***
+	 * This method verifies whether subscribe to pulse button
+	 * is dislpayed or NOT
+	 * @return
+	 */
+	public boolean isSubscribeToPulseBtnDisplayed(){
+		return driver.isElementVisible(SUBSCRIBE_TO_PULSE_BTN_LOC);
+	}
+
+	/***
+	 * This method clicks on the cancel pulse subscription btn
+	 */
+	public StoreFrontAutoshipStatusPage clickCancelPulseSubscription(){
+		driver.click(CANCEL_PULSE_SUBSCRIPTION_BTN_LOC);
+		driver.waitForLoadingImageToDisappear();
+		driver.waitForPageLoad();
+		return this;
+	}
+
+	/***
+	 * This method click on Enroll in CRP  Button on 
+	 * autoship status page
+	 * @param
+	 * @return
+	 * 
+	 */
+	public void clickEnrollInCRPButton(){
+		driver.click(ENROLL_IN_CRP_BTN_LOC);
+		logger.info("Enroll in CRP clicked on autoship status page");
+	}
+
+	/***
+	 * This method click on cancel CRP Link on 
+	 * autoship status page
+	 * @param
+	 * @return store front autoship status page object
+	 * 
+	 */
+	public StoreFrontAutoshipCartPage clickCancelCRPLink(){
+		driver.click(CANCEL_MY_CRP_LINK_LOC);
+		logger.info("Cancel my CRP link clicked on autoship status page");
+		return new StoreFrontAutoshipCartPage(driver);
+	}
+
+	/***
+	 * This method click on confirm cancel CRP button on 
+	 * autoship status page
+	 * @param
+	 * @return store front autoship status page object
+	 * 
+	 */
+	public StoreFrontAutoshipCartPage clickCancelCRPButton(){
+		driver.click(CANCEL_CRP_BUTTON_LOC);
+		logger.info("Cancel CRP button clicked on autoship status page");
+		return new StoreFrontAutoshipCartPage(driver);
+	}
+
+	/***
+	 * This method get the success message for actions performed
+	 *
+	 * @param
+	 * @return String
+	 * 
+	 */
+	public String getActionSucccessMsgOnAutoshipStatusPage(){
+		return driver.getText(ACTION_SUCCESS_MSG_ON_AUTOSHIP_STATUS_PAGE_LOC);
+	}
+
+	/***
+	 * This method get the current crp status
+	 *
+	 * @param
+	 * @return String
+	 * 
+	 */
+	public String getCurrentCRPStatus(){
+		return driver.getText(CRP_CURRENT_STATUS_LOC).trim();
+	}
+
+	/***
+	 * This method validates the presence of Enroll into CRP button
+	 *
+	 * @param
+	 * @return boolean
+	 * 
+	 */
+	public boolean isEnrollIntoCRPButtonPresent(){
+		return driver.isElementVisible(ENROLL_IN_CRP_BTN_LOC);
+	}
+
+	/***
+	 * This method validates next Bill ship date on autoship status page
+	 * 
+	 * @param
+	 * @return boolean value
+	 * 
+	 */
+	public boolean isCancelMyCrpLinkVisible(){
+		return driver.isElementVisible(CANCEL_MY_CRP_LOC);
+	}
 }

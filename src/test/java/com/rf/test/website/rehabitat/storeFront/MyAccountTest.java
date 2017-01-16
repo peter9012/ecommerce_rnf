@@ -1114,4 +1114,30 @@ public class MyAccountTest extends StoreFrontWebsiteBaseTest{
 		s_assert.assertTrue(pcPerksStatus.equalsIgnoreCase(expectedPCPerksStatus),"PC Perks status expected on autoship status page "+expectedPCPerksStatus+" but actual in UI"+pcPerksStatus);
 		s_assert.assertAll();
 	}
+	
+	/***
+	 * qtest: TC-277 Consultant Autoship Status- Subscribe to Pulse (First Time Pulse Enrollment)
+	 * Description: This method subscribe the consultant with pulse and also cancels the same
+	 */	
+	@Test(enabled=false)//TODO
+	public void testConsultantFirstTimePulseEnrollment_277(){
+		String prefix = TestConstants.FIRST_NAME+CommonUtils.getCurrentTimeStamp();
+		sfHomePage.loginToStoreFront(TestConstants.CONSULTANT_EMAIL,password);
+		sfHomePage.clickWelcomeDropdown();
+		sfAutoshipStatusPage = sfHomePage.navigateToAutoshipStatusPage();
+		sfAutoshipStatusPage.clickSubscribeToPulseBtn();
+		sfAutoshipStatusPage.enterAvailablePrefix(prefix);
+		sfAutoshipStatusPage.clickNextBtn();
+		sfCheckoutPage = sfAutoshipStatusPage.clickConfirmSubscription().checkTheConfirmSubscriptionChkBoxAndSubscribe();
+		sfCheckoutPage.clickUseSavedCardBtn().clickBillingDetailsNextbutton().clickPlaceOrderButton();
+		s_assert.assertTrue(sfCheckoutPage.isPopUpForTermsAndConditionsCheckboxDisplayed(), "validation popup for terms and conditions not displayed");
+		sfCheckoutPage.closePopUp();
+		sfCheckoutPage.selectTermsAndConditionsChkBox().clickPlaceOrderButton();
+		s_assert.assertTrue(sfCheckoutPage.isOrderPlacedSuccessfully(),"Order is Not placed successfully");
+		sfHomePage.clickWelcomeDropdown();
+		sfHomePage.navigateToAutoshipStatusPage();
+		sfAutoshipStatusPage.clickCancelPulseSubscription().clickConfirmSubscription();
+		s_assert.assertTrue(sfAutoshipStatusPage.isSubscribeToPulseBtnDisplayed(), "Pulse subscription is NOT cancelled");
+		s_assert.assertAll();
+	}	
 }

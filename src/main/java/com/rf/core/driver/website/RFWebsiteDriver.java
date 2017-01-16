@@ -390,6 +390,31 @@ public class RFWebsiteDriver implements RFDriver,WebDriver {
 		}
 	}
 
+	public void waitForTokenizing() {
+		int timeout = 90;
+		turnOffImplicitWaits();
+		boolean isElementFound = false;
+		for(int i=1;i<=timeout;i++){  
+			try{
+				if(driver.findElements(By.xpath("//div[@class='card-icons']//span[not(contains(@class,'disabled'))]")).size()==0){
+					pauseExecutionFor(1000);
+					logger.info("waiting...");
+					continue;
+				}else{
+					logger.info("wait over,element found");
+					isElementFound =true;
+					turnOnImplicitWaits();
+					pauseExecutionFor(1000);
+					break;
+				}   
+			}catch(Exception e){
+				continue;
+			}
+		}
+		if(isElementFound ==false)
+			logger.info("ELEMENT NOT FOUND");  
+	}
+
 	public void waitForStorfrontLegacyLoadingImageToDisappear(){
 		turnOffImplicitWaits();
 		By locator = By.xpath("//div[contains(@id,'UpdateProgress')][contains(@style,'display: block;')]");
@@ -686,7 +711,7 @@ public class RFWebsiteDriver implements RFDriver,WebDriver {
 			return false;
 		}
 	}
-	
+
 	/**
 	 * Checks if element is visible Purpose:
 	 * 

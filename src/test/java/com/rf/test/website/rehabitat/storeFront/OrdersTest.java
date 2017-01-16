@@ -886,73 +886,83 @@ public class OrdersTest extends StoreFrontWebsiteBaseTest{
 
 	/***
 	 * qTest : TC-409 Order Confirmation for AdHoc Orders
-	 * Description : //TODO
-	 * 
-	 *     
+	 * Description : This test case validates SubTotal, Grand Total, Shipping charges, Item name, product qty, SV, 
+	 * shipping method, Shipping profile name, Billing profile name, CC details
+	 * at order confirmation page
+	 *  
 	 */
-	@Test(enabled=false)//TODO
+	@Test(enabled=false)//TODO assertion for SV & GST
 	public void testOrderConfirmationForAdhocOrders_409(){
-		String productName=null;
-		String productQuantity=null;
-		String productPrice=null;
+		String productName="Items in Order";
+		String productQuantity="Qty";
+		String unitPrice="Unit Price";
+		String total = "Total";
 		String subTotal=null;
 		String orderTotal=null;
 		String shippingProfile=null;
 		String shippingCharges=null;
-		String shippingMethodAfterOrderPlaced=null;
+		String shippingMethodBeforeOrderPlaced=null;
 		String ccfourDigits  = null;
 		String ccExpiryDate = null;
 		String billingProfileName  = null;
-
+		String billingProfileLastName = null;
+		String text_Subtotal = "Subtotal";
+		String text_Shipping = "Shipping";
+		String text_GrandTotal = "GRAND TOTAL";
+		String text_Delivery = "Delivery";
+		String text_OrderTotal = "Order Total";
 		String shippingProfileFromOrderConfirmationPage = null;
 		String shippingMethodFromOrderConfirmationPage = null;
 		String billingProfileNameFromOrderConfirmationPage = null;
 		String lastFourDigitOfCCFromOrderConfirmationPage = null;
 		String expDateOfCCFromOrderConfirmationPage = null;
-		String totalChhargesFromOrderConfirmationPage = null;
-
+		String grandTotatAtOrderConfirmationPage = null;
+		String shippingChargeAtOrderConfirmationPage = null;
+		String subTotalAtOrderConfirmationPage = null;
 		sfHomePage.loginToStoreFront(TestConstants.CONSULTANT_EMAIL, password);
 		sfShopSkinCarePage = sfHomePage.clickAllProducts();
 		sfShopSkinCarePage.selectFirstProduct();
 		sfCartPage=sfShopSkinCarePage.checkoutTheCartFromPopUp();
-
-		productName = sfCartPage.getProductName("1");
-		productQuantity = sfCartPage.getQuantityOfProductFromCart("1");
-		productPrice = sfCartPage.getProductPrice("1");
-		subTotal = sfCartPage.getSubtotalofItems();
-		orderTotal = sfCartPage.getOrderTotal();
-
 		sfCheckoutPage=sfCartPage.checkoutTheCart();
 		sfCheckoutPage.clickSaveButton();
-
+		shippingMethodBeforeOrderPlaced =  sfCheckoutPage.getSelectedShippingMethodName();
+		shippingProfile = sfCheckoutPage.getDefaultShippingAddressNameAtCheckoutPage();
 		sfCheckoutPage.clickShippingDetailsNextbutton();
 		sfCheckoutPage.clickAddNewBillingProfileButton();
 		sfCheckoutPage.enterUserBillingDetails(TestConstants.CARD_TYPE, TestConstants.CARD_NUMBER, TestConstants.CARD_NAME, TestConstants.CVV);
-		sfCheckoutPage.checkUseMyDeliveryAddressChkBox();
 		sfCheckoutPage.clickBillingDetailsNextbutton();
-		shippingProfile = sfCheckoutPage.getDefaultShippingAddressNameAtCheckoutPage();
-		shippingCharges = sfCheckoutPage.getDeliveryChargesAtOrderReviewPage();
-		shippingMethodAfterOrderPlaced =  sfCheckoutPage.getSelectedShippingMethodName();
+		billingProfileName = sfCheckoutPage.getBillingProfileName();
+		billingProfileLastName = sfCheckoutPage.getLastName(billingProfileName);
+		sfCheckoutPage.getCardDetailsFromBillingInfo(billingProfileLastName);
 		ccfourDigits = sfCheckoutPage.getLastFourDigitsOfCardNumberInBillingDetails();
 		ccExpiryDate = sfCheckoutPage.getExpiryDateOfCardNumberInBillingDetails();
-		billingProfileName = sfCheckoutPage.getBillingProfileDetailsFromBillingProfile();
-		sfCheckoutPage.selectTermsAndConditionsChkBox();
+		shippingCharges = sfCheckoutPage.getChargesAccordingToLabelAtOrderReviewPage(text_Delivery);
+		orderTotal = sfCheckoutPage.getChargesAccordingToLabelAtOrderReviewPage(text_OrderTotal);
+		subTotal = sfCheckoutPage.getChargesAccordingToLabelAtOrderReviewPage(text_Subtotal);
+		sfCheckoutPage.selectPCTermsAndConditionsChkBox();
 		sfCheckoutPage.clickPlaceOrderButton();
 		shippingProfileFromOrderConfirmationPage = sfCheckoutPage.getShippingProfileFromConfirmationPage();
 		shippingMethodFromOrderConfirmationPage = sfCheckoutPage.getShippingMethodAfterPlacedOrder();
-		billingProfileNameFromOrderConfirmationPage = sfCheckoutPage.getBillingProfileDetailsFromBillingProfile();
+		billingProfileNameFromOrderConfirmationPage = sfCheckoutPage.getBillingProfileAfterPlacedOrder();
 		lastFourDigitOfCCFromOrderConfirmationPage = sfCheckoutPage.getLastFourNumbersOfBillingDetailsOnConFirmationPage();
 		expDateOfCCFromOrderConfirmationPage = sfCheckoutPage.getExpiryDateOfCardNumberInBillingDetails();
-		totalChhargesFromOrderConfirmationPage = sfCheckoutPage.getTotalChargeOnConFirmationPage();
-
+		grandTotatAtOrderConfirmationPage = sfCheckoutPage.getChargesAccordingToLabelAtOrderConfirmationPage(text_GrandTotal);
+		shippingChargeAtOrderConfirmationPage = sfCheckoutPage.getChargesAccordingToLabelAtOrderConfirmationPage(text_Shipping);
+		subTotalAtOrderConfirmationPage = sfCheckoutPage.getChargesAccordingToLabelAtOrderConfirmationPage(text_Subtotal);
 		s_assert.assertTrue(sfCheckoutPage.isOrderPlacedSuccessfully(),"Order not placed. Thank you message is not displayed");
 		s_assert.assertTrue(sfCheckoutPage.isTextPresent("Order #"),"Order Number is not present on the confirmation page");
-		s_assert.assertTrue(shippingProfileFromOrderConfirmationPage.equals(shippingProfile), "Shipping Profile is not matching on confirmation page. Expected is :"+shippingProfile+" But found is :"+shippingProfileFromOrderConfirmationPage);
-		s_assert.assertTrue(shippingMethodFromOrderConfirmationPage.equals(shippingMethodAfterOrderPlaced), "Shipping Method is not matching on confirmation page. Expected is :"+shippingMethodAfterOrderPlaced+" But found is :"+shippingMethodFromOrderConfirmationPage);
-		s_assert.assertTrue(billingProfileNameFromOrderConfirmationPage.equals(billingProfileName),"Billing Profile is not matching on confirmation page. Expected is :"+billingProfileName+" But found is :"+billingProfileNameFromOrderConfirmationPage);
+		s_assert.assertTrue(shippingProfile.contains(shippingProfileFromOrderConfirmationPage), "Shipping Profile is not matching on confirmation page. Expected is :"+shippingProfile+" But found is :"+shippingProfileFromOrderConfirmationPage);
+		s_assert.assertTrue(shippingMethodBeforeOrderPlaced.contains(shippingMethodFromOrderConfirmationPage), "Shipping Method is not matching on confirmation page. Expected is :"+shippingMethodBeforeOrderPlaced+" But found is :"+shippingMethodFromOrderConfirmationPage);
+		s_assert.assertTrue(billingProfileNameFromOrderConfirmationPage.contains(billingProfileLastName),"Billing Profile is not matching on confirmation page. Expected is :"+billingProfileLastName+" But found is :"+billingProfileNameFromOrderConfirmationPage);
 		s_assert.assertTrue(lastFourDigitOfCCFromOrderConfirmationPage.equals(ccfourDigits), "Credit Card Last 4 digits are not matching. Expected is :"+ccfourDigits+" But found is :"+lastFourDigitOfCCFromOrderConfirmationPage);
 		s_assert.assertTrue(expDateOfCCFromOrderConfirmationPage.equals(ccExpiryDate), "Credit Card Expiry Date is not matching. Expected is :"+ccExpiryDate+" But found is :"+expDateOfCCFromOrderConfirmationPage);
-		s_assert.assertTrue(totalChhargesFromOrderConfirmationPage.equals(orderTotal),"Order total is not matching. Expected is:"+orderTotal+"But found is "+totalChhargesFromOrderConfirmationPage);
+		s_assert.assertTrue(grandTotatAtOrderConfirmationPage.equals(orderTotal),"Order total is not matching. Expected is:"+orderTotal+"But found is "+grandTotatAtOrderConfirmationPage);
+		s_assert.assertTrue(shippingChargeAtOrderConfirmationPage.equals(shippingCharges),"Shipping charge is not matching. Expected is:"+shippingCharges+"But found is "+shippingChargeAtOrderConfirmationPage);
+		s_assert.assertTrue(subTotalAtOrderConfirmationPage.equals(subTotal),"Subtotal is not matching. Expected is:"+subTotal+"But found is "+subTotalAtOrderConfirmationPage);
+		s_assert.assertTrue(sfCheckoutPage.isTagPresentInOrderItemsHeading(productQuantity), productQuantity+" tag is not present at order confirmation page");
+		s_assert.assertTrue(sfCheckoutPage.isTagPresentInOrderItemsHeading(productName), productName+" tag is not present at order confirmation page");
+		s_assert.assertTrue(sfCheckoutPage.isTagPresentInOrderItemsHeading(unitPrice), unitPrice+" tag is not present at order confirmation page");
+		s_assert.assertTrue(sfCheckoutPage.isTagPresentInOrderItemsHeading(total), total+" tag is not present at order confirmation page");
 		s_assert.assertAll();
 	}
 
@@ -1031,55 +1041,10 @@ public class OrdersTest extends StoreFrontWebsiteBaseTest{
 	 * 
 	 *     
 	 */
-	@Test(enabled=false)//TODO
+	@Test(enabled=false)
 	public void testReviewAndPlaceOrder_470(){
-		String cardType = TestConstants.CARD_TYPE;
-		String cardNumber = TestConstants.CARD_NUMBER;
-		String cardName = TestConstants.CARD_NAME;
-		String CVV = TestConstants.CVV;
-		String itemCodeFromCart = null;
-		String quantityOfFirstProductFromCart = null;
-		String productNameFromCart = null;
-		String subTotalFromCart = null;
-		String deliveryChargesFromCart = null;
-		int totalNoOfItemsFromCart = 0;
-		String itemCodeFromCheckout = null;
-		String quantityOfFirstProductFromCheckout = null;
-		String productNameFromCheckout = null;
-		String subTotalFromCheckout = null;
-		String deliveryChargesFromCheckout = null;
-		int totalNoOfItemsFromCheckout = 0;
-		sfHomePage.loginToStoreFront(TestConstants.CONSULTANT_EMAIL, password);
-		sfShopSkinCarePage = sfHomePage.clickAllProducts();
-		sfShopSkinCarePage.selectFirstProduct();
-		sfCartPage = sfShopSkinCarePage.checkoutTheCartFromPopUp();
-		totalNoOfItemsFromCart = sfCartPage.getTotalNoOfItemsInCart();
-		itemCodeFromCart = sfCartPage.getItemCode("1");
-		quantityOfFirstProductFromCart = sfCartPage.getQuantityOfProductFromCart("1");
-		productNameFromCart = sfCartPage.getProductName("1");
-		subTotalFromCart = sfCartPage.getSubtotalofItems();
-		deliveryChargesFromCart = sfCartPage.getDeliveryCharges();
-		sfCheckoutPage = sfCartPage.checkoutTheCart();
-		sfCheckoutPage.clickSaveButton();
-		sfCheckoutPage.clickShippingDetailsNextbutton();
-		sfCheckoutPage.clickAddNewBillingProfileButton();
-		sfCheckoutPage.enterUserBillingDetails(cardType, cardNumber, cardName, CVV);
-		sfCheckoutPage.checkUseMyDeliveryAddressChkBox();
-		sfCheckoutPage.clickBillingDetailsNextbutton();
-		totalNoOfItemsFromCheckout = sfCheckoutPage.getTotalNoOfItemsAtOrderReviewPage();
-		productNameFromCheckout = sfCheckoutPage.getProductNameAtOrderReviewPage("1");
-		subTotalFromCheckout = sfCheckoutPage.getSubtotalofItemsAtOrderReviewPage();
-		deliveryChargesFromCheckout = sfCheckoutPage.getDeliveryChargesAtOrderReviewPage();
-		s_assert.assertTrue(totalNoOfItemsFromCheckout==totalNoOfItemsFromCart, "Expected total no of item at order review page is "+totalNoOfItemsFromCart+"Actual on UI "+totalNoOfItemsFromCheckout);
-		s_assert.assertTrue(productNameFromCheckout.contains(productNameFromCart), "Expected product name of item at order review page is "+productNameFromCart+"Actual on UI "+productNameFromCheckout);
-		s_assert.assertTrue(subTotalFromCheckout.contains(subTotalFromCart), "Expected subtotal at order review page is "+subTotalFromCart+"Actual on UI "+subTotalFromCheckout);
-		s_assert.assertTrue(deliveryChargesFromCheckout.contains(deliveryChargesFromCart), "Expected delivery charges at order review page is "+deliveryChargesFromCart+"Actual on UI "+deliveryChargesFromCheckout);
-		sfHomePage.selectTermsAndConditionsChkBox();
-		sfCheckoutPage.clickPlaceOrderButton();
-		s_assert.assertTrue(sfCheckoutPage.isOrderPlacedSuccessfully(), "Adhoc order is not placed successfully by PC");
-		s_assert.assertAll();
+		// same as 409
 	}
-
 
 	/***
 	 * qTest : TC-324 Add a ship address- Checkout - existing user
@@ -1441,8 +1406,6 @@ public class OrdersTest extends StoreFrontWebsiteBaseTest{
 		s_assert.assertTrue(sfCheckoutPage.isOrderPlacedSuccessfully(), "Adhoc order is not placed successfully by RC");
 	}
 
-	//----
-
 	/***
 	 * qTest : TC-322 Edit a Ship address- Checkout - Invalid details
 	 * Description : This test validates error message for blank fields & Invalid postal code
@@ -1653,9 +1616,9 @@ public class OrdersTest extends StoreFrontWebsiteBaseTest{
 		s_assert.assertFalse(sfCheckoutPage.isNotYourConsultantLinkPresent(), "Not your sponsor link is present for consultant's sponsor");
 		s_assert.assertAll();
 	}
-	
+
 	//--
-	
+
 	/***
 	 * qTest : TC-227 Order History- Report a Problem- Field Validations
 	 * Description : This test validates report problems page & field validations
@@ -1703,8 +1666,8 @@ public class OrdersTest extends StoreFrontWebsiteBaseTest{
 		s_assert.assertTrue(confirmationMessageFromUI.contains(expectedConfirmationMessage.toLowerCase()), "Expected confirmation message is"+expectedConfirmationMessage+" but actual on UI is "+confirmationMessageFromUI);
 		s_assert.assertAll();
 	}
- 
- /***
+
+	/***
 	 * qTest : TC-228 Order History- Report a Problem- Confirmation page
 	 * Description : This test validates return order request & details
 	 *     
@@ -1759,7 +1722,7 @@ public class OrdersTest extends StoreFrontWebsiteBaseTest{
 		s_assert.assertTrue(MessageAtReportConfirmationPage.contains(message), "Expected order number at report confirmation page is "+message+" Actual on UI is "+MessageAtReportConfirmationPage);
 		s_assert.assertAll();
 	}
-	
+
 
 
 }

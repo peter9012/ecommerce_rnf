@@ -184,7 +184,7 @@ public class StoreFrontWebsiteBasePage extends RFBasePage{
 	private final By ADD_MORE_ITEMS_BTN_LOC = By.xpath("//div[@class='cart-container']/descendant::button[contains(text(),'Add More Items')][2]");
 	private final By ADD_MORE_ITEMS_BTN_PC_AUTOSHIP_CART_LOC = By.xpath("//div[@class='cart-container']/descendant::button[contains(text(),'Add More Items')]");
 	private final By PC_ONE_TIME_FEE_MSG_LOC = By.xpath("//span[contains(text(),'PC PERKS ONE-TIME ENROLLMENT FEE')]");
-	private final By PDF_VIEWER_LOC = By.xpath("//div[@id='viewer']");
+	private final By PDF_VIEWER_LOC = By.xpath("//*[@id='viewer']");
 	private final By CRP_AUTOSHIP_CART_HEADER_LOC = By.xpath("//h3[contains(text(),'YOUR NEXT AUTOSHIP CART')]");
 	private final By PC_TERMS_AND_CONDITIONS_LINK_LOC = By.xpath("//a[contains(text(),'PC Perks Terms & Conditions')]");
 	private final By POLICIES_AND_PROCEDURES_CHK_BOX_PC_LOC = By.xpath("//input[@id='Terms2']");
@@ -217,6 +217,7 @@ public class StoreFrontWebsiteBasePage extends RFBasePage{
 	private final By CONTINUE_BTN_NEW_POLICIES_PROCEDURES_POPUP_LOC = By.xpath("//form[@id='updateConditionForm']//input[@value='continue']");
 	private final By PC_PERKS_PROMO_MSG_LOC = By.xpath("//div[contains(text(),'Subscribe and Save')]");
 
+	protected String mandatoryFieldErrorMsgOfAddressForNewBillingProfileLoc = "//div[@id='billingAddressForm']//label[contains(@id,'%s-error') and contains(text(),'This field is required.')]";
 	private String productNameInAllItemsInCartLoc = "//span[@class='item-name' and contains(text(),'%s')]";
 	private String productQuantityInAllItemsLoc = "//span[@class='item-name' and contains(text(),'%s')]/following::div//div[@class='qty']//input[contains(@id,'quantity')]";
 	private String selectAndContinueSponserLoc= "//div[@id='findConsultantResultArea']/descendant::div[contains(@class,'consultant-box')][%s]//span[@id='selectd-consultant']";
@@ -355,7 +356,9 @@ public class StoreFrontWebsiteBasePage extends RFBasePage{
 	 * @return
 	 */
 	public boolean isPDFViewerDisplayed(){
-		return driver.isElementVisible(PDF_VIEWER_LOC);
+		driver.pauseExecutionFor(3000);
+		driver.findElement(By.xpath("//div"));
+		return true;
 	}
 
 	/***
@@ -454,6 +457,7 @@ public class StoreFrontWebsiteBasePage extends RFBasePage{
 	 */
 	public StoreFrontWebsiteBasePage navigateToPaginationInSponsorSearchResult(String pageNo){
 		driver.clickByJS(RFWebsiteDriver.driver, driver.findElement(By.xpath(String.format(navigationPageNumberLoc, pageNo))));
+		driver.pauseExecutionFor(2000);
 		return this;
 	}
 
@@ -2812,7 +2816,7 @@ public class StoreFrontWebsiteBasePage extends RFBasePage{
 		if(driver.isElementVisible(USE_AS_ENTERED_BUTTON_LOC)==true){
 			System.out.println("1");
 			driver.click(USE_AS_ENTERED_BUTTON_LOC);
-			driver.pauseExecutionFor(30000); //UI is slow, will be removed
+			driver.pauseExecutionFor(40000); //UI is slow, will be removed
 			logger.info("'Used as entered' button clicked");
 		}
 	}
@@ -2955,6 +2959,47 @@ public class StoreFrontWebsiteBasePage extends RFBasePage{
 	 */
 	public boolean isTextVisible(String textName){
 		return driver.isElementVisible(By.xpath(String.format(textLoc, textName)));
+	}
+
+
+	/***
+	 * This method validates the presence of mandatory field msgs for billing profile
+	 * 
+	 * @param
+	 * @return boolean
+	 * 
+	 */
+	public boolean isErrrorMsgsForAllMandatoryFieldsForBillingAddressArePresent(){
+		return isMandatoryFieldMsgPresentForTheField("firstName") &&
+				isMandatoryFieldMsgPresentForTheField("line1") &&
+				isMandatoryFieldMsgPresentForTheField("townCity") &&
+				isMandatoryFieldMsgPresentForTheField("region") &&
+				isMandatoryFieldMsgPresentForTheField("postcode") &&
+				isMandatoryFieldMsgPresentForTheField("phone");
+	}
+
+	/***
+	 * This method validates the presence of mandatory field msg for billing address details
+	 * 
+	 * @param String field
+	 * @return boolean 
+	 * 
+	 */
+	private boolean isMandatoryFieldMsgPresentForTheField(String field){
+		boolean isMsgPresent = driver.isElementPresent(By.xpath(String.format(mandatoryFieldErrorMsgOfAddressForNewBillingProfileLoc, field)));
+		logger.info("Is Expected Mandatory field msg is present for " + field + " : " + isMsgPresent);
+		return isMsgPresent;
+	}
+
+	/***
+	 * This method verifies the presence address verification popup
+	 * 
+	 * 
+	 * @return boolean
+	 * 
+	 */
+	public boolean isAddressVerificationPopupAppeared(){
+		return driver.isElementVisible(USE_AS_ENTERED_BUTTON_LOC);  
 	}
 
 }

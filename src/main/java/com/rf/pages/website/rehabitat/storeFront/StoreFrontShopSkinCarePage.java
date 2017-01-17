@@ -89,11 +89,16 @@ public class StoreFrontShopSkinCarePage extends StoreFrontWebsiteBasePage{
 	 */
 	public StoreFrontShopSkinCarePage selectFirstProduct(){
 		driver.pauseExecutionFor(5000);
-		driver.click(ADD_TO_CART_FIRST_PRODUCT_LOC);
+		driver.moveToElementByJS(ADD_TO_CART_FIRST_PRODUCT_LOC);
+		if(driver.isElementVisible(ADD_TO_BAG_OF_FIRST_PRODUCT)){
+			driver.click(ADD_TO_BAG_OF_FIRST_PRODUCT);
+		}else{
+			driver.click(ADD_TO_CART_FIRST_PRODUCT_LOC);
+		}
 		logger.info("First product added to the cart");
 		return this;
 	}
-
+	
 	/***
 	 * This method select sort by price filter High to low
 	 * 

@@ -39,7 +39,7 @@ public class StoreFrontBillingInfoPage extends StoreFrontWebsiteBasePage{
 	private final By BILLING_PROFILE_SECTION_HEADER = By.xpath("//h3[@class='sub-header' and contains(text(),'BILLING PROFILE')]");
 	private final By BILLING_PROFILES_DETAILS_LIST_LOC = By.xpath("//div[@class='account-paymentdetails account-list']");
 	private final By BILLING_INFO_SECTION_HEADER_LOC = By.xpath("//h2[contains(@class,'account-section-header') and contains(text(),'BILLING INFO')]");
-	private final By BILLING_ADDRESS_DD_OPTIONS_LOC = By.xpath("//select[@id='billingAddress.addressId']/option");
+	private final By BILLING_ADDRESS_DD_OPTIONS_LOC = By.xpath("//select[@id='default-address']/option[not(@label)]");
 	private final By PROFILES_IN_BILLING_LIST_LOC = By.xpath("//div[@class='account-cards card-select']//div[@class='row']/div[contains(@class,'card')]"); 
 	private final By SET_AS_DEFAULT_BILLING_PROFILE_BUTTON_LOC = By.xpath("//div[@class='myModal' and contains(@style,'display')]//div[@class='modal-content']//a[contains(text(),'Set as Default')]");
 	private final By DEFAULT_BILLING_PROFILE_ADDRESS_NAME_LOC = By.xpath("//div[@class='account-paymentdetails account-list']//strong[contains(text(),'Default')]/ancestor::li[1]");

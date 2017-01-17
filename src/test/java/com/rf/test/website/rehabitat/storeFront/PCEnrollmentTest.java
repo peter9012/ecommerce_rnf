@@ -9,28 +9,24 @@ import com.rf.pages.website.rehabitat.storeFront.StoreFrontShopSkinCarePage;
 import com.rf.test.website.rehabitat.storeFront.baseTest.StoreFrontWebsiteBaseTest;
 
 public class PCEnrollmentTest extends StoreFrontWebsiteBaseTest{
-	public String email=null;
+	private String email=null;
 	private String firstName = null;
 	private String lastName = null;
-	String addressLine1 = null;
-	String addressLine2 = null;
-	String city = null;
-	String state = null;
-	String postalCode = null;
-	String phoneNumber = null;
-	String cardType = null;
-	String cardNumber = null;
-	String cardName = null;
-	String CVV = null;
-	String timeStamp=null;
-	String randomWords = null;
+	private String addressLine1 = null;
+	private String addressLine2 = null;
+	private String city = null;
+	private String state = null;
+	private String postalCode = null;
+	private String phoneNumber = null;
+	private String cardType = null;
+	private String cardNumber = null;
+	private String cardName = null;
+	private String CVV = null;
+	private String timeStamp=null;
+	private String randomWords = null;
 
 	public PCEnrollmentTest() {
-		timeStamp = CommonUtils.getCurrentTimeStamp();
-		randomWords = CommonUtils.getRandomWord(5);
 		firstName=TestConstants.PC_FIRST_NAME;
-		lastName = TestConstants.LAST_NAME+randomWords;
-		email = firstName+timeStamp+TestConstants.EMAIL_SUFFIX;
 		addressLine1 = TestConstants.ADDRESS_LINE_1_US;
 		addressLine2 = TestConstants.ADDRESS_LINE_2_US;
 		city = TestConstants.CITY_US;
@@ -51,6 +47,10 @@ public class PCEnrollmentTest extends StoreFrontWebsiteBaseTest{
 	 */
 	@Test(enabled=true)
 	public void testPCEnrollment_452(){
+		timeStamp = CommonUtils.getCurrentTimeStamp();
+		randomWords = CommonUtils.getRandomWord(5);		
+		lastName = TestConstants.LAST_NAME+randomWords;
+		email = firstName+timeStamp+TestConstants.EMAIL_SUFFIX;
 		sfCartPage = new StoreFrontCartPage(driver);
 		sfShopSkinCarePage = new StoreFrontShopSkinCarePage(driver);
 		sfHomePage.clickLoginIcon();
@@ -88,6 +88,10 @@ public class PCEnrollmentTest extends StoreFrontWebsiteBaseTest{
 	 */
 	@Test(enabled=true)
 	public void testPCIncompleteEnrollment_451(){
+		timeStamp = CommonUtils.getCurrentTimeStamp();
+		randomWords = CommonUtils.getRandomWord(5);		
+		lastName = TestConstants.LAST_NAME+randomWords;
+		email = firstName+timeStamp+TestConstants.EMAIL_SUFFIX;
 		sfCartPage = new StoreFrontCartPage(driver);
 		sfShopSkinCarePage = new StoreFrontShopSkinCarePage(driver);
 		sfHomePage.clickLoginIcon();
@@ -124,6 +128,10 @@ public class PCEnrollmentTest extends StoreFrontWebsiteBaseTest{
 	 */
 	@Test(enabled=true)
 	public void testPCEnrollmentTCCheckboxNotSelected_481(){
+		timeStamp = CommonUtils.getCurrentTimeStamp();
+		randomWords = CommonUtils.getRandomWord(5);		
+		lastName = TestConstants.LAST_NAME+randomWords;
+		email = firstName+timeStamp+TestConstants.EMAIL_SUFFIX;
 		sfCartPage = new StoreFrontCartPage(driver);
 		sfShopSkinCarePage = new StoreFrontShopSkinCarePage(driver);
 		sfHomePage.clickLoginIcon();
@@ -158,6 +166,10 @@ public class PCEnrollmentTest extends StoreFrontWebsiteBaseTest{
 	 */
 	@Test(enabled=true)
 	public void testPCEnrollmentSelectSponsor_495(){
+		timeStamp = CommonUtils.getCurrentTimeStamp();
+		randomWords = CommonUtils.getRandomWord(5);		
+		lastName = TestConstants.LAST_NAME+randomWords;
+		email = firstName+timeStamp+TestConstants.EMAIL_SUFFIX;
 		String allProduct = "ALL PRODUCTS";
 		String dummyConsultant = "xxx";
 		String consultantWith2Chars = "Pu";
@@ -193,6 +205,10 @@ public class PCEnrollmentTest extends StoreFrontWebsiteBaseTest{
 	 */
 	@Test(enabled=false)
 	public void testAutoAssignConsultantPcEnrollment_573(){
+		timeStamp = CommonUtils.getCurrentTimeStamp();
+		randomWords = CommonUtils.getRandomWord(5);		
+		lastName = TestConstants.LAST_NAME+randomWords;
+		email = firstName+timeStamp+TestConstants.EMAIL_SUFFIX;
 		String sponserName = null;
 		String sponserNameAfterEnrollment = null;
 		String existingConsultant = TestConstants.SPONSOR;
@@ -243,6 +259,10 @@ public class PCEnrollmentTest extends StoreFrontWebsiteBaseTest{
 	 */
 	@Test(enabled=false)
 	public void testUpdateSponserDuringPCEnrollment_574(){
+		timeStamp = CommonUtils.getCurrentTimeStamp();
+		randomWords = CommonUtils.getRandomWord(5);		
+		lastName = TestConstants.LAST_NAME+randomWords;
+		email = firstName+timeStamp+TestConstants.EMAIL_SUFFIX;
 		String sponserName = null;
 		String secondSponser = null;
 		String sponserNameAfterEnrollment = null;
@@ -294,6 +314,10 @@ public class PCEnrollmentTest extends StoreFrontWebsiteBaseTest{
 	 */
 	@Test(enabled=false)
 	public void testUpdateSponserAfterPCEnrollment_575(){
+		timeStamp = CommonUtils.getCurrentTimeStamp();
+		randomWords = CommonUtils.getRandomWord(5);		
+		lastName = TestConstants.LAST_NAME+randomWords;
+		email = firstName+timeStamp+TestConstants.EMAIL_SUFFIX;
 		String sponserName = null;
 		String secondSponser = null;
 		String existingConsultant = TestConstants.SPONSOR;

@@ -202,19 +202,6 @@ public class StoreFrontShippingInfoPage extends StoreFrontWebsiteBasePage{
 	}
 
 	/***
-	 * This method click the cancel button of delete address and update shipping address popup
-	 * 
-	 * @param
-	 * @return store front shipping info page object
-	 * 
-	 */
-	public StoreFrontShippingInfoPage cancelDeleteAddressAndUpdateShippingAddressForAutoshipPopup(){
-		driver.click(CANCEL_BUTTON_OF_DELETE_ADDRESS_AND_UPDATE_SHIPPING_ADDRESS_FOR_AUTOSHIP_POPUP_LOC);
-		logger.info("Cancel button clicked");
-		return this;
-	}
-
-	/***
 	 * This method click the update my autoship button of delete address and update shipping address popup
 	 * 
 	 * @param
@@ -237,6 +224,20 @@ public class StoreFrontShippingInfoPage extends StoreFrontWebsiteBasePage{
 	public boolean isAutoshipShippingProfileNamePresent(){
 		logger.info("Autoship shipping profile name "+driver.getText(AUTOSHIP_SHIPPING_PROFILE_NAME_LOC));
 		return driver.getText(AUTOSHIP_SHIPPING_PROFILE_NAME_LOC).length()>0;
+	}
+	
+	/***
+	 * This method click the cancel button of delete address and update shipping address popup
+	 * 
+	 * @param
+	 * @return store front shipping info page object
+	 * 
+	 */
+	public StoreFrontShippingInfoPage cancelDeleteAddressAndUpdateShippingAddressForAutoshipPopup(){
+		driver.click(CANCEL_BUTTON_OF_DELETE_ADDRESS_AND_UPDATE_SHIPPING_ADDRESS_FOR_AUTOSHIP_POPUP_LOC);
+		logger.info("Cancel button clicked");
+		driver.pauseExecutionFor(1000);
+		return this;
 	}
 
 }

@@ -10,7 +10,7 @@ public class TestConstants {
 	public static final String BECOME_A_CONSULTANT = "Become A Consultant";
 	public static final String SHOP_SKINCARE = "Shop Skincare";
 	public static final String SPONSOR = "purush";
-	public static final String SPONSOR_3_CHARS = "pur";
+	public static final String SPONSOR_3_CHARS = "tes";
 	public static final String SPONSOR_FIRST_NAME = "Purush";
 	public static final String SPONSOR_LAST_NAME = "Born";
 	public static final String SPONSOR_EMAIL = "purush.born@rf.com";
@@ -61,6 +61,11 @@ public class TestConstants {
 	public static final String POSTAL_CODE_US = "94105";
 	public static final String PHONE_NUMBER = "9842342342";
 	public static final String STATE_US = "California";
+	public static final String ADDRESS_LINE_1_ND_US = "3205 N. 14th Street";
+	public static final String CITY_ND_US = "Bismarck";
+	public static final String POSTAL_CODE_ND_US = "58503";
+	public static final String STATE_ND_US = "North Dakota";
+	
 	public static final String DAY_OF_BIRTH = "14";
 	public static final String MONTH_OF_BIRTH = "Jun";
 	public static final String YEAR_OF_BIRTH = "1986";
@@ -151,5 +156,18 @@ public class TestConstants {
 	public static final String MORE_THAN_200_CHARS = "This is the test message This is the test message This is the test message This is the test message "+
 			"This is the test message This is the test message This is the test message This is the test message T";
 	public static final String CANCELLED_CRP_ORDER_SUCCESS_MESSAGE = "Your CRP Order has been cancelled.";
+	
+	public static final String SECOND_ADDRESS_LINE_1_US = "1625 Sixth Street";
+	public static final String SECOND_ADDRESS_LINE_2_US = "Apt 211";
+	public static final String SECOND_CITY_US = "Concord";
+	public static final String SECOND_POSTAL_CODE_US = "94519";
+	 
+	public static final String RC_USER_WITHOUT_ADDRESS = "autorc1717171@mailinator.com";
+	public static final String CONSULTANT_USERNAME_SPONSOR_WITHOUT_PWS = "consponsorwiithoutpws1@mailinator.com";
+	public static final String CONSULTANT_USERNAME_WITH_CRP_AND_PULSE = "autocon2525@mailinator.com";
+	public static final String CONSULTANT_PREFIX = "alnamebttt";
+	public static final String PWS = "https://www.qa1.rodanandfields.com/US/pws/alnameawaw/";
+	public static final String RC_EMAIL_HAVING_ORDER = "autorc1100@mailinator.com";
+	
 }
 

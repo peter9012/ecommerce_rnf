@@ -290,44 +290,6 @@ public class OrdersTest extends StoreFrontWebsiteBaseTest{
 		s_assert.assertAll();
 	}
 
-	/***
-	 * qTest : TC-304 Billing profile- Add a Profile with same Shipping address
-	 * Description : This test case edit the billing profile and validate it
-	 * 
-	 *     
-	 */
-	@Test(enabled=true)
-	public void testBillingProfileAddAProfileWithSameShippingAddress_304(){
-		String cardType = TestConstants.CARD_TYPE;
-		String cardNumber = TestConstants.CARD_NUMBER;
-		String cardName = TestConstants.CARD_NAME;
-		String CVV = TestConstants.CVV;
-		String cardNumberFromUI = null;
-		sfHomePage.loginToStoreFront(TestConstants.CONSULTANT_EMAIL, password);
-		sfShopSkinCarePage = sfHomePage.clickAllProducts();
-		sfShopSkinCarePage.selectFirstProduct();
-		sfShopSkinCarePage.checkoutTheCartFromPopUp();
-		sfCheckoutPage=sfShopSkinCarePage.checkoutTheCart();
-		sfCheckoutPage.clickSaveButton();
-		sfCheckoutPage.clickShippingDetailsNextbutton();
-		sfCheckoutPage.clickAddNewBillingProfileButton();
-		sfCheckoutPage.enterUserBillingDetails(cardType, cardNumber, cardName, CVV);
-		sfCheckoutPage.clickBillingDetailsNextbutton();
-		sfCheckoutPage.clickEditLinkOfBillingAddress();
-		cardNumberFromUI = sfCheckoutPage.getCreditCardDetailsFromBillingProfile();
-		if(cardNumberFromUI.contains("4747")){
-			cardNumber = TestConstants.CARD_NUMBER_2;
-		}else{
-			cardNumber = TestConstants.CARD_NUMBER;
-		}
-		sfCheckoutPage.clickAddNewBillingProfileButton();
-		sfCheckoutPage.enterUserBillingDetails(cardType, cardNumber, cardName, CVV);
-		sfCheckoutPage.clickBillingDetailsNextbutton();
-		cardNumberFromUI = sfCheckoutPage.getCreditCardDetailsFromBillingProfile();
-		cardNumber= cardNumber.substring(11,15);
-		s_assert.assertTrue(cardNumberFromUI.contains(cardNumber), "Expected newly added billing profile should contains "+cardName+ "but actual on UI is "+cardNumberFromUI);
-		s_assert.assertAll();
-	}
 
 	/***
 	 * qTest : TC-305 Adding a payment method- Errors
@@ -335,7 +297,7 @@ public class OrdersTest extends StoreFrontWebsiteBaseTest{
 	 * TODO :: Have to enter a expire card date 
 	 *     
 	 */
-	@Test(enabled=true)
+	@Test(enabled=false)
 	public void testAddingAPaymentMethodErrors_305(){
 		String cardType = TestConstants.CARD_TYPE;
 		String cardNumber = TestConstants.CARD_NUMBER;
@@ -568,55 +530,6 @@ public class OrdersTest extends StoreFrontWebsiteBaseTest{
 
 	}
 
-	/***
-	 * qTest : TC-318 Address Verification - Billing Profile
-	 * Description : This test case edit and add billing profile with address
-	 * and verify it 
-	 *     
-	 */
-	@Test(enabled=false)
-	public void testAddressVerificationBillingProfile_318(){
-		String cardType = TestConstants.CARD_TYPE;
-		String cardNumber = TestConstants.CARD_NUMBER;
-		String cardName = TestConstants.CARD_NAME;
-		String CVV = TestConstants.CVV;
-		String randomWord = CommonUtils.getRandomWord(5);
-		String firstName = TestConstants.FIRST_NAME;
-		String lastName = TestConstants.LAST_NAME+randomWord;
-		String addressLine1 = TestConstants.ADDRESS_LINE_1_US;
-		String addressLine2 = TestConstants.ADDRESS_LINE_2_US;
-		String city = TestConstants.CITY_US;
-		String state = TestConstants.STATE_US;
-		String postalCode = TestConstants.POSTAL_CODE_US;
-		String phoneNumber = TestConstants.PHONE_NUMBER;
-		sfHomePage.loginToStoreFront(TestConstants.CONSULTANT_EMAIL, password);
-		sfShopSkinCarePage = sfHomePage.clickAllProducts();
-		sfShopSkinCarePage.selectFirstProduct();
-		sfShopSkinCarePage.checkoutTheCartFromPopUp();
-		sfCheckoutPage=sfShopSkinCarePage.checkoutTheCart();
-		sfCheckoutPage.clickSaveButton();
-		sfCheckoutPage.clickShippingDetailsNextbutton();
-		sfCheckoutPage.clickAddNewBillingProfileButton();
-		sfCheckoutPage.enterUserBillingDetails(cardType, cardNumber, cardName, CVV);
-		sfCheckoutPage.clickBillingDetailsNextbutton();
-		sfCheckoutPage.clickEditLinkOfBillingAddress();
-		sfCheckoutPage.clickEditLinkOfBillingProfile();
-		sfCheckoutPage.checkUseMyDeliveryAddressChkBoxForExistingBillingProfile();
-		sfCheckoutPage.enterBillingAddressDetailsAtCheckout(firstName, lastName, addressLine1, addressLine2, city, state, postalCode, phoneNumber);
-		sfCheckoutPage.clickSavePaymentButton();
-		sfCheckoutPage.clickUseAsEnteredButtonOnPopUp();
-		s_assert.assertTrue(sfCheckoutPage.isNewBillingDetailsVisibleOnUI(lastName),"Edit billing Details do not get updated as Default billing details on checkout page");
-		randomWord = CommonUtils.getRandomWord(5);
-		lastName = TestConstants.LAST_NAME+randomWord;
-		sfCheckoutPage.clickAddNewBillingProfileButton();
-		sfCheckoutPage.checkUseMyDeliveryAddressChkBox();
-		sfCheckoutPage.enterUserBillingDetailsAfterEditTheProfile(cardType, cardNumber, cardName, CVV);
-		sfCheckoutPage.enterBillingAddressDetails(firstName, lastName, addressLine1, addressLine2, city, state, postalCode, phoneNumber);
-		sfCheckoutPage.clickBillingDetailsNextbutton();
-		sfCheckoutPage.clickUseAsEnteredButtonOnPopUp();
-		s_assert.assertTrue(sfCheckoutPage.isNewBillingDetailsVisibleOnUI(lastName),"New Billing Details do not get updated as Default Billing details on Checkout Page");
-		s_assert.assertAll();
-	}
 
 	/***
 	 * qTest : TC-319 Shipping to PO/RR boxes
@@ -1723,6 +1636,221 @@ public class OrdersTest extends StoreFrontWebsiteBaseTest{
 		s_assert.assertAll();
 	}
 
+	//--
 
+	/***
+	 * qTest : TC-315 Ship method- Ad Hoc carts
+	 * Description : This test case validates the change in shipping method for the adhoc order 
+	 * 
+	 *     
+	 */
+	@Test(enabled=true)
+	public void testShipMethodAdHocCarts_315(){
+		String selectedShippingMethodLabel = null;
+		String changedShippingMethodLabel = null;
+		String titleOfSelectedShipppingMethod = null;
+		String titleOfShippingMethodAfterNextButton = null;
+		String shippingMethodAtOrderConfirmationPage = null;
+		sfHomePage.loginToStoreFront(TestConstants.PC_USERNAME, password);
+		sfShopSkinCarePage = sfHomePage.clickAllProducts();
+		sfShopSkinCarePage.addFirstProductToBag();
+		sfCartPage = sfShopSkinCarePage.checkoutTheCartFromPopUp();
+		sfCheckoutPage = sfCartPage.checkoutTheCart();
+		sfCheckoutPage.clickSaveButton();
+		sfCheckoutPage.clickShippingDetailsNextbutton();
+		sfCheckoutPage.clickShippingDetailsEditButton();
+		changedShippingMethodLabel = sfCheckoutPage.changeTheShippingMethodAtCheckoutPage();
+		selectedShippingMethodLabel = sfCheckoutPage.getLabelOfSelectedShippingMethod();
+		titleOfSelectedShipppingMethod = sfCheckoutPage.getTitleOfSelectedShippingMethod();
+		sfCheckoutPage.clickShippingDetailsNextbutton();
+		titleOfShippingMethodAfterNextButton = sfCheckoutPage.getTitleOfShippingMethodFromShippingDetails();
+		sfCheckoutPage.clickBillingDetailsNextbutton();
+		sfCheckoutPage.selectTermsAndConditionsChkBox();
+		sfCheckoutPage.clickPlaceOrderButton();
+		shippingMethodAtOrderConfirmationPage = sfCheckoutPage.getShippingMethodAfterPlacedOrder();
+		s_assert.assertTrue(selectedShippingMethodLabel.contains(changedShippingMethodLabel),"Shipping method does not get updated at Checkout page. Expected : " + changedShippingMethodLabel + ". Actual : " + selectedShippingMethodLabel);
+		s_assert.assertTrue(titleOfSelectedShipppingMethod.contains(titleOfShippingMethodAfterNextButton),"Shipping method title is not found as expected after Shipping details next button. Expected : " + titleOfSelectedShipppingMethod + ". Actual : " + titleOfShippingMethodAfterNextButton);
+		s_assert.assertTrue(shippingMethodAtOrderConfirmationPage.contains(titleOfSelectedShipppingMethod),"Shipping method is not found as expected on order confirmation page after placing order. Expected : " + titleOfSelectedShipppingMethod + ". Actual : " + shippingMethodAtOrderConfirmationPage);
+		s_assert.assertAll();
+	}
+
+	/***
+	 * qTest : TC-318 Address Verification - Billing Profile
+	 * Description : This test case edit and add billing profile with address
+	 * and verify it 
+	 *     
+	 */
+	@Test(enabled=false)
+	public void testAddressVerificationBillingProfile_318(){
+		String randomWord = CommonUtils.getRandomWord(5);
+		String cardName = TestConstants.CARD_NAME + randomWord;
+		String firstName = TestConstants.FIRST_NAME;
+		String lastName = TestConstants.LAST_NAME;
+		String addressLine1 = TestConstants.ADDRESS_LINE_1_US;
+		String addressLine2 = TestConstants.ADDRESS_LINE_2_US;
+		String city = TestConstants.CITY_US;
+		String state = TestConstants.STATE_US;
+		String postalCode = TestConstants.POSTAL_CODE_US;
+		String phoneNumber = TestConstants.PHONE_NUMBER;
+		String addressLine1ForUpdation = TestConstants.SECOND_ADDRESS_LINE_1_US; 
+		String addressLine2ForUpdation = TestConstants.SECOND_ADDRESS_LINE_2_US;
+		String cityForUpdation = TestConstants.SECOND_CITY_US;
+		String postalCodeForUpdation = TestConstants.SECOND_POSTAL_CODE_US;
+		String defaultBillingProfile = null;
+		String lastNameOfDefaultBillingProfile = null;
+		String billingDetailsOnUI = null;
+
+		sfHomePage.loginToStoreFront(TestConstants.CONSULTANT_EMAIL, password);
+		sfShopSkinCarePage = sfHomePage.clickAllProducts();
+		sfShopSkinCarePage.addFirstProductToBag();
+		sfShopSkinCarePage.checkoutTheCartFromPopUp();
+		sfCheckoutPage=sfShopSkinCarePage.checkoutTheCart();
+		sfCheckoutPage.clickSaveButton();
+		sfCheckoutPage.clickShippingDetailsNextbutton();
+		sfCheckoutPage.clickAddNewBillingProfileButton();
+		sfCheckoutPage.enterUserBillingDetails(TestConstants.CARD_TYPE,TestConstants.CARD_NUMBER, cardName, TestConstants.CVV);
+		sfCheckoutPage.checkUseMyDeliveryAddressChkBox();
+		sfCheckoutPage.enterBillingAddressDetails(firstName, lastName, addressLine1, addressLine2, city, state, postalCode, phoneNumber);
+		sfCheckoutPage.clickBillingDetailsNextbutton();
+		sfCheckoutPage.clickUseAsEnteredButtonOnPopUp();
+		defaultBillingProfile = sfCheckoutPage.getDefaultBillingProfileName();
+		lastNameOfDefaultBillingProfile = sfCheckoutPage.getLastName(defaultBillingProfile);
+		s_assert.assertTrue(defaultBillingProfile.contains(lastNameOfDefaultBillingProfile),"Default profile has not been updated. Expected : " + cardName + ". Actual : " + defaultBillingProfile);
+
+		sfCheckoutPage.clickEditLinkOfBillingAddress();
+		sfCheckoutPage.clickEditLinkOfBillingProfile();
+		sfCheckoutPage.checkUseMyDeliveryAddressChkBoxForExistingBillingProfile();
+		sfCheckoutPage.enterBillingAddressDetailsAtCheckout(firstName, lastName, addressLine1ForUpdation, addressLine2ForUpdation, cityForUpdation, state, postalCodeForUpdation, phoneNumber);
+		sfCheckoutPage.clickSavePaymentButton();
+		s_assert.assertTrue(sfCheckoutPage.isAddressVerificationPopupAppeared(),"Address Verification popup is not appeared for billing address");
+		sfCheckoutPage.clickUseAsEnteredButtonOnPopUp();
+		billingDetailsOnUI = sfCheckoutPage.getBillingProfileDetailsFromBillingProfile();
+		s_assert.assertTrue(sfCheckoutPage.isBillingAddressOnUIIsFoundAsExpected(addressLine1ForUpdation,cityForUpdation, postalCodeForUpdation, state, billingDetailsOnUI),"Billing details are not found as expceted on UI");
+		s_assert.assertAll();
+	}
+
+	/***
+	 * qTest : TC-517 Order history- Return Orders/Credits - Returns Don't exist
+	 * Description : This test validates empty message for return orders
+	 *     
+	 */
+	@Test
+	public void testOrderHistoryReturnOrderReturnDoNotExist_517(){
+		String noReturnOrderMessage = "There are no return orders or credit for the user";
+		sfHomePage.loginToStoreFront(TestConstants.CONSULTANT_USERNAME, password);
+		sfHomePage.clickWelcomeDropdown();
+		sfOrdersPage = sfHomePage.navigateToOrdersPage();
+		s_assert.assertTrue(sfOrdersPage.isTextVisible(noReturnOrderMessage), "No message for empty return order section");
+		s_assert.assertAll();
+	}
+
+/*	*//***
+	 * qTest : TC-520 Order Details - Order number link
+	 * Description : This test case validates SubTotal, Grand Total, Shipping charges, Item name, product qty, SV, 
+	 * shipping method, Shipping profile name, Billing profile name, CC details
+	 * at order Details page
+	 *     
+	 *//*
+	@Test
+	public void testOrderDetailsOrderNumberLink_520(){
+		String orderNumber = null;
+		String productName=null;
+		String productQuantity="Qty";
+		String subTotal=null;
+		String orderTotal=null;
+		String shippingProfile=null;
+		String shippingCharges=null;
+		String shippingMethodBeforeOrderPlaced=null;
+		String ccfourDigits  = null;
+		String ccExpiryDate = null;
+		String billingProfileName  = null;
+		String billingProfileLastName = null;
+		String text_Subtotal = "Subtotal";
+		String text_Shipping = "Shipping";
+		String text_GrandTotal = "GRAND TOTAL";
+		String text_Delivery = "Delivery";
+		String text_OrderTotal = "Order Total";
+		String productSVValue = null;
+		String yourPrice = null;
+		String totalOfOrder = null;
+		String shippingProfileFromOrderConfirmationPage = null;
+		String shippingMethodFromOrderConfirmationPage = null;
+		String billingProfileNameFromOrderConfirmationPage = null;
+		String lastFourDigitOfCCFromOrderConfirmationPage = null;
+		String expDateOfCCFromOrderConfirmationPage = null;
+		String grandTotalAtOrderConfirmationPage = null;
+		String shippingChargeAtOrderConfirmationPage = null;
+		String subTotalAtOrderConfirmationPage = null;
+		String productQtyAtOrderDetailsPage = null;
+		String productSVAtOrderDetailsPage = null;
+		String productUnitPriceAtOrderDetailsPage = null;
+		String orderTotalAtOrderDetailsPage = null;
+		String productNameAtOrderDetailsPage = null;
+
+		sfHomePage.loginToStoreFront(TestConstants.CONSULTANT_WITH_CRP_USERNAME, password);
+		sfCartPage = sfHomePage.clickMiniCartBagLink();
+		sfCartPage.removeAllProductsFromCart();
+		sfCartPage.clickRodanAndFieldsLogo();
+		sfShopSkinCarePage = sfHomePage.clickAllProducts();
+		productSVValue = sfShopSkinCarePage.getFirstProductRetailAndSVPrice();
+		yourPrice = sfShopSkinCarePage.getYourPriceOfAProduct("1");
+		sfShopSkinCarePage.selectFirstProduct();
+		sfShopSkinCarePage.checkoutTheCartFromPopUp();
+		productName = sfCartPage.getProductName("1");
+		productQuantity = sfCartPage.getQuantityOfProductFromCart("1");
+		totalOfOrder = sfCartPage.getOrderTotal().trim();
+		sfCheckoutPage=sfCartPage.checkoutTheCart();
+		sfCheckoutPage.clickSaveButton();
+		shippingMethodBeforeOrderPlaced =  sfCheckoutPage.getSelectedShippingMethodName();
+		shippingProfile = sfCheckoutPage.getDefaultShippingAddressNameAtCheckoutPage();
+		sfCheckoutPage.clickShippingDetailsNextbutton();
+		sfCheckoutPage.clickAddNewBillingProfileButton();
+		sfCheckoutPage.enterUserBillingDetails(TestConstants.CARD_TYPE, TestConstants.CARD_NUMBER, TestConstants.CARD_NAME, TestConstants.CVV);
+		sfCheckoutPage.clickBillingDetailsNextbutton();
+		billingProfileName = sfCheckoutPage.getBillingProfileName();
+		billingProfileLastName = sfCheckoutPage.getLastName(billingProfileName);
+		sfCheckoutPage.getCardDetailsFromBillingInfo(billingProfileLastName);
+		ccfourDigits = sfCheckoutPage.getLastFourDigitsOfCardNumberInBillingDetails();
+		ccExpiryDate = sfCheckoutPage.getExpiryDateOfCardNumberInBillingDetails();
+		shippingCharges = sfCheckoutPage.getChargesAccordingToLabelAtOrderReviewPage(text_Delivery);
+		orderTotal = sfCheckoutPage.getChargesAccordingToLabelAtOrderReviewPage(text_OrderTotal);
+		subTotal = sfCheckoutPage.getChargesAccordingToLabelAtOrderReviewPage(text_Subtotal);
+		sfCheckoutPage.selectPCTermsAndConditionsChkBox();
+		sfCheckoutPage.clickPlaceOrderButton();
+		s_assert.assertTrue(sfCheckoutPage.isOrderPlacedSuccessfully(),"Order not placed. Thank you message is not displayed");
+		s_assert.assertTrue(sfCheckoutPage.isTextPresent("Order #"),"Order Number is not present on the confirmation page");
+		orderNumber = sfCheckoutPage.getOrderNumberAfterCheckout();
+		sfCheckoutPage.clickWelcomeDropdown();
+		sfOrdersPage = sfCheckoutPage.navigateToOrdersPage();
+		sfOrdersPage.clickOrderNumber(orderNumber);
+		productQtyAtOrderDetailsPage = sfOrdersPage.getProductQuantityOfAnItem("2");
+		productSVAtOrderDetailsPage = sfOrdersPage.getProductSVOfAnItem("2").trim();
+		productUnitPriceAtOrderDetailsPage = sfOrdersPage.getProductUnitPriceOfAnItem("2");
+		orderTotalAtOrderDetailsPage = sfOrdersPage.getProductOrderTotalOfAnItem("2");
+		productNameAtOrderDetailsPage = sfOrdersPage.getProductNameOfAnItem("2");
+		shippingProfileFromOrderConfirmationPage = sfCheckoutPage.getShippingProfileFromConfirmationPage();
+		shippingMethodFromOrderConfirmationPage = sfCheckoutPage.getShippingMethodAfterPlacedOrder().split("\\:")[1].trim();
+		billingProfileNameFromOrderConfirmationPage = sfCheckoutPage.getBillingProfileAfterPlacedOrder();
+		lastFourDigitOfCCFromOrderConfirmationPage = sfCheckoutPage.getLastFourNumbersOfBillingDetailsOnConFirmationPage();
+		expDateOfCCFromOrderConfirmationPage = sfCheckoutPage.getExpiryDateOfCardNumberInBillingDetails();
+		grandTotalAtOrderConfirmationPage = sfCheckoutPage.getChargesAccordingToLabelAtOrderConfirmationPage(text_GrandTotal);
+		shippingChargeAtOrderConfirmationPage = sfCheckoutPage.getChargesAccordingToLabelAtOrderConfirmationPage(text_Shipping);
+		subTotalAtOrderConfirmationPage = sfCheckoutPage.getChargesAccordingToLabelAtOrderConfirmationPage(text_Subtotal);
+		s_assert.assertTrue(shippingProfile.contains(shippingProfileFromOrderConfirmationPage), "Shipping Profile is not matching on confirmation page. Expected is :"+shippingProfile+" But found is :"+shippingProfileFromOrderConfirmationPage);
+		s_assert.assertTrue(shippingMethodBeforeOrderPlaced.contains(shippingMethodFromOrderConfirmationPage), "Shipping Method is not matching on confirmation page. Expected is :"+shippingMethodBeforeOrderPlaced+" But found is :"+shippingMethodFromOrderConfirmationPage);
+		s_assert.assertTrue(billingProfileNameFromOrderConfirmationPage.contains(billingProfileLastName),"Billing Profile is not matching on confirmation page. Expected is :"+billingProfileLastName+" But found is :"+billingProfileNameFromOrderConfirmationPage);
+		s_assert.assertTrue(lastFourDigitOfCCFromOrderConfirmationPage.equals(ccfourDigits), "Credit Card Last 4 digits are not matching. Expected is :"+ccfourDigits+" But found is :"+lastFourDigitOfCCFromOrderConfirmationPage);
+		s_assert.assertTrue(expDateOfCCFromOrderConfirmationPage.equals(ccExpiryDate), "Credit Card Expiry Date is not matching. Expected is :"+ccExpiryDate+" But found is :"+expDateOfCCFromOrderConfirmationPage);
+		s_assert.assertTrue(grandTotalAtOrderConfirmationPage.equals(orderTotal),"Order total is not matching. Expected is:"+orderTotal+"But found is "+grandTotalAtOrderConfirmationPage);
+		s_assert.assertTrue(shippingChargeAtOrderConfirmationPage.equals(shippingCharges),"Shipping charge is not matching. Expected is:"+shippingCharges+"But found is "+shippingChargeAtOrderConfirmationPage);
+		s_assert.assertTrue(subTotalAtOrderConfirmationPage.equals(subTotal),"Subtotal is not matching. Expected is:"+subTotal+"But found is "+subTotalAtOrderConfirmationPage);
+		s_assert.assertTrue(productQtyAtOrderDetailsPage.contains(productQuantity),"Product qty is not matching. Expected is:"+productQuantity+"But found is "+productQtyAtOrderDetailsPage);
+		s_assert.assertTrue(productSVValue.contains(productSVAtOrderDetailsPage),"Product SV value is not matching. Expected is:"+productSVValue+"But found is "+productSVAtOrderDetailsPage);
+		s_assert.assertTrue(productUnitPriceAtOrderDetailsPage.contains(yourPrice),"Product unit price is not matching. Expected is:"+yourPrice+"But found is "+productUnitPriceAtOrderDetailsPage);
+		s_assert.assertTrue(orderTotalAtOrderDetailsPage.contains(totalOfOrder),"Product order total is not matching. Expected is:"+totalOfOrder+"But found is "+orderTotalAtOrderDetailsPage);
+		s_assert.assertTrue(productNameAtOrderDetailsPage.contains(productName),"Product name is not matching. Expected is:"+productName+"But found is "+productNameAtOrderDetailsPage);
+		s_assert.assertAll();
+	}
+*/
 
 }

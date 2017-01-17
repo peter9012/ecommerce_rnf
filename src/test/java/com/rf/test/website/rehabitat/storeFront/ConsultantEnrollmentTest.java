@@ -7,6 +7,36 @@ import com.rf.core.website.constants.TestConstants;
 import com.rf.test.website.rehabitat.storeFront.baseTest.StoreFrontWebsiteBaseTest;
 
 public class ConsultantEnrollmentTest extends StoreFrontWebsiteBaseTest{
+	private String firstName = null;
+	private String lastName = null;
+	private String email = null;
+	private String addressLine1 = null;
+	private String addressLine2 = null;
+	private String city = null;
+	private String state = null;
+	private String postalCode = null;
+	private String phoneNumber = null;
+	private String cardType = null;
+	private String cardNumber = null;
+	private String cardName = null;
+	private String CVV = null;
+	private String timeStamp=null;
+	private String randomWords = null;
+
+	
+	public ConsultantEnrollmentTest() {
+		firstName = TestConstants.FIRST_NAME;
+		addressLine1 = TestConstants.ADDRESS_LINE_1_US;
+		addressLine2 = TestConstants.ADDRESS_LINE_2_US;
+		city = TestConstants.CITY_US;
+		state = TestConstants.STATE_US;
+		postalCode = TestConstants.POSTAL_CODE_US;
+		phoneNumber = TestConstants.PHONE_NUMBER;
+		cardType = TestConstants.CARD_TYPE;
+		cardNumber = TestConstants.CARD_NUMBER;
+		cardName = TestConstants.CARD_NAME;
+		CVV = TestConstants.CVV;
+	}
 
 	/***
 	 * qTest : TC-223 Find a Consultant/Search-CID
@@ -48,26 +78,16 @@ public class ConsultantEnrollmentTest extends StoreFrontWebsiteBaseTest{
 	 */
 	@Test(enabled=true)
 	public void testConsultantEnrollment_231(){
-		String timeStamp = CommonUtils.getCurrentTimeStamp();
+		timeStamp = CommonUtils.getCurrentTimeStamp();
+		randomWords = CommonUtils.getRandomWord(5);		
+		lastName = TestConstants.LAST_NAME+randomWords;
+		email = firstName+timeStamp+TestConstants.EMAIL_SUFFIX;
 		String socialInsuranceNumber = String.valueOf(CommonUtils.getRandomNum(100000000, 999999999));
-		String firstName = TestConstants.FIRST_NAME;
-		String lastName = TestConstants.LAST_NAME;
-		String emailID = TestConstants.FIRST_NAME+timeStamp+TestConstants.EMAIL_SUFFIX;
-		String addressLine1 = TestConstants.ADDRESS_LINE_1_US;
-		String addressLine2 = TestConstants.ADDRESS_LINE_2_US;
-		String city = TestConstants.CITY_US;
-		String state = TestConstants.STATE_US;
-		String postalCode = TestConstants.POSTAL_CODE_US;
-		String phoneNumber = TestConstants.PHONE_NUMBER;
-		String cardType = TestConstants.CARD_TYPE;
-		String cardNumber = TestConstants.CARD_NUMBER;
-		String cardName = TestConstants.CARD_NAME;
-		String CVV = TestConstants.CVV;
 		sfHomePage.clickEnrollNow();
 		sfHomePage.searchSponsor(TestConstants.SPONSOR);
 		s_assert.assertTrue(sfHomePage.isSponsorResultDisplayed(),"No result found after searching the sponsor with name "+TestConstants.SPONSOR);
 		sfHomePage.selectFirstSponsorFromList();
-		sfHomePage.enterConsultantEnrollmentDetails(firstName, lastName, emailID, password, socialInsuranceNumber);
+		sfHomePage.enterConsultantEnrollmentDetails(firstName, lastName, email, password, socialInsuranceNumber);
 		sfHomePage.clickNextButton();
 		s_assert.assertFalse(sfHomePage.isNextButtonEnabledBeforeSelectingKit(), "Next Button is NOT disabled before selecting kit");
 		sfHomePage.chooseProductFromKitPage();
@@ -102,6 +122,10 @@ public class ConsultantEnrollmentTest extends StoreFrontWebsiteBaseTest{
 	 */
 	@Test(enabled=true)
 	public void testRequestSponsorConsultantEnrollment_261(){
+		timeStamp = CommonUtils.getCurrentTimeStamp();
+		randomWords = CommonUtils.getRandomWord(5);		
+		lastName = TestConstants.LAST_NAME+randomWords;
+		email = firstName+timeStamp+TestConstants.EMAIL_SUFFIX;
 		String fieldName;
 		sfHomePage.clickEnrollNow();
 		sfHomePage.clickIDontHaveSponsorCheckBox();
@@ -174,27 +198,17 @@ public class ConsultantEnrollmentTest extends StoreFrontWebsiteBaseTest{
 	 */
 	@Test(enabled=true)
 	public void testConsultantEnrollmentPersonalBusinessPortfolio_290(){
-		String timeStamp = CommonUtils.getCurrentTimeStamp();
+		timeStamp = CommonUtils.getCurrentTimeStamp();
+		randomWords = CommonUtils.getRandomWord(5);		
+		lastName = TestConstants.LAST_NAME+randomWords;
+		email = firstName+timeStamp+TestConstants.EMAIL_SUFFIX;
 		String socialInsuranceNumber = String.valueOf(CommonUtils.getRandomNum(100000000, 999999999));
-		String firstName = TestConstants.FIRST_NAME;
-		String lastName = TestConstants.LAST_NAME;
-		String emailID = TestConstants.FIRST_NAME+timeStamp+TestConstants.EMAIL_SUFFIX;
-		String addressLine1 = TestConstants.ADDRESS_LINE_1_US;
-		String addressLine2 = TestConstants.ADDRESS_LINE_2_US;
-		String city = TestConstants.CITY_US;
-		String state = TestConstants.STATE_US;
-		String postalCode = TestConstants.POSTAL_CODE_US;
-		String phoneNumber = TestConstants.PHONE_NUMBER;
-		String cardType = TestConstants.CARD_TYPE;
-		String cardNumber = TestConstants.CARD_NUMBER;
-		String cardName = TestConstants.CARD_NAME;
-		String CVV = TestConstants.CVV;
 		String kitName = "BUSINESS PORTFOLIO";
 		sfHomePage.clickEnrollNow();
 		sfHomePage.searchSponsor(TestConstants.SPONSOR);
 		s_assert.assertTrue(sfHomePage.isSponsorResultDisplayed(),"No result found after searching the sponsor with name "+TestConstants.SPONSOR);
 		sfHomePage.selectFirstSponsorFromList();
-		sfHomePage.enterConsultantEnrollmentDetails(firstName, lastName, emailID, password, socialInsuranceNumber);
+		sfHomePage.enterConsultantEnrollmentDetails(firstName, lastName, email, password, socialInsuranceNumber);
 		sfHomePage.clickNextButton();
 		sfHomePage.chooseProductFromKitPage(kitName);
 		sfHomePage.clickNextButton();
@@ -226,18 +240,19 @@ public class ConsultantEnrollmentTest extends StoreFrontWebsiteBaseTest{
 	 */
 	@Test(enabled=true)
 	public void testViewHideCTADetailsInEnrollmentKit_291(){
+		timeStamp = CommonUtils.getCurrentTimeStamp();
+		randomWords = CommonUtils.getRandomWord(5);		
+		lastName = TestConstants.LAST_NAME+randomWords;
+		email = firstName+timeStamp+TestConstants.EMAIL_SUFFIX;
 		int totalKits = 0;
 		int randomKit = 0;
 		String timeStamp = CommonUtils.getCurrentTimeStamp();
 		String socialInsuranceNumber = String.valueOf(CommonUtils.getRandomNum(100000000, 999999999));
-		String firstName = TestConstants.FIRST_NAME;
-		String lastName = TestConstants.LAST_NAME;
-		String emailID = TestConstants.FIRST_NAME+timeStamp+TestConstants.EMAIL_SUFFIX;
 		sfHomePage.clickEnrollNow();
 		sfHomePage.searchSponsor(TestConstants.SPONSOR);
 		s_assert.assertTrue(sfHomePage.isSponsorResultDisplayed(),"No result found after searching the sponsor with name "+TestConstants.SPONSOR);
 		sfHomePage.selectFirstSponsorFromList();
-		sfHomePage.enterConsultantEnrollmentDetails(firstName, lastName, emailID, password, socialInsuranceNumber);
+		sfHomePage.enterConsultantEnrollmentDetails(firstName, lastName, email, password, socialInsuranceNumber);
 		sfHomePage.clickNextButton();
 		totalKits = sfHomePage.getTotalKitsDisplayedDuringConsultantEnrollment();
 		randomKit = CommonUtils.getRandomNum(1, totalKits);
@@ -257,6 +272,10 @@ public class ConsultantEnrollmentTest extends StoreFrontWebsiteBaseTest{
 	 */
 	@Test(enabled=false)
 	public void testNortDakotaConsultantEnrollmentValidBillingAddress_485(){
+		timeStamp = CommonUtils.getCurrentTimeStamp();
+		randomWords = CommonUtils.getRandomWord(5);		
+		lastName = TestConstants.LAST_NAME+randomWords;
+		email = firstName+timeStamp+TestConstants.EMAIL_SUFFIX;
 		int randomNum = CommonUtils.getRandomNum(10000, 1000000);
 		String socialInsuranceNumber = String.valueOf(CommonUtils.getRandomNum(100000000, 999999999));
 		String firstName = TestConstants.FIRST_NAME;
@@ -305,11 +324,11 @@ public class ConsultantEnrollmentTest extends StoreFrontWebsiteBaseTest{
 	 */
 	@Test(enabled=true)
 	public void testLinksToPoliciesAndProcedures_393(){
-		String timeStamp = CommonUtils.getCurrentTimeStamp();
+		timeStamp = CommonUtils.getCurrentTimeStamp();
+		randomWords = CommonUtils.getRandomWord(5);		
+		lastName = TestConstants.LAST_NAME+randomWords;
+		email = firstName+timeStamp+TestConstants.EMAIL_SUFFIX;
 		String socialInsuranceNumber = String.valueOf(CommonUtils.getRandomNum(100000000, 999999999));
-		String firstName = TestConstants.FIRST_NAME;
-		String lastName = TestConstants.LAST_NAME;
-		String emailID = TestConstants.FIRST_NAME+timeStamp+TestConstants.EMAIL_SUFFIX;
 		String policiesAndProceduresPdfUrl = "Policies_Procedures_USA.pdf";
 		String pulseProTCUrl = "Pulse_Terms_and_Conditions_CANADA.pdf";
 		String crpTCPdfUrl = "CRP_Terms_and_Conditions_CANADA.pdf";
@@ -319,47 +338,41 @@ public class ConsultantEnrollmentTest extends StoreFrontWebsiteBaseTest{
 		String parentWindowID = CommonUtils.getCurrentWindowHandle();
 		sfHomePage.switchToChildWindow(parentWindowID);
 		s_assert.assertTrue(sfHomePage.getCurrentURL().contains(policiesAndProceduresPdfUrl), "Policies And Procedures PDF has not opened at search sponsor page");
-		s_assert.assertTrue(sfHomePage.isPDFViewerDisplayed(), "PDF viewer not displayed for Policies And Procedures at search sponsor page");
 		sfHomePage.switchToParentWindow(parentWindowID);
 
 		sfHomePage.clickPulseProTermsAndConditionsLink();
 		parentWindowID = CommonUtils.getCurrentWindowHandle();
 		sfHomePage.switchToChildWindow(parentWindowID);
 		s_assert.assertTrue(sfHomePage.getCurrentURL().contains(pulseProTCUrl), "Pulse Pro Terms And Conditions PDF has not opened at search sponsor page");
-		s_assert.assertTrue(sfHomePage.isPDFViewerDisplayed(), "PDF viewer not displayed for Pulse Pro Terms And Conditions at search sponsor page");
 		sfHomePage.switchToParentWindow(parentWindowID);
 
 		sfHomePage.clickCRPTermsAndConditionsLink();
 		parentWindowID = CommonUtils.getCurrentWindowHandle();
 		sfHomePage.switchToChildWindow(parentWindowID);
 		s_assert.assertTrue(sfHomePage.getCurrentURL().contains(crpTCPdfUrl), "CRP Terms And Conditions PDF has not opened at search sponsor page");
-		s_assert.assertTrue(sfHomePage.isPDFViewerDisplayed(), "PDF viewer not displayed for CRP Terms And Conditions at search sponsor page");
 		sfHomePage.switchToParentWindow(parentWindowID);
 
 		sfHomePage.searchSponsor(TestConstants.SPONSOR);
 		sfHomePage.selectFirstSponsorFromList();
-		sfHomePage.enterConsultantEnrollmentDetails(firstName, lastName, emailID, password, socialInsuranceNumber);
+		sfHomePage.enterConsultantEnrollmentDetails(firstName, lastName, email, password, socialInsuranceNumber);
 		sfHomePage.clickNextButton();
 
 		sfHomePage.clickPoliciesAndProceduresLink();
 		parentWindowID = CommonUtils.getCurrentWindowHandle();
 		sfHomePage.switchToChildWindow(parentWindowID);
 		s_assert.assertTrue(sfHomePage.getCurrentURL().contains(policiesAndProceduresPdfUrl), "Policies And Procedures PDF has not opened at consultant details page");
-		s_assert.assertTrue(sfHomePage.isPDFViewerDisplayed(), "PDF viewer not displayed for Policies And Procedures at consultant details page");
 		sfHomePage.switchToParentWindow(parentWindowID);
 
 		sfHomePage.clickPulseProTermsAndConditionsLink();
 		parentWindowID = CommonUtils.getCurrentWindowHandle();
 		sfHomePage.switchToChildWindow(parentWindowID);
 		s_assert.assertTrue(sfHomePage.getCurrentURL().contains(pulseProTCUrl), "Pulse Pro Terms And Conditions PDF has not opened at consultant details page");
-		s_assert.assertTrue(sfHomePage.isPDFViewerDisplayed(), "PDF viewer not displayed for Pulse Pro Terms And Conditions at consultant details page");
 		sfHomePage.switchToParentWindow(parentWindowID);
 
 		sfHomePage.clickCRPTermsAndConditionsLink();
 		parentWindowID = CommonUtils.getCurrentWindowHandle();
 		sfHomePage.switchToChildWindow(parentWindowID);
 		s_assert.assertTrue(sfHomePage.getCurrentURL().contains(crpTCPdfUrl), "CRP Terms And Conditions PDF has not opened at consultant details page ");
-		s_assert.assertTrue(sfHomePage.isPDFViewerDisplayed(), "PDF viewer not displayed for CRP Terms And Conditions at consultant details page");
 		sfHomePage.switchToParentWindow(parentWindowID);
 		s_assert.assertAll();
 	}
@@ -373,32 +386,26 @@ public class ConsultantEnrollmentTest extends StoreFrontWebsiteBaseTest{
 	 */
 	@Test(enabled=true)
 	public void testConsultantEnrollmentNorthDakotaChecked_492(){
-		String timeStamp = CommonUtils.getCurrentTimeStamp();
+		timeStamp = CommonUtils.getCurrentTimeStamp();
+		randomWords = CommonUtils.getRandomWord(5);		
+		lastName = TestConstants.LAST_NAME+randomWords;
+		email = firstName+timeStamp+TestConstants.EMAIL_SUFFIX;
 		String socialInsuranceNumber = String.valueOf(CommonUtils.getRandomNum(100000000, 999999999));
-		String firstName = TestConstants.FIRST_NAME;
-		String lastName = TestConstants.LAST_NAME;
-		String emailID = TestConstants.FIRST_NAME+timeStamp+TestConstants.EMAIL_SUFFIX;
-		String addressLine1 = TestConstants.ADDRESS_LINE_1_US;
-		String addressLine2 = TestConstants.ADDRESS_LINE_2_US;
-		String city = TestConstants.CITY_US;
-		String state = TestConstants.STATE_US;
-		String postalCode = TestConstants.POSTAL_CODE_US;
-		String phoneNumber = TestConstants.PHONE_NUMBER;
-		String cardType = TestConstants.CARD_TYPE;
-		String cardNumber = TestConstants.CARD_NUMBER;
-		String cardName = TestConstants.CARD_NAME;
-		String CVV = TestConstants.CVV;
+		String addressLine1 = TestConstants.ADDRESS_LINE_1_ND_US;
+		String city = TestConstants.CITY_ND_US;
+		String state = TestConstants.STATE_ND_US;
+		String postalCode = TestConstants.POSTAL_CODE_ND_US;
 		sfHomePage.clickEnrollNow();
 		sfHomePage.searchSponsor(TestConstants.SPONSOR);
 		s_assert.assertTrue(sfHomePage.isSponsorResultDisplayed(),"No result found after searching the sponsor with name "+TestConstants.SPONSOR);
 		sfHomePage.selectFirstSponsorFromList();
-		sfHomePage.enterConsultantEnrollmentDetails(firstName, lastName, emailID, password, socialInsuranceNumber);
+		sfHomePage.enterConsultantEnrollmentDetails(firstName, lastName, email, password, socialInsuranceNumber);
 		sfHomePage.clickNextButton();
 		sfHomePage.selectNorthDakotaCheckBoxOnKitPage();
 		s_assert.assertTrue(sfHomePage.areAllKitsDisabled(), "Kit section is not disbaled ab=fter selecting North Dakota Checkbox");
 		sfHomePage.clickNextButton();
 		sfHomePage.clickSaveButton();
-		sfHomePage.enterConsultantShippingDetails(firstName, lastName, addressLine1, addressLine2 ,city, state, postalCode, phoneNumber);
+		sfHomePage.enterConsultantShippingDetails(firstName, lastName, addressLine1, "" ,city, state, postalCode, phoneNumber);
 		sfHomePage.clickUseAsEnteredButtonOnPopUp();
 		sfHomePage.clickShippingDetailsNextbutton();
 		sfHomePage.enterUserBillingDetails(cardType, cardNumber, cardName, CVV);
@@ -451,28 +458,19 @@ public class ConsultantEnrollmentTest extends StoreFrontWebsiteBaseTest{
 	 */
 	@Test(enabled=false)//TODO
 	public void testConsultantEnrollmentWithPulseSubscription_467(){
+		timeStamp = CommonUtils.getCurrentTimeStamp();
+		randomWords = CommonUtils.getRandomWord(5);		
+		lastName = TestConstants.LAST_NAME+randomWords;
+		email = firstName+timeStamp+TestConstants.EMAIL_SUFFIX;
 		int randomNum = CommonUtils.getRandomNum(10000, 1000000);
 		String timeStamp = CommonUtils.getCurrentTimeStamp();
 		String socialInsuranceNumber = String.valueOf(CommonUtils.getRandomNum(100000000, 999999999));
-		String firstName = TestConstants.FIRST_NAME;
-		String lastName = TestConstants.LAST_NAME;
-		String emailID = TestConstants.FIRST_NAME+timeStamp+TestConstants.EMAIL_SUFFIX;
-		String addressLine1 = TestConstants.ADDRESS_LINE_1_US;
-		String addressLine2 = TestConstants.ADDRESS_LINE_2_US;
-		String city = TestConstants.CITY_US;
-		String state = TestConstants.STATE_US;
-		String postalCode = TestConstants.POSTAL_CODE_US;
-		String phoneNumber = TestConstants.PHONE_NUMBER;
-		String cardType = TestConstants.CARD_TYPE;
-		String cardNumber = TestConstants.CARD_NUMBER;
-		String cardName = TestConstants.CARD_NAME;
-		String CVV = TestConstants.CVV;
 		String prefix = firstName+randomNum;
 		sfHomePage.clickEnrollNow();
 		sfHomePage.searchSponsor(TestConstants.SPONSOR);
 		s_assert.assertTrue(sfHomePage.isSponsorResultDisplayed(),"No result found after searching the sponsor with name "+TestConstants.SPONSOR);
 		sfHomePage.selectFirstSponsorFromList();
-		sfHomePage.enterConsultantEnrollmentDetails(firstName, lastName, emailID, password, socialInsuranceNumber);
+		sfHomePage.enterConsultantEnrollmentDetails(firstName, lastName, email, password, socialInsuranceNumber);
 		sfHomePage.clickNextButton();
 		s_assert.assertFalse(sfHomePage.isNextButtonEnabledBeforeSelectingKit(), "Next Button is NOT disabled before selecting kit");
 		sfHomePage.chooseProductFromKitPage();
@@ -506,28 +504,19 @@ public class ConsultantEnrollmentTest extends StoreFrontWebsiteBaseTest{
 	 */
 	@Test(enabled=false)//TODO
 	public void testConsultantEnrollmengtWithoutPulseSubscription_468(){
+		timeStamp = CommonUtils.getCurrentTimeStamp();
+		randomWords = CommonUtils.getRandomWord(5);		
+		lastName = TestConstants.LAST_NAME+randomWords;
+		email = firstName+timeStamp+TestConstants.EMAIL_SUFFIX;
 		int randomNum = CommonUtils.getRandomNum(10000, 1000000);
 		String timeStamp = CommonUtils.getCurrentTimeStamp();
 		String socialInsuranceNumber = String.valueOf(CommonUtils.getRandomNum(100000000, 999999999));
-		String firstName = TestConstants.FIRST_NAME;
-		String lastName = TestConstants.LAST_NAME;
-		String emailID = TestConstants.FIRST_NAME+timeStamp+TestConstants.EMAIL_SUFFIX;
-		String addressLine1 = TestConstants.ADDRESS_LINE_1_US;
-		String addressLine2 = TestConstants.ADDRESS_LINE_2_US;
-		String city = TestConstants.CITY_US;
-		String state = TestConstants.STATE_US;
-		String postalCode = TestConstants.POSTAL_CODE_US;
-		String phoneNumber = TestConstants.PHONE_NUMBER;
-		String cardType = TestConstants.CARD_TYPE;
-		String cardNumber = TestConstants.CARD_NUMBER;
-		String cardName = TestConstants.CARD_NAME;
-		String CVV = TestConstants.CVV;
 		String prefix = firstName+randomNum;
 		sfHomePage.clickEnrollNow();
 		sfHomePage.searchSponsor(TestConstants.SPONSOR);
 		s_assert.assertTrue(sfHomePage.isSponsorResultDisplayed(),"No result found after searching the sponsor with name "+TestConstants.SPONSOR);
 		sfHomePage.selectFirstSponsorFromList();
-		sfHomePage.enterConsultantEnrollmentDetails(firstName, lastName, emailID, password, socialInsuranceNumber);
+		sfHomePage.enterConsultantEnrollmentDetails(firstName, lastName, email, password, socialInsuranceNumber);
 		sfHomePage.clickNextButton();
 		s_assert.assertFalse(sfHomePage.isNextButtonEnabledBeforeSelectingKit(), "Next Button is NOT disabled before selecting kit");
 		sfHomePage.chooseProductFromKitPage();

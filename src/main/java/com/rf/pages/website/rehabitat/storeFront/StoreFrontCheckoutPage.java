@@ -156,6 +156,8 @@ public class StoreFrontCheckoutPage extends StoreFrontWebsiteBasePage{
 	private final By BILLING_PROFILE_AFTER_ORDER_PLACED = By.xpath("//div[@class='orderBillingAddress']");
 	private final By BILLING_PROFILE_NAME_LOC = By.xpath("//div[@id='default-payment-method']//strong");
 	private final By CREDIT_CARD_NUMBER_AT_ORDER_CONFIRMATION_PAGE = By.xpath("//div[@class='orderBillingDetails']/div[2]");
+	private final By EDIT_LINK_OF_SHIPPING_DETAILS = By.xpath("//div[contains(text(),'Shipping')]/following-sibling::a[contains(text(),'Edit')]");
+	private final By ORDER_NUMBER_AT_CONFIRMATION_PAGE_OF_PLACED_ORDER_LOC = By.xpath("//div[@class='orderHeading']");
 
 	private String orderItemsTagLoc = "//li[@class='orderItemsHeading']//div[contains(text(),'%s')]";
 	private String chargesFromOrderConfirmationPage = "//div[@class='orderGrandTotal']//div[contains(text(),'%s')]/following::div[@class='orderValue'][1]";
@@ -700,18 +702,6 @@ public class StoreFrontCheckoutPage extends StoreFrontWebsiteBasePage{
 	}
 
 	/***
-	 * This method get the Order Number after Successful Checkout 
-	 * 
-	 * @param 
-	 * @return String
-	 * 
-	 */
-	public String getOrderNumberAfterCheckout(){
-		String orderNumber = driver.getText(CONFIRMATION_MSG_OF_PLACED_ORDER_LOC).replaceAll("[^-?0-9]+","");
-		return orderNumber;
-	}
-
-	/***
 	 * This method validates login or register text displayed or not
 	 * 
 	 * @param 
@@ -998,19 +988,6 @@ public class StoreFrontCheckoutPage extends StoreFrontWebsiteBasePage{
 		String profileNameAtConfirmation=driver.findElement(By.xpath("//div[@class='orderShippingAddress']//li[1]")).getText();
 		logger.info("Shipping Profile name at Confimation Page : "+profileNameAtConfirmation);
 		return profileNameAtConfirmation;
-	}
-
-	/***
-	 * This method get the shipping method after Successful Checkout 
-	 * 
-	 * @param 
-	 * @return Shipping method
-	 * 
-	 */
-	public String getShippingMethodAfterPlacedOrder(){
-		String shippingMethod = driver.getText(SHIPPING_METHOD_AFTER_ORDER_PLACED).replaceAll("[^-?0-9]+","");
-		logger.info("Shipping method at order confirmation page : "+shippingMethod);
-		return shippingMethod;
 	}
 
 	/***
@@ -1714,6 +1691,45 @@ public class StoreFrontCheckoutPage extends StoreFrontWebsiteBasePage{
 		String charge=driver.findElement(By.xpath(String.format(chargesFromOrderReviewPage, labelName))).getText();
 		logger.info(labelName+" 's value at order review page is"+charge);
 		return charge;
+	}
+
+	/***
+	 * This method click on the shipping details Edit button
+	 * 
+	 * @param 
+	 * @return StoreFrontCheckoutPage object 
+	 * 
+	 */
+	public StoreFrontCheckoutPage clickShippingDetailsEditButton(){
+		driver.click(EDIT_LINK_OF_SHIPPING_DETAILS);
+		logger.info("Clicked shipping details edit button");
+		return this;
+	}
+
+
+	/***
+	 * This method get the Order Number after Successful Checkout 
+	 * 
+	 * @param 
+	 * @return String
+	 * 
+	 */
+	public String getOrderNumberAfterCheckout(){
+		String orderNumber = driver.getText(ORDER_NUMBER_AT_CONFIRMATION_PAGE_OF_PLACED_ORDER_LOC).replaceAll("[^-?0-9]+","");
+		return orderNumber;
+	}
+
+	/***
+	 * This method get the shipping method after Successful Checkout 
+	 * 
+	 * @param 
+	 * @return Shipping method
+	 * 
+	 */
+	public String getShippingMethodAfterPlacedOrder(){
+		String shippingMethod = driver.getText(SHIPPING_METHOD_AFTER_ORDER_PLACED);
+		logger.info("Shipping method at order confirmation page : "+shippingMethod);
+		return shippingMethod;
 	}
 
 }

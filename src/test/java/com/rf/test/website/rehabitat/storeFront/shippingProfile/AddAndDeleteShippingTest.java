@@ -354,47 +354,6 @@ public class AddAndDeleteShippingTest extends StoreFrontWebsiteBaseTest{
 		s_assert.assertAll();
 	}
 
-	/***
-	 * qTest : TC-384 Autoship Information should appear on the Shipping profile
-	 * Description :  This test verify the working of cancel & update my autoship button
-	 * while delete a shipping profile selected for CRP 
-	 *     
-	 */
-	@Test(enabled=true)
-	public void testAutoshipInformationShouldAppearOnTheShippingProfilePage_384(){
-		String randomWord = CommonUtils.getRandomWord(5);
-		String firstName = TestConstants.FIRST_NAME;
-		String lastName = TestConstants.LAST_NAME+randomWord;
-		String addressLine1 = TestConstants.ADDRESS_LINE_1_US;
-		String addressLine2 = TestConstants.ADDRESS_LINE_2_US;
-		String city = TestConstants.CITY_US;
-		String state = TestConstants.STATE_US;
-		String postalCode = TestConstants.POSTAL_CODE_US;
-		String phoneNumber = TestConstants.PHONE_NUMBER;
-		String autoShipShippingProfileLastName = null;
-		String checkoutPageText = "Account Info";
-		String currentURL = null;
-		String CRPText = "Next CRP";
-		sfHomePage.loginToStoreFront(TestConstants.CONSULTANT_WITH_CRP_USERNAME, password);
-		sfHomePage.clickWelcomeDropdown();
-		sfShippingInfoPage = sfHomePage.navigateToShippingInfoPage();
-		sfShippingInfoPage.clickAddANewShippingAddressLink();
-		sfShippingInfoPage.enterConsultantShippingDetails(firstName, lastName, addressLine1, addressLine2,city, state, postalCode, phoneNumber);
-		sfShippingInfoPage.checkMakeThisMyDefaultAddressChkBox();
-		sfShippingInfoPage.clickSaveButtonOfShippingAddress();
-		sfShippingInfoPage.clickUseAsEnteredButtonOnPopUp();
-		autoShipShippingProfileLastName = sfShippingInfoPage.getAutoshipShippingProfileName().split(TestConstants.LAST_NAME.toLowerCase())[1].trim();
-		s_assert.assertTrue(sfShippingInfoPage.isTextVisible(CRPText),CRPText+" text is not present");
-		s_assert.assertTrue(sfShippingInfoPage.isAutoshipShippingProfileNamePresent(), "Autoship shipping profile name is not present");
-		sfShippingInfoPage.clickDeleteLinkForShippingProfile(autoShipShippingProfileLastName);
-		sfShippingInfoPage.cancelDeleteAddressAndUpdateShippingAddressForAutoshipPopup();
-		s_assert.assertTrue(sfShippingInfoPage.isShippingProfilePresent(autoShipShippingProfileLastName), "Existing shipping profile is not present at shipping info page & cancel button is not working");
-		sfShippingInfoPage.clickDeleteLinkForShippingProfile(autoShipShippingProfileLastName);
-		sfShippingInfoPage.clickUpdateMyAutoshipOnDeleteAddressAndUpdateShippingAddressForAutoshipPopup();
-		currentURL = sfShippingInfoPage.getCurrentURL();
-		s_assert.assertTrue(currentURL.contains("checkout") && sfShippingInfoPage.isTextPresent(checkoutPageText),"User is not redirecting to checkout page after clicked on update my autoship button");
-		s_assert.assertAll();
-	}
 
 	/**
 	 * qTest : TC-320 Shipping Profile-Edit a ship address and save
@@ -463,6 +422,90 @@ public class AddAndDeleteShippingTest extends StoreFrontWebsiteBaseTest{
 		shippingAddressNameInAccountInfo = sfCheckoutPage.getShippingAddressNameFromShippingSection();
 		s_assert.assertTrue(shippingAddressNameInAccountInfo.contains(lastName),
 				"New Shipping Address added do not get updated on shipping section. Expected lastName : " + lastName + ".Actual Name :  " + shippingAddressNameInAccountInfo);
+		s_assert.assertAll();
+	}
+	
+	/***
+	 * qTest : TC-384 Autoship Information should appear on the Shipping profile
+	 * Description :  This test verify the working of cancel & update my autoship button
+	 * while delete a shipping profile selected for CRP 
+	 *     
+	 */
+	@Test(enabled=true)
+	public void testAutoshipInformationShouldAppearOnTheShippingProfilePage_384(){
+		String randomWord = CommonUtils.getRandomWord(5);
+		String firstName = TestConstants.FIRST_NAME;
+		String lastName = TestConstants.LAST_NAME+randomWord;
+		String addressLine1 = TestConstants.ADDRESS_LINE_1_US;
+		String addressLine2 = TestConstants.ADDRESS_LINE_2_US;
+		String city = TestConstants.CITY_US;
+		String state = TestConstants.STATE_US;
+		String postalCode = TestConstants.POSTAL_CODE_US;
+		String phoneNumber = TestConstants.PHONE_NUMBER;
+		String autoShipShippingProfileLastName = null;
+		String checkoutPageText = "Account Info";
+		String currentURL = null;
+		String CRPText = "Next CRP";
+		sfHomePage.loginToStoreFront(TestConstants.CONSULTANT_WITH_CRP_USERNAME, password);
+		sfHomePage.clickWelcomeDropdown();
+		sfShippingInfoPage = sfHomePage.navigateToShippingInfoPage();
+		sfShippingInfoPage.clickAddANewShippingAddressLink();
+		sfShippingInfoPage.enterConsultantShippingDetails(firstName, lastName, addressLine1, addressLine2,city, state, postalCode, phoneNumber);
+		sfShippingInfoPage.checkMakeThisMyDefaultAddressChkBox();
+		sfShippingInfoPage.clickSaveButtonOfShippingAddress();
+		sfShippingInfoPage.clickUseAsEnteredButtonOnPopUp();
+		autoShipShippingProfileLastName = sfShippingInfoPage.getAutoshipShippingProfileName();
+		autoShipShippingProfileLastName = sfShippingInfoPage.getLastName(autoShipShippingProfileLastName).trim();
+		s_assert.assertTrue(sfShippingInfoPage.isTextVisible(CRPText),CRPText+" text is not present");
+		s_assert.assertTrue(sfShippingInfoPage.isAutoshipShippingProfileNamePresent(), "Autoship shipping profile name is not present");
+		sfShippingInfoPage.clickDeleteLinkForShippingProfile(autoShipShippingProfileLastName);
+		sfShippingInfoPage.cancelDeleteAddressAndUpdateShippingAddressForAutoshipPopup();
+		s_assert.assertTrue(sfShippingInfoPage.isShippingProfilePresent(autoShipShippingProfileLastName), "Existing shipping profile is not present at shipping info page & cancel button is not working");
+		sfShippingInfoPage.clickDeleteLinkForShippingProfile(autoShipShippingProfileLastName);
+		sfShippingInfoPage.clickUpdateMyAutoshipOnDeleteAddressAndUpdateShippingAddressForAutoshipPopup();
+		currentURL = sfShippingInfoPage.getCurrentURL();
+		s_assert.assertTrue(currentURL.contains("checkout") && sfShippingInfoPage.isTextPresent(checkoutPageText),"User is not redirecting to checkout page after clicked on update my autoship button");
+		s_assert.assertAll();
+	}
+	
+	/***
+	 * qTest : TC-378 Delete autoship shipping profile
+	 * Description : This test verify the working of cancel & update my autoship button
+	 * while delete a shipping profile selected for CRP
+	 *     
+	 */
+	@Test(enabled=true)
+	public void testDeleteAutoshipShippingProfile_378(){
+		String randomWord = CommonUtils.getRandomWord(5);
+		String firstName = TestConstants.FIRST_NAME;
+		String lastName = TestConstants.LAST_NAME+randomWord;
+		String addressLine1 = TestConstants.ADDRESS_LINE_1_US;
+		String addressLine2 = TestConstants.ADDRESS_LINE_2_US;
+		String city = TestConstants.CITY_US;
+		String state = TestConstants.STATE_US;
+		String postalCode = TestConstants.POSTAL_CODE_US;
+		String phoneNumber = TestConstants.PHONE_NUMBER;
+		String autoShipShippingProfileLastName = null;
+		String checkoutPageText = "Account Info";
+		String currentURL = null;
+		sfHomePage.loginToStoreFront(TestConstants.CONSULTANT_WITH_CRP_USERNAME, password);
+		sfHomePage.clickWelcomeDropdown();
+		sfShippingInfoPage = sfHomePage.navigateToShippingInfoPage();
+		sfShippingInfoPage.clickAddANewShippingAddressLink();
+		sfShippingInfoPage.enterConsultantShippingDetails(firstName, lastName, addressLine1, addressLine2,city, state, postalCode, phoneNumber);
+		sfShippingInfoPage.checkMakeThisMyDefaultAddressChkBox();
+		sfShippingInfoPage.clickSaveButtonOfShippingAddress();
+		sfShippingInfoPage.clickUseAsEnteredButtonOnPopUp();
+		s_assert.assertTrue(sfShippingInfoPage.isShippingProfilePresent(lastName), "Newly added shipping profile is not present at shipping info page");
+		autoShipShippingProfileLastName = sfShippingInfoPage.getAutoshipShippingProfileName();
+		autoShipShippingProfileLastName = sfShippingInfoPage.getLastName(autoShipShippingProfileLastName).trim();
+		sfShippingInfoPage.clickDeleteLinkForShippingProfile(autoShipShippingProfileLastName);
+		sfShippingInfoPage.cancelDeleteAddressAndUpdateShippingAddressForAutoshipPopup();
+		s_assert.assertTrue(sfShippingInfoPage.isShippingProfilePresent(autoShipShippingProfileLastName), "Existing shipping profile is not present at shipping info page & cancel button is not working");
+		sfShippingInfoPage.clickDeleteLinkForShippingProfile(autoShipShippingProfileLastName);
+		sfShippingInfoPage.clickUpdateMyAutoshipOnDeleteAddressAndUpdateShippingAddressForAutoshipPopup();
+		currentURL = sfShippingInfoPage.getCurrentURL();
+		s_assert.assertTrue(currentURL.contains("checkout") && sfShippingInfoPage.isTextPresent(checkoutPageText),"User is not redirecting to checkout page after clicked on update my autoship button");
 		s_assert.assertAll();
 	}
 

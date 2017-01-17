@@ -48,6 +48,12 @@ public class StoreFrontOrdersPage extends StoreFrontWebsiteBasePage{
 	private static final By AUTOSHIP_ORDER_HISTORY_TABLE_LOC = By.xpath("//div[contains(text(),'PENDING AUTOSHIP ORDERS')]/following-sibling::div//tbody");
 	private static final By FIRST_ORDER_STATUS_IN_AUTOSHIP_ORDER_HISTORY_LOC = By.xpath("//div[contains(text(),'PENDING AUTOSHIP ORDERS')]/following-sibling::div//tbody/descendant::tr[2]//td[@class='status'][1]");
 
+	public  String orderNumberLoc = "//a[contains(text(),'%s')]";
+	private String qtyOfProductOfAnItemLoc = "//div[@class='orderConfirmationInfo']/descendant::div[@class='orderQty'][%s]";
+	private String SVOfProductOfAnItemLoc = "//div[@class='orderConfirmationInfo']/descendant::div[@class='orderSv'][%s]";
+	private String unitPriceOfProductOfAnItemLoc = "//div[@class='orderConfirmationInfo']/descendant::div[@class='orderUnitPrice'][%s]";
+	private String orderTotalOfProductOfAnItemLoc = "//div[@class='orderConfirmationInfo']/descendant::div[@class='orderTotal'][%s]";
+	private String productNameOfAnItemLoc = "//div[@class='orderConfirmationInfo']/descendant::p[%s]";
 	private String optionsLinkUnderReturnOrderSectionLoc = "//div[contains(text(),'RETURN ORDERS AND CREDITS')]/../../descendant::a[contains(text(),'%s')]";
 	private String headerTitleInOrderHistorySection = "//div[@id='orderHistoryContentArea']//th[contains(text(),'%s')]";
 	private String headerTitleInReturnOrderSection = "//div[contains(text(),'RETURN ORDERS AND CREDITS')]/../..//th[contains(text(),'%s')]";
@@ -636,6 +642,87 @@ public class StoreFrontOrdersPage extends StoreFrontWebsiteBasePage{
 	public String getStatusOfFirstOrderPresentInAutoshipOrderHistory(){
 		return driver.getText(FIRST_ORDER_STATUS_IN_AUTOSHIP_ORDER_HISTORY_LOC);
 	}
+
+	/***
+	 * This method clicked on an order number  
+	 * 
+	 * @param
+	 * @return Store front order page obj
+	 * 
+	 */
+	public StoreFrontOrdersPage clickOrderNumber(String orderNumber){
+		driver.click(By.xpath(String.format(orderNumberLoc, orderNumber)));
+		logger.info(orderNumber+" Order number clicked");
+		return this;
+	}
+
+
+	/***
+	 * This method get product qty
+	 * 
+	 * @param product number
+	 * @return product qty
+	 * 
+	 */
+	public String getProductQuantityOfAnItem(String itemNumber){
+		String qty = driver.findElement(By.xpath(String.format(qtyOfProductOfAnItemLoc, itemNumber))).getText();
+		logger.info("Quantity of product is"+qty+ "of item number"+itemNumber);
+		return qty;
+	}
+
+	/***
+	 * This method get product SV value
+	 * 
+	 * @param product number
+	 * @return product SV
+	 * 
+	 */
+	public String getProductSVOfAnItem(String itemNumber){
+		String SV = driver.findElement(By.xpath(String.format(SVOfProductOfAnItemLoc, itemNumber))).getText();
+		logger.info("SV of product is"+SV+ "of item number"+itemNumber);
+		return SV;
+	}
+
+	/***
+	 * This method get product unit price
+	 * 
+	 * @param product number
+	 * @return product unit price
+	 * 
+	 */
+	public String getProductUnitPriceOfAnItem(String itemNumber){
+		String price = driver.findElement(By.xpath(String.format(unitPriceOfProductOfAnItemLoc, itemNumber))).getText();
+		logger.info("unit price of product is"+price+ "of item number"+itemNumber);
+		return price;
+	}
+
+	/***
+	 * This method get product order total
+	 * 
+	 * @param product number
+	 * @return product order total
+	 * 
+	 */
+	public String getProductOrderTotalOfAnItem(String itemNumber){
+		String orderTotal = driver.findElement(By.xpath(String.format(orderTotalOfProductOfAnItemLoc, itemNumber))).getText();
+		logger.info("order total of product is"+orderTotal+ "of item number"+itemNumber);
+		return orderTotal;
+	}
+
+	/***
+	 * This method get product name
+	 * 
+	 * @param product number
+	 * @return product name
+	 * 
+	 */
+	public String getProductNameOfAnItem(String itemNumber){
+		String productName = driver.findElement(By.xpath(String.format(productNameOfAnItemLoc, itemNumber))).getText();
+		logger.info("product name is"+productName+ "of item number"+itemNumber);
+		return productName;
+	}
+
+
 
 }
 

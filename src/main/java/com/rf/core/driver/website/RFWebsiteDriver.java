@@ -200,7 +200,7 @@ public class RFWebsiteDriver implements RFDriver,WebDriver {
 
 	public void waitForElementPresent(By locator) {
 		logger.info("wait started for "+locator);
-		int timeout = 90;
+		int timeout = 30;
 		turnOffImplicitWaits();
 		boolean isElementFound = false;
 		for(int i=1;i<=timeout;i++){		

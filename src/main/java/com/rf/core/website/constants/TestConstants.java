@@ -65,6 +65,7 @@ public class TestConstants {
 	public static final String CITY_ND_US = "Bismarck";
 	public static final String POSTAL_CODE_ND_US = "58503";
 	public static final String STATE_ND_US = "North Dakota";
+	public static final String CONSULTANT_ENROLLED_IN_PULSE = "AutoCons20170117122201@mailinator.com";
 	
 	public static final String DAY_OF_BIRTH = "14";
 	public static final String MONTH_OF_BIRTH = "Jun";

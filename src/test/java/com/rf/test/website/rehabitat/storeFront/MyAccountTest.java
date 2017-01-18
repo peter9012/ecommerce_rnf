@@ -176,22 +176,22 @@ public class MyAccountTest extends StoreFrontWebsiteBaseTest{
 	 * 
 	 *     
 	 */
-	@Test(enabled=false)//TODOD Incomplete flow is not as per test case in qtest
+	@Test(enabled=true)
 	public void testUpdateFirstAndLastNameOnCheckoutPageForUser_230(){
 		String category_AllProduct = "ALL PRODUCTS";
 		String randomWord = CommonUtils.getRandomWord(4);
 		String updatedFirstName = "updFname"+randomWord;
 		String updatedLastName = "updLname"+randomWord;
+		String firstNameAccountInfo = "";
+		String lastNameAccountInfo = "";
 		//Login as consultant user.
-		sfHomePage.loginToStoreFront(TestConstants.CONSULTANT_USERNAME,password);
+		sfHomePage.loginToStoreFront(TestConstants.CONSULTANT_EMAIL,password,true);
 		sfShopSkinCarePage = sfHomePage.navigateToShopSkincareLink(category_AllProduct);
 		sfShopSkinCarePage.selectFirstProduct();
 		sfShopSkinCarePage.checkoutTheCartFromPopUp();
 		sfCheckoutPage = sfHomePage.checkoutTheCart();
 		sfCheckoutPage.clickSaveButton();
 		//Verify first And Last name are updated successfully.
-		//sfCheckoutPage
-		//Verify sponser change functionality for user.
 		sfCheckoutPage.editMainAccountInfo();
 		sfCheckoutPage.updateFirstName(updatedFirstName);
 		sfCheckoutPage.updateLastName(updatedLastName);
@@ -199,6 +199,29 @@ public class MyAccountTest extends StoreFrontWebsiteBaseTest{
 		sfCheckoutPage.editMainAccountInfo();
 		s_assert.assertTrue(sfCheckoutPage.getMainFirstNameOfUser().contains(updatedFirstName), "FirstName was not edited");
 		s_assert.assertTrue(sfCheckoutPage.getMainLastNameOfUser().contains(updatedLastName), "LastName was not edited");
+		//Verify consultant can not edit sponser details.
+		s_assert.assertFalse(sfCheckoutPage.isChangeSponserLinkDisplayed(),"Change sponser link is present on account info page for consultant user");
+		sfCheckoutPage.clickRodanAndFieldsLogo();
+		sfCheckoutPage.clickWelcomeDropdown();
+		sfAccountInfoPage = sfCheckoutPage.navigateToAccountInfoPage();
+		firstNameAccountInfo = sfAccountInfoPage.getFirstNameFromAccountInfo();
+		lastNameAccountInfo = sfAccountInfoPage.getLastNameFromAccountInfo();
+		//verify first and last name on account info page.
+		s_assert.assertTrue(firstNameAccountInfo.equalsIgnoreCase(updatedFirstName.trim()),"Updated first name is not present on account info page.");
+		s_assert.assertTrue(lastNameAccountInfo.equalsIgnoreCase(updatedLastName.trim()),"Updated Last name is not present on account info page.");
+		sfCheckoutPage.clickWelcomeDropdown();
+		sfCheckoutPage.logout();
+		//Login as PC user
+		navigateToStoreFrontBaseURL();
+		sfHomePage.loginToStoreFront(TestConstants.PC_EMAIL,password);
+		sfShopSkinCarePage = sfHomePage.navigateToShopSkincareLink(category_AllProduct);
+		sfShopSkinCarePage.selectFirstProduct();
+		sfShopSkinCarePage.checkoutTheCartFromPopUp();
+		sfCheckoutPage = sfHomePage.checkoutTheCart();
+		sfCheckoutPage.clickSaveButton();
+		//Verify PC can not edit sponser details.
+		sfCheckoutPage.editMainAccountInfo();
+		s_assert.assertFalse(sfCheckoutPage.isChangeSponserLinkDisplayed(),"Change sponser link is present on account info page for PC user");
 		s_assert.assertAll();
 	}
 
@@ -1070,7 +1093,7 @@ public class MyAccountTest extends StoreFrontWebsiteBaseTest{
 	 * from autoship detail page.
 	 *     
 	 */
-	@Test(enabled=false)
+	@Test(enabled=true)
 	public void testVerifyPCPerksAutoshipCartPageFromAutoShipDetailsPage_279(){
 		String currentURL = null;
 		String autoshipCart = "autoship/cart";
@@ -1100,7 +1123,7 @@ public class MyAccountTest extends StoreFrontWebsiteBaseTest{
 	 * 
 	 *     
 	 */
-	@Test(enabled=false)
+	@Test(enabled=true)
 	public void testVerifyPCPerksAutoshipDetails_280(){
 		String pcPerksStatus = null;
 		String expectedPCPerksStatus = "Enrolled";
@@ -1114,7 +1137,7 @@ public class MyAccountTest extends StoreFrontWebsiteBaseTest{
 		s_assert.assertTrue(pcPerksStatus.equalsIgnoreCase(expectedPCPerksStatus),"PC Perks status expected on autoship status page "+expectedPCPerksStatus+" but actual in UI"+pcPerksStatus);
 		s_assert.assertAll();
 	}
-	
+
 	/***
 	 * qtest: TC-277 Consultant Autoship Status- Subscribe to Pulse (First Time Pulse Enrollment)
 	 * Description: This method subscribe the consultant with pulse and also cancels the same
@@ -1140,4 +1163,77 @@ public class MyAccountTest extends StoreFrontWebsiteBaseTest{
 		s_assert.assertTrue(sfAutoshipStatusPage.isSubscribeToPulseBtnDisplayed(), "Pulse subscription is NOT cancelled");
 		s_assert.assertAll();
 	}	
+
+	/***
+	 * qTest : TC-518 Edit PWS - User is subscribed to Pulse
+	 * 
+	 * Description : This test validates edits PWS functionality of user 
+	 * who is subscribed to pulse.
+	 * 
+	 *     
+	 */
+	@Test(enabled=true)
+	public void testEditPWSOfUserSubscribedToPulse_518(){
+
+		//Login as consultant user and verify about me page.
+		sfHomePage.loginToStoreFront(TestConstants.CONSULTANT_ENROLLED_IN_PULSE,password);
+		sfHomePage.clickWelcomeDropdown();
+		sfAboutMePage = sfHomePage.navigateToEditPWSPage();
+		s_assert.assertTrue(sfAboutMePage.isAboutMePagePresent(),"About me Page content not visible after clicking edit pws from welcome DD");
+		s_assert.assertAll();
+	}
+
+	/***
+	 * qTest : TC-519 Edit PWS - User is not subscribed to Pulse
+	 * 
+	 * Description : This test validates edits PWS functionality of user 
+	 * who is not subscribed to pulse.
+	 * 
+	 *     
+	 */
+	@Test(enabled=true)
+	public void testEditPWSOfUserNotSubscribedToPulse_519(){
+		String timeStamp = CommonUtils.getCurrentTimeStamp();
+		String socialInsuranceNumber = String.valueOf(CommonUtils.getRandomNum(100000000, 999999999));
+		String firstName = TestConstants.FIRST_NAME;
+		String lastName = TestConstants.LAST_NAME;
+		String emailID = TestConstants.FIRST_NAME+timeStamp+TestConstants.EMAIL_SUFFIX;
+		String addressLine1 = TestConstants.ADDRESS_LINE_1_US;
+		String addressLine2 = TestConstants.ADDRESS_LINE_2_US;
+		String city = TestConstants.CITY_US;
+		String state = TestConstants.STATE_US;
+		String postalCode = TestConstants.POSTAL_CODE_US;
+		String phoneNumber = TestConstants.PHONE_NUMBER;
+		String cardType = TestConstants.CARD_TYPE;
+		String cardNumber = TestConstants.CARD_NUMBER;
+		String cardName = TestConstants.CARD_NAME;
+		String CVV = TestConstants.CVV;
+
+		//Enroll consultant user.
+		sfHomePage.clickEnrollNow();
+		sfHomePage.searchSponsor(TestConstants.SPONSOR);
+		s_assert.assertTrue(sfHomePage.isSponsorResultDisplayed(),"No result found after searching the sponsor with name "+TestConstants.SPONSOR);
+		sfHomePage.selectFirstSponsorFromList();
+		sfHomePage.enterConsultantEnrollmentDetails(firstName, lastName, emailID, password, socialInsuranceNumber);
+		sfHomePage.clickNextButton();
+		s_assert.assertFalse(sfHomePage.isNextButtonEnabledBeforeSelectingKit(), "Next Button is NOT disabled before selecting kit");
+		sfHomePage.chooseProductFromKitPage();
+		sfHomePage.clickNextButton();
+		sfHomePage.clickSaveButton();
+		sfHomePage.enterConsultantShippingDetails(firstName, lastName, addressLine1, addressLine2 ,city, state, postalCode, phoneNumber);
+		sfHomePage.clickUseAsEnteredButtonOnPopUp();
+		sfHomePage.clickShippingDetailsNextbutton();
+		sfHomePage.enterUserBillingDetails(cardType, cardNumber, cardName, CVV);
+		sfHomePage.clickBillingDetailsNextbutton();
+		sfHomePage.selectPoliciesAndProceduresChkBox();
+		sfHomePage.selectIAcknowledgeChkBox();
+		sfHomePage.selectTermsAndConditionsChkBox();
+		sfHomePage.selectConsentFormChkBox();
+		sfHomePage.clickBecomeAConsultant();
+		s_assert.assertTrue(sfHomePage.isEnrollemntSuccessfulMsgDisplayed(), "Expected 'ENROLLMENT SUCCESSFUL' msg has NOT displayed"); 
+		sfHomePage.clickRodanAndFieldsLogo();
+		sfHomePage.clickWelcomeDropdown();
+		s_assert.assertFalse(sfHomePage.isEditPWSLinkPresentInWelcomeDD(),"Edit PWS link is present for user not subscribed to pulse.");
+		s_assert.assertAll();
+	}
 }

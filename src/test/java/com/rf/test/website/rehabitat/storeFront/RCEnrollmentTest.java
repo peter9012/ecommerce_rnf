@@ -58,4 +58,28 @@ public class RCEnrollmentTest extends StoreFrontWebsiteBaseTest{
 		s_assert.assertTrue(sfHomePage.isWelcomeUserElementDisplayed(), "RC has not been enrolled successfully");
 		s_assert.assertAll();
 	}	
+	
+	/***
+	 * qTest : TC-551 Retail user enrollment - From PWS site
+	 * Description : This test is for successfully enrolling a RC user from pws site
+	 * and redirection to pws site after RC enrollment.
+	 *     
+	 */
+	@Test(enabled=false)//Redirect to corp site after enrollment from pws site
+	public void testRCEnrollmentFromPWSSite_551(){
+		String PWSSite = TestConstants.CONSULTANT_PWS;
+		String currentURL = null;
+		
+		sfHomePage.navigateToUrl(PWSSite);
+		sfCartPage = new StoreFrontCartPage(driver);
+		sfShopSkinCarePage = new StoreFrontShopSkinCarePage(driver);
+		sfHomePage.clickLoginIcon();
+		sfCheckoutPage=sfHomePage.clickSignUpNowLink();
+		sfCheckoutPage.fillNewUserDetails(TestConstants.USER_TYPE_RC, firstName, lastName, email, password);
+		sfCheckoutPage.clickCreateAccountButton();
+		s_assert.assertTrue(sfHomePage.isWelcomeUserElementDisplayed(), "RC has not been enrolled successfully");
+		/*currentURL = sfHomePage.getCurrentURL().toLowerCase();
+		s_assert.assertTrue(currentURL.contains(PWSSite), "Expected URL should contain"+PWSSite+"but actual on UI is"+currentURL);*/
+		s_assert.assertAll();
+	}	
 }

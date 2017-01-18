@@ -16,16 +16,16 @@ public class StoreFrontAboutMePage extends StoreFrontWebsiteBasePage{
 			.getLogger(StoreFrontAboutMePage.class.getName());
 
 	private final By PERSONALIZE_MY_PROFILE_LOC = By.xpath("//a[contains(text(),'PERSONALIZE MY PROFILE')]");
-	
-	private final By CONTACT_ME_HEADER_LOC = By.xpath("//h3[contains(text(),'Contact Me')]");
-	
-	private String quesOnAboutMePageLoc = "//form[@id='aboutmeFormData']//h2[contains(text(),'%s')]";
-	
-	private String answerOnAboutMePageLoc = "//form[@id='aboutmeFormData']//h2[contains(text(),'%s')]/following-sibling::p";
-	
-	
 
-	
+	private final By CONTACT_ME_HEADER_LOC = By.xpath("//h3[contains(text(),'Contact Me')]");
+
+	private String quesOnAboutMePageLoc = "//form[@id='aboutmeFormData']//h2[contains(text(),'%s')]";
+
+	private String answerOnAboutMePageLoc = "//form[@id='aboutmeFormData']//h2[contains(text(),'%s')]/following-sibling::p";
+
+
+
+
 
 	/***
 	 * This method click Personalize my profile button
@@ -39,7 +39,7 @@ public class StoreFrontAboutMePage extends StoreFrontWebsiteBasePage{
 		logger.info("Personalize my profile btn clicked");
 		return this;
 	}
-	
+
 	/***
 	 * This method validates the presence of contact me header on about me page
 	 * 
@@ -49,9 +49,9 @@ public class StoreFrontAboutMePage extends StoreFrontWebsiteBasePage{
 	 */
 	public boolean isContactMeHeaderPresentOnAboutMePage(){
 		return driver.isElementVisible(CONTACT_ME_HEADER_LOC);
-	
+
 	}
-	
+
 	/***
 	 * This method validates the presence of 'What I love most about Rodan and Fields' ques on about me page
 	 * 
@@ -61,9 +61,9 @@ public class StoreFrontAboutMePage extends StoreFrontWebsiteBasePage{
 	 */
 	public boolean isExpectedQuesPresentOnAboutMePage(String ques){
 		return driver.isElementVisible(By.xpath(String.format(quesOnAboutMePageLoc,ques)));
-	
+
 	}
-	
+
 	/***
 	 * This method validates the presence of answer of 'What I love most about Rodan and Fields' ques on about me page
 	 * 
@@ -73,7 +73,20 @@ public class StoreFrontAboutMePage extends StoreFrontWebsiteBasePage{
 	 */
 	public boolean isAnswerOfExpectedQuesPresentOnAboutMePage(String ques){
 		return driver.isElementVisible(By.xpath(String.format(answerOnAboutMePageLoc,ques)));
-	
+
+	}
+
+	/***
+	 * This method validates about me page present.
+	 * 
+	 * @param
+	 * @return boolean
+	 * 
+	 */
+	public boolean isAboutMePagePresent(){
+		String aboutMePage ="about-me";
+		return (driver.isElementVisible(PERSONALIZE_MY_PROFILE_LOC)&& driver.getCurrentUrl().toLowerCase().contains(aboutMePage.toLowerCase()));
+
 	}
 
 

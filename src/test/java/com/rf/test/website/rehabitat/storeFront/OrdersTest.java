@@ -1530,14 +1530,12 @@ public class OrdersTest extends StoreFrontWebsiteBaseTest{
 		s_assert.assertAll();
 	}
 
-	//--
-
 	/***
 	 * qTest : TC-227 Order History- Report a Problem- Field Validations
 	 * Description : This test validates report problems page & field validations
 	 *     
 	 */
-	@Test(enabled=false)
+	@Test(enabled=true)
 	public void testOrderHistoryReportAProblemFieldValidations_227(){
 		String reportProblemsLink = "Report Problems";
 		String name = TestConstants.FIRST_NAME;
@@ -1636,8 +1634,6 @@ public class OrdersTest extends StoreFrontWebsiteBaseTest{
 		s_assert.assertAll();
 	}
 
-	//--
-
 	/***
 	 * qTest : TC-315 Ship method- Ad Hoc carts
 	 * Description : This test case validates the change in shipping method for the adhoc order 
@@ -1680,7 +1676,7 @@ public class OrdersTest extends StoreFrontWebsiteBaseTest{
 	 * and verify it 
 	 *     
 	 */
-	@Test(enabled=false)
+	@Test(enabled=true)
 	public void testAddressVerificationBillingProfile_318(){
 		String randomWord = CommonUtils.getRandomWord(5);
 		String cardName = TestConstants.CARD_NAME + randomWord;
@@ -1744,14 +1740,14 @@ public class OrdersTest extends StoreFrontWebsiteBaseTest{
 		s_assert.assertAll();
 	}
 
-/*	*//***
+	/***
 	 * qTest : TC-520 Order Details - Order number link
 	 * Description : This test case validates SubTotal, Grand Total, Shipping charges, Item name, product qty, SV, 
 	 * shipping method, Shipping profile name, Billing profile name, CC details
 	 * at order Details page
 	 *     
-	 *//*
-	@Test
+	 */
+	@Test(enabled=false)
 	public void testOrderDetailsOrderNumberLink_520(){
 		String orderNumber = null;
 		String productName=null;
@@ -1851,6 +1847,4 @@ public class OrdersTest extends StoreFrontWebsiteBaseTest{
 		s_assert.assertTrue(productNameAtOrderDetailsPage.contains(productName),"Product name is not matching. Expected is:"+productName+"But found is "+productNameAtOrderDetailsPage);
 		s_assert.assertAll();
 	}
-*/
-
 }

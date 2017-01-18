@@ -98,7 +98,7 @@ public class StoreFrontShopSkinCarePage extends StoreFrontWebsiteBasePage{
 		logger.info("First product added to the cart");
 		return this;
 	}
-	
+
 	/***
 	 * This method select sort by price filter High to low
 	 * 
@@ -191,20 +191,7 @@ public class StoreFrontShopSkinCarePage extends StoreFrontWebsiteBasePage{
 		else 
 			return false;
 	}
-	/***
-	 * This method click on first product name on all product page
-	 * 
-	 * @param
-	 * @return object of product detail page
-	 * 
-	 */
-	public StoreFrontProductDetailPage clickNameOfFirstProduct(){
-		String productName = driver.findElement(PRODUCTS_NAME_LINK_LOC).getText();
-		driver.click(PRODUCTS_NAME_LINK_LOC);
-		logger.info("product name "+productName+ "Clicked");
-		driver.waitForPageLoad();
-		return new StoreFrontProductDetailPage(driver);
-	}
+
 	/***
 	 * This method Refine Product by category name
 	 * 
@@ -283,20 +270,7 @@ public class StoreFrontShopSkinCarePage extends StoreFrontWebsiteBasePage{
 		logger.info("Product name from all product page is "+productName);
 		return productName;
 	}
-	/***
-	 * This method click on first product name on all product page
-	 * 
-	 * @param
-	 * @return object of product detail page
-	 * 
-	 */
-	public StoreFrontProductDetailPage clickNameOfProductOnAllProductPage(String productNumber){
-		String productName = driver.findElement(By.xpath(String.format(productNameLinkOnAllProductPageLoc, productNumber))).getText();
-		driver.click(By.xpath(String.format(productNameLinkOnAllProductPageLoc, productNumber)));
-		logger.info("product name "+productName+ "Clicked");
-		driver.waitForPageLoad();
-		return new StoreFrontProductDetailPage(driver);
-	}
+
 	/***
 	 * This method press Escape
 	 * 
@@ -352,24 +326,6 @@ public class StoreFrontShopSkinCarePage extends StoreFrontWebsiteBasePage{
 	 */
 	public boolean isCheckoutPopupDisplayed(){
 		return driver.findElement(CHECKOUT_BUTTON_POPUP_LOC).isDisplayed();
-	}
-
-	/***
-	 * This method verify add to cart dropdown option displayed or not
-	 * 
-	 * @param 
-	 * @return Boolean
-	 * 
-	 */
-	public boolean isAddToCartDDOptionsDisplayed(String userType){
-		if(userType.equalsIgnoreCase("PC")){
-			return driver.findElement(ADD_TO_BAG_OF_FIRST_PRODUCT).isDisplayed() && driver.findElement(SUBSCRIBE_PLUS_SAVE_DD_OPTIONS_LOC).isDisplayed();
-		}
-		else if(userType.equalsIgnoreCase("Consultant")){
-			return driver.findElement(ADD_TO_BAG_OF_FIRST_PRODUCT).isDisplayed() && driver.findElement(ADD_TO_CRP_DD_OPTIONS_LOC).isDisplayed();
-		}
-		else
-			return false;
 	}
 
 	/**
@@ -529,20 +485,6 @@ public class StoreFrontShopSkinCarePage extends StoreFrontWebsiteBasePage{
 	}
 
 	/***
-	 * This method click add to CRP button through product number
-	 * 
-	 * @param product number
-	 * @return Store front Shop skincare page obj
-	 * 
-	 */
-	public StoreFrontShopSkinCarePage addProductToAdhocCart(int productNumber){
-		driver.waitForElementToBeClickable(By.xpath(String.format(addToCartButtonThroughProductNumber,productNumber)), 30);
-		driver.click(By.xpath(String.format(addToCartButtonThroughProductNumber,productNumber)));
-		logger.info("Added "+productNumber+ "product to adhoc cart");
-		driver.pauseExecutionFor(2000);
-		return this;
-	}
-	/***
 	 * This method validate all product page present
 	 * 
 	 * 
@@ -553,6 +495,7 @@ public class StoreFrontShopSkinCarePage extends StoreFrontWebsiteBasePage{
 	public boolean isAllProductPageDisplayed(){
 		return driver.isElementVisible(ADD_TO_CART_FIRST_PRODUCT_LOC);
 	}
+
 	/***
 	 * This method click add to cart button for first product after login and click add to crp
 	 * 
@@ -570,6 +513,7 @@ public class StoreFrontShopSkinCarePage extends StoreFrontWebsiteBasePage{
 		}
 		return this;
 	}
+
 	/***
 	 * This method click add to cart button for product after login and click add to crp
 	 * 
@@ -588,6 +532,7 @@ public class StoreFrontShopSkinCarePage extends StoreFrontWebsiteBasePage{
 		logger.info("Added "+productNumber+ "product to the AutoShip Cart");
 		return this;
 	}
+
 	/***
 	 * This method click on yes button on popup saying do you want to enroll in CRP
 	 * 
@@ -606,9 +551,6 @@ public class StoreFrontShopSkinCarePage extends StoreFrontWebsiteBasePage{
 		}
 		return new StoreFrontAutoshipCartPage(driver);
 	}
-
-	//---
-
 
 	/***
 	 * This method return product quantity from quick view option
@@ -1030,6 +972,107 @@ public class StoreFrontShopSkinCarePage extends StoreFrontWebsiteBasePage{
 		logger.info("Clear all link clicked to remove all applied product filter.");
 		driver.waitForPageLoad();
 		return this;
+	}
+
+	/***
+	 * This method click add to bag button for first product using actions class
+	 * 
+	 * @param
+	 * @return store front shop skincare page object
+	 * 
+	 */
+	public StoreFrontShopSkinCarePage selectFirstProductViaAction(){
+		driver.pauseExecutionFor(3000);
+		driver.moveToElement(ADD_TO_CART_FIRST_PRODUCT_LOC);
+		if(driver.isElementVisible(ADD_TO_BAG_OF_FIRST_PRODUCT)){
+			driver.clickByAction(ADD_TO_BAG_OF_FIRST_PRODUCT);
+		}else{
+			driver.clickByAction(ADD_TO_CART_FIRST_PRODUCT_LOC);
+		}
+		logger.info("First product added to the cart");
+		return this;
+	}
+
+	/***
+	 * This method click add to CRP button through product number
+	 * 
+	 * @param product number
+	 * @return Store front Shop skincare page obj
+	 * 
+	 */
+	public StoreFrontShopSkinCarePage addProductToAdhocCart(int productNumber){
+		driver.pauseExecutionFor(3000);
+		driver.moveToElement(By.xpath(String.format(addToCartButtonThroughProductNumber,productNumber)));
+		if(driver.isElementVisible(By.xpath(String.format(addToCartButtonThroughProductNumber,productNumber)))){
+			driver.clickByAction(By.xpath(String.format(addToCartButtonThroughProductNumber,productNumber)));
+		}
+		driver.pauseExecutionFor(2000);
+		return this;
+	}
+
+	/***
+	 * This method click on first product name on all product page
+	 * 
+	 * @param
+	 * @return object of product detail page
+	 * 
+	 */
+	public StoreFrontProductDetailPage clickNameOfProductOnAllProductPage(String productNumber){
+		String productName = driver.findElement(By.xpath(String.format(productNameLinkOnAllProductPageLoc, productNumber))).getText();
+		driver.moveToElement(By.xpath(String.format(productNameLinkOnAllProductPageLoc, productNumber)));
+		if(driver.isElementVisible(By.xpath(String.format(productNameLinkOnAllProductPageLoc, productNumber)))){
+			driver.clickByAction(By.xpath(String.format(productNameLinkOnAllProductPageLoc, productNumber)));
+		}
+		logger.info("product name "+productName+ "Clicked");
+		driver.waitForPageLoad();
+		return new StoreFrontProductDetailPage(driver);
+	}
+
+	/***
+	 * This method verify add to cart dropdown option displayed or not
+	 * 
+	 * @param 
+	 * @return Boolean
+	 * 
+	 */
+	public boolean isAddToCartDDOptionsDisplayed(String userType){
+		if(userType.equalsIgnoreCase("PC")){
+			return driver.findElement(ADD_TO_BAG_OF_FIRST_PRODUCT).isDisplayed();// && driver.findElement(SUBSCRIBE_PLUS_SAVE_DD_OPTIONS_LOC).isDisplayed();
+		}
+		else if(userType.equalsIgnoreCase("Consultant")){
+			return driver.findElement(ADD_TO_BAG_OF_FIRST_PRODUCT).isDisplayed() && driver.findElement(ADD_TO_CRP_DD_OPTIONS_LOC).isDisplayed();
+		}
+		else
+			return false;
+	}
+	/***
+	 * This method click on first product name on all product page
+	 * 
+	 * @param
+	 * @return object of product detail page
+	 * 
+	 */
+	public StoreFrontProductDetailPage clickNameOfFirstProduct(){
+		String productName = driver.findElement(PRODUCTS_NAME_LINK_LOC).getText();
+		if(driver.isElementVisible(PRODUCTS_NAME_LINK_LOC)){
+			driver.click(PRODUCTS_NAME_LINK_LOC);
+		}
+		logger.info("product name "+productName+ " Clicked");
+		driver.waitForPageLoad();
+		return new StoreFrontProductDetailPage(driver);
+	}
+
+	/***
+	 * This method get your price of product
+	 * 
+	 * @param product number
+	 * @return product price.
+	 * 
+	 */
+	public String getYourPriceOfAProduct(String productNumber){
+		String price = driver.findElement(By.xpath(String.format(yourpriceOfProductLoc, productNumber))).getText().split("\\$")[1].trim();
+		logger.info(productNumber+"'s your price is"+price);
+		return price;
 	}
 
 }

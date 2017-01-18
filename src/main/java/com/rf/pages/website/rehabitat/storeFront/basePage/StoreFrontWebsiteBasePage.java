@@ -19,6 +19,7 @@ import org.testng.Reporter;
 import com.rf.core.driver.website.RFWebsiteDriver;
 import com.rf.core.website.constants.TestConstants;
 import com.rf.pages.RFBasePage;
+import com.rf.pages.website.rehabitat.storeFront.StoreFrontAboutMePage;
 import com.rf.pages.website.rehabitat.storeFront.StoreFrontAccountInfoPage;
 import com.rf.pages.website.rehabitat.storeFront.StoreFrontAutoshipCartPage;
 import com.rf.pages.website.rehabitat.storeFront.StoreFrontAutoshipStatusPage;
@@ -1097,18 +1098,7 @@ public class StoreFrontWebsiteBasePage extends RFBasePage{
 		logger.info("First Name Updated for account info at checkout page");
 		return this;
 	}
-	/***
-	 * This method Update last name on checkout Page.
-	 * 
-	 * @param
-	 * @return store front base page object
-	 * 
-	 */
-	public StoreFrontWebsiteBasePage updateLastName(String updatedName){
-		driver.type(FIRST_LAST_NAME_FOR_SHIPPING_DETAILS_LOC, updatedName);
-		logger.info("Last Name Updated for account info at checkout page");
-		return this;
-	}
+
 	/***
 	 * This method edit Main Account info at checkout page
 	 * 
@@ -1178,19 +1168,6 @@ public class StoreFrontWebsiteBasePage extends RFBasePage{
 		driver.waitForLoadingImageToDisappear();
 		driver.waitForPageLoad();
 		return new StoreFrontOrdersPage(driver);
-	}
-
-	/***
-	 * This method click the save button of shipping address
-	 * 
-	 * @param
-	 * @return store front shipping info page object
-	 * 
-	 */
-	public StoreFrontWebsiteBasePage clickSaveButtonOfShippingAddress(){
-		driver.clickByJS(RFWebsiteDriver.driver, driver.findElement(SAVE_BUTTON_OF_SHIPPING_ADDRESS_LOC));
-		logger.info("Save button clicked");
-		return this;
 	}
 
 	/***
@@ -3000,6 +2977,57 @@ public class StoreFrontWebsiteBasePage extends RFBasePage{
 	 */
 	public boolean isAddressVerificationPopupAppeared(){
 		return driver.isElementVisible(USE_AS_ENTERED_BUTTON_LOC);  
+	}
+
+	/***
+	 * This method click EditPWS link from welcome dropdown.
+	 * 
+	 * @param
+	 * @return StoreFrontAutoshipCartPage object
+	 * 
+	 */
+	public StoreFrontAboutMePage navigateToEditPWSPage(){
+		driver.click(WELCOME_DD_EDIT_PWS_LOC);
+		logger.info("Edit PWS clicked from welcome dropdown");
+		driver.waitForLoadingImageToDisappear();
+		driver.waitForPageLoad();
+		return new StoreFrontAboutMePage(driver);
+	}
+
+	/***
+	 * This method validates EditPWS link from welcome dropdown.
+	 * 
+	 * @param
+	 * @return boolean value
+	 * 
+	 */
+	public boolean isEditPWSLinkPresentInWelcomeDD(){
+		return driver.isElementVisible(WELCOME_DD_EDIT_PWS_LOC);
+	}
+
+	/***
+	 * This method Update last name on checkout Page.
+	 * 
+	 * @param
+	 * @return store front base page object
+	 * 
+	 */
+	public StoreFrontWebsiteBasePage updateLastName(String updatedName){
+		driver.type(LAST_NAME_FOR_ADDRESS_DETAILS_LOC, updatedName);
+		logger.info("Last Name Updated for account info at checkout page"+updatedName);
+		return this;
+	}
+	/***
+	 * This method click the save button of shipping address
+	 * 
+	 * @param
+	 * @return store front shipping info page object
+	 * 
+	 */
+	public StoreFrontWebsiteBasePage clickSaveButtonOfShippingAddress(){
+		driver.clickByJS(RFWebsiteDriver.driver, driver.findElement(SAVE_BUTTON_OF_SHIPPING_ADDRESS_LOC));
+		logger.info("Save button clicked");
+		return this;
 	}
 
 }

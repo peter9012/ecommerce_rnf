@@ -306,29 +306,6 @@ public class ProductsAndCartDetailsTest extends StoreFrontWebsiteBaseTest{
 	}
 
 	/***
-	 * qTest : TC-500 Cart Page- Checkout CTA - Anonymous - Create account
-	 * Description : This test validates add a product to cart and enter details to create an account
-	 *     
-	 */
-	@Test(enabled=true)
-	public void testCartPageCheckoutCTAAnonymousCreateAccount_500(){
-		String userType=TestConstants.USER_TYPE_PC;
-		String firstName=TestConstants.FIRST_NAME;
-		String lastName=TestConstants.LAST_NAME;
-		String email=TestConstants.PC_EMAIL;
-		sfShopSkinCarePage=sfHomePage.clickAllProducts();
-		sfShopSkinCarePage.addFirstProductToBag();
-		sfShopSkinCarePage.checkoutTheCartFromPopUp();
-		sfCheckoutPage=sfShopSkinCarePage.checkoutTheCart();
-		s_assert.assertTrue(sfCheckoutPage.isLoginOrRegisterTextDisplayed()," user is not redirected to expected login page");
-		sfCheckoutPage.fillNewUserDetails(userType, firstName, lastName, email, password);
-		sfCheckoutPage.clickCreateAccountButton();
-		String currentURL=sfCheckoutPage.getCurrentURL().toLowerCase();
-		s_assert.assertTrue(currentURL.contains("checkout"),"Current url should contain checkout but actual on UI is "+currentURL);
-		s_assert.assertAll();
-	}
-
-	/***
 	 * qTest : TC-340 Product Listing Page- PC
 	 * Description : This test validates login with pc and observe the products w.r.t the options
 	 *     
@@ -376,30 +353,6 @@ public class ProductsAndCartDetailsTest extends StoreFrontWebsiteBaseTest{
 	public void testLoginPriorToCheckoutNewUser_186(){
 		//Duplicate TestCase same as TC-500 Cart Page- Checkout CTA - Anonymous - Create account  
 	}
-
-	/***
-	 * qTest : TC-220 Cart Page- PC Perks Terms and Conditions - anonymous user
-	 * Description : This test validates PC Perks Terms and Conditions Link for Anonymous user
-	 * 
-	 */
-	@Test(enabled=true)
-	public void testCartPagePCPerksTermsAndConditionsAnonymousUser_220(){
-		String currentWindowID = null; 
-		String currentURL = null;
-		String utlToAssertForTCDetailsPage = "common/pdf/Archives/PCPerks-TCs";
-		sfShopSkinCarePage = sfHomePage.clickAllProducts();
-		sfShopSkinCarePage.addFirstProductToBag();
-		sfCartPage = sfShopSkinCarePage.checkoutTheCartFromPopUp();
-		sfCheckoutPage = sfCartPage.clickCheckoutBtn();
-		currentWindowID = CommonUtils.getCurrentWindowHandle();
-		sfCheckoutPage.clickPCTermsAndConditionsLink();
-		sfCheckoutPage.switchToChildWindow(currentWindowID);
-		currentURL = sfCheckoutPage.getCurrentURL();
-		s_assert.assertTrue(currentURL.contains(utlToAssertForTCDetailsPage),"Current URL : " + currentURL + " does not contain : " + utlToAssertForTCDetailsPage);
-		sfCheckoutPage.switchToParentWindow(currentWindowID);
-		s_assert.assertAll();
-	}
-
 
 	/***
 	 * qTest : TC-222 Cart Page- PC Perks Terms and Conditions - PC User
@@ -529,31 +482,6 @@ public class ProductsAndCartDetailsTest extends StoreFrontWebsiteBaseTest{
 		//Update qty as 'Zero' and update at cart page.
 		sfCartPage.enterQuantityOfProductAtCart("1", quantityAsZero);
 		sfCartPage.clickOnUpdateLinkThroughItemNumber("1");
-		s_assert.assertFalse(sfCartPage.isProductPresentInCart(),"No product expected in cart but product are present in cart");
-		s_assert.assertAll();
-	}
-
-	/***
-	 * qTest : TC-68 Cart Page- Remove a product
-	 * Description : This test validates add multiple product to cart and remove product from cart functionality
-	 *   
-	 */
-	@Test(enabled=true)
-	public void testAddMultipleProductToCartAndRemoveTillCartEmpty_68(){
-		sfShopSkinCarePage=sfHomePage.clickAllProducts();
-		sfShopSkinCarePage.addFirstProductToBag();
-		sfCartPage = sfShopSkinCarePage.checkoutTheCartFromPopUp();
-		sfCartPage.clickAddMoreItemsBtn();
-		sfShopSkinCarePage.addProductToAdhocCart(2);
-		sfCartPage = sfShopSkinCarePage.checkoutTheCartFromPopUp();
-		sfCartPage.clickAddMoreItemsBtn();
-		sfShopSkinCarePage.addProductToAdhocCart(3);
-		sfCartPage = sfShopSkinCarePage.checkoutTheCartFromPopUp();
-		sfCartPage.clickAddMoreItemsBtn();
-		sfShopSkinCarePage.addProductToAdhocCart(4);
-		sfCartPage = sfShopSkinCarePage.checkoutTheCartFromPopUp();
-		s_assert.assertTrue(sfCartPage.isProductPresentInCart(),"No product is present in cart.");
-		sfCartPage.removeAllProductsFromCart();
 		s_assert.assertFalse(sfCartPage.isProductPresentInCart(),"No product expected in cart but product are present in cart");
 		s_assert.assertAll();
 	}
@@ -841,46 +769,6 @@ public class ProductsAndCartDetailsTest extends StoreFrontWebsiteBaseTest{
 		s_assert.assertAll();	
 	}
 
-	/***
-	 * qTest : TC-162 Cart Page- Retail User - Ad Hoc Cart
-	 * Description : This test validates adhoc product is added to the cart and verifies from product popup
-	 *     
-	 */
-	@Test(enabled=true)
-	public void testCartPageRetailUserAdHocCart_162(){
-		int numberOfProductInCart;
-		String itemsOfProduct = null;
-		String newItemsOfProduct = null;
-		String updatedQuantity = null;
-		int newProductCount;
-		sfHomePage.loginToStoreFront(TestConstants.RC_EMAIL, password);
-		//Remove all products from cart.
-		sfCartPage = sfHomePage.clickMiniCartBagLink();
-		sfCartPage.removeAllProductsFromCart();
-		s_assert.assertFalse(sfCartPage.isProductPresentInCart(),"No product expected in cart but product are present in cart");
-		sfHomePage.clickRodanAndFieldsLogo();
-		//Add new product to cart page.
-		sfShopSkinCarePage=sfHomePage.clickAllProducts();
-		sfShopSkinCarePage.addFirstProductToBag();
-		sfCartPage = sfShopSkinCarePage.checkoutTheCartFromPopUp();
-		s_assert.assertTrue(sfCartPage.isProductPresentInCart(),"Newly Added product not present in adhoc cart");
-		numberOfProductInCart = sfCartPage.getProductCountInAdhocCart();
-		sfCartPage.clickRodanAndFieldsLogo();
-		//Access cart page via mini cart.
-		sfHomePage.clickMiniCartBagLink();
-		newProductCount = sfCartPage.getProductCountInAdhocCart();
-		itemsOfProduct = sfCartPage.getQuantityOfProductFromCart("1");
-		updatedQuantity = sfCartPage.updateQuantityByOne(itemsOfProduct);
-		s_assert.assertTrue(newProductCount==numberOfProductInCart,"Expected product count"+numberOfProductInCart+" while actual on UI "+newProductCount);
-		sfCartPage.clickRodanAndFieldsLogo();
-		//Access cart page via product popup.
-		sfShopSkinCarePage=sfHomePage.clickAllProducts();
-		sfShopSkinCarePage.addFirstProductToBag();
-		sfCartPage = sfShopSkinCarePage.checkoutTheCartFromPopUp();
-		newItemsOfProduct = sfCartPage.getQuantityOfProductFromCart("1");
-		s_assert.assertTrue(newItemsOfProduct.equalsIgnoreCase(updatedQuantity),"Expected items in cart"+updatedQuantity+" but actual in UI"+newItemsOfProduct);
-		s_assert.assertAll();	
-	}
 
 	/***
 	 * qTest : TC-503 Product Pricing - PC
@@ -1100,40 +988,6 @@ public class ProductsAndCartDetailsTest extends StoreFrontWebsiteBaseTest{
 		s_assert.assertAll();
 	}
 
-	/***
-	 * qTest : TC-161 Cart Page- Anonymous User - Ad Hoc Cart
-	 * Description : This test validates adhoc product is added to the cart and verifies from product popup
-	 *     
-	 */
-	@Test(enabled=true)
-	public void testCartPageAnonymousUserAdHocCart_161(){
-		String allProduct = "ALL PRODUCTS";
-		int numberOfProductInCart;
-		int newProductCount;
-		String itemsOfProduct = null;
-		String newItemsOfProduct = null;
-		String updatedQuantity = null;
-
-		sfShopSkinCarePage = sfHomePage.navigateToShopSkincareLink(allProduct);
-		sfShopSkinCarePage.addFirstProductToBag();
-		sfCartPage=sfShopSkinCarePage.checkoutTheCartFromPopUp();
-		numberOfProductInCart=sfCartPage.getProductCountInAdhocCart();
-		sfCartPage.clickRodanAndFieldsLogo();
-		//View cart page through mini cart.
-		sfHomePage.clickMiniCartBagLink();
-		newProductCount = sfCartPage.getProductCountInAdhocCart();
-		itemsOfProduct = sfCartPage.getQuantityOfProductFromCart("1");
-		updatedQuantity = sfCartPage.updateQuantityByOne(itemsOfProduct);
-		s_assert.assertTrue(newProductCount==numberOfProductInCart,"Expected product count"+numberOfProductInCart+" while actual on UI "+newProductCount);
-		sfCartPage.clickRodanAndFieldsLogo();
-		//Navigate to cart page through product popup.
-		sfShopSkinCarePage=sfHomePage.clickAllProducts();
-		sfShopSkinCarePage.selectFirstProduct();
-		sfCartPage = sfShopSkinCarePage.checkoutTheCartFromPopUp();
-		newItemsOfProduct = sfCartPage.getQuantityOfProductFromCart("1");
-		s_assert.assertTrue(newItemsOfProduct.equalsIgnoreCase(updatedQuantity),"Expected items in cart"+updatedQuantity+" but actual in UI"+newItemsOfProduct);
-		s_assert.assertAll();	
-	}
 
 	/***
 	 * qTest : TC-61 Sort/Order
@@ -1158,33 +1012,6 @@ public class ProductsAndCartDetailsTest extends StoreFrontWebsiteBaseTest{
 		s_assert.assertAll();
 	}
 
-	/***
-	 * qTest : TC-602 Proceed to Checkout Confirmation alert for Ad-hoc orders - Consultant
-	 * 
-	 * Description : This test validates the checkout confirmation popup for consulatnt user.
-	 *     
-	 */ 
-	@Test(enabled=true)
-	public void testProceedToCheckoutConfirmationAlertForAdhocOrdersConsultant_602(){
-		String currentURL = null;
-		String urlToAssertForCartPage = "cart";
-		String urlToAssertForCheckoutPage = "checkout";
-		sfHomePage.loginToStoreFront(TestConstants.CONSULTANT_USERNAME, password);
-		sfShopSkinCarePage = sfHomePage.clickAllProducts();
-		sfShopSkinCarePage.addFirstProductToBag();
-		sfCartPage = sfShopSkinCarePage.checkoutTheCartFromPopUp();
-		sfCartPage.clickCheckoutTheCartFromCartPage();
-		sfCartPage.clickCloseBtnOfCheckoutConfirmationPopup();
-		currentURL = sfCartPage.getCurrentURL();
-		s_assert.assertTrue(currentURL.contains(urlToAssertForCartPage),"Expected URL should contain "+urlToAssertForCartPage+" but actual on UI is "+currentURL);
-		s_assert.assertTrue(sfCartPage.isYourShoppingCartHeaderPresentOnCartPage(),"Your Shopping cart header is not present as expected on cart page");
-		sfCartPage.clickCheckoutTheCartFromCartPage();
-		sfCheckoutPage = sfCartPage.clickOkOnCheckoutConfirmationPopup();
-		currentURL = sfCheckoutPage.getCurrentURL();
-		s_assert.assertTrue(currentURL.contains(urlToAssertForCheckoutPage),"Expected URL should contain "+urlToAssertForCheckoutPage+" but actual on UI is "+currentURL);
-		s_assert.assertTrue(sfCheckoutPage.isShippingLinkPresentAtCheckoutPage(),"Shipping Link is not present on Checkout page when clicked on Ok button on confirmation popup");
-		s_assert.assertAll();
-	}
 
 	/***
 	 * qTest:TC-154 Product Detail pages- PC Perks Promo as Anonymous user
@@ -1241,6 +1068,179 @@ public class ProductsAndCartDetailsTest extends StoreFrontWebsiteBaseTest{
 	@Test(enabled=true)
 	public void testProductDetailsImageGallery_156(){
 		//Duplicate Test: same as TC-337 Product Details Page- Product images
+	}
+	//--
+
+	/***
+	 * qTest : TC-68 Cart Page- Remove a product
+	 * Description : This test validates add multiple product to cart and remove product from cart functionality
+	 *   
+	 */
+	@Test(enabled=true)
+	public void testAddMultipleProductToCartAndRemoveTillCartEmpty_68(){
+		sfShopSkinCarePage=sfHomePage.clickAllProducts();
+		sfShopSkinCarePage.addProductToAdhocCart(1);
+		sfCartPage = sfShopSkinCarePage.checkoutTheCartFromPopUp();
+		sfCartPage.clickAddMoreItemsBtn();
+		sfShopSkinCarePage.addProductToAdhocCart(2);
+		sfCartPage = sfShopSkinCarePage.checkoutTheCartFromPopUp();
+		sfCartPage.clickAddMoreItemsBtn();
+		sfShopSkinCarePage.addProductToAdhocCart(3);
+		sfCartPage = sfShopSkinCarePage.checkoutTheCartFromPopUp();
+		sfCartPage.clickAddMoreItemsBtn();
+		sfShopSkinCarePage.addProductToAdhocCart(4);
+		sfCartPage = sfShopSkinCarePage.checkoutTheCartFromPopUp();
+		s_assert.assertTrue(sfCartPage.isProductPresentInCart(),"No product is present in cart.");
+		sfCartPage.removeAllProductsFromCart();
+		s_assert.assertFalse(sfCartPage.isProductPresentInCart(),"No product expected in cart but product are present in cart");
+		s_assert.assertAll();
+	}
+	/***
+	 * qTest : TC-161 Cart Page- Anonymous User - Ad Hoc Cart
+	 * Description : This test validates adhoc product is added to the cart and verifies from product popup
+	 *     
+	 */
+	@Test(enabled=true)
+	public void testCartPageAnonymousUserAdHocCart_161(){
+		String allProduct = "ALL PRODUCTS";
+		int numberOfProductInCart;
+		int newProductCount;
+		String itemsOfProduct = null;
+		String newItemsOfProduct = null;
+		String updatedQuantity = null;
+
+		sfShopSkinCarePage = sfHomePage.navigateToShopSkincareLink(allProduct);
+		sfShopSkinCarePage.selectFirstProductViaAction();
+		sfCartPage=sfShopSkinCarePage.checkoutTheCartFromPopUp();
+		numberOfProductInCart=sfCartPage.getProductCountInAdhocCart();
+		sfCartPage.clickRodanAndFieldsLogo();
+		//View cart page through mini cart.
+		sfHomePage.clickMiniCartBagLink();
+		newProductCount = sfCartPage.getProductCountInAdhocCart();
+		itemsOfProduct = sfCartPage.getQuantityOfProductFromCart("1");
+		updatedQuantity = sfCartPage.updateQuantityByOne(itemsOfProduct);
+		s_assert.assertTrue(newProductCount==numberOfProductInCart,"Expected product count"+numberOfProductInCart+" while actual on UI "+newProductCount);
+		sfCartPage.clickRodanAndFieldsLogo();
+		//Navigate to cart page through product popup.
+		sfShopSkinCarePage=sfHomePage.clickAllProducts();
+		sfShopSkinCarePage.selectFirstProductViaAction();
+		sfCartPage = sfShopSkinCarePage.checkoutTheCartFromPopUp();
+		newItemsOfProduct = sfCartPage.getQuantityOfProductFromCart("1");
+		s_assert.assertTrue(newItemsOfProduct.equalsIgnoreCase(updatedQuantity),"Expected items in cart"+updatedQuantity+" but actual in UI"+newItemsOfProduct);
+		s_assert.assertAll();	
+	}
+
+	/***
+	 * qTest : TC-500 Cart Page- Checkout CTA - Anonymous - Create account
+	 * Description : This test validates add a product to cart and enter details to create an account
+	 *     
+	 */
+	@Test(enabled=true)
+	public void testCartPageCheckoutCTAAnonymousCreateAccount_500(){
+		String userType=TestConstants.USER_TYPE_PC;
+		String firstName=TestConstants.FIRST_NAME;
+		String lastName=TestConstants.LAST_NAME;
+		String email=TestConstants.PC_EMAIL;
+		sfShopSkinCarePage=sfHomePage.clickAllProducts();
+		sfShopSkinCarePage.selectFirstProductViaAction();
+		sfShopSkinCarePage.checkoutTheCartFromPopUp();
+		sfCheckoutPage=sfShopSkinCarePage.checkoutTheCart();
+		s_assert.assertTrue(sfCheckoutPage.isLoginOrRegisterTextDisplayed()," user is not redirected to expected login page");
+		sfCheckoutPage.fillNewUserDetails(userType, firstName, lastName, email, password);
+		sfCheckoutPage.clickCreateAccountButton();
+		String currentURL=sfCheckoutPage.getCurrentURL().toLowerCase();
+		s_assert.assertTrue(currentURL.contains("checkout"),"Current url should contain checkout but actual on UI is "+currentURL);
+		s_assert.assertAll();
+	}
+	/***
+	 * qTest : TC-220 Cart Page- PC Perks Terms and Conditions - anonymous user
+	 * Description : This test validates PC Perks Terms and Conditions Link for Anonymous user
+	 * 
+	 */
+	@Test(enabled=true)
+	public void testCartPagePCPerksTermsAndConditionsAnonymousUser_220(){
+		String currentWindowID = null; 
+		String currentURL = null;
+		String utlToAssertForTCDetailsPage = "common/pdf/Archives/PCPerks-TCs";
+		sfShopSkinCarePage = sfHomePage.clickAllProducts();
+		sfShopSkinCarePage.selectFirstProductViaAction();
+		sfCartPage = sfShopSkinCarePage.checkoutTheCartFromPopUp();
+		sfCheckoutPage = sfCartPage.clickCheckoutBtn();
+		currentWindowID = CommonUtils.getCurrentWindowHandle();
+		sfCheckoutPage.clickPCTermsAndConditionsLink();
+		sfCheckoutPage.switchToChildWindow(currentWindowID);
+		currentURL = sfCheckoutPage.getCurrentURL();
+		s_assert.assertTrue(currentURL.contains(utlToAssertForTCDetailsPage),"Current URL : " + currentURL + " does not contain : " + utlToAssertForTCDetailsPage);
+		sfCheckoutPage.switchToParentWindow(currentWindowID);
+		s_assert.assertAll();
+	}
+
+	/***
+	 * qTest : TC-162 Cart Page- Retail User - Ad Hoc Cart
+	 * Description : This test validates adhoc product is added to the cart and verifies from product popup
+	 *     
+	 */
+	@Test(enabled=true)
+	public void testCartPageRetailUserAdHocCart_162(){
+		int numberOfProductInCart;
+		String itemsOfProduct = null;
+		String newItemsOfProduct = null;
+		String updatedQuantity = null;
+		int newProductCount;
+		sfHomePage.loginToStoreFront(TestConstants.RC_EMAIL, password);
+		//Remove all products from cart.
+		sfCartPage = sfHomePage.clickMiniCartBagLink();
+		sfCartPage.removeAllProductsFromCart();
+		s_assert.assertFalse(sfCartPage.isProductPresentInCart(),"No product expected in cart but product are present in cart");
+		sfHomePage.clickRodanAndFieldsLogo();
+		//Add new product to cart page.
+		sfShopSkinCarePage=sfHomePage.clickAllProducts();
+		sfShopSkinCarePage.selectFirstProductViaAction();
+		sfCartPage = sfShopSkinCarePage.checkoutTheCartFromPopUp();
+		s_assert.assertTrue(sfCartPage.isProductPresentInCart(),"Newly Added product not present in adhoc cart");
+		numberOfProductInCart = sfCartPage.getProductCountInAdhocCart();
+		sfCartPage.clickRodanAndFieldsLogo();
+		//Access cart page via mini cart.
+		sfHomePage.clickMiniCartBagLink();
+		newProductCount = sfCartPage.getProductCountInAdhocCart();
+		itemsOfProduct = sfCartPage.getQuantityOfProductFromCart("1");
+		updatedQuantity = sfCartPage.updateQuantityByOne(itemsOfProduct);
+		s_assert.assertTrue(newProductCount==numberOfProductInCart,"Expected product count"+numberOfProductInCart+" while actual on UI "+newProductCount);
+		sfCartPage.clickRodanAndFieldsLogo();
+		//Access cart page via product popup.
+		sfShopSkinCarePage=sfHomePage.clickAllProducts();
+		sfShopSkinCarePage.selectFirstProductViaAction();
+		sfCartPage = sfShopSkinCarePage.checkoutTheCartFromPopUp();
+		newItemsOfProduct = sfCartPage.getQuantityOfProductFromCart("1");
+		s_assert.assertTrue(newItemsOfProduct.equalsIgnoreCase(updatedQuantity),"Expected items in cart"+updatedQuantity+" but actual in UI"+newItemsOfProduct);
+		s_assert.assertAll();	
+	}
+	/***
+	 * qTest : TC-602 Proceed to Checkout Confirmation alert for Ad-hoc orders - Consultant
+	 * 
+	 * Description : This test validates the checkout confirmation popup for consulatnt user.
+	 *     
+	 */ 
+	@Test(enabled=true)
+	public void testProceedToCheckoutConfirmationAlertForAdhocOrdersConsultant_602(){
+		String currentURL = null;
+		String urlToAssertForCartPage = "cart";
+		String urlToAssertForCheckoutPage = "checkout";
+		sfHomePage.loginToStoreFront(TestConstants.CONSULTANT_USERNAME, password);
+		sfShopSkinCarePage = sfHomePage.clickAllProducts();
+		sfShopSkinCarePage.addProductToBagForSpecificOrderType(1, "One Time Order");
+		sfCartPage = sfShopSkinCarePage.checkoutTheCartFromPopUp();
+		sfCartPage.clickCheckoutTheCartFromCartPage();
+		sfCartPage.clickCloseBtnOfCheckoutConfirmationPopup();
+		currentURL = sfCartPage.getCurrentURL();
+		s_assert.assertTrue(currentURL.contains(urlToAssertForCartPage),"Expected URL should contain "+urlToAssertForCartPage+" but actual on UI is "+currentURL);
+		s_assert.assertTrue(sfCartPage.isYourShoppingCartHeaderPresentOnCartPage(),"Your Shopping cart header is not present as expected on cart page");
+		sfCartPage.clickCheckoutTheCartFromCartPage();
+		sfCheckoutPage = sfCartPage.clickOkOnCheckoutConfirmationPopup();
+		currentURL = sfCheckoutPage.getCurrentURL();
+		s_assert.assertTrue(currentURL.contains(urlToAssertForCheckoutPage),"Expected URL should contain "+urlToAssertForCheckoutPage+" but actual on UI is "+currentURL);
+		s_assert.assertTrue(sfCheckoutPage.isShippingLinkPresentAtCheckoutPage(),"Shipping Link is not present on Checkout page when clicked on Ok button on confirmation popup");
+		s_assert.assertAll();
 	}
 
 }

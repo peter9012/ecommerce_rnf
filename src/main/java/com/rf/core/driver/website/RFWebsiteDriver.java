@@ -570,6 +570,12 @@ public class RFWebsiteDriver implements RFDriver,WebDriver {
 		turnOnImplicitWaits();
 	}
 
+	public void clickByAction(By locator) {
+		Actions build = new Actions(driver);
+		build.moveToElement(driver.findElement(locator)).click().build().perform();
+		pauseExecutionFor(1000);
+	}
+
 	public void type(By locator, String input) {
 		/*		driver.manage().timeouts().implicitlyWait(5, TimeUnit.SECONDS);
 		 */		

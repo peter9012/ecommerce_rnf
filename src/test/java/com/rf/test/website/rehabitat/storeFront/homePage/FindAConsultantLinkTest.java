@@ -6,7 +6,7 @@ import com.rf.core.website.constants.TestConstants;
 import com.rf.test.website.rehabitat.storeFront.baseTest.StoreFrontWebsiteBaseTest;
 
 public class FindAConsultantLinkTest extends StoreFrontWebsiteBaseTest{
-	
+
 	/***
 	 * qTest : TC-7 Corporate Sites Should Have "Find A Consultant" Link On The Home Page
 	 * Description : This test validates that the 'Find a Consultant' link navigates to the
@@ -27,5 +27,20 @@ public class FindAConsultantLinkTest extends StoreFrontWebsiteBaseTest{
 		s_assert.assertTrue(sfHomePage.isFindAConsultantPagePresent(),"'Find A Consultant' page either doesn't have the URL as 'find-consultant' or sponsor search field is not present for RC");
 		s_assert.assertAll();
 	}
+
+//	/***
+//	 * qTest : TC-8 BIZ and Com sites shouldn’t have "Find a consultant" link on the header of the home page
+//	 * Description : This test validates that the 'Find a Consultant' link not present
+//	 * on homepage of biz and com site.
+//	 * 				
+//	 */
+//	@Test(enabled=false)
+//	public void testPWSSitesShouldNotHaveFindAConsultantLinkOnTheHomePage_8(){
+//		String PWSSite = TestConstants.CONSULTANT_PWS;
+//
+//		sfHomePage.navigateToUrl(PWSSite);
+//		s_assert.assertFalse(sfHomePage.isFindAConsultantLinkOnHomePagePresent(),"'Find a consultant' link is present on home page of PWS site");
+//		s_assert.assertAll();
+//	}
 
 }

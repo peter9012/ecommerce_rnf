@@ -558,4 +558,30 @@ public class StoreFrontAccountInfoPage extends StoreFrontWebsiteBasePage{
 
 	}
 
+	/***
+	 * This method get first name on account info page.
+	 * 
+	 * @param
+	 * @return first name message
+	 * 
+	 */
+	public String getFirstNameFromAccountInfo(){
+		String firstNameAccountInfo = driver.findElement(FIRST_NAME_LOC).getText(); 
+		logger.info("First Name on account info is: "+firstNameAccountInfo);
+		return firstNameAccountInfo.trim();
+	}
+
+	/***
+	 * This method get Last name on account info page.
+	 * 
+	 * @param
+	 * @return first name message
+	 * 
+	 */
+	public String getLastNameFromAccountInfo(){
+		String lastNameAccountInfo = driver.findElement(LAST_NAME_LOC).getText(); 
+		logger.info("Last Name on account info is: "+lastNameAccountInfo);
+		return lastNameAccountInfo.trim();
+	}
+
 }

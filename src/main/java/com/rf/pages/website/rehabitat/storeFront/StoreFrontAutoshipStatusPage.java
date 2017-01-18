@@ -37,12 +37,14 @@ public class StoreFrontAutoshipStatusPage extends StoreFrontWebsiteBasePage{
 	private final By PC_PERKS_STATUS_ON_AUTOSHIP_STATUS_PAGE = By.xpath("//div[contains(text(),'Current PC Perks Status')]/following::div[1]");
 	private final By SUBSCRIBE_TO_PULSE_BTN_LOC = By.id("asmrunnowconfirmsubmit");
 	private final By CANCEL_PULSE_SUBSCRIPTION_BTN_LOC = By.xpath("//a[contains(text(),'Cancel my Pulse subscription')]");
-	private static final By ENROLL_IN_CRP_BTN_LOC = By.xpath("//input[@value='Enroll In CRP']");
-	private static final By CANCEL_MY_CRP_LINK_LOC = By.xpath("//a[@id='cancelCRPStatus']");
-	private static final By CANCEL_CRP_BUTTON_LOC = By.xpath("//input[@value='CANCEL CRP']");
-	private static final By ACTION_SUCCESS_MSG_ON_AUTOSHIP_STATUS_PAGE_LOC = By.xpath("//div[@class='alert alert-info alert-dismissable']"); 
-	private static final By CRP_CURRENT_STATUS_LOC = By.xpath("//div[contains(text(),'Current CRP Status')]/following-sibling::div[1]");
+	private final By ENROLL_IN_CRP_BTN_LOC = By.xpath("//input[@value='Enroll In CRP']");
+	private final By CANCEL_MY_CRP_LINK_LOC = By.xpath("//a[@id='cancelCRPStatus']");
+	private final By CANCEL_CRP_BUTTON_LOC = By.xpath("//input[@value='CANCEL CRP']");
+	private final By ACTION_SUCCESS_MSG_ON_AUTOSHIP_STATUS_PAGE_LOC = By.xpath("//div[@class='alert alert-info alert-dismissable']"); 
+	private final By CRP_CURRENT_STATUS_LOC = By.xpath("//div[contains(text(),'Current CRP Status')]/following-sibling::div[1]");
 	private final By CANCEL_MY_CRP_LOC = By.id("cancelCRPStatus");
+	private final By PULSE_CURRENT_STATUS_LOC = By.xpath("//div[contains(text(),'Current Subscription Status')]/following-sibling::div[1]");
+	private final By PULSE_NEXT_BILL_SHIP_DATE_LOC = By.xpath("//*[contains(text(),'Next Bill Date:')]/following-sibling::div[1]");
 
 	private String socialMediaIconLoc = "//div[@class='container']//a[contains(@href,'%s')]";
 
@@ -557,4 +559,60 @@ public class StoreFrontAutoshipStatusPage extends StoreFrontWebsiteBasePage{
 	public boolean isCancelMyCrpLinkVisible(){
 		return driver.isElementVisible(CANCEL_MY_CRP_LOC);
 	}
+
+	/***
+	 * This method get the current Pulse status
+	 *
+	 * @param
+	 * @return String
+	 * 
+	 */
+	public String getCurrentPulseStatus(){
+		return driver.getText(PULSE_CURRENT_STATUS_LOC).trim();
+	}
+
+	/***
+	 * This method validates next Bill ship date on autoship status page
+	 * for Pulse
+	 * @param
+	 * @return boolean value
+	 * 
+	 */
+	public boolean isNextPulseAutoshipBillShipDatePresent(){
+		return driver.isElementVisible(PULSE_NEXT_BILL_SHIP_DATE_LOC);
+	}
+
+	/***
+	 * This method validates next Bill ship date on autoship status page
+	 * for Pulse
+	 * @param
+	 * @return boolean value
+	 * 
+	 */
+	public boolean isPulseCancellationPopupPresent(){
+		String popupText = null;
+		if(driver.isElementPresent(PULSE_CANCELLATION_POPUP_TEXT_LOC)){
+			popupText = driver.findElement(PULSE_CANCELLATION_POPUP_TEXT_LOC).getText().trim();	
+		}
+		if(popupText.contains("Are you sure you want to cancel the PULSE Subscription")){
+			return true;
+		}else{
+			logger.info("Pulse cancellation popup not present");
+			return false;
+		}
+	}	
+	/***
+	 * This method click on 'Cancel' on pulse cancellation popup
+	 * 
+	 * @param
+	 * @return store front autoship status page object
+	 * 
+	 */
+	public StoreFrontAutoshipCartPage clickCancelOnPulseCancellationPopup(){
+		driver.click(PULSE_CANCELLATION_POPUP_CANCEL_LOC);
+		logger.info("Cancel Button clicked on pulse cancellation popup.");
+		return new StoreFrontAutoshipCartPage(driver);
+	}
+
+
 }

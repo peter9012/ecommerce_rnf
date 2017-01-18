@@ -21,6 +21,9 @@ public class TestConstants {
 	public static final String USER_TYPE_CONSULTANT = "Consultant";
 	public static final String USER_TYPE_PC = "PC";
 	public static final String USER_TYPE_RC = "RC";
+	public static final String ORDER_TYPE_ADHOC = "One Time Order";
+	public static final String ORDER_TYPE_PC_PERKS = "PC Perks Order";
+	public static final String PRODUCT_NUMBER = "2";
 	public static final String PC_FIRST_NAME = "AutoPC";
 	public static final String RC_FIRST_NAME = "AutoRC";
 	public static final String LAST_NAME = "lName";
@@ -44,7 +47,8 @@ public class TestConstants {
 	public static final String ABOUT_ME_PAGE_QUES_FROM_JOIN_URL = "WHAT I LOVE MOST ABOUT MY R+F BUSINESS";
 	public static final String SHIPPING_ADDRESS_ADDED_MESSAGE = "Your address was created.";
 	public static final String SHIPPING_ADDRESS_REMOVED_MESSAGE = "Your address was removed.";
-
+	public static final String TITLE_OF_ALL_SKINCARE_PAGE = "All Skincare | Rodan and Fields";
+	
 	// Order page Details
 	public static final String TITLE_OF_ORDER_DETAILS_PAGE = "Order Details | Rodan and Fields";
 
@@ -52,6 +56,7 @@ public class TestConstants {
 	public static final String CONSULTANT_USERNAME = "AutoCons20170116103858@mailinator.com";
 	public static final String CONSULTANT_EMAIL = "AutoCons20170116103858@mailinator.com";
 	public static final String CONSULTANT_WITH_CRP_USERNAME = "autocon1515@mailinator.com";
+	public static final String CONSULTANT_USERNAME_HAVING_NO_RETURN_ORDERS = "AutoCons20170116103858@mailinator.com";
 	public static final String CONSULTANT_ACCOUNT_ID = "";
 	public static final String CONSULTANT_ACCOUNT_NUMBER = "";
 	public static final String FIRST_NAME = "AutoCons";
@@ -109,9 +114,10 @@ public class TestConstants {
 	public static final String DPO_STATE_US = "AP Armed Forces";
 
 	//PC User Details
-	public static final String PC_USERNAME = "autocon13121@mailinator.com";
-	public static final String PC_EMAIL = "autocon13121@mailinator.com";
-	public static final String PC_EMAIL_HAVING_AUTOSHIP = "autocon13121@mailinator.com";
+	public static final String PC_USERNAME = "autopc1100@mailinator.com";
+	public static final String PC_EMAIL = "autopc1100@mailinator.com";
+	public static final String PC_EMAIL_HAVING_AUTOSHIP = "autopc1100@mailinator.com";
+	public static final String PC_EMAIL_WHO_ENROLLED_UNDER_SPONSOR_WITH_PWS = "autopc1100@mailinator.com";
 
 	//RC User Details
 	public static final String RC_USERNAME = "AutoRC20170113140808@mailinator.com";

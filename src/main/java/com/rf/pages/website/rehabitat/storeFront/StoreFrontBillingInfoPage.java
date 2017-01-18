@@ -47,6 +47,7 @@ public class StoreFrontBillingInfoPage extends StoreFrontWebsiteBasePage{
 	private final By SUCCESSFUL_ACTION_MSG_LOC = By.xpath("//div[@class='global-alerts']/div[@class='alert alert-info alert-dismissable']");
 	private final By ADD_NEW_BILLING_ADDRESS_BLOCK_LOC = By.xpath("//div[@id='billingAddressForm']");
 	private final By STREET_ERROR_MSG_LOC = By.xpath("//div[@id='accountBillingForm']//p[@id='errorMessage']");
+	private final By CARD_ICONS_LOC = By.xpath("//div[@class='form-group']//div[@class='card-icons']/span");
 
 	private String billingProfileFirstNameLoc = "//div[@class='account-paymentdetails account-list']//li[contains(text(),'%s')]";
 	private String creditCardNumberForSpecificBillingProfileLoc = "//li[contains(text(),'%s')]/following-sibling::li[contains(text(),'Credit')]";
@@ -145,23 +146,6 @@ public class StoreFrontBillingInfoPage extends StoreFrontWebsiteBasePage{
 	 */
 	public boolean isCardDetailsAddedSuccessfulMsgAppearedAsExpected(String expectedMsg){
 		return driver.getText(CARD_DETAILS_SUCCESSFULLY_ADDED_MSG_LOC).contains(expectedMsg);
-	}
-
-	/***
-	 * This method validates the Disability of Billing Profile Card Details Fields.
-	 * 
-	 * @param
-	 * @return boolean value
-	 * 
-	 */
-	public boolean isCardDetailsFieldsDisabled(){
-		boolean flag = driver.findElement(NAME_ON_CARD_TF_LOC).isEnabled() &&
-				driver.findElement(ACCOUNT_NUM_ON_CARD_TF_LOC).isEnabled() &&
-				driver.findElement(CARD_TYPE_DD_LOC).isEnabled() &&
-				driver.findElement(CARD_EXPIRY_MONTH_DD_LOC).isEnabled() &&
-				driver.findElement(CARD_EXPIRY_YEAR_DD_LOC).isEnabled() &&
-				driver.findElement(CARD_CVV_NUM_TF_LOC).isEnabled();
-		return !flag;
 	}
 
 	/***
@@ -466,6 +450,48 @@ public class StoreFrontBillingInfoPage extends StoreFrontWebsiteBasePage{
 	 */
 	public boolean isAddNewBillingAddressFormDisplayed(){
 		return driver.isElementVisible(ADD_NEW_BILLING_ADDRESS_BLOCK_LOC);
+	}
+
+	/***
+	 * This method validates the Disability of Billing Profile Card Details Fields.
+	 * 
+	 * @param
+	 * @return boolean value
+	 * 
+	 */
+	public boolean isCardDetailsFieldsDisabled(){
+		boolean flag = driver.findElement(NAME_ON_CARD_TF_LOC).isEnabled() &&
+				driver.findElement(ACCOUNT_NUM_ON_CARD_TF_LOC).isEnabled() &&
+				driver.findElement(CARD_EXPIRY_MONTH_DD_LOC).isEnabled() &&
+				driver.findElement(CARD_EXPIRY_YEAR_DD_LOC).isEnabled() &&
+				driver.findElement(CARD_CVV_NUM_TF_LOC).isEnabled();
+		return !flag;
+	}
+
+
+	/***
+	 * This method validates the Disability of Card Type icons
+	 * 
+	 * @param
+	 * @return boolean value
+	 * 
+	 */
+	public boolean isCardTypeIconsDisabled(){
+		boolean flag = false;
+		List<WebElement> cardTypes = driver.findElements(CARD_ICONS_LOC);
+		String classAttribute = null;
+		for(WebElement cardType : cardTypes){
+			classAttribute = cardType.getAttribute("class").trim();
+			if(classAttribute.contains("disabled")){
+				flag = true;
+				logger.info("Card Type : " + classAttribute.split(" ")[0] + " is disabled");
+			}
+			else{
+				flag = false;
+				logger.info("Card Type : " + classAttribute.split(" ")[0] + " is not disabled");
+			}
+		}
+		return flag;
 	}
 
 }

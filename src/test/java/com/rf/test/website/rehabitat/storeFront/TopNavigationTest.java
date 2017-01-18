@@ -24,7 +24,7 @@ public class TopNavigationTest extends StoreFrontWebsiteBaseTest{
 		sfHomePage.clickFirstEventCalendar();
 		sfHomePage.switchToChildWindow(currentWindowID);
 		currentURL = sfHomePage.getCurrentURL().toLowerCase();
-		s_assert.assertTrue(currentURL.contains("events/calendar"), "Expected URL should contain events/Calendar but actual on UI is"+currentURL);
+		s_assert.assertTrue(currentURL.contains("events/eventrsvp"), "Expected URL should contain events/EventRsvp but actual on UI is"+currentURL);
 		sfHomePage.switchToParentWindow(currentWindowID);
 		s_assert.assertAll();
 	}

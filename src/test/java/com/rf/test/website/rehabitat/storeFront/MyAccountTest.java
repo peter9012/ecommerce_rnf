@@ -6,6 +6,7 @@ import org.testng.annotations.Test;
 
 import com.rf.core.utils.CommonUtils;
 import com.rf.core.website.constants.TestConstants;
+import com.rf.pages.website.rehabitat.storeFront.StoreFrontCheckoutPage;
 import com.rf.test.website.rehabitat.storeFront.baseTest.StoreFrontWebsiteBaseTest;
 
 public class MyAccountTest extends StoreFrontWebsiteBaseTest{
@@ -34,6 +35,7 @@ public class MyAccountTest extends StoreFrontWebsiteBaseTest{
 		s_assert.assertTrue(sfAccountInfoPage.isCityFieldPresent()," City field not present on account Info page for consultant");
 		s_assert.assertTrue(sfAccountInfoPage.isPostalFieldPresent(),"Postal field not present on account Info page for consultant");
 		s_assert.assertTrue(sfAccountInfoPage.isMainPhoneNumberFieldPresent(),"Main phone number field not present on account Info page for consultant");
+		sfHomePage.clickWelcomeDropdown();
 		sfAccountInfoPage.logout();
 		sfHomePage.loginToStoreFront(TestConstants.PC_EMAIL, password);
 		sfHomePage.clickWelcomeDropdown();
@@ -47,6 +49,7 @@ public class MyAccountTest extends StoreFrontWebsiteBaseTest{
 		s_assert.assertTrue(sfAccountInfoPage.isCityFieldPresent()," City field not present on account Info page for pc");
 		s_assert.assertTrue(sfAccountInfoPage.isPostalFieldPresent(),"Postal field not present on account Info page for pc");
 		s_assert.assertTrue(sfAccountInfoPage.isMainPhoneNumberFieldPresent(),"Main phone number field not present on account Info page for pc");
+		sfHomePage.clickWelcomeDropdown();
 		sfAccountInfoPage.logout();
 		sfHomePage.loginToStoreFront(TestConstants.RC_EMAIL, password);
 		sfHomePage.clickWelcomeDropdown();
@@ -187,7 +190,7 @@ public class MyAccountTest extends StoreFrontWebsiteBaseTest{
 		//Login as consultant user.
 		sfHomePage.loginToStoreFront(TestConstants.CONSULTANT_EMAIL,password,true);
 		sfShopSkinCarePage = sfHomePage.navigateToShopSkincareLink(category_AllProduct);
-		sfShopSkinCarePage.selectFirstProduct();
+		sfShopSkinCarePage.addProductToCart(TestConstants.PRODUCT_NUMBER, TestConstants.ORDER_TYPE_ADHOC);
 		sfShopSkinCarePage.checkoutTheCartFromPopUp();
 		sfCheckoutPage = sfHomePage.checkoutTheCart();
 		sfCheckoutPage.clickSaveButton();
@@ -215,7 +218,7 @@ public class MyAccountTest extends StoreFrontWebsiteBaseTest{
 		navigateToStoreFrontBaseURL();
 		sfHomePage.loginToStoreFront(TestConstants.PC_EMAIL,password);
 		sfShopSkinCarePage = sfHomePage.navigateToShopSkincareLink(category_AllProduct);
-		sfShopSkinCarePage.selectFirstProduct();
+		sfShopSkinCarePage.addProductToCart(TestConstants.PRODUCT_NUMBER, TestConstants.ORDER_TYPE_ADHOC);
 		sfShopSkinCarePage.checkoutTheCartFromPopUp();
 		sfCheckoutPage = sfHomePage.checkoutTheCart();
 		sfCheckoutPage.clickSaveButton();
@@ -691,7 +694,7 @@ public class MyAccountTest extends StoreFrontWebsiteBaseTest{
 	 * 
 	 * 				
 	 */
-	@Test(enabled=false)//TODO Incomplete as pulse functionality not implemented yet.
+	@Test(enabled=true) //Not auto loggedIn in pulse.
 	public void testVerifyCheckMyPulsePage_357(){
 		String currentURL = null;
 		String currentWindowID = null;
@@ -1234,6 +1237,113 @@ public class MyAccountTest extends StoreFrontWebsiteBaseTest{
 		sfHomePage.clickRodanAndFieldsLogo();
 		sfHomePage.clickWelcomeDropdown();
 		s_assert.assertFalse(sfHomePage.isEditPWSLinkPresentInWelcomeDD(),"Edit PWS link is present for user not subscribed to pulse.");
+		s_assert.assertAll();
+	}
+
+	/***
+	 * qTest : TC-359 Enroll into pulse from my account order page
+	 * 
+	 * Description : This test enroll user in pulse from order page
+	 * 
+	 * 				
+	 */
+	@Test(enabled=false) //TODO No subscribe to pulse link present on order page.
+	public void testEnrollUserInPulseFromOrderHistoryPage_359(){
+		String currentURL = null;
+		String currentWindowID = null;
+		String urlToAssert = "myrfpulse";
+		//Login as consultant user.
+		sfHomePage.loginToStoreFront(TestConstants.CONSULTANT_USERNAME,password);
+		sfHomePage.clickWelcomeDropdown();
+		sfOrdersPage = sfHomePage.navigateToOrdersPage();
+		s_assert.assertAll();
+	}
+
+	/***
+	 * qTest : TC-360 Access Link to Pulse from Order History
+	 * 
+	 * Description : This test validate pulse link functionality on order page.
+	 * 
+	 * 				
+	 */
+	@Test(enabled=true)//Not auto loggedIn in pulse.
+	public void testVerifyPulseLinkOnOrderPage_360(){
+		String currentURL = null;
+		String currentWindowID = null;
+		String urlToAssert = "myrfpulse";
+		//Login as consultant user.
+		sfHomePage.loginToStoreFront(TestConstants.CONSULTANT_USERNAME,password);
+		sfHomePage.clickWelcomeDropdown();
+		sfOrdersPage = sfHomePage.navigateToOrdersPage();
+		currentWindowID = CommonUtils.getCurrentWindowHandle();
+		sfOrdersPage.clickPulseLink();
+		sfHomePage.switchToChildWindow(currentWindowID);
+		currentURL = sfHomePage.getCurrentURL().toLowerCase();
+		s_assert.assertTrue(currentURL.contains(urlToAssert), "Expected URL should contain "+urlToAssert+" but actual on UI is"+currentURL);
+		sfHomePage.switchToParentWindow(currentWindowID);
+		s_assert.assertAll();
+	}
+	
+	/***
+	 * qTest : TC-361 View Pulse autoship status and next bill date from Autoship status page in my account
+	 * 
+	 * Description : This test validate pulse autoship status and next bill ship date
+	 * from autoship status page.
+	 * 				
+	 */
+	@Test(enabled=true) //Not auto loggedIn in pulse.
+	public void testVerifyPulseStatusAndNextBillShipDate_361(){
+		String currentURL = null;
+		String currentWindowID = null;
+		String currentPulseStatus = null;
+		String urlToAssert = "myrfpulse";
+		//Login as consultant user.
+		sfHomePage.loginToStoreFront(TestConstants.CONSULTANT_ENROLLED_IN_PULSE,password);
+		sfHomePage.clickWelcomeDropdown();
+		sfAutoshipStatusPage = sfHomePage.navigateToAutoshipStatusPage();
+		s_assert.assertFalse(sfAutoshipStatusPage.isSubscribeToPulseBtnDisplayed(),"User is not subscribed to pulse");
+		currentPulseStatus = sfAutoshipStatusPage.getCurrentPulseStatus();
+		s_assert.assertTrue(currentPulseStatus.contains("Enrolled"),"Consultant is not enrolled into Pulse yet expected 'Enrolled' and Actual"+currentPulseStatus);
+		s_assert.assertTrue(sfAutoshipStatusPage.isNextPulseAutoshipBillShipDatePresent(),"Pulse next Bill ship date not present on autoship status page.");
+		sfHomePage.clickWelcomeDropdown();
+		currentWindowID = CommonUtils.getCurrentWindowHandle();
+		sfHomePage.navigateToCheckMyPulsePage();
+		sfHomePage.switchToChildWindow(currentWindowID);
+		currentURL = sfHomePage.getCurrentURL().toLowerCase();
+		s_assert.assertTrue(currentURL.contains(urlToAssert), "Expected URL should contain "+urlToAssert+" but actual on UI is"+currentURL);
+		sfHomePage.switchToParentWindow(currentWindowID);
+		s_assert.assertAll();
+	}
+	
+	/***
+	 * qtest: TC-380 Cancel Pulse Subscription From My Account Autoship page
+	 * Description: This method cancel pulse from autoship status page.
+	 */	
+	@Test(enabled=false)
+	public void testConsultantFirstTimePulseEnrollment_380(){
+		String prefix = TestConstants.FIRST_NAME+CommonUtils.getCurrentTimeStamp();
+		sfCheckoutPage = new StoreFrontCheckoutPage(driver);
+		sfHomePage.loginToStoreFront(TestConstants.CONSULTANT_EMAIL,password);
+		sfHomePage.clickWelcomeDropdown();
+		sfAutoshipStatusPage = sfHomePage.navigateToAutoshipStatusPage();
+		sfAutoshipStatusPage.clickSubscribeToPulseBtn();
+		sfAutoshipStatusPage.enterAvailablePrefix(prefix);
+		sfAutoshipStatusPage.clickNextBtn();
+		sfCheckoutPage = sfAutoshipStatusPage.clickConfirmSubscription().checkTheConfirmSubscriptionChkBoxAndSubscribe();
+		sfCheckoutPage.clickUseSavedCardBtn().clickBillingDetailsNextbutton().clickPlaceOrderButton();
+		s_assert.assertTrue(sfCheckoutPage.isPopUpForTermsAndConditionsCheckboxDisplayed(), "validation popup for terms and conditions not displayed");
+		sfCheckoutPage.closePopUp();
+		sfCheckoutPage.selectTermsAndConditionsChkBox().clickPlaceOrderButton();
+		s_assert.assertTrue(sfCheckoutPage.isOrderPlacedSuccessfully(),"Order is Not placed successfully");
+		sfHomePage.clickWelcomeDropdown();
+		sfHomePage.navigateToAutoshipStatusPage();
+		sfAutoshipStatusPage.clickCancelPulseSubscription();
+		sfAutoshipStatusPage.clickConfirmSubscriptionButton();
+		s_assert.assertTrue(sfAutoshipStatusPage.isPulseCancellationPopupPresent(),"Pulse cancellation popup is not present.");
+		sfAutoshipStatusPage.clickCancelOnPulseCancellationPopup();
+		s_assert.assertFalse(sfAutoshipStatusPage.isPulseCancellationPopupPresent(),"Pulse cancellation popup is present after clicking cancel button.");
+		sfAutoshipStatusPage.clickConfirmSubscription();
+		s_assert.assertTrue(sfAutoshipStatusPage.isSubscribeToPulseBtnDisplayed(), "Pulse subscription is NOT cancelled");
 		s_assert.assertAll();
 	}
 }

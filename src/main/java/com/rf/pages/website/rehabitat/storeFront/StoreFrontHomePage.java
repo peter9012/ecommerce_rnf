@@ -32,7 +32,7 @@ public class StoreFrontHomePage extends StoreFrontWebsiteBasePage{
 	private final By ERROR_MSG_TEXT_LOC = By.xpath("//div[@class='content']//h2");
 	private final By INCORRECT_USERNAME_PASSOWRD_TXT_LOC = By.xpath("//div[contains(@class,'alert-danger') and contains(text(),'') or contains(text(),'Your username or password was incorrect.')]");
 	private final By MEET_THE_DOCTORS_TXT_LOC = By.xpath("//h1[text()=' Meet the Doctors']");
-	private final By MEET_RF_EXECUTIVE_TEAM_LINK_LOC = By.xpath("//a[@href='/executive-team']");
+	private final By MEET_RF_EXECUTIVE_TEAM_LINK_LOC = By.xpath("//a[@href='executive-team']");
 	private final By TOTAL_TEAM_MEMBERS_IN_EXECUTIVE_TEAM_LOC = By.xpath("//div[@id='modal_front']//div[@class='title']");
 	private final By TEAM_MEMBER_NAME_FROM_POPUP_LOC = By.xpath("//div[@class='item active']/descendant::h4[1]");
 	private final By CLOSE_ICON_MEMBER_DETAIL_POPUP_LOC = By.xpath("//button[@class='close']");

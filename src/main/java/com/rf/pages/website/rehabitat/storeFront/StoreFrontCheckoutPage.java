@@ -66,7 +66,9 @@ public class StoreFrontCheckoutPage extends StoreFrontWebsiteBasePage{
 	private final By SHIPPING_STATE_AT_CHECKOUT_PAGE_LOC=By.id("address.region");
 	private final By SHIPPING_POSTAL_CODE_AT_CHECKOUT_PAGE_LOC=By.id("address.postcode");
 	private final By SHIPPING_PHONE_NUMBER_AT_CHECKOUT_PAGE_LOC=By.id("address.phone");
-
+	private final By PROFILE_FOR_FUTURE_AUTOSHIP_CHECKBOX_LOC = By.xpath("//label[@for='futureAutoship']");
+	private final By TERMS_AND_CONDITIONS_CHCKBOX_FOR_CONSULTANT_CRP_LOC = By.xpath("//a[contains(text(),'terms and conditions')]/ancestor::label[1]/preceding-sibling::input[1]");
+	private final By POLICIES_AND_PROCEDURES_CHECBOX_LOC = By.xpath("//a[contains(text(),'policies and procedures')]/ancestor::label[1]/preceding-sibling::input[1]");
 	private final By QUEBEC_PROVINCE_FOR_SHIPPING_LOC=By.xpath("//option[@disabled='disabled' and text()='Quebec']");
 	private final By SELECTED_SHIPPING_METHOD_LOC = By.xpath("//li[@class='checked']/label");
 	private final By EDIT_LINK_OF_ORDERS_SUMMARY_LOC=By.xpath("//div[@class='price']/a[contains(text(),'Edit')]");
@@ -151,7 +153,6 @@ public class StoreFrontCheckoutPage extends StoreFrontWebsiteBasePage{
 	private final By USE_THESE_PAYMENT_DETAILS_BTN_LOC = By.xpath("//button[contains(text(),'Use these payment details')]");
 	private final By SHIPPING_METHOD_AFTER_ORDER_PLACED = By.xpath("//div[contains(text(),'Shipping Method')]");
 	private final By DEFAULT_BILLING_PROFILE_NAME_LOC = By.xpath("//div[@id='default-payment-method']//strong");
-	private final By TERMS_AND_CONDITIONS_CHCKBOX_FOR_CONSULTANT_CRP_LOC = By.xpath("//button[@id='confirmCRPOrder']/preceding-sibling::div//input[@type='checkbox']/following-sibling::label");
 	private final By CONFIRM_CRP_ORDER_MSG_LOC = By.xpath("//h2[contains(text(),'CRP ORDER CONFIRMED')]");
 	private final By BILLING_PROFILE_AFTER_ORDER_PLACED = By.xpath("//div[@class='orderBillingAddress']");
 	private final By BILLING_PROFILE_NAME_LOC = By.xpath("//div[@id='default-payment-method']//strong");
@@ -1592,19 +1593,6 @@ public class StoreFrontCheckoutPage extends StoreFrontWebsiteBasePage{
 	}
 
 	/***
-	 * This method select terms and conditions checkbox for consultant
-	 * 
-	 * @param
-	 * @return Store front checkout page object
-	 * 
-	 */
-	public StoreFrontCheckoutPage selectTermsAndConditionsCheckBoxForConsulatntCRP(){
-		driver.click(TERMS_AND_CONDITIONS_CHCKBOX_FOR_CONSULTANT_CRP_LOC);
-		logger.info("Clicked Terms and conditions checkbox for consultant CRP checkout");
-		return this;
-	}
-
-	/***
 	 * This method click on the confirm Autoship order button
 	 * 
 	 * @param 
@@ -1730,6 +1718,45 @@ public class StoreFrontCheckoutPage extends StoreFrontWebsiteBasePage{
 		String shippingMethod = driver.getText(SHIPPING_METHOD_AFTER_ORDER_PLACED);
 		logger.info("Shipping method at order confirmation page : "+shippingMethod);
 		return shippingMethod;
+	}
+
+	/***
+	 * This method select the checkbox for saving billing profile for future autoship
+	 * 
+	 * @param 
+	 * @return StoreFrontCheckoutPage object 
+	 * 
+	 */
+	public StoreFrontCheckoutPage selectCheckboxForSavingProfileForFutureAutoship(){
+		driver.click(PROFILE_FOR_FUTURE_AUTOSHIP_CHECKBOX_LOC);
+		logger.info("Selected checkbox for saving Billing profile for future autoship");
+		return this;
+	}
+
+	/***
+	 * This method select the checkbox for policies and procedures on checkout page
+	 * 
+	 * @param 
+	 * @return StoreFrontCheckoutPage object 
+	 * 
+	 */
+	public StoreFrontCheckoutPage selectCheckboxForPoliciesAndProcedures(){
+		driver.clickByJS(RFWebsiteDriver.driver,driver.findElement(POLICIES_AND_PROCEDURES_CHECBOX_LOC));
+		logger.info("Selected checkbox for policies and procedures on checkout page");
+		return this;
+	}
+
+	/***
+	 * This method select terms and conditions checkbox for consultant
+	 * 
+	 * @param
+	 * @return Store front checkout page object
+	 * 
+	 */
+	public StoreFrontCheckoutPage selectTermsAndConditionsCheckBoxForConsulatntCRP(){
+		driver.clickByJS(RFWebsiteDriver.driver,driver.findElement(TERMS_AND_CONDITIONS_CHCKBOX_FOR_CONSULTANT_CRP_LOC));
+		logger.info("Clicked Terms and conditions checkbox for consultant CRP checkout");
+		return this;
 	}
 
 }

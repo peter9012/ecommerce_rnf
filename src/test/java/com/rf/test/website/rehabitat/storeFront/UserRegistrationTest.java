@@ -23,7 +23,7 @@ public class UserRegistrationTest extends StoreFrontWebsiteBaseTest{
 		String errorMessage = "Please enter a valid email address";
 		String errorMessageFromUI = null;
 		sfShopSkinCarePage = sfHomePage.clickAllProducts();
-		sfShopSkinCarePage.addFirstProductToBag();
+		sfShopSkinCarePage.addProductToCart(TestConstants.PRODUCT_NUMBER, TestConstants.ORDER_TYPE_ADHOC);
 		sfCartPage = sfShopSkinCarePage.checkoutTheCartFromPopUp();
 		sfCheckoutPage = sfCartPage.checkoutTheCart();
 		sfCheckoutPage.clickCreateAccountButton();

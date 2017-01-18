@@ -74,7 +74,7 @@ public class SuccessfulUserLoginTest extends StoreFrontWebsiteBaseTest{
 		String allProduct = "ALL PRODUCTS";
 		sfCartPage = new StoreFrontCartPage(driver);
 		sfShopSkinCarePage = sfHomePage.navigateToShopSkincareLink(allProduct);
-		sfShopSkinCarePage.addFirstProductToBag();
+		sfShopSkinCarePage.addProductToCart(TestConstants.PRODUCT_NUMBER, TestConstants.ORDER_TYPE_ADHOC);
 		sfShopSkinCarePage.checkoutTheCartFromPopUp();
 		sfCheckoutPage=sfShopSkinCarePage.checkoutTheCart();
 		sfCheckoutPage.clickForgetPasswordLinkAtCheckout();

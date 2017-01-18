@@ -109,7 +109,7 @@ public class AddAndDeleteShippingTest extends StoreFrontWebsiteBaseTest{
 			s_assert.assertTrue(countryNameFromUI.contains(expectedCountryName), "Expected country name is"+expectedCountryName+" but actual on UI is"+countryNameFromUI);
 			sfShippingInfoPage.clickRodanAndFieldsLogo();
 			sfShopSkinCarePage = sfShippingInfoPage.clickAllProducts();
-			sfShopSkinCarePage.selectFirstProduct();
+			sfShopSkinCarePage.addProductToCart(TestConstants.PRODUCT_NUMBER, TestConstants.ORDER_TYPE_ADHOC);
 			sfShopSkinCarePage.checkoutTheCartFromPopUp();
 			sfCheckoutPage = sfShopSkinCarePage.checkoutTheCart();
 			sfCheckoutPage.clickSaveButton();
@@ -142,7 +142,7 @@ public class AddAndDeleteShippingTest extends StoreFrontWebsiteBaseTest{
 			s_assert.assertTrue(countryNameFromUI.contains(expectedCountryName), "Expected country name is"+expectedCountryName+" but actual on UI is"+countryNameFromUI);
 			sfShippingInfoPage.clickRodanAndFieldsLogo();
 			sfShopSkinCarePage = sfShippingInfoPage.clickAllProducts();
-			sfShopSkinCarePage.selectFirstProduct();
+			sfShopSkinCarePage.addProductToCart(TestConstants.PRODUCT_NUMBER, TestConstants.ORDER_TYPE_ADHOC);
 			sfShopSkinCarePage.checkoutTheCartFromPopUp();
 			sfCheckoutPage = sfShopSkinCarePage.checkoutTheCart();
 			sfCheckoutPage.clickSaveButton();
@@ -175,7 +175,7 @@ public class AddAndDeleteShippingTest extends StoreFrontWebsiteBaseTest{
 			s_assert.assertTrue(countryNameFromUI.contains(expectedCountryName), "Expected country name is"+expectedCountryName+" but actual on UI is"+countryNameFromUI);
 			sfShippingInfoPage.clickRodanAndFieldsLogo();
 			sfShopSkinCarePage = sfShippingInfoPage.clickAllProducts();
-			sfShopSkinCarePage.selectFirstProduct();
+			sfShopSkinCarePage.addProductToCart(TestConstants.PRODUCT_NUMBER, TestConstants.ORDER_TYPE_ADHOC);
 			sfShopSkinCarePage.checkoutTheCartFromPopUp();
 			sfCheckoutPage = sfShopSkinCarePage.checkoutTheCart();
 			sfCheckoutPage.clickSaveButton();
@@ -217,7 +217,7 @@ public class AddAndDeleteShippingTest extends StoreFrontWebsiteBaseTest{
 		s_assert.assertTrue(defaultShippingAddressName.contains(lastName.toLowerCase()), "Expected default shipping address name is "+lastName.toLowerCase()+" but actual on UI is "+defaultShippingAddressName);
 		sfShippingInfoPage.clickRodanAndFieldsLogo();
 		sfShopSkinCarePage = sfShippingInfoPage.clickAllProducts();
-		sfShopSkinCarePage.selectFirstProduct();
+		sfShopSkinCarePage.addProductToCart(TestConstants.PRODUCT_NUMBER, TestConstants.ORDER_TYPE_ADHOC);
 		sfShopSkinCarePage.checkoutTheCartFromPopUp();
 		sfCheckoutPage = sfShopSkinCarePage.checkoutTheCart();
 		sfCheckoutPage.clickSaveButton();

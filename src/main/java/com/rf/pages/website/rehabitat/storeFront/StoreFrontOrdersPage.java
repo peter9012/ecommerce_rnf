@@ -45,15 +45,11 @@ public class StoreFrontOrdersPage extends StoreFrontWebsiteBasePage{
 	private final By CHKBOX_OF_PRODUCT_LOC = By.xpath("//input[@id='orderEntries1']/..//img");
 	private final By MESSAGE_INSTRUCTIONS_TEXT_LOC = By.xpath("//span[contains(text(),'Maximum 800 characters including spaces')]");
 	private final By SELECTED_PROBLEEM_REASON_AT_ORDER_PROBLEM_PAGE_LOC = By.id("itemCodeValue");
-	private static final By AUTOSHIP_ORDER_HISTORY_TABLE_LOC = By.xpath("//div[contains(text(),'PENDING AUTOSHIP ORDERS')]/following-sibling::div//tbody");
-	private static final By FIRST_ORDER_STATUS_IN_AUTOSHIP_ORDER_HISTORY_LOC = By.xpath("//div[contains(text(),'PENDING AUTOSHIP ORDERS')]/following-sibling::div//tbody/descendant::tr[2]//td[@class='status'][1]");
+	private final By AUTOSHIP_ORDER_HISTORY_TABLE_LOC = By.xpath("//div[contains(text(),'PENDING AUTOSHIP ORDERS')]/following-sibling::div//tbody");
+	private final By FIRST_ORDER_STATUS_IN_AUTOSHIP_ORDER_HISTORY_LOC = By.xpath("//div[contains(text(),'PENDING AUTOSHIP ORDERS')]/following-sibling::div//tbody/descendant::tr[2]//td[@class='status'][1]");
+	private final By PULSE_LINK_ORDER_PAGE = By.xpath("//div[@class='account-orderhistory']//a[text()='Pulse']");
 
-	public  String orderNumberLoc = "//a[contains(text(),'%s')]";
-	private String qtyOfProductOfAnItemLoc = "//div[@class='orderConfirmationInfo']/descendant::div[@class='orderQty'][%s]";
-	private String SVOfProductOfAnItemLoc = "//div[@class='orderConfirmationInfo']/descendant::div[@class='orderSv'][%s]";
-	private String unitPriceOfProductOfAnItemLoc = "//div[@class='orderConfirmationInfo']/descendant::div[@class='orderUnitPrice'][%s]";
-	private String orderTotalOfProductOfAnItemLoc = "//div[@class='orderConfirmationInfo']/descendant::div[@class='orderTotal'][%s]";
-	private String productNameOfAnItemLoc = "//div[@class='orderConfirmationInfo']/descendant::p[%s]";
+	private String orderNumberLoc = "//a[contains(text(),'%s')]";
 	private String optionsLinkUnderReturnOrderSectionLoc = "//div[contains(text(),'RETURN ORDERS AND CREDITS')]/../../descendant::a[contains(text(),'%s')]";
 	private String headerTitleInOrderHistorySection = "//div[@id='orderHistoryContentArea']//th[contains(text(),'%s')]";
 	private String headerTitleInReturnOrderSection = "//div[contains(text(),'RETURN ORDERS AND CREDITS')]/../..//th[contains(text(),'%s')]";
@@ -61,7 +57,7 @@ public class StoreFrontOrdersPage extends StoreFrontWebsiteBasePage{
 	private String statusOfOrderFromOrderHistory = "//div[@id='orderHistoryContentArea']//a[contains(@href,'my-account/order') and contains(text(),'%s')]/ancestor::td/following-sibling::td[@class='status'][1]";
 	private String detailsLinkUnderOrderHistoryLoc = "//div[@id='orderHistoryContentArea']//tr[2]//a[contains(text(),'%s')]";
 	private String problemDropdownOptionsLoc = "//select[@id='problemReasonCode']//option[contains(text(),%s)]";
-	public  String informationAtOrderReportConfirmationPage = "//div[text()='%s:']/following::div[1]";
+	private String informationAtOrderReportConfirmationPage = "//div[text()='%s:']/following::div[1]";
 
 	/***
 	 * This method get first order number from order history 
@@ -658,70 +654,36 @@ public class StoreFrontOrdersPage extends StoreFrontWebsiteBasePage{
 
 
 	/***
-	 * This method get product qty
+	 * This method enter the details for return a product  
 	 * 
-	 * @param product number
-	 * @return product qty
+	 * @param message
+	 * @return store front orders page object
 	 * 
 	 */
-	public String getProductQuantityOfAnItem(String itemNumber){
-		String qty = driver.findElement(By.xpath(String.format(qtyOfProductOfAnItemLoc, itemNumber))).getText();
-		logger.info("Quantity of product is"+qty+ "of item number"+itemNumber);
-		return qty;
+	public StoreFrontOrdersPage enterTheDetailsForReportProblem(String message, String problemReason){
+		driver.clickByJS(RFWebsiteDriver.driver, driver.findElement(CHKBOX_OF_PRODUCT_LOC));
+		logger.info("Check box checked for product");
+		driver.click(PROBLEM_DD_LOC);
+		logger.info("Problem dropdown clicked");
+		driver.click(By.xpath(String.format(problemDropdownOptionsLoc, problemReason)));
+		logger.info("problem reason select as "+problemReason+" from problem dropdown");
+		driver.type(MESSAGE_BOX_LOC, message);
+		logger.info("Message typed as: "+message);
+		return this;
 	}
 
 	/***
-	 * This method get product SV value
+	 * This method click on pulse link on order history page  
 	 * 
-	 * @param product number
-	 * @return product SV
-	 * 
-	 */
-	public String getProductSVOfAnItem(String itemNumber){
-		String SV = driver.findElement(By.xpath(String.format(SVOfProductOfAnItemLoc, itemNumber))).getText();
-		logger.info("SV of product is"+SV+ "of item number"+itemNumber);
-		return SV;
-	}
-
-	/***
-	 * This method get product unit price
-	 * 
-	 * @param product number
-	 * @return product unit price
+	 * @param
+	 * @return Store front order page obj
 	 * 
 	 */
-	public String getProductUnitPriceOfAnItem(String itemNumber){
-		String price = driver.findElement(By.xpath(String.format(unitPriceOfProductOfAnItemLoc, itemNumber))).getText();
-		logger.info("unit price of product is"+price+ "of item number"+itemNumber);
-		return price;
+	public StoreFrontOrdersPage clickPulseLink(){
+		driver.click(PULSE_LINK_ORDER_PAGE);
+		logger.info("Pulse link clicked on order history page");
+		return this;
 	}
-
-	/***
-	 * This method get product order total
-	 * 
-	 * @param product number
-	 * @return product order total
-	 * 
-	 */
-	public String getProductOrderTotalOfAnItem(String itemNumber){
-		String orderTotal = driver.findElement(By.xpath(String.format(orderTotalOfProductOfAnItemLoc, itemNumber))).getText();
-		logger.info("order total of product is"+orderTotal+ "of item number"+itemNumber);
-		return orderTotal;
-	}
-
-	/***
-	 * This method get product name
-	 * 
-	 * @param product number
-	 * @return product name
-	 * 
-	 */
-	public String getProductNameOfAnItem(String itemNumber){
-		String productName = driver.findElement(By.xpath(String.format(productNameOfAnItemLoc, itemNumber))).getText();
-		logger.info("product name is"+productName+ "of item number"+itemNumber);
-		return productName;
-	}
-
 
 
 }

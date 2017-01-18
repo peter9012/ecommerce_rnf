@@ -76,7 +76,7 @@ public class StoreFrontWebsiteBasePage extends RFBasePage{
 	private final By USERNAME_TXTFLD_LOC = By.id("username");
 	private final By USERNAME_DISABLED_LOC = By.xpath("//input[@class='text-input valid' and @disabled='']");
 	private final By PASSWORD_TXTFLD_LOC = By.id("password");
-	private final By LOGIN_BTN_LOC =By.xpath("//input[@value='SIGN IN']");
+	private final By LOGIN_BTN_LOC =By.xpath("//input[@value='SIGN IN' or @value='LOG IN']");
 	private final By CLOSE_ICON_OF_SEARCH_TEXT_BOX_IN_HEADER_NAVIGATION_LOC = By.xpath("//div[@class='yCmsComponent']//span[contains(@class,'icon-close')]");
 	private final By DEFAULT_COUNTRY_NAME_IN_TOGGLE_LOC = By.xpath("//div[contains(@class,'wSelect-selected')]");
 	private final By TOGGLE_BUTTON_OF_COUNTRY_LOC = By.xpath("//div[@class='form-group']/div");
@@ -151,7 +151,6 @@ public class StoreFrontWebsiteBasePage extends RFBasePage{
 	private final By WELCOME_DD_PC_PERKS_STATUS_LOC = By.xpath("//a[text()='PC Perks Status']");
 	private final By FIRST_PRODUCT_NAME_LOC=By.xpath("//div[@id='product_listing']/descendant::a[@class='name'][1]");
 	private final By FIRST_PRODUCT_IMAGE_LOC=By.xpath("//div[@class='product__listing product__grid']/div[1]/a");
-	protected final By ADD_TO_CART_FIRST_PRODUCT_LOC = By.xpath("//div[@id='product_listing']/descendant::button[text()='Add to cart'][2]");
 	private final By REMEMBER_ME_LOC = By.xpath("//label[contains(text(),'Remember me')]");
 	private final By YOUR_SHOPPING_CART_HEADER_LOC = By.xpath("//h1[@class='urcart-header' and contains(text(),'Your Shopping Cart')]");
 	private final By INVALID_EXP_YEAR_LOC= By.xpath("//select[@id='c-exyr']//option[2]");
@@ -217,6 +216,8 @@ public class StoreFrontWebsiteBasePage extends RFBasePage{
 	private final By ACCEPT_RDBTN_NEW_POLICIES_PROCEDURES_POPUP_LOC = By.xpath("//form[@id='updateConditionForm']//input[@id='terms-accept']");
 	private final By CONTINUE_BTN_NEW_POLICIES_PROCEDURES_POPUP_LOC = By.xpath("//form[@id='updateConditionForm']//input[@value='continue']");
 	private final By PC_PERKS_PROMO_MSG_LOC = By.xpath("//div[contains(text(),'Subscribe and Save')]");
+	protected final By PULSE_CANCELLATION_POPUP_TEXT_LOC = By.id("popup_confirm_savedcart_restore");
+	protected final By PULSE_CANCELLATION_POPUP_CANCEL_LOC = By.xpath("//*[@id='popup_confirm_savedcart_restore']//a[contains(text(),'CANCEL')]");
 
 	protected String mandatoryFieldErrorMsgOfAddressForNewBillingProfileLoc = "//div[@id='billingAddressForm']//label[contains(@id,'%s-error') and contains(text(),'This field is required.')]";
 	private String productNameInAllItemsInCartLoc = "//span[@class='item-name' and contains(text(),'%s')]";
@@ -242,6 +243,13 @@ public class StoreFrontWebsiteBasePage extends RFBasePage{
 	private String sponsorEmptyFieldValidationOnPopUpLoc = "//label[@id='sponsor.%s-error'][contains(text(),'%s')]";
 	private String sponsorInvalidFieldValidationOnPopUpLoc = "//label[@id='sponsor.%s-error'][contains(text(),'%s')]";
 	private String cardTypeLoc= "//select[@id='card_cardType']//option[text()='%s']";
+	private String qtyOfProductOfAnItemLoc = "//div[@class='orderConfirmationInfo']/descendant::div[@class='orderQty'][%s]";
+	private String SVOfProductOfAnItemLoc = "//div[@class='orderConfirmationInfo']/descendant::div[@class='orderSv'][%s]";
+	private String unitPriceOfProductOfAnItemLoc = "//div[@class='orderConfirmationInfo']/descendant::div[@class='orderUnitPrice'][%s]";
+	private String orderTotalOfProductOfAnItemLoc = "//div[@class='orderConfirmationInfo']/descendant::div[@class='orderTotal'][%s]";
+	private String productNameOfAnItemLoc = "//div[@class='orderConfirmationInfo']/descendant::p[%s]";
+	private final By SHIPPING_SECTION_LOC = By.xpath("//div[@class='checkout-shipping']");
+	private final By BILLING_SECTION_LOC = By.xpath("//div[@class='checkout-paymentmethod']");
 
 	private String RFO_DB = null;
 
@@ -1893,19 +1901,6 @@ public class StoreFrontWebsiteBasePage extends RFBasePage{
 	}
 
 	/***
-	 * This method performs mouse hover on add to cart button on all product page
-	 * 
-	 * @param
-	 * @return base page object
-	 * 
-	 */
-	public StoreFrontWebsiteBasePage mouseHoverOnAddToCart(){
-		Actions build = new Actions(RFWebsiteDriver.driver);
-		build.moveToElement(driver.findElement(ADD_TO_CART_FIRST_PRODUCT_LOC)).build().perform();
-		return this;
-	}
-
-	/***
 	 * This method validates the header when redirect to checkout page after clicking checkout button from checkout popup.
 	 * 
 	 * @param 
@@ -2516,19 +2511,6 @@ public class StoreFrontWebsiteBasePage extends RFBasePage{
 	}
 
 	/***
-	 * This method click on add to cart button on all product page
-	 * 
-	 * @param
-	 * @return base page object
-	 * 
-	 */
-	public StoreFrontWebsiteBasePage clickAddToCartOfFirstProduct(){
-		Actions actions = new Actions(RFWebsiteDriver.driver);
-		actions.click(driver.findElement(ADD_TO_CART_FIRST_PRODUCT_LOC)).build().perform();
-		return this;
-	}
-
-	/***
 	 * This method verifies if the PC one time joining fee msg 
 	 * is displayed or not
 	 * @return
@@ -2677,23 +2659,6 @@ public class StoreFrontWebsiteBasePage extends RFBasePage{
 			driver.click(UPDATE_LINK_OF_FIRST_PRODUCT_LOC);
 		}
 		logger.info("Update link of "+itemNumber+" is clicked");
-		return this;
-	}
-
-	/***
-	 * This method add first product to bag
-	 * 
-	 * @param
-	 * @return store front shop skincare page object
-	 * 
-	 */
-	public StoreFrontWebsiteBasePage addFirstProductToBag(){
-		driver.waitForElementToBeClickable(ADD_TO_CART_FIRST_PRODUCT_LOC, 30);
-		//driver.moveToElement(ADD_TO_CART_FIRST_PRODUCT_LOC);
-		//driver.moveToElementByJS(ADD_TO_CART_FIRST_PRODUCT_LOC);
-		driver.click(ADD_TO_CART_FIRST_PRODUCT_LOC);
-		logger.info("Added first product to the bag");
-		driver.pauseExecutionFor(2000);
 		return this;
 	}
 
@@ -3039,6 +3004,106 @@ public class StoreFrontWebsiteBasePage extends RFBasePage{
 	 */
 	public boolean isFindAConsultantLinkOnHomePagePresent(){
 		return driver.isElementVisible(FIND_A_CONSULTANT_LINK_LOC);
+	}
+
+	/***
+	 * This method get product qty
+	 * 
+	 * @param product number
+	 * @return product qty
+	 * 
+	 */
+	public String getProductQuantityOfAnItem(String itemNumber){
+		String qty = driver.findElement(By.xpath(String.format(qtyOfProductOfAnItemLoc, itemNumber))).getText();
+		logger.info("Quantity of product is"+qty+ "of item number"+itemNumber);
+		return qty;
+	}
+
+	/***
+	 * This method get product SV value
+	 * 
+	 * @param product number
+	 * @return product SV
+	 * 
+	 */
+	public String getProductSVOfAnItem(String itemNumber){
+		String SV = driver.findElement(By.xpath(String.format(SVOfProductOfAnItemLoc, itemNumber))).getText();
+		logger.info("SV of product is"+SV+ "of item number"+itemNumber);
+		return SV;
+	}
+
+	/***
+	 * This method get product unit price
+	 * 
+	 * @param product number
+	 * @return product unit price
+	 * 
+	 */
+	public String getProductUnitPriceOfAnItem(String itemNumber){
+		String price = driver.findElement(By.xpath(String.format(unitPriceOfProductOfAnItemLoc, itemNumber))).getText();
+		logger.info("unit price of product is"+price+ "of item number"+itemNumber);
+		return price;
+	}
+
+	/***
+	 * This method get product order total
+	 * 
+	 * @param product number
+	 * @return product order total
+	 * 
+	 */
+	public String getProductOrderTotalOfAnItem(String itemNumber){
+		String orderTotal = driver.findElement(By.xpath(String.format(orderTotalOfProductOfAnItemLoc, itemNumber))).getText();
+		logger.info("order total of product is"+orderTotal+ "of item number"+itemNumber);
+		return orderTotal;
+	}
+
+	/***
+	 * This method get product name
+	 * 
+	 * @param product number
+	 * @return product name
+	 * 
+	 */
+	public String getProductNameOfAnItem(String itemNumber){
+		String productName = driver.findElement(By.xpath(String.format(productNameOfAnItemLoc, itemNumber))).getText();
+		logger.info("product name is"+productName+ "of item number"+itemNumber);
+		return productName;
+	}
+
+	/***
+	 * This method validates the presence of shipping section  
+	 * 
+	 * @param 
+	 * @return boolean
+	 * 
+	 */
+	public boolean isShippingSectionPresent(){
+		return driver.isElementPresent(SHIPPING_SECTION_LOC);
+	}
+
+	/***
+	 * This method validates the presence of Biiling section
+	 * 
+	 * @param 
+	 * @return boolean
+	 * 
+	 */
+	public boolean isBillingSectionPresent(){
+		return driver.isElementPresent(BILLING_SECTION_LOC);
+	}
+
+	/***
+	 * This method will click on the confirm pulse subscription btn
+	 * 
+	 * 
+	 * 
+	 * @return
+	 */
+	public StoreFrontWebsiteBasePage clickConfirmSubscriptionButton(){
+		driver.clickByAction(CONFIRM_PULSE_SUBSCRIPTION_BTN_LOC);
+		logger.info("confirm sibscription btn clicked");
+		return this;
 	}
 
 }

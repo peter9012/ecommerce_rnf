@@ -20,7 +20,7 @@ public class MiniCartTest extends StoreFrontWebsiteBaseTest{
 		String noOfItemFromUI = null;   
 		sfHomePage.loginToStoreFront(TestConstants.CONSULTANT_USERNAME, password);
 		sfShopSkinCarePage = sfHomePage.clickAllProducts();
-		sfShopSkinCarePage.selectFirstProduct();
+		sfShopSkinCarePage.addProductToCart(TestConstants.PRODUCT_NUMBER, TestConstants.ORDER_TYPE_ADHOC);
 		sfCartPage = sfShopSkinCarePage.checkoutTheCartFromPopUp();
 		noOfItemFromUI = sfHomePage.getNumberOfItemFromMiniCart();
 		s_assert.assertTrue(noOfItemFromUI.equalsIgnoreCase(itemInAdhocCart), "Expected no of item is "+itemInAdhocCart+" Actual on UI is "+noOfItemFromUI);
@@ -45,13 +45,13 @@ public class MiniCartTest extends StoreFrontWebsiteBaseTest{
 	@Test(enabled=true)
 	public void testViewMiniShippingBag_147(){
 		sfShopSkinCarePage = sfHomePage.clickAllProducts();
-		sfShopSkinCarePage.addFirstProductToBag();
+		sfShopSkinCarePage.addProductToCart(TestConstants.PRODUCT_NUMBER, TestConstants.ORDER_TYPE_ADHOC);
 		sfCartPage = sfShopSkinCarePage.checkoutTheCartFromPopUp();
 		int totalNoOfItem = sfCartPage.getTotalNoOfItemsInCart();
 		String totalNoOfItemFromMiniCart = sfCartPage.getNumberOfItemFromMiniCart();
 		s_assert.assertTrue(totalNoOfItem==Integer.parseInt(totalNoOfItemFromMiniCart), "Expected total no of items in mini shopping bag icon is "+totalNoOfItem+" Actual on UI is "+totalNoOfItem);
 		sfCartPage.clickAddMoreItemsBtn();
-		sfShopSkinCarePage.addProductToBag(2);
+		sfShopSkinCarePage.addProductToCart(TestConstants.PRODUCT_NUMBER, TestConstants.ORDER_TYPE_ADHOC);
 		sfShopSkinCarePage.checkoutTheCartFromPopUp();
 		totalNoOfItem = sfCartPage.getTotalNoOfItemsInCart();
 		totalNoOfItemFromMiniCart = sfCartPage.getNumberOfItemFromMiniCart();
@@ -80,7 +80,7 @@ public class MiniCartTest extends StoreFrontWebsiteBaseTest{
 	public void testPCUserAbleToSeeLogoUsernameDropdownAndMiniCartAtCartPage_147(){
 		sfHomePage.loginToStoreFront(TestConstants.PC_EMAIL, password);
 		sfShopSkinCarePage = sfHomePage.clickAllProducts();
-		sfShopSkinCarePage.selectFirstProduct();
+		sfShopSkinCarePage.addProductToCart(TestConstants.PRODUCT_NUMBER, TestConstants.ORDER_TYPE_ADHOC);
 		sfCartPage = sfShopSkinCarePage.checkoutTheCartFromPopUp();
 		s_assert.assertTrue(sfCartPage.isRodanAndFieldsLogoPresent(), "Rodan and fields logo is not present at cart page");
 		s_assert.assertTrue(sfCartPage.isWelcomeDropdownPresent(), "Welcome dropdown is not present at cart page");
@@ -99,7 +99,7 @@ public class MiniCartTest extends StoreFrontWebsiteBaseTest{
 	public void testConsultantUserAbleToSeeLogoUsernameDropdownAndMiniCartAtCartPage_149(){
 		sfHomePage.loginToStoreFront(TestConstants.CONSULTANT_EMAIL, password);
 		sfShopSkinCarePage = sfHomePage.clickAllProducts();
-		sfShopSkinCarePage.selectFirstProduct();
+		sfShopSkinCarePage.addProductToCart(TestConstants.PRODUCT_NUMBER, TestConstants.ORDER_TYPE_ADHOC);
 		sfCartPage = sfShopSkinCarePage.checkoutTheCartFromPopUp();
 		s_assert.assertTrue(sfCartPage.isRodanAndFieldsLogoPresent(), "Rodan and fields logo is not present at cart page");
 		s_assert.assertTrue(sfCartPage.isWelcomeDropdownPresent(), "Welcome dropdown is not present at cart page");
@@ -151,8 +151,8 @@ public class MiniCartTest extends StoreFrontWebsiteBaseTest{
 		sfCartPage.clickWelcomeDropdown();
 		sfCartPage.logout();
 		sfShopSkinCarePage = sfHomePage.clickAllProducts();
-		productName = sfShopSkinCarePage.getProductNameFromAllProductPage("1");
-		sfShopSkinCarePage.addFirstProductToBag();
+		productName = sfShopSkinCarePage.getProductNameFromAllProductPage("2");
+		sfShopSkinCarePage.addProductToCart(TestConstants.PRODUCT_NUMBER, TestConstants.ORDER_TYPE_ADHOC);
 		productNameOnCheckoutPopup = sfShopSkinCarePage.getProductNameFromCheckoutPopup();
 		s_assert.assertTrue(sfShopSkinCarePage.isAddedToYourShoppingCartHeadlinePresentOnCheckoutPopup(),"Added to ypur shopping cart header is not present on checkout popup");
 		s_assert.assertTrue(productNameOnCheckoutPopup.contains(productName),"Name of Product added to Bag does not matches with the product name on checkout popup. Expeced : " + productName + ". Actual : " + productNameOnCheckoutPopup);
@@ -185,8 +185,8 @@ public class MiniCartTest extends StoreFrontWebsiteBaseTest{
 		sfCartPage.clickWelcomeDropdown();
 		sfCartPage.logout();
 		sfShopSkinCarePage = sfHomePage.clickAllProducts();
-		productName = sfShopSkinCarePage.getProductNameFromAllProductPage("1");
-		sfShopSkinCarePage.addFirstProductToBag();
+		productName = sfShopSkinCarePage.getProductNameFromAllProductPage("2");
+		sfShopSkinCarePage.addProductToCart(TestConstants.PRODUCT_NUMBER, TestConstants.ORDER_TYPE_ADHOC);
 		productNameOnCheckoutPopup = sfShopSkinCarePage.getProductNameFromCheckoutPopup();
 		s_assert.assertTrue(sfShopSkinCarePage.isAddedToYourShoppingCartHeadlinePresentOnCheckoutPopup(),"Added to ypur shopping cart header is not present on checkout popup");
 		s_assert.assertTrue(productNameOnCheckoutPopup.contains(productName),"Name of Product added to Bag does not matches with the product name on checkout popup. Expeced : " + productName + ". Actual : " + productNameOnCheckoutPopup);
@@ -199,8 +199,8 @@ public class MiniCartTest extends StoreFrontWebsiteBaseTest{
 		s_assert.assertTrue(sfCartPage.isProductAddedToCartPresentOnCartPage(productNameOnCheckoutPopup),"Product added to cart : "+productName+" is not present on the cart page");
 		sfCartPage.clickRodanAndFieldsLogo();
 		sfCartPage.clickAllProducts();
-		productNameToAddByUser = sfShopSkinCarePage.getProductNameFromAllProductPage("2");
-		sfShopSkinCarePage.addProductToBag(2);
+		productNameToAddByUser = sfShopSkinCarePage.getProductNameFromAllProductPage("3");
+		sfShopSkinCarePage.addProductToCart("3", TestConstants.ORDER_TYPE_ADHOC);
 		productNameAddedByUser = sfShopSkinCarePage.getProductNameFromCheckoutPopup();
 		s_assert.assertTrue(sfShopSkinCarePage.isAddedToYourShoppingCartHeadlinePresentOnCheckoutPopup(),"Added to ypur shopping cart header is not present on checkout popup");
 		s_assert.assertTrue(productNameAddedByUser.contains(productNameToAddByUser),"Name of Product added to Bag does not matches with the product name on checkout popup. Expeced : " + productNameToAddByUser + ". Actual : " + productNameAddedByUser);
@@ -231,7 +231,7 @@ public class MiniCartTest extends StoreFrontWebsiteBaseTest{
 		sfCartPage.logout();
 		sfShopSkinCarePage = sfHomePage.clickAllProducts();
 		productName = sfShopSkinCarePage.getProductNameFromAllProductPage("1");
-		sfShopSkinCarePage.addFirstProductToBag();
+		sfShopSkinCarePage.addProductToCart(TestConstants.PRODUCT_NUMBER, TestConstants.ORDER_TYPE_ADHOC);
 		productNameOnCheckoutPopup = sfShopSkinCarePage.getProductNameFromCheckoutPopup();
 		s_assert.assertTrue(sfShopSkinCarePage.isAddedToYourShoppingCartHeadlinePresentOnCheckoutPopup(),"Added to ypur shopping cart header is not present on checkout popup");
 		s_assert.assertTrue(productNameOnCheckoutPopup.contains(productName),"Name of Product added to Bag does not matches with the product name on checkout popup. Expeced : " + productName + ". Actual : " + productNameOnCheckoutPopup);
@@ -261,7 +261,7 @@ public class MiniCartTest extends StoreFrontWebsiteBaseTest{
 		sfShopSkinCarePage = sfHomePage.clickAllProducts();
 		productName = null;
 		productName = sfShopSkinCarePage.getProductNameFromAllProductPage("1");
-		sfShopSkinCarePage.addFirstProductToBag();
+		sfShopSkinCarePage.addProductToCart(TestConstants.PRODUCT_NUMBER, TestConstants.ORDER_TYPE_ADHOC);
 		productNameOnCheckoutPopup = null;
 		productNameOnCheckoutPopup = sfShopSkinCarePage.getProductNameFromCheckoutPopup();
 		s_assert.assertTrue(sfShopSkinCarePage.isAddedToYourShoppingCartHeadlinePresentOnCheckoutPopup(),"Added to ypur shopping cart header is not present on checkout popup");
@@ -310,7 +310,7 @@ public class MiniCartTest extends StoreFrontWebsiteBaseTest{
 		sfCartPage.removeAllProductsFromCart();
 		sfCartPage.clickRodanAndFieldsLogo();
 		sfShopSkinCarePage = sfHomePage.clickAllProducts();
-		sfShopSkinCarePage.addFirstProductToBag();
+		sfShopSkinCarePage.addProductToCart(TestConstants.PRODUCT_NUMBER, TestConstants.ORDER_TYPE_ADHOC);
 		sfCartPage = sfShopSkinCarePage.checkoutTheCartFromPopUp();
 		String productName = sfCartPage.getProductName("1").toLowerCase();
 		sfCartPage.clickRodanAndFieldsLogo();

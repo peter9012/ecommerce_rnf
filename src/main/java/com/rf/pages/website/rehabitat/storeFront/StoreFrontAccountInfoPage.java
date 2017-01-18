@@ -49,19 +49,19 @@ public class StoreFrontAccountInfoPage extends StoreFrontWebsiteBasePage{
 	private final By EMAIL_TO_CONSULTANT_EMAIL_CONTENT_LOC= By.id("emailToConsultantForm.emailContent");
 	private final By EMAIL_TO_CONSULTANT_EMAIL_SUBMIT_BTN_LOC= By.id("emailToConsultantSubmitButton");
 
-	private String spouseFirstNameValidationErrorLoc = " //*[@id='profile.spouseFirstname']/following::label[contains(text(),'%s')][1]";
-	private String spouseLastNameValidationErrorLoc = " //*[@id='profile.spouseLastname']/following::label[contains(text(),'%s')][1]";
+	private String spouseFirstNameValidationErrorLoc = " //*[@id='profile.spouseFirstname']/../label[contains(text(),'%s')][1]";
+	private String spouseLastNameValidationErrorLoc = " //*[@id='profile.spouseLastname']/../[contains(text(),'%s')][1]";
 	private String stateForAccountDetails = "//select[@id='profile.region']//option[text()='%s']";
-	private String emailValidationErrorLoc ="//*[@id='profile.email']/following::label[contains(text(),'%s')]";
-	private String currentPasswordValidationErrorLoc ="//*[@id='profile.currentPassword']/following::label[contains(text(),'%s')]";
-	private String newPasswordValidationErrorLoc ="//*[@id='profile.newPassword']/following::label[contains(text(),'%s')]";
-	private String confirmPasswordValidationErrorLoc ="//*[@id='profile.checkNewPassword']/following::label[contains(text(),'%s')]";
-	private String firstNameValidationErrorLoc ="//*[@id='profile.firstName']/following::label[contains(text(),'%s')][1]";
-	private String lastNameValidationErrorLoc = "//*[@id='profile.lastName']/following::label[contains(text(),'%s')][1]";
-	private String addressLineValidationErrorLoc = "//*[@id='profile.line1']/following::label[contains(text(),'%s')][1]";
-	private String cityValidationErrorLoc = "//*[@id='profile.townCity']/following::label[contains(text(),'%s')][1]";
-	private String postalValidationErrorLoc = "//*[@id='profile.postcode']/following::label[contains(text(),'%s')][1]";
-	private String phoneNumberValidationErrorLoc = "//*[@id='profile.phone1']/following::label[contains(text(),'%s')][1]";
+	private String emailValidationErrorLoc ="//*[@id='profile.email']/../label[contains(text(),'%s')]";
+	private String currentPasswordValidationErrorLoc ="//*[@id='profile.currentPassword']/../label[contains(text(),'%s')]";
+	private String newPasswordValidationErrorLoc ="//*[@id='profile.newPassword']/../label[contains(text(),'%s')]";
+	private String confirmPasswordValidationErrorLoc ="//*[@id='profile.checkNewPassword']/../label[contains(text(),'%s')]";
+	private String firstNameValidationErrorLoc ="//*[@id='profile.firstName']/../label[contains(text(),'%s')][1]";
+	private String lastNameValidationErrorLoc = "//*[@id='profile.lastName']/../label[contains(text(),'%s')][1]";
+	private String addressLineValidationErrorLoc = "//*[@id='profile.line1']/../label[contains(text(),'%s')][1]";
+	private String cityValidationErrorLoc = "//*[@id='profile.townCity']/../label[contains(text(),'%s')][1]";
+	private String postalValidationErrorLoc = "//*[@id='profile.postcode']/../label[contains(text(),'%s')][1]";
+	private String phoneNumberValidationErrorLoc = "//*[@id='profile.phone1']/../label[contains(text(),'%s')][1]";
 	private String genderRadioBtnLoc = "//input[@name='gender'][@value='%s']/..";
 	private String emailYourConsultantValidationMsgLoc = "//label[@id='emailToConsultantForm.%s-error'][contains(text(),'%s')]";
 

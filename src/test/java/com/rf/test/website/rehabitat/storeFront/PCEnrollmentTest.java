@@ -59,7 +59,7 @@ public class PCEnrollmentTest extends StoreFrontWebsiteBaseTest{
 		sfCheckoutPage.clickCreateAccountButton();
 		s_assert.assertTrue(sfCartPage.isPcOneTimeFeeMsgDisplayed(),"PC one time joining fee msg has not displayed");
 		sfCartPage.clickAddMoreItemsBtn();
-		sfShopSkinCarePage=sfCartPage.clickAllProducts();// this is a temperoray patch
+		//sfShopSkinCarePage=sfCartPage.clickAllProducts();// this is a temperoray patch
 		sfShopSkinCarePage.selectFirstProduct();
 		sfCartPage = sfShopSkinCarePage.checkoutTheCartFromPopUp();
 		sfCartPage.enterQuantityOfProductAtCart("1", "2");

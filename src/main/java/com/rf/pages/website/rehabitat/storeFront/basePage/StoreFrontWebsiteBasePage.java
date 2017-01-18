@@ -151,7 +151,7 @@ public class StoreFrontWebsiteBasePage extends RFBasePage{
 	private final By WELCOME_DD_PC_PERKS_STATUS_LOC = By.xpath("//a[text()='PC Perks Status']");
 	private final By FIRST_PRODUCT_NAME_LOC=By.xpath("//div[@id='product_listing']/descendant::a[@class='name'][1]");
 	private final By FIRST_PRODUCT_IMAGE_LOC=By.xpath("//div[@class='product__listing product__grid']/div[1]/a");
-	protected final By ADD_TO_CART_FIRST_PRODUCT_LOC = By.xpath("//div[@id='product_listing']/descendant::button[text()='Add to cart'][1]");
+	protected final By ADD_TO_CART_FIRST_PRODUCT_LOC = By.xpath("//div[@id='product_listing']/descendant::button[text()='Add to cart'][2]");
 	private final By REMEMBER_ME_LOC = By.xpath("//label[contains(text(),'Remember me')]");
 	private final By YOUR_SHOPPING_CART_HEADER_LOC = By.xpath("//h1[@class='urcart-header' and contains(text(),'Your Shopping Cart')]");
 	private final By INVALID_EXP_YEAR_LOC= By.xpath("//select[@id='c-exyr']//option[2]");
@@ -3028,6 +3028,17 @@ public class StoreFrontWebsiteBasePage extends RFBasePage{
 		driver.clickByJS(RFWebsiteDriver.driver, driver.findElement(SAVE_BUTTON_OF_SHIPPING_ADDRESS_LOC));
 		logger.info("Save button clicked");
 		return this;
+	}
+
+	/***
+	 * This method validates find a consultant link on homepage
+	 * 
+	 * @param
+	 * @return boolean value
+	 * 
+	 */
+	public boolean isFindAConsultantLinkOnHomePagePresent(){
+		return driver.isElementVisible(FIND_A_CONSULTANT_LINK_LOC);
 	}
 
 }

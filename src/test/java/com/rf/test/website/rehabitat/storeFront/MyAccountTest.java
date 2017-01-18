@@ -113,25 +113,25 @@ public class MyAccountTest extends StoreFrontWebsiteBaseTest{
 		String expectedValidationErrorMsg = TestConstants.VALIDATION_ERROR_THIS_FIELD_IS_REQUIRED;
 		sfAccountInfoPage.enterEmail("");
 		sfAccountInfoPage.saveAccountInfo();
-		s_assert.assertTrue(sfAccountInfoPage.isValidationMsgPresentForParticularField("email", expectedValidationErrorMsg));
+		s_assert.assertTrue(sfAccountInfoPage.isValidationMsgPresentForParticularField("email", expectedValidationErrorMsg),TestConstants.VALIDATION_ERROR_THIS_FIELD_IS_REQUIRED +" msg NOT displayed for blank email");
 		sfAccountInfoPage.enterEmail(emailAddressWithoutAtAndDot);
 		sfAccountInfoPage.saveAccountInfo();
 		expectedValidationErrorMsg = TestConstants.EMAIL_VALIDATION_ERROR_VALID_EMAIL_ADDRESS;
-		s_assert.assertTrue(sfAccountInfoPage.isValidationMsgPresentForParticularField("email", expectedValidationErrorMsg));
+		s_assert.assertTrue(sfAccountInfoPage.isValidationMsgPresentForParticularField("email", expectedValidationErrorMsg),TestConstants.EMAIL_VALIDATION_ERROR_VALID_EMAIL_ADDRESS+" msg NOT displayed for email "+emailAddressWithoutAtAndDot);
 		sfAccountInfoPage.enterEmail(emailAddressWithoutAt);
 		sfAccountInfoPage.saveAccountInfo();
 		expectedValidationErrorMsg = TestConstants.EMAIL_VALIDATION_ERROR_VALID_EMAIL_ADDRESS;
-		s_assert.assertTrue(sfAccountInfoPage.isValidationMsgPresentForParticularField("email", expectedValidationErrorMsg));
+		s_assert.assertTrue(sfAccountInfoPage.isValidationMsgPresentForParticularField("email", expectedValidationErrorMsg),TestConstants.EMAIL_VALIDATION_ERROR_VALID_EMAIL_ADDRESS+" msg NOT displayed for email "+emailAddressWithoutAt);
 		sfAccountInfoPage.enterEmail(emailAddressWithoutDot);
 		sfAccountInfoPage.saveAccountInfo();
 		expectedValidationErrorMsg = TestConstants.EMAIL_VALIDATION_ERROR_VALID_EMAIL_ADDRESS;
-		s_assert.assertTrue(sfAccountInfoPage.isValidationMsgPresentForParticularField("email", expectedValidationErrorMsg));
+		s_assert.assertTrue(sfAccountInfoPage.isValidationMsgPresentForParticularField("email", expectedValidationErrorMsg),TestConstants.EMAIL_VALIDATION_ERROR_VALID_EMAIL_ADDRESS+" msg NOT displayed for email "+emailAddressWithoutDot);
 		sfAccountInfoPage.enterEmail(TestConstants.CONSULTANT_EMAIL);
 		sfAccountInfoPage.saveAccountInfo();
 		expectedValidationErrorMsg = TestConstants.EMAIL_VALIDATION_ERROR_VALID_EMAIL_ADDRESS;
-		s_assert.assertFalse(sfAccountInfoPage.isValidationMsgPresentForParticularField("email", expectedValidationErrorMsg));
+		s_assert.assertFalse(sfAccountInfoPage.isValidationMsgPresentForParticularField("email", expectedValidationErrorMsg),TestConstants.EMAIL_VALIDATION_ERROR_VALID_EMAIL_ADDRESS+" msg displayed");
 		expectedValidationErrorMsg = TestConstants.VALIDATION_ERROR_THIS_FIELD_IS_REQUIRED;
-		s_assert.assertFalse(sfAccountInfoPage.isValidationMsgPresentForParticularField("email", expectedValidationErrorMsg));
+		s_assert.assertFalse(sfAccountInfoPage.isValidationMsgPresentForParticularField("email", expectedValidationErrorMsg),TestConstants.VALIDATION_ERROR_THIS_FIELD_IS_REQUIRED+" msg displayed");
 		s_assert.assertAll();
 	}
 

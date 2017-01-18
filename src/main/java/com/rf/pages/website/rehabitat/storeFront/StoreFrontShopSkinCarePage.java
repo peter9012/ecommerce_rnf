@@ -93,7 +93,9 @@ public class StoreFrontShopSkinCarePage extends StoreFrontWebsiteBasePage{
 		if(driver.isElementVisible(ADD_TO_BAG_OF_FIRST_PRODUCT)){
 			driver.click(ADD_TO_BAG_OF_FIRST_PRODUCT);
 		}else{
-			driver.click(ADD_TO_CART_FIRST_PRODUCT_LOC);
+			//driver.click(ADD_TO_CART_FIRST_PRODUCT_LOC);
+			Actions action = new Actions(RFWebsiteDriver.driver);
+			action.doubleClick(driver.findElement(ADD_TO_CART_FIRST_PRODUCT_LOC)).build().perform();
 		}
 		logger.info("First product added to the cart");
 		return this;

@@ -1283,7 +1283,7 @@ public class MyAccountTest extends StoreFrontWebsiteBaseTest{
 		sfHomePage.switchToParentWindow(currentWindowID);
 		s_assert.assertAll();
 	}
-	
+
 	/***
 	 * qTest : TC-361 View Pulse autoship status and next bill date from Autoship status page in my account
 	 * 
@@ -1314,7 +1314,7 @@ public class MyAccountTest extends StoreFrontWebsiteBaseTest{
 		sfHomePage.switchToParentWindow(currentWindowID);
 		s_assert.assertAll();
 	}
-	
+
 	/***
 	 * qtest: TC-380 Cancel Pulse Subscription From My Account Autoship page
 	 * Description: This method cancel pulse from autoship status page.
@@ -1344,6 +1344,31 @@ public class MyAccountTest extends StoreFrontWebsiteBaseTest{
 		s_assert.assertFalse(sfAutoshipStatusPage.isPulseCancellationPopupPresent(),"Pulse cancellation popup is present after clicking cancel button.");
 		sfAutoshipStatusPage.clickConfirmSubscription();
 		s_assert.assertTrue(sfAutoshipStatusPage.isSubscribeToPulseBtnDisplayed(), "Pulse subscription is NOT cancelled");
+		s_assert.assertAll();
+	}
+
+	/***
+	 * qtest: TC-278 Consultant Autoship Status- Subscribe to Pulse (Re-Enrollment within 180 days)
+	  Description: This method re-enroll consultant in pulse within existing inactive prefix .
+	 *within 180 days
+	 */	
+	@Test(enabled=false)//Incomplete for existing Inactive Prefix less than 180 days.
+	public void testReEnnrollmentInPulseWithin180DaysOfExistingInactivePrefix_278(){
+		String prefix = TestConstants.FIRST_NAME+CommonUtils.getCurrentTimeStamp();
+		//String existingInactiveprefix = null;
+		sfCheckoutPage = new StoreFrontCheckoutPage(driver);
+		sfHomePage.loginToStoreFront(TestConstants.CONSULTANT_EMAIL,password);
+		sfHomePage.clickWelcomeDropdown();
+		sfAutoshipStatusPage = sfHomePage.navigateToAutoshipStatusPage();
+		sfAutoshipStatusPage.clickSubscribeToPulseBtn();
+		sfAutoshipStatusPage.enterAvailablePrefix(prefix);
+		sfAutoshipStatusPage.clickNextBtn();
+		sfCheckoutPage = sfAutoshipStatusPage.clickConfirmSubscription().checkTheConfirmSubscriptionChkBoxAndSubscribe();
+		sfCheckoutPage.clickUseSavedCardBtn().clickBillingDetailsNextbutton().clickPlaceOrderButton();
+		s_assert.assertTrue(sfCheckoutPage.isPopUpForTermsAndConditionsCheckboxDisplayed(), "validation popup for terms and conditions not displayed");
+		sfCheckoutPage.closePopUp();
+		sfCheckoutPage.selectTermsAndConditionsChkBox().clickPlaceOrderButton();
+		s_assert.assertTrue(sfCheckoutPage.isOrderPlacedSuccessfully(),"Order is Not placed successfully");
 		s_assert.assertAll();
 	}
 }

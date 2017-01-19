@@ -211,6 +211,7 @@ public class BillingProfileTest extends StoreFrontWebsiteBaseTest{
 		s_assert.assertTrue(sfBillingInfoPage.isBillingAddressOnUIIsFoundAsExpected(addressLine1, addressLine2, city, postalCode, stateAbbreviation, billingAddressOnUI),"Billing Address on UI is not found as expected");
 		s_assert.assertAll();
 	}
+
 	/***
 	 * qTest : TC-454 Tokenization - Checkout
 	 * 
@@ -238,6 +239,7 @@ public class BillingProfileTest extends StoreFrontWebsiteBaseTest{
 		String phoneNumber = TestConstants.PHONE_NUMBER;
 		String stateAbbreviation = TestConstants.STATE_US_ABBREVIATION;
 		String cardLastName = null;
+
 		//Login as Consultant.
 		sfHomePage.loginToStoreFront(TestConstants.CONSULTANT_USERNAME, password);
 		sfShopSkinCarePage = sfHomePage.clickAllProducts();
@@ -256,7 +258,7 @@ public class BillingProfileTest extends StoreFrontWebsiteBaseTest{
 		sfCheckoutPage.clickUseAsEnteredButtonOnPopUp();
 		cardLastName = sfCheckoutPage.getLastName(cardName); 
 		s_assert.assertTrue(sfCheckoutPage.isNewBillingDetailsVisibleOnUI(cardLastName),"New Billing Details do not get updated as Default Billing details on Checkout Page");
-		billingDetailsOnUI = sfCheckoutPage.getBillingAddressForSpecificBillingProfile(cardLastName);
+		billingDetailsOnUI = sfCheckoutPage.getBillingProfileDetailsFromBillingProfile();
 		sfCheckoutPage.getCardDetailsFromBillingInfo(cardLastName);
 		lastFourDigitOfCard = sfCheckoutPage.getLastFourDigitsOfCardNumberInBillingDetails();
 		s_assert.assertTrue(cardNum.endsWith(lastFourDigitOfCard),"Last 4 Digits of Card Number on UI are not found as Expected. Card Number : " + cardNum + ". Acutal 4 Digits on UI : " +lastFourDigitOfCard);
@@ -265,8 +267,8 @@ public class BillingProfileTest extends StoreFrontWebsiteBaseTest{
 		s_assert.assertTrue(sfCheckoutPage.isBillingAddressOnUIIsFoundAsExpected(addressLine1,city, postalCode, stateAbbreviation, billingDetailsOnUI),"Billing Address on UI is not found as expected");
 		s_assert.assertAll();
 	}
-	/***
 
+	/***
 	 * qTest : TC-475 Billing information- Default Payment Profiles - Multiple Profiles
 	 * 
 	 * Description :  This method validates the change of Default billing profile from multiple profiles

@@ -218,6 +218,10 @@ public class StoreFrontWebsiteBasePage extends RFBasePage{
 	private final By PC_PERKS_PROMO_MSG_LOC = By.xpath("//div[contains(text(),'Subscribe and Save')]");
 	protected final By PULSE_CANCELLATION_POPUP_TEXT_LOC = By.id("popup_confirm_savedcart_restore");
 	protected final By PULSE_CANCELLATION_POPUP_CANCEL_LOC = By.xpath("//*[@id='popup_confirm_savedcart_restore']//a[contains(text(),'CANCEL')]");
+	private final By BILLING_PROFILE_DETAILS_ORDER_REVIEW_PAGE_LOC = By.xpath("//*[@id='default-payment-method']/ul");
+	protected final By POPUP_FOR_TERMS_AND_CONDITIONS_LOC = By.id("city_popup");//moved from checkoutPage
+	private final By BILLING_ADDRESS_OTHER_THAN_ND_POPUP_TEXT_LOC = By.xpath("//*[@id='city_popup']//h3");
+	private final By CHOOSE_A_KIT_OPTION_ON_POPUP_LOC = By.xpath("//a[text()='Choose a kit']");
 
 	protected String mandatoryFieldErrorMsgOfAddressForNewBillingProfileLoc = "//div[@id='billingAddressForm']//label[contains(@id,'%s-error') and contains(text(),'This field is required.')]";
 	private String productNameInAllItemsInCartLoc = "//span[@class='item-name' and contains(text(),'%s')]";
@@ -3104,6 +3108,97 @@ public class StoreFrontWebsiteBasePage extends RFBasePage{
 		driver.clickByAction(CONFIRM_PULSE_SUBSCRIPTION_BTN_LOC);
 		logger.info("confirm sibscription btn clicked");
 		return this;
+	}
+
+	/***
+	 * This method enter the consultant Billing Address details
+	 * 
+	 * @param First name,Last name, address line1, city, state, postal code, phone number
+	 * @return store front Base page object
+	 * 
+	 */
+	public StoreFrontWebsiteBasePage enterConsultantAddressDetails(String firstName, String lastName, String addressLine1, String city, String state, String postal, String phoneNumber){
+		String completeName = firstName+" "+lastName;
+		driver.type(FIRST_NAME_FOR_ADDRESS_DETAILS_LOC, completeName); //this will put first and last name
+		logger.info("Entered complete name as "+completeName);
+		driver.type(ADDRESS_LINE_1_FOR_ADDRESS_DETAILS_LOC, addressLine1);
+		logger.info("Entered address line 1 as "+addressLine1);
+		driver.type(CITY_FOR_ADDRESS_DETAILS_LOC, city);
+		logger.info("Entered city as "+city);
+		driver.click(STATE_DD_FOR_REGISTRATION_LOC);
+		logger.info("State dropdown clicked");
+		driver.click(By.xpath(String.format(stateForShippingDetails, state)));
+		logger.info("State selected as "+state);
+		driver.type(POSTAL_CODE_FOR_ADDRESS_DETAILS_LOC, postal);
+		logger.info("Entered postal code as "+postal);
+		driver.type(PHONE_NUMBER_FOR_ADDRESS_DETAILS_LOC, phoneNumber);
+		logger.info("Entered Phone number  as "+phoneNumber);
+		return this;
+	}
+
+	/***
+	 * This method get billing profile details on order review page
+	 * 
+	 * @param 
+	 * @return Complete billing profile details.
+	 * 
+	 */
+	public String getBillingProfileDetails(){
+		String billingProfileDetails = driver.findElement(BILLING_PROFILE_DETAILS_ORDER_REVIEW_PAGE_LOC).getText();
+		logger.info("Billing Profile Details On order review Page"+billingProfileDetails);
+		return billingProfileDetails;
+	}
+
+	/***
+	 * This method enter the consultant billing Address details
+	 * 
+	 * @param First name,Last name, address line1, city, state, postal code, phone number
+	 * @return store front Base page object
+	 * 
+	 */
+	public StoreFrontWebsiteBasePage enterConsultantAddressDetails(String firstName, String lastName, String addressLine1, String city, String state){
+		String completeName = firstName+" "+lastName;
+		driver.type(FIRST_NAME_FOR_ADDRESS_DETAILS_LOC, completeName); //this will put first and last name
+		logger.info("Entered complete name as "+completeName);
+		driver.type(ADDRESS_LINE_1_FOR_ADDRESS_DETAILS_LOC, addressLine1);
+		logger.info("Entered address line 1 as "+addressLine1);
+		driver.type(CITY_FOR_ADDRESS_DETAILS_LOC, city);
+		logger.info("Entered city as "+city);
+		driver.click(STATE_DD_FOR_REGISTRATION_LOC);
+		logger.info("State dropdown clicked");
+		driver.click(By.xpath(String.format(stateForShippingDetails, state)));
+		logger.info("State selected as "+state);
+		return this;
+	}
+
+	/***
+	 * This method checks whether the pop up for billing address selected other than
+	 * north dakota present.
+	 * 
+	 * @return
+	 */
+	public boolean isPopUpForBillingAddressOtherThanNorthDakotaPresent(){
+		String expectedText ="Not a resident of North Dakota";
+		String popupText = driver.findElement(BILLING_ADDRESS_OTHER_THAN_ND_POPUP_TEXT_LOC).getText();
+		if(driver.isElementVisible(POPUP_FOR_TERMS_AND_CONDITIONS_LOC)&& popupText.contains(expectedText)){
+			return true;
+		}else{
+			return false;
+		}
+
+	}
+
+	/***
+	 * This method selects choose a kit option on popup for invalid ND billing address
+	 * 
+	 * @param sponsor
+	 * @return
+	 * 
+	 */
+	public void selectChooseAKitOptionOnPopup(){
+		driver.click(CHOOSE_A_KIT_OPTION_ON_POPUP_LOC);
+		logger.info("Clicked on 'Choose a Kit' option on popup for invalid ND billig address.");
+		driver.waitForPageLoad();
 	}
 
 }

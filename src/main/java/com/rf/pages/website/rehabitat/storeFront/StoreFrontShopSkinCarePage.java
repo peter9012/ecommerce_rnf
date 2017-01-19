@@ -60,6 +60,7 @@ public class StoreFrontShopSkinCarePage extends StoreFrontWebsiteBasePage{
 	private final By CLEAR_ALL_LINK_LOC = By.id("clear_all");
 	private final By ADD_TO_CART_BTN_LOC = By.xpath("//div[@id='product_listing']/descendant::button[text()='Add to cart'][2]");
 
+	private String appliedFilterLoc = "//div[@id='applied_filters']/descendant::li[%s]";
 	private String productNameOnQuickViewPopupLoc = "//div[@id='myModal' and contains(@style,'display')]//div[contains(@class,'product-details')]/div[@class='name']/a[contains(text(),'%s')]";
 	private String regimenNameInShopByCategoryDD = "//div[@id='product-facet']//descendant::ul[2]//span[contains(text(),'%s')]";
 	private String specificPriceForProductLoc = "//div[contains(@class,'product__listing')]//div[@class='product-item'][%s]//em[@class='priceLabel' and contains(text(),'Your Price:')]/ancestor::span";
@@ -686,7 +687,7 @@ public class StoreFrontShopSkinCarePage extends StoreFrontWebsiteBasePage{
 	 * 
 	 */
 	public StoreFrontWebsiteBasePage clickShopByCategoryDD(){
-		driver.click(REFINE_PRODUCT_CATEGORY_FILTER_DD_LOC);
+		driver.clickByJS(RFWebsiteDriver.driver, driver.findElement(REFINE_PRODUCT_CATEGORY_FILTER_DD_LOC));
 		logger.info("Refine category filter dropdown clicked");
 		return this;
 	}
@@ -1067,6 +1068,61 @@ public class StoreFrontShopSkinCarePage extends StoreFrontWebsiteBasePage{
 		Actions build = new Actions(RFWebsiteDriver.driver);
 		build.moveToElement(driver.findElement(ADD_TO_CART_BTN_LOC)).build().perform();
 		return this;
+	}
+
+	/***
+	 * This method Refine Product by random category and return unique category name
+	 * 
+	 * @param selected category name
+	 * @return category name
+	 * 
+	 */
+	public String refineShopByCategoryAndReturnUniqueCategoryName(String selectedCategoryName){
+		String categoryName = null;
+		while(true){ 
+			categoryName = refineShopByCategoryAndReturnCategoryName();
+			if(categoryName.toLowerCase().contains(selectedCategoryName)){
+				categoryName = refineShopByCategoryAndReturnCategoryName();
+				continue;
+			}
+			else{
+				break;
+			}
+		}
+		return categoryName;
+	}
+
+	/***
+	 * This method Refine Product by random category and return category name
+	 * 
+	 * @param
+	 * @return selected category name
+	 * 
+	 */
+	public String refineShopByCategoryAndReturnCategoryName(){
+		String categoryName = null;
+		clickShopByCategoryDD();
+		logger.info("Refine category filter dropdown clicked");
+		int randomNum = CommonUtils.getRandomNum(2,7);
+		logger.info("Random selected category is "+(randomNum-1));
+		categoryName=driver.findElement(By.xpath(String.format(randomCategoryName,randomNum))).getText().trim();
+		driver.click(By.xpath(String.format(randomProductCategoryCheckbox,randomNum)));
+		logger.info("Product category selected is "+categoryName);
+		driver.waitForPageLoad();
+		driver.waitForLoadingImageToDisappear();
+		return categoryName;
+	}
+
+	/***
+	 * This method validate the applied filter
+	 * 
+	 * @param filter number
+	 * @return filter name
+	 * 
+	 */
+	public String getAppliedFilterName(int filterNumber){
+		logger.info(driver.getText(By.xpath(String.format(appliedFilterLoc,filterNumber))));
+		return driver.getText(By.xpath(String.format(appliedFilterLoc,filterNumber)));
 	}
 
 	//	/***

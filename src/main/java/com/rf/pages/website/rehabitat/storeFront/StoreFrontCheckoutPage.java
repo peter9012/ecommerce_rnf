@@ -75,9 +75,7 @@ public class StoreFrontCheckoutPage extends StoreFrontWebsiteBasePage{
 	private final By CANCEL_BUTTON_LOC=By.xpath("//button[contains(text(),'Cancel')]");
 	private final By EDIT_LINK_OF_ACCOUNT_INFO_LOC=By.xpath("//a[@class='editIcon']");
 	private final By CONTINUE_WITHOUT_SPONSOR_LOC = By.xpath("//a[contains(text(),'Continue Without a Consultant')]");
-	private final By USE_MY_DELIVERY_ADDRESS_CHECKBOX_LOC = By.xpath("//input[@id='useDeliveryAddress']/..");
 	private final By NEXT_BTN_AFTER_BILLING_LOC = By.id("reviewOrder");
-	private final By POPUP_FOR_TERMS_AND_CONDITIONS_LOC = By.id("city_popup");
 	private final By EDIT_LINK_OF_SHIPPING_PROFILE_LOC=By.xpath("//span[@id='defaultShippingAddress']/a");
 	private final By CONSULTANT_NAME_ID_FIELD_LOC = By.id("sponserparam");
 	private final By CONSULTANT_SEARCH_BTN_LOC = By.id("search-sponsor-button");
@@ -159,7 +157,8 @@ public class StoreFrontCheckoutPage extends StoreFrontWebsiteBasePage{
 	private final By CREDIT_CARD_NUMBER_AT_ORDER_CONFIRMATION_PAGE = By.xpath("//div[@class='orderBillingDetails']/div[2]");
 	private final By EDIT_LINK_OF_SHIPPING_DETAILS = By.xpath("//div[contains(text(),'Shipping')]/following-sibling::a[contains(text(),'Edit')]");
 	private final By ORDER_NUMBER_AT_CONFIRMATION_PAGE_OF_PLACED_ORDER_LOC = By.xpath("//div[@class='orderHeading']");
-
+	private final By USE_MY_DELIVERY_ADDRESS_CHECKBOX_LOC = By.xpath("//input[@id='useDeliveryAddress']");
+	
 	private String orderItemsTagLoc = "//li[@class='orderItemsHeading']//div[contains(text(),'%s')]";
 	private String chargesFromOrderConfirmationPage = "//div[@class='orderGrandTotal']//div[contains(text(),'%s')]/following::div[@class='orderValue'][1]";
 	private String chargesFromOrderReviewPage = "//*[contains(text(),'%s')]/following::span[1]";
@@ -472,16 +471,6 @@ public class StoreFrontCheckoutPage extends StoreFrontWebsiteBasePage{
 	public StoreFrontCheckoutPage clickContinueWithoutConsultantLink(){
 		driver.click(CONTINUE_WITHOUT_SPONSOR_LOC);
 		logger.info("Continue without sponsor link clicked");
-		return this;
-	}
-
-	/**
-	 * This method selects the use my delivery address checkbox
-	 * @return
-	 */
-	public StoreFrontCheckoutPage selectUseMyDeliveyAddressCheckbox(){
-		driver.click(USE_MY_DELIVERY_ADDRESS_CHECKBOX_LOC);
-		logger.info("Use My delivery address checkbox checked");
 		return this;
 	}
 
@@ -1144,27 +1133,6 @@ public class StoreFrontCheckoutPage extends StoreFrontWebsiteBasePage{
 		return driver.getText(POSTAL_CODE_ERROR_MSG_LOC).trim();
 	}
 
-
-	/***
-	 * This method validates the presence of appropriate mandatory field msg for billing address details
-	 * 
-	 * @param String field
-	 * @return boolean 
-	 * 
-	 */
-	private boolean isErrorMsgPresentAsExpectedForTheMandatoryAddressFieldForExistingBillingProfile(String field, String expectedMsg){
-		driver.pauseExecutionFor(3000);
-		driver.waitForElementPresent(By.xpath(String.format(mandatoryFieldErrorMsgOfAddressForExistingBillingProfileLoc, field)));
-		String errorMsg = driver.getText(By.xpath(String.format(mandatoryFieldErrorMsgOfAddressForExistingBillingProfileLoc, field)));
-		if(expectedMsg.contains(errorMsg)){
-			logger.info("Error msg for billing address field " + field + " is present as expected");
-			return true;
-		}
-		logger.info("Error msg for billing address field " + field + " is NOT present as expected. Expected : " + expectedMsg + ".Actual : " + errorMsg);
-		return false;
-	}
-
-
 	/***
 	 * This method validates the presence of mandatory field msgs for billing profile
 	 * 
@@ -1173,7 +1141,6 @@ public class StoreFrontCheckoutPage extends StoreFrontWebsiteBasePage{
 	 * 
 	 */
 	public boolean isErrrorMsgsForAllMandatoryFieldsForBillingAddressWithExistingProfileArePresent(){
-		driver.waitForElementToBeVisible(ADDRESS_NAME_ERROR_MGS_LOC,20);
 		return isErrorMsgPresentAsExpectedForTheMandatoryAddressFieldForExistingBillingProfile("firstName",TestConstants.ADDRESS_NAME_MANDATORY_MSG) &&
 				isErrorMsgPresentAsExpectedForTheMandatoryAddressFieldForExistingBillingProfile("street1",TestConstants.ADDRESS_LINE_MANDATORY_MSG) &&
 				isErrorMsgPresentAsExpectedForTheMandatoryAddressFieldForExistingBillingProfile("city",TestConstants.CITY_MANDATORY_MSG) &&
@@ -1181,7 +1148,6 @@ public class StoreFrontCheckoutPage extends StoreFrontWebsiteBasePage{
 				isErrorMsgPresentAsExpectedForTheMandatoryAddressFieldForExistingBillingProfile("postalCode",TestConstants.POSTAL_CODE_MANDATORY_MSG) &&
 				isErrorMsgPresentAsExpectedForTheMandatoryAddressFieldForExistingBillingProfile("phoneNumber",TestConstants.PHONE_NUMBER_MANDATORY_MSG);
 	}
-
 
 	/***
 	 * This method enter the billing address details after editing default billing profile
@@ -1756,6 +1722,41 @@ public class StoreFrontCheckoutPage extends StoreFrontWebsiteBasePage{
 	public StoreFrontCheckoutPage selectTermsAndConditionsCheckBoxForConsulatntCRP(){
 		driver.clickByJS(RFWebsiteDriver.driver,driver.findElement(TERMS_AND_CONDITIONS_CHCKBOX_FOR_CONSULTANT_CRP_LOC));
 		logger.info("Clicked Terms and conditions checkbox for consultant CRP checkout");
+		return this;
+	}
+
+	/***
+	 * This method validates the presence of appropriate mandatory field msg for billing address details
+	 * 
+	 * @param String field
+	 * @return boolean 
+	 * 
+	 */
+	private boolean isErrorMsgPresentAsExpectedForTheMandatoryAddressFieldForExistingBillingProfile(String field, String expectedMsg){
+		boolean isElementVisible = false;
+		isElementVisible = driver.isElementVisible(By.xpath(String.format(mandatoryFieldErrorMsgOfAddressForExistingBillingProfileLoc, field)));
+		if(isElementVisible){
+			String errorMsg = driver.getText(By.xpath(String.format(mandatoryFieldErrorMsgOfAddressForExistingBillingProfileLoc, field)));
+			if(expectedMsg.contains(errorMsg)){
+				logger.info("Error msg for billing address field " + field + " is present as expected");
+				return true;
+			}
+			else{
+				logger.info("Error msg for billing address field " + field + " is NOT present as expected. Expected : " + expectedMsg + ".Actual : " + errorMsg);
+				return false;
+			}
+		}
+		logger.info("Error msg for billing address field " + field + " is not appeared");
+		return false;
+	}
+
+	/**
+	 * This method selects the use my delivery address checkbox
+	 * @return
+	 */
+	public StoreFrontCheckoutPage selectUseMyDeliveyAddressCheckbox(){
+		driver.clickByJS(RFWebsiteDriver.driver,driver.findElement(USE_MY_DELIVERY_ADDRESS_CHECKBOX_LOC));
+		logger.info("Use My delivery address checkbox checked");
 		return this;
 	}
 

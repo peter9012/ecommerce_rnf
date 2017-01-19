@@ -49,15 +49,11 @@ public class TestConstants {
 	public static final String SHIPPING_ADDRESS_ADDED_MESSAGE = "Your address was created.";
 	public static final String SHIPPING_ADDRESS_REMOVED_MESSAGE = "Your address was removed.";
 	public static final String TITLE_OF_ALL_SKINCARE_PAGE = "All Skincare | Rodan and Fields";
-	
+
 	// Order page Details
 	public static final String TITLE_OF_ORDER_DETAILS_PAGE = "Order Details | Rodan and Fields";
 
 	//Consultant user details
-	public static final String CONSULTANT_USERNAME = "AutoCons20170116103858@mailinator.com";
-	public static final String CONSULTANT_EMAIL = "AutoCons20170116103858@mailinator.com";
-	public static final String CONSULTANT_WITH_CRP_USERNAME = "autocon1515@mailinator.com";
-	public static final String CONSULTANT_USERNAME_HAVING_NO_RETURN_ORDERS = "AutoCons20170116103858@mailinator.com";
 	public static final String CONSULTANT_ACCOUNT_ID = "";
 	public static final String CONSULTANT_ACCOUNT_NUMBER = "";
 	public static final String FIRST_NAME = "AutoCons";
@@ -71,8 +67,10 @@ public class TestConstants {
 	public static final String CITY_ND_US = "Bismarck";
 	public static final String POSTAL_CODE_ND_US = "58503";
 	public static final String STATE_ND_US = "North Dakota";
-	public static final String CONSULTANT_ENROLLED_IN_PULSE = "AutoCons20170117122201@mailinator.com";
-	
+
+	public static final String FIRST_NAME_BILLING_ADDRESS = "BAFirstName";
+	public static final String LAST_NAME_BILLING_ADDRESS = "BALastName";
+
 	public static final String DAY_OF_BIRTH = "14";
 	public static final String MONTH_OF_BIRTH = "Jun";
 	public static final String YEAR_OF_BIRTH = "1986";
@@ -91,7 +89,6 @@ public class TestConstants {
 	public static final String BILLING_PROFILE_ADDED_MESSAGE = "Card details are added successfully.";
 	public static final String PASSWORD_RECOVERY_SUBMIT_SUCCESS_MESSAGE = "Password reset instructions have been sent to your e-mail address. Please contact customer support if you require additional assistance";
 	public static final String PASSWORD_RECOVERY_SUBMIT_EMAIL_NOT_REGISTERED_MESSAGE = "You do not have account with us. Please create your account";
-	public static final String CONSULTANT_PWS = "https://www.qa1.rodanandfields.com/US/pws/alnameawaw";
 
 	//PO address details
 	public static final String PO_ADDRESS_LINE_1_US = "P.O. Box 283 8562 Fusce Rd";
@@ -114,16 +111,6 @@ public class TestConstants {
 	public static final String DPO_POSTAL_CODE_US = "09498-9997";
 	public static final String DPO_STATE_US = "AP Armed Forces";
 
-	//PC User Details
-	public static final String PC_USERNAME = "autopc1100@mailinator.com";
-	public static final String PC_EMAIL = "autopc1100@mailinator.com";
-	public static final String PC_EMAIL_HAVING_AUTOSHIP = "autopc1100@mailinator.com";
-	public static final String PC_EMAIL_WHO_ENROLLED_UNDER_SPONSOR_WITH_PWS = "autopc1100@mailinator.com";
-
-	//RC User Details
-	public static final String RC_USERNAME = "AutoRC20170113140808@mailinator.com";
-	public static final String RC_EMAIL = "AutoRC20170113140808@mailinator.com";
-
 	public static final String SHIPPING_METHOD_UPS_2DAY = "UPS 2 Days";
 	public static final String SHIPPING_METHOD_UPS_GROUND = "UPS Ground";
 	public static final String SHIPPING_METHOD_UPS_OVERNIGHT = "UPS Overnight";
@@ -139,7 +126,6 @@ public class TestConstants {
 	public static final String INVALID_CARD_EXP_YEAR = "2019";
 
 	// Error Messages for Billing Details
-
 	public static final String NAME_ON_CARD_MANDATORY_MSG = "Please enter the card holder name";
 	public static final String CARD_NUM_MANDATORY_MSG = "Please enter a card number";
 	public static final String CARD_TYPE_MANDATORY_MSG = "Please select the card type";
@@ -164,18 +150,34 @@ public class TestConstants {
 	public static final String MORE_THAN_200_CHARS = "This is the test message This is the test message This is the test message This is the test message "+
 			"This is the test message This is the test message This is the test message This is the test message T";
 	public static final String CANCELLED_CRP_ORDER_SUCCESS_MESSAGE = "Your CRP Order has been cancelled.";
-	
+
 	public static final String SECOND_ADDRESS_LINE_1_US = "1625 Sixth Street";
 	public static final String SECOND_ADDRESS_LINE_2_US = "Apt 211";
 	public static final String SECOND_CITY_US = "Concord";
 	public static final String SECOND_POSTAL_CODE_US = "94519";
-	 
+
+	//Users
+	public static final String CONSULTANT_USERNAME = "AutoCons20170116103858@mailinator.com";
+	public static final String CONSULTANT_EMAIL = "AutoCons20170116103858@mailinator.com";
+	public static final String CONSULTANT_WITH_CRP_USERNAME = "autocon1515@mailinator.com";
+	public static final String CONSULTANT_USERNAME_HAVING_NO_RETURN_ORDERS = "AutoCons20170116103858@mailinator.com";
+	public static final String CONSULTANT_ENROLLED_IN_PULSE = "AutoCons20170117122201@mailinator.com";
+	public static final String PC_USERNAME = "autopc1100@mailinator.com";
+	public static final String PC_EMAIL = "autopc1100@mailinator.com";
+	public static final String PC_EMAIL_HAVING_AUTOSHIP = "autopc1100@mailinator.com";
+	public static final String PC_EMAIL_WHO_ENROLLED_UNDER_SPONSOR_WITH_PWS = "autopc1100@mailinator.com";
+	public static final String RC_USERNAME = "AutoRC20170113140808@mailinator.com";
+	public static final String RC_EMAIL = "AutoRC20170113140808@mailinator.com";
+	public static final String CONSULTANT_PWS = "https://www.qa1.rodanandfields.com/US/pws/alnameawaw";
 	public static final String RC_USER_WITHOUT_ADDRESS = "autorc1717171@mailinator.com";
 	public static final String CONSULTANT_USERNAME_SPONSOR_WITHOUT_PWS = "consponsorwiithoutpws1@mailinator.com";
 	public static final String CONSULTANT_USERNAME_WITH_CRP_AND_PULSE = "autocon2525@mailinator.com";
 	public static final String CONSULTANT_PREFIX = "alnamebttt";
 	public static final String PWS = "https://www.qa1.rodanandfields.com/US/pws/alnameawaw/";
 	public static final String RC_EMAIL_HAVING_ORDER = "autorc1100@mailinator.com";
-	
+	public static final String PC_USER_WHO_ENROLLED_UNDER_RF_CORPORATE_SPONSOR = "autoPc1901@mailinator.com";
+	public static final String CONSULTANT_EMAIL_WITHOUT_PWS = "AutoCons20170119113134@mailinator.com";
+	public static final String PC_EMAIL_WHO_ENROLLED_UNDER_SPONSOR_WITHOUT_PWS = "autopc19012017@mailinator.com";
+
 }
 

@@ -23,7 +23,7 @@ public class ConsultantEnrollmentTest extends StoreFrontWebsiteBaseTest{
 	private String timeStamp=null;
 	private String randomWords = null;
 
-	
+
 	public ConsultantEnrollmentTest() {
 		firstName = TestConstants.FIRST_NAME;
 		addressLine1 = TestConstants.ADDRESS_LINE_1_US;
@@ -168,9 +168,9 @@ public class ConsultantEnrollmentTest extends StoreFrontWebsiteBaseTest{
 		s_assert.assertTrue(sfHomePage.isTheUserOnNavigationPage("1"),"user is not on navigation page 1");
 		sfHomePage.navigateToPaginationInSponsorSearchResult("2");
 		s_assert.assertTrue(sfHomePage.isTheUserOnNavigationPage("2"),"user is not on navigation page 2");
-//		sfHomePage.clickRodanAndFieldsLogo();
-//		sfHomePage.selectFirstSponsorFromList();
-//		s_assert.assertTrue(sfHomePage.isSponsorResultDisplayed(),"No result found after searching the sponsor with name after navigating from Connect with Consultant button "+TestConstants.SPONSOR_3_CHARS);
+		//		sfHomePage.clickRodanAndFieldsLogo();
+		//		sfHomePage.selectFirstSponsorFromList();
+		//		s_assert.assertTrue(sfHomePage.isSponsorResultDisplayed(),"No result found after searching the sponsor with name after navigating from Connect with Consultant button "+TestConstants.SPONSOR_3_CHARS);
 		s_assert.assertAll();
 	}
 
@@ -266,8 +266,8 @@ public class ConsultantEnrollmentTest extends StoreFrontWebsiteBaseTest{
 	/***
 	 * qTest : TC-485 North Dakota Error-Valid ND billing address
 	 * 
-	 * Description : This test validates that complete checkout process for consultant
-	 * enrollment
+	 * Description : TThis test validates consultant enrollment with 'North Dakota'
+	 * State and valid billing address selected.
 	 *     
 	 */
 	@Test(enabled=false)
@@ -280,7 +280,7 @@ public class ConsultantEnrollmentTest extends StoreFrontWebsiteBaseTest{
 		String socialInsuranceNumber = String.valueOf(CommonUtils.getRandomNum(100000000, 999999999));
 		String firstName = TestConstants.FIRST_NAME;
 		String lastName = TestConstants.LAST_NAME;
-		String emailID = TestConstants.FIRST_NAME+randomNum+TestConstants.EMAIL_SUFFIX;
+		String emailID = TestConstants.FIRST_NAME+timeStamp+TestConstants.EMAIL_SUFFIX;
 		String addressLine1 = TestConstants.ADDRESS_LINE_1_US;
 		String addressLine2 = TestConstants.ADDRESS_LINE_2_US;
 		String city = TestConstants.CITY_US;
@@ -291,20 +291,32 @@ public class ConsultantEnrollmentTest extends StoreFrontWebsiteBaseTest{
 		String cardNumber = TestConstants.CARD_NUMBER;
 		String cardName = TestConstants.CARD_NAME;
 		String CVV = TestConstants.CVV;
+		String firstNameBA = TestConstants.FIRST_NAME_BILLING_ADDRESS;
+		String lastNameBA = TestConstants.LAST_NAME_BILLING_ADDRESS;
+		String addressLine1BA = TestConstants.ADDRESS_LINE_1_ND_US;
+		String cityBA = TestConstants.CITY_ND_US;
+		String stateBA = TestConstants.STATE_ND_US;
+		String postalCodeBA = TestConstants.POSTAL_CODE_ND_US;
+		String billingDetailsOnOrderReview = null;
 		sfHomePage.clickEnrollNow();
 		sfHomePage.searchSponsor(TestConstants.SPONSOR);
 		s_assert.assertTrue(sfHomePage.isSponsorResultDisplayed(),"No result found after searching the sponsor with name "+TestConstants.SPONSOR);
 		sfHomePage.selectFirstSponsorFromList();
 		sfHomePage.enterConsultantEnrollmentDetails(firstName, lastName, emailID, password, socialInsuranceNumber);
 		sfHomePage.clickNextButton();
-		sfHomePage.chooseProductFromKitPage();
+		sfHomePage.selectNorthDakotaCheckBoxOnKitPage();
 		sfHomePage.clickNextButton();
 		sfHomePage.clickSaveButton();
 		sfHomePage.enterConsultantShippingDetails(firstName, lastName, addressLine1, addressLine2 ,city, state, postalCode, phoneNumber);
 		sfHomePage.clickUseAsEnteredButtonOnPopUp();
 		sfHomePage.clickShippingDetailsNextbutton();
 		sfHomePage.enterUserBillingDetails(cardType, cardNumber, cardName, CVV);
+		sfHomePage.checkUseMyDeliveryAddressChkBox();
+		sfHomePage.enterConsultantAddressDetails(firstNameBA, lastNameBA, addressLine1BA, cityBA, stateBA, postalCodeBA, phoneNumber);
 		sfHomePage.clickBillingDetailsNextbutton();
+		sfHomePage.clickUseAsEnteredButtonOnPopUp();
+		billingDetailsOnOrderReview = sfHomePage.getBillingProfileDetails();
+		s_assert.assertTrue(billingDetailsOnOrderReview.trim().contains("ND"), "ND billing profile is not saved successfully.");
 		sfHomePage.selectPoliciesAndProceduresChkBox();
 		sfHomePage.selectIAcknowledgeChkBox();
 		sfHomePage.selectTermsAndConditionsChkBox();
@@ -449,14 +461,14 @@ public class ConsultantEnrollmentTest extends StoreFrontWebsiteBaseTest{
 		s_assert.assertFalse(sfHomePage.isApplyingAsBusinessEntityPopupDisplayed(), "'Applying as Business Entity' popup has NOT closed");
 		s_assert.assertAll();
 	}
-	
+
 	/***
 	 * qTest : TC-467 Consultant Enrollment-Page 2- Pulse Pro Subscription - Select and continue
 	 * 
 	 * Description : This method completes the consultant enrollment by selecting pulse
 	 *     
 	 */
-	@Test(enabled=false)//TODO
+	@Test//(enabled=false)//TODO //assertion for pulse order in order history is pending.
 	public void testConsultantEnrollmentWithPulseSubscription_467(){
 		timeStamp = CommonUtils.getCurrentTimeStamp();
 		randomWords = CommonUtils.getRandomWord(5);		
@@ -466,6 +478,7 @@ public class ConsultantEnrollmentTest extends StoreFrontWebsiteBaseTest{
 		String timeStamp = CommonUtils.getCurrentTimeStamp();
 		String socialInsuranceNumber = String.valueOf(CommonUtils.getRandomNum(100000000, 999999999));
 		String prefix = firstName+randomNum;
+		String status = null;
 		sfHomePage.clickEnrollNow();
 		sfHomePage.searchSponsor(TestConstants.SPONSOR);
 		s_assert.assertTrue(sfHomePage.isSponsorResultDisplayed(),"No result found after searching the sponsor with name "+TestConstants.SPONSOR);
@@ -480,7 +493,6 @@ public class ConsultantEnrollmentTest extends StoreFrontWebsiteBaseTest{
 		sfHomePage.clickNextButton();
 		sfHomePage.clickSaveButton();
 		sfHomePage.enterConsultantShippingDetails(firstName, lastName, addressLine1, addressLine2 ,city, state, postalCode, phoneNumber);
-		sfHomePage.clickUseAsEnteredButtonOnPopUp();
 		sfHomePage.clickShippingDetailsNextbutton();
 		sfHomePage.enterUserBillingDetails(cardType, cardNumber, cardName, CVV);
 		sfHomePage.clickBillingDetailsNextbutton();
@@ -492,26 +504,26 @@ public class ConsultantEnrollmentTest extends StoreFrontWebsiteBaseTest{
 		s_assert.assertTrue(sfHomePage.isEnrollemntSuccessfulMsgDisplayed(), "Expected 'ENROLLMENT SUCCESSFUL' msg has NOT displayed"); 
 		sfHomePage.clickRodanAndFieldsLogo();
 		s_assert.assertTrue(sfHomePage.isWelcomeUserElementDisplayed(), "Welcome user locator has not displayed after consultant enrollment");
+		/*sfHomePage.clickWelcomeDropdown();
+		sfOrdersPage = sfHomePage.navigateToOrdersPage();
+		//Verify autoship order details.
+		s_assert.assertTrue(sfOrdersPage.isAutoshipOrderHistoryTableAppeared(),"Autoship Order history Table is not present on orders page");*/
 		s_assert.assertAll();
 
 	}
-
 	/***
 	 * qTest : TC-468 Consultant Enrollment-Page 2- Pulse Pro Subscription - Unselect and continue
 	 * 
 	 * Description : This method completes the consultant enrollment without selecting pulse
 	 *     
 	 */
-	@Test(enabled=false)//TODO
-	public void testConsultantEnrollmengtWithoutPulseSubscription_468(){
+	@Test(enabled=false)//TODO //Assertion for pulse pro order pending on order history.
+	public void testConsultantEnrollmentWithoutPulseSubscription_468(){
 		timeStamp = CommonUtils.getCurrentTimeStamp();
 		randomWords = CommonUtils.getRandomWord(5);		
 		lastName = TestConstants.LAST_NAME+randomWords;
 		email = firstName+timeStamp+TestConstants.EMAIL_SUFFIX;
-		int randomNum = CommonUtils.getRandomNum(10000, 1000000);
-		String timeStamp = CommonUtils.getCurrentTimeStamp();
 		String socialInsuranceNumber = String.valueOf(CommonUtils.getRandomNum(100000000, 999999999));
-		String prefix = firstName+randomNum;
 		sfHomePage.clickEnrollNow();
 		sfHomePage.searchSponsor(TestConstants.SPONSOR);
 		s_assert.assertTrue(sfHomePage.isSponsorResultDisplayed(),"No result found after searching the sponsor with name "+TestConstants.SPONSOR);
@@ -535,10 +547,213 @@ public class ConsultantEnrollmentTest extends StoreFrontWebsiteBaseTest{
 		s_assert.assertTrue(sfHomePage.isEnrollemntSuccessfulMsgDisplayed(), "Expected 'ENROLLMENT SUCCESSFUL' msg has NOT displayed"); 
 		sfHomePage.clickRodanAndFieldsLogo();
 		s_assert.assertTrue(sfHomePage.isWelcomeUserElementDisplayed(), "Welcome user locator has not displayed after consultant enrollment");
+		/*sfHomePage.clickWelcomeDropdown();
+		sfOrdersPage = sfHomePage.navigateToOrdersPage();
+		//Verify autoship order details.
+		s_assert.assertTrue(sfOrdersPage.isAutoshipOrderHistoryTableAppeared(),"Autoship Order history Table is not present on orders page");*/
 		s_assert.assertAll();
 
 	}
 	
+	/***
+	 * qTest : TC-469 Consultant Enrollment-Page 2- Pulse Pro Subscription - Select and continue with existing prefix
+	 * 
+	 * Description : This method Validates consultant enrollment with existing prefix.
+	 *     
+	 */
+	@Test(enabled=false)
+	public void testConsultantEnrollmentWithExistingPrefix_469(){
+		timeStamp = CommonUtils.getCurrentTimeStamp();
+		randomWords = CommonUtils.getRandomWord(5);		
+		lastName = TestConstants.LAST_NAME+randomWords;
+		email = firstName+timeStamp+TestConstants.EMAIL_SUFFIX;
+		String socialInsuranceNumber = String.valueOf(CommonUtils.getRandomNum(100000000, 999999999));
+		String existingPrefix = TestConstants.CONSULTANT_PREFIX;
+		sfHomePage.clickEnrollNow();
+		sfHomePage.searchSponsor(TestConstants.SPONSOR);
+		s_assert.assertTrue(sfHomePage.isSponsorResultDisplayed(),"No result found after searching the sponsor with name "+TestConstants.SPONSOR);
+		sfHomePage.selectFirstSponsorFromList();
+		sfHomePage.enterConsultantEnrollmentDetails(firstName, lastName, email, password, socialInsuranceNumber);
+		sfHomePage.clickNextButton();
+		s_assert.assertFalse(sfHomePage.isNextButtonEnabledBeforeSelectingKit(), "Next Button is NOT disabled before selecting kit");
+		sfHomePage.chooseProductFromKitPage();
+		sfHomePage.selectSubscribeToPulseCheckBox();
+		sfHomePage.enterPrefix(existingPrefix);
+		s_assert.assertFalse(sfHomePage.isPrefixAvailable(), "entered prefix "+existingPrefix+" is available");
+		s_assert.assertFalse(sfHomePage.isNextButtonEnabledBeforeSelectingKit(), "Next Button is NOT disabled before selecting valid prefix.");
+		s_assert.assertAll();
+
+	}
+
+	/***
+	 * qTest : TC-486 North Dakota Error-Empty ND billing address
+	 * 
+	 * Description : This test validates consultant enrollment with 'North Dakota'
+	 * State and empty billing address selected.
+	 *     
+	 */
+	@Test
+	public void testNortDakotaConsultantEnrollmentEmptyBillingAddress_486(){
+		timeStamp = CommonUtils.getCurrentTimeStamp();
+		randomWords = CommonUtils.getRandomWord(5);		
+		lastName = TestConstants.LAST_NAME+randomWords;
+		email = firstName+timeStamp+TestConstants.EMAIL_SUFFIX;
+		String socialInsuranceNumber = String.valueOf(CommonUtils.getRandomNum(100000000, 999999999));
+		String firstName = TestConstants.FIRST_NAME;
+		String lastName = TestConstants.LAST_NAME;
+		String emailID = TestConstants.FIRST_NAME+timeStamp+TestConstants.EMAIL_SUFFIX;
+		String addressLine1 = TestConstants.ADDRESS_LINE_1_US;
+		String addressLine2 = TestConstants.ADDRESS_LINE_2_US;
+		String city = TestConstants.CITY_US;
+		String state = TestConstants.STATE_US;
+		String postalCode = TestConstants.POSTAL_CODE_US;
+		String phoneNumber = TestConstants.PHONE_NUMBER;
+		String cardType = TestConstants.CARD_TYPE;
+		String cardNumber = TestConstants.CARD_NUMBER;
+		String cardName = TestConstants.CARD_NAME;
+		String CVV = TestConstants.CVV;
+		sfHomePage.clickEnrollNow();
+		sfHomePage.searchSponsor(TestConstants.SPONSOR);
+		s_assert.assertTrue(sfHomePage.isSponsorResultDisplayed(),"No result found after searching the sponsor with name "+TestConstants.SPONSOR);
+		sfHomePage.selectFirstSponsorFromList();
+		sfHomePage.enterConsultantEnrollmentDetails(firstName, lastName, emailID, password, socialInsuranceNumber);
+		sfHomePage.clickNextButton();
+		sfHomePage.selectNorthDakotaCheckBoxOnKitPage();
+		sfHomePage.clickNextButton();
+		sfHomePage.clickSaveButton();
+		sfHomePage.enterConsultantShippingDetails(firstName, lastName, addressLine1, addressLine2 ,city, state, postalCode, phoneNumber);
+		sfHomePage.clickUseAsEnteredButtonOnPopUp();
+		sfHomePage.clickShippingDetailsNextbutton();
+		sfHomePage.enterUserBillingDetails(cardType, cardNumber, cardName, CVV);
+		sfHomePage.checkUseMyDeliveryAddressChkBox();
+		sfHomePage.enterConsultantAddressDetails(firstName, lastName, addressLine1, city, state);
+		s_assert.assertTrue(sfHomePage.isPopUpForBillingAddressOtherThanNorthDakotaPresent(),"Error Popup for ND billing address is not present");
+		sfHomePage.selectChooseAKitOptionOnPopup();
+		//Verify user is redirected to kit selection page.
+		s_assert.assertTrue(sfHomePage.areAllKitsDisabled(), "Kit section is not disbaled ab=fter selecting North Dakota Checkbox");
+		s_assert.assertAll();
+	}
+
+	@Test(enabled=false)
+	public void testConsultantEnrollmentWithPulseAndCRP(){
+		//		timeStamp = CommonUtils.getCurrentTimeStamp();
+		//		randomWords = CommonUtils.getRandomWord(5);		
+		//		lastName = TestConstants.LAST_NAME+randomWords;
+		//		email = firstName+"WPWCRP"+timeStamp+TestConstants.EMAIL_SUFFIX;
+		//		int randomNum = CommonUtils.getRandomNum(10000, 1000000);
+		//		String socialInsuranceNumber = String.valueOf(CommonUtils.getRandomNum(100000000, 999999999));
+		//		String prefix = firstName+randomNum;
+		//		sfHomePage.clickEnrollNow();
+		//		sfHomePage.searchSponsor(TestConstants.SPONSOR);
+		//		sfHomePage.selectFirstSponsorFromList();
+		//		sfHomePage.enterConsultantEnrollmentDetails(firstName, lastName, email, password, socialInsuranceNumber);
+		//		sfHomePage.clickNextButton();
+		//		sfHomePage.chooseProductFromKitPage();
+		//		sfHomePage.selectSubscribeToPulseCheckBox();
+		//		sfHomePage.enterPrefix(prefix);
+		//		sfHomePage.clickNextButton();
+		//		sfHomePage.clickSaveButton();
+		//		sfHomePage.enterConsultantShippingDetails(firstName, lastName, addressLine1, addressLine2 ,city, state, postalCode, phoneNumber);
+		//		sfHomePage.clickUseAsEnteredButtonOnPopUp();
+		//		sfHomePage.clickShippingDetailsNextbutton();
+		//		sfHomePage.enterUserBillingDetails(cardType, cardNumber, cardName, CVV);
+		//		sfHomePage.clickBillingDetailsNextbutton();
+		//		sfHomePage.selectPoliciesAndProceduresChkBox();
+		//		sfHomePage.selectIAcknowledgeChkBox();
+		//		sfHomePage.selectTermsAndConditionsChkBox();
+		//		sfHomePage.selectConsentFormChkBox();
+		//		sfHomePage.clickBecomeAConsultant();
+		//		s_assert.assertTrue(sfHomePage.isEnrollemntSuccessfulMsgDisplayed(), "Expected 'ENROLLMENT SUCCESSFUL' msg has NOT displayed"); 
+		//		sfHomePage.addFirstProductForCRPCheckout();
+		//		sfCheckoutPage = sfHomePage.checkoutCRPBag();
+		//		sfCheckoutPage.clickSaveButton();
+		//		sfCheckoutPage.clickShippingDetailsNextbutton();
+		//		sfCheckoutPage.clickBillingDetailsNextbutton();
+		//		sfCheckoutPage.selectTermsAndConditionsCheckBoxForConsulatntCRP();
+		//		sfCheckoutPage.selectCheckboxForPoliciesAndProcedures();
+		//		sfCheckoutPage.clickConfirmAutoshipOrderButton();
+		//		s_assert.assertTrue(sfCheckoutPage.isCRPOrderConfirmedSuccessMsgAppeared(),"CRP Order confirmed success messge is not appeared");
+		//		sfCheckoutPage.clickRodanAndFieldsLogo();
+		email="testcons@xyz.com";
+		setUsers("conultantWithPulseAndWithCRP", email);
+		setUsers("PWS", driver.getCurrentUrl());
+		//		s_assert.assertAll();
+	}
+
+	@Test(enabled=false)
+	public void testConsultantEnrollmentWithPulseAndWithoutCRP(){
+		timeStamp = CommonUtils.getCurrentTimeStamp();
+		randomWords = CommonUtils.getRandomWord(5);		
+		lastName = TestConstants.LAST_NAME+randomWords;
+		email = firstName+"WPWOCRP"+timeStamp+TestConstants.EMAIL_SUFFIX;
+		int randomNum = CommonUtils.getRandomNum(10000, 1000000);
+		String socialInsuranceNumber = String.valueOf(CommonUtils.getRandomNum(100000000, 999999999));
+		String prefix = firstName+randomNum;
+		sfHomePage.clickEnrollNow();
+		sfHomePage.searchSponsor(TestConstants.SPONSOR);
+		sfHomePage.selectFirstSponsorFromList();
+		sfHomePage.enterConsultantEnrollmentDetails(firstName, lastName, email, password, socialInsuranceNumber);
+		sfHomePage.clickNextButton();
+		sfHomePage.chooseProductFromKitPage();
+		sfHomePage.selectSubscribeToPulseCheckBox();
+		sfHomePage.enterPrefix(prefix);
+		sfHomePage.clickNextButton();
+		sfHomePage.clickSaveButton();
+		sfHomePage.enterConsultantShippingDetails(firstName, lastName, addressLine1, addressLine2 ,city, state, postalCode, phoneNumber);
+		sfHomePage.clickUseAsEnteredButtonOnPopUp();
+		sfHomePage.clickShippingDetailsNextbutton();
+		sfHomePage.enterUserBillingDetails(cardType, cardNumber, cardName, CVV);
+		sfHomePage.clickBillingDetailsNextbutton();
+		sfHomePage.selectPoliciesAndProceduresChkBox();
+		sfHomePage.selectIAcknowledgeChkBox();
+		sfHomePage.selectTermsAndConditionsChkBox();
+		sfHomePage.selectConsentFormChkBox();
+		sfHomePage.clickBecomeAConsultant();
+		s_assert.assertTrue(sfHomePage.isEnrollemntSuccessfulMsgDisplayed(), "Expected 'ENROLLMENT SUCCESSFUL' msg has NOT displayed"); 
+		s_assert.assertAll();
+	}
+
+	@Test(enabled=false)
+	public void testConsultantEnrollmentWithCRPAndWithoutPulse(){
+		timeStamp = CommonUtils.getCurrentTimeStamp();
+		randomWords = CommonUtils.getRandomWord(5);		
+		lastName = TestConstants.LAST_NAME+randomWords;
+		email = firstName+timeStamp+TestConstants.EMAIL_SUFFIX;
+		String socialInsuranceNumber = String.valueOf(CommonUtils.getRandomNum(100000000, 999999999));
+		sfHomePage.clickEnrollNow();
+		sfHomePage.searchSponsor(TestConstants.SPONSOR);
+		s_assert.assertTrue(sfHomePage.isSponsorResultDisplayed(),"No result found after searching the sponsor with name "+TestConstants.SPONSOR);
+		sfHomePage.selectFirstSponsorFromList();
+		sfHomePage.enterConsultantEnrollmentDetails(firstName, lastName, email, password, socialInsuranceNumber);
+		sfHomePage.clickNextButton();
+		s_assert.assertFalse(sfHomePage.isNextButtonEnabledBeforeSelectingKit(), "Next Button is NOT disabled before selecting kit");
+		sfHomePage.chooseProductFromKitPage();
+		sfHomePage.clickNextButton();
+		sfHomePage.clickSaveButton();
+		sfHomePage.enterConsultantShippingDetails(firstName, lastName, addressLine1, addressLine2 ,city, state, postalCode, phoneNumber);
+		sfHomePage.clickUseAsEnteredButtonOnPopUp();
+		sfHomePage.clickShippingDetailsNextbutton();
+		sfHomePage.enterUserBillingDetails(cardType, cardNumber, cardName, CVV);
+		//sfHomePage.selectBillingAddressFromDD();
+		//sfHomePage.checkUseMyDeliveryAddressChkBox();
+		sfHomePage.clickBillingDetailsNextbutton();
+		sfHomePage.selectPoliciesAndProceduresChkBox();
+		sfHomePage.selectIAcknowledgeChkBox();
+		sfHomePage.selectTermsAndConditionsChkBox();
+		sfHomePage.selectConsentFormChkBox();
+		sfHomePage.clickBecomeAConsultant();
+		s_assert.assertTrue(sfHomePage.isEnrollemntSuccessfulMsgDisplayed(), "Expected 'ENROLLMENT SUCCESSFUL' msg has NOT displayed"); 
+		sfHomePage.addFirstProductForCRPCheckout();
+		sfCheckoutPage = sfHomePage.checkoutCRPBag();
+		sfCheckoutPage.clickSaveButton();
+		sfCheckoutPage.clickShippingDetailsNextbutton();
+		sfCheckoutPage.clickBillingDetailsNextbutton();
+		sfCheckoutPage.selectTermsAndConditionsCheckBoxForConsulatntCRP();
+		sfCheckoutPage.clickConfirmAutoshipOrderButton();
+		s_assert.assertTrue(sfCheckoutPage.isCRPOrderConfirmedSuccessMsgAppeared(),"CRP Order confirmed success messge is not appeared");
+		s_assert.assertAll();
+	}
+
 	//Test Case Hybris Phase 2-3720 :: Version : 1 :: Perform Consultant Account termination through my account
 	@Test(enabled=false)//Duplicate test,covered in Enrollment validation TC-4308
 	public void testAccountTerminationPageForConsultant_3720() throws InterruptedException {

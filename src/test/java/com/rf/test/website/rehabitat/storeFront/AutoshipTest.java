@@ -28,24 +28,79 @@ public class AutoshipTest extends StoreFrontWebsiteBaseTest{
 		String postalCode = TestConstants.POSTAL_CODE_US;
 		String phoneNumber = TestConstants.PHONE_NUMBER;
 		String textToAssertInURL = "autoship/cart";
+
 		//Login to application.
-		sfHomePage.loginToStoreFront(TestConstants.PC_USERNAME, password);
+		sfHomePage.loginToStoreFront(TestConstants.PC_EMAIL_HAVING_AUTOSHIP, password);
 		sfAutoshipCartPage = sfHomePage.clickOnAutoshipCartLink();
 		currentURL = sfAutoshipCartPage.getCurrentURL().toLowerCase();
 		s_assert.assertTrue(currentURL.contains(textToAssertInURL), "Expected URL should contain "+textToAssertInURL+" but actual on UI is "+currentURL);
 		sfCheckoutPage = sfAutoshipCartPage.clickOnPCPerksCheckoutButton();
 		sfCheckoutPage.clickSaveButton();
+
+		// Edit default Shipping Profile and Save Changes
 		sfCheckoutPage.clickEditLinkOfShippingProfile();
 		sfCheckoutPage.updateShippingAddressDetailsAtCheckoutPage(firstName, lastName, addressLine1,addressLine2, city, state, postalCode, phoneNumber);
 		sfCheckoutPage.clickSaveButtonOfShippingAddress();
 		sfCheckoutPage.clickUseAsEnteredButtonOnPopUp();
 		s_assert.assertTrue(sfCheckoutPage.getDefaultShippingAddressNameAtCheckoutPage().contains(lastName),
 				"Shipping profile does not get updated at checkout page");
+
+		// Edit default Shipping Profile and Cancel changes
 		sfCheckoutPage.clickEditLinkOfShippingProfile();
 		sfCheckoutPage.updateShippingAddressDetailsAtCheckoutPage(firstName, updatedLastName, addressLine1,addressLine2, city, state, postalCode, phoneNumber);
 		sfCheckoutPage.clickCancelButton();
 		s_assert.assertFalse(sfCheckoutPage.getDefaultShippingAddressNameAtCheckoutPage().contains(updatedLastName),
 				"Shipping profile get updated at checkout page even after clicking cancel button at checkout page");
+		s_assert.assertAll();
+	}
+
+	/***
+	 * qTest : TC-422 Update Autoship- Add a billing address to new Profile - Invalid
+	 * Description : This test validates the error and mandatory messages for invalid and insufficient Billing Address details
+	 * 
+	 *     
+	 */
+	@Test(enabled=false)
+	public void testUpdateAutoshipAddABillingProfileInvalid_422(){
+		String currentURL = null;
+		String randomWord = CommonUtils.getRandomWord(5);
+		String textToAssertInURL = "autoship/cart";
+		String cardType = TestConstants.CARD_TYPE;
+		String cardNum = TestConstants.CARD_NUMBER;
+		String cardName = TestConstants.CARD_NAME;
+		String cvv =  TestConstants.CVV;
+		String firstName = TestConstants.FIRST_NAME + randomWord;
+		String lastName = TestConstants.LAST_NAME;
+		String addressLine1 = TestConstants.ADDRESS_LINE_1_US;
+		String addressLine2 = TestConstants.ADDRESS_LINE_2_US;
+		String city = TestConstants.CITY_US;
+		String state = TestConstants.STATE_US;
+		String invalidPostalCode = TestConstants.INVALID_POSTAL_CODE;
+		String phoneNumber = TestConstants.PHONE_NUMBER;
+
+		//Login to application.
+		sfHomePage.loginToStoreFront(TestConstants.PC_EMAIL_HAVING_AUTOSHIP, password);
+		sfAutoshipCartPage = sfHomePage.clickOnAutoshipCartLink();
+		currentURL = sfAutoshipCartPage.getCurrentURL().toLowerCase();
+		s_assert.assertTrue(currentURL.contains(textToAssertInURL), "Expected URL should contain "+textToAssertInURL+" but actual on UI is "+currentURL);
+		sfCheckoutPage = sfAutoshipCartPage.clickOnPCPerksCheckoutButton();
+		sfCheckoutPage.clickSaveButton();
+		sfCheckoutPage.clickShippingDetailsNextbutton();
+
+		// Adding New Billing Profile
+		sfCheckoutPage.clickAddNewBillingProfileButton();
+		sfCheckoutPage.enterUserBillingDetails(cardType,cardNum,cardName,cvv);
+
+		// Click Next Button without filling any Billing Address details
+		sfCheckoutPage.selectUseMyDeliveyAddressCheckbox();
+		sfCheckoutPage.clickBillingDetailsNextbutton();
+		s_assert.assertTrue(sfCheckoutPage.isErrrorMsgsForAllMandatoryFieldsArePresent(),
+				"Mandatory Fields error messages are not present as expected");
+
+		// Enter Billing details with Invalid postal code
+		sfCheckoutPage.enterBillingAddressDetailsAtCheckoutForNewBillingProfile(firstName, lastName, addressLine1, addressLine2, city, state, invalidPostalCode, phoneNumber);
+		s_assert.assertTrue(sfCheckoutPage.getErrorMessageForInvalidPostalCode().contains(TestConstants.INVALID_POSTAL_CODE_MSG),
+				"Error msg for Invalid postal code is not present as expected");
 		s_assert.assertAll();
 	}
 
@@ -191,49 +246,6 @@ public class AutoshipTest extends StoreFrontWebsiteBaseTest{
 		s_assert.assertTrue(currentURL.contains(textToAssertInURL), "Expected URL should contain "+textToAssertInURL+" but actual on UI is "+currentURL);
 		s_assert.assertTrue(sfAutoshipCartPage.isCRPAutoshipHeaderPresentOnCartPage(),"CRP Autoship header is not present on Autoship cart page");
 		s_assert.assertFalse(sfAutoshipCartPage.isShippingSectionPresent(),"Shipping section is present at autoship cart page");
-		s_assert.assertAll();
-	}
-
-	/***
-	 * qTest : TC-422 Update Autoship- Add a billing address to new Profile - Invalid
-	 * Description : This test validates the error and mandatory messages for invalid and insufficient Billing Address details
-	 * 
-	 *     
-	 */
-	@Test(enabled=false)
-	public void testUpdateAutoshipAddABillingProfileInvalid_422(){
-		String currentURL = null;
-		String randomWord = CommonUtils.getRandomWord(5);
-		String textToAssertInURL = "autoship/cart";
-		String cardType = TestConstants.CARD_TYPE;
-		String cardNum = TestConstants.CARD_NUMBER;
-		String cardName = TestConstants.CARD_NAME;
-		String cvv =  TestConstants.CVV;
-		String firstName = TestConstants.FIRST_NAME + randomWord;
-		String lastName = TestConstants.LAST_NAME;
-		String addressLine1 = TestConstants.ADDRESS_LINE_1_US;
-		String addressLine2 = TestConstants.ADDRESS_LINE_2_US;
-		String city = TestConstants.CITY_US;
-		String state = TestConstants.STATE_US;
-		String invalidPostalCode = TestConstants.INVALID_POSTAL_CODE;
-		String phoneNumber = TestConstants.PHONE_NUMBER;
-		//Login to application.
-		sfHomePage.loginToStoreFront(TestConstants.PC_USERNAME, password);
-		sfAutoshipCartPage = sfHomePage.clickOnAutoshipCartLink();
-		currentURL = sfAutoshipCartPage.getCurrentURL().toLowerCase();
-		s_assert.assertTrue(currentURL.contains(textToAssertInURL), "Expected URL should contain "+textToAssertInURL+" but actual on UI is "+currentURL);
-		sfCheckoutPage = sfAutoshipCartPage.clickOnPCPerksCheckoutButton();
-		sfCheckoutPage.clickSaveButton();
-		sfCheckoutPage.clickShippingDetailsNextbutton();
-		sfCheckoutPage.clickAddNewBillingProfileButton();
-		sfCheckoutPage.enterUserBillingDetails(cardType,cardNum,cardName,cvv);
-		// Click Next Button without filling any Billing Address details
-		sfCheckoutPage.clickNextButtonAfterBillingAddress();
-		s_assert.assertTrue(sfCheckoutPage.isErrrorMsgsForAllMandatoryFieldsArePresent(),
-				"Mandatory Fields error messages are not present as expected");
-		sfCheckoutPage.enterBillingAddressDetailsAtCheckoutForNewBillingProfile(firstName, lastName, addressLine1, addressLine2, city, state, invalidPostalCode, phoneNumber);
-		s_assert.assertTrue(sfCheckoutPage.getErrorMessageForInvalidPostalCode().contains(TestConstants.INVALID_POSTAL_CODE_MSG),
-				"Error msg for Invalid postal code is not present as expected");
 		s_assert.assertAll();
 	}
 
@@ -707,6 +719,7 @@ public class AutoshipTest extends StoreFrontWebsiteBaseTest{
 		sfCheckoutPage.clickShippingDetailsNextbutton();
 		sfCheckoutPage.clickBillingDetailsNextbutton();
 		sfCheckoutPage.selectTermsAndConditionsCheckBoxForConsulatntCRP();
+		sfCheckoutPage.selectCheckboxForPoliciesAndProcedures();
 		sfCheckoutPage.clickConfirmAutoshipOrderButton();
 		s_assert.assertTrue(sfCheckoutPage.isCRPOrderConfirmedSuccessMsgAppeared(),"CRP Order confirmed success messge is not appeared");
 		sfCheckoutPage.clickRodanAndFieldsLogo();

@@ -4,6 +4,8 @@ import org.testng.annotations.Test;
 
 import com.rf.core.utils.CommonUtils;
 import com.rf.core.website.constants.TestConstants;
+import com.rf.pages.website.rehabitat.storeFront.StoreFrontCartPage;
+import com.rf.pages.website.rehabitat.storeFront.StoreFrontShopSkinCarePage;
 import com.rf.test.website.rehabitat.storeFront.baseTest.StoreFrontWebsiteBaseTest;
 
 public class AddAndDeleteShippingTest extends StoreFrontWebsiteBaseTest{
@@ -195,34 +197,65 @@ public class AddAndDeleteShippingTest extends StoreFrontWebsiteBaseTest{
 	 */
 	@Test(enabled=true)
 	public void testDefaultShipAddressDisplayedInCheckoutMultipleAddress_173(){
-		String randomWord = CommonUtils.getRandomWord(5);
 		String firstName = TestConstants.FIRST_NAME;
-		String lastName = TestConstants.LAST_NAME+randomWord;
+		String timeStamp = CommonUtils.getCurrentTimeStamp();
+		String randomWords = CommonUtils.getRandomWord(5);
+		String randomWord2 = CommonUtils.getRandomWord(5); 
 		String addressLine1 = TestConstants.ADDRESS_LINE_1_US;
 		String addressLine2 = TestConstants.ADDRESS_LINE_2_US;
 		String city = TestConstants.CITY_US;
 		String state = TestConstants.STATE_US;
 		String postalCode = TestConstants.POSTAL_CODE_US;
 		String phoneNumber = TestConstants.PHONE_NUMBER;
+		String lastName = TestConstants.LAST_NAME+randomWords;
+		String lastNameForSecondProfile = TestConstants.LAST_NAME + randomWord2;
+		String email = firstName+timeStamp+TestConstants.EMAIL_SUFFIX;
 		String defaultShippingAddressName = null;
-		sfHomePage.loginToStoreFront(TestConstants.CONSULTANT_USERNAME, password);
-		sfHomePage.clickWelcomeDropdown();
+		sfCartPage = new StoreFrontCartPage(driver);
+		sfShopSkinCarePage = new StoreFrontShopSkinCarePage(driver);
+		sfHomePage.clickLoginIcon();
+
+		// Enrolling PC User
+		sfCheckoutPage=sfHomePage.clickSignUpNowLink();
+		sfCheckoutPage.fillNewUserDetails(TestConstants.USER_TYPE_PC, firstName, lastName, email, password);
+		sfCheckoutPage.clickCreateAccountButton();
+		s_assert.assertTrue(sfCartPage.isPcOneTimeFeeMsgDisplayed(),"PC one time joining fee msg has not displayed");
+		sfCartPage.clickAddMoreItemsBtn();
+		sfShopSkinCarePage.addProductToCart(TestConstants.PRODUCT_NUMBER, TestConstants.ORDER_TYPE_ADHOC);;
+		sfCartPage = sfShopSkinCarePage.checkoutTheCartFromPopUp();
+		sfCartPage.enterQuantityOfProductAtCart("1", "2");
+		sfCartPage.clickOnUpdateLinkThroughItemNumber("1");
+		sfCartPage.clickCheckoutBtn();
+		sfCheckoutPage.clickContinueWithoutConsultantLink();
+		sfCheckoutPage.clickSaveButton();
+		sfCheckoutPage.enterShippingDetails(firstName+" "+lastName, addressLine1, addressLine2, city, state, postalCode, phoneNumber);
+		sfCheckoutPage.clickShippingDetailsNextbutton();
+		sfCheckoutPage.enterUserBillingDetails(TestConstants.CARD_TYPE, TestConstants.CARD_NUMBER_2, TestConstants.CARD_NAME,TestConstants.CVV);
+		sfCheckoutPage.clickBillingDetailsNextbutton();
+		sfCheckoutPage.selectIAcknowledgePCChkBox();
+		sfCheckoutPage.selectPCTermsAndConditionsChkBox();
+		sfCheckoutPage.clickPlaceOrderButton();
+		sfCheckoutPage.clickRodanAndFieldsLogo();
+		s_assert.assertTrue(sfHomePage.hasPCEnrolledSuccessfully(), "PC has not been enrolled successfully");
+
+		// Navigating to Shipping Info Page for newly enrolled user
+		sfCheckoutPage.clickRodanAndFieldsLogo();
+		sfCheckoutPage.clickWelcomeDropdown();
 		sfShippingInfoPage = sfHomePage.navigateToShippingInfoPage();
 		sfShippingInfoPage.clickAddANewShippingAddressLink();
-		sfShippingInfoPage.enterConsultantShippingDetails(firstName, lastName, addressLine1,addressLine2, city, state, postalCode, phoneNumber);
-		sfShippingInfoPage.checkMakeThisMyDefaultAddressChkBox();
+		sfShippingInfoPage.enterConsultantShippingDetails(firstName, lastNameForSecondProfile, addressLine1,addressLine2, city, state, postalCode, phoneNumber);
 		sfShippingInfoPage.clickSaveButtonOfShippingAddress();
 		sfShippingInfoPage.clickUseAsEnteredButtonOnPopUp();
-		defaultShippingAddressName = sfShippingInfoPage.getDefaultShippingAddressName().toLowerCase();
-		s_assert.assertTrue(defaultShippingAddressName.contains(lastName.toLowerCase()), "Expected default shipping address name is "+lastName.toLowerCase()+" but actual on UI is "+defaultShippingAddressName);
-		sfShippingInfoPage.clickRodanAndFieldsLogo();
-		sfShopSkinCarePage = sfShippingInfoPage.clickAllProducts();
+		s_assert.assertTrue(sfShippingInfoPage.isShippingProfilePresent(lastNameForSecondProfile), "Newly added shipping profile is not present at shipping info page");
+
+		// Adding product to cart and proceed to checkout
+		sfShippingInfoPage.clickAllProducts();
 		sfShopSkinCarePage.addProductToCart(TestConstants.PRODUCT_NUMBER, TestConstants.ORDER_TYPE_ADHOC);
-		sfShopSkinCarePage.checkoutTheCartFromPopUp();
-		sfCheckoutPage = sfShopSkinCarePage.checkoutTheCart();
+		sfCartPage = sfShopSkinCarePage.checkoutTheCartFromPopUp();
+		sfCartPage.checkoutTheCart();
 		sfCheckoutPage.clickSaveButton();
 		defaultShippingAddressName = sfCheckoutPage.getDefaultShippingAddressNameAtCheckoutPage();
-		s_assert.assertTrue(defaultShippingAddressName.contains(lastName.toLowerCase()), "Expected default shipping address name at checkout page is "+lastName.toLowerCase()+" but actual on UI is "+defaultShippingAddressName);
+		s_assert.assertTrue(defaultShippingAddressName.contains(lastName), "Expected default shipping address name at checkout page is "+lastName.toLowerCase()+" but actual on UI is "+defaultShippingAddressName);
 		s_assert.assertAll();
 	}
 
@@ -314,46 +347,6 @@ public class AddAndDeleteShippingTest extends StoreFrontWebsiteBaseTest{
 		s_assert.assertAll();
 	}
 
-	/***
-	 * qTest : TC-378 Delete autoship shipping profile
-	 * Description : This test verify the working of cancel & update my autoship button
-	 * while delete a shipping profile selected for CRP
-	 *     
-	 */
-	@Test(enabled=true)
-	public void testDeleteAutoshipBillingProfile_378(){
-		String randomWord = CommonUtils.getRandomWord(5);
-		String firstName = TestConstants.FIRST_NAME;
-		String lastName = TestConstants.LAST_NAME+randomWord;
-		String addressLine1 = TestConstants.ADDRESS_LINE_1_US;
-		String addressLine2 = TestConstants.ADDRESS_LINE_2_US;
-		String city = TestConstants.CITY_US;
-		String state = TestConstants.STATE_US;
-		String postalCode = TestConstants.POSTAL_CODE_US;
-		String phoneNumber = TestConstants.PHONE_NUMBER;
-		String autoShipShippingProfileLastName = null;
-		String checkoutPageText = "Account Info";
-		String currentURL = null;
-		sfHomePage.loginToStoreFront(TestConstants.CONSULTANT_WITH_CRP_USERNAME, password);
-		sfHomePage.clickWelcomeDropdown();
-		sfShippingInfoPage = sfHomePage.navigateToShippingInfoPage();
-		sfShippingInfoPage.clickAddANewShippingAddressLink();
-		sfShippingInfoPage.enterConsultantShippingDetails(firstName, lastName, addressLine1, addressLine2,city, state, postalCode, phoneNumber);
-		sfShippingInfoPage.checkMakeThisMyDefaultAddressChkBox();
-		sfShippingInfoPage.clickSaveButtonOfShippingAddress();
-		sfShippingInfoPage.clickUseAsEnteredButtonOnPopUp();
-		s_assert.assertTrue(sfShippingInfoPage.isShippingProfilePresent(lastName), "Newly added shipping profile is not present at shipping info page");
-		autoShipShippingProfileLastName = sfShippingInfoPage.getAutoshipShippingProfileName().split(TestConstants.LAST_NAME.toLowerCase())[1].trim();
-		sfShippingInfoPage.clickDeleteLinkForShippingProfile(autoShipShippingProfileLastName);
-		sfShippingInfoPage.cancelDeleteAddressAndUpdateShippingAddressForAutoshipPopup();
-		s_assert.assertTrue(sfShippingInfoPage.isShippingProfilePresent(autoShipShippingProfileLastName), "Existing shipping profile is not present at shipping info page & cancel button is not working");
-		sfShippingInfoPage.clickDeleteLinkForShippingProfile(autoShipShippingProfileLastName);
-		sfShippingInfoPage.clickUpdateMyAutoshipOnDeleteAddressAndUpdateShippingAddressForAutoshipPopup();
-		currentURL = sfShippingInfoPage.getCurrentURL();
-		s_assert.assertTrue(currentURL.contains("checkout") && sfShippingInfoPage.isTextPresent(checkoutPageText),"User is not redirecting to checkout page after clicked on update my autoship button");
-		s_assert.assertAll();
-	}
-
 
 	/**
 	 * qTest : TC-320 Shipping Profile-Edit a ship address and save
@@ -424,7 +417,7 @@ public class AddAndDeleteShippingTest extends StoreFrontWebsiteBaseTest{
 				"New Shipping Address added do not get updated on shipping section. Expected lastName : " + lastName + ".Actual Name :  " + shippingAddressNameInAccountInfo);
 		s_assert.assertAll();
 	}
-	
+
 	/***
 	 * qTest : TC-384 Autoship Information should appear on the Shipping profile
 	 * Description :  This test verify the working of cancel & update my autoship button
@@ -467,7 +460,7 @@ public class AddAndDeleteShippingTest extends StoreFrontWebsiteBaseTest{
 		s_assert.assertTrue(currentURL.contains("checkout") && sfShippingInfoPage.isTextPresent(checkoutPageText),"User is not redirecting to checkout page after clicked on update my autoship button");
 		s_assert.assertAll();
 	}
-	
+
 	/***
 	 * qTest : TC-378 Delete autoship shipping profile
 	 * Description : This test verify the working of cancel & update my autoship button
@@ -508,5 +501,4 @@ public class AddAndDeleteShippingTest extends StoreFrontWebsiteBaseTest{
 		s_assert.assertTrue(currentURL.contains("checkout") && sfShippingInfoPage.isTextPresent(checkoutPageText),"User is not redirecting to checkout page after clicked on update my autoship button");
 		s_assert.assertAll();
 	}
-
 }

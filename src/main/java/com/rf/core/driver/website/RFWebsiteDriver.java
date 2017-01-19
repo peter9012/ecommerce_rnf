@@ -572,7 +572,7 @@ public class RFWebsiteDriver implements RFDriver,WebDriver {
 
 	public void clickByAction(By locator) {
 		Actions build = new Actions(driver);
-		build.moveToElement(driver.findElement(locator)).click().build().perform();
+		build.doubleClick(driver.findElement(locator)).build().perform();
 		pauseExecutionFor(1000);
 	}
 

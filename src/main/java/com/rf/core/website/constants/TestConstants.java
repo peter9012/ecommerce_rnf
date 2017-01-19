@@ -23,6 +23,7 @@ public class TestConstants {
 	public static final String USER_TYPE_RC = "RC";
 	public static final String ORDER_TYPE_ADHOC = "One Time Order";
 	public static final String ORDER_TYPE_PC_PERKS = "PC Perks Order";
+	public static final String ORDER_TYPE_CRP= "Add to CRP";
 	public static final String PRODUCT_NUMBER = "2";
 	public static final String PC_FIRST_NAME = "AutoPC";
 	public static final String RC_FIRST_NAME = "AutoRC";

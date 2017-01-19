@@ -418,7 +418,7 @@ public class StoreFrontShopSkinCarePage extends StoreFrontWebsiteBasePage{
 			priceToAssert = driver.getText(By.xpath(String.format(productPriceThroughProductNumberLoc,"subscribe + save",productNumber))).replace("$","");
 			driver.clickByAction(By.xpath(String.format(addToCartDDLoc,"subscribe + save",productNumber)));
 		}
-		else {
+		else if(orderType.equals(TestConstants.ORDER_TYPE_PC_PERKS)&& driver.isElementVisible(By.xpath(String.format(productPriceThroughProductNumberLoc,TestConstants.ORDER_TYPE_PC_PERKS,productNumber)))){
 			priceToAssert = driver.getText(By.xpath(String.format(productPriceThroughProductNumberLoc,"Add to CRP",productNumber))).replace("$","");
 			driver.clickByAction(By.xpath(String.format(addToCartDDLoc,"Add to CRP",productNumber)));
 		}

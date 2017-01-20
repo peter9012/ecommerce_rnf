@@ -48,6 +48,7 @@ public class StoreFrontAccountInfoPage extends StoreFrontWebsiteBasePage{
 	private final By EMAIL_TO_CONSULTANT_EMAIL_LOC= By.id("emailToConsultantForm.emailId");
 	private final By EMAIL_TO_CONSULTANT_EMAIL_CONTENT_LOC= By.id("emailToConsultantForm.emailContent");
 	private final By EMAIL_TO_CONSULTANT_EMAIL_SUBMIT_BTN_LOC= By.id("emailToConsultantSubmitButton");
+	private final By SPONSER_NAME_ON_ACCOUNT_INFO_LOC = By.xpath("//p[text()='R+F Independent Consultant']/preceding-sibling::p[1]");
 
 	private String spouseFirstNameValidationErrorLoc = " //*[@id='profile.spouseFirstname']/../label[contains(text(),'%s')][1]";
 	private String spouseLastNameValidationErrorLoc = " //*[@id='profile.spouseLastname']/../[contains(text(),'%s')][1]";
@@ -583,5 +584,19 @@ public class StoreFrontAccountInfoPage extends StoreFrontWebsiteBasePage{
 		logger.info("Last Name on account info is: "+lastNameAccountInfo);
 		return lastNameAccountInfo.trim();
 	}
+
+	/***
+	 * This method verifies if the email your consultant validation is 
+	 * displayed or not.
+	 * 
+	 * @param 
+	 * @param 
+	 * @return boolean
+	 */
+	public boolean isSponserNameWithTitleRFIndependentConsultantPresent(){
+		return driver.isElementVisible(SPONSER_NAME_ON_ACCOUNT_INFO_LOC);
+	}
+
+
 
 }

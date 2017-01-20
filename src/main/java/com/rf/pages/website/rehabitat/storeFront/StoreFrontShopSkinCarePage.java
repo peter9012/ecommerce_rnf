@@ -60,6 +60,7 @@ public class StoreFrontShopSkinCarePage extends StoreFrontWebsiteBasePage{
 	private final By CLEAR_ALL_LINK_LOC = By.id("clear_all");
 	private final By ADD_TO_CART_BTN_LOC = By.xpath("//div[@id='product_listing']/descendant::button[text()='Add to cart'][2]");
 
+	private String productPriceOnQuickViewPopupThroughOrderTypeLoc = "//*[@id='command']/descendant::span[contains(text(),'%s')]/following-sibling::span[contains(@class,'productPrice')]";
 	private String appliedFilterLoc = "//div[@id='applied_filters']/descendant::li[%s]";
 	private String productNameOnQuickViewPopupLoc = "//div[@id='myModal' and contains(@style,'display')]//div[contains(@class,'product-details')]/div[@class='name']/a[contains(text(),'%s')]";
 	private String regimenNameInShopByCategoryDD = "//div[@id='product-facet']//descendant::ul[2]//span[contains(text(),'%s')]";
@@ -145,6 +146,7 @@ public class StoreFrontShopSkinCarePage extends StoreFrontWebsiteBasePage{
 		else 
 			return false;
 	}
+
 	/***
 	 * This method select sort by price filter Low to High
 	 * 
@@ -418,7 +420,7 @@ public class StoreFrontShopSkinCarePage extends StoreFrontWebsiteBasePage{
 			priceToAssert = driver.getText(By.xpath(String.format(productPriceThroughProductNumberLoc,"subscribe + save",productNumber))).replace("$","");
 			driver.clickByAction(By.xpath(String.format(addToCartDDLoc,"subscribe + save",productNumber)));
 		}
-		else if(orderType.equals(TestConstants.ORDER_TYPE_PC_PERKS)&& driver.isElementVisible(By.xpath(String.format(productPriceThroughProductNumberLoc,TestConstants.ORDER_TYPE_PC_PERKS,productNumber)))){
+		else if(orderType.equals(TestConstants.ORDER_TYPE_CRP)&& driver.isElementVisible(By.xpath(String.format(productPriceThroughProductNumberLoc,TestConstants.ORDER_TYPE_CRP,productNumber)))){
 			priceToAssert = driver.getText(By.xpath(String.format(productPriceThroughProductNumberLoc,"Add to CRP",productNumber))).replace("$","");
 			driver.clickByAction(By.xpath(String.format(addToCartDDLoc,"Add to CRP",productNumber)));
 		}
@@ -1124,6 +1126,35 @@ public class StoreFrontShopSkinCarePage extends StoreFrontWebsiteBasePage{
 		logger.info(driver.getText(By.xpath(String.format(appliedFilterLoc,filterNumber))));
 		return driver.getText(By.xpath(String.format(appliedFilterLoc,filterNumber)));
 	}
+
+	/***
+	 * This method adds the product to the cart from quick view popup(adhoc/autoship/PC perks as specified)
+	 * 
+	 * @param Order type
+	 * @return string price
+	 * 
+	 */
+	public String addProductToCartFromQuickViewPopup(String orderType){
+		String priceToAssert = null;
+		driver.pauseExecutionFor(3000);
+		driver.moveToElementByJS(ADD_TO_CART_BTN_ON_QUICK_VIEW_POPUP_LOC);
+		driver.clickByAction(ADD_TO_CART_BTN_ON_QUICK_VIEW_POPUP_LOC);
+		if(orderType.equals(TestConstants.ORDER_TYPE_ADHOC)&& driver.isElementVisible(By.xpath(String.format(productPriceOnQuickViewPopupThroughOrderTypeLoc,TestConstants.ORDER_TYPE_ADHOC)))){
+			priceToAssert = driver.getText(By.xpath(String.format(productPriceOnQuickViewPopupThroughOrderTypeLoc,TestConstants.ORDER_TYPE_ADHOC))).replace("$","");
+			driver.clickByAction(By.xpath(String.format(productPriceOnQuickViewPopupThroughOrderTypeLoc,TestConstants.ORDER_TYPE_ADHOC)));
+		}
+		else if(orderType.equals(TestConstants.ORDER_TYPE_PC_PERKS)&& driver.isElementVisible(By.xpath(String.format(productPriceOnQuickViewPopupThroughOrderTypeLoc,TestConstants.ORDER_TYPE_PC_PERKS)))){
+			priceToAssert = driver.getText(By.xpath(String.format(productPriceOnQuickViewPopupThroughOrderTypeLoc,"subscribe + save"))).replace("$","");
+			driver.clickByAction(By.xpath(String.format(productPriceOnQuickViewPopupThroughOrderTypeLoc,"subscribe + save")));
+		}
+		else if(orderType.equals(TestConstants.ORDER_TYPE_CRP)&& driver.isElementVisible(By.xpath(String.format(productPriceOnQuickViewPopupThroughOrderTypeLoc,TestConstants.ORDER_TYPE_CRP)))){
+			priceToAssert = driver.getText(By.xpath(String.format(productPriceOnQuickViewPopupThroughOrderTypeLoc,"Add to CRP"))).replace("$","");
+			driver.clickByAction(By.xpath(String.format(productPriceOnQuickViewPopupThroughOrderTypeLoc,"Add to CRP")));
+		}
+		logger.info("Add To Cart clicked, order type is "+orderType);
+		return priceToAssert;
+	}
+
 
 	//	/***
 	//	 * This method click on add to cart button on all product page

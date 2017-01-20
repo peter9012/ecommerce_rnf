@@ -2,6 +2,7 @@ package com.rf.test.website.rehabitat.storeFront.homePage;
 
 import org.testng.annotations.Test;
 
+import com.rf.core.website.constants.TestConstants;
 import com.rf.test.website.rehabitat.storeFront.baseTest.StoreFrontWebsiteBaseTest;
 
 public class AccessLinkToCreateNewRFAccountTest extends StoreFrontWebsiteBaseTest{
@@ -24,8 +25,10 @@ public class AccessLinkToCreateNewRFAccountTest extends StoreFrontWebsiteBaseTes
 	 * Description : This test validates sign up now link from .com site
 	 *     
 	 */
-	@Test(enabled=false) //TODO Incomplete
+	@Test(enabled=false)
 	public void testAccessALinkToCreateANewRFAccountFromComSite_16(){
+		String pwsSite = TestConstants.CONSULTANT_PWS;
+		sfHomePage.navigateToUrl(pwsSite);
 		sfHomePage.clickLoginIcon();
 		sfHomePage.clickSignUpNowLink();
 		s_assert.assertTrue(sfHomePage.isLoginOrRegisterPageDisplayed()&& sfHomePage.getCurrentURL().contains("/login"), "'Login Or Register' page has not displayed");
@@ -39,9 +42,6 @@ public class AccessLinkToCreateNewRFAccountTest extends StoreFrontWebsiteBaseTes
 	 */
 	@Test(enabled=false) //TODO Incomplete
 	public void testAccessALinkToCreateANewRFAccountFromBizSite_17(){
-		sfHomePage.clickLoginIcon();
-		sfHomePage.clickSignUpNowLink();
-		s_assert.assertTrue(sfHomePage.isLoginOrRegisterPageDisplayed()&& sfHomePage.getCurrentURL().contains("/login"), "'Login Or Register' page has not displayed");
-		s_assert.assertAll();
+		//Duplicate as	TC-16 Access a link to create a new R+F account from .com site
 	}
 }

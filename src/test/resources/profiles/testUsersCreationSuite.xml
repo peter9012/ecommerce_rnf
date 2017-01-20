@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<suite name="testUsersCreationSuite">
+	<tests>
+		<test name="testUsersCreationTest">
+			<classes>
+				<class
+					name="com.rf.test.website.rehabitat.storeFront.ConsultantEnrollmentTest">
+					<groups>
+						<run>
+							<include name="users"></include>
+						</run>
+					</groups>
+				</class>
+			</classes>
+		</test>
+	</tests>
+</suite>

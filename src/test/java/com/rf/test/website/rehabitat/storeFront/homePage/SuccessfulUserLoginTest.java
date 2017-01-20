@@ -99,4 +99,22 @@ public class SuccessfulUserLoginTest extends StoreFrontWebsiteBaseTest{
 		s_assert.assertTrue(sfHomePage.isPasswordRecoveryEmailMsgDisplayed(TestConstants.PASSWORD_RECOVERY_SUBMIT_EMAIL_NOT_REGISTERED_MESSAGE), "Warning msg for un-registered msg has NOT displayed after clicking submit btn for password recovery");
 		s_assert.assertAll();
 	}
+
+	/***
+	 * qTest : TC-28 Verify user login from PWS site.
+	 * 
+	 * Description : This test validates that the successful user login from PWS
+	 * after clicking the login icon on home page
+	 * 
+	 * 				
+	 */
+	@Test(enabled=false)
+	public void testUserloginFromPWS_28(){
+		String pwsSite = TestConstants.CONSULTANT_PWS;
+		sfHomePage.navigateToUrl(pwsSite);
+		sfHomePage.loginToStoreFront(TestConstants.CONSULTANT_USERNAME_WITH_CRP_AND_PULSE, password);
+		s_assert.assertTrue(sfHomePage.isWelcomeUserElementDisplayed(),"user is NOT successfully logged in");
+		s_assert.assertTrue(sfHomePage.getCurrentURL().contains(TestConstants.CONSULTANT_PREFIX),"User is not on PWS site after login");
+		s_assert.assertAll();
+	}
 }

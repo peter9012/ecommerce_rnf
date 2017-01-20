@@ -383,7 +383,7 @@ public class AddAndDeleteShippingTest extends StoreFrontWebsiteBaseTest{
 	 * 
 	 *     
 	 */
-	@Test(enabled=false)
+	@Test(enabled=true)
 	public void testAddAShippingAddressOnUpdateAutoshipCart_506(){
 		String currentURL = null;
 		String randomWord = CommonUtils.getRandomWord(5);

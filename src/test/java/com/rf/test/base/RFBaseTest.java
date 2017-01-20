@@ -33,8 +33,11 @@ public class RFBaseTest{
 	public static WebDriver driver;
 	// Added for local testing and will be removed later
 	public String defaultProps = "defaultenv.properties";
+	public String userProps = "user.properties";
 
 	protected PropertyFile propertyFile = new PropertyFile();
+	protected PropertyFile userPropertyFile = new PropertyFile();
+	
 	private static final Logger logger = LogManager
 			.getLogger(RFBaseTest.class.getName());
 	protected SoftAssert s_assert;

@@ -6,6 +6,7 @@ import org.openqa.selenium.By;
 import org.openqa.selenium.NoSuchElementException;
 
 import com.rf.core.driver.website.RFWebsiteDriver;
+import com.rf.core.website.constants.TestConstants;
 import com.rf.pages.website.rehabitat.storeFront.basePage.StoreFrontWebsiteBasePage;
 
 public class StoreFrontProductDetailPage extends StoreFrontWebsiteBasePage{
@@ -38,6 +39,7 @@ public class StoreFrontProductDetailPage extends StoreFrontWebsiteBasePage{
 	private final By CLOSE_ZOOM_LOC=By.xpath("//a[@class='closeZoom']");
 	private final By RECENTLY_VIEWED_PRODUCT_NAME_LOC=By.xpath("//div[@class='autoship-recentlyViewed']//div[@class='owl-item active'][1]//h3//a");
 
+	private String productPriceOnProductDetailsPageThroughOrderTypeLoc = "//span[contains(text(),'%s')]/following-sibling::span[contains(@class,'productPrice')]";
 	private String productUnderRecentlyViewTabLoc = "//div[@id='pdp_page']//div[@class='content']//following::div[@class='owl-item active']//a[contains(text(),'%s')]";
 	private String tabOnProductDetailPageLoc = "//div[@id='pdp_page']//following::li/a[contains(text(),'%s')]";
 
@@ -352,6 +354,36 @@ public class StoreFrontProductDetailPage extends StoreFrontWebsiteBasePage{
 		logger.info("clicked on recently viewed product name");
 		return productName;
 	}
+
+	/***
+	 * This method Add  the product to cart from product detail page after clicking
+	 * add to cart button after login
+	 * 
+	 * @param order type
+	 * @return Price
+	 * 
+	 */
+	public String addProductToCartFromProductDetailPageAfterLogin(String orderType){
+		String priceToAssert = null;
+		driver.pauseExecutionFor(3000);
+		driver.moveToElementByJS(ADD_TO_CART_BUTTON_AT_PRODUCT_DETAIL_PAGE_LOGIN_LOC);
+		driver.clickByAction(ADD_TO_CART_BUTTON_AT_PRODUCT_DETAIL_PAGE_LOGIN_LOC);
+		if(orderType.equals(TestConstants.ORDER_TYPE_ADHOC)&& driver.isElementVisible(By.xpath(String.format(productPriceOnProductDetailsPageThroughOrderTypeLoc,TestConstants.ORDER_TYPE_ADHOC)))){
+			priceToAssert = driver.getText(By.xpath(String.format(productPriceOnProductDetailsPageThroughOrderTypeLoc,TestConstants.ORDER_TYPE_ADHOC))).replace("$","");
+			driver.clickByAction(By.xpath(String.format(productPriceOnProductDetailsPageThroughOrderTypeLoc,TestConstants.ORDER_TYPE_ADHOC)));
+		}
+		else if(orderType.equals(TestConstants.ORDER_TYPE_PC_PERKS)&& driver.isElementVisible(By.xpath(String.format(productPriceOnProductDetailsPageThroughOrderTypeLoc,TestConstants.ORDER_TYPE_PC_PERKS)))){
+			priceToAssert = driver.getText(By.xpath(String.format(productPriceOnProductDetailsPageThroughOrderTypeLoc,"subscribe + save"))).replace("$","");
+			driver.clickByAction(By.xpath(String.format(productPriceOnProductDetailsPageThroughOrderTypeLoc,"subscribe + save")));
+		}
+		else if(orderType.equals(TestConstants.ORDER_TYPE_CRP)&& driver.isElementVisible(By.xpath(String.format(productPriceOnProductDetailsPageThroughOrderTypeLoc,TestConstants.ORDER_TYPE_CRP)))){
+			priceToAssert = driver.getText(By.xpath(String.format(productPriceOnProductDetailsPageThroughOrderTypeLoc,"Add to CRP"))).replace("$","");
+			driver.clickByAction(By.xpath(String.format(productPriceOnProductDetailsPageThroughOrderTypeLoc,"Add to CRP")));
+		}
+		logger.info("Add To Cart clicked, order type is "+orderType);
+		return priceToAssert;
+	}
+
 
 
 }

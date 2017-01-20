@@ -7,8 +7,8 @@ import com.rf.test.website.rehabitat.storeFront.baseTest.StoreFrontWebsiteBaseTe
 
 public class AddProductsViaPLPPDPAndQuickViewOptionTest extends StoreFrontWebsiteBaseTest{
 
-	
-	
+
+
 	/***
 	 * qTest : TC-113 Add product to cart from PLP
 	 * Description : This test validates the product added to cart from 
@@ -35,7 +35,7 @@ public class AddProductsViaPLPPDPAndQuickViewOptionTest extends StoreFrontWebsit
 		s_assert.assertAll();
 	}
 
-	
+
 	/***
 	 * qTest : TC-114 Add Product to cart from PDP
 	 * Description : This test validates the product added to cart from 
@@ -66,36 +66,73 @@ public class AddProductsViaPLPPDPAndQuickViewOptionTest extends StoreFrontWebsit
 		s_assert.assertTrue(sfCartPage.isProductAddedToCartPresentOnCartPage(productNameOnCheckoutPopup),"Product added to cart : "+productName+" is not present on the cart page");
 		s_assert.assertAll();
 	}
-	
+
 	/***
-	  * qTest : TC-117 Add product to PC Perks Autoship Cart from Quick View
-	  * Description : This test validates the flow of adding product to PC Perks autoship for PC User
-	  *     
-	  */
-	 @Test(enabled=true)
-	 public void testAddProductToPCPerksAutoshipCartFromQuickView_117(){
-	  String selectedProductName = null;
-	  String textToAssertInURL = "autoship/cart";
-	  String currentURL = null;
-	  //Login to application.
-	  sfHomePage.loginToStoreFront(TestConstants.PC_USERNAME, password);
-	  sfShopSkinCarePage = sfHomePage.clickAllProducts();
-	  selectedProductName = sfShopSkinCarePage.getFirstProductNameFromAllProductPage();
-	  sfShopSkinCarePage.clickOnQuickViewLinkForProduct("1");
-	  s_assert.assertTrue(sfShopSkinCarePage.isProductNamePresentAtQuickViewPopupAsExpected(selectedProductName),
-	    "Product name is not present as expected on quick view poup");
-	  sfShopSkinCarePage.clickPCPerksButtonFromQuickViewPopup();
-	  s_assert.assertTrue(sfShopSkinCarePage.isAddedToYourShoppingCartHeadlinePresentOnCheckoutPopup(),
-	    "Added to your shipping cart Headline is not present on Checkout popup");
-	  sfAutoshipCartPage = sfShopSkinCarePage.checkoutTheCartFromPopUpForPCPerks();
-	  currentURL = sfAutoshipCartPage.getCurrentURL().toLowerCase();
-	  s_assert.assertTrue(currentURL.contains(textToAssertInURL),
-	    "Expected URL should contain "+textToAssertInURL+" but actual on UI is "+currentURL);
-	  s_assert.assertTrue(sfAutoshipCartPage.isPCPerksCartHeaderPresentOnCartPage(),
-	    "PC Perks Cart Header is not present on Cart Page as expected");
-	  s_assert.assertTrue((sfAutoshipCartPage.isProductAddedToCartPresentOnCartPage(selectedProductName)),
-	    "Product added to PC Perks is not present on Cart page");
-	  s_assert.assertAll();
-	 } 
-	
+	 * qTest : TC-117 Add product to PC Perks Autoship Cart from Quick View
+	 * Description : This test validates the flow of adding product to PC Perks autoship for PC User
+	 *     
+	 */
+	@Test(enabled=true)
+	public void testAddProductToPCPerksAutoshipCartFromQuickView_117(){
+		String selectedProductName = null;
+		String textToAssertInURL = "autoship/cart";
+		String currentURL = null;
+		//Login to application.
+		sfHomePage.loginToStoreFront(TestConstants.PC_USERNAME, password);
+		sfShopSkinCarePage = sfHomePage.clickAllProducts();
+		selectedProductName = sfShopSkinCarePage.getFirstProductNameFromAllProductPage();
+		sfShopSkinCarePage.clickOnQuickViewLinkForProduct("1");
+		s_assert.assertTrue(sfShopSkinCarePage.isProductNamePresentAtQuickViewPopupAsExpected(selectedProductName),
+				"Product name is not present as expected on quick view poup");
+		sfShopSkinCarePage.clickPCPerksButtonFromQuickViewPopup();
+		s_assert.assertTrue(sfShopSkinCarePage.isAddedToYourShoppingCartHeadlinePresentOnCheckoutPopup(),
+				"Added to your shipping cart Headline is not present on Checkout popup");
+		sfAutoshipCartPage = sfShopSkinCarePage.checkoutTheCartFromPopUpForPCPerks();
+		currentURL = sfAutoshipCartPage.getCurrentURL().toLowerCase();
+		s_assert.assertTrue(currentURL.contains(textToAssertInURL),
+				"Expected URL should contain "+textToAssertInURL+" but actual on UI is "+currentURL);
+		s_assert.assertTrue(sfAutoshipCartPage.isPCPerksCartHeaderPresentOnCartPage(),
+				"PC Perks Cart Header is not present on Cart Page as expected");
+		s_assert.assertTrue((sfAutoshipCartPage.isProductAddedToCartPresentOnCartPage(selectedProductName)),
+				"Product added to PC Perks is not present on Cart page");
+		s_assert.assertAll();
+	} 
+
+	/***
+	 * qTest : TC-116 Add product to CRP Autoship Cart from PLP
+	 * Description : This test validates the product added to cart from 
+	 * PLP page and verify at autoship cart
+	 */
+	@Test(enabled=false)
+	public void testAddProductToCRPAutoshipCartFromPLP_116(){
+		String productName = null;
+		String productQuantity = null;
+		String updatedQuantity = null;
+		String updatedQuantityFromUI = null;
+		boolean isProductPresent = false;
+		sfHomePage.navigateToUrl(TestConstants.PWS);
+		sfHomePage.loginToStoreFront(TestConstants.CONSULTANT_WITH_CRP_USERNAME, password);
+		sfShopSkinCarePage = sfHomePage.clickAllProducts();
+		sfShopSkinCarePage.refineProductByCategory(TestConstants.CONSULTANT_CRP_AUTOSHIP_PRODUCT_CATEGORY);
+		productName = sfShopSkinCarePage.getFirstProductNameFromAllProductPage();
+		sfAutoshipCartPage = sfShopSkinCarePage.clickAutoshipLink();
+		if(sfAutoshipCartPage.isProductAddedToCartPresentOnCartPage(productName)){
+			productQuantity = sfAutoshipCartPage.getQuantityOfSpecificProductFromAutoshipCart(productName).trim(); 
+			isProductPresent = true;
+		}
+		sfAutoshipCartPage.clickRodanAndFieldsLogo();
+		sfAutoshipCartPage.clickAllProducts();
+		sfShopSkinCarePage.refineProductByCategory(TestConstants.CONSULTANT_CRP_AUTOSHIP_PRODUCT_CATEGORY);
+		sfShopSkinCarePage.addProductToCart("1", TestConstants.ORDER_TYPE_CRP);
+		s_assert.assertTrue(sfShopSkinCarePage.isCheckoutPopupDisplayed(),"Expected checkout popup is not displayed while adding product from PLP");
+		sfShopSkinCarePage.checkoutTheCartFromPopUp();
+		if(isProductPresent){
+			updatedQuantity = sfAutoshipCartPage.updateQuantityByOne(productQuantity).trim();
+			updatedQuantityFromUI = sfAutoshipCartPage.getQuantityOfSpecificProductFromAutoshipCart(productName).trim();
+			s_assert.assertTrue(updatedQuantityFromUI.equals(updatedQuantity), "Added item from PLP is not present into cart");
+		}else{
+			s_assert.assertTrue(sfAutoshipCartPage.isProductAddedToCartPresentOnCartPage(productName), "Added item from PLP is not present into cart");
+		}
+		s_assert.assertAll();
+	}
 }

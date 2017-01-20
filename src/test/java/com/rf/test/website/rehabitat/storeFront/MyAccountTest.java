@@ -1371,4 +1371,22 @@ public class MyAccountTest extends StoreFrontWebsiteBaseTest{
 		s_assert.assertTrue(sfCheckoutPage.isOrderPlacedSuccessfully(),"Order is Not placed successfully");
 		s_assert.assertAll();
 	}
+	
+	/***
+	 * qTest : TC-287 Account Information- Consultant information
+	 * 
+	 * Description : This test validates sponser name on account info page.
+	 *
+	 * 
+	 * 				
+	 */
+	@Test(enabled=false)
+	public void testVerifySponserNameOnAccountInfoPage_287(){
+		//Login as consultant user.
+		sfHomePage.loginToStoreFront(TestConstants.PC_EMAIL,password);
+		sfHomePage.clickWelcomeDropdown();
+		sfAccountInfoPage = sfHomePage.navigateToAccountInfoPage();
+		s_assert.assertTrue(sfAccountInfoPage.isSponserNameWithTitleRFIndependentConsultantPresent(),"Sponser name along title 'R+F' independent consultant not present.");
+		s_assert.assertAll();
+	}
 }

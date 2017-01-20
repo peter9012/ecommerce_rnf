@@ -38,6 +38,7 @@ public class PropertyFile {
 	public void storeProperty(FileOutputStream out) {
 		try {
 			props.store(out, null);
+			System.out.println("store");
 		} catch (IOException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
@@ -45,9 +46,7 @@ public class PropertyFile {
 	}
 	
 	public void setAndWriteProperty(String key, String value,String fileName) {
-		System.out.println("key="+key);
-		System.out.println("value="+value);
-		System.out.println("file="+fileName);
+		System.out.println("set And Write");
 		 try {
 				outputStream = new FileOutputStream(path+fileName);
 			} catch (FileNotFoundException e) {

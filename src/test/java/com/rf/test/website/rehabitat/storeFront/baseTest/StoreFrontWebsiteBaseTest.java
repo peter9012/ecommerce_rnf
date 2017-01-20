@@ -41,13 +41,14 @@ import com.rf.test.base.RFBaseTest;
  *
  */
 public class StoreFrontWebsiteBaseTest extends RFBaseTest {
-
+	
 	/***
 	 * @author Shubham Mathur
 	 * @description StoreFrontWebsiteBaseTest constructor having StoreFront HomePage initialization
 	 */
 	public StoreFrontWebsiteBaseTest() {
 		sfHomePage = new StoreFrontHomePage(driver);
+		userPropertyFile.loadProps(userProps);
 	}
 
 	/***
@@ -72,6 +73,12 @@ public class StoreFrontWebsiteBaseTest extends RFBaseTest {
 	protected String countryId=null;
 	protected String country=null;
 	protected boolean runBaseURLOrLogoutExecutionCode = true;
+	protected String conultantWithPulseAndWithCRP = null;
+	protected String conultantWithoutPulseAndWithoutCRP = null;
+//	protected String conultantWithPulseAndWithoutCRP = null;
+//	protected String conultantWithCRPAndWithoutPulse = null;
+	protected String PWS1 = null;
+	protected String PWS2 = null;
 
 	protected RFWebsiteDriver driver = new RFWebsiteDriver(propertyFile);
 
@@ -105,11 +112,19 @@ public class StoreFrontWebsiteBaseTest extends RFBaseTest {
 			sfHomePage.logout();
 		}
 	}
+
+	@AfterGroups("users")
+	public void afterGroup(){
+		System.out.println("After Group");
+		setUsers("conultantWithPulseAndWithCRP", conultantWithPulseAndWithCRP);
+		setUsers("conultantWithoutPulseAndWithoutCRP", conultantWithoutPulseAndWithoutCRP);
+//		setUsers("conultantWithCRPAndWithoutPulse", conultantWithCRPAndWithoutPulse);
+		setUsers("PWS1", PWS1);
+		setUsers("PWS2", PWS2);
+	}
 	
 	public void setUsers(String key,String value){
-		PropertyFile pf = new PropertyFile();  
-		pf.loadProps("user.properties");
-		pf.setAndWriteProperty(key, value,"user.properties");
+		userPropertyFile.setAndWriteProperty(key, value,userProps);
 	}
 
 	public void checkAndCloseMoreThanOneWindows(){
@@ -143,6 +158,7 @@ public class StoreFrontWebsiteBaseTest extends RFBaseTest {
 
 	public void navigateToStoreFrontBaseURL(){
 		driver.get(driver.getURL()+"/"+country.toUpperCase());
+		System.out.println("Navigated to base URL");
 	}
 
 	public void closeCurrentWindow(){

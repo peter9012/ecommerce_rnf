@@ -359,7 +359,7 @@ public class ProductsAndCartDetailsTest extends StoreFrontWebsiteBaseTest{
 	 * Description : This test validates PC Perks Terms and Conditions Link for PC User
 	 * 
 	 */
-	@Test(enabled=false)
+	@Test(enabled=true)
 	public void testCartPagePCPerksTermsAndConditionsPCUser_222(){
 		String currentWindowID = null; 
 		String currentURL = null;
@@ -382,7 +382,7 @@ public class ProductsAndCartDetailsTest extends StoreFrontWebsiteBaseTest{
 	 * Description : This test validates PC Perks Terms and Conditions Link for PC User
 	 * 
 	 */
-	@Test(enabled=false)
+	@Test(enabled=true)
 	public void testCartPagePCPerksTermsAndConditionsPCUser_221(){
 		String currentWindowID = null; 
 		String currentURL = null;
@@ -995,7 +995,7 @@ public class ProductsAndCartDetailsTest extends StoreFrontWebsiteBaseTest{
 	 * and also sorting for different category based on price filter.
 	 * 				
 	 */ 
-	@Test
+	@Test(enabled=true)
 	public void testSortProductBaseOnPriceFilter_61(){
 		String allProduct = "ALL PRODUCTS";
 		sfShopSkinCarePage = sfHomePage.navigateToShopSkincareLink(allProduct);

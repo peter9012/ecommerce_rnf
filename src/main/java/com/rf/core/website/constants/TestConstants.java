@@ -155,6 +155,8 @@ public class TestConstants {
 	public static final String SECOND_ADDRESS_LINE_2_US = "Apt 211";
 	public static final String SECOND_CITY_US = "Concord";
 	public static final String SECOND_POSTAL_CODE_US = "94519";
+	public static final String CONSULTANT_CRP_AUTOSHIP_PRODUCT_CATEGORY = "CRP Autoship";
+	public static final String PC_PERKS_AUTOSHIP_PRODUCT_CATEGORY = "PC Perk Autoship";
 
 	//Users
 	public static final String CONSULTANT_USERNAME = "AutoCons20170116103858@mailinator.com";

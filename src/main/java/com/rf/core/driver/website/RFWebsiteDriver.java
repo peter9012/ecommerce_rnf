@@ -57,7 +57,7 @@ public class RFWebsiteDriver implements RFDriver,WebDriver {
 	private static int DEFAULT_TIMEOUT_CSCOCKPIT = 70;
 	String browser = null;
 	String dbIP = null;
-	String baseURL  =null;
+	String baseUrl  =null;
 	String country = null;
 	String environment = null;
 	String storeFrontUserPassword = null;
@@ -144,11 +144,11 @@ public class RFWebsiteDriver implements RFDriver,WebDriver {
 	}
 
 	public String getURL() {
-		baseURL=System.getProperty("baseUrl");
-		if(StringUtils.isEmpty(baseURL)){
-			baseURL = propertyFile.getProperty("baseURL");
+		baseUrl=System.getProperty("baseUrl");
+		if(StringUtils.isEmpty(baseUrl)){
+			baseUrl = propertyFile.getProperty("baseUrl");
 		}
-		return baseURL;
+		return baseUrl;
 	}
 
 	public String getBrowser(){
@@ -171,7 +171,7 @@ public class RFWebsiteDriver implements RFDriver,WebDriver {
 	public String getEnvironment(){
 		environment=System.getProperty("env");
 		if(StringUtils.isEmpty(environment)){
-			environment = propertyFile.getProperty("environment");
+			environment = propertyFile.getProperty("environment");			
 		}
 		return environment;
 	}

@@ -13,7 +13,7 @@ public class RedirectionAfterLoginTest extends StoreFrontWebsiteBaseTest{
 	 * Description : This test validate the URL while login with a consultant having PWS
 	 *     
 	 */
-	@Test(enabled=false)
+	@Test(enabled=true)
 	public void testAsAConsultantAfterLoggingInFromCorpSponsorWithPWS_374(){
 		String currentURL = null;
 		sfHomePage.loginToStoreFront(TestConstants.CONSULTANT_USERNAME_WITH_CRP_AND_PULSE, password);
@@ -27,7 +27,7 @@ public class RedirectionAfterLoginTest extends StoreFrontWebsiteBaseTest{
 	 * Description : This test validate the URL while login with a consultant who's sponsor not having pws
 	 *     
 	 */
-	@Test(enabled=false)
+	@Test(enabled=true)
 	public void testAsAConsultantAfterLoggingInFromCorpSponsorWithoutPWS_376(){
 		String currentURL = null;
 		sfHomePage.loginToStoreFront(TestConstants.CONSULTANT_USERNAME_SPONSOR_WITHOUT_PWS, password, true);
@@ -42,7 +42,7 @@ public class RedirectionAfterLoginTest extends StoreFrontWebsiteBaseTest{
 	 * Description : This test validate the URL while login with a consultant who's having PWS
 	 *     
 	 */
-	@Test(enabled=false)
+	@Test(enabled=true)
 	public void testConsultantWithPWSLoggingInFromCorpSite_530(){
 		String currentURL = null;
 		String prefix = TestConstants.CONSULTANT_PREFIX;
@@ -58,7 +58,7 @@ public class RedirectionAfterLoginTest extends StoreFrontWebsiteBaseTest{
 	 * Description : This test validate PWS of PC's sponsor after login from different sponsor PWS
 	 *     
 	 */
-	@Test(enabled=false)
+	@Test(enabled=true)
 	public void testPCUserEnrollrdUnderSponsorWithPWSAndLogsInFromDifferentSponsorPWS_531(){
 		String currentURL = null;
 		String PWS = TestConstants.PWS;

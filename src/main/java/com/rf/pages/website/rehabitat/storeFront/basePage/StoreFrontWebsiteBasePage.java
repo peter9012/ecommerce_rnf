@@ -1582,6 +1582,16 @@ public class StoreFrontWebsiteBasePage extends RFBasePage {
 	public String getBaseUrl() {
 		return driver.getURL();
 	}
+	
+	/***
+	 * This method will return the country
+	 * 
+	 * @param
+	 * @return String
+	 */
+	public String getCountry() {
+		return driver.getCountry();
+	}
 
 	/***
 	 * This method enter the consultant Address details

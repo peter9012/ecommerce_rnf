@@ -30,13 +30,13 @@ import com.rf.core.website.constants.TestConstants;
 
 @Listeners({ com.rf.core.listeners.TestListner.class})
 public class RFBaseTest{
-	public static WebDriver driver;
+	//public static WebDriver driver;
 	// Added for local testing and will be removed later
 	public String defaultProps = "defaultenv.properties";
 	public String userProps = "user.properties";
 
-	protected PropertyFile propertyFile = new PropertyFile();
-	protected PropertyFile userPropertyFile = new PropertyFile();
+	protected static PropertyFile propertyFile = new PropertyFile();
+	protected static PropertyFile userPropertyFile = new PropertyFile();
 	
 	private static final Logger logger = LogManager
 			.getLogger(RFBaseTest.class.getName());
@@ -50,18 +50,19 @@ public class RFBaseTest{
 	@BeforeSuite(alwaysRun = true)
 	@Parameters({"envproperties"})
 	public void beforeSuite(@Optional String envproperties) {
-		System.out.println("Started execution with " + " " + envproperties);
 		logger.debug("Started execution with " + " " + envproperties);
 		if (!StringUtils.isEmpty(envproperties)) {
+			System.out.println("Started execution with " + " " + envproperties);
 			propertyFile.loadProps(envproperties);
 			logger.debug("Environment properties recieved and preparing the environment for "
 					+ envproperties); 
 		} else {
+			System.out.println("Started execution with " + " " + defaultProps);
 			propertyFile.loadProps(defaultProps);
 			logger.info("Environment properties are not provided by the user ... loading the default properties");
 			logger.info("Default Browser is  ------ "+propertyFile.getProperty("browser"));
 			logger.info("Default URL is  ------ "+propertyFile.getProperty("baseUrl"));
-			logger.info("Default user password is  ------ "+propertyFile.getProperty("password"));
+			logger.info("Default user password is  ------ "+propertyFile.getProperty("storeFrontPassword"));
 			logger.info("Default Country is  ------ "+propertyFile.getProperty("country"));
 			logger.info("Default DB IP is  ------ "+propertyFile.getProperty("dbIP"));
 			logger.info("Default DB Username is  ------ "+propertyFile.getProperty("dbUsername"));

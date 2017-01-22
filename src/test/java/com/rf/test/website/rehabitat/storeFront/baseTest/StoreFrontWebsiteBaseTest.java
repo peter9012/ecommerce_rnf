@@ -41,14 +41,13 @@ import com.rf.test.base.RFBaseTest;
  *
  */
 public class StoreFrontWebsiteBaseTest extends RFBaseTest {
-	
+	protected static RFWebsiteDriver driver = new RFWebsiteDriver(propertyFile);
 	/***
 	 * @author Shubham Mathur
 	 * @description StoreFrontWebsiteBaseTest constructor having StoreFront HomePage initialization
 	 */
 	public StoreFrontWebsiteBaseTest() {
-		sfHomePage = new StoreFrontHomePage(driver);
-		userPropertyFile.loadProps(userProps);
+		sfHomePage = new StoreFrontHomePage(driver);		
 	}
 
 	/***
@@ -75,12 +74,14 @@ public class StoreFrontWebsiteBaseTest extends RFBaseTest {
 	protected boolean runBaseURLOrLogoutExecutionCode = true;
 	protected String conultantWithPulseAndWithCRP = null;
 	protected String conultantWithoutPulseAndWithoutCRP = null;
-//	protected String conultantWithPulseAndWithoutCRP = null;
-//	protected String conultantWithCRPAndWithoutPulse = null;
-	protected String PWS1 = null;
-	protected String PWS2 = null;
+	protected String rcWithoutOrder = null;
+	protected String rcWithOrder = null;
+	protected String pcUserWithoutSponsor = null;
+	protected String pcUserWithPWSSponsor = null;
 
-	protected RFWebsiteDriver driver = new RFWebsiteDriver(propertyFile);
+	//	protected String conultantWithPulseAndWithoutCRP = null;
+	//	protected String conultantWithCRPAndWithoutPulse = null;
+	protected String pwsPrefix = null;
 
 	private static final Logger logger = LogManager
 			.getLogger(StoreFrontWebsiteBaseTest.class.getName());
@@ -113,18 +114,22 @@ public class StoreFrontWebsiteBaseTest extends RFBaseTest {
 		}
 	}
 
-	@AfterGroups("users")
+	@AfterGroups(alwaysRun=true,groups="users")
 	public void afterGroup(){
-		System.out.println("After Group");
+		logger.info("After Group");
+		userPropertyFile.loadProps(userProps);
 		setUsers("conultantWithPulseAndWithCRP", conultantWithPulseAndWithCRP);
+		setUsers("pwsPrefix", pwsPrefix);
 		setUsers("conultantWithoutPulseAndWithoutCRP", conultantWithoutPulseAndWithoutCRP);
-//		setUsers("conultantWithCRPAndWithoutPulse", conultantWithCRPAndWithoutPulse);
-		setUsers("PWS1", PWS1);
-		setUsers("PWS2", PWS2);
+		setUsers("pcUserWithPWSSponsor", pcUserWithPWSSponsor);
+		setUsers("pcUserWithoutSponsor", pcUserWithoutSponsor);
+		setUsers("rcWithOrder", rcWithOrder);
+		setUsers("rcWithoutOrder", rcWithoutOrder);
 	}
-	
+
 	public void setUsers(String key,String value){
-		userPropertyFile.setAndWriteProperty(key, value,userProps);
+		if(value!=null)
+			userPropertyFile.setAndWriteProperty(key, value,userProps);
 	}
 
 	public void checkAndCloseMoreThanOneWindows(){
@@ -158,7 +163,12 @@ public class StoreFrontWebsiteBaseTest extends RFBaseTest {
 
 	public void navigateToStoreFrontBaseURL(){
 		driver.get(driver.getURL()+"/"+country.toUpperCase());
-		System.out.println("Navigated to base URL");
+		logger.info("Navigated to base URL");
+	}
+	
+	public void navigateToStoreFrontBaseURLWithoutCountry(){
+		driver.get(driver.getURL());
+		logger.info("Navigated to base URL without country");
 	}
 
 	public void closeCurrentWindow(){

@@ -70,6 +70,7 @@ public class StoreFrontShopSkinCarePage extends StoreFrontWebsiteBasePage{
 	private String addToPCPerksButtonThroughProductNumber = "//div[@class='product-item'][%s]//span[contains(text(),'subscribe + save')]";
 	private String quickViewForSpecificProductLoc = "//div[@class='product__listing product__grid']//div[@class='product-item'][%s]/a[@class='thumb']";
 	private String productNameLinkOnAllProductPageLoc = "//div[@id='product_listing']/descendant::div[@class='details'][%s]//a";
+	private String productNameLoc = "//div[@class='product__listing product__grid']//a[contains(text(),'%s')]";
 	private String priceOfProductLoc = "//div[contains(@class,'product__listing')]//div[@class='product-item'][%s]//span[@id='cust_price']";
 	private String categoryNameLoc = "//div[@id='product-facet']//descendant::ul[2]/li/descendant::span[contains(text(),'%s')]/preceding::label[1]";
 	private String randomProductCategoryCheckbox = "//div[@id='product-facet']//descendant::ul[2]/li[%s]//descendant::label[2]";
@@ -271,6 +272,16 @@ public class StoreFrontShopSkinCarePage extends StoreFrontWebsiteBasePage{
 		String productName = driver.findElement(By.xpath(String.format(productNameLinkOnAllProductPageLoc, productNumber))).getText().split("\\.")[0].trim();
 		logger.info("Product name from all product page is "+productName);
 		return productName;
+	}
+	
+	/***
+	 * This method verifies if the specified product is displayed
+	 *  on the page or not
+	 * @param productName
+	 * @return
+	 */
+	public boolean isProductPresentOnPage(String productName){
+		return driver.isElementVisible(By.xpath(String.format(productNameLoc, productName)));
 	}
 
 	/***
@@ -587,6 +598,7 @@ public class StoreFrontShopSkinCarePage extends StoreFrontWebsiteBasePage{
 		logger.info("Retail values are "+driver.findElement(RETAIL_AND_SV_PRICE_LOC).getText());
 		return driver.findElement(RETAIL_AND_SV_PRICE_LOC).getText(); 
 	}
+	
 	/***
 	 * This method validates products displayed for selected category
 	 * 
@@ -1002,9 +1014,9 @@ public class StoreFrontShopSkinCarePage extends StoreFrontWebsiteBasePage{
 	 */
 	public StoreFrontProductDetailPage clickNameOfProductOnAllProductPage(String productNumber){
 		String productName = driver.findElement(By.xpath(String.format(productNameLinkOnAllProductPageLoc, productNumber))).getText();
-		driver.moveToElement(By.xpath(String.format(productNameLinkOnAllProductPageLoc, productNumber)));
+//		driver.moveToElement(By.xpath(String.format(productNameLinkOnAllProductPageLoc, productNumber)));
 		if(driver.isElementVisible(By.xpath(String.format(productNameLinkOnAllProductPageLoc, productNumber)))){
-			driver.clickByAction(By.xpath(String.format(productNameLinkOnAllProductPageLoc, productNumber)));
+			driver.click(By.xpath(String.format(productNameLinkOnAllProductPageLoc, productNumber)));
 		}
 		logger.info("product name "+productName+ "Clicked");
 		driver.waitForPageLoad();

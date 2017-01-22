@@ -222,7 +222,7 @@ public class ProductsAndCartDetailsTest extends StoreFrontWebsiteBaseTest{
 	 * Description : This test validates Quick view details of product and add a product to cart
 	 *     
 	 */
-	@Test(enabled=false) //TODO Incomplete as not asserted for product added to cart.
+	@Test(enabled=true) //TODO Incomplete as not asserted for product added to cart.
 	public void testQuickViewAddToCart_342(){
 		sfShopSkinCarePage=sfHomePage.clickAllProducts();
 		sfShopSkinCarePage.clickOnFirstProductQuickViewButtonAndReturnProductName();
@@ -838,7 +838,7 @@ public class ProductsAndCartDetailsTest extends StoreFrontWebsiteBaseTest{
 	 * Description : This test validates product details page with different scenarios
 	 *     
 	 */
-	@Test(enabled=false)//TODO incomplete search functionality not working
+	@Test(enabled=true)
 	public void testProductDetailPage_196(){
 		String productName = TestConstants.PRODUCT_NAME;
 		sfShopSkinCarePage=sfHomePage.clickAllProducts();
@@ -858,6 +858,7 @@ public class ProductsAndCartDetailsTest extends StoreFrontWebsiteBaseTest{
 		s_assert.assertTrue(productNameAtPDP.contains(productNameFromAllProdutcs)," Expected product name at all products page is:"+productNameFromAllProdutcs+" But actual product name at PDP is:"+productNameAtPDP);
 		sfProductDetailPage.clickSearchIcon();
 		sfProductDetailPage.searchProduct(productName);
+		s_assert.assertTrue(sfShopSkinCarePage.isProductPresentOnPage(productName),"searched product is not displayed on the page");
 		s_assert.assertAll();
 	}
 
@@ -1018,7 +1019,7 @@ public class ProductsAndCartDetailsTest extends StoreFrontWebsiteBaseTest{
 	 * Description: This test verifies the PC Perks promo msg
 	 * for anonymous user and also the Learn More link
 	 */
-	@Test(enabled=false)
+	@Test(enabled=true)
 	public void testPCPerksPromoMsgAnonymousUser_154(){
 		sfShopSkinCarePage = sfHomePage.clickAllProducts();
 		sfShopSkinCarePage.clickOnQuickViewLinkForProduct("1");
@@ -1041,7 +1042,7 @@ public class ProductsAndCartDetailsTest extends StoreFrontWebsiteBaseTest{
 	 * Description: This test verifies the PC Perks promo msg
 	 * for RC user and also the Learn More link
 	 */
-	@Test(enabled=false)
+	@Test(enabled=true)
 	public void testPCPerksPromoMsgRCUser_155(){
 		sfHomePage.loginToStoreFront(TestConstants.RC_USERNAME, password);
 		sfShopSkinCarePage = sfHomePage.clickAllProducts();

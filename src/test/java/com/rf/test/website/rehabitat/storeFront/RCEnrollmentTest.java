@@ -82,4 +82,45 @@ public class RCEnrollmentTest extends StoreFrontWebsiteBaseTest{
 		s_assert.assertTrue(currentURL.contains(PWSSite), "Expected URL should contain"+PWSSite+"but actual on UI is"+currentURL);*/
 		s_assert.assertAll();
 	}	
+	
+	@Test(enabled=true, groups="users")
+	public void testRCEnrollmentWithoutOrder(){
+		navigateToStoreFrontBaseURL();
+		sfCartPage = new StoreFrontCartPage(driver);
+		sfShopSkinCarePage = new StoreFrontShopSkinCarePage(driver);
+		sfHomePage.clickLoginIcon();
+		sfCheckoutPage=sfHomePage.clickSignUpNowLink();
+		sfCheckoutPage.fillNewUserDetails(TestConstants.USER_TYPE_RC, firstName, lastName, email, password);
+		sfCheckoutPage.clickCreateAccountButton();
+		s_assert.assertTrue(sfHomePage.isWelcomeUserElementDisplayed(), "RC has not been enrolled successfully");
+		s_assert.assertAll();
+		rcWithoutOrder=email;
+	}
+	
+	@Test(enabled=true, groups="users")
+	public void testRCEnrollmentWithOrder(){
+		navigateToStoreFrontBaseURL();
+		sfCartPage = new StoreFrontCartPage(driver);
+		sfShopSkinCarePage = new StoreFrontShopSkinCarePage(driver);
+		sfHomePage.clickLoginIcon();
+		sfCheckoutPage=sfHomePage.clickSignUpNowLink();
+		sfCheckoutPage.fillNewUserDetails(TestConstants.USER_TYPE_RC, firstName, lastName, email, password);
+		sfCheckoutPage.clickCreateAccountButton();
+		s_assert.assertTrue(sfHomePage.isWelcomeUserElementDisplayed(), "RC has not been enrolled successfully");
+		sfShopSkinCarePage = sfHomePage.clickAllProducts();
+		sfShopSkinCarePage.addProductToCart(TestConstants.PRODUCT_NUMBER, TestConstants.ORDER_TYPE_ADHOC);;
+		sfCartPage = sfShopSkinCarePage.checkoutTheCartFromPopUp();
+		sfCheckoutPage = sfCartPage.checkoutTheCart();
+		sfCheckoutPage.clickContinueWithoutConsultantLink();
+		sfCheckoutPage.clickSaveButton();
+		sfCheckoutPage.clickShippingDetailsNextbutton();
+		sfCheckoutPage.clickAddNewBillingProfileButton();
+		sfCheckoutPage.enterUserBillingDetails(cardType, cardNumber, cardName, CVV);
+		sfCheckoutPage.clickBillingDetailsNextbutton();
+		sfCheckoutPage.selectTermsAndConditionsChkBox();
+		sfCheckoutPage.clickPlaceOrderButton();
+		s_assert.assertTrue(sfCheckoutPage.isOrderPlacedSuccessfully(), "Adhoc order is not placed successfully by PC");
+		s_assert.assertAll();
+		rcWithoutOrder=email;		
+	}
 }

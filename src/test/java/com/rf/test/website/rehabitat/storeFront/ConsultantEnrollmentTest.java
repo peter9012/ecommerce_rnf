@@ -268,7 +268,7 @@ public class ConsultantEnrollmentTest extends StoreFrontWebsiteBaseTest{
 	 * State and valid billing address selected.
 	 *     
 	 */
-	@Test(enabled=false)
+	@Test(enabled=true)
 	public void testNortDakotaConsultantEnrollmentValidBillingAddress_485(){
 		timeStamp = CommonUtils.getCurrentTimeStamp();
 		randomWords = CommonUtils.getRandomWord(5);		
@@ -590,7 +590,7 @@ public class ConsultantEnrollmentTest extends StoreFrontWebsiteBaseTest{
 	 * State and empty billing address selected.
 	 *     
 	 */
-	@Test
+	@Test(enabled=true)
 	public void testNortDakotaConsultantEnrollmentEmptyBillingAddress_486(){
 		timeStamp = CommonUtils.getCurrentTimeStamp();
 		randomWords = CommonUtils.getRandomWord(5);		
@@ -634,197 +634,190 @@ public class ConsultantEnrollmentTest extends StoreFrontWebsiteBaseTest{
 
 	@Test(enabled=true, groups={"users"})
 	public void testConsultantEnrollmentWithPulseAndCRP(){
-//		navigateToStoreFrontBaseURL();
-//		timeStamp = CommonUtils.getCurrentTimeStamp();
-//		randomWords = CommonUtils.getRandomWord(5);		
-//		lastName = TestConstants.LAST_NAME+randomWords;
-//		email = firstName+"WPWCRP"+timeStamp+TestConstants.EMAIL_SUFFIX;
-//		int randomNum = CommonUtils.getRandomNum(10000, 1000000);
-//		String socialInsuranceNumber = String.valueOf(CommonUtils.getRandomNum(100000000, 999999999));
-//		String prefix = firstName+randomNum;
-//		sfHomePage.clickEnrollNow();
-//		sfHomePage.searchSponsor(TestConstants.SPONSOR);
-//		sfHomePage.selectFirstSponsorFromList();
-//		sfHomePage.enterConsultantEnrollmentDetails(firstName, lastName, email, password, socialInsuranceNumber);
-//		sfHomePage.clickNextButton();
-//		sfHomePage.chooseProductFromKitPage();
-//		sfHomePage.selectSubscribeToPulseCheckBox();
-//		sfHomePage.enterPrefix(prefix);
-//		sfHomePage.clickNextButton();
-//		sfHomePage.clickSaveButton();
-//		sfHomePage.enterConsultantShippingDetails(firstName, lastName, addressLine1, addressLine2 ,city, state, postalCode, phoneNumber);
-//		sfHomePage.clickUseAsEnteredButtonOnPopUp();
-//		sfHomePage.clickShippingDetailsNextbutton();
-//		sfHomePage.enterUserBillingDetails(cardType, cardNumber, cardName, CVV);
-//		sfHomePage.clickBillingDetailsNextbutton();
-//		sfHomePage.selectPoliciesAndProceduresChkBox();
-//		sfHomePage.selectIAcknowledgeChkBox();
-//		sfHomePage.selectTermsAndConditionsChkBox();
-//		sfHomePage.selectConsentFormChkBox();
-//		sfHomePage.clickBecomeAConsultant();
-//		s_assert.assertTrue(sfHomePage.isEnrollemntSuccessfulMsgDisplayed(), "Expected 'ENROLLMENT SUCCESSFUL' msg has NOT displayed"); 
-//		sfHomePage.addFirstProductForCRPCheckout();
-//		sfCheckoutPage = sfHomePage.checkoutCRPBag();
-//		sfCheckoutPage.clickSaveButton();
-//		sfCheckoutPage.clickShippingDetailsNextbutton();
-//		sfCheckoutPage.clickBillingDetailsNextbutton();
-//		sfCheckoutPage.selectTermsAndConditionsCheckBoxForConsulatntCRP();
-//		sfCheckoutPage.selectCheckboxForPoliciesAndProcedures();
-//		sfCheckoutPage.clickConfirmAutoshipOrderButton();
-//		s_assert.assertTrue(sfCheckoutPage.isCRPOrderConfirmedSuccessMsgAppeared(),"CRP Order confirmed success messge is not appeared");
-//		sfCheckoutPage.clickRodanAndFieldsLogo();
-		conultantWithPulseAndWithCRP="testUser1@zbc.com";
-		PWS1=driver.getCurrentUrl();
-		setUsers("conultantWithPulseAndWithCRP", conultantWithPulseAndWithCRP);
-		setUsers("PWS1", PWS1);
-//		s_assert.assertAll();		
-//			
+		navigateToStoreFrontBaseURL();
+		timeStamp = CommonUtils.getCurrentTimeStamp();
+		randomWords = CommonUtils.getRandomWord(5);		
+		lastName = TestConstants.LAST_NAME+randomWords;
+		email = firstName+"WPWCRP"+timeStamp+TestConstants.EMAIL_SUFFIX;
+		int randomNum = CommonUtils.getRandomNum(10000, 1000000);
+		String socialInsuranceNumber = String.valueOf(CommonUtils.getRandomNum(100000000, 999999999));
+		String prefix = firstName+randomNum;
+		sfHomePage.clickEnrollNow();
+		sfHomePage.searchSponsor(TestConstants.SPONSOR);
+		sfHomePage.selectFirstSponsorFromList();
+		sfHomePage.enterConsultantEnrollmentDetails(firstName, lastName, email, password, socialInsuranceNumber);
+		sfHomePage.clickNextButton();
+		sfHomePage.chooseProductFromKitPage();
+		sfHomePage.selectSubscribeToPulseCheckBox();
+		sfHomePage.enterPrefix(prefix);
+		sfHomePage.clickNextButton();
+		sfHomePage.clickSaveButton();
+		sfHomePage.enterConsultantShippingDetails(firstName, lastName, addressLine1, addressLine2 ,city, state, postalCode, phoneNumber);
+		sfHomePage.clickUseAsEnteredButtonOnPopUp();
+		sfHomePage.clickShippingDetailsNextbutton();
+		sfHomePage.enterUserBillingDetails(cardType, cardNumber, cardName, CVV);
+		sfHomePage.clickBillingDetailsNextbutton();
+		sfHomePage.selectPoliciesAndProceduresChkBox();
+		sfHomePage.selectIAcknowledgeChkBox();
+		sfHomePage.selectTermsAndConditionsChkBox();
+		sfHomePage.selectConsentFormChkBox();
+		sfHomePage.clickBecomeAConsultant();
+		s_assert.assertTrue(sfHomePage.isEnrollemntSuccessfulMsgDisplayed(), "Expected 'ENROLLMENT SUCCESSFUL' msg has NOT displayed"); 
+		sfHomePage.addFirstProductForCRPCheckout();
+		sfCheckoutPage = sfHomePage.checkoutCRPBag();
+		sfCheckoutPage.clickSaveButton();
+		sfCheckoutPage.clickShippingDetailsNextbutton();
+		sfCheckoutPage.clickBillingDetailsNextbutton();
+		sfCheckoutPage.selectTermsAndConditionsCheckBoxForConsulatntCRP();
+		sfCheckoutPage.selectCheckboxForPoliciesAndProcedures();
+		sfCheckoutPage.clickConfirmAutoshipOrderButton();
+		s_assert.assertTrue(sfCheckoutPage.isCRPOrderConfirmedSuccessMsgAppeared(),"CRP Order confirmed success messge is not appeared");
+		sfCheckoutPage.clickRodanAndFieldsLogo();
+		conultantWithPulseAndWithCRP=email;
+		pwsPrefix=prefix;
+		s_assert.assertAll();		
 	}
-
-//	@Test(enabled=true, groups={"users"})
-//	public void testConsultantEnrollmentWithPulseAndWithoutCRP(){
-//		timeStamp = CommonUtils.getCurrentTimeStamp();
-//		randomWords = CommonUtils.getRandomWord(5);		
-//		lastName = TestConstants.LAST_NAME+randomWords;
-//		email = firstName+"WPWOCRP"+timeStamp+TestConstants.EMAIL_SUFFIX;
-//		int randomNum = CommonUtils.getRandomNum(10000, 1000000);
-//		String socialInsuranceNumber = String.valueOf(CommonUtils.getRandomNum(100000000, 999999999));
-//		String prefix = firstName+randomNum;
-//		sfHomePage.clickEnrollNow();
-//		sfHomePage.searchSponsor(TestConstants.SPONSOR);
-//		sfHomePage.selectFirstSponsorFromList();
-//		sfHomePage.enterConsultantEnrollmentDetails(firstName, lastName, email, password, socialInsuranceNumber);
-//		sfHomePage.clickNextButton();
-//		sfHomePage.chooseProductFromKitPage();
-//		sfHomePage.selectSubscribeToPulseCheckBox();
-//		sfHomePage.enterPrefix(prefix);
-//		sfHomePage.clickNextButton();
-//		sfHomePage.clickSaveButton();
-//		sfHomePage.enterConsultantShippingDetails(firstName, lastName, addressLine1, addressLine2 ,city, state, postalCode, phoneNumber);
-//		sfHomePage.clickUseAsEnteredButtonOnPopUp();
-//		sfHomePage.clickShippingDetailsNextbutton();
-//		sfHomePage.enterUserBillingDetails(cardType, cardNumber, cardName, CVV);
-//		sfHomePage.clickBillingDetailsNextbutton();
-//		sfHomePage.selectPoliciesAndProceduresChkBox();
-//		sfHomePage.selectIAcknowledgeChkBox();
-//		sfHomePage.selectTermsAndConditionsChkBox();
-//		sfHomePage.selectConsentFormChkBox();
-//		sfHomePage.clickBecomeAConsultant();
-//		s_assert.assertTrue(sfHomePage.isEnrollemntSuccessfulMsgDisplayed(), "Expected 'ENROLLMENT SUCCESSFUL' msg has NOT displayed"); 
-//		conultantWithPulseAndWithoutCRP=email;
-//		PWS2=driver.getCurrentUrl();
-//		s_assert.assertAll();	
-//	}
-//
-//	@Test(enabled=true, groups={"users"})
-//	public void testConsultantEnrollmentWithCRPAndWithoutPulse(){
-//		timeStamp = CommonUtils.getCurrentTimeStamp();
-//		randomWords = CommonUtils.getRandomWord(5);		
-//		lastName = TestConstants.LAST_NAME+randomWords;
-//		email = firstName+"WCRPWOP"+timeStamp+TestConstants.EMAIL_SUFFIX;
-//		String socialInsuranceNumber = String.valueOf(CommonUtils.getRandomNum(100000000, 999999999));
-//		sfHomePage.clickEnrollNow();
-//		sfHomePage.searchSponsor(TestConstants.SPONSOR);
-//		s_assert.assertTrue(sfHomePage.isSponsorResultDisplayed(),"No result found after searching the sponsor with name "+TestConstants.SPONSOR);
-//		sfHomePage.selectFirstSponsorFromList();
-//		sfHomePage.enterConsultantEnrollmentDetails(firstName, lastName, email, password, socialInsuranceNumber);
-//		sfHomePage.clickNextButton();
-//		s_assert.assertFalse(sfHomePage.isNextButtonEnabledBeforeSelectingKit(), "Next Button is NOT disabled before selecting kit");
-//		sfHomePage.chooseProductFromKitPage();
-//		sfHomePage.clickNextButton();
-//		sfHomePage.clickSaveButton();
-//		sfHomePage.enterConsultantShippingDetails(firstName, lastName, addressLine1, addressLine2 ,city, state, postalCode, phoneNumber);
-//		sfHomePage.clickUseAsEnteredButtonOnPopUp();
-//		sfHomePage.clickShippingDetailsNextbutton();
-//		sfHomePage.enterUserBillingDetails(cardType, cardNumber, cardName, CVV);
-//		//sfHomePage.selectBillingAddressFromDD();
-//		//sfHomePage.checkUseMyDeliveryAddressChkBox();
-//		sfHomePage.clickBillingDetailsNextbutton();
-//		sfHomePage.selectPoliciesAndProceduresChkBox();
-//		sfHomePage.selectIAcknowledgeChkBox();
-//		sfHomePage.selectTermsAndConditionsChkBox();
-//		sfHomePage.selectConsentFormChkBox();
-//		sfHomePage.clickBecomeAConsultant();
-//		s_assert.assertTrue(sfHomePage.isEnrollemntSuccessfulMsgDisplayed(), "Expected 'ENROLLMENT SUCCESSFUL' msg has NOT displayed"); 
-//		sfHomePage.addFirstProductForCRPCheckout();
-//		sfCheckoutPage = sfHomePage.checkoutCRPBag();
-//		sfCheckoutPage.clickSaveButton();
-//		sfCheckoutPage.clickShippingDetailsNextbutton();
-//		sfCheckoutPage.clickBillingDetailsNextbutton();
-//		sfCheckoutPage.selectTermsAndConditionsCheckBoxForConsulatntCRP();
-//		sfCheckoutPage.selectCheckboxForPoliciesAndProcedures();
-//		sfCheckoutPage.clickConfirmAutoshipOrderButton();
-//		s_assert.assertTrue(sfCheckoutPage.isCRPOrderConfirmedSuccessMsgAppeared(),"CRP Order confirmed success messge is not appeared");
-//		conultantWithCRPAndWithoutPulse=email;
-//		s_assert.assertAll();
-//	}
 	
 	@Test(enabled=true, groups={"users"})
 	public void testConsultantEnrollmentWithoutCRPAndWithoutPulse(){
-//		navigateToStoreFrontBaseURL();
-//		timeStamp = CommonUtils.getCurrentTimeStamp();
-//		randomWords = CommonUtils.getRandomWord(5);		
-//		lastName = TestConstants.LAST_NAME+randomWords;
-//		email = firstName+timeStamp+TestConstants.EMAIL_SUFFIX;
-//		String socialInsuranceNumber = String.valueOf(CommonUtils.getRandomNum(100000000, 999999999));
-//		sfHomePage.clickEnrollNow();
-//		sfHomePage.searchSponsor(TestConstants.SPONSOR);
-//		s_assert.assertTrue(sfHomePage.isSponsorResultDisplayed(),"No result found after searching the sponsor with name "+TestConstants.SPONSOR);
-//		sfHomePage.selectFirstSponsorFromList();
-//		sfHomePage.enterConsultantEnrollmentDetails(firstName, lastName, email, password, socialInsuranceNumber);
-//		sfHomePage.clickNextButton();
-//		s_assert.assertFalse(sfHomePage.isNextButtonEnabledBeforeSelectingKit(), "Next Button is NOT disabled before selecting kit");
-//		sfHomePage.chooseProductFromKitPage();
-//		sfHomePage.clickNextButton();
-//		sfHomePage.clickSaveButton();
-//		sfHomePage.enterConsultantShippingDetails(firstName, lastName, addressLine1, addressLine2 ,city, state, postalCode, phoneNumber);
-//		sfHomePage.clickUseAsEnteredButtonOnPopUp();
-//		sfHomePage.clickShippingDetailsNextbutton();
-//		sfHomePage.enterUserBillingDetails(cardType, cardNumber, cardName, CVV);
-//		//sfHomePage.selectBillingAddressFromDD();
-//		//sfHomePage.checkUseMyDeliveryAddressChkBox();
-//		sfHomePage.clickBillingDetailsNextbutton();
-//		sfHomePage.selectPoliciesAndProceduresChkBox();
-//		sfHomePage.selectIAcknowledgeChkBox();
-//		sfHomePage.selectTermsAndConditionsChkBox();
-//		sfHomePage.selectConsentFormChkBox();
-//		sfHomePage.clickBecomeAConsultant();
-//		s_assert.assertTrue(sfHomePage.isEnrollemntSuccessfulMsgDisplayed(), "Expected 'ENROLLMENT SUCCESSFUL' msg has NOT displayed"); 
-//		sfHomePage.clickRodanAndFieldsLogo();
-//		s_assert.assertTrue(sfHomePage.isWelcomeUserElementDisplayed(), "Welcome user locator has not displayed after consultant enrollment");
-//		conultantWithoutPulseAndWithoutCRP=email;
-//		s_assert.assertAll();
-		conultantWithPulseAndWithCRP="testUser2@zbc.com";
-		PWS2=driver.getCurrentUrl();
-		setUsers("conultantWithPulseAndWithCRP", conultantWithPulseAndWithCRP);
-		setUsers("PWS2", PWS2);
+		navigateToStoreFrontBaseURL();
+		timeStamp = CommonUtils.getCurrentTimeStamp();
+		randomWords = CommonUtils.getRandomWord(5);		
+		lastName = TestConstants.LAST_NAME+randomWords;
+		email = firstName+timeStamp+TestConstants.EMAIL_SUFFIX;
+		String socialInsuranceNumber = String.valueOf(CommonUtils.getRandomNum(100000000, 999999999));
+		sfHomePage.clickEnrollNow();
+		sfHomePage.searchSponsor(TestConstants.SPONSOR);
+		s_assert.assertTrue(sfHomePage.isSponsorResultDisplayed(),"No result found after searching the sponsor with name "+TestConstants.SPONSOR);
+		sfHomePage.selectFirstSponsorFromList();
+		sfHomePage.enterConsultantEnrollmentDetails(firstName, lastName, email, password, socialInsuranceNumber);
+		sfHomePage.clickNextButton();
+		s_assert.assertFalse(sfHomePage.isNextButtonEnabledBeforeSelectingKit(), "Next Button is NOT disabled before selecting kit");
+		sfHomePage.chooseProductFromKitPage();
+		sfHomePage.clickNextButton();
+		sfHomePage.clickSaveButton();
+		sfHomePage.enterConsultantShippingDetails(firstName, lastName, addressLine1, addressLine2 ,city, state, postalCode, phoneNumber);
+		sfHomePage.clickUseAsEnteredButtonOnPopUp();
+		sfHomePage.clickShippingDetailsNextbutton();
+		sfHomePage.enterUserBillingDetails(cardType, cardNumber, cardName, CVV);
+		//sfHomePage.selectBillingAddressFromDD();
+		//sfHomePage.checkUseMyDeliveryAddressChkBox();
+		sfHomePage.clickBillingDetailsNextbutton();
+		sfHomePage.selectPoliciesAndProceduresChkBox();
+		sfHomePage.selectIAcknowledgeChkBox();
+		sfHomePage.selectTermsAndConditionsChkBox();
+		sfHomePage.selectConsentFormChkBox();
+		sfHomePage.clickBecomeAConsultant();
+		s_assert.assertTrue(sfHomePage.isEnrollemntSuccessfulMsgDisplayed(), "Expected 'ENROLLMENT SUCCESSFUL' msg has NOT displayed"); 
+		sfHomePage.clickRodanAndFieldsLogo();
+		s_assert.assertTrue(sfHomePage.isWelcomeUserElementDisplayed(), "Welcome user locator has not displayed after consultant enrollment");
+		conultantWithoutPulseAndWithoutCRP=email;
+		s_assert.assertAll();
 	}
 
 
-//	//Test Case Hybris Phase 2-3720 :: Version : 1 :: Perform Consultant Account termination through my account
-//	@Test(enabled=false)//Duplicate test,covered in Enrollment validation TC-4308
-//	public void testAccountTerminationPageForConsultant_3720() throws InterruptedException {
-//		/*		RFO_DB = driver.getDBNameRFO(); 
-//		List<Map<String, Object>> randomConsultantList =  null;
-//		String consultantEmailID = null;
-//		String accountID = null;
-//		storeFrontHomePage = new StoreFrontHomePage(driver);
-//		while(true){
-//			randomConsultantList = DBUtil.performDatabaseQuery(DBQueries_RFO.callQueryWithArguement(DBQueries_RFO.GET_RANDOM_ACTIVE_CONSULTANT_WITH_ORDERS_AND_AUTOSHIPS_RFO,countryId),RFO_DB);
-//			consultantEmailID = (String) getValueFromQueryResult(randomConsultantList, "UserName");  
-//			accountID = String.valueOf(getValueFromQueryResult(randomConsultantList, "AccountID"));
-//			logger.info("Account Id of the user is "+accountID);
-//			storeFrontConsultantPage = storeFrontHomePage.loginAsConsultant(consultantEmailID, password);
-//			boolean isLoginError = driver.getCurrentUrl().contains("error");
-//			if(isLoginError){
-//				logger.info("Login error for the user "+consultantEmailID);
-//				driver.get(driver.getURL()+"/"+driver.getCountry());
-//			}
-//			else
-//				break;
-//		}
-//		 */		//s_assert.assertTrue(storeFrontConsultantPage.verifyConsultantPage(),"Consultant Page doesn't contain Welcome User Message");
-//	}
+	//	@Test(enabled=true, groups={"users"})
+	//	public void testConsultantEnrollmentWithPulseAndWithoutCRP(){
+	//		timeStamp = CommonUtils.getCurrentTimeStamp();
+	//		randomWords = CommonUtils.getRandomWord(5);		
+	//		lastName = TestConstants.LAST_NAME+randomWords;
+	//		email = firstName+"WPWOCRP"+timeStamp+TestConstants.EMAIL_SUFFIX;
+	//		int randomNum = CommonUtils.getRandomNum(10000, 1000000);
+	//		String socialInsuranceNumber = String.valueOf(CommonUtils.getRandomNum(100000000, 999999999));
+	//		String prefix = firstName+randomNum;
+	//		sfHomePage.clickEnrollNow();
+	//		sfHomePage.searchSponsor(TestConstants.SPONSOR);
+	//		sfHomePage.selectFirstSponsorFromList();
+	//		sfHomePage.enterConsultantEnrollmentDetails(firstName, lastName, email, password, socialInsuranceNumber);
+	//		sfHomePage.clickNextButton();
+	//		sfHomePage.chooseProductFromKitPage();
+	//		sfHomePage.selectSubscribeToPulseCheckBox();
+	//		sfHomePage.enterPrefix(prefix);
+	//		sfHomePage.clickNextButton();
+	//		sfHomePage.clickSaveButton();
+	//		sfHomePage.enterConsultantShippingDetails(firstName, lastName, addressLine1, addressLine2 ,city, state, postalCode, phoneNumber);
+	//		sfHomePage.clickUseAsEnteredButtonOnPopUp();
+	//		sfHomePage.clickShippingDetailsNextbutton();
+	//		sfHomePage.enterUserBillingDetails(cardType, cardNumber, cardName, CVV);
+	//		sfHomePage.clickBillingDetailsNextbutton();
+	//		sfHomePage.selectPoliciesAndProceduresChkBox();
+	//		sfHomePage.selectIAcknowledgeChkBox();
+	//		sfHomePage.selectTermsAndConditionsChkBox();
+	//		sfHomePage.selectConsentFormChkBox();
+	//		sfHomePage.clickBecomeAConsultant();
+	//		s_assert.assertTrue(sfHomePage.isEnrollemntSuccessfulMsgDisplayed(), "Expected 'ENROLLMENT SUCCESSFUL' msg has NOT displayed"); 
+	//		conultantWithPulseAndWithoutCRP=email;
+	//		PWS2=driver.getCurrentUrl();
+	//		s_assert.assertAll();	
+	//	}
+	//
+	//	@Test(enabled=true, groups={"users"})
+	//	public void testConsultantEnrollmentWithCRPAndWithoutPulse(){
+	//		timeStamp = CommonUtils.getCurrentTimeStamp();
+	//		randomWords = CommonUtils.getRandomWord(5);		
+	//		lastName = TestConstants.LAST_NAME+randomWords;
+	//		email = firstName+"WCRPWOP"+timeStamp+TestConstants.EMAIL_SUFFIX;
+	//		String socialInsuranceNumber = String.valueOf(CommonUtils.getRandomNum(100000000, 999999999));
+	//		sfHomePage.clickEnrollNow();
+	//		sfHomePage.searchSponsor(TestConstants.SPONSOR);
+	//		s_assert.assertTrue(sfHomePage.isSponsorResultDisplayed(),"No result found after searching the sponsor with name "+TestConstants.SPONSOR);
+	//		sfHomePage.selectFirstSponsorFromList();
+	//		sfHomePage.enterConsultantEnrollmentDetails(firstName, lastName, email, password, socialInsuranceNumber);
+	//		sfHomePage.clickNextButton();
+	//		s_assert.assertFalse(sfHomePage.isNextButtonEnabledBeforeSelectingKit(), "Next Button is NOT disabled before selecting kit");
+	//		sfHomePage.chooseProductFromKitPage();
+	//		sfHomePage.clickNextButton();
+	//		sfHomePage.clickSaveButton();
+	//		sfHomePage.enterConsultantShippingDetails(firstName, lastName, addressLine1, addressLine2 ,city, state, postalCode, phoneNumber);
+	//		sfHomePage.clickUseAsEnteredButtonOnPopUp();
+	//		sfHomePage.clickShippingDetailsNextbutton();
+	//		sfHomePage.enterUserBillingDetails(cardType, cardNumber, cardName, CVV);
+	//		//sfHomePage.selectBillingAddressFromDD();
+	//		//sfHomePage.checkUseMyDeliveryAddressChkBox();
+	//		sfHomePage.clickBillingDetailsNextbutton();
+	//		sfHomePage.selectPoliciesAndProceduresChkBox();
+	//		sfHomePage.selectIAcknowledgeChkBox();
+	//		sfHomePage.selectTermsAndConditionsChkBox();
+	//		sfHomePage.selectConsentFormChkBox();
+	//		sfHomePage.clickBecomeAConsultant();
+	//		s_assert.assertTrue(sfHomePage.isEnrollemntSuccessfulMsgDisplayed(), "Expected 'ENROLLMENT SUCCESSFUL' msg has NOT displayed"); 
+	//		sfHomePage.addFirstProductForCRPCheckout();
+	//		sfCheckoutPage = sfHomePage.checkoutCRPBag();
+	//		sfCheckoutPage.clickSaveButton();
+	//		sfCheckoutPage.clickShippingDetailsNextbutton();
+	//		sfCheckoutPage.clickBillingDetailsNextbutton();
+	//		sfCheckoutPage.selectTermsAndConditionsCheckBoxForConsulatntCRP();
+	//		sfCheckoutPage.selectCheckboxForPoliciesAndProcedures();
+	//		sfCheckoutPage.clickConfirmAutoshipOrderButton();
+	//		s_assert.assertTrue(sfCheckoutPage.isCRPOrderConfirmedSuccessMsgAppeared(),"CRP Order confirmed success messge is not appeared");
+	//		conultantWithCRPAndWithoutPulse=email;
+	//		s_assert.assertAll();
+	//	}
+
+	//	//Test Case Hybris Phase 2-3720 :: Version : 1 :: Perform Consultant Account termination through my account
+	//	@Test(enabled=false)//Duplicate test,covered in Enrollment validation TC-4308
+	//	public void testAccountTerminationPageForConsultant_3720() throws InterruptedException {
+	//		/*		RFO_DB = driver.getDBNameRFO(); 
+	//		List<Map<String, Object>> randomConsultantList =  null;
+	//		String consultantEmailID = null;
+	//		String accountID = null;
+	//		storeFrontHomePage = new StoreFrontHomePage(driver);
+	//		while(true){
+	//			randomConsultantList = DBUtil.performDatabaseQuery(DBQueries_RFO.callQueryWithArguement(DBQueries_RFO.GET_RANDOM_ACTIVE_CONSULTANT_WITH_ORDERS_AND_AUTOSHIPS_RFO,countryId),RFO_DB);
+	//			consultantEmailID = (String) getValueFromQueryResult(randomConsultantList, "UserName");  
+	//			accountID = String.valueOf(getValueFromQueryResult(randomConsultantList, "AccountID"));
+	//			logger.info("Account Id of the user is "+accountID);
+	//			storeFrontConsultantPage = storeFrontHomePage.loginAsConsultant(consultantEmailID, password);
+	//			boolean isLoginError = driver.getCurrentUrl().contains("error");
+	//			if(isLoginError){
+	//				logger.info("Login error for the user "+consultantEmailID);
+	//				driver.get(driver.getURL()+"/"+driver.getCountry());
+	//			}
+	//			else
+	//				break;
+	//		}
+	//		 */		//s_assert.assertTrue(storeFrontConsultantPage.verifyConsultantPage(),"Consultant Page doesn't contain Welcome User Message");
+	//	}
 
 
 }

@@ -360,5 +360,112 @@ public class PCEnrollmentTest extends StoreFrontWebsiteBaseTest{
 		s_assert.assertTrue(sfCheckoutPage.isChangeSponserLinkDisplayed(),"Change sponser link is present on account info page.");
 		s_assert.assertAll();
 	}
+	
+	@Test(enabled=true,groups="users")
+	public void testPCEnrollmentWithPWSSponsor(){
+		navigateToStoreFrontBaseURL();
+		timeStamp = CommonUtils.getCurrentTimeStamp();
+		randomWords = CommonUtils.getRandomWord(5);		
+		lastName = TestConstants.LAST_NAME+randomWords;
+		email = firstName+timeStamp+TestConstants.EMAIL_SUFFIX;
+		sfCartPage = new StoreFrontCartPage(driver);
+		sfShopSkinCarePage = new StoreFrontShopSkinCarePage(driver);
+		sfHomePage.clickLoginIcon();
+		sfCheckoutPage=sfHomePage.clickSignUpNowLink();
+		sfCheckoutPage.fillNewUserDetails(TestConstants.USER_TYPE_PC, firstName, lastName, email, password);
+		sfCheckoutPage.clickCreateAccountButton();
+		s_assert.assertTrue(sfCartPage.isPcOneTimeFeeMsgDisplayed(),"PC one time joining fee msg has not displayed");
+		sfCartPage.clickAddMoreItemsBtn();
+		sfShopSkinCarePage.addProductToCart(TestConstants.PRODUCT_NUMBER, TestConstants.ORDER_TYPE_ADHOC);;
+		sfCartPage = sfShopSkinCarePage.checkoutTheCartFromPopUp();
+		sfCartPage.enterQuantityOfProductAtCart("1", "2");
+		sfCartPage.clickOnUpdateLinkThroughItemNumber("1");
+		sfCartPage.clickCheckoutBtn();
+		sfCartPage.searchSponsor(TestConstants.SPONSOR);
+		sfHomePage.selectFirstSponsorFromList();
+		sfCheckoutPage.clickSaveButton();
+		sfCheckoutPage.enterShippingDetails(firstName+" "+lastName, addressLine1, addressLine2, city, state, postalCode, phoneNumber);
+		sfCheckoutPage.clickShippingDetailsNextbutton();
+		sfCheckoutPage.enterUserBillingDetails(cardType, cardNumber, cardName, CVV);
+		sfCheckoutPage.clickBillingDetailsNextbutton();
+		sfCheckoutPage.selectIAcknowledgePCChkBox();
+		sfCheckoutPage.selectPCTermsAndConditionsChkBox();
+		sfCheckoutPage.clickPlaceOrderButton();
+		sfCheckoutPage.clickRodanAndFieldsLogo();
+		s_assert.assertTrue(sfHomePage.hasPCEnrolledSuccessfully(), "PC has not been enrolled successfully");
+		s_assert.assertAll();
+		pcUserWithPWSSponsor=email;
+	}
+	
+	@Test(enabled=true,groups="users")
+	public void testPCEnrollmentWithoutSponsor(){
+		navigateToStoreFrontBaseURL();
+		timeStamp = CommonUtils.getCurrentTimeStamp();
+		randomWords = CommonUtils.getRandomWord(5);		
+		lastName = TestConstants.LAST_NAME+randomWords;
+		email = firstName+timeStamp+TestConstants.EMAIL_SUFFIX;
+		sfCartPage = new StoreFrontCartPage(driver);
+		sfShopSkinCarePage = new StoreFrontShopSkinCarePage(driver);
+		sfHomePage.clickLoginIcon();
+		sfCheckoutPage=sfHomePage.clickSignUpNowLink();
+		sfCheckoutPage.fillNewUserDetails(TestConstants.USER_TYPE_PC, firstName, lastName, email, password);
+		sfCheckoutPage.clickCreateAccountButton();
+		s_assert.assertTrue(sfCartPage.isPcOneTimeFeeMsgDisplayed(),"PC one time joining fee msg has not displayed");
+		sfCartPage.clickAddMoreItemsBtn();
+		//sfShopSkinCarePage=sfCartPage.clickAllProducts();// this is a temporary patch
+		sfShopSkinCarePage.addProductToCart(TestConstants.PRODUCT_NUMBER, TestConstants.ORDER_TYPE_ADHOC);;
+		sfCartPage = sfShopSkinCarePage.checkoutTheCartFromPopUp();
+		sfCartPage.enterQuantityOfProductAtCart("1", "2");
+		sfCartPage.clickOnUpdateLinkThroughItemNumber("1");
+		sfCartPage.clickCheckoutBtn();
+		sfCheckoutPage.clickContinueWithoutConsultantLink();
+		sfCheckoutPage.clickSaveButton();
+		sfCheckoutPage.enterShippingDetails(firstName+" "+lastName, addressLine1, addressLine2, city, state, postalCode, phoneNumber);
+		sfCheckoutPage.clickShippingDetailsNextbutton();
+		sfCheckoutPage.enterUserBillingDetails(cardType, cardNumber, cardName, CVV);
+		//		sfCheckoutPage.checkUseMyDeliveryAddressChkBox();
+		sfCheckoutPage.clickBillingDetailsNextbutton();
+		sfCheckoutPage.selectIAcknowledgePCChkBox();
+		sfCheckoutPage.selectPCTermsAndConditionsChkBox();
+		sfCheckoutPage.clickPlaceOrderButton();
+		sfCheckoutPage.clickRodanAndFieldsLogo();
+		s_assert.assertTrue(sfHomePage.hasPCEnrolledSuccessfully(), "PC has not been enrolled successfully");
+		s_assert.assertAll();
+		pcUserWithoutSponsor = email;
+	}
+	
+	@Test(enabled=false,groups="users")//TODO
+	public void testPCEnrollmentWithoutPWSSponsor(){
+		timeStamp = CommonUtils.getCurrentTimeStamp();
+		randomWords = CommonUtils.getRandomWord(5);		
+		lastName = TestConstants.LAST_NAME+randomWords;
+		email = firstName+timeStamp+TestConstants.EMAIL_SUFFIX;
+		sfCartPage = new StoreFrontCartPage(driver);
+		sfShopSkinCarePage = new StoreFrontShopSkinCarePage(driver);
+		sfHomePage.clickLoginIcon();
+		sfCheckoutPage=sfHomePage.clickSignUpNowLink();
+		sfCheckoutPage.fillNewUserDetails(TestConstants.USER_TYPE_PC, firstName, lastName, email, password);
+		sfCheckoutPage.clickCreateAccountButton();
+		s_assert.assertTrue(sfCartPage.isPcOneTimeFeeMsgDisplayed(),"PC one time joining fee msg has not displayed");
+		sfCartPage.clickAddMoreItemsBtn();
+		sfShopSkinCarePage.addProductToCart(TestConstants.PRODUCT_NUMBER, TestConstants.ORDER_TYPE_ADHOC);;
+		sfCartPage = sfShopSkinCarePage.checkoutTheCartFromPopUp();
+		sfCartPage.enterQuantityOfProductAtCart("1", "2");
+		sfCartPage.clickOnUpdateLinkThroughItemNumber("1");
+		sfCartPage.clickCheckoutBtn();
+		sfCartPage.searchSponsor(TestConstants.SPONSOR);
+		sfHomePage.selectFirstSponsorFromList();
+		sfCheckoutPage.clickSaveButton();
+		sfCheckoutPage.enterShippingDetails(firstName+" "+lastName, addressLine1, addressLine2, city, state, postalCode, phoneNumber);
+		sfCheckoutPage.clickShippingDetailsNextbutton();
+		sfCheckoutPage.enterUserBillingDetails(cardType, cardNumber, cardName, CVV);
+		sfCheckoutPage.clickBillingDetailsNextbutton();
+		sfCheckoutPage.selectIAcknowledgePCChkBox();
+		sfCheckoutPage.selectPCTermsAndConditionsChkBox();
+		sfCheckoutPage.clickPlaceOrderButton();
+		sfCheckoutPage.clickRodanAndFieldsLogo();
+		s_assert.assertTrue(sfHomePage.hasPCEnrolledSuccessfully(), "PC has not been enrolled successfully");
+		s_assert.assertAll();
+	}
 
 }

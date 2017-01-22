@@ -164,22 +164,24 @@ public class TestConstants {
 	public static final String CONSULTANT_WITH_CRP_USERNAME = "autocon1515@mailinator.com";
 	public static final String CONSULTANT_USERNAME_HAVING_NO_RETURN_ORDERS = "AutoCons20170116103858@mailinator.com";
 	public static final String CONSULTANT_ENROLLED_IN_PULSE = "AutoCons20170117122201@mailinator.com";
-	public static final String PC_USERNAME = "autopc1100@mailinator.com";
-	public static final String PC_EMAIL = "autopc1100@mailinator.com";
-	public static final String PC_EMAIL_HAVING_AUTOSHIP = "autopc1100@mailinator.com";
-	public static final String PC_EMAIL_WHO_ENROLLED_UNDER_SPONSOR_WITH_PWS = "autopc1100@mailinator.com";
-	public static final String RC_USERNAME = "AutoRC20170113140808@mailinator.com";
-	public static final String RC_EMAIL = "AutoRC20170113140808@mailinator.com";
+	public static final String CONSULTANT_EMAIL_WITHOUT_PWS = "AutoCons20170119113134@mailinator.com";
 	public static final String CONSULTANT_PWS = "https://www.qa1.rodanandfields.com/US/pws/alnameawaw";
-	public static final String RC_USER_WITHOUT_ADDRESS = "autorc1717171@mailinator.com";
 	public static final String CONSULTANT_USERNAME_SPONSOR_WITHOUT_PWS = "consponsorwiithoutpws1@mailinator.com";
 	public static final String CONSULTANT_USERNAME_WITH_CRP_AND_PULSE = "autocon2525@mailinator.com";
 	public static final String CONSULTANT_PREFIX = "alnamebttt";
 	public static final String PWS = "https://www.qa1.rodanandfields.com/US/pws/alnameawaw/";
-	public static final String RC_EMAIL_HAVING_ORDER = "autorc1100@mailinator.com";
+	
+	public static final String PC_USERNAME = "autopc1100@mailinator.com";
+	public static final String PC_EMAIL = "autopc1100@mailinator.com";
+	public static final String PC_EMAIL_HAVING_AUTOSHIP = "autopc1100@mailinator.com";
+	public static final String PC_EMAIL_WHO_ENROLLED_UNDER_SPONSOR_WITH_PWS = "autopc1100@mailinator.com";
 	public static final String PC_USER_WHO_ENROLLED_UNDER_RF_CORPORATE_SPONSOR = "autoPc1901@mailinator.com";
-	public static final String CONSULTANT_EMAIL_WITHOUT_PWS = "AutoCons20170119113134@mailinator.com";
 	public static final String PC_EMAIL_WHO_ENROLLED_UNDER_SPONSOR_WITHOUT_PWS = "autopc19012017@mailinator.com";
+
+	public static final String RC_USERNAME = "AutoRC20170113140808@mailinator.com";
+	public static final String RC_EMAIL = "AutoRC20170113140808@mailinator.com";
+	public static final String RC_USER_WITHOUT_ADDRESS = "autorc1717171@mailinator.com";
+	public static final String RC_EMAIL_HAVING_ORDER = "autorc1100@mailinator.com";
 
 }
 

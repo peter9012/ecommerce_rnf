@@ -53,9 +53,6 @@ public class StoreFrontShopSkinCarePage extends StoreFrontWebsiteBasePage{
 	private final By PRODUCT_IMG_ON_QUICK_VIEW_POPUP_LOC = By.xpath("//div[@id='myModal' and contains(@style,'display')]//div[contains(@class,'product-image')]//img");
 	private final By PC_PERKS_PROMO_MSG_LOC = By.xpath("//div[@id='pc_perks_comp']/div[@class='content']/div[contains(text(),'Subscribe + Save 10%')]");
 	private final By PC_PERKS_SAVE_AMOUNT_LOC = By.xpath("//span[@class='pcli']");
-	private final By LEARN_MORE_LINK_QUICK_VIEW_LOC = By.xpath("//a[contains(text(),'Learn more')]");
-	private final By PC_PROMO_POPUP_LOC = By.id("cboxLoadedContent");
-	private final By PC_PROMO_POPUP_CLOSE_BTN_LOC = By.id("cboxClose");
 	private final By SHOP_BY_PRICE_FILTER_OPTION_DEFAULT_LOC = By.xpath("//select[@id='sortOptions1']/descendant::option[1]");
 	private final By CLEAR_ALL_LINK_LOC = By.id("clear_all");
 	private final By ADD_TO_CART_BTN_LOC = By.xpath("//div[@id='product_listing']/descendant::button[text()='Add to cart'][2]");
@@ -926,35 +923,6 @@ public class StoreFrontShopSkinCarePage extends StoreFrontWebsiteBasePage{
 		driver.click(SHOP_BY_PRICE_FILTER_OPTION_HIGH_TO_LOW_LOC);
 		logger.info("Price filter 'HIGH TO LOW' selected");
 		driver.waitForPageLoad();
-		return this;
-	}
-
-	/***
-	 * This method clicks on the Learn View link on quick view
-	 * @return StoreFrontShopSkinCarePage
-	 */
-	public StoreFrontShopSkinCarePage clickLearnMoreLinkOnQuickView(){
-		driver.click(LEARN_MORE_LINK_QUICK_VIEW_LOC);
-		logger.info("Learn View link on quick view is clicked");
-		return this;
-	}
-
-	/***
-	 * this method verifies whether PC perks promo popup is
-	 * displayed or not after clicking on learn more link
-	 * @return
-	 */
-	public boolean isLearnMoreAboutPCPromoPopupDisplayed(){
-		return  driver.isElementVisible(PC_PROMO_POPUP_LOC);
-	}
-
-	/***
-	 * This method closes the PC Perks Promo popup
-	 * @return StoreFrontShopSkinCarePage
-	 */
-	public StoreFrontShopSkinCarePage closePCPerksPromoPopUp(){
-		driver.click(PC_PROMO_POPUP_CLOSE_BTN_LOC);
-		logger.info("closed the PC Perks promo popup");
 		return this;
 	}
 

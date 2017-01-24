@@ -10,6 +10,11 @@
 		<classes>
 			<class
 				name="com.rf.test.website.rehabitat.storeFront.ConsultantEnrollmentTest">
+				<groups>
+					<run>
+						<exclude name="users" />
+					</run>
+				</groups>
 			</class>
 		</classes>
 	</test>

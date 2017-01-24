@@ -81,33 +81,6 @@ public class ProductQuickViewTest extends StoreFrontWebsiteBaseTest{
 	}
 
 	/***
-	 * qTest : TC-194 Product qty field shouldn't allow any characters except a digits on the quick view
-	 * Description : This test validates that special characters is not allowed in Quantity text field on quick view pop up
-	 * Note : Warning message is not coming yet. Need to add a assertion for the same when functionality start working fine.
-	 *     
-	 */
-
-	@Test(enabled=false) //TODO Incomplete 
-	public void testProductQtyFieldShouldnotAllowAnyCharactersExceptADigitsOnTheQuickView_194(){
-		String selectedProductName = null;
-		String specialChar = "@";
-		String alphabetChar = "a";
-		//Login to application.
-		sfHomePage.loginToStoreFront(TestConstants.PC_USERNAME, password);
-		sfShopSkinCarePage = sfHomePage.clickAllProducts();
-		sfShopSkinCarePage.refineProductByCategory(TestConstants.PC_PERKS_AUTOSHIP_PRODUCT_CATEGORY);
-		selectedProductName = sfShopSkinCarePage.getFirstProductNameFromAllProductPage();
-		sfShopSkinCarePage.clickOnQuickViewLinkForProduct("1");
-		s_assert.assertTrue(sfShopSkinCarePage.isProductNamePresentAtQuickViewPopupAsExpected(selectedProductName),"Product name is not present as expected on quick view poup");
-		s_assert.assertTrue(sfShopSkinCarePage.isQuantityTextFieldPresentAtQuickViewPopup(),"Quantity Text field is not present on quick view poup");
-		sfShopSkinCarePage.enterQuantityOfProductOnQuickViewPopup(specialChar);
-		sfShopSkinCarePage.addProductToCartFromQuickViewPopup(TestConstants.ORDER_TYPE_ADHOC);
-		//sfShopSkinCarePage.clickAddToCartButtonOnQuickViewPopup();
-		// Need to add assertion for Warning message
-		s_assert.assertAll();
-	}
-
-	/***
 	 * qTest: TC-195 Quick-View- Display PC perks promo message for RC user
 	 * Description: This method verifies she quick view web elements
 	 * with RC user 
@@ -208,6 +181,45 @@ public class ProductQuickViewTest extends StoreFrontWebsiteBaseTest{
 		sfShopSkinCarePage.addProductToCartFromQuickViewPopup(TestConstants.ORDER_TYPE_ADHOC);
 		s_assert.assertTrue(sfShopSkinCarePage.isAddedToYourShoppingCartHeadlinePresentOnCheckoutPopup(),"Added to your shipping cart Headline is not present on Checkout popup");
 		sfAutoshipCartPage = sfShopSkinCarePage.checkoutTheCartFromPopUpForPCPerks();
+		s_assert.assertAll();
+	}
+	
+	/***
+	 * qTest : TC-194 Product qty field shouldn't allow any characters except a digits on the quick view
+	 * Description : This test validates that special characters is not allowed in Quantity text field on quick view pop up
+	 * Note : Warning message is not coming yet. Need to add a assertion for the same when functionality start working fine.
+	 *     
+	 */
+
+	@Test(enabled=false)//Unable to add product to adhoc cart from quick view.
+	public void testProductQtyFieldShouldnotAllowAnyCharactersExceptADigitsOnTheQuickView_194(){
+		String currentURL = null;
+		String selectedProductName = null;
+		String specialChar = "@";
+		String previousProductCount=null;
+		String updateProductCount =null;
+		String newProductCount = null;
+		String expectedURL="/cart";
+		
+		//Login to application.
+		sfHomePage.loginToStoreFront(TestConstants.PC_USERNAME, password);
+		//Get product count on adhoc cart page.
+		sfHomePage.clickWelcomeDropdown();
+		previousProductCount = sfHomePage.getNumberOfItemFromMiniCart();
+		updateProductCount = sfHomePage.updateQuantityByOne(previousProductCount);
+		sfShopSkinCarePage = sfHomePage.clickAllProducts();
+		sfShopSkinCarePage.refineProductByCategory(TestConstants.PC_PERKS_AUTOSHIP_PRODUCT_CATEGORY);
+		selectedProductName = sfShopSkinCarePage.getFirstProductNameFromAllProductPage();
+		sfShopSkinCarePage.clickOnQuickViewLinkForProduct("1");
+		s_assert.assertTrue(sfShopSkinCarePage.isProductNamePresentAtQuickViewPopupAsExpected(selectedProductName),"Product name is not present as expected on quick view poup");
+		s_assert.assertTrue(sfShopSkinCarePage.isQuantityTextFieldPresentAtQuickViewPopup(),"Quantity Text field is not present on quick view poup");
+		sfShopSkinCarePage.enterQuantityOfProductOnQuickViewPopup(specialChar);
+		sfShopSkinCarePage.addProductToCartFromQuickViewPopup(TestConstants.ORDER_TYPE_ADHOC);
+		sfCartPage = sfShopSkinCarePage.checkoutTheCartFromPopUp();
+		currentURL = sfCartPage.getCurrentURL().toLowerCase();
+		s_assert.assertTrue(currentURL.endsWith(expectedURL),"Expected URL should contain "+expectedURL+" but actual on UI is "+currentURL);
+		newProductCount = sfHomePage.getNumberOfItemFromMiniCart();
+		s_assert.assertTrue(newProductCount.equals(updateProductCount),"Expected product count on adhoc cart contain "+updateProductCount+" but actual on UI is "+newProductCount);
 		s_assert.assertAll();
 	}
 

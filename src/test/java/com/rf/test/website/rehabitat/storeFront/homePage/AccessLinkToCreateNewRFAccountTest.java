@@ -25,7 +25,7 @@ public class AccessLinkToCreateNewRFAccountTest extends StoreFrontWebsiteBaseTes
 	 * Description : This test validates sign up now link from .com site
 	 *     
 	 */
-	@Test(enabled=false)
+	@Test(enabled=true)
 	public void testAccessALinkToCreateANewRFAccountFromComSite_16(){
 		String pwsSite = TestConstants.CONSULTANT_PWS;
 		sfHomePage.navigateToUrl(pwsSite);
@@ -40,7 +40,7 @@ public class AccessLinkToCreateNewRFAccountTest extends StoreFrontWebsiteBaseTes
 	 * Description : This test validates sign up now link from .biz site
 	 *     
 	 */
-	@Test(enabled=false) //TODO Incomplete
+	@Test(enabled=true) //TODO Incomplete
 	public void testAccessALinkToCreateANewRFAccountFromBizSite_17(){
 		//Duplicate as	TC-16 Access a link to create a new R+F account from .com site
 	}

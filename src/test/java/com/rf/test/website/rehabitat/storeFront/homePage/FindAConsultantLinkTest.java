@@ -34,7 +34,7 @@ public class FindAConsultantLinkTest extends StoreFrontWebsiteBaseTest{
 	 * on homepage of biz and com site.
 	 * 				
 	 */
-	@Test(enabled=false)
+	@Test(enabled=true)
 	public void testPWSSitesShouldNotHaveFindAConsultantLinkOnTheHomePage_8(){
 		String PWSSite = TestConstants.CONSULTANT_PWS;
 		sfHomePage.navigateToUrl(PWSSite);

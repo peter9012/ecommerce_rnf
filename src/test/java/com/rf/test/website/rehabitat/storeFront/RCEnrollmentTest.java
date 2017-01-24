@@ -65,7 +65,7 @@ public class RCEnrollmentTest extends StoreFrontWebsiteBaseTest{
 	 * and redirection to pws site after RC enrollment.
 	 *     
 	 */
-	@Test(enabled=false)//Redirect to corp site after enrollment from pws site
+	@Test(enabled=true)//Redirect to corp site after enrollment from pws site
 	public void testRCEnrollmentFromPWSSite_551(){
 		String PWSSite = TestConstants.CONSULTANT_PWS;
 		String currentURL = null;
@@ -83,7 +83,7 @@ public class RCEnrollmentTest extends StoreFrontWebsiteBaseTest{
 		s_assert.assertAll();
 	}	
 	
-	@Test(enabled=true, groups="users")
+	@Test(enabled=false, groups="users")
 	public void testRCEnrollmentWithoutOrder(){
 		navigateToStoreFrontBaseURL();
 		sfCartPage = new StoreFrontCartPage(driver);
@@ -97,7 +97,7 @@ public class RCEnrollmentTest extends StoreFrontWebsiteBaseTest{
 		rcWithoutOrder=email;
 	}
 	
-	@Test(enabled=true, groups="users")
+	@Test(enabled=false, groups="users")
 	public void testRCEnrollmentWithOrder(){
 		navigateToStoreFrontBaseURL();
 		sfCartPage = new StoreFrontCartPage(driver);

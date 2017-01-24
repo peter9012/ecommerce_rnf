@@ -30,6 +30,10 @@ public class StoreFrontCartPage extends StoreFrontWebsiteBasePage{
 	private final By ORDER_TOTAL_LOC = By.xpath("//td[text()='Order Total']/following::td[1]");
 	private final By CHECKOUT_BTN_CONSULTANT_LOC = By.id("checkoutPopup");
 	private final By CLOSE_BTN_ON_CONFIRMATION_POPUP_LOC = By.xpath("//button[@id='cboxClose']");
+	private final By LEARN_MORE_LINK_LOC = By.xpath("//a[contains(text(),'Learn more')]");
+	private final By PC_PERKS_PROMOTION_OVERLAY_CLOSE_BTN_LOC = By.xpath("//button[@id='cboxClose']");
+	private final By PROMOTION_OVERLAY_CONTENT_LOC = By.xpath("//div[@id='cboxContent']//div[@class='content']");
+	private final By PC_PERKS_PROMOTION_POPUP_LOC = By.xpath("//div[@id='cboxContent']");
 
 	private String productPriceInAllItemsInCartLoc = "//li[@class='item-list-item']//div[@class='item-info']//span[@class='item-name' and contains(text(),'%s')]/ancestor::div[1]/following-sibling::div[@class='item-price-info']";
 	private String recentlyViewProductOnCartPageLoc = "//div[@id='recentlyViewedTitle']/following::div[@class='owl-item active']//a[contains(text(),'%s')]";
@@ -398,5 +402,67 @@ public class StoreFrontCartPage extends StoreFrontWebsiteBasePage{
 		return this;
 	}
 
+	/***
+	 * This method click Learn more Link at cart page
+	 * 
+	 * @param
+	 * @return store front cart page object
+	 * 
+	 */
+	public StoreFrontCartPage clickLearnMoreLink(){
+		driver.click(LEARN_MORE_LINK_LOC);
+		logger.info("Clicked on Learn more Link");
+		return this;
+	}
+
+	/***
+	 * This method click close btn of PC Perks Promotion overlay
+	 * 
+	 * @param
+	 * @return store front cart page object
+	 * 
+	 */
+	public StoreFrontCartPage clickCloseBtnOfPromotionOverlay(){
+		driver.click(PC_PERKS_PROMOTION_OVERLAY_CLOSE_BTN_LOC);
+		logger.info("Clicked on close btn of PC Perks Promotion overlay");
+		return this;
+	}
+
+	/***
+	 * This method get the Promotion overlay content
+	 * 
+	 * @param
+	 * @return String
+	 * 
+	 */
+	public String getPromotionOverlayContent(){
+		driver.pauseExecutionFor(3000);
+		return driver.getText(PROMOTION_OVERLAY_CONTENT_LOC);
+	}
+
+	/***
+	 * This method verify the presence of PC Perks Promotion popup
+	 * 
+	 * @param
+	 * @return String
+	 * 
+	 */
+	public boolean isPCPerksPromotionPopupPresent(){
+		driver.pauseExecutionFor(2000);
+		return driver.isElementVisible(PC_PERKS_PROMOTION_POPUP_LOC);
+	}
+
+
+	/***
+	 * This method press Escape key through action class to dismiss the promotion overlay
+	 * 
+	 * @param 
+	 * @return
+	 * 
+	 */
+	public StoreFrontCartPage pressEscapeKeyForDismissingPromotionOverlay(){
+		driver.pressEscapeKey();
+		return this;
+	}
 }
 

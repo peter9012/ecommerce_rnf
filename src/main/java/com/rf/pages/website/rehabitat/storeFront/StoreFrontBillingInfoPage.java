@@ -48,7 +48,10 @@ public class StoreFrontBillingInfoPage extends StoreFrontWebsiteBasePage{
 	private final By ADD_NEW_BILLING_ADDRESS_BLOCK_LOC = By.xpath("//div[@id='billingAddressForm']");
 	private final By STREET_ERROR_MSG_LOC = By.xpath("//div[@id='accountBillingForm']//p[@id='errorMessage']");
 	private final By CARD_ICONS_LOC = By.xpath("//div[@class='form-group']//div[@class='card-icons']/span");
+	private final By BILLING_ADDRESS_DD_FOR_EXISTING_PROFILE_LOC = By.id("addressId");
+	private final By BILLING_ADDRESS_DD_OPTIONS_FOR_EXISTING_PROFILE_LOC = By.xpath("//select[@id='addressId']/option[not(@label)]");
 
+	private String editLinkForSpecificBillingProfileLoc = "//div[@class='account-paymentdetails account-list']//li[contains(text(),'%s')]//ancestor::ul[1]/following-sibling::div/a[contains(text(),'Edit')]";
 	private String billingProfileFirstNameLoc = "//div[@class='account-paymentdetails account-list']//li[contains(text(),'%s')]";
 	private String creditCardNumberForSpecificBillingProfileLoc = "//li[contains(text(),'%s')]/following-sibling::li[contains(text(),'Credit')]";
 	private String creditCardExpDateForSpecificBillingProfileLoc = "//li[contains(text(),'%s')]/following-sibling::li[contains(text(),'Expiration')]";
@@ -492,6 +495,77 @@ public class StoreFrontBillingInfoPage extends StoreFrontWebsiteBasePage{
 			}
 		}
 		return flag;
+	}
+
+	/***
+	 * This method validates the presence of billing addresses dropdown after editing existing profile
+	 * 
+	 * @param
+	 * @return boolean value
+	 * 
+	 */
+	public boolean isBillingAddressDropdownPresentForExisitngProfile(){
+		return driver.isElementVisible(BILLING_ADDRESS_DD_FOR_EXISTING_PROFILE_LOC);
+	}
+
+	/***
+	 * This method get the specific address index from dropdown
+	 * 
+	 * @param String addressLine1, String addressLine2, String city, String postalCode
+	 * @return int
+	 * 
+	 */
+	public int getAddressIndexFromDD(String addressLine1, String addressLine2, String city, String postalCode){
+		List<WebElement> addressInDD = driver.findElements(BILLING_ADDRESS_DD_OPTIONS_FOR_EXISTING_PROFILE_LOC);
+		String text = null;
+		int index = 0;
+		for(WebElement address : addressInDD){
+			index = index + 1;
+			text = address.getText();
+			if(text.contains(addressLine1) && text.contains(addressLine2) && text.contains(city) && text.contains(postalCode)){
+				return index;
+			}
+		}
+		return index;
+	}
+
+	/***
+	 * This method get the count of addresses present in Billing address dropdown.
+	 * 
+	 * @param 
+	 * @return int
+	 * 
+	 */
+	public int getCountOfBillingAddressesPresentInDropdownForExistingProfile(){
+		return driver.findElements(BILLING_ADDRESS_DD_OPTIONS_FOR_EXISTING_PROFILE_LOC).size();
+	}
+
+
+	/***
+	 * This method select the address from DD
+	 * 
+	 * @param int  index
+	 * @return StoreFrontBillingInfoPage object
+	 * 
+	 */
+	public StoreFrontBillingInfoPage selectAddressFromDD(int index){
+		Select addressDD = new Select(driver.findElement(BILLING_ADDRESS_DD_FOR_EXISTING_PROFILE_LOC));
+		addressDD.selectByIndex(index);
+		logger.info("Select address at index : " + index + " from Dropdown");
+		return this;
+	}
+
+	/***
+	 * This method clicked on Edit Link of Specific Billing Profile
+	 * 
+	 * @param
+	 * @return store front billing info page object
+	 * 
+	 */
+	public StoreFrontBillingInfoPage clickBillingProfileEditLink(String profile){
+		driver.clickByJS(RFWebsiteDriver.driver,driver.findElement(By.xpath(String.format(editLinkForSpecificBillingProfileLoc,profile))));
+		logger.info("Edit Link Clicked for Billing Profile : " + profile);
+		return this;
 	}
 
 }

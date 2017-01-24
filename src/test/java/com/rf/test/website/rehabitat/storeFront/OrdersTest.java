@@ -476,17 +476,6 @@ public class OrdersTest extends StoreFrontWebsiteBaseTest{
 	}
 
 	/***
-	 * qTest : TC-313 Ship Method-PC - Existing PC changes Shipping Method
-	 * Description : //TODO
-	 * 
-	 *     
-	 */
-	@Test(enabled=false)//TODO
-	public void testShipMethodPCExistingPCChangesShippingMethod_313(){
-
-	}
-
-	/***
 	 * qTest : TC-314 Ship Method-PC - Existing PC places Ad-hoc order
 	 * Description : This testcase validates shipping method name and cost for PC
 	 * During Adhoc order
@@ -506,7 +495,6 @@ public class OrdersTest extends StoreFrontWebsiteBaseTest{
 		s_assert.assertTrue(shippingMethodWithCost.contains("$0") && shippingMethodWithCost.contains(shippingMethodName), "Expected shipping method name is "+shippingMethodName+" and shipping cost should contain $0 but actual on UI is "+shippingMethodWithCost);
 		s_assert.assertAll();
 	}
-
 
 	/***
 	 * qTest : TC-315 Ship method- Ad Hoc carts
@@ -1850,6 +1838,69 @@ public class OrdersTest extends StoreFrontWebsiteBaseTest{
 		s_assert.assertTrue(productUnitPriceAtOrderDetailsPage.contains(yourPrice),"Product unit price is not matching. Expected is:"+yourPrice+"But found is "+productUnitPriceAtOrderDetailsPage);
 		s_assert.assertTrue(orderTotalAtOrderDetailsPage.contains(totalOfOrder),"Product order total is not matching. Expected is:"+totalOfOrder+"But found is "+orderTotalAtOrderDetailsPage);
 		s_assert.assertTrue(productNameAtOrderDetailsPage.contains(productName),"Product name is not matching. Expected is:"+productName+"But found is "+productNameAtOrderDetailsPage);
+		s_assert.assertAll();
+	}
+
+	/***
+	 * qTest : TC-477 Retail User Checkout- Choose a Consultant - multiple search
+	 * Description : This test case  search sponsor multiple times and validate the last selected sponsor
+	 * 
+	 */
+	@Test(enabled=true)
+	public void testRetailUserCheckoutChooseAConsultantMultipleSearch_477(){
+		String sponsorID = TestConstants.CONSULTANT_WITH_CRP_USERNAME;
+		String sponsorFromUI = null;
+		sfHomePage.loginToStoreFront(TestConstants.RC_EMAIL, password);
+		sfShopSkinCarePage = sfHomePage.clickAllProducts();
+		sfShopSkinCarePage.addProductToCart(TestConstants.PRODUCT_NUMBER, TestConstants.ORDER_TYPE_ADHOC);;
+		sfCartPage = sfShopSkinCarePage.checkoutTheCartFromPopUp();
+		sfCheckoutPage = sfCartPage.checkoutTheCart();
+		sfCheckoutPage.searchSponsor(TestConstants.SPONSOR);
+		s_assert.assertTrue(sfHomePage.isSponsorResultDisplayed(),"No result found after searching the sponsor with name "+TestConstants.SPONSOR);
+		sfCheckoutPage.searchSponsor(sponsorID);
+		s_assert.assertTrue(sfHomePage.isSponsorResultDisplayed(),"No result found after searching the sponsor with name "+sponsorID);
+		sfCheckoutPage.selectFirstSponsorFromList();
+		sponsorFromUI = sfCheckoutPage.getSponsorNameFromAccountInfo();
+		s_assert.assertTrue(sponsorFromUI.contains(sponsorID), "Expected sponsor email is "+sponsorID+" but actual on UI is"+sponsorFromUI);
+		s_assert.assertAll();
+	}
+
+	/***
+	 * qTest : TC-313 Ship Method-PC - Existing PC changes Shipping Method
+	 * Description : This test case change the all shipping method and verify their charges
+	 * 
+	 *     
+	 */
+	@Test(enabled=false)
+	public void testShipMethodPCExistingPCChangesShippingMethod_313(){
+		String shippingMethodWithCost = null;
+		String deliveryCharge = null;
+		sfHomePage.loginToStoreFront(TestConstants.PC_USERNAME, password);
+		sfCartPage = sfHomePage.clickMiniCartBagLink();
+		sfCartPage.removeAllProductsFromCart();
+		sfCartPage.clickRodanAndFieldsLogo();
+		sfShopSkinCarePage = sfCartPage.clickAllProducts();
+		sfShopSkinCarePage.addProductToCart(TestConstants.PRODUCT_NUMBER, TestConstants.ORDER_TYPE_ADHOC);;
+		sfCartPage = sfShopSkinCarePage.checkoutTheCartFromPopUp();
+		sfCheckoutPage = sfCartPage.clickCheckoutBtn();
+		sfCheckoutPage.clickSaveButton();
+		shippingMethodWithCost = sfCheckoutPage.getSelectedShippingMethodName();
+		sfCheckoutPage.clickNextbuttonOfShippingDetails();
+		deliveryCharge = sfCheckoutPage.getDeliveryChargesAtOrderReviewPage().toLowerCase();
+		s_assert.assertTrue(shippingMethodWithCost.contains("$0") && deliveryCharge.contains("free"), "Expected shipping method cost for UPS ground is "+shippingMethodWithCost+" and delivery charge should contain free but actual on UI is "+deliveryCharge);
+		sfCheckoutPage.navigateToBackPage();
+		sfCheckoutPage.selectShippingMethod(TestConstants.SHIPPING_METHOD_UPS_2DAY);
+		shippingMethodWithCost = sfCheckoutPage.getSelectedShippingMethodName();
+		sfCheckoutPage.clickNextbuttonOfShippingDetails();
+		deliveryCharge = sfCheckoutPage.getDeliveryChargesAtOrderReviewPage().trim();
+		s_assert.assertTrue(shippingMethodWithCost.contains(deliveryCharge), "Expected shipping method cost for UPS 2Day is "+shippingMethodWithCost+" but actual on UI is "+deliveryCharge);
+		// For SHIPPING_METHOD_UPS_OVERNIGHT
+		sfCheckoutPage.navigateToBackPage();
+		sfCheckoutPage.selectShippingMethod(TestConstants.SHIPPING_METHOD_UPS_OVERNIGHT);
+		shippingMethodWithCost = sfCheckoutPage.getSelectedShippingMethodName();
+		sfCheckoutPage.clickNextbuttonOfShippingDetails();
+		deliveryCharge = sfCheckoutPage.getDeliveryChargesAtOrderReviewPage().trim();
+		s_assert.assertTrue(shippingMethodWithCost.contains(deliveryCharge), "Expected shipping method cost for UPS Overnight is "+shippingMethodWithCost+" but actual on UI is "+deliveryCharge);
 		s_assert.assertAll();
 	}
 }

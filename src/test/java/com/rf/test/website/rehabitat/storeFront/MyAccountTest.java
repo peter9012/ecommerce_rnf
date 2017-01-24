@@ -1145,7 +1145,7 @@ public class MyAccountTest extends StoreFrontWebsiteBaseTest{
 	 * qtest: TC-277 Consultant Autoship Status- Subscribe to Pulse (First Time Pulse Enrollment)
 	 * Description: This method subscribe the consultant with pulse and also cancels the same
 	 */	
-	@Test(enabled=false)//TODO
+	@Test(enabled=true)//TODO
 	public void testConsultantFirstTimePulseEnrollment_277(){
 		String prefix = TestConstants.FIRST_NAME+CommonUtils.getCurrentTimeStamp();
 		sfHomePage.loginToStoreFront(TestConstants.CONSULTANT_EMAIL,password);
@@ -1247,16 +1247,9 @@ public class MyAccountTest extends StoreFrontWebsiteBaseTest{
 	 * 
 	 * 				
 	 */
-	@Test(enabled=false) //TODO No subscribe to pulse link present on order page.
+	@Test(enabled=true) 
 	public void testEnrollUserInPulseFromOrderHistoryPage_359(){
-		String currentURL = null;
-		String currentWindowID = null;
-		String urlToAssert = "myrfpulse";
-		//Login as consultant user.
-		sfHomePage.loginToStoreFront(TestConstants.CONSULTANT_USERNAME,password);
-		sfHomePage.clickWelcomeDropdown();
-		sfOrdersPage = sfHomePage.navigateToOrdersPage();
-		s_assert.assertAll();
+		//Duplicate TestCase same as TC-499 Cart Page- Checkout CTA - Anonymous - Login
 	}
 
 	/***
@@ -1349,21 +1342,38 @@ public class MyAccountTest extends StoreFrontWebsiteBaseTest{
 
 	/***
 	 * qtest: TC-278 Consultant Autoship Status- Subscribe to Pulse (Re-Enrollment within 180 days)
-	  Description: This method re-enroll consultant in pulse within existing inactive prefix .
-	 *within 180 days
+	  Description: This method re-enroll consultant in pulse with new prefix and existing autosuggested prefix .
+	 *
 	 */	
-	@Test(enabled=false)//Incomplete for existing Inactive Prefix less than 180 days.
-	public void testReEnnrollmentInPulseWithin180DaysOfExistingInactivePrefix_278(){
+	@Test(enabled=false)
+	public void testReEnnrollmentInPulseWithin180DaysOfExistingAutoSuggestedPrefix_278(){
 		String prefix = TestConstants.FIRST_NAME+CommonUtils.getCurrentTimeStamp();
-		//String existingInactiveprefix = null;
+		String autoSuggestedPrefixName = null;
+		//Subscribe to pulse with a new prefix.
 		sfCheckoutPage = new StoreFrontCheckoutPage(driver);
-		sfHomePage.loginToStoreFront(TestConstants.CONSULTANT_EMAIL,password);
+		sfHomePage.loginToStoreFront(TestConstants.CONSULTANT_EMAIL_WITHOUT_PULSE,password);
 		sfHomePage.clickWelcomeDropdown();
 		sfAutoshipStatusPage = sfHomePage.navigateToAutoshipStatusPage();
 		sfAutoshipStatusPage.clickSubscribeToPulseBtn();
+		autoSuggestedPrefixName = sfAutoshipStatusPage.getAvailablePrefixName();
 		sfAutoshipStatusPage.enterAvailablePrefix(prefix);
 		sfAutoshipStatusPage.clickNextBtn();
-		sfCheckoutPage = sfAutoshipStatusPage.clickConfirmSubscription().checkTheConfirmSubscriptionChkBoxAndSubscribe();
+		sfAutoshipStatusPage.clickConfirmSubscription();
+		sfCheckoutPage.clickUseSavedCardBtn().clickBillingDetailsNextbutton().clickPlaceOrderButton();
+		s_assert.assertTrue(sfCheckoutPage.isPopUpForTermsAndConditionsCheckboxDisplayed(), "validation popup for terms and conditions not displayed");
+		sfCheckoutPage.closePopUp();
+		sfCheckoutPage.selectTermsAndConditionsChkBox().clickPlaceOrderButton();
+		s_assert.assertTrue(sfCheckoutPage.isOrderPlacedSuccessfully(),"Order is Not placed successfully");
+		//Cancel the pulse of user.
+		sfHomePage.clickWelcomeDropdown();
+		sfAutoshipStatusPage = sfHomePage.navigateToAutoshipStatusPage();
+		sfAutoshipStatusPage.clickCancelPulseSubscription().clickConfirmSubscription();
+		s_assert.assertTrue(sfAutoshipStatusPage.isSubscribeToPulseBtnDisplayed(), "Pulse subscription is NOT cancelled");
+		//Subscribe to pulse again with autosuggested prefix prefix.
+		sfAutoshipStatusPage.clickSubscribeToPulseBtn();
+		sfAutoshipStatusPage.enterAvailablePrefix(autoSuggestedPrefixName);
+		sfAutoshipStatusPage.clickNextBtn();
+		sfAutoshipStatusPage.clickConfirmSubscription();
 		sfCheckoutPage.clickUseSavedCardBtn().clickBillingDetailsNextbutton().clickPlaceOrderButton();
 		s_assert.assertTrue(sfCheckoutPage.isPopUpForTermsAndConditionsCheckboxDisplayed(), "validation popup for terms and conditions not displayed");
 		sfCheckoutPage.closePopUp();
@@ -1371,7 +1381,7 @@ public class MyAccountTest extends StoreFrontWebsiteBaseTest{
 		s_assert.assertTrue(sfCheckoutPage.isOrderPlacedSuccessfully(),"Order is Not placed successfully");
 		s_assert.assertAll();
 	}
-	
+
 	/***
 	 * qTest : TC-287 Account Information- Consultant information
 	 * 
@@ -1380,13 +1390,51 @@ public class MyAccountTest extends StoreFrontWebsiteBaseTest{
 	 * 
 	 * 				
 	 */
-	@Test(enabled=false)
+	@Test(enabled=true)
 	public void testVerifySponserNameOnAccountInfoPage_287(){
 		//Login as consultant user.
 		sfHomePage.loginToStoreFront(TestConstants.PC_EMAIL,password);
 		sfHomePage.clickWelcomeDropdown();
 		sfAccountInfoPage = sfHomePage.navigateToAccountInfoPage();
 		s_assert.assertTrue(sfAccountInfoPage.isSponserNameWithTitleRFIndependentConsultantPresent(),"Sponser name along title 'R+F' independent consultant not present.");
+		s_assert.assertAll();
+	}
+
+	/***
+	 * qtest: TC-369 Consultant Autoship Status- Subscribe to Pulse (Using some other Prefix less than 180 days)
+	  Description: This method re-enroll consultant in pulse with existing autosuggested prefix and other consultant prefix.
+	 *
+	 */	
+	@Test(enabled=false)
+	public void testReEnnrollmentInPulseWithin180DaysWithOtherUserPrefix_369(){
+		String autoSuggestedPrefixName = null;
+		String otherUserPrefix = TestConstants.CONSULTANT_PREFIX;
+		String errorMessage = null;
+		String expectedErrorMsgForPrefix = TestConstants.ERROR_MSG_EXISTING_PREFIX;
+		//Subscribe to pulse with a new prefix.
+		sfCheckoutPage = new StoreFrontCheckoutPage(driver);
+		sfHomePage.loginToStoreFront(TestConstants.CONSULTANT_EMAIL_WITHOUT_PULSE,password);
+		sfHomePage.clickWelcomeDropdown();
+		sfAutoshipStatusPage = sfHomePage.navigateToAutoshipStatusPage();
+		sfAutoshipStatusPage.clickSubscribeToPulseBtn();
+		autoSuggestedPrefixName = sfAutoshipStatusPage.getAvailablePrefixName();
+		sfAutoshipStatusPage.enterAvailablePrefix(otherUserPrefix);
+		sfAutoshipStatusPage.clickNextBtn();
+		errorMessage = sfAutoshipStatusPage.getErrorMessageForExistingPrefixName();
+		s_assert.assertTrue(errorMessage.contains(expectedErrorMsgForPrefix),"Error message for existing prefix name not available Expected"+expectedErrorMsgForPrefix+"while Actual"+errorMessage);
+		sfAutoshipStatusPage.enterAvailablePrefix(autoSuggestedPrefixName);
+		sfAutoshipStatusPage.clickNextBtn();
+		sfAutoshipStatusPage.clickConfirmSubscription();
+		sfCheckoutPage.clickUseSavedCardBtn().clickBillingDetailsNextbutton().clickPlaceOrderButton();
+		s_assert.assertTrue(sfCheckoutPage.isPopUpForTermsAndConditionsCheckboxDisplayed(), "validation popup for terms and conditions not displayed");
+		sfCheckoutPage.closePopUp();
+		sfCheckoutPage.selectTermsAndConditionsChkBox().clickPlaceOrderButton();
+		s_assert.assertTrue(sfCheckoutPage.isOrderPlacedSuccessfully(),"Order is Not placed successfully");
+		//Cancel the pulse of user.
+		sfHomePage.clickWelcomeDropdown();
+		sfAutoshipStatusPage = sfHomePage.navigateToAutoshipStatusPage();
+		sfAutoshipStatusPage.clickCancelPulseSubscription().clickConfirmSubscription();
+		s_assert.assertTrue(sfAutoshipStatusPage.isSubscribeToPulseBtnDisplayed(), "Pulse subscription is NOT cancelled");
 		s_assert.assertAll();
 	}
 }

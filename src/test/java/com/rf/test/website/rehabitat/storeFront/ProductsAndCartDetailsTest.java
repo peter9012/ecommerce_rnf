@@ -9,6 +9,7 @@ import com.rf.test.website.rehabitat.storeFront.baseTest.StoreFrontWebsiteBaseTe
 public class ProductsAndCartDetailsTest extends StoreFrontWebsiteBaseTest{
 
 	/***
+	 * 
 	 * qTest : TC-62 Sort/Order Removal by default option section
 	 * 
 	 * Description : This test validates the sorting of product base on price filter applied
@@ -28,25 +29,6 @@ public class ProductsAndCartDetailsTest extends StoreFrontWebsiteBaseTest{
 		//Verify the default price filter applied.
 		s_assert.assertFalse(sfShopSkinCarePage.isPriceFilterLowToHighAppliedSuccessfully(),"Selected Price filter 'Default' is not applied but 'Low To High' applied to product successfully");
 		s_assert.assertFalse(sfShopSkinCarePage.isPriceFilterHighToLowAppliedSuccessfully(),"Selected Price filter 'Default' is not applied but 'High To Low' applied to product successfully");
-		s_assert.assertAll();
-	}
-
-	/***
-	 * qTest : TC-63 Sort/Order Removal by clicking Clear All link
-	 * 
-	 * Description : This test validates the sorting of product base on price filter applied
-	 * and also Unsorting of product when filter removed by clicking clear all link.
-	 * 				
-	 */ 
-	@Test(enabled=false) //TODO Blocked as no clear all link is present.
-	public void testSortAndUnsortProductBaseOnPriceFilterApplied_63(){
-		String allProduct = "ALL PRODUCTS";
-		sfShopSkinCarePage=sfHomePage.navigateToShopSkincareLink(allProduct);
-		sfShopSkinCarePage.productPriceFilterLowToHigh();
-		s_assert.assertTrue(sfShopSkinCarePage.isPriceFilterLowToHighAppliedSuccessfully(),"Selected Price filter 'Low To High' is not applied to product successfully");
-		//Click clear all link and verify all filters are removed.
-		//sfShopSkinCarePage.selectClearAllLink(); create this method.
-		s_assert.assertFalse(sfShopSkinCarePage.isPriceFilterLowToHighAppliedSuccessfully(),"Selected Price filter 'Low To High' is still applied after clicking clear all link.");
 		s_assert.assertAll();
 	}
 
@@ -483,68 +465,6 @@ public class ProductsAndCartDetailsTest extends StoreFrontWebsiteBaseTest{
 		sfCartPage.enterQuantityOfProductAtCart("1", quantityAsZero);
 		sfCartPage.clickOnUpdateLinkThroughItemNumber("1");
 		s_assert.assertFalse(sfCartPage.isProductPresentInCart(),"No product expected in cart but product are present in cart");
-		s_assert.assertAll();
-	}
-
-	/***
-	 * qTest : TC-69 Cart Page- Add More Items CTA
-	 * Description : This test validates login with consultant,PC and RC and observe the products
-	 *     are added to cart successfully.
-	 */
-	@Test(enabled=false) //TODO Pending for consultant and PC autoship cart page
-	public void testAddMultipleProductsToCartAfterLogin_69(){
-		String usertype = "Consultant";
-		String pcUsertype = TestConstants.USER_TYPE_PC;
-		String itemInAdhocCart= "1";
-		String noOfItemFromUI = null;   
-		//Verify anonymous user cart page product.
-		sfShopSkinCarePage = sfHomePage.clickAllProducts();
-		sfShopSkinCarePage.addProductToCart(TestConstants.PRODUCT_NUMBER, TestConstants.ORDER_TYPE_ADHOC);
-		sfCartPage = sfShopSkinCarePage.checkoutTheCartFromPopUp();
-		noOfItemFromUI = sfCartPage.getNumberOfItemFromMiniCart();
-		s_assert.assertTrue(noOfItemFromUI.equalsIgnoreCase(itemInAdhocCart), "Expected no of item is "+itemInAdhocCart+" Actual on UI is "+noOfItemFromUI);
-		sfCartPage.clickAddMoreItemsBtn();
-		s_assert.assertTrue(sfShopSkinCarePage.isAllProductPageDisplayed(),"All product page not present after clicking continue shopping for anonymous user.");
-		//Add multiple products to consultant adhoc and autoship cart.
-		//Adhoc cart
-		sfHomePage.loginToStoreFront(TestConstants.CONSULTANT_EMAIL, password);
-		sfShopSkinCarePage=sfHomePage.clickAllProducts();
-		sfShopSkinCarePage.addProductToCart(TestConstants.PRODUCT_NUMBER, TestConstants.ORDER_TYPE_ADHOC);
-		sfCartPage = sfShopSkinCarePage.checkoutTheCartFromPopUp();
-		sfCartPage.clickAddMoreItemsBtn();
-		s_assert.assertTrue(sfShopSkinCarePage.isAllProductPageDisplayed(),"All product page not present after clicking continue shopping on adhoc cart of consultant.");
-		//Autoship cart.
-		//sfShopSkinCarePage.addFirstProductToAutoshipCart(usertype);
-		//sfAutoshipCartPage = sfShopSkinCarePage.acceptEnrollInCRPPopup();
-		//sfCartPage.clickAddMoreItemsBtn();
-		//s_assert.assertTrue(sfShopSkinCarePage.isAllProductPageDisplayed(),"All product page not present after clicking continue shopping on autoship cart of consultant.");
-		sfShopSkinCarePage.clickRodanAndFieldsLogo();
-		sfHomePage.clickWelcomeDropdown();
-		sfHomePage.logout();
-		//Add multiple products to PC adhoc And Autoship cart
-		//PC adhoc cart
-		sfHomePage.loginToStoreFront(TestConstants.PC_EMAIL, password);
-		sfShopSkinCarePage=sfHomePage.clickAllProducts();
-		sfShopSkinCarePage.addProductToCart(TestConstants.PRODUCT_NUMBER, TestConstants.ORDER_TYPE_ADHOC);
-		sfCartPage = sfShopSkinCarePage.checkoutTheCartFromPopUp();
-		sfCartPage.clickAddMoreItemsBtn();
-		s_assert.assertTrue(sfShopSkinCarePage.isAllProductPageDisplayed(),"All product page not present after clicking continue shopping on adhoc cart of PC.");
-		//PC Autoship Cart
-		//sfShopSkinCarePage.addFirstProductToAutoshipCart(pcUsertype);
-		//sfCartPage = sfShopSkinCarePage.checkoutTheCartFromPopUp();
-		//sfCartPage.clickAddMoreItemsBtn();
-		//s_assert.assertTrue(sfShopSkinCarePage.isAllProductPageDisplayed(),"All product page not present after clicking continue shopping on autoship cart of PC.");
-		sfShopSkinCarePage.clickRodanAndFieldsLogo();
-		sfHomePage.clickWelcomeDropdown();
-		sfHomePage.logout();
-		//Add multiple products to RC adhoc And Autoship cart
-		//RC adhoc cart
-		sfHomePage.loginToStoreFront(TestConstants.RC_EMAIL, password);
-		sfShopSkinCarePage=sfHomePage.clickAllProducts();
-		sfShopSkinCarePage.addProductToCart(TestConstants.PRODUCT_NUMBER, TestConstants.ORDER_TYPE_ADHOC);
-		sfCartPage = sfShopSkinCarePage.checkoutTheCartFromPopUp();
-		sfCartPage.clickAddMoreItemsBtn();
-		s_assert.assertTrue(sfShopSkinCarePage.isAllProductPageDisplayed(),"All product page not present after clicking continue shopping on RC adhoc cart.");
 		s_assert.assertAll();
 	}
 
@@ -1022,14 +942,15 @@ public class ProductsAndCartDetailsTest extends StoreFrontWebsiteBaseTest{
 	@Test(enabled=true)
 	public void testPCPerksPromoMsgAnonymousUser_154(){
 		sfShopSkinCarePage = sfHomePage.clickAllProducts();
-		sfShopSkinCarePage.clickOnQuickViewLinkForProduct("1");
-		s_assert.assertTrue(sfShopSkinCarePage.isProductImagePresentAtQuickViewPopup(),
-				"Product image is not present at Quick view popup");
-		s_assert.assertTrue(sfShopSkinCarePage.isPCPerksPromoMessageAndSaveAmountPresentOnQuickViewPopup(),
-				"PC Perks Promo message is NOT present on Quick view popup for anonymous user");
-		s_assert.assertTrue(sfShopSkinCarePage.isViewProductDetailsLinkDisplayedOnQuickViewPopup(),
-				"View product Details link is not presnt on quick view poup");		
-		sfShopSkinCarePage.clickLearnMoreLinkOnQuickView();
+		sfProductDetailPage=sfShopSkinCarePage.clickNameOfProductOnAllProductPage("1");
+		s_assert.assertTrue(sfProductDetailPage.isDescriptionTabPresentAtProductDetailsPage(), "Not on Product details page");
+		//		s_assert.assertTrue(sfShopSkinCarePage.isProductImagePresentAtQuickViewPopup(),
+		//				"Product image is not present at Quick view popup");
+		//		s_assert.assertTrue(sfShopSkinCarePage.isPCPerksPromoMessageAndSaveAmountPresentOnQuickViewPopup(),
+		//				"PC Perks Promo message is NOT present on Quick view popup for anonymous user");
+		//		s_assert.assertTrue(sfShopSkinCarePage.isViewProductDetailsLinkDisplayedOnQuickViewPopup(),
+		//				"View product Details link is not presnt on quick view poup");		
+		sfShopSkinCarePage.clickLearnMoreLink();
 		s_assert.assertTrue(sfShopSkinCarePage.isLearnMoreAboutPCPromoPopupDisplayed(), "pc perks promo popup not displayed after clicking on learn more link");
 		sfShopSkinCarePage.closePCPerksPromoPopUp();
 		s_assert.assertFalse(sfShopSkinCarePage.isLearnMoreAboutPCPromoPopupDisplayed(), "pc perks promo popup has NOT closed");
@@ -1046,14 +967,15 @@ public class ProductsAndCartDetailsTest extends StoreFrontWebsiteBaseTest{
 	public void testPCPerksPromoMsgRCUser_155(){
 		sfHomePage.loginToStoreFront(TestConstants.RC_USERNAME, password);
 		sfShopSkinCarePage = sfHomePage.clickAllProducts();
-		sfShopSkinCarePage.clickOnQuickViewLinkForProduct("1");
-		s_assert.assertTrue(sfShopSkinCarePage.isProductImagePresentAtQuickViewPopup(),
-				"Product image is not present at Quick view popup");
-		s_assert.assertTrue(sfShopSkinCarePage.isPCPerksPromoMessageAndSaveAmountPresentOnQuickViewPopup(),
-				"PC Perks Promo message is NOT present on Quick view popup for anonymous user");
-		s_assert.assertTrue(sfShopSkinCarePage.isViewProductDetailsLinkDisplayedOnQuickViewPopup(),
-				"View product Details link is not presnt on quick view poup");		
-		sfShopSkinCarePage.clickLearnMoreLinkOnQuickView();
+		sfProductDetailPage=sfShopSkinCarePage.clickNameOfProductOnAllProductPage("1");
+		s_assert.assertTrue(sfProductDetailPage.isDescriptionTabPresentAtProductDetailsPage(), "Not on Product details page");
+		//		s_assert.assertTrue(sfShopSkinCarePage.isProductImagePresentAtQuickViewPopup(),
+		//				"Product image is not present at Quick view popup");
+		//		s_assert.assertTrue(sfShopSkinCarePage.isPCPerksPromoMessageAndSaveAmountPresentOnQuickViewPopup(),
+		//				"PC Perks Promo message is NOT present on Quick view popup for anonymous user");
+		//		s_assert.assertTrue(sfShopSkinCarePage.isViewProductDetailsLinkDisplayedOnQuickViewPopup(),
+		//				"View product Details link is not presnt on quick view poup");		
+		sfShopSkinCarePage.clickLearnMoreLink();
 		s_assert.assertTrue(sfShopSkinCarePage.isLearnMoreAboutPCPromoPopupDisplayed(), "pc perks promo popup not displayed after clicking on learn more link");
 		sfShopSkinCarePage.closePCPerksPromoPopUp();
 		s_assert.assertFalse(sfShopSkinCarePage.isLearnMoreAboutPCPromoPopupDisplayed(), "pc perks promo popup has NOT closed");
@@ -1094,7 +1016,7 @@ public class ProductsAndCartDetailsTest extends StoreFrontWebsiteBaseTest{
 		s_assert.assertFalse(sfCartPage.isProductPresentInCart(),"No product expected in cart but product are present in cart");
 		s_assert.assertAll();
 	}
-	
+
 	/***
 	 * qTest : TC-161 Cart Page- Anonymous User - Ad Hoc Cart
 	 * Description : This test validates adhoc product is added to the cart and verifies from product popup
@@ -1240,6 +1162,124 @@ public class ProductsAndCartDetailsTest extends StoreFrontWebsiteBaseTest{
 		currentURL = sfCheckoutPage.getCurrentURL();
 		s_assert.assertTrue(currentURL.contains(urlToAssertForCheckoutPage),"Expected URL should contain "+urlToAssertForCheckoutPage+" but actual on UI is "+currentURL);
 		s_assert.assertTrue(sfCheckoutPage.isShippingLinkPresentAtCheckoutPage(),"Shipping Link is not present on Checkout page when clicked on Ok button on confirmation popup");
+		s_assert.assertAll();
+	}
+
+	/***
+	 * qTest : TC-169 PC Perks information overlay
+	 * 
+	 * Description : This test validates the PC Perks Promotion Overlay
+	 *     
+	 */ 
+	@Test(enabled=false) 
+	public void testPCPerksInformationOverlay_169(){
+		String overlayPromoMsg = null;
+		sfShopSkinCarePage = sfHomePage.clickAllProducts();
+		sfShopSkinCarePage.addProductToCart(TestConstants.PRODUCT_NUMBER, TestConstants.ORDER_TYPE_ADHOC);
+		sfCartPage = sfShopSkinCarePage.checkoutTheCartFromPopUp();
+		sfCartPage.clickLearnMoreLink();
+		s_assert.assertTrue(sfCartPage.isPCPerksPromotionPopupPresent(),"PC Perks Promotion overlay is not present");
+		overlayPromoMsg = sfCartPage.getPromotionOverlayContent();
+		s_assert.assertTrue(overlayPromoMsg.contains(TestConstants.PROMOTION_OVERLAY_MSG),"Promotion overlay msg is not present as expected");
+		sfCartPage.clickCloseBtnOfPromotionOverlay();
+		s_assert.assertFalse(sfCartPage.isPCPerksPromotionPopupPresent(),"PC Perks Promotion overlay is still present after clicking on close Button");
+
+		sfCartPage.clickLearnMoreLink();
+		s_assert.assertTrue(sfCartPage.isPCPerksPromotionPopupPresent(),"PC Perks Promotion overlay is not present");
+		overlayPromoMsg = sfCartPage.getPromotionOverlayContent();
+		s_assert.assertTrue(overlayPromoMsg.contains(TestConstants.PROMOTION_OVERLAY_MSG),"Promotion overlay msg is not present as expected");
+		sfCartPage.pressEscapeKeyForDismissingPromotionOverlay();
+		s_assert.assertFalse(sfCartPage.isPCPerksPromotionPopupPresent(),"PC Perks Promotion overlay is still present after after clicking outside of the poupup");
+		s_assert.assertAll();
+	}
+
+	/***
+	 * qTest : TC-69 Cart Page- Add More Items CTA
+	 * Description : This test validates login with consultant,PC and RC and observe the products
+	 *     are added to cart successfully.
+	 */
+	@Test(enabled=false)
+	public void testAddMultipleProductsToCartAfterLogin_69(){
+		String usertype = "Consultant";
+		String pcUsertype = TestConstants.USER_TYPE_PC;
+		String itemInAdhocCart= "1";
+		String noOfItemFromUI = null;   
+		//Verify anonymous user cart page product.
+		sfShopSkinCarePage = sfHomePage.clickAllProducts();
+		sfShopSkinCarePage.addProductToCart(TestConstants.PRODUCT_NUMBER, TestConstants.ORDER_TYPE_ADHOC);
+		sfCartPage = sfShopSkinCarePage.checkoutTheCartFromPopUp();
+		noOfItemFromUI = sfCartPage.getNumberOfItemFromMiniCart();
+		s_assert.assertTrue(noOfItemFromUI.equalsIgnoreCase(itemInAdhocCart), "Expected no of item is "+itemInAdhocCart+" Actual on UI is "+noOfItemFromUI);
+		sfCartPage.clickAddMoreItemsBtn();
+		s_assert.assertTrue(sfShopSkinCarePage.isAllProductPageDisplayed(),"All product page not present after clicking continue shopping for anonymous user.");
+		sfShopSkinCarePage.clickRodanAndFieldsLogo();
+		//Add multiple products to consultant adhoc and autoship cart.
+		//Adhoc cart
+		sfHomePage.loginToStoreFront(TestConstants.CONSULTANT_WITH_CRP_USERNAME, password);
+		sfShopSkinCarePage=sfHomePage.clickAllProducts();
+		sfShopSkinCarePage.refineProductByCategory(TestConstants.CONSULTANT_CRP_AUTOSHIP_PRODUCT_CATEGORY);
+		sfShopSkinCarePage.addProductToCart(TestConstants.PRODUCT_NUMBER, TestConstants.ORDER_TYPE_ADHOC);
+		sfCartPage = sfShopSkinCarePage.checkoutTheCartFromPopUp();
+		sfCartPage.clickAddMoreItemsBtn();
+		s_assert.assertTrue(sfShopSkinCarePage.isAllProductPageDisplayed(),"All product page not present after clicking continue shopping on adhoc cart of consultant.");
+		//Autoship cart.
+		sfShopSkinCarePage.refineProductByCategory(TestConstants.CONSULTANT_CRP_AUTOSHIP_PRODUCT_CATEGORY);
+		sfShopSkinCarePage.addProductToCart(TestConstants.PRODUCT_NUMBER, TestConstants.ORDER_TYPE_CRP);
+		sfCartPage = sfShopSkinCarePage.checkoutTheCartFromPopUp();
+		sfCartPage.clickAddMoreItemsBtn();
+		s_assert.assertTrue(sfShopSkinCarePage.isAllProductPageDisplayed(),"All product page not present after clicking continue shopping on autoship cart of consultant.");
+		sfShopSkinCarePage.clickRodanAndFieldsLogo();
+		sfHomePage.clickWelcomeDropdown();
+		sfHomePage.logout();
+		navigateToStoreFrontBaseURL();
+		//Add multiple products to PC adhoc And Autoship cart
+		//PC adhoc cart
+		sfHomePage.loginToStoreFront(TestConstants.PC_EMAIL_HAVING_AUTOSHIP, password);
+		sfShopSkinCarePage=sfHomePage.clickAllProducts();
+		sfShopSkinCarePage.refineProductByCategory(TestConstants.PC_PERKS_AUTOSHIP_PRODUCT_CATEGORY);
+		sfShopSkinCarePage.addProductToCart(TestConstants.PRODUCT_NUMBER, TestConstants.ORDER_TYPE_ADHOC);
+		sfCartPage = sfShopSkinCarePage.checkoutTheCartFromPopUp();
+		sfCartPage.clickAddMoreItemsBtn();
+		s_assert.assertTrue(sfShopSkinCarePage.isAllProductPageDisplayed(),"All product page not present after clicking continue shopping on adhoc cart of PC.");
+		sfShopSkinCarePage.clickRodanAndFieldsLogo();
+		//PC Autoship Cart
+		sfShopSkinCarePage.refineProductByCategory(TestConstants.PC_PERKS_AUTOSHIP_PRODUCT_CATEGORY);
+		sfShopSkinCarePage.addProductToCart(TestConstants.PRODUCT_NUMBER, TestConstants.ORDER_TYPE_PC_PERKS);
+		sfCartPage = sfShopSkinCarePage.checkoutTheCartFromPopUp();
+		sfCartPage.clickAddMoreItemsBtn();
+		s_assert.assertTrue(sfShopSkinCarePage.isAllProductPageDisplayed(),"All product page not present after clicking continue shopping on autoship cart of consultant.");
+		sfShopSkinCarePage.clickRodanAndFieldsLogo();
+		sfHomePage.clickWelcomeDropdown();
+		sfHomePage.logout();
+		navigateToStoreFrontBaseURL();
+		//Add multiple products to RC adhoc And Autoship cart
+		//RC adhoc cart
+		sfHomePage.loginToStoreFront(TestConstants.RC_EMAIL, password);
+		sfShopSkinCarePage=sfHomePage.clickAllProducts();
+		sfShopSkinCarePage.addProductToCart(TestConstants.PRODUCT_NUMBER, TestConstants.ORDER_TYPE_ADHOC);
+		sfCartPage = sfShopSkinCarePage.checkoutTheCartFromPopUp();
+		sfCartPage.clickAddMoreItemsBtn();
+		s_assert.assertTrue(sfShopSkinCarePage.isAllProductPageDisplayed(),"All product page not present after clicking continue shopping on RC adhoc cart.");
+		s_assert.assertAll();
+	}
+
+	/***
+	 * qTest : TC-63 Sort/Order Removal by clicking Clear All link
+	 * 
+	 * Description : This test validates the sorting of product base on price filter applied
+	 * and also Unsorting of product when filter removed by clicking clear all link.
+	 * 				
+	 */ 
+	@Test(enabled=false)//No price present for first 3 products.
+	public void testSortAndUnsortProductBaseOnPriceFilterApplied_63(){
+		String allProduct = "ALL PRODUCTS";
+		sfShopSkinCarePage=sfHomePage.navigateToShopSkincareLink(allProduct);
+		sfShopSkinCarePage.refineProductByCategoryAndReturnCategoryName();
+		sfShopSkinCarePage.productPriceFilterLowToHighSelect();
+		s_assert.assertTrue(sfShopSkinCarePage.isPriceFilterLowToHighAppliedSuccessfully(),"Selected Price filter 'Low To High' is not applied to product successfully");
+		//Click clear all link and verify all filters are removed.
+		sfShopSkinCarePage.selectClearAllLink(); 
+		s_assert.assertFalse(sfShopSkinCarePage.isPriceFilterLowToHighAppliedSuccessfully(),"Selected Price filter 'Low To High' is still applied after clicking clear all link.");
 		s_assert.assertAll();
 	}
 

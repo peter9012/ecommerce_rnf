@@ -299,17 +299,6 @@ public class AddAndDeleteShippingTest extends StoreFrontWebsiteBaseTest{
 	}
 
 	/***
-	 * qTest : TC-172 Default Ship Address displayed in checkout - Single Address
-	 * Description : This test validates the default shipping profile at
-	 * checkout page
-	 *     
-	 */
-	@Test(enabled=false)//TODO
-	public void testDefaultShipAddressDisplayedInCheckoutSingleAddress_172(){
-
-	}
-
-	/***
 	 * qTest : TC-377 Delete shipping profile
 	 * Description : This test validates delete shipping profile which is not a part of autoship
 	 *     
@@ -500,5 +489,63 @@ public class AddAndDeleteShippingTest extends StoreFrontWebsiteBaseTest{
 		currentURL = sfShippingInfoPage.getCurrentURL();
 		s_assert.assertTrue(currentURL.contains("checkout") && sfShippingInfoPage.isTextPresent(checkoutPageText),"User is not redirecting to checkout page after clicked on update my autoship button");
 		s_assert.assertAll();
+	}
+
+	/***
+	 * qTest : TC-172 Default Ship Address displayed in checkout - Single Address
+	 * Description : This test validates the default shipping profile at
+	 * checkout page
+	 *     
+	 */
+	@Test(enabled=false)
+	public void testDefaultShipAddressDisplayedInCheckoutSingleAddress_172(){
+		String firstName = TestConstants.FIRST_NAME;
+		String timeStamp = CommonUtils.getCurrentTimeStamp();
+		String randomWords = CommonUtils.getRandomWord(5);
+		String addressLine1 = TestConstants.ADDRESS_LINE_1_US;
+		String addressLine2 = TestConstants.ADDRESS_LINE_2_US;
+		String city = TestConstants.CITY_US;
+		String state = TestConstants.STATE_US;
+		String postalCode = TestConstants.POSTAL_CODE_US;
+		String phoneNumber = TestConstants.PHONE_NUMBER;
+		String lastName = TestConstants.LAST_NAME+randomWords;
+		String email = firstName+timeStamp+TestConstants.EMAIL_SUFFIX;
+		String defaultShippingAddressName = null;
+		sfCartPage = new StoreFrontCartPage(driver);
+		sfShopSkinCarePage = new StoreFrontShopSkinCarePage(driver);
+		sfHomePage.clickLoginIcon();
+
+		// Enrolling PC User
+		sfCheckoutPage=sfHomePage.clickSignUpNowLink();
+		sfCheckoutPage.fillNewUserDetails(TestConstants.USER_TYPE_PC, firstName, lastName, email, password);
+		sfCheckoutPage.clickCreateAccountButton();
+		s_assert.assertTrue(sfCartPage.isPcOneTimeFeeMsgDisplayed(),"PC one time joining fee msg has not displayed");
+		sfCartPage.clickAddMoreItemsBtn();
+		sfShopSkinCarePage.addProductToCart(TestConstants.PRODUCT_NUMBER, TestConstants.ORDER_TYPE_ADHOC);;
+		sfCartPage = sfShopSkinCarePage.checkoutTheCartFromPopUp();
+		sfCartPage.enterQuantityOfProductAtCart("1", "2");
+		sfCartPage.clickOnUpdateLinkThroughItemNumber("1");
+		sfCartPage.clickCheckoutBtn();
+		sfCheckoutPage.clickContinueWithoutConsultantLink();
+		sfCheckoutPage.clickSaveButton();
+		sfCheckoutPage.enterShippingDetails(firstName+" "+lastName, addressLine1, addressLine2, city, state, postalCode, phoneNumber);
+		sfCheckoutPage.clickShippingDetailsNextbutton();
+		sfCheckoutPage.enterUserBillingDetails(TestConstants.CARD_TYPE, TestConstants.CARD_NUMBER_2, TestConstants.CARD_NAME,TestConstants.CVV);
+		sfCheckoutPage.clickBillingDetailsNextbutton();
+		sfCheckoutPage.selectIAcknowledgePCChkBox();
+		sfCheckoutPage.selectPCTermsAndConditionsChkBox();
+		sfCheckoutPage.clickPlaceOrderButton();
+		sfCheckoutPage.clickRodanAndFieldsLogo();
+		s_assert.assertTrue(sfHomePage.hasPCEnrolledSuccessfully(), "PC has not been enrolled successfully");
+
+		// Adding product to cart and proceed to checkout
+		sfShippingInfoPage.clickAllProducts();
+		sfShopSkinCarePage.addProductToCart(TestConstants.PRODUCT_NUMBER, TestConstants.ORDER_TYPE_ADHOC);
+		sfCartPage = sfShopSkinCarePage.checkoutTheCartFromPopUp();
+		sfCartPage.checkoutTheCart();
+		sfCheckoutPage.clickSaveButton();
+		defaultShippingAddressName = sfCheckoutPage.getDefaultShippingAddressNameAtCheckoutPage();
+		s_assert.assertTrue(defaultShippingAddressName.contains(lastName), "Expected default shipping address name at checkout page is "+lastName.toLowerCase()+" but actual on UI is "+defaultShippingAddressName);
+		s_assert.assertAll();	
 	}
 }

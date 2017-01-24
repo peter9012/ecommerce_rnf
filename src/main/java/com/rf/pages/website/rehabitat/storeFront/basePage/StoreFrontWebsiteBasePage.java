@@ -264,11 +264,25 @@ public class StoreFrontWebsiteBasePage extends RFBasePage {
 			.xpath("//*[@id='popup_confirm_savedcart_restore']//a[contains(text(),'CANCEL')]");
 	private final By BILLING_PROFILE_DETAILS_ORDER_REVIEW_PAGE_LOC = By.xpath("//*[@id='default-payment-method']/ul");
 	protected final By POPUP_FOR_TERMS_AND_CONDITIONS_LOC = By.id("city_popup");// moved
-	// from
-	// checkoutPage
 	private final By BILLING_ADDRESS_OTHER_THAN_ND_POPUP_TEXT_LOC = By.xpath("//*[@id='city_popup']//h3");
 	private final By CHOOSE_A_KIT_OPTION_ON_POPUP_LOC = By.xpath("//a[text()='Choose a kit']");
+	private final By SHIPPING_SECTION_LOC = By.xpath("//div[@class='checkout-shipping']");
+	private final By BILLING_SECTION_LOC = By.xpath("//div[@class='checkout-paymentmethod']");
+	private final By LEARN_MORE_LINK_LOC = By.xpath("//a[contains(text(),'Learn more')]");
+	private final By PC_PROMO_POPUP_LOC = By.id("cboxLoadedContent");
+	private final By PC_PROMO_POPUP_CLOSE_BTN_LOC = By.id("cboxClose");
+	private final By SPONSOR_NAME_ACCOUNT_INFO_LOC = By.xpath("//div[contains(@id,'findConsultantResultArea')]/descendant::span[@id='selectd-consultant'][2]");
+	private final By SAVE_PAYMENT_BUTTON_LOC = By.id("updateBillingAddress");
+	private final By FIRST_LAST_NAME_FOR_BILLING_ADDRESS_FOR_EXISTING_PROFILE_LOC=By.xpath("//div[@id='checkoutEditBillingAddressForm']//input[@id='address.firstName']");
+	private final By ADDRESS_LINE1_FOR_BILLING_ADDRESS_FOR_EXISTING_PROFILE_LOC=By.xpath("//div[@id='checkoutEditBillingAddressForm']//input[@id='address.line1']");
+	private final By ADDRESS_LINE_2_FOR_BILLING_ADDRESS_FOR_EXISTING_PROFILE_LOC=By.xpath("//div[@id='checkoutEditBillingAddressForm']//input[@id='address.line2']");
+	private final By CITY_FOR_BILLING_ADDRESS_FOR_EXISTING_PROFILE_LOC=By.xpath("//div[@id='checkoutEditBillingAddressForm']//input[@id='address.townCity']");
+	private final By STATE_DD_FOR_BILLING_ADDRESS_FOR_EXISTING_PROFILE_LOC=By.xpath("//div[@id='checkoutEditBillingAddressForm']//select[@id='address.region']");
+	private final By POSTAL_CODE_FOR_BILLING_ADDRESS_FOR_EXISTING_PROFILE_LOC=By.xpath("//div[@id='checkoutEditBillingAddressForm']//input[@id='address.postcode']");
+	private final By PHONE_NUMBER_FOR_BILLING_ADDRESS_FOR_EXISTING_PROFILE_LOC=By.xpath("//div[@id='checkoutEditBillingAddressForm']//input[@id='address.phone']");
+	private final By ERROR_MESSAGE_EXISTING_PREFIX_LOC = By.xpath("//*[@id='command']//following::span[@class='prefix-error']");
 
+	private String stateForShippingDetailsForExistingBillingProfile = "//div[@id='checkoutEditBillingAddressForm']//option[text()='%s']";
 	protected String mandatoryFieldErrorMsgOfAddressForNewBillingProfileLoc = "//div[@id='billingAddressForm']//label[contains(@id,'%s-error') and contains(text(),'This field is required.')]";
 	private String productNameInAllItemsInCartLoc = "//span[@class='item-name' and contains(text(),'%s')]";
 	private String productQuantityInAllItemsLoc = "//span[@class='item-name' and contains(text(),'%s')]/following::div//div[@class='qty']//input[contains(@id,'quantity')]";
@@ -298,8 +312,7 @@ public class StoreFrontWebsiteBasePage extends RFBasePage {
 	private String unitPriceOfProductOfAnItemLoc = "//div[@class='orderConfirmationInfo']/descendant::div[@class='orderUnitPrice'][%s]";
 	private String orderTotalOfProductOfAnItemLoc = "//div[@class='orderConfirmationInfo']/descendant::div[@class='orderTotal'][%s]";
 	private String productNameOfAnItemLoc = "//div[@class='orderConfirmationInfo']/descendant::p[%s]";
-	private final By SHIPPING_SECTION_LOC = By.xpath("//div[@class='checkout-shipping']");
-	private final By BILLING_SECTION_LOC = By.xpath("//div[@class='checkout-paymentmethod']");
+
 
 	private String RFO_DB = null;
 
@@ -1582,7 +1595,7 @@ public class StoreFrontWebsiteBasePage extends RFBasePage {
 	public String getBaseUrl() {
 		return driver.getURL();
 	}
-	
+
 	/***
 	 * This method will return the country
 	 * 
@@ -3293,12 +3306,6 @@ public class StoreFrontWebsiteBasePage extends RFBasePage {
 			String addressLine1, String city, String state, String postal, String phoneNumber) {
 		String completeName = firstName + " " + lastName;
 		driver.type(FIRST_NAME_FOR_ADDRESS_DETAILS_LOC, completeName); // this
-		// will
-		// put
-		// first
-		// and
-		// last
-		// name
 		logger.info("Entered complete name as " + completeName);
 		driver.type(ADDRESS_LINE_1_FOR_ADDRESS_DETAILS_LOC, addressLine1);
 		logger.info("Entered address line 1 as " + addressLine1);
@@ -3341,12 +3348,6 @@ public class StoreFrontWebsiteBasePage extends RFBasePage {
 			String addressLine1, String city, String state) {
 		String completeName = firstName + " " + lastName;
 		driver.type(FIRST_NAME_FOR_ADDRESS_DETAILS_LOC, completeName); // this
-		// will
-		// put
-		// first
-		// and
-		// last
-		// name
 		logger.info("Entered complete name as " + completeName);
 		driver.type(ADDRESS_LINE_1_FOR_ADDRESS_DETAILS_LOC, addressLine1);
 		logger.info("Entered address line 1 as " + addressLine1);
@@ -3401,6 +3402,117 @@ public class StoreFrontWebsiteBasePage extends RFBasePage {
 	public boolean isCheckoutPopupDisplayed(){
 		driver.pauseExecutionFor(2000);
 		return driver.findElement(CHECKOUT_BUTTON_POPUP_LOC).isDisplayed();
+	}
+
+	/***
+	 * This method clicks on the Learn View link 
+	 * @return StoreFrontWebsiteBasePage
+	 */
+	public StoreFrontWebsiteBasePage clickLearnMoreLink(){
+		driver.click(LEARN_MORE_LINK_LOC);
+		logger.info("Learn More link is clicked");
+		driver.pauseExecutionFor(1000);
+		return this;
+	}
+
+	/***
+	 * this method verifies whether PC perks promo popup is
+	 * displayed or not after clicking on learn more link
+	 * @return
+	 */
+	public boolean isLearnMoreAboutPCPromoPopupDisplayed(){
+		driver.waitForElementToBeVisible(PC_PROMO_POPUP_LOC, 10);
+		return driver.isElementVisible(PC_PROMO_POPUP_LOC);
+	}
+
+	/***
+	 * This method closes the PC Perks Promo popup
+	 * @return StoreFrontWebsiteBasePage
+	 */
+	public StoreFrontWebsiteBasePage closePCPerksPromoPopUp(){
+		driver.click(PC_PROMO_POPUP_CLOSE_BTN_LOC);
+		logger.info("closed the PC Perks promo popup");
+		return this;
+	}
+
+	/***
+	 * This method get available autosuggested prefix name
+	 * 
+	 * @param
+	 * @return autosuggested prefix name
+	 * 
+	 */
+	public String getAvailablePrefixName() {
+		String availablePrefix = driver.findElement(PWS_PREFIX_INPUT_FIELD_LOC).getAttribute("value");
+		logger.info("Available autosuggested prefix name " + availablePrefix);
+		return availablePrefix;
+	}
+
+	/***
+	 * This method get available autosuggested prefix name
+	 * 
+	 * @param
+	 * @return autosuggested prefix name
+	 * 
+	 */
+	public String getErrorMessageForExistingPrefixName() {
+		String existingPrefixMsg = driver.findElement(ERROR_MESSAGE_EXISTING_PREFIX_LOC).getText();
+		logger.info("Error msg for Existing prefix" + existingPrefixMsg);
+		return existingPrefixMsg;
+	}
+
+	/***
+	 * This method click on the checkOut Button on the popup on the cart.
+	 * 
+	 * @return
+	 */
+	public StoreFrontAutoshipCartPage checkoutTheCartFromPopUpForAutoship() {
+		driver.click(CHECKOUT_BUTTON_POPUP_LOC);
+		logger.info("Clicked on checkout button on the popup");
+		driver.waitForPageLoad();
+		driver.waitForLoadingImageToDisappear();
+		return new StoreFrontAutoshipCartPage(driver);
+	}
+
+	/***
+	 * This method click the SAVE Payment button
+	 * 
+	 * @param
+	 * @return store front Base page object
+	 * 
+	 */
+	public StoreFrontWebsiteBasePage clickSavePaymentButton(){
+		driver.click(SAVE_PAYMENT_BUTTON_LOC);
+		logger.info("Save payment button clicked of billing details");
+		return this;
+	}
+
+	/***
+	 * This method enter the billing address details after editinig an existing billing profile
+	 * 
+	 * @param First name,Last name, address line1, city, state, postal code, phone number
+	 * @return store front Websitebase page object
+	 * 
+	 */
+	public StoreFrontWebsiteBasePage enterBillingAddressDetailsForExistingBillingProfile(String firstName, String lastName, String addressLine1, String addressLine2, String city, String state, String postal, String phoneNumber){
+		String completeName = firstName+" "+lastName;
+		driver.type(FIRST_LAST_NAME_FOR_BILLING_ADDRESS_FOR_EXISTING_PROFILE_LOC, completeName);
+		logger.info("Entered complete name as "+completeName);
+		driver.type(ADDRESS_LINE1_FOR_BILLING_ADDRESS_FOR_EXISTING_PROFILE_LOC, addressLine1);
+		logger.info("Entered address line 1 as "+addressLine1);
+		driver.type(ADDRESS_LINE_2_FOR_BILLING_ADDRESS_FOR_EXISTING_PROFILE_LOC, addressLine2);
+		logger.info("Entered address line 2 as "+addressLine2);
+		driver.type(CITY_FOR_BILLING_ADDRESS_FOR_EXISTING_PROFILE_LOC, city);
+		logger.info("Entered city as "+city);
+		driver.click(STATE_DD_FOR_BILLING_ADDRESS_FOR_EXISTING_PROFILE_LOC);
+		logger.info("State dropdown clicked");
+		driver.click(By.xpath(String.format(stateForShippingDetailsForExistingBillingProfile, state)));
+		logger.info("State selected as "+state);
+		driver.type(POSTAL_CODE_FOR_BILLING_ADDRESS_FOR_EXISTING_PROFILE_LOC, postal);
+		logger.info("Entered postal code as "+postal);
+		driver.type(PHONE_NUMBER_FOR_BILLING_ADDRESS_FOR_EXISTING_PROFILE_LOC, phoneNumber);
+		logger.info("Entered Phone number  as "+phoneNumber);
+		return this;
 	}
 
 }

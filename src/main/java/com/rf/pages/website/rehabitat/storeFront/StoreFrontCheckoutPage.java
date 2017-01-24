@@ -158,7 +158,12 @@ public class StoreFrontCheckoutPage extends StoreFrontWebsiteBasePage{
 	private final By EDIT_LINK_OF_SHIPPING_DETAILS = By.xpath("//div[contains(text(),'Shipping')]/following-sibling::a[contains(text(),'Edit')]");
 	private final By ORDER_NUMBER_AT_CONFIRMATION_PAGE_OF_PLACED_ORDER_LOC = By.xpath("//div[@class='orderHeading']");
 	private final By USE_MY_DELIVERY_ADDRESS_CHECKBOX_LOC = By.xpath("//input[@id='useDeliveryAddress']");
-	
+
+	private final By ADDRESS_BOOK_BTN_LOC = By.xpath("//button[contains(text(),'Address Book')]");
+	private String useThisAddressBtnInAddressBookLoc = "//div[@id='addressbook']/descendant::form[@id='useShipAddressFromBook'][%s]//button";
+	private String profileNameFromAddressBookLoc = "//div[@id='addressbook']/descendant::strong[%s]";
+	private String useThisPaymentDetailsBtnInSavedCardLoc = "//div[@id='savedpaymentsbody']/descendant::button[contains(text(),'Use these payment details')][%s]";
+	private String profileNameFromSavedCardLoc = "//div[@id='savedpaymentsbody']/descendant::strong[%s]";
 	private String orderItemsTagLoc = "//li[@class='orderItemsHeading']//div[contains(text(),'%s')]";
 	private String chargesFromOrderConfirmationPage = "//div[@class='orderGrandTotal']//div[contains(text(),'%s')]/following::div[@class='orderValue'][1]";
 	private String chargesFromOrderReviewPage = "//*[contains(text(),'%s')]/following::span[1]";
@@ -1758,6 +1763,57 @@ public class StoreFrontCheckoutPage extends StoreFrontWebsiteBasePage{
 		driver.clickByJS(RFWebsiteDriver.driver,driver.findElement(USE_MY_DELIVERY_ADDRESS_CHECKBOX_LOC));
 		logger.info("Use My delivery address checkbox checked");
 		return this;
+	}
+
+	/**
+	 * This method click the address book btn
+	 * 
+	 * @param
+	 * @return Store Front Checkout page obj.
+	 */
+	public StoreFrontCheckoutPage clickAddressBookBtn(){
+		driver.clickByJS(RFWebsiteDriver.driver, driver.findElement(ADDRESS_BOOK_BTN_LOC));
+		logger.info("Address book nutton clicked");
+		driver.pauseExecutionFor(2000);
+		return this;
+	}
+
+	/**
+	 * This method click use this address btn from address book
+	 * 
+	 * @param profile number
+	 * @return profile name
+	 */
+	public String clickUseThisAddressBtnAndReturnProfileName(String profileNumber){
+		String name = driver.getText(By.xpath(String.format(profileNameFromAddressBookLoc, profileNumber)));
+		driver.clickByJS(RFWebsiteDriver.driver,driver.findElement(By.xpath(String.format(useThisAddressBtnInAddressBookLoc, profileNumber))));
+		logger.info(profileNumber+"st is selected as shipping profile and profile name is "+name);
+		return name;
+	}
+
+	/***
+	 * This method clicks on the 'Use a saved card' btn on the cart
+	 * @param
+	 * @return Store Front Checkout page obj.
+	 */
+	public StoreFrontCheckoutPage clickUseSavedCardBtnOnly(){
+		driver.click(USE_SAVED_CARD_BTN_LOC);
+		logger.info("clicked on the 'Use a saved card' btn on the cart");
+		return this;
+	}
+
+	/**
+	 * This method click use this payment details from saved card
+	 * 
+	 * @param profile number
+	 * @return profile name
+	 */
+	public String clickUseThesePaymentDetailsAndReturnBillingProfileName(String profileNumber){
+		driver.pauseExecutionFor(2000);
+		String name = driver.getText(By.xpath(String.format(profileNameFromSavedCardLoc, profileNumber)));
+		driver.click(By.xpath(String.format(useThisPaymentDetailsBtnInSavedCardLoc, profileNumber)));
+		logger.info(profileNumber+"st is selected as billing profile and profile name is "+name);
+		return name;
 	}
 
 }

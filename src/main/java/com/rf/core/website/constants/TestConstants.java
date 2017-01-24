@@ -49,7 +49,7 @@ public class TestConstants {
 	public static final String SHIPPING_ADDRESS_ADDED_MESSAGE = "Your address was created.";
 	public static final String SHIPPING_ADDRESS_REMOVED_MESSAGE = "Your address was removed.";
 	public static final String TITLE_OF_ALL_SKINCARE_PAGE = "All Skincare | Rodan and Fields";
-
+	
 	// Order page Details
 	public static final String TITLE_OF_ORDER_DETAILS_PAGE = "Order Details | Rodan and Fields";
 
@@ -157,7 +157,9 @@ public class TestConstants {
 	public static final String SECOND_POSTAL_CODE_US = "94519";
 	public static final String CONSULTANT_CRP_AUTOSHIP_PRODUCT_CATEGORY = "CRP Autoship";
 	public static final String PC_PERKS_AUTOSHIP_PRODUCT_CATEGORY = "PC Perk Autoship";
-
+	public static final String PROMOTION_OVERLAY_MSG = "Your favourite Rodan + Fields® products automatically delivered to your doorstep";
+	public static final String ERROR_MSG_EXISTING_PREFIX = "Subscription Prefix Not available";
+	
 	//Users
 	public static final String CONSULTANT_USERNAME = "AutoCons20170116103858@mailinator.com";
 	public static final String CONSULTANT_EMAIL = "AutoCons20170116103858@mailinator.com";
@@ -170,6 +172,7 @@ public class TestConstants {
 	public static final String CONSULTANT_USERNAME_WITH_CRP_AND_PULSE = "autocon2525@mailinator.com";
 	public static final String CONSULTANT_PREFIX = "alnamebttt";
 	public static final String PWS = "https://www.qa1.rodanandfields.com/US/pws/alnameawaw/";
+	public static final String CONSULTANT_EMAIL_WITHOUT_PULSE = "AutoCons20170123110857@mailinator.com";
 	
 	public static final String PC_USERNAME = "autopc1100@mailinator.com";
 	public static final String PC_EMAIL = "autopc1100@mailinator.com";

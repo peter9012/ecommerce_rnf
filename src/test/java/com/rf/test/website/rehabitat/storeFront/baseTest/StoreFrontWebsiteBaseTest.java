@@ -20,6 +20,7 @@ import com.rf.core.driver.website.RFWebsiteDriver;
 import com.rf.core.utils.HtmlLogger;
 import com.rf.core.utils.PropertyFile;
 import com.rf.core.utils.SoftAssert;
+import com.rf.core.website.constants.TestConstants;
 import com.rf.pages.website.rehabitat.storeFront.StoreFrontAboutMePage;
 import com.rf.pages.website.rehabitat.storeFront.StoreFrontAccountInfoPage;
 import com.rf.pages.website.rehabitat.storeFront.StoreFrontAutoshipCartPage;
@@ -72,12 +73,12 @@ public class StoreFrontWebsiteBaseTest extends RFBaseTest {
 	protected String countryId=null;
 	protected String country=null;
 	protected boolean runBaseURLOrLogoutExecutionCode = true;
-	protected String conultantWithPulseAndWithCRP = null;
-	protected String conultantWithoutPulseAndWithoutCRP = null;
-	protected String rcWithoutOrder = null;
-	protected String rcWithOrder = null;
-	protected String pcUserWithoutSponsor = null;
-	protected String pcUserWithPWSSponsor = null;
+	protected static String conultantWithPulseAndWithCRP = null;
+	protected static String conultantWithoutPulseAndWithoutCRP = null;
+	protected static String rcWithoutOrder = null;
+	protected static String rcWithOrder = null;
+	protected static String pcUserWithoutSponsor = null;
+	protected static String pcUserWithPWSSponsor = null;
 
 	//	protected String conultantWithPulseAndWithoutCRP = null;
 	//	protected String conultantWithCRPAndWithoutPulse = null;
@@ -95,9 +96,6 @@ public class StoreFrontWebsiteBaseTest extends RFBaseTest {
 	public void setUp() throws Exception {
 		driver.loadApplication();
 		driver.setDBConnectionString();
-		//		setCountry();
-		//		setCountryId();
-		//		setStoreFrontPassword(driver.getStoreFrontUserPassword());
 	}
 
 	@BeforeMethod(alwaysRun=true)
@@ -187,14 +185,6 @@ public class StoreFrontWebsiteBaseTest extends RFBaseTest {
 		logger.info("Application launched");
 	}
 
-	//	public void logout(){
-	//		driver.click(WELCOME_DROPDOWN_LOC);
-	//		logger.info("Welcome dropdown clicked");
-	//		driver.pauseExecutionFor(2000);
-	//		driver.click(SIGN_OUT_LOC);
-	//		driver.waitForPageLoad();
-	//	}
-
 	/**
 	 * @throws Exception
 	 */
@@ -227,5 +217,13 @@ public class StoreFrontWebsiteBaseTest extends RFBaseTest {
 		}
 		return allReturnedValuesFromQuery;
 	}
+	
+	public String getConultantWithPulseAndWithCRP(){
+			return userPropertyFile.getProperty("conultantWithPulseAndWithCRP");
+	}
+	
+	public String getConultantWithoutPulseAndWithoutCRP(){
+		return userPropertyFile.getProperty("conultantWithPulseAndWithCRP");
+}
 
 }

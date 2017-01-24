@@ -20,6 +20,7 @@ import org.apache.logging.log4j.Logger;
 import org.openqa.selenium.By;
 import org.openqa.selenium.Capabilities;
 import org.openqa.selenium.JavascriptExecutor;
+import org.openqa.selenium.Keys;
 import org.openqa.selenium.OutputType;
 import org.openqa.selenium.StaleElementReferenceException;
 import org.openqa.selenium.TakesScreenshot;
@@ -734,6 +735,18 @@ public class RFWebsiteDriver implements RFDriver,WebDriver {
 		}finally{
 			turnOnImplicitWaits();
 		}
+	}
+
+	/***
+	 * This method press Escape key through action class
+	 * 
+	 * @param 
+	 * @return
+	 * 
+	 */
+	public void pressEscapeKey(){
+		Actions actions = new Actions(driver);
+		actions.sendKeys(Keys.ESCAPE).build().perform();;
 	}
 
 	/**

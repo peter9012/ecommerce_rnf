@@ -506,37 +506,6 @@ public class AutoshipTest extends StoreFrontWebsiteBaseTest{
 	}
 
 	/***
-	 * qTest : TC-510 User does not select the Update CTA after making edits to autoship cart
-	 * Description : This test validates the Autoship cart page changes for PC/Consultant Autoship
-	 * page update and without click on save.
-	 *     
-	 */
-	@Test(enabled=false)
-	public void testVerifyUpdateChangesOnAutoShipCartWithoutClickSave_510(){
-		String currentURL = null;
-		String quantityOfProduct = null;
-		String updatedQuantity = null;
-		String textToAssertInURL = "autoship/cart";
-		double subtotalAtAutoshipCart;
-		double newSubtotalAtAutoshipCart;
-		//Login to application.
-		sfHomePage.loginToStoreFront(TestConstants.CONSULTANT_EMAIL, password);
-		sfHomePage.clickWelcomeDropdown();
-		sfAutoshipCartPage = sfHomePage.navigateToEditCRPPage();
-		//sfAutoshipCartPage = sfHomePage.clickOnAutoshipCartLink();
-		currentURL = sfAutoshipCartPage.getCurrentURL().toLowerCase();
-		s_assert.assertTrue(currentURL.contains(textToAssertInURL), "Expected URL should contain "+textToAssertInURL+" on Autoship cart page but actual on UI is "+currentURL);
-		subtotalAtAutoshipCart = sfAutoshipCartPage.getSubtotalofItemsAtCart();
-		quantityOfProduct = sfAutoshipCartPage.getQuantityOfProductFromCart("1");
-		//Update and increase product qty by one and assert for subtotal.
-		updatedQuantity = sfAutoshipCartPage.updateQuantityByOne(quantityOfProduct);
-		sfAutoshipCartPage.enterQuantityOfProductAtCart("1", updatedQuantity);
-		newSubtotalAtAutoshipCart = sfAutoshipCartPage.getSubtotalofItemsAtCart();
-		s_assert.assertTrue(newSubtotalAtAutoshipCart==subtotalAtAutoshipCart,"Product quantity and subtotal is updated on autoship cart without clicking update link.");
-		s_assert.assertAll();		
-	}
-
-	/***
 	 * qTest : TC-509 User selects Update CTA after making changes in the autoship cart
 	 * Description : This test validates the Autoship cart page changes for PC/Consultant Autoship
 	 * page Update and click on save.
@@ -1094,4 +1063,163 @@ public class AutoshipTest extends StoreFrontWebsiteBaseTest{
 		s_assert.assertTrue(updatedQuantityFromUI.equals(updatedQuantity), "Added item from quick view popup is not present into cart");
 		s_assert.assertAll();
 	}
+	
+	/***
+	 * qTest : TC-509 User selects Update CTA after making changes in the autoship cart
+	 * Description : This test validates the Autoship cart page changes for PC/Consultant Autoship
+	 * page Update and click on save.
+	 *     
+	 */
+	@Test(enabled=true)
+	public void testVerifyUpdateChangesOnAutoShipCartAfterClickSave_509(){
+		String shippingProfileNameFromAddressBook = null;
+		String billingProfileNameFromSavedCard = null;
+		String shippingProfileNameFromUI = null;
+		String billingProfileNameFromFromUI= null;
+		//Login to application.
+		sfHomePage.loginToStoreFront(TestConstants.CONSULTANT_USERNAME_WITH_CRP_AND_PULSE, password);
+		sfHomePage.clickWelcomeDropdown();
+		sfAutoshipCartPage=sfHomePage.navigateToEditCRPPage();
+		sfCheckoutPage = sfAutoshipCartPage.clickOnCRPCheckoutButton();
+		sfCheckoutPage.clickSaveButton();
+		sfCheckoutPage.clickAddressBookBtn();
+		shippingProfileNameFromAddressBook = sfCheckoutPage.clickUseThisAddressBtnAndReturnProfileName("1");
+		sfCheckoutPage.clickShippingDetailsNextbutton();
+		sfCheckoutPage.clickUseSavedCardBtnOnly();
+		billingProfileNameFromSavedCard = sfCheckoutPage.clickUseThesePaymentDetailsAndReturnBillingProfileName("1");
+		sfCheckoutPage.clickBillingDetailsNextbutton();
+		sfCheckoutPage.selectTermsAndConditionsCheckBoxForConsulatntCRP();
+		sfCheckoutPage.selectIAcknowledgeChkBox();
+		sfCheckoutPage.clickConfirmAutoshipOrderButton();
+		sfCheckoutPage.clickAutoshipLink();
+		sfAutoshipCartPage.clickOnCRPCheckoutButton();
+		sfCheckoutPage.clickSaveButton();
+		shippingProfileNameFromUI = sfCheckoutPage.getDefaultShippingAddressNameAtCheckoutPage();
+		shippingProfileNameFromAddressBook = sfCheckoutPage.getLastName(shippingProfileNameFromAddressBook);
+		s_assert.assertTrue(shippingProfileNameFromUI.contains(shippingProfileNameFromAddressBook), "Expected shipping profile name is "+shippingProfileNameFromAddressBook+" but actual on UI is "+shippingProfileNameFromUI);
+		sfCheckoutPage.clickShippingDetailsNextbutton();
+		billingProfileNameFromFromUI = sfCheckoutPage.getDefaultBillingProfileName();
+		billingProfileNameFromSavedCard = sfCheckoutPage.getLastName(billingProfileNameFromSavedCard);
+		s_assert.assertTrue(billingProfileNameFromFromUI.contains(billingProfileNameFromSavedCard), "Expected billing profile name is "+billingProfileNameFromSavedCard+" but actual on UI is "+billingProfileNameFromFromUI);
+		s_assert.assertAll();
+	}
+	
+	/***
+	 * qTest : TC-510 User does not select the Update CTA after making edits to autoship cart
+	 * Description : This test validates the Autoship cart page changes for PC/Consultant Autoship
+	 * page update and without click on save.
+	 *     
+	 */
+	@Test(enabled=false)
+	public void testVerifyUpdateChangesOnAutoShipCartWithoutClickSave_510(){
+		String shippingProfileNameBeforeEdit = null;
+		String billingProfileNameBeforeEdit = null;
+		String shippingProfileNameFromUI = null;
+		String billingProfileNameFromFromUI= null;
+		//Login to application.
+		sfHomePage.loginToStoreFront(TestConstants.CONSULTANT_USERNAME_WITH_CRP_AND_PULSE, password);
+		sfHomePage.clickWelcomeDropdown();
+		sfAutoshipCartPage=sfHomePage.navigateToEditCRPPage();
+		sfCheckoutPage = sfAutoshipCartPage.clickOnCRPCheckoutButton();
+		sfCheckoutPage.clickSaveButton();
+		shippingProfileNameBeforeEdit = sfCheckoutPage.getDefaultShippingAddressNameAtCheckoutPage();
+		sfCheckoutPage.clickAddressBookBtn();
+		sfCheckoutPage.clickUseThisAddressBtnAndReturnProfileName("1");
+		sfCheckoutPage.clickShippingDetailsNextbutton();
+		billingProfileNameBeforeEdit = sfCheckoutPage.getDefaultBillingProfileName();
+		sfCheckoutPage.clickUseSavedCardBtnOnly();
+		sfCheckoutPage.clickUseThesePaymentDetailsAndReturnBillingProfileName("1");
+		sfCheckoutPage.clickBillingDetailsNextbutton();
+		sfCheckoutPage.clickRodanAndFieldsLogo();
+		sfCheckoutPage.clickAutoshipLink();
+		sfAutoshipCartPage.clickOnCRPCheckoutButton();
+		sfCheckoutPage.clickSaveButton();
+		shippingProfileNameFromUI = sfCheckoutPage.getDefaultShippingAddressNameAtCheckoutPage();
+		shippingProfileNameBeforeEdit = sfCheckoutPage.getLastName(shippingProfileNameBeforeEdit);
+		s_assert.assertTrue(shippingProfileNameFromUI.contains(shippingProfileNameBeforeEdit), "Expected shipping profile name is "+shippingProfileNameBeforeEdit+" but actual on UI is "+shippingProfileNameFromUI);
+		sfCheckoutPage.clickShippingDetailsNextbutton();
+		billingProfileNameFromFromUI = sfCheckoutPage.getDefaultBillingProfileName();
+		billingProfileNameBeforeEdit = sfCheckoutPage.getLastName(billingProfileNameBeforeEdit);
+		s_assert.assertTrue(billingProfileNameFromFromUI.contains(billingProfileNameBeforeEdit), "Expected billing profile name is "+billingProfileNameBeforeEdit+" but actual on UI is "+billingProfileNameFromFromUI);
+		s_assert.assertAll();
+	}
+	
+	/***
+	 * qTest : TC-397 Add to Autoship Cart - PC
+	 * Description : This test add a new product in to cart through PLP, Quick View Popup, PDP
+	 * and validate all
+	 *     
+	 */
+	@Test(enabled=false)
+	public void testAddToAutoshipCartPC_397(){
+		String productName = null;
+		String productQuantity = null;
+		String updatedQuantity = null;
+		String updatedQuantityFromUI = null;
+		boolean isProductPresent = false;
+		sfHomePage.loginToStoreFront(TestConstants.PC_EMAIL_HAVING_AUTOSHIP, password);
+		sfShopSkinCarePage = sfHomePage.clickAllProducts();
+		sfShopSkinCarePage.refineProductByCategory(TestConstants.PC_PERKS_AUTOSHIP_PRODUCT_CATEGORY);
+		productName = sfShopSkinCarePage.getFirstProductNameFromAllProductPage();
+		sfAutoshipCartPage = sfShopSkinCarePage.clickAutoshipLink();
+		if(sfAutoshipCartPage.isProductAddedToCartPresentOnCartPage(productName)){
+			productQuantity = sfAutoshipCartPage.getQuantityOfSpecificProductFromAutoshipCart(productName).trim(); 
+			isProductPresent = true;
+		}
+		sfAutoshipCartPage.clickRodanAndFieldsLogo();
+		sfAutoshipCartPage.clickAllProducts();
+		sfShopSkinCarePage.refineProductByCategory(TestConstants.PC_PERKS_AUTOSHIP_PRODUCT_CATEGORY);
+		sfShopSkinCarePage.addProductToCart("1", TestConstants.ORDER_TYPE_PC_PERKS);
+		s_assert.assertTrue(sfShopSkinCarePage.isCheckoutPopupDisplayed(),"Expected checkout popup is not displayed while adding product from PLP");
+		sfShopSkinCarePage.checkoutTheCartFromPopUp();
+		if(isProductPresent){
+			updatedQuantity = sfAutoshipCartPage.updateQuantityByOne(productQuantity).trim();
+			updatedQuantityFromUI = sfAutoshipCartPage.getQuantityOfSpecificProductFromAutoshipCart(productName).trim();
+			s_assert.assertTrue(updatedQuantityFromUI.equals(updatedQuantity), "Added item from PLP is not present into cart");
+		}else{
+			s_assert.assertTrue(sfAutoshipCartPage.isProductAddedToCartPresentOnCartPage(productName), "Added item from PLP is not present into cart");
+		}
+		sfAutoshipCartPage.clickRodanAndFieldsLogo();
+		sfAutoshipCartPage.clickAllProducts();
+		sfShopSkinCarePage.refineProductByCategory(TestConstants.PC_PERKS_AUTOSHIP_PRODUCT_CATEGORY);
+		sfShopSkinCarePage.clickOnQuickViewLinkForProduct("1");
+		sfShopSkinCarePage.addProductToCartFromQuickViewPopup(TestConstants.ORDER_TYPE_PC_PERKS);
+		s_assert.assertTrue(sfShopSkinCarePage.isCheckoutPopupDisplayed(),"Expected checkout popup is not displayed while adding product from Quick View popup");
+		sfShopSkinCarePage.checkoutTheCartFromPopUp();
+		updatedQuantity = sfAutoshipCartPage.updateQuantityByOne(updatedQuantityFromUI).trim();
+		updatedQuantityFromUI = sfAutoshipCartPage.getQuantityOfSpecificProductFromAutoshipCart(productName).trim();
+		s_assert.assertTrue(updatedQuantityFromUI.equals(updatedQuantity), "Added item from quick view popup is not present into cart");
+		//From product page
+		sfAutoshipCartPage.clickRodanAndFieldsLogo();
+		sfAutoshipCartPage.clickAllProducts();
+		sfShopSkinCarePage.refineProductByCategory(TestConstants.PC_PERKS_AUTOSHIP_PRODUCT_CATEGORY);
+		sfProductDetailPage = sfShopSkinCarePage.clickNameOfProductOnAllProductPage("1");
+		sfProductDetailPage.addProductToCartFromProductDetailPageAfterLogin(TestConstants.ORDER_TYPE_PC_PERKS);
+		s_assert.assertTrue(sfProductDetailPage.isCheckoutPopupDisplayed(),"Expected checkout popup is not displayed while adding product from Quick View popup");
+		sfProductDetailPage.checkoutTheCartFromPopUp();
+		updatedQuantity = sfAutoshipCartPage.updateQuantityByOne(updatedQuantityFromUI).trim();
+		updatedQuantityFromUI = sfAutoshipCartPage.getQuantityOfSpecificProductFromAutoshipCart(productName).trim();
+		s_assert.assertTrue(updatedQuantityFromUI.equals(updatedQuantity), "Added item from quick view popup is not present into cart");
+		s_assert.assertAll();
+	}
+	
+	/***
+	 * qTest : TC-353 Consultant Autoship Cart- Pulse subscription status
+	 * Description : This test validates Next bill date and Current Subscription Status label
+	 * for pulse
+	 *     
+	 */
+	@Test(enabled=false)
+	public void testConsultantAutoshipCartPulseSubscriptionStatus_353(){
+		String nextBillAndShipDate = "	Next Bill Date";
+		String currentPulseStatus = "Current Subscription Status";
+		sfHomePage.loginToStoreFront(TestConstants.CONSULTANT_USERNAME_WITH_CRP_AND_PULSE, password);
+		sfHomePage.clickWelcomeDropdown();
+		sfAutoshipStatusPage = sfHomePage.navigateToAutoshipStatusPage();
+		s_assert.assertTrue(sfAutoshipStatusPage.isTextVisible(currentPulseStatus), currentPulseStatus+" tag is not present for pulse");
+		s_assert.assertTrue(sfAutoshipStatusPage.isTextVisible(nextBillAndShipDate), nextBillAndShipDate+" tag is not present for pulse");
+		s_assert.assertAll();
+	}
+	
+
 }

@@ -59,20 +59,6 @@ public class SwitchCountryTogglesTest extends StoreFrontWebsiteBaseTest{
 	}
 
 	/***
-	 * qTest : TC-3 Toggle Should Be Deactivated If User Is Logged Into Their Account
-	 * 
-	 * Description : This test validates toggle button is disabled after 
-	 * logged into their account
-	 *     
-	 */
-	@Test(enabled=false) //Incomplete toggle is present after login.
-	public void testToggleShouldBeDeactivatedIfUserIsLoggedIn_3(){
-		sfHomePage.loginToStoreFront(TestConstants.CONSULTANT_EMAIL, password);
-		s_assert.assertFalse(sfHomePage.isToggleButtonPresent(), "Expected toggle should not be present after login");
-		s_assert.assertAll();
-	}
-
-	/***
 	 * qTest : TC-1 Accessing RF URL Should Defaults User To US Country
 	 * 
 	 * Description : This test validates default corporate URL redirects to US country. 
@@ -91,6 +77,26 @@ public class SwitchCountryTogglesTest extends StoreFrontWebsiteBaseTest{
 		//Verify corp url redirects to US site.
 		currentURL = sfHomePage.getCurrentURL().toLowerCase();
 		s_assert.assertTrue(currentURL.contains(usCorpURL.toLowerCase()), "Expected PWS URL should contain" +usCorpURL+" but actual on UI is"+currentURL);
+		s_assert.assertAll();
+	}
+
+	/***
+	 * qTest : TC-3 Toggle Should Be Deactivated If User Is Logged Into Their Account
+	 * 
+	 * Description : This test validates toggle button is disabled after 
+	 * logged into their account
+	 *     
+	 */
+	@Test(enabled=true)
+	public void testToggleShouldBeDeactivatedIfUserIsLoggedIn_3(){
+		String country_CA = "CAN";
+		String countryNameFromUI =null;
+		sfHomePage.loginToStoreFront(TestConstants.CONSULTANT_EMAIL, password);
+		sfHomePage.clickToggleButtonOfCountry();
+		sfHomePage.selectCountryFromToggleButton(country_CA);
+		countryNameFromUI = sfHomePage.getDefaultSelectedCountryNameFromToggle().toUpperCase();
+		s_assert.assertTrue(countryNameFromUI.contains(country_CA), "For Corp Expected country name is "+country_CA+" Actual on UI is:"+countryNameFromUI);
+		s_assert.assertTrue(sfHomePage.isLogoutSuccessful(),"User is still logged in after switching country from US to CA");
 		s_assert.assertAll();
 	}
 }

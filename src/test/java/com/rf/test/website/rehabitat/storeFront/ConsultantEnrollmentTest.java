@@ -473,7 +473,7 @@ public class ConsultantEnrollmentTest extends StoreFrontWebsiteBaseTest{
 		int randomNum = CommonUtils.getRandomNum(10000, 1000000);
 		String timeStamp = CommonUtils.getCurrentTimeStamp();
 		String socialInsuranceNumber = String.valueOf(CommonUtils.getRandomNum(100000000, 999999999));
-		String prefix = firstName+randomNum;
+		String prefix = firstName+timeStamp;
 		String status = null;
 		sfHomePage.clickEnrollNow();
 		sfHomePage.searchSponsor(TestConstants.SPONSOR);
@@ -564,7 +564,7 @@ public class ConsultantEnrollmentTest extends StoreFrontWebsiteBaseTest{
 		lastName = TestConstants.LAST_NAME+randomWords;
 		email = firstName+timeStamp+TestConstants.EMAIL_SUFFIX;
 		String socialInsuranceNumber = String.valueOf(CommonUtils.getRandomNum(100000000, 999999999));
-		String existingPrefix = TestConstants.CONSULTANT_PREFIX;
+		String existingPrefix = TestConstants.CONSULTANT_PWS_PREFIX;
 		sfHomePage.clickEnrollNow();
 		sfHomePage.searchSponsor(TestConstants.SPONSOR);
 		s_assert.assertTrue(sfHomePage.isSponsorResultDisplayed(),"No result found after searching the sponsor with name "+TestConstants.SPONSOR);
@@ -637,9 +637,8 @@ public class ConsultantEnrollmentTest extends StoreFrontWebsiteBaseTest{
 		randomWords = CommonUtils.getRandomWord(5);		
 		lastName = TestConstants.LAST_NAME+randomWords;
 		email = firstName+"WPWCRP"+timeStamp+TestConstants.EMAIL_SUFFIX;
-		int randomNum = CommonUtils.getRandomNum(10000, 1000000);
 		String socialInsuranceNumber = String.valueOf(CommonUtils.getRandomNum(100000000, 999999999));
-		String prefix = firstName+randomNum;
+		String prefix = firstName+"WPWCRP"+timeStamp;
 		sfHomePage.clickEnrollNow();
 		sfHomePage.searchSponsor(TestConstants.SPONSOR);
 		sfHomePage.selectFirstSponsorFromList();
@@ -739,6 +738,5 @@ public class ConsultantEnrollmentTest extends StoreFrontWebsiteBaseTest{
 	//		}
 	//		 */		//s_assert.assertTrue(storeFrontConsultantPage.verifyConsultantPage(),"Consultant Page doesn't contain Welcome User Message");
 	//	}
-
 
 }

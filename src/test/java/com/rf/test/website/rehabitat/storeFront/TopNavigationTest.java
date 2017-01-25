@@ -146,48 +146,6 @@ public class TopNavigationTest extends StoreFrontWebsiteBaseTest{
 	}
 
 	/***
-	 * qTest : TC-183 Product Search- Name
-	 * 
-	 * Description : This test validates search icon functionality using product name
-	 *     
-	 */
-	@Test(enabled=false)//Incomplete(need a product name for search)
-	public void testProductSearchName_183(){
-		String productName = TestConstants.PRODUCT_NAME;
-		String productNameFromUI = null;
-		sfHomePage.clickSearchIcon();
-		sfHomePage.searchProduct(productName);
-		productNameFromUI = sfHomePage.getProductName().toLowerCase();
-		productName = productName.toLowerCase();
-		s_assert.assertTrue(productNameFromUI.contains(productName), "Expected product name is:"+productName+"Actual On UI is:"+productNameFromUI);
-		s_assert.assertAll();
-	}
-
-	/***
-	 * qTest : TC-184 Product Search - Auto-complete
-	 * 
-	 * Description : This test validates search icon auto complete functionality 
-	 * using product name
-	 *     
-	 */
-	@Test(enabled=false) //TODO Incomplete(need a product name of 3 letters)
-	public void testProductSearchAutoComplete_184(){
-		String productName = TestConstants.PRODUCT_NAME;
-		String productNameLessThanThreeLetters = "AB";
-		String productNameFromUI = null;
-		sfHomePage.clickSearchIcon();
-		sfHomePage.searchProduct(productNameLessThanThreeLetters);
-		String errorMessage = sfHomePage.getErrorMessageForSearchedProduct().toLowerCase();
-		s_assert.assertTrue(errorMessage.contains("sorry, we couldn't find any results for your search"), "Expected error message is 'Sorry, we couldn't find any results for your search' Actual on UI is:"+errorMessage);
-		sfHomePage.clickSearchIcon();
-		sfHomePage.searchProduct(productName);
-		productNameFromUI = sfHomePage.getProductName().toLowerCase();
-		productName = productName.toLowerCase();
-		s_assert.assertTrue(productNameFromUI.contains(productName), "Expected product name is:"+productName+"Actual On UI is:"+productNameFromUI);
-		s_assert.assertAll();
-	}
-
-	/***
 	 * qTest : TC-76 About R+F- Executive Team
 	 * Description : This test validates team member details on executive team page.
 	 *  
@@ -219,7 +177,7 @@ public class TopNavigationTest extends StoreFrontWebsiteBaseTest{
 	 */
 	@Test(enabled=true)
 	public void testViewSearchTextBox_345(){
-		sfHomePage.loginToStoreFront(TestConstants.CONSULTANT_EMAIL, password);
+		sfHomePage.loginToStoreFront(TestConstants.CONSULTANT_EMAIL_WITH_CRP_AND_PULSE, password);
 		sfHomePage.clickSearchIcon();
 		s_assert.assertTrue(sfHomePage.isSearchTextBoxDisplayed(),"Search text box not present after clicking search");
 		sfHomePage.closeSearchTextBox();
@@ -240,7 +198,7 @@ public class TopNavigationTest extends StoreFrontWebsiteBaseTest{
 		String whoWeAreURL = "who-we-are";
 		String givingBackURL ="giving-back";
 
-		sfHomePage.loginToStoreFront(TestConstants.PC_EMAIL, password);
+		sfHomePage.loginToStoreFront(TestConstants.PC_EMAIL_HAVING_AUTOSHIP, password);
 		//Verify meet the doctors link.
 		sfHomePage.clickMeetTheDoctorsLink();
 		s_assert.assertTrue(sfHomePage.isMeetTheDoctorsPagePresent(),"'Meet the Doctors' page either doesn't have the URL as 'meet-the-doctors' or meet the doctor Text is not present on page");
@@ -269,7 +227,7 @@ public class TopNavigationTest extends StoreFrontWebsiteBaseTest{
 	public void testVerifyFeaturedProductSectionUnderShopSkinCare_347(){
 		String category="FEATURED";
 
-		sfHomePage.loginToStoreFront(TestConstants.PC_EMAIL, password);
+		sfHomePage.loginToStoreFront(TestConstants.PC_EMAIL_HAVING_AUTOSHIP, password);
 		sfShopSkinCarePage = sfHomePage.navigateToShopSkincareLink(category);
 		String pageTitle=sfShopSkinCarePage.getCurrentpageTitle();
 		s_assert.assertTrue(sfShopSkinCarePage.isProductsDisplayedOnPage() && pageTitle.contains(category),"Expected featured products not displayed for selected category or Expected page title contains:"+category+" But actual on UI is: "+pageTitle);
@@ -284,7 +242,7 @@ public class TopNavigationTest extends StoreFrontWebsiteBaseTest{
 	 */
 	@Test(enabled=true)
 	public void testVerifyPLPUnderShopSkinCare_348(){
-		sfHomePage.loginToStoreFront(TestConstants.RC_EMAIL, password);
+		sfHomePage.loginToStoreFront(TestConstants.RC_EMAIL_HAVING_ORDER, password);
 		sfShopSkinCarePage=sfHomePage.clickAllProducts();
 		s_assert.assertTrue(sfShopSkinCarePage.isAllProductPageDisplayed(),"All product page not present after clicking continue shopping.");
 		s_assert.assertAll();
@@ -309,7 +267,7 @@ public class TopNavigationTest extends StoreFrontWebsiteBaseTest{
 		String expectedURLForRedefineResults = "redefine-results";
 		String expectedURLForUnblemishResults = "unblemish-results";
 
-		sfHomePage.loginToStoreFront(TestConstants.PC_EMAIL, password);
+		sfHomePage.loginToStoreFront(TestConstants.PC_EMAIL_HAVING_AUTOSHIP, password);
 		//Verify FAQ page for soothe regimen.
 		sfHomePage.navigateToShopSkinCareSubLinks(sootheLinkUnderShopSkincare, sublinkNameUnderShopSkincare);
 		currentURL = sfHomePage.getCurrentURL().toLowerCase();
@@ -348,7 +306,7 @@ public class TopNavigationTest extends StoreFrontWebsiteBaseTest{
 		String expectedURLForRedefineFAQ = "redefine-faq";
 		String expectedURLForUnblemishFAQ = "unblemish-faq";
 
-		sfHomePage.loginToStoreFront(TestConstants.RC_EMAIL, password);
+		sfHomePage.loginToStoreFront(TestConstants.RC_EMAIL_HAVING_ORDER, password);
 		//Verify FAQ page for soothe regimen.
 		sfHomePage.navigateToShopSkinCareSubLinks(sootheLinkUnderShopSkincare, sublinkNameUnderShopSkincare);
 		currentURL = sfHomePage.getCurrentURL().toLowerCase();
@@ -380,7 +338,7 @@ public class TopNavigationTest extends StoreFrontWebsiteBaseTest{
 		String allProductLinkUnderShopSkincare = "ALL PRODUCTS";
 
 		//Login to application.
-		sfHomePage.loginToStoreFront(TestConstants.RC_EMAIL, password);
+		sfHomePage.loginToStoreFront(TestConstants.RC_EMAIL_HAVING_ORDER, password);
 		sfHomePage.navigateToShopSkincareLink(reverseLinkUnderShopSkincare);
 		s_assert.assertTrue(sfHomePage.isHeaderIsConsistentOnAllPages(),"Header is not present on reverse product category page.");
 		sfShopSkinCarePage = sfHomePage.navigateToShopSkincareLink(allProductLinkUnderShopSkincare);
@@ -470,4 +428,60 @@ public class TopNavigationTest extends StoreFrontWebsiteBaseTest{
 		s_assert.assertTrue(sfHomePage.isSponserSearchPageDisplayed(),"Sponser search page is not displayed");
 		s_assert.assertAll();
 	}
+	
+//	/***
+//	 * qTest : TC-183 Product Search- Name
+//	 * 
+//	 * Description : This test validates search icon functionality using product name
+//	 *     
+//	 */
+//	@Test(enabled=false)
+//	public void testProductSearchName_183(){
+//		String productName = TestConstants.PRODUCT_NAME;
+//		String productCategory = TestConstants.PRODUCT_CATEGORY_REDEFINE;
+//		String partialProductName = "AGI";
+//		String partialProductCategory = "RED";
+//		String productNameFromUI = null;
+//		sfHomePage.clickSearchIcon();
+//		//Search product by category name.
+//		sfHomePage.searchProduct(productCategory);
+//		s_assert.assertTrue(sfHomePage.isProductSearchResultsPresent(),"Product search results for category Redefine not present.");
+//		//Search product by product name.
+//		sfHomePage.clickSearchIcon();
+//		sfHomePage.searchProduct(productName);
+//		productNameFromUI = sfHomePage.getProductName().toLowerCase();
+//		productName = productName.toLowerCase();
+//		s_assert.assertTrue(productNameFromUI.contains(productName), "Expected product name is:"+productName+"Actual On UI is:"+productNameFromUI);
+//		//Search product by partial product name.
+//		sfHomePage.clickSearchIcon();
+//		sfHomePage.searchProduct(partialProductName);
+//		String errorMessage = sfHomePage.getErrorMessageForSearchedProduct().toLowerCase();
+//		s_assert.assertTrue(errorMessage.contains("sorry, we couldn't find any results for your search"), "Expected error message for 'Partial product name' is 'Sorry, we couldn't find any results for your search' Actual on UI is:"+errorMessage);
+//		//Search product by partial product category name.
+//		sfHomePage.clickSearchIcon();
+//		sfHomePage.searchProduct(partialProductCategory);
+//	    errorMessage = sfHomePage.getErrorMessageForSearchedProduct().toLowerCase();
+//		s_assert.assertTrue(errorMessage.contains("sorry, we couldn't find any results for your search"), "Expected error message for 'Partial Product category name' is 'Sorry, we couldn't find any results for your search' Actual on UI is:"+errorMessage);
+//		s_assert.assertAll();
+//	}
+
+	/***
+	 * qTest : TC-184 Product Search - Auto-complete
+	 * 
+	 * Description : This test validates search icon auto complete functionality 
+	 * using product name
+	 *     
+	 */
+	@Test(enabled=false)
+	public void testProductSearchAutoComplete_184(){
+		String productNameThreeLetter ="AGI";
+		String productNameLessThanThreeLetters = "AG";
+		sfHomePage.clickSearchIcon();
+		sfHomePage.enterProductName(productNameLessThanThreeLetters);
+		s_assert.assertFalse(sfHomePage.isProductSearchAutoSuggestionPresent(),"Product search autosuggestion is not present for 2 letter.");
+		sfHomePage.enterProductName(productNameThreeLetter);
+		s_assert.assertTrue(sfHomePage.isProductSearchAutoSuggestionPresent(),"Product search autosuggestion is not present for 3 letter.");
+		s_assert.assertAll();
+	}
+
 }

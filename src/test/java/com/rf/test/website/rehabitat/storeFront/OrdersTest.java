@@ -20,7 +20,7 @@ public class OrdersTest extends StoreFrontWebsiteBaseTest{
 		String currentURL = null;
 		String orderDetailsText = "Order Details";
 		//For consultant
-		sfHomePage.loginToStoreFront(TestConstants.CONSULTANT_USERNAME, password);
+		sfHomePage.loginToStoreFront(TestConstants.CONSULTANT_EMAIL_WITH_CRP_AND_PULSE, password);
 		sfHomePage.clickWelcomeDropdown();
 		sfOrdersPage = sfHomePage.navigateToOrdersPage();
 		orderNumber = sfOrdersPage.getFirstOrderNumberFromOrderHistory();
@@ -32,7 +32,7 @@ public class OrdersTest extends StoreFrontWebsiteBaseTest{
 		sfOrdersPage.logout();
 		//For PC
 		navigateToStoreFrontBaseURL();
-		sfHomePage.loginToStoreFront(TestConstants.PC_EMAIL, password);
+		sfHomePage.loginToStoreFront(TestConstants.PC_EMAIL_HAVING_AUTOSHIP, password);
 		sfHomePage.clickWelcomeDropdown();
 		sfOrdersPage = sfHomePage.navigateToOrdersPage();
 		orderNumber = sfOrdersPage.getFirstOrderNumberFromOrderHistory();
@@ -44,7 +44,7 @@ public class OrdersTest extends StoreFrontWebsiteBaseTest{
 		sfOrdersPage.logout();
 		//For RC
 		navigateToStoreFrontBaseURL();
-		sfHomePage.loginToStoreFront(TestConstants.RC_USERNAME, password);
+		sfHomePage.loginToStoreFront(TestConstants.RC_EMAIL_HAVING_ORDER, password);
 		sfHomePage.clickWelcomeDropdown();
 		sfOrdersPage = sfHomePage.navigateToOrdersPage();
 		orderNumber = sfOrdersPage.getFirstOrderNumberFromOrderHistory();
@@ -72,7 +72,7 @@ public class OrdersTest extends StoreFrontWebsiteBaseTest{
 		String postalCode = TestConstants.POSTAL_CODE_US;
 		String phoneNumber = TestConstants.PHONE_NUMBER;
 		String shippngAddressName = null;
-		sfHomePage.loginToStoreFront(TestConstants.CONSULTANT_USERNAME, password);
+		sfHomePage.loginToStoreFront(TestConstants.CONSULTANT_EMAIL_WITH_CRP_AND_PULSE, password);
 		sfShopSkinCarePage = sfHomePage.clickAllProducts();
 		sfShopSkinCarePage.addProductToCart(TestConstants.PRODUCT_NUMBER, TestConstants.ORDER_TYPE_ADHOC);
 		sfShopSkinCarePage.checkoutTheCartFromPopUp();
@@ -96,7 +96,7 @@ public class OrdersTest extends StoreFrontWebsiteBaseTest{
 	@Test(enabled=false) //CA specific test
 	public void testConsultantCanNotShipToQuebec_316(){
 		if(country.equalsIgnoreCase("ca")){
-			sfHomePage.loginToStoreFront(TestConstants.CONSULTANT_USERNAME, password);
+			sfHomePage.loginToStoreFront(TestConstants.CONSULTANT_EMAIL_WITH_CRP_AND_PULSE, password);
 			sfShopSkinCarePage = sfHomePage.clickAllProducts();
 			sfShopSkinCarePage.addProductToCart(TestConstants.PRODUCT_NUMBER, TestConstants.ORDER_TYPE_ADHOC);;
 			sfShopSkinCarePage.checkoutTheCartFromPopUp();
@@ -141,7 +141,7 @@ public class OrdersTest extends StoreFrontWebsiteBaseTest{
 	public void testCheckoutPageEditsCheckEditOptions_295(){
 		String currentURL = null;
 		String accountInfo = "delivery-account";
-		sfHomePage.loginToStoreFront(TestConstants.CONSULTANT_USERNAME, password);
+		sfHomePage.loginToStoreFront(TestConstants.CONSULTANT_EMAIL_WITH_CRP_AND_PULSE, password);
 		sfShopSkinCarePage = sfHomePage.clickAllProducts();
 		sfShopSkinCarePage.addProductToCart(TestConstants.PRODUCT_NUMBER, TestConstants.ORDER_TYPE_ADHOC);;
 		sfShopSkinCarePage.checkoutTheCartFromPopUp();
@@ -171,7 +171,7 @@ public class OrdersTest extends StoreFrontWebsiteBaseTest{
 		String shippingMethodNameFromUI = null;
 		String nonSelectedshippingMethodName1 = TestConstants.SHIPPING_METHOD_UPS_2DAY;
 		String nonSelectedshippingMethodName2 = TestConstants.SHIPPING_METHOD_UPS_OVERNIGHT;
-		sfHomePage.loginToStoreFront(TestConstants.CONSULTANT_USERNAME, password);
+		sfHomePage.loginToStoreFront(TestConstants.CONSULTANT_EMAIL_WITH_CRP_AND_PULSE, password);
 		sfShopSkinCarePage = sfHomePage.clickAllProducts();
 		sfShopSkinCarePage.addProductToCart(TestConstants.PRODUCT_NUMBER, TestConstants.ORDER_TYPE_ADHOC);;
 		sfShopSkinCarePage.checkoutTheCartFromPopUp();
@@ -197,7 +197,7 @@ public class OrdersTest extends StoreFrontWebsiteBaseTest{
 		String updatedQuantity = null;
 		String checkoutPageText = "Account Info";
 		String currentURL = null;
-		sfHomePage.loginToStoreFront(TestConstants.CONSULTANT_USERNAME, password);
+		sfHomePage.loginToStoreFront(TestConstants.CONSULTANT_EMAIL_WITH_CRP_AND_PULSE, password);
 		sfShopSkinCarePage = sfHomePage.clickAllProducts();
 		sfShopSkinCarePage.addProductToCart(TestConstants.PRODUCT_NUMBER, TestConstants.ORDER_TYPE_ADHOC);;
 		sfCartPage = sfShopSkinCarePage.checkoutTheCartFromPopUp();
@@ -233,7 +233,7 @@ public class OrdersTest extends StoreFrontWebsiteBaseTest{
 		String postalCode = TestConstants.POSTAL_CODE_US;
 		String phoneNumber = TestConstants.PHONE_NUMBER;
 		String shippngAddressName = null;
-		sfHomePage.loginToStoreFront(TestConstants.CONSULTANT_USERNAME, password);
+		sfHomePage.loginToStoreFront(TestConstants.CONSULTANT_EMAIL_WITH_CRP_AND_PULSE, password);
 		sfShopSkinCarePage = sfHomePage.clickAllProducts();
 		sfShopSkinCarePage.addProductToCart(TestConstants.PRODUCT_NUMBER, TestConstants.ORDER_TYPE_ADHOC);;
 		sfShopSkinCarePage.checkoutTheCartFromPopUp();
@@ -273,7 +273,7 @@ public class OrdersTest extends StoreFrontWebsiteBaseTest{
 		String state = TestConstants.STATE_US;
 		String postalCode = TestConstants.POSTAL_CODE_US;
 		String phoneNumber = TestConstants.PHONE_NUMBER;
-		sfHomePage.loginToStoreFront(TestConstants.CONSULTANT_EMAIL, password);
+		sfHomePage.loginToStoreFront(TestConstants.CONSULTANT_EMAIL_WITH_CRP_AND_PULSE, password);
 		sfShopSkinCarePage = sfHomePage.clickAllProducts();
 		sfShopSkinCarePage.addProductToCart(TestConstants.PRODUCT_NUMBER, TestConstants.ORDER_TYPE_ADHOC);;
 		sfShopSkinCarePage.checkoutTheCartFromPopUp();
@@ -311,7 +311,7 @@ public class OrdersTest extends StoreFrontWebsiteBaseTest{
 		String CVVWithTwoDigit = TestConstants.CVV_WITH_TWO_DIGIT;
 		String errorMessage = null;
 		String errorMessageFromUI = null;
-		sfHomePage.loginToStoreFront(TestConstants.CONSULTANT_EMAIL, password);
+		sfHomePage.loginToStoreFront(TestConstants.CONSULTANT_EMAIL_WITH_CRP_AND_PULSE, password);
 		sfShopSkinCarePage = sfHomePage.clickAllProducts();
 		sfShopSkinCarePage.addProductToCart(TestConstants.PRODUCT_NUMBER, TestConstants.ORDER_TYPE_ADHOC);;
 		sfShopSkinCarePage.checkoutTheCartFromPopUp();
@@ -485,7 +485,7 @@ public class OrdersTest extends StoreFrontWebsiteBaseTest{
 	public void testShipMethodPCExistingPCPlaceAdhocOrder_314(){
 		String shippingMethodWithCost = null;
 		String shippingMethodName = TestConstants.SHIPPING_METHOD_UPS_GROUND;
-		sfHomePage.loginToStoreFront(TestConstants.PC_USERNAME, password);
+		sfHomePage.loginToStoreFront(TestConstants.PC_EMAIL_HAVING_AUTOSHIP, password);
 		sfShopSkinCarePage = sfHomePage.clickAllProducts();
 		sfShopSkinCarePage.addProductToCart(TestConstants.PRODUCT_NUMBER, TestConstants.ORDER_TYPE_ADHOC);;
 		sfCartPage = sfShopSkinCarePage.checkoutTheCartFromPopUp();
@@ -539,7 +539,7 @@ public class OrdersTest extends StoreFrontWebsiteBaseTest{
 		String shippingProfileNameFromUI = null;
 		String errorMessageForPOAddress = "We are unable to ship to P.O. Boxes";
 		String errorMessageForPOAddressFromUI = null;
-		sfHomePage.loginToStoreFront(TestConstants.CONSULTANT_USERNAME, password);
+		sfHomePage.loginToStoreFront(TestConstants.CONSULTANT_EMAIL_WITH_CRP_AND_PULSE, password);
 		sfShopSkinCarePage = sfHomePage.clickAllProducts();
 		sfShopSkinCarePage.addProductToCart(TestConstants.PRODUCT_NUMBER, TestConstants.ORDER_TYPE_ADHOC);;
 		sfCartPage = sfShopSkinCarePage.checkoutTheCartFromPopUp();
@@ -622,7 +622,7 @@ public class OrdersTest extends StoreFrontWebsiteBaseTest{
 	@Test(enabled=false)//TODO
 	public void testPCUserIsInTheProcessOfPlacingAnAdhocOrderLessThan90_354(){
 		String errorMessage = "more to your cart to qualify for FREE shipping";
-		sfHomePage.loginToStoreFront(TestConstants.PC_USERNAME, password);
+		sfHomePage.loginToStoreFront(TestConstants.PC_EMAIL_HAVING_AUTOSHIP, password);
 		sfShopSkinCarePage = sfHomePage.clickAllProducts();
 		sfShopSkinCarePage.productPriceFilterLowToHigh();
 		int totalNoOfProduct = sfShopSkinCarePage.getTotalNoOfProduct();
@@ -671,7 +671,7 @@ public class OrdersTest extends StoreFrontWebsiteBaseTest{
 		String errorMessageFromUI = null;
 		String errorMessage= null;
 		String billingProfileDetails = null;
-		sfHomePage.loginToStoreFront(TestConstants.CONSULTANT_EMAIL, password);
+		sfHomePage.loginToStoreFront(TestConstants.CONSULTANT_EMAIL_WITH_CRP_AND_PULSE, password);
 		sfShopSkinCarePage = sfHomePage.clickAllProducts();
 		sfShopSkinCarePage.addProductToCart(TestConstants.PRODUCT_NUMBER, TestConstants.ORDER_TYPE_ADHOC);;
 		sfShopSkinCarePage.checkoutTheCartFromPopUp();
@@ -737,7 +737,7 @@ public class OrdersTest extends StoreFrontWebsiteBaseTest{
 		String errorMessage= null;
 		String billingProfileDetails = null;
 		String billingLastName = null;
-		sfHomePage.loginToStoreFront(TestConstants.CONSULTANT_EMAIL, password);
+		sfHomePage.loginToStoreFront(TestConstants.CONSULTANT_EMAIL_WITH_CRP_AND_PULSE, password);
 		sfShopSkinCarePage = sfHomePage.clickAllProducts();
 		sfShopSkinCarePage.addProductToCart(TestConstants.PRODUCT_NUMBER, TestConstants.ORDER_TYPE_ADHOC);;
 		sfShopSkinCarePage.checkoutTheCartFromPopUp();
@@ -827,7 +827,7 @@ public class OrdersTest extends StoreFrontWebsiteBaseTest{
 		String orderTotalAtOrderDetailsPage = null;
 		String productNameAtOrderDetailsPage = null;
 
-		sfHomePage.loginToStoreFront(TestConstants.CONSULTANT_USERNAME, password);
+		sfHomePage.loginToStoreFront(TestConstants.CONSULTANT_EMAIL_WITH_CRP_AND_PULSE, password);
 		sfCartPage = sfHomePage.clickMiniCartBagLink();
 		sfCartPage.removeAllProductsFromCart();
 		sfCartPage.clickRodanAndFieldsLogo();
@@ -896,7 +896,7 @@ public class OrdersTest extends StoreFrontWebsiteBaseTest{
 	 */
 	@Test(enabled=false)
 	public void testUserShouldntAbleToChangeTheSponsorAfterConsultantAccountCreated_414(){
-		sfHomePage.loginToStoreFront(TestConstants.CONSULTANT_EMAIL, password);
+		sfHomePage.loginToStoreFront(TestConstants.CONSULTANT_EMAIL_WITH_CRP_AND_PULSE, password);
 		sfShopSkinCarePage = sfHomePage.clickAllProducts();
 		sfShopSkinCarePage.addProductToCart(TestConstants.PRODUCT_NUMBER, TestConstants.ORDER_TYPE_ADHOC);;
 		sfCartPage = sfShopSkinCarePage.checkoutTheCartFromPopUp();
@@ -914,7 +914,7 @@ public class OrdersTest extends StoreFrontWebsiteBaseTest{
 	 */
 	@Test(enabled=false)
 	public void testUserShouldntAbleToChangeTheSponsorAfterPCAccountCreated_415(){
-		sfHomePage.loginToStoreFront(TestConstants.PC_EMAIL, password);
+		sfHomePage.loginToStoreFront(TestConstants.PC_EMAIL_HAVING_AUTOSHIP, password);
 		sfShopSkinCarePage = sfHomePage.clickAllProducts();
 		sfShopSkinCarePage.addProductToCart(TestConstants.PRODUCT_NUMBER, TestConstants.ORDER_TYPE_ADHOC);;
 		sfCartPage = sfShopSkinCarePage.checkoutTheCartFromPopUp();
@@ -937,24 +937,69 @@ public class OrdersTest extends StoreFrontWebsiteBaseTest{
 
 	/***
 	 * qTest : TC-458 Choose a consultant- R+F Corporate sponsor - PC First checkout from PWS
-	 * Description : //TODO
+	 * Description :  This test case validates the sponsor functionality and before enrolled PC
+	 * & after enrollment PC can not change the sponsor start from PWS
 	 * 
 	 *     
 	 */
 	@Test(enabled=false)
 	public void testChooseAConsultantRFCorporateSponsorPCFirstCheckoutFromPWS_458(){
-
-	}
-
-	/***
-	 * qTest : TC-459 Choose a consultant- R+F Corporate sponsor - RC checkout from Corporate
-	 * Description : //TODO
-	 * 
-	 *     
-	 */
-	@Test(enabled=false)
-	public void testChooseAConsultantRFCorporateSponsorRCCheckoutFromCorporate_459(){
-
+		String homePageURL = sfHomePage.getCurrentURL();
+		String prefix = TestConstants.CONSULTANT_PWS_PREFIX;
+		sfHomePage.navigateToUrl(homePageURL + "/pws/" + prefix);
+		String timeStamp = CommonUtils.getCurrentTimeStamp();
+		String firstName = TestConstants.FIRST_NAME;
+		String lastName = TestConstants.LAST_NAME;
+		String emailID = TestConstants.FIRST_NAME+timeStamp+TestConstants.EMAIL_SUFFIX;
+		String addressLine1 = TestConstants.ADDRESS_LINE_1_US;
+		String addressLine2 = TestConstants.ADDRESS_LINE_2_US;
+		String city = TestConstants.CITY_US;
+		String state = TestConstants.STATE_US;
+		String postalCode = TestConstants.POSTAL_CODE_US;
+		String phoneNumber = TestConstants.PHONE_NUMBER;
+		String sponsorName = "RF Corporate";
+		String cardType = TestConstants.CARD_TYPE;
+		String cardNumber = TestConstants.CARD_NUMBER;
+		String cardName = TestConstants.CARD_NAME;
+		String CVV = TestConstants.CVV;
+		String sponsorNameFromUI = null;
+		sfShopSkinCarePage = sfHomePage.clickAllProducts();
+		sfShopSkinCarePage.addProductToCart(TestConstants.PRODUCT_NUMBER, TestConstants.ORDER_TYPE_ADHOC);;
+		sfCartPage = sfShopSkinCarePage.checkoutTheCartFromPopUp();
+		sfCheckoutPage = sfCartPage.checkoutTheCart();
+		sfCheckoutPage.fillNewUserDetails(TestConstants.USER_TYPE_PC,firstName, lastName, emailID, password);
+		sfCheckoutPage.clickCreateAccountButton();
+		sfCheckoutPage.checkoutTheCart();
+		sfCheckoutPage.clickRemoveLink();
+		sfCheckoutPage.clickContinueWithoutConsultantLink();
+		sponsorNameFromUI = sfCheckoutPage.getSponsorInfo();
+		s_assert.assertTrue(sponsorNameFromUI.contains(sponsorName), "Expected sponsor name is "+sponsorName+" but actual on UI is "+sponsorNameFromUI);
+		sfCheckoutPage.clickNotYourConsultantLink();
+		sfCheckoutPage.clickContinueWithoutConsultantLink();
+		sponsorNameFromUI = sfCheckoutPage.getSponsorInfo();
+		s_assert.assertTrue(sponsorNameFromUI.contains(sponsorName), "Expected sponsor name is "+sponsorName+" but actual on UI is "+sponsorNameFromUI);
+		sfCheckoutPage.clickNotYourConsultantLink();
+		s_assert.assertTrue(sfCheckoutPage.isSponsorSearchBoxVisible(), "Sponsor search box is not visible after clicked on not your consultant link");
+		sfCheckoutPage.searchSponsor(TestConstants.SPONSOR);
+		s_assert.assertTrue(sfHomePage.isSponsorResultDisplayed(),"No result found after searching the sponsor with name "+TestConstants.SPONSOR);
+		sfCheckoutPage.clickContinueWithoutConsultantLink();
+		s_assert.assertTrue(sponsorNameFromUI.contains(sponsorName), "Expected sponsor name is "+sponsorName+" but actual on UI is at last "+sponsorNameFromUI);
+		sfCheckoutPage.clickSaveButton();
+		sfCheckoutPage.enterShippingDetails(firstName+" "+lastName, addressLine1, addressLine2, city, state, postalCode, phoneNumber);
+		sfCheckoutPage.clickShippingDetailsNextbutton();
+		sfCheckoutPage.clickUseAsEnteredButtonOnPopUp();
+		sfCheckoutPage.enterUserBillingDetails(cardType, cardNumber, cardName, CVV);
+		sfCheckoutPage.clickBillingDetailsNextbutton();
+		sfCheckoutPage.selectIAcknowledgePCChkBox();
+		sfCheckoutPage.selectPCTermsAndConditionsChkBox();
+		sfCheckoutPage.clickPlaceOrderButton();
+		sfHomePage= sfCheckoutPage.clickRodanAndFieldsLogo();
+		sfShopSkinCarePage = sfHomePage.clickAllProducts();
+		sfShopSkinCarePage.addProductToCart(TestConstants.PRODUCT_NUMBER, TestConstants.ORDER_TYPE_ADHOC);;
+		sfShopSkinCarePage.checkoutTheCartFromPopUp();
+		sfCartPage.checkoutTheCart();
+		s_assert.assertFalse(sfCheckoutPage.isNotYourConsultantLinkPresent(), "Not your sponsor link is present for consultant's sponsor");
+		s_assert.assertAll();
 	}
 
 	/***
@@ -984,7 +1029,7 @@ public class OrdersTest extends StoreFrontWebsiteBaseTest{
 		String state = TestConstants.STATE_US;
 		String postalCode = TestConstants.POSTAL_CODE_US;
 		String phoneNumber = TestConstants.PHONE_NUMBER;
-		sfHomePage.loginToStoreFront(TestConstants.CONSULTANT_USERNAME, password);
+		sfHomePage.loginToStoreFront(TestConstants.CONSULTANT_EMAIL_WITH_CRP_AND_PULSE, password);
 		sfShopSkinCarePage = sfHomePage.clickAllProducts();
 		sfShopSkinCarePage.addProductToCart(TestConstants.PRODUCT_NUMBER, TestConstants.ORDER_TYPE_ADHOC);;
 		sfCartPage = sfShopSkinCarePage.checkoutTheCartFromPopUp();
@@ -1014,7 +1059,7 @@ public class OrdersTest extends StoreFrontWebsiteBaseTest{
 		String state = TestConstants.STATE_US;
 		String postalCode = TestConstants.POSTAL_CODE_US;
 		String phoneNumber = TestConstants.PHONE_NUMBER;
-		sfHomePage.loginToStoreFront(TestConstants.CONSULTANT_USERNAME, password);
+		sfHomePage.loginToStoreFront(TestConstants.CONSULTANT_EMAIL_WITH_CRP_AND_PULSE, password);
 		sfShopSkinCarePage = sfHomePage.clickAllProducts();
 		sfShopSkinCarePage.addProductToCart(TestConstants.PRODUCT_NUMBER, TestConstants.ORDER_TYPE_ADHOC);;
 		sfShopSkinCarePage.checkoutTheCartFromPopUp();
@@ -1067,7 +1112,7 @@ public class OrdersTest extends StoreFrontWebsiteBaseTest{
 		String ProblemReasonAtReportConfirmationPage = null;
 		String MessageAtReportConfirmationPage = null;
 
-		sfHomePage.loginToStoreFront(TestConstants.PC_EMAIL, password);
+		sfHomePage.loginToStoreFront(TestConstants.PC_EMAIL_HAVING_AUTOSHIP, password);
 		sfHomePage.clickWelcomeDropdown();
 		sfOrdersPage = sfHomePage.navigateToOrdersPage();
 		sfOrdersPage.chooselinkFromActionsDDUnderOrderHistoryForFirstOrder(reportProblemsLink);
@@ -1114,7 +1159,7 @@ public class OrdersTest extends StoreFrontWebsiteBaseTest{
 		String titleOfOrderDetailsPage  = null;
 		String headerToAssert = "report a problem";
 		String actualHeaderOnUI = null;
-		sfHomePage.loginToStoreFront(TestConstants.CONSULTANT_USERNAME, password);
+		sfHomePage.loginToStoreFront(TestConstants.CONSULTANT_EMAIL_WITH_CRP_AND_PULSE, password);
 		sfHomePage.clickWelcomeDropdown();
 		sfOrdersPage = sfHomePage.navigateToOrdersPage();
 		orderNumber = sfOrdersPage.getFirstOrderNumberFromOrderHistory();
@@ -1147,7 +1192,7 @@ public class OrdersTest extends StoreFrontWebsiteBaseTest{
 		String CVV = TestConstants.CVV;
 		String orderNum = null;
 		String orderStatus= null;
-		sfHomePage.loginToStoreFront(TestConstants.CONSULTANT_EMAIL, password);
+		sfHomePage.loginToStoreFront(TestConstants.CONSULTANT_EMAIL_WITH_CRP_AND_PULSE, password);
 		sfShopSkinCarePage = sfHomePage.clickAllProducts();
 		sfShopSkinCarePage.addProductToCart(TestConstants.PRODUCT_NUMBER, TestConstants.ORDER_TYPE_ADHOC);;
 		sfCartPage = sfShopSkinCarePage.checkoutTheCartFromPopUp();
@@ -1177,7 +1222,7 @@ public class OrdersTest extends StoreFrontWebsiteBaseTest{
 	@Test(enabled=true)
 	public void testOrderHistoryReportAProblemProductLevelWithEmptyFields_483(){
 		String currentUrlOfReportProblemPagePage = null;
-		sfHomePage.loginToStoreFront(TestConstants.CONSULTANT_USERNAME, password);
+		sfHomePage.loginToStoreFront(TestConstants.CONSULTANT_EMAIL_WITH_CRP_AND_PULSE, password);
 		sfHomePage.clickWelcomeDropdown();
 		sfOrdersPage = sfHomePage.navigateToOrdersPage();
 		String orderNumber = sfOrdersPage.getFirstOrderNumberFromOrderHistory();
@@ -1329,7 +1374,7 @@ public class OrdersTest extends StoreFrontWebsiteBaseTest{
 		String state = TestConstants.STATE_US;
 		String phoneNumber = TestConstants.PHONE_NUMBER;
 		String invalidPostalCode = "123";
-		sfHomePage.loginToStoreFront(TestConstants.CONSULTANT_USERNAME, password);
+		sfHomePage.loginToStoreFront(TestConstants.CONSULTANT_EMAIL_WITH_CRP_AND_PULSE, password);
 		sfShopSkinCarePage = sfHomePage.clickAllProducts();
 		sfShopSkinCarePage.addProductToCart(TestConstants.PRODUCT_NUMBER, TestConstants.ORDER_TYPE_ADHOC);;
 		sfCartPage = sfShopSkinCarePage.checkoutTheCartFromPopUp();
@@ -1366,7 +1411,7 @@ public class OrdersTest extends StoreFrontWebsiteBaseTest{
 		String postalCode = TestConstants.POSTAL_CODE_US;
 		String phoneNumber = TestConstants.PHONE_NUMBER;
 		String shippingProfileNameFromUI = null;
-		sfHomePage.loginToStoreFront(TestConstants.CONSULTANT_USERNAME, password);
+		sfHomePage.loginToStoreFront(TestConstants.CONSULTANT_EMAIL_WITH_CRP_AND_PULSE, password);
 		sfShopSkinCarePage = sfHomePage.clickAllProducts();
 		sfShopSkinCarePage.addProductToCart(TestConstants.PRODUCT_NUMBER, TestConstants.ORDER_TYPE_ADHOC);;
 		sfCartPage = sfShopSkinCarePage.checkoutTheCartFromPopUp();
@@ -1397,7 +1442,7 @@ public class OrdersTest extends StoreFrontWebsiteBaseTest{
 		String cardNumber = TestConstants.CARD_NUMBER;
 		String cardName = TestConstants.CARD_NAME;
 		String CVV = TestConstants.CVV;
-		sfHomePage.loginToStoreFront(TestConstants.CONSULTANT_EMAIL, password);
+		sfHomePage.loginToStoreFront(TestConstants.CONSULTANT_EMAIL_WITH_CRP_AND_PULSE, password);
 		sfShopSkinCarePage = sfHomePage.clickAllProducts();
 		sfShopSkinCarePage.addProductToCart(TestConstants.PRODUCT_NUMBER, TestConstants.ORDER_TYPE_ADHOC);;
 		sfCartPage = sfShopSkinCarePage.checkoutTheCartFromPopUp();
@@ -1468,7 +1513,7 @@ public class OrdersTest extends StoreFrontWebsiteBaseTest{
 	 * & after enrollment PC can not change the sponsor 
 	 *     
 	 */
-	@Test(enabled=false)
+	@Test(enabled=true)
 	public void testChooseAConsultantRFCorporateSponsorPCFirstCheckoutFromCorp_457(){
 		String timeStamp = CommonUtils.getCurrentTimeStamp();
 		String firstName = TestConstants.FIRST_NAME;
@@ -1504,7 +1549,8 @@ public class OrdersTest extends StoreFrontWebsiteBaseTest{
 		s_assert.assertTrue(sfCheckoutPage.isSponsorSearchBoxVisible(), "Sponsor search box is not visible after clicked on not your consultant link");
 		sfCheckoutPage.searchSponsor(TestConstants.SPONSOR);
 		s_assert.assertTrue(sfHomePage.isSponsorResultDisplayed(),"No result found after searching the sponsor with name "+TestConstants.SPONSOR);
-		sfCheckoutPage.selectFirstSponsorFromList();
+		sfCheckoutPage.clickContinueWithoutConsultantLink();
+		s_assert.assertTrue(sponsorNameFromUI.contains(sponsorName), "Expected sponsor name is "+sponsorName+" but actual on UI is at last "+sponsorNameFromUI);
 		sfCheckoutPage.clickSaveButton();
 		sfCheckoutPage.enterShippingDetails(firstName+" "+lastName, addressLine1, addressLine2, city, state, postalCode, phoneNumber);
 		sfCheckoutPage.clickShippingDetailsNextbutton();
@@ -1539,8 +1585,9 @@ public class OrdersTest extends StoreFrontWebsiteBaseTest{
 		String reasonShipmentWasDamaged = "\"My Shipment was damaged or missing items\"";
 		String expectedConfirmationMessage = "We have sent your problem to our customer service and they will review the issue and respond within 48 hours";
 		String confirmationMessageFromUI = null;
-		sfHomePage.navigateToUrl(TestConstants.CONSULTANT_PWS);
-		sfHomePage.loginToStoreFront(TestConstants.CONSULTANT_USERNAME, password);
+		String prefix = TestConstants.CONSULTANT_PWS_PREFIX;
+		sfHomePage.navigateToUrl(sfHomePage.getBaseUrl()+"/" +sfHomePage.getCountry() +"/pws/" + prefix);
+		sfHomePage.loginToStoreFront(TestConstants.CONSULTANT_EMAIL_WITH_CRP_AND_PULSE, password);
 		sfHomePage.clickWelcomeDropdown();
 		sfOrdersPage = sfHomePage.navigateToOrdersPage();
 		sfOrdersPage.chooselinkFromActionsDDUnderOrderHistoryForFirstOrder(reportProblemsLink);
@@ -1564,7 +1611,7 @@ public class OrdersTest extends StoreFrontWebsiteBaseTest{
 		sfOrdersPage.enterTheDetailsForReportProblem("For Automation");
 		sfOrdersPage.enterEmailIdAtReportProblemPage(name);
 		s_assert.assertTrue(sfOrdersPage.isErrorMsgForEmailPresent(),"Error message is not present for invalid email id");
-		sfOrdersPage.enterEmailIdAtReportProblemPage(TestConstants.CONSULTANT_EMAIL);
+		sfOrdersPage.enterEmailIdAtReportProblemPage(TestConstants.CONSULTANT_EMAIL_WITH_CRP_AND_PULSE);
 		sfOrdersPage.clickSubmitBtnAtReportProblemPage();
 		confirmationMessageFromUI = sfOrdersPage.getConfirmationMsgOfReportProblem().toLowerCase();
 		s_assert.assertTrue(confirmationMessageFromUI.contains(expectedConfirmationMessage.toLowerCase()), "Expected confirmation message is"+expectedConfirmationMessage+" but actual on UI is "+confirmationMessageFromUI);
@@ -1599,7 +1646,7 @@ public class OrdersTest extends StoreFrontWebsiteBaseTest{
 		String emailID = "E-mail Address";
 		String problemReason = "Problem Reason";
 		String messageTag = "Message";
-		sfHomePage.loginToStoreFront(TestConstants.CONSULTANT_USERNAME, password);
+		sfHomePage.loginToStoreFront(TestConstants.CONSULTANT_EMAIL_WITH_CRP_AND_PULSE, password);
 		sfHomePage.clickWelcomeDropdown();
 		sfOrdersPage = sfHomePage.navigateToOrdersPage();
 		sfOrdersPage.chooselinkFromActionsDDUnderOrderHistoryForFirstOrder(reportProblemsLink);
@@ -1640,7 +1687,7 @@ public class OrdersTest extends StoreFrontWebsiteBaseTest{
 		String titleOfSelectedShipppingMethod = null;
 		String titleOfShippingMethodAfterNextButton = null;
 		String shippingMethodAtOrderConfirmationPage = null;
-		sfHomePage.loginToStoreFront(TestConstants.PC_USERNAME, password);
+		sfHomePage.loginToStoreFront(TestConstants.PC_EMAIL_HAVING_AUTOSHIP, password);
 		sfShopSkinCarePage = sfHomePage.clickAllProducts();
 		sfShopSkinCarePage.addProductToCart(TestConstants.PRODUCT_NUMBER, TestConstants.ORDER_TYPE_ADHOC);;
 		sfCartPage = sfShopSkinCarePage.checkoutTheCartFromPopUp();
@@ -1689,7 +1736,7 @@ public class OrdersTest extends StoreFrontWebsiteBaseTest{
 		String lastNameOfDefaultBillingProfile = null;
 		String billingDetailsOnUI = null;
 
-		sfHomePage.loginToStoreFront(TestConstants.CONSULTANT_EMAIL, password);
+		sfHomePage.loginToStoreFront(TestConstants.CONSULTANT_EMAIL_WITH_CRP_AND_PULSE, password);
 		sfShopSkinCarePage = sfHomePage.clickAllProducts();
 		sfShopSkinCarePage.addProductToCart(TestConstants.PRODUCT_NUMBER, TestConstants.ORDER_TYPE_ADHOC);;
 		sfShopSkinCarePage.checkoutTheCartFromPopUp();
@@ -1726,7 +1773,7 @@ public class OrdersTest extends StoreFrontWebsiteBaseTest{
 	@Test(enabled=false)
 	public void testOrderHistoryReturnOrderReturnDoNotExist_517(){
 		String noReturnOrderMessage = "There are no return orders or credit for the user";
-		sfHomePage.loginToStoreFront(TestConstants.CONSULTANT_USERNAME_HAVING_NO_RETURN_ORDERS, password);
+		sfHomePage.loginToStoreFront(TestConstants.CONSULTANT_EMAIL_WITH_CRP_AND_PULSE, password);
 		sfHomePage.clickWelcomeDropdown();
 		sfOrdersPage = sfHomePage.navigateToOrdersPage();
 		s_assert.assertTrue(sfOrdersPage.isTextVisible(noReturnOrderMessage), "No message for empty return order section");
@@ -1776,7 +1823,7 @@ public class OrdersTest extends StoreFrontWebsiteBaseTest{
 		String orderTotalAtOrderDetailsPage = null;
 		String productNameAtOrderDetailsPage = null;
 
-		sfHomePage.loginToStoreFront(TestConstants.CONSULTANT_WITH_CRP_USERNAME, password);
+		sfHomePage.loginToStoreFront(TestConstants.CONSULTANT_EMAIL_WITH_CRP_AND_PULSE, password);
 		sfCartPage = sfHomePage.clickMiniCartBagLink();
 		sfCartPage.removeAllProductsFromCart();
 		sfCartPage.clickRodanAndFieldsLogo();
@@ -1848,9 +1895,9 @@ public class OrdersTest extends StoreFrontWebsiteBaseTest{
 	 */
 	@Test(enabled=true)
 	public void testRetailUserCheckoutChooseAConsultantMultipleSearch_477(){
-		String sponsorID = TestConstants.CONSULTANT_WITH_CRP_USERNAME;
+		String sponsorID = TestConstants.CONSULTANT_EMAIL_WITH_CRP_AND_PULSE;
 		String sponsorFromUI = null;
-		sfHomePage.loginToStoreFront(TestConstants.RC_EMAIL, password);
+		sfHomePage.loginToStoreFront(TestConstants.RC_EMAIL_HAVING_ORDER, password);
 		sfShopSkinCarePage = sfHomePage.clickAllProducts();
 		sfShopSkinCarePage.addProductToCart(TestConstants.PRODUCT_NUMBER, TestConstants.ORDER_TYPE_ADHOC);;
 		sfCartPage = sfShopSkinCarePage.checkoutTheCartFromPopUp();
@@ -1871,11 +1918,11 @@ public class OrdersTest extends StoreFrontWebsiteBaseTest{
 	 * 
 	 *     
 	 */
-	@Test(enabled=false)
+	@Test(enabled=true)
 	public void testShipMethodPCExistingPCChangesShippingMethod_313(){
 		String shippingMethodWithCost = null;
 		String deliveryCharge = null;
-		sfHomePage.loginToStoreFront(TestConstants.PC_USERNAME, password);
+		sfHomePage.loginToStoreFront(TestConstants.PC_EMAIL_HAVING_AUTOSHIP, password);
 		sfCartPage = sfHomePage.clickMiniCartBagLink();
 		sfCartPage.removeAllProductsFromCart();
 		sfCartPage.clickRodanAndFieldsLogo();
@@ -1901,6 +1948,70 @@ public class OrdersTest extends StoreFrontWebsiteBaseTest{
 		sfCheckoutPage.clickNextbuttonOfShippingDetails();
 		deliveryCharge = sfCheckoutPage.getDeliveryChargesAtOrderReviewPage().trim();
 		s_assert.assertTrue(shippingMethodWithCost.contains(deliveryCharge), "Expected shipping method cost for UPS Overnight is "+shippingMethodWithCost+" but actual on UI is "+deliveryCharge);
+		s_assert.assertAll();
+	}
+
+	/***
+	 * qTest : TC-459 Choose a consultant- R+F Corporate sponsor - RC checkout from Corporate
+	 * Description : This test case validates the sponsor functionality and before enrolled RC
+	 * & after enrollment RC can change the sponsor
+	 *     
+	 */
+	@Test(enabled=false)
+	public void testChooseAConsultantRFCorporateSponsorRCCheckoutFromCorporate_459(){
+		String timeStamp = CommonUtils.getCurrentTimeStamp();
+		String firstName = TestConstants.FIRST_NAME;
+		String lastName = TestConstants.LAST_NAME;
+		String emailID = TestConstants.FIRST_NAME+timeStamp+TestConstants.EMAIL_SUFFIX;
+		String addressLine1 = TestConstants.ADDRESS_LINE_1_US;
+		String addressLine2 = TestConstants.ADDRESS_LINE_2_US;
+		String city = TestConstants.CITY_US;
+		String state = TestConstants.STATE_US;
+		String postalCode = TestConstants.POSTAL_CODE_US;
+		String phoneNumber = TestConstants.PHONE_NUMBER;
+		String sponsorName = "RF Corporate";
+		String cardType = TestConstants.CARD_TYPE;
+		String cardNumber = TestConstants.CARD_NUMBER;
+		String cardName = TestConstants.CARD_NAME;
+		String CVV = TestConstants.CVV;
+		String sponsorNameFromUI = null;
+		sfShopSkinCarePage = sfHomePage.clickAllProducts();
+		sfShopSkinCarePage.addProductToCart(TestConstants.PRODUCT_NUMBER, TestConstants.ORDER_TYPE_ADHOC);;
+		sfCartPage = sfShopSkinCarePage.checkoutTheCartFromPopUp();
+		sfCheckoutPage = sfCartPage.checkoutTheCart();
+		sfCheckoutPage.fillNewUserDetails(TestConstants.USER_TYPE_RC,firstName, lastName, emailID, password);
+		sfCheckoutPage.clickCreateAccountButton();
+		sfCheckoutPage.clickContinueWithoutConsultantLink();
+		sponsorNameFromUI = sfCheckoutPage.getSponsorInfo();
+		s_assert.assertTrue(sponsorNameFromUI.contains(sponsorName), "Expected sponsor name is "+sponsorName+" but actual on UI is "+sponsorNameFromUI);
+		sfCheckoutPage.clickNotYourConsultantLink();
+		sfCheckoutPage.clickContinueWithoutConsultantLink();
+		sponsorNameFromUI = sfCheckoutPage.getSponsorInfo();
+		s_assert.assertTrue(sponsorNameFromUI.contains(sponsorName), "Expected sponsor name is "+sponsorName+" but actual on UI is "+sponsorNameFromUI);
+		sfCheckoutPage.clickNotYourConsultantLink();
+		s_assert.assertTrue(sfCheckoutPage.isSponsorSearchBoxVisible(), "Sponsor search box is not visible after clicked on not your consultant link");
+		sfCheckoutPage.searchSponsor(TestConstants.SPONSOR);
+		s_assert.assertTrue(sfHomePage.isSponsorResultDisplayed(),"No result found after searching the sponsor with name "+TestConstants.SPONSOR);
+		sfCheckoutPage.clickContinueWithoutConsultantLink();
+		s_assert.assertTrue(sponsorNameFromUI.contains(sponsorName), "Expected sponsor name is "+sponsorName+" but actual on UI is at last "+sponsorNameFromUI);
+		sfCheckoutPage.clickSaveButton();
+		sfCheckoutPage.enterShippingDetails(firstName+" "+lastName, addressLine1, addressLine2, city, state, postalCode, phoneNumber);
+		sfCheckoutPage.clickShippingDetailsNextbutton();
+		sfCheckoutPage.clickUseAsEnteredButtonOnPopUp();
+		sfCheckoutPage.enterUserBillingDetails(cardType, cardNumber, cardName, CVV);
+		sfCheckoutPage.clickBillingDetailsNextbutton();
+		sfCheckoutPage.selectTermsAndConditionsChkBox();
+		sfCheckoutPage.clickPlaceOrderButton();
+		sfHomePage= sfCheckoutPage.clickRodanAndFieldsLogo();
+		sfHomePage.clickWelcomeDropdown();
+		sfHomePage.logout();
+		sfHomePage.loginToStoreFront(emailID, password);
+		sfShopSkinCarePage = sfHomePage.clickAllProducts();
+		sfShopSkinCarePage.addProductToCart(TestConstants.PRODUCT_NUMBER, TestConstants.ORDER_TYPE_ADHOC);;
+		sfShopSkinCarePage.checkoutTheCartFromPopUp();
+		sfCartPage.checkoutTheCart();
+		sfCheckoutPage.clickContinueWithoutConsultantLink();
+		s_assert.assertTrue(sfCheckoutPage.isNotYourConsultantLinkPresent(), "Not your sponsor link is not present for consultant's sponsor");
 		s_assert.assertAll();
 	}
 }

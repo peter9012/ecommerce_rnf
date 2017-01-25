@@ -23,13 +23,18 @@ public class StoreFrontShippingInfoPage extends StoreFrontWebsiteBasePage{
 	private final By ACTION_SUCCESS_MSG_LOC = By.xpath("//div[contains(@class,'alert-info') and contains(@class,'alert-dismissable')]");
 	private final By CANCEL_BUTTON_ON_DELETE_SHIPPING_POPUP_LOC = By.xpath("//div[@id='colorbox']//a[contains(text(),'Cancel')]");
 	private final By DELETE_BUTTON_ON_DELETE_SHIPPING_POPUP_LOC = By.xpath("//div[@id='colorbox']//a[contains(text(),'Delete')]");
-	private String deleteLinkForProfileLoc = "//strong[contains(text(),'%s')]/ancestor::ul[1]/following-sibling::div[@class='account-cards-actions']//a[contains(text(),'Delete')]";
-	private String shippingProfileNameLoc  = "//div[contains(@class,'account-addressbook')]/descendant::strong[contains(text(),'%s')][1]";
+    private final By LEAVE_AS_IS_BUTTON_ON_UPDATE_AUTOSHIP_MODAL_LOC = By.xpath("//div[@class='myModal' and contains(@style,'display')]//a[contains(text(),'LEAVE AS IS')]");
+    private final By UPDATE_MY_AUTOSHIP_BUTTON_ON_UPDATE_AUTOSHIP_MODAL_LOC = By.xpath("//div[@class='myModal' and contains(@style,'display')]//a[contains(text(),'UPDATE MY AUTO-SHIP')]");
+    private final By NEXT_CRP_DEFAULT_ADDRESS_LOC = By.xpath("//strong[contains(text(),'Next CRP')]//following-sibling::div[@class='address']/strong");
 	private final By TOTAL_NO_OF_SHIPPING_PROFILE_LOC = By.xpath("//div[contains(@class,'account-addressbook')]/descendant::div[@class='set-default-addform']");
 	private final By AUTOSHIP_SHIPPING_PROFILE_NAME_LOC = By.xpath("//strong[contains(text(),'Next CRP')]/following::strong[1]");
 	private final By CANCEL_BUTTON_OF_DELETE_ADDRESS_AND_UPDATE_SHIPPING_ADDRESS_FOR_AUTOSHIP_POPUP_LOC = By.xpath("//div[@id='cboxLoadedContent']//a[contains(text(),'Cancel')]");
 	private final By UPDATE_MY_AUTOSHIP_BUTTON_OF_DELETE_ADDRESS_AND_UPDATE_SHIPPING_ADDRESS_FOR_AUTOSHIP_POPUP_LOC = By.xpath("//div[@id='cboxLoadedContent']//a[contains(text(),'Update My Autoship')]");
-
+	
+	private String defaultLinkForProfileLoc = "//strong[contains(text(),'%s')]/ancestor::ul[1]/following-sibling::div//a[contains(text(),'Default')]";
+	private String deleteLinkForProfileLoc = "//strong[contains(text(),'%s')]/ancestor::ul[1]/following-sibling::div[@class='account-cards-actions']//a[contains(text(),'Delete')]";
+	private String shippingProfileNameLoc  = "//div[contains(@class,'account-addressbook')]/descendant::strong[contains(text(),'%s')][1]";
+	
 	/***
 	 * This method clicked on add a new shipping address link 
 	 * 
@@ -166,18 +171,6 @@ public class StoreFrontShippingInfoPage extends StoreFrontWebsiteBasePage{
 	}
 
 	/***
-	 * This method fetch the actionsuccess message  
-	 * 
-	 * @param
-	 * @return String
-	 * 
-	 */
-	public String getActionSuccessMsgOnShippingInfoPage(){
-		logger.info(driver.getText(ACTION_SUCCESS_MSG_LOC));
-		return driver.getText(ACTION_SUCCESS_MSG_LOC);
-	}
-
-	/***
 	 * This method fetch the total no of shipping profile  
 	 * 
 	 * @param
@@ -225,7 +218,7 @@ public class StoreFrontShippingInfoPage extends StoreFrontWebsiteBasePage{
 		logger.info("Autoship shipping profile name "+driver.getText(AUTOSHIP_SHIPPING_PROFILE_NAME_LOC));
 		return driver.getText(AUTOSHIP_SHIPPING_PROFILE_NAME_LOC).length()>0;
 	}
-	
+
 	/***
 	 * This method click the cancel button of delete address and update shipping address popup
 	 * 
@@ -238,6 +231,58 @@ public class StoreFrontShippingInfoPage extends StoreFrontWebsiteBasePage{
 		logger.info("Cancel button clicked");
 		driver.pauseExecutionFor(1000);
 		return this;
+	}
+
+	/***
+	 * This method click the default button for specific profile
+	 * 
+	 * @param
+	 * @return store front shipping info page object
+	 * 
+	 */
+	public StoreFrontShippingInfoPage clickDefaultButtonForShippingProfile(String profileName){
+		driver.click(By.xpath(String.format(defaultLinkForProfileLoc,profileName)));
+		logger.info("Default Button Clicked for Profile : " + profileName);
+		return this;
+	}
+
+	/***
+	 * This method click the 'Leave As Is' Button on update auto ship modal
+	 * 
+	 * @param
+	 * @return store front shipping info page object
+	 * 
+	 */
+	public StoreFrontShippingInfoPage clickLeaveAsIsBtnOnUpdateAutoshipModal(){
+		driver.click(LEAVE_AS_IS_BUTTON_ON_UPDATE_AUTOSHIP_MODAL_LOC);
+		logger.info("Clicked 'Leave As Is' Button on update Autoship modal");
+		return this;
+	}
+
+	/***
+	 * This method click the 'Update my autoship' Button on update auto ship modal
+	 * 
+	 * @param
+	 * @return store front checkout page object
+	 * 
+	 */
+	public StoreFrontCheckoutPage clickUpdateMyAutoshipBtnOnUpdateAutoshipModal(){
+		driver.click(UPDATE_MY_AUTOSHIP_BUTTON_ON_UPDATE_AUTOSHIP_MODAL_LOC);
+		logger.info("Clicked 'Update my autoship' Button on update AutoShip modal");
+		return new StoreFrontCheckoutPage(driver);
+	}
+
+	/***
+	 * This method get the default address profile Name for Next CRP
+	 * 
+	 * @param
+	 * @return String
+	 * 
+	 */
+	public String getProfileNameForNextCRPDeliveryAddress(){
+		String profileName = driver.getText(NEXT_CRP_DEFAULT_ADDRESS_LOC).trim();
+		logger.info("Next CRP Delivery Address Profile Name : " + profileName);
+		return profileName;
 	}
 
 }

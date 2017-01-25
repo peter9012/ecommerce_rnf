@@ -50,6 +50,8 @@ public class StoreFrontBillingInfoPage extends StoreFrontWebsiteBasePage{
 	private final By CARD_ICONS_LOC = By.xpath("//div[@class='form-group']//div[@class='card-icons']/span");
 	private final By BILLING_ADDRESS_DD_FOR_EXISTING_PROFILE_LOC = By.id("addressId");
 	private final By BILLING_ADDRESS_DD_OPTIONS_FOR_EXISTING_PROFILE_LOC = By.xpath("//select[@id='addressId']/option[not(@label)]");
+	private final By BILLING_ADDRESS_FORM_FOR_EXISTING_PROFILE_LOC = By.xpath("//div[@id='checkoutEditBillingAddressForm']//div[@id='billingAddressForm']");
+	private final By STREET_ERROR_MSG_FOR_EXISTING_PROFILE_LOC = By.xpath("//div[@id='checkoutEditBillingAddressForm']//p[@id='errorMessage']");
 
 	private String editLinkForSpecificBillingProfileLoc = "//div[@class='account-paymentdetails account-list']//li[contains(text(),'%s')]//ancestor::ul[1]/following-sibling::div/a[contains(text(),'Edit')]";
 	private String billingProfileFirstNameLoc = "//div[@class='account-paymentdetails account-list']//li[contains(text(),'%s')]";
@@ -566,6 +568,28 @@ public class StoreFrontBillingInfoPage extends StoreFrontWebsiteBasePage{
 		driver.clickByJS(RFWebsiteDriver.driver,driver.findElement(By.xpath(String.format(editLinkForSpecificBillingProfileLoc,profile))));
 		logger.info("Edit Link Clicked for Billing Profile : " + profile);
 		return this;
+	}
+
+	/***
+	 * This method validates the Error Message for Wrong Address.
+	 * 
+	 * @param
+	 * @return boolean value
+	 * 
+	 */
+	public boolean isUnknownAddressErrorMessageIsPresentAsExpectedForExistingProfile(){
+		return driver.getText(STREET_ERROR_MSG_FOR_EXISTING_PROFILE_LOC).equalsIgnoreCase("Unknown street");
+	}
+
+	/***
+	 * This method validates the Add New Billing Address Form for Existing billing Profile
+	 * 
+	 * @param
+	 * @return boolean value
+	 * 
+	 */
+	public boolean isAddNewBillingAddressFormDisplayedForExistingProfile(){
+		return driver.isElementVisible(BILLING_ADDRESS_FORM_FOR_EXISTING_PROFILE_LOC);
 	}
 
 }

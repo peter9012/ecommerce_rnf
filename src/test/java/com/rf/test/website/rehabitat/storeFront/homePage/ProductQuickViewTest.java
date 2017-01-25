@@ -48,7 +48,7 @@ public class ProductQuickViewTest extends StoreFrontWebsiteBaseTest{
 		String textToAssertInURL = "autoship/cart";
 		String currentURL = null;
 		//Login to application.
-		sfHomePage.loginToStoreFront(TestConstants.PC_USERNAME, password);
+		sfHomePage.loginToStoreFront(TestConstants.PC_EMAIL_HAVING_AUTOSHIP, password);
 		sfShopSkinCarePage = sfHomePage.clickAllProducts();
 		sfShopSkinCarePage.refineProductByCategory(TestConstants.PC_PERKS_AUTOSHIP_PRODUCT_CATEGORY);
 		selectedProductName = sfShopSkinCarePage.getFirstProductNameFromAllProductPage();
@@ -88,7 +88,7 @@ public class ProductQuickViewTest extends StoreFrontWebsiteBaseTest{
 	@Test(enabled=true)
 	public void testProductQuickViewRCUser_195(){
 		String selectedProductName = null;
-		sfHomePage.loginToStoreFront(TestConstants.RC_EMAIL, password);
+		sfHomePage.loginToStoreFront(TestConstants.RC_EMAIL_HAVING_ORDER, password);
 		sfShopSkinCarePage = sfHomePage.clickAllProducts();
 		selectedProductName = sfShopSkinCarePage.getFirstProductNameFromAllProductPage();
 		sfShopSkinCarePage.clickOnQuickViewLinkForProduct("1");
@@ -120,7 +120,7 @@ public class ProductQuickViewTest extends StoreFrontWebsiteBaseTest{
 		String textToAssertInURL = "autoship/cart";
 		String currentURL = null;
 		//Login to application.
-		sfHomePage.loginToStoreFront(TestConstants.CONSULTANT_USERNAME, password);
+		sfHomePage.loginToStoreFront(TestConstants.CONSULTANT_EMAIL_WITH_CRP_AND_PULSE, password);
 		sfShopSkinCarePage = sfHomePage.clickAllProducts();
 		sfShopSkinCarePage.refineProductByCategory(TestConstants.CONSULTANT_CRP_AUTOSHIP_PRODUCT_CATEGORY);
 		selectedProductName = sfShopSkinCarePage.getFirstProductNameFromAllProductPage();
@@ -164,7 +164,7 @@ public class ProductQuickViewTest extends StoreFrontWebsiteBaseTest{
 		String textToAssertInURL = "autoship/cart";
 		String currentURL = null;
 		//Login to application.
-		sfHomePage.loginToStoreFront(TestConstants.CONSULTANT_USERNAME, password);
+		sfHomePage.loginToStoreFront(TestConstants.CONSULTANT_EMAIL_WITH_CRP_AND_PULSE, password);
 		sfShopSkinCarePage = sfHomePage.clickAllProducts();
 		sfShopSkinCarePage.refineProductByCategory(TestConstants.CONSULTANT_CRP_AUTOSHIP_PRODUCT_CATEGORY);
 		selectedProductName = sfShopSkinCarePage.getFirstProductNameFromAllProductPage();
@@ -183,7 +183,7 @@ public class ProductQuickViewTest extends StoreFrontWebsiteBaseTest{
 		sfAutoshipCartPage = sfShopSkinCarePage.checkoutTheCartFromPopUpForPCPerks();
 		s_assert.assertAll();
 	}
-	
+
 	/***
 	 * qTest : TC-194 Product qty field shouldn't allow any characters except a digits on the quick view
 	 * Description : This test validates that special characters is not allowed in Quantity text field on quick view pop up
@@ -200,9 +200,9 @@ public class ProductQuickViewTest extends StoreFrontWebsiteBaseTest{
 		String updateProductCount =null;
 		String newProductCount = null;
 		String expectedURL="/cart";
-		
+
 		//Login to application.
-		sfHomePage.loginToStoreFront(TestConstants.PC_USERNAME, password);
+		sfHomePage.loginToStoreFront(TestConstants.PC_EMAIL_HAVING_AUTOSHIP, password);
 		//Get product count on adhoc cart page.
 		sfHomePage.clickWelcomeDropdown();
 		previousProductCount = sfHomePage.getNumberOfItemFromMiniCart();

@@ -119,7 +119,7 @@ public class AutoshipTest extends StoreFrontWebsiteBaseTest{
 		String cardName = TestConstants.CARD_NAME;
 		String cvv =  TestConstants.CVV;
 		//Login to application.
-		sfHomePage.loginToStoreFront(TestConstants.PC_USERNAME, password);
+		sfHomePage.loginToStoreFront(TestConstants.PC_EMAIL_HAVING_AUTOSHIP, password);
 		sfAutoshipCartPage = sfHomePage.clickOnAutoshipCartLink();
 		currentURL = sfAutoshipCartPage.getCurrentURL().toLowerCase();
 		s_assert.assertTrue(currentURL.contains(textToAssertInURL), "Expected URL should contain "+textToAssertInURL+" but actual on UI is "+currentURL);
@@ -240,7 +240,7 @@ public class AutoshipTest extends StoreFrontWebsiteBaseTest{
 		String currentURL = null;
 		String textToAssertInURL = "autoship/cart";
 		//Login to application.
-		sfHomePage.loginToStoreFront(TestConstants.CONSULTANT_WITH_CRP_USERNAME, password);
+		sfHomePage.loginToStoreFront(TestConstants.CONSULTANT_EMAIL_WITH_CRP_AND_PULSE, password);
 		sfAutoshipCartPage = sfHomePage.clickOnAutoshipCartLink();
 		currentURL = sfAutoshipCartPage.getCurrentURL().toLowerCase();
 		s_assert.assertTrue(currentURL.contains(textToAssertInURL), "Expected URL should contain "+textToAssertInURL+" but actual on UI is "+currentURL);
@@ -260,7 +260,7 @@ public class AutoshipTest extends StoreFrontWebsiteBaseTest{
 		String currentURL = null;
 		String textToAssertInURL = "autoship/cart";
 		//Login to application.
-		sfHomePage.loginToStoreFront(TestConstants.PC_USERNAME, password);
+		sfHomePage.loginToStoreFront(TestConstants.PC_EMAIL_HAVING_AUTOSHIP, password);
 		sfHomePage.clickWelcomeDropdown();
 		sfHomePage.navigateToEditPCPerksPage();
 		currentURL = sfHomePage.getCurrentURL().toLowerCase();
@@ -290,7 +290,7 @@ public class AutoshipTest extends StoreFrontWebsiteBaseTest{
 		String phoneNumber = TestConstants.PHONE_NUMBER;
 
 		//Login to application.
-		sfHomePage.loginToStoreFront(TestConstants.CONSULTANT_WITH_CRP_USERNAME, password);
+		sfHomePage.loginToStoreFront(TestConstants.CONSULTANT_EMAIL_WITH_CRP_AND_PULSE, password);
 		sfAutoshipCartPage = sfHomePage.clickOnAutoshipCartLink();
 		currentURL = sfAutoshipCartPage.getCurrentURL().toLowerCase();
 		s_assert.assertTrue(currentURL.contains(textToAssertInURL), "Expected URL should contain "+textToAssertInURL+" but actual on UI is "+currentURL);
@@ -351,7 +351,7 @@ public class AutoshipTest extends StoreFrontWebsiteBaseTest{
 		double subtotalAtAutoshipCart;
 		double newSubtotalAtAutoshipCart;
 		//Login to application.
-		sfHomePage.loginToStoreFront(TestConstants.PC_EMAIL, password);
+		sfHomePage.loginToStoreFront(TestConstants.PC_EMAIL_HAVING_AUTOSHIP, password);
 		//sfAutoshipCartPage = sfHomePage.clickOnAutoshipCartLink();
 		sfHomePage.clickWelcomeDropdown();
 		sfAutoshipCartPage = sfHomePage.navigateToEditPCPerksPage();
@@ -392,7 +392,7 @@ public class AutoshipTest extends StoreFrontWebsiteBaseTest{
 		String textToAssertInURL = "autoship/cart";
 		String defaultShippingAddress = null;
 		//Login to application.
-		sfHomePage.loginToStoreFront(TestConstants.CONSULTANT_WITH_CRP_USERNAME, password);
+		sfHomePage.loginToStoreFront(TestConstants.CONSULTANT_EMAIL_WITH_CRP_AND_PULSE, password);
 		sfAutoshipCartPage = sfHomePage.clickOnAutoshipCartLink();
 		currentURL = sfAutoshipCartPage.getCurrentURL().toLowerCase();
 		s_assert.assertTrue(currentURL.contains(textToAssertInURL), "Expected URL should contain "+textToAssertInURL+" but actual on UI is "+currentURL);
@@ -442,7 +442,7 @@ public class AutoshipTest extends StoreFrontWebsiteBaseTest{
 		String cardLastName = null;
 
 		//Login to application.
-		sfHomePage.loginToStoreFront(TestConstants.CONSULTANT_WITH_CRP_USERNAME, password);
+		sfHomePage.loginToStoreFront(TestConstants.CONSULTANT_EMAIL_WITH_CRP_AND_PULSE, password);
 		sfAutoshipCartPage = sfHomePage.clickOnAutoshipCartLink();
 		currentURL = sfAutoshipCartPage.getCurrentURL().toLowerCase();
 		s_assert.assertTrue(currentURL.contains(textToAssertInURL), "Expected URL should contain "+textToAssertInURL+" but actual on UI is "+currentURL);
@@ -493,7 +493,7 @@ public class AutoshipTest extends StoreFrontWebsiteBaseTest{
 		String currentURL = null;
 		String textToAssertInURL = "autoship/cart";
 		//Login to application.
-		sfHomePage.loginToStoreFront(TestConstants.CONSULTANT_WITH_CRP_USERNAME, password);
+		sfHomePage.loginToStoreFront(TestConstants.CONSULTANT_EMAIL_WITH_CRP_AND_PULSE, password);
 		sfHomePage.clickWelcomeDropdown();
 		sfAutoshipCartPage = sfHomePage.navigateToEditCRPPage();
 		currentURL = sfAutoshipCartPage.getCurrentURL().toLowerCase();
@@ -520,7 +520,7 @@ public class AutoshipTest extends StoreFrontWebsiteBaseTest{
 		double subtotalAtAutoshipCart;
 		double newSubtotalAtAutoshipCart;
 		//Login to application.
-		sfHomePage.loginToStoreFront(TestConstants.CONSULTANT_EMAIL, password);
+		sfHomePage.loginToStoreFront(TestConstants.CONSULTANT_EMAIL_WITH_CRP_AND_PULSE, password);
 		sfHomePage.clickWelcomeDropdown();
 		sfAutoshipCartPage=sfHomePage.navigateToEditCRPPage();
 		//sfAutoshipCartPage = sfHomePage.clickOnAutoshipCartLink();
@@ -555,7 +555,7 @@ public class AutoshipTest extends StoreFrontWebsiteBaseTest{
 		String profileLastName = null;
 		String defaultBillingProfileName = null;
 		//Login to application.
-		sfHomePage.loginToStoreFront(TestConstants.CONSULTANT_USERNAME, password);
+		sfHomePage.loginToStoreFront(TestConstants.CONSULTANT_EMAIL_WITH_CRP_AND_PULSE, password);
 		sfAutoshipCartPage = sfHomePage.clickOnAutoshipCartLink();
 		currentURL = sfAutoshipCartPage.getCurrentURL().toLowerCase();
 		s_assert.assertTrue(currentURL.contains(textToAssertInURL), "Expected URL should contain "+textToAssertInURL+" but actual on UI is "+currentURL);
@@ -569,6 +569,7 @@ public class AutoshipTest extends StoreFrontWebsiteBaseTest{
 		defaultBillingProfileName = sfCheckoutPage.getDefaultBillingProfileName();
 		s_assert.assertTrue(defaultBillingProfileName.contains(profileLastName),"New Billing Profile Details do not get updated. Expected Profile Name : "+ cardName + ". Actual : " + defaultBillingProfileName);
 		sfCheckoutPage.selectTermsAndConditionsCheckBoxForConsulatntCRP();
+		sfCheckoutPage.selectCheckboxForPoliciesAndProcedures();
 		sfCheckoutPage.clickConfirmAutoshipOrderButton();
 		sfCheckoutPage.clickOnAutoshipCartLink();
 		sfAutoshipCartPage.clickOnCRPCheckoutButton();
@@ -609,7 +610,7 @@ public class AutoshipTest extends StoreFrontWebsiteBaseTest{
 	@Test(enabled=true)
 	public void testConsultantAutoshipStatusCancelCRP_449(){
 		//Login to application.
-		sfHomePage.loginToStoreFront(TestConstants.CONSULTANT_USERNAME, password);
+		sfHomePage.loginToStoreFront(TestConstants.CONSULTANT_EMAIL_WITH_CRP_AND_PULSE, password);
 		sfHomePage.clickWelcomeDropdown();
 		sfAutoshipStatusPage = sfHomePage.navigateToAutoshipStatusPage();
 		s_assert.assertTrue(sfAutoshipStatusPage.getCurrentCRPStatus().contains("Enrolled"),"Consultant is not enrolled into CRP yet");
@@ -626,6 +627,7 @@ public class AutoshipTest extends StoreFrontWebsiteBaseTest{
 		sfCheckoutPage.clickShippingDetailsNextbutton();
 		sfCheckoutPage.clickBillingDetailsNextbutton();
 		sfCheckoutPage.selectTermsAndConditionsCheckBoxForConsulatntCRP();
+		sfCheckoutPage.selectCheckboxForPoliciesAndProcedures();
 		sfCheckoutPage.clickConfirmAutoshipOrderButton();
 		s_assert.assertTrue(sfCheckoutPage.isCRPOrderConfirmedSuccessMsgAppeared(),"CRP Order confirmed success messge is not appeared");
 		sfCheckoutPage.clickRodanAndFieldsLogo();
@@ -780,7 +782,7 @@ public class AutoshipTest extends StoreFrontWebsiteBaseTest{
 		String currentCRPStatus = "Current CRP Status";
 		String nextBillAndShipDate = "Next Bill & Ship Date";
 		String currentPulseStatus = "Current Subscription Status";
-		sfHomePage.loginToStoreFront(TestConstants.CONSULTANT_WITH_CRP_USERNAME, password);
+		sfHomePage.loginToStoreFront(TestConstants.CONSULTANT_EMAIL_WITH_CRP_AND_PULSE, password);
 		sfHomePage.clickWelcomeDropdown();
 		sfAutoshipStatusPage = sfHomePage.navigateToAutoshipStatusPage();
 		s_assert.assertTrue(sfAutoshipStatusPage.isTextVisible(currentCRPStatus), currentCRPStatus+" tag is not present for CRP");
@@ -902,7 +904,7 @@ public class AutoshipTest extends StoreFrontWebsiteBaseTest{
 		String defaultBillingProfileName = null;
 
 		//Login to application and navigated to Checkout from Autoship cart page 
-		sfHomePage.loginToStoreFront(TestConstants.CONSULTANT_WITH_CRP_USERNAME, password);
+		sfHomePage.loginToStoreFront(TestConstants.CONSULTANT_EMAIL_WITH_CRP_AND_PULSE, password);
 		sfAutoshipCartPage = sfHomePage.clickOnAutoshipCartLink();
 		currentURL = sfAutoshipCartPage.getCurrentURL().toLowerCase();
 		s_assert.assertTrue(currentURL.contains(textToAssertInURL), "Expected URL should contain "+textToAssertInURL+" but actual on UI is "+currentURL);
@@ -954,7 +956,7 @@ public class AutoshipTest extends StoreFrontWebsiteBaseTest{
 		int productnumber = 0;
 		String productQuantity = null;
 		String productQuantityToUpdate = null;
-		sfHomePage.loginToStoreFront(TestConstants.CONSULTANT_WITH_CRP_USERNAME, password);
+		sfHomePage.loginToStoreFront(TestConstants.CONSULTANT_EMAIL_WITH_CRP_AND_PULSE, password);
 		sfAutoshipCartPage = sfHomePage.clickOnAutoshipCartLink();
 		totalNoOfItemBeforeAdd = sfAutoshipCartPage.getTotalNumberOfItemsFromCart();
 		sfShopSkinCarePage = sfAutoshipCartPage.clickAddMoreItemsBtn();
@@ -1010,7 +1012,6 @@ public class AutoshipTest extends StoreFrontWebsiteBaseTest{
 	 * 
 	 *     
 	 */
-
 	@Test(enabled=false)
 	public void testAddToAutoshipCartConsultant_396(){
 		String productName = null;
@@ -1018,7 +1019,7 @@ public class AutoshipTest extends StoreFrontWebsiteBaseTest{
 		String updatedQuantity = null;
 		String updatedQuantityFromUI = null;
 		boolean isProductPresent = false;
-		sfHomePage.loginToStoreFront(TestConstants.CONSULTANT_WITH_CRP_USERNAME, password);
+		sfHomePage.loginToStoreFront(TestConstants.CONSULTANT_EMAIL_WITH_CRP_AND_PULSE, password);
 		sfShopSkinCarePage = sfHomePage.clickAllProducts();
 		sfShopSkinCarePage.refineProductByCategory(TestConstants.CONSULTANT_CRP_AUTOSHIP_PRODUCT_CATEGORY);
 		productName = sfShopSkinCarePage.getFirstProductNameFromAllProductPage();
@@ -1063,7 +1064,7 @@ public class AutoshipTest extends StoreFrontWebsiteBaseTest{
 		s_assert.assertTrue(updatedQuantityFromUI.equals(updatedQuantity), "Added item from quick view popup is not present into cart");
 		s_assert.assertAll();
 	}
-	
+
 	/***
 	 * qTest : TC-509 User selects Update CTA after making changes in the autoship cart
 	 * Description : This test validates the Autoship cart page changes for PC/Consultant Autoship
@@ -1077,7 +1078,7 @@ public class AutoshipTest extends StoreFrontWebsiteBaseTest{
 		String shippingProfileNameFromUI = null;
 		String billingProfileNameFromFromUI= null;
 		//Login to application.
-		sfHomePage.loginToStoreFront(TestConstants.CONSULTANT_USERNAME_WITH_CRP_AND_PULSE, password);
+		sfHomePage.loginToStoreFront(TestConstants.CONSULTANT_EMAIL_WITH_CRP_AND_PULSE, password);
 		sfHomePage.clickWelcomeDropdown();
 		sfAutoshipCartPage=sfHomePage.navigateToEditCRPPage();
 		sfCheckoutPage = sfAutoshipCartPage.clickOnCRPCheckoutButton();
@@ -1103,7 +1104,7 @@ public class AutoshipTest extends StoreFrontWebsiteBaseTest{
 		s_assert.assertTrue(billingProfileNameFromFromUI.contains(billingProfileNameFromSavedCard), "Expected billing profile name is "+billingProfileNameFromSavedCard+" but actual on UI is "+billingProfileNameFromFromUI);
 		s_assert.assertAll();
 	}
-	
+
 	/***
 	 * qTest : TC-510 User does not select the Update CTA after making edits to autoship cart
 	 * Description : This test validates the Autoship cart page changes for PC/Consultant Autoship
@@ -1117,7 +1118,7 @@ public class AutoshipTest extends StoreFrontWebsiteBaseTest{
 		String shippingProfileNameFromUI = null;
 		String billingProfileNameFromFromUI= null;
 		//Login to application.
-		sfHomePage.loginToStoreFront(TestConstants.CONSULTANT_USERNAME_WITH_CRP_AND_PULSE, password);
+		sfHomePage.loginToStoreFront(TestConstants.CONSULTANT_EMAIL_WITH_CRP_AND_PULSE, password);
 		sfHomePage.clickWelcomeDropdown();
 		sfAutoshipCartPage=sfHomePage.navigateToEditCRPPage();
 		sfCheckoutPage = sfAutoshipCartPage.clickOnCRPCheckoutButton();
@@ -1143,14 +1144,14 @@ public class AutoshipTest extends StoreFrontWebsiteBaseTest{
 		s_assert.assertTrue(billingProfileNameFromFromUI.contains(billingProfileNameBeforeEdit), "Expected billing profile name is "+billingProfileNameBeforeEdit+" but actual on UI is "+billingProfileNameFromFromUI);
 		s_assert.assertAll();
 	}
-	
+
 	/***
 	 * qTest : TC-397 Add to Autoship Cart - PC
 	 * Description : This test add a new product in to cart through PLP, Quick View Popup, PDP
 	 * and validate all
 	 *     
 	 */
-	@Test(enabled=false)
+	@Test(enabled=true)
 	public void testAddToAutoshipCartPC_397(){
 		String productName = null;
 		String productQuantity = null;
@@ -1202,7 +1203,7 @@ public class AutoshipTest extends StoreFrontWebsiteBaseTest{
 		s_assert.assertTrue(updatedQuantityFromUI.equals(updatedQuantity), "Added item from quick view popup is not present into cart");
 		s_assert.assertAll();
 	}
-	
+
 	/***
 	 * qTest : TC-353 Consultant Autoship Cart- Pulse subscription status
 	 * Description : This test validates Next bill date and Current Subscription Status label
@@ -1213,13 +1214,26 @@ public class AutoshipTest extends StoreFrontWebsiteBaseTest{
 	public void testConsultantAutoshipCartPulseSubscriptionStatus_353(){
 		String nextBillAndShipDate = "	Next Bill Date";
 		String currentPulseStatus = "Current Subscription Status";
-		sfHomePage.loginToStoreFront(TestConstants.CONSULTANT_USERNAME_WITH_CRP_AND_PULSE, password);
+		sfHomePage.loginToStoreFront(TestConstants.CONSULTANT_EMAIL_WITH_CRP_AND_PULSE, password);
 		sfHomePage.clickWelcomeDropdown();
 		sfAutoshipStatusPage = sfHomePage.navigateToAutoshipStatusPage();
 		s_assert.assertTrue(sfAutoshipStatusPage.isTextVisible(currentPulseStatus), currentPulseStatus+" tag is not present for pulse");
 		s_assert.assertTrue(sfAutoshipStatusPage.isTextVisible(nextBillAndShipDate), nextBillAndShipDate+" tag is not present for pulse");
 		s_assert.assertAll();
 	}
-	
 
+	/***
+	 * qTest : TC-336 Cart Page- Total SV and Additional SV
+	 * Description : This test validates the threshold message for autoship 
+	 *     
+	 */
+	@Test(enabled=false)
+	public void testCartPageTotalSVAndAdditionalSV_336(){
+		String thresholdMessage = null;
+		sfHomePage.loginToStoreFront(TestConstants.CONSULTANT_EMAIL_WITH_CRP_AND_PULSE, password);
+		sfAutoshipCartPage = sfHomePage.clickAutoshipLink();
+		thresholdMessage = sfAutoshipCartPage.getThresholdMessageWhileRemovingProductFromAutoshipCart();
+		s_assert.assertTrue(thresholdMessage.contains("minimum commitment"), "Expected threshold message should contain 'minimum commitment' for < 100$ SV but actual on UI is "+thresholdMessage);
+		s_assert.assertAll();
+	}
 }

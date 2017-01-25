@@ -15,7 +15,7 @@ public class FeatureProductTest extends StoreFrontWebsiteBaseTest{
 	 */
 	@Test(enabled=false)
 	public void testVerifyFeaturedProductCategoryUnderShopSkincareOnCorpComAndBizSite_81(){
-		String pwsSite = TestConstants.CONSULTANT_PWS;
+		String prefix = TestConstants.CONSULTANT_PWS_PREFIX;
 		String currentURL = null;
 		String featuredRegimenURL = "/c/featured";
 		String category_Featured = "FEATURED";
@@ -24,7 +24,7 @@ public class FeatureProductTest extends StoreFrontWebsiteBaseTest{
 		currentURL = sfHomePage.getCurrentURL().toLowerCase();
 		s_assert.assertTrue(sfShopSkinCarePage.isProductsDisplayedOnPage() && currentURL.contains(featuredRegimenURL),"Expected featured products not displayed for selected category or Expected page URL"+featuredRegimenURL+" But actual on UI is: "+currentURL);
 		//Click featured link on pws site.
-		sfHomePage.navigateToUrl(pwsSite);
+		sfHomePage.navigateToUrl(sfHomePage.getBaseUrl()+"/" +sfHomePage.getCountry() +"/pws/" + prefix);
 		sfShopSkinCarePage = sfHomePage.navigateToShopSkincareLink(category_Featured);
 		currentURL = sfHomePage.getCurrentURL().toLowerCase();
 		s_assert.assertTrue(sfShopSkinCarePage.isProductsDisplayedOnPage() && currentURL.contains(featuredRegimenURL),"Expected featured products not displayed for selected category or Expected page URL"+featuredRegimenURL+" But actual on UI is: "+currentURL);

@@ -12,15 +12,15 @@ public class NewRFAccountTest extends StoreFrontWebsiteBaseTest{
 	 * 
 	 * Description : This test validates create an account page from sign up now link. 
 	 */
-	@Test(enabled=false)
+	@Test(enabled=true)
 	public void testValidateCreateAnAccountPage_50(){
-		String pwsSite = TestConstants.CONSULTANT_PWS;
+		String prefix = TestConstants.CONSULTANT_PWS_PREFIX;
 		//Verify create an account page on corp site
 		sfHomePage.clickLoginIcon();
 		sfHomePage.clickSignUpNowLink();
 		s_assert.assertTrue(sfHomePage.isLoginOrRegisterPageDisplayed(),"Login or register page not present on corp site.");
 		//Verify the functionality on PWS site.
-		sfHomePage.navigateToUrl(pwsSite);
+		sfHomePage.navigateToUrl(sfHomePage.getBaseUrl()+"/" +sfHomePage.getCountry() +"/pws/" + prefix);
 		sfHomePage.clickLoginIcon();
 		sfHomePage.clickSignUpNowLink();
 		s_assert.assertTrue(sfHomePage.isLoginOrRegisterPageDisplayed(),"Login or register page not present on PWS site.");

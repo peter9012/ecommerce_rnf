@@ -27,7 +27,6 @@ public class StoreFrontShopSkinCarePage extends StoreFrontWebsiteBasePage{
 	private final By SHOP_BY_PRICE_FILTER_OPTION_HIGH_TO_LOW_LOC = By.xpath("//select[@id='sortOptions1']/descendant::option[2]");
 	private final By SHOP_BY_PRICE_FILTER_OPTION_LOW_TO_HIGH_LOC = By.xpath("//select[@id='sortOptions1']/descendant::option[3]");
 	private final By REFINE_PRODUCT_CATEGORY_FILTER_DD_LOC = By.xpath("//div[@id='product-facet']/descendant::div[text()[normalize-space()='Shop by Category']]");
-	private final By TOTAL_PRODUCTS_LOC = By.xpath("//div[@id='product_listing']//following::div[@class='product-item']");
 	private final By ADD_TO_CART_BUTTON_FROM_QUICK_VIEW_POPUP_LOC=By.xpath("//div[@class='addToCartBtn-wrapper']/button");
 	private final By CLOSE_QUICK_VIEW_OPTION_POPUP_LOC=By.xpath("//button[@class='close']");
 	private final By PRODUCT_IMAGE_QUICK_VIEW_POPUP_LOC=By.xpath(".//*[@id='myModal']//div[@class='quick-view-popup']");
@@ -270,7 +269,7 @@ public class StoreFrontShopSkinCarePage extends StoreFrontWebsiteBasePage{
 		logger.info("Product name from all product page is "+productName);
 		return productName;
 	}
-	
+
 	/***
 	 * This method verifies if the specified product is displayed
 	 *  on the page or not
@@ -424,7 +423,7 @@ public class StoreFrontShopSkinCarePage extends StoreFrontWebsiteBasePage{
 			priceToAssert = driver.getText(By.xpath(String.format(productPriceThroughProductNumberLoc,TestConstants.ORDER_TYPE_ADHOC,productNumber))).replace("$","");
 			driver.clickByAction(By.xpath(String.format(addToCartDDLoc,TestConstants.ORDER_TYPE_ADHOC,productNumber)));
 		}
-		else if(orderType.equals(TestConstants.ORDER_TYPE_PC_PERKS)&& driver.isElementVisible(By.xpath(String.format(productPriceThroughProductNumberLoc,TestConstants.ORDER_TYPE_PC_PERKS,productNumber)))){
+		else if(orderType.equals(TestConstants.ORDER_TYPE_PC_PERKS)&& driver.isElementVisible(By.xpath(String.format(productPriceThroughProductNumberLoc,"subscribe + save",productNumber)))){
 			priceToAssert = driver.getText(By.xpath(String.format(productPriceThroughProductNumberLoc,"subscribe + save",productNumber))).replace("$","");
 			driver.clickByAction(By.xpath(String.format(addToCartDDLoc,"subscribe + save",productNumber)));
 		}
@@ -595,7 +594,7 @@ public class StoreFrontShopSkinCarePage extends StoreFrontWebsiteBasePage{
 		logger.info("Retail values are "+driver.findElement(RETAIL_AND_SV_PRICE_LOC).getText());
 		return driver.findElement(RETAIL_AND_SV_PRICE_LOC).getText(); 
 	}
-	
+
 	/***
 	 * This method validates products displayed for selected category
 	 * 
@@ -982,7 +981,7 @@ public class StoreFrontShopSkinCarePage extends StoreFrontWebsiteBasePage{
 	 */
 	public StoreFrontProductDetailPage clickNameOfProductOnAllProductPage(String productNumber){
 		String productName = driver.findElement(By.xpath(String.format(productNameLinkOnAllProductPageLoc, productNumber))).getText();
-//		driver.moveToElement(By.xpath(String.format(productNameLinkOnAllProductPageLoc, productNumber)));
+		//		driver.moveToElement(By.xpath(String.format(productNameLinkOnAllProductPageLoc, productNumber)));
 		if(driver.isElementVisible(By.xpath(String.format(productNameLinkOnAllProductPageLoc, productNumber)))){
 			driver.click(By.xpath(String.format(productNameLinkOnAllProductPageLoc, productNumber)));
 		}
@@ -1123,7 +1122,7 @@ public class StoreFrontShopSkinCarePage extends StoreFrontWebsiteBasePage{
 			priceToAssert = driver.getText(By.xpath(String.format(productPriceOnQuickViewPopupThroughOrderTypeLoc,TestConstants.ORDER_TYPE_ADHOC))).replace("$","");
 			driver.clickByAction(By.xpath(String.format(productPriceOnQuickViewPopupThroughOrderTypeLoc,TestConstants.ORDER_TYPE_ADHOC)));
 		}
-		else if(orderType.equals(TestConstants.ORDER_TYPE_PC_PERKS)&& driver.isElementVisible(By.xpath(String.format(productPriceOnQuickViewPopupThroughOrderTypeLoc,TestConstants.ORDER_TYPE_PC_PERKS)))){
+		else if(orderType.equals(TestConstants.ORDER_TYPE_PC_PERKS)&& driver.isElementVisible(By.xpath(String.format(productPriceOnQuickViewPopupThroughOrderTypeLoc,"subscribe + save")))){
 			priceToAssert = driver.getText(By.xpath(String.format(productPriceOnQuickViewPopupThroughOrderTypeLoc,"subscribe + save"))).replace("$","");
 			driver.clickByAction(By.xpath(String.format(productPriceOnQuickViewPopupThroughOrderTypeLoc,"subscribe + save")));
 		}

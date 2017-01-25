@@ -80,7 +80,8 @@ public class StoreFrontHomePage extends StoreFrontWebsiteBasePage{
 	private final By CRP_CHECKOUT_BTN_LOC = By.xpath("//button[contains(text(),'Checkout')]");
 	private final By SET_UP_CRP_BTN_LOC = By.xpath("//a[contains(text(),'SET UP CRP')]");
 	private final By SET_UP_CRP_LINK_LOC = By.xpath("//a[contains(text(),'SET UP CRP')]");
-
+	private final By PRODUCT_SEARCH_AUTOSUGGESTION_LOC = By.xpath("//div[@class='name']");
+	
 	private String viewDetailsLinkLoc = "//div[contains(@class,'enrollmentKit-wrapper')]/descendant::a[contains(text(),'View Details')][%s]";
 	private String expandedKitDescriptionLoc = "//div[contains(@class,'enrollmentKit-wrapper')]/div[%s]//div[@class='detailed-description']";
 	private String closeBtnForKitDetailsLoc = "//div[contains(@class,'enrollmentKit-wrapper')]/div[%s]//a[@class='enrollKit-close']";
@@ -958,4 +959,15 @@ public class StoreFrontHomePage extends StoreFrontWebsiteBasePage{
 		return this;
 	}
 
+	/***
+	 * This method verifies whether product search autosuggestion present.
+	 * by checking the visibility 
+	 * 
+	 * @return boolean
+	 */
+	public boolean isProductSearchAutoSuggestionPresent(){
+		boolean isProductSearchAutosuggestionPresent = driver.isElementVisible(PRODUCT_SEARCH_AUTOSUGGESTION_LOC);
+		logger.info("is product search autosuggestion = "+isProductSearchAutosuggestionPresent);
+		return isProductSearchAutosuggestionPresent;
+	}
 }

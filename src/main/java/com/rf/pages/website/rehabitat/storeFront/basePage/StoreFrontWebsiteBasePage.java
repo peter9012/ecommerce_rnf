@@ -43,10 +43,9 @@ public class StoreFrontWebsiteBasePage extends RFBasePage {
 	}
 
 	protected String topNavigationLoc = "//div[contains(@class,'navbar-inverse')]";
-
-	/**
-	 * Top Navigation Links
-	 */
+	protected final By TOTAL_PRODUCTS_LOC = By.xpath("//div[@id='product_listing']//following::div[@class='product-item']");
+	private final By CANCEL_BUTTON_LOC=By.xpath("//button[contains(text(),'Cancel')]");
+	private final By ACTION_SUCCESS_MSG_LOC = By.xpath("//div[contains(@class,'alert-info') and contains(@class,'alert-dismissable')]");
 	private final By BECOME_A_CONSULTANT_LOC = By.xpath(topNavigationLoc + "//*[@title='BECOME A CONSULTANT']");
 	private final By ENROLL_NOW_LOC = By.xpath(topNavigationLoc + "//a[@title='ENROLL NOW']");
 	private final By WHY_RF_LOC = By.xpath(topNavigationLoc + "//a[@title='WHY R+F']");
@@ -281,7 +280,8 @@ public class StoreFrontWebsiteBasePage extends RFBasePage {
 	private final By POSTAL_CODE_FOR_BILLING_ADDRESS_FOR_EXISTING_PROFILE_LOC=By.xpath("//div[@id='checkoutEditBillingAddressForm']//input[@id='address.postcode']");
 	private final By PHONE_NUMBER_FOR_BILLING_ADDRESS_FOR_EXISTING_PROFILE_LOC=By.xpath("//div[@id='checkoutEditBillingAddressForm']//input[@id='address.phone']");
 	private final By ERROR_MESSAGE_EXISTING_PREFIX_LOC = By.xpath("//*[@id='command']//following::span[@class='prefix-error']");
-
+	private final By ABOUT_ME_LOC = By.xpath(topNavigationLoc + "//a[contains(@title,'About Me')]");
+	
 	private String stateForShippingDetailsForExistingBillingProfile = "//div[@id='checkoutEditBillingAddressForm']//option[text()='%s']";
 	protected String mandatoryFieldErrorMsgOfAddressForNewBillingProfileLoc = "//div[@id='billingAddressForm']//label[contains(@id,'%s-error') and contains(text(),'This field is required.')]";
 	private String productNameInAllItemsInCartLoc = "//span[@class='item-name' and contains(text(),'%s')]";
@@ -1150,7 +1150,8 @@ public class StoreFrontWebsiteBasePage extends RFBasePage {
 	 * 
 	 */
 	public StoreFrontCheckoutPage checkoutTheCart() {
-		driver.click(CHECKOUT_BUTTON_LOC);
+		driver.pauseExecutionFor(3000);
+		driver.clickByJS(RFWebsiteDriver.driver, driver.findElement(CHECKOUT_BUTTON_LOC));
 		logger.info("Clicked on checkout button");
 		if (driver.isElementPresent(CHECKOUT_CONFIRMATION_OK_BUTTON_LOC) == true) {
 			driver.click(CHECKOUT_CONFIRMATION_OK_BUTTON_LOC);
@@ -2537,6 +2538,7 @@ public class StoreFrontWebsiteBasePage extends RFBasePage {
 		driver.type(SEARCH_BOX, productName);
 		driver.click(SEARCH_ICON_NEAR_SEARCH_BOX);
 		logger.info("clicked on 'Search icon' for search a product");
+		driver.waitForPageLoad();
 		return this;
 	}
 
@@ -2798,7 +2800,7 @@ public class StoreFrontWebsiteBasePage extends RFBasePage {
 	 * 
 	 */
 	public String updateQuantityByOne(String quantity) {
-		quantity = "" + (Integer.parseInt(quantity) + 1);
+		quantity = "" + Integer.toString((Integer.parseInt(quantity) + 1));
 		logger.info("Updated quantity is " + quantity);
 		return quantity;
 	}
@@ -2932,7 +2934,6 @@ public class StoreFrontWebsiteBasePage extends RFBasePage {
 
 	public void clickUseAsEnteredButtonOnPopUp() {
 		if (driver.isElementVisible(USE_AS_ENTERED_BUTTON_LOC) == true) {
-			System.out.println("1");
 			driver.click(USE_AS_ENTERED_BUTTON_LOC);
 			driver.pauseExecutionFor(40000); // UI is slow, will be removed
 			logger.info("'Used as entered' button clicked");
@@ -3514,5 +3515,74 @@ public class StoreFrontWebsiteBasePage extends RFBasePage {
 		logger.info("Entered Phone number  as "+phoneNumber);
 		return this;
 	}
+
+	/***
+	 * This method click on cancel button for Shipping/Billing Address Updation
+	 * 
+	 * @param
+	 * @return store front Website Base page object
+	 * 
+	 */
+	public StoreFrontWebsiteBasePage clickCancelButton(){
+		driver.click(CANCEL_BUTTON_LOC);
+		logger.info("Clicked on cancel button");
+		return this;
+	}
+
+	/***
+	 * This method fetch the action success message  
+	 * 
+	 * @param
+	 * @return String
+	 * 
+	 */
+	public String getActionSuccessMsg(){
+		logger.info(driver.getText(ACTION_SUCCESS_MSG_LOC));
+		return driver.getText(ACTION_SUCCESS_MSG_LOC);
+	}
+
+	/***
+	 * This method validates the product search results page.
+	 * 
+	 * @param
+	 * @return product name
+	 * 
+	 */
+	public boolean isProductSearchResultsPresent() {
+		int totalProducts = driver.findElements(TOTAL_PRODUCTS_LOC).size();
+		if(totalProducts>0){
+			return true;
+		}else{
+			return false;	
+		}
+
+	}
+	/***
+	 * This method enter product name in search Icon
+	 * 
+	 * @param product
+	 *            name
+	 * @return store front base object
+	 * 
+	 */
+	public StoreFrontWebsiteBasePage enterProductName(String productName) {
+		driver.type(SEARCH_BOX, productName);
+		logger.info("Entered product Name in search box"+productName);
+		driver.pauseExecutionFor(2000);
+		return this;
+	}
+	
+	 /***
+	  * This method clicks on the About me link in Top Navigation
+	  * 
+	  * @param
+	  * @return
+	  */
+	 public StoreFrontAboutMePage clickAboutMe(){
+	  mouseHoverOn(TestConstants.ABOUT_ME);
+	  driver.click(ABOUT_ME_LOC);
+	  logger.info("clicked on 'About Me'");
+	  return new StoreFrontAboutMePage(driver);
+	 }
 
 }

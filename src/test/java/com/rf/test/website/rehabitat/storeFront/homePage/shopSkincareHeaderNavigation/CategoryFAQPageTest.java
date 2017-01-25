@@ -15,7 +15,7 @@ public class CategoryFAQPageTest extends StoreFrontWebsiteBaseTest{
 	 */
 	@Test(enabled=false)
 	public void testVerifyFAQLinkForCategoryUnderShopSkincareOnCorpComAndBizSite_56(){
-		String pwsSite = TestConstants.CONSULTANT_PWS;
+		String prefix = TestConstants.CONSULTANT_PWS_PREFIX;
 		String currentURL = null;
 		String sootheLinkUnderShopSkincare = "SOOTHE";
 		String reverseLinkUnderShopSkincare = "REVERSE";
@@ -45,7 +45,7 @@ public class CategoryFAQPageTest extends StoreFrontWebsiteBaseTest{
 		s_assert.assertTrue(currentURL.contains(expectedURLForUnblemishFAQ), "Expected URL should contain" +expectedURLForUnblemishFAQ+ ". but actual on UI is"+currentURL);
 
 		//Verify the functionality on PWS site.
-		sfHomePage.navigateToUrl(pwsSite);
+		sfHomePage.navigateToUrl(sfHomePage.getBaseUrl()+"/" +sfHomePage.getCountry() +"/pws/" + prefix);
 		//Verify FAQ page for soothe regimen.
 		sfHomePage.navigateToShopSkinCareSubLinks(sootheLinkUnderShopSkincare, sublinkNameUnderShopSkincare);
 		currentURL = sfHomePage.getCurrentURL().toLowerCase();

@@ -27,7 +27,7 @@ public class AddAndDeleteShippingTest extends StoreFrontWebsiteBaseTest{
 		String state = TestConstants.STATE_US;
 		String postalCode = TestConstants.POSTAL_CODE_US;
 		String phoneNumber = TestConstants.PHONE_NUMBER;
-		sfHomePage.loginToStoreFront(TestConstants.CONSULTANT_USERNAME, password);
+		sfHomePage.loginToStoreFront(TestConstants.CONSULTANT_EMAIL_WITH_CRP_AND_PULSE, password);
 		sfHomePage.clickWelcomeDropdown();
 		sfShippingInfoPage = sfHomePage.navigateToShippingInfoPage();
 		sfShippingInfoPage.clickAddANewShippingAddressLink();
@@ -56,7 +56,7 @@ public class AddAndDeleteShippingTest extends StoreFrontWebsiteBaseTest{
 		String state = TestConstants.STATE_US;
 		String postalCode = TestConstants.POSTAL_CODE_US;
 		String phoneNumber = TestConstants.PHONE_NUMBER;
-		sfHomePage.loginToStoreFront(TestConstants.CONSULTANT_USERNAME, password);
+		sfHomePage.loginToStoreFront(TestConstants.CONSULTANT_EMAIL_WITH_CRP_AND_PULSE, password);
 		sfHomePage.clickWelcomeDropdown();
 		sfShippingInfoPage = sfHomePage.navigateToShippingInfoPage();
 		sfShippingInfoPage.clickAddANewShippingAddressLink();
@@ -76,7 +76,7 @@ public class AddAndDeleteShippingTest extends StoreFrontWebsiteBaseTest{
 	 */
 	@Test(enabled=true)
 	public void testCheckingErrorMessageForTheAddressField_79(){
-		sfHomePage.loginToStoreFront(TestConstants.CONSULTANT_USERNAME, password);
+		sfHomePage.loginToStoreFront(TestConstants.CONSULTANT_EMAIL_WITH_CRP_AND_PULSE, password);
 		sfHomePage.clickWelcomeDropdown();
 		sfShippingInfoPage = sfHomePage.navigateToShippingInfoPage();
 		sfShippingInfoPage.clickAddANewShippingAddressLink();
@@ -102,7 +102,7 @@ public class AddAndDeleteShippingTest extends StoreFrontWebsiteBaseTest{
 		if(country.equalsIgnoreCase("au")){
 			String expectedCountryName = "australia";
 			String countryNameFromUI = null;
-			sfHomePage.loginToStoreFront(TestConstants.CONSULTANT_USERNAME, password);
+			sfHomePage.loginToStoreFront(TestConstants.CONSULTANT_EMAIL_WITH_CRP_AND_PULSE, password);
 			sfHomePage.clickWelcomeDropdown();
 			sfShippingInfoPage = sfHomePage.navigateToShippingInfoPage();
 			sfShippingInfoPage.clickAddANewShippingAddressLink();
@@ -135,7 +135,7 @@ public class AddAndDeleteShippingTest extends StoreFrontWebsiteBaseTest{
 		if(country.equalsIgnoreCase("ca")){
 			String expectedCountryName = "canada";
 			String countryNameFromUI = null;
-			sfHomePage.loginToStoreFront(TestConstants.CONSULTANT_USERNAME, password);
+			sfHomePage.loginToStoreFront(TestConstants.CONSULTANT_EMAIL_WITH_CRP_AND_PULSE, password);
 			sfHomePage.clickWelcomeDropdown();
 			sfShippingInfoPage = sfHomePage.navigateToShippingInfoPage();
 			sfShippingInfoPage.clickAddANewShippingAddressLink();
@@ -168,7 +168,7 @@ public class AddAndDeleteShippingTest extends StoreFrontWebsiteBaseTest{
 		if(country.equalsIgnoreCase("us")){
 			String expectedCountryName = "usa";
 			String countryNameFromUI = null;
-			sfHomePage.loginToStoreFront(TestConstants.CONSULTANT_USERNAME, password);
+			sfHomePage.loginToStoreFront(TestConstants.CONSULTANT_EMAIL_WITH_CRP_AND_PULSE, password);
 			sfHomePage.clickWelcomeDropdown();
 			sfShippingInfoPage = sfHomePage.navigateToShippingInfoPage();
 			sfShippingInfoPage.clickAddANewShippingAddressLink();
@@ -280,7 +280,7 @@ public class AddAndDeleteShippingTest extends StoreFrontWebsiteBaseTest{
 		String phoneNumber = TestConstants.PHONE_NUMBER;
 		String defaultShippingAddressName = null;
 		String defaultShippingAddressNameAfterUpdate = null;
-		sfHomePage.loginToStoreFront(TestConstants.CONSULTANT_USERNAME, password);
+		sfHomePage.loginToStoreFront(TestConstants.CONSULTANT_EMAIL_WITH_CRP_AND_PULSE, password);
 		sfHomePage.clickWelcomeDropdown();
 		sfShippingInfoPage = sfHomePage.navigateToShippingInfoPage();
 		sfShippingInfoPage.clickEditLinkOfDefaultShippingAddress();
@@ -314,14 +314,14 @@ public class AddAndDeleteShippingTest extends StoreFrontWebsiteBaseTest{
 		String state = TestConstants.STATE_US;
 		String postalCode = TestConstants.POSTAL_CODE_US;
 		String phoneNumber = TestConstants.PHONE_NUMBER;
-		sfHomePage.loginToStoreFront(TestConstants.CONSULTANT_USERNAME, password);
+		sfHomePage.loginToStoreFront(TestConstants.CONSULTANT_EMAIL_WITH_CRP_AND_PULSE, password);
 		sfHomePage.clickWelcomeDropdown();
 		sfShippingInfoPage = sfHomePage.navigateToShippingInfoPage();
 		sfShippingInfoPage.clickAddANewShippingAddressLink();
 		sfShippingInfoPage.enterConsultantShippingDetails(firstName, lastName, addressLine1, addressLine2,city, state, postalCode, phoneNumber);
 		sfShippingInfoPage.clickSaveButtonOfShippingAddress();
 		sfShippingInfoPage.clickUseAsEnteredButtonOnPopUp();
-		s_assert.assertTrue(sfShippingInfoPage.getActionSuccessMsgOnShippingInfoPage().contains(TestConstants.SHIPPING_ADDRESS_ADDED_MESSAGE),"Shipping Address created msg is not found as expected");
+		s_assert.assertTrue(sfShippingInfoPage.getActionSuccessMsg().contains(TestConstants.SHIPPING_ADDRESS_ADDED_MESSAGE),"Shipping Address created msg is not found as expected");
 		s_assert.assertTrue(sfShippingInfoPage.isShippingProfilePresent(lastName),
 				"Expected profile name is not present in Address list");
 		sfShippingInfoPage.clickDeleteLinkForShippingProfile(lastName);
@@ -330,7 +330,7 @@ public class AddAndDeleteShippingTest extends StoreFrontWebsiteBaseTest{
 				"Shipping profile is not present in the list after selecting cancel option from delete shipping popup");
 		sfShippingInfoPage.clickDeleteLinkForShippingProfile(lastName);
 		sfShippingInfoPage.clickDeleteButtonOnDeleteShippingPopup();
-		s_assert.assertTrue(sfShippingInfoPage.getActionSuccessMsgOnShippingInfoPage().contains(TestConstants.SHIPPING_ADDRESS_REMOVED_MESSAGE),"Shipping Address removed msg is not found as expected");
+		s_assert.assertTrue(sfShippingInfoPage.getActionSuccessMsg().contains(TestConstants.SHIPPING_ADDRESS_REMOVED_MESSAGE),"Shipping Address removed msg is not found as expected");
 		s_assert.assertFalse(sfShippingInfoPage.isShippingProfilePresent(lastName),
 				"Shipping profile is present in the list after selecting delete option from delete shipping popup");
 		s_assert.assertAll();
@@ -354,7 +354,7 @@ public class AddAndDeleteShippingTest extends StoreFrontWebsiteBaseTest{
 		String state = TestConstants.STATE_US;
 		String postalCode = TestConstants.POSTAL_CODE_US;
 		String phoneNumber = TestConstants.PHONE_NUMBER;
-		sfHomePage.loginToStoreFront(TestConstants.CONSULTANT_USERNAME, password);
+		sfHomePage.loginToStoreFront(TestConstants.CONSULTANT_EMAIL_WITH_CRP_AND_PULSE, password);
 		sfHomePage.clickWelcomeDropdown();
 		sfShippingInfoPage=sfHomePage.navigateToShippingInfoPage();
 		sfShippingInfoPage.clickEditLinkOfDefaultShippingAddress();
@@ -387,7 +387,7 @@ public class AddAndDeleteShippingTest extends StoreFrontWebsiteBaseTest{
 		String textToAssertInURL = "autoship/cart";
 		String shippingAddressNameInAccountInfo = null;
 		//Login to application.
-		sfHomePage.loginToStoreFront(TestConstants.CONSULTANT_WITH_CRP_USERNAME, password);
+		sfHomePage.loginToStoreFront(TestConstants.CONSULTANT_EMAIL_WITH_CRP_AND_PULSE, password);
 		sfAutoshipCartPage = sfHomePage.clickOnAutoshipCartLink();
 		currentURL = sfAutoshipCartPage.getCurrentURL().toLowerCase();
 		s_assert.assertTrue(currentURL.contains(textToAssertInURL), "Expected URL should contain "+textToAssertInURL+" but actual on UI is "+currentURL);
@@ -428,7 +428,7 @@ public class AddAndDeleteShippingTest extends StoreFrontWebsiteBaseTest{
 		String checkoutPageText = "Account Info";
 		String currentURL = null;
 		String CRPText = "Next CRP";
-		sfHomePage.loginToStoreFront(TestConstants.CONSULTANT_WITH_CRP_USERNAME, password);
+		sfHomePage.loginToStoreFront(TestConstants.CONSULTANT_EMAIL_WITH_CRP_AND_PULSE, password);
 		sfHomePage.clickWelcomeDropdown();
 		sfShippingInfoPage = sfHomePage.navigateToShippingInfoPage();
 		sfShippingInfoPage.clickAddANewShippingAddressLink();
@@ -470,7 +470,7 @@ public class AddAndDeleteShippingTest extends StoreFrontWebsiteBaseTest{
 		String autoShipShippingProfileLastName = null;
 		String checkoutPageText = "Account Info";
 		String currentURL = null;
-		sfHomePage.loginToStoreFront(TestConstants.CONSULTANT_WITH_CRP_USERNAME, password);
+		sfHomePage.loginToStoreFront(TestConstants.CONSULTANT_EMAIL_WITH_CRP_AND_PULSE, password);
 		sfHomePage.clickWelcomeDropdown();
 		sfShippingInfoPage = sfHomePage.navigateToShippingInfoPage();
 		sfShippingInfoPage.clickAddANewShippingAddressLink();
@@ -547,5 +547,80 @@ public class AddAndDeleteShippingTest extends StoreFrontWebsiteBaseTest{
 		defaultShippingAddressName = sfCheckoutPage.getDefaultShippingAddressNameAtCheckoutPage();
 		s_assert.assertTrue(defaultShippingAddressName.contains(lastName), "Expected default shipping address name at checkout page is "+lastName.toLowerCase()+" but actual on UI is "+defaultShippingAddressName);
 		s_assert.assertAll();	
+	}
+
+	/***
+	 * qTest : TC-525 Changing the shipping profile to be the default
+	 * Description : This test select shipping profile default for Autoship and verify it on shipping section on checkout page.
+	 * 
+	 *     
+	 */
+	@Test(enabled=false)
+	public void testAddShippingProfileBySelectingTheCheckboxForTheAutoship_525(){
+		String randomWord = CommonUtils.getRandomWord(5);
+		String randomWord2 = CommonUtils.getRandomWord(5);
+		String firstName = TestConstants.FIRST_NAME;
+		String lastName = TestConstants.LAST_NAME + randomWord;
+		String lastNameForSecondProfile = TestConstants.LAST_NAME + randomWord2;
+		String addressLine1 = TestConstants.ADDRESS_LINE_1_US;
+		String addressLine2 = TestConstants.ADDRESS_LINE_2_US;
+		String city = TestConstants.CITY_US;
+		String state = TestConstants.STATE_US;
+		String postalCode = TestConstants.POSTAL_CODE_US;
+		String phoneNumber = TestConstants.PHONE_NUMBER;
+		String shippingProfileNameOnCheckcoutPage = null;
+		String defaultAddressUpdationMsg = null;
+		String defaultShippingAddressName = null;
+		String nextCRPDeliveryAddressProfileName = null;
+		String nextCRPDeliveryAddressProfileNameAfterUpdation = null;
+
+
+		// Login as CRP Enrolled consulatant
+		sfHomePage.loginToStoreFront(TestConstants.CONSULTANT_EMAIL_WITH_CRP_AND_PULSE, password);
+		sfHomePage.clickWelcomeDropdown();
+		sfShippingInfoPage = sfHomePage.navigateToShippingInfoPage();
+
+		// Creating New Shipping Profile
+		sfShippingInfoPage.clickAddANewShippingAddressLink();
+		sfShippingInfoPage.enterConsultantShippingDetails(firstName, lastName, addressLine1, addressLine2,city, state, postalCode, phoneNumber);
+		sfShippingInfoPage.clickSaveButtonOfShippingAddress();
+		sfShippingInfoPage.clickUseAsEnteredButtonOnPopUp();
+		s_assert.assertTrue(sfShippingInfoPage.isShippingProfilePresent(lastName), "Shipping Profile " + lastName +  " is not present on UI");
+
+		//Selecting New Shipping Profile as default and cancelling for Autoship Default
+		nextCRPDeliveryAddressProfileName = sfShippingInfoPage.getProfileNameForNextCRPDeliveryAddress();
+		sfShippingInfoPage.clickDefaultButtonForShippingProfile(lastName);
+		sfShippingInfoPage.clickLeaveAsIsBtnOnUpdateAutoshipModal();
+		defaultAddressUpdationMsg = sfShippingInfoPage.getActionSuccessMsg();
+		s_assert.assertTrue(defaultAddressUpdationMsg.contains(TestConstants.DEFAULT_SHIPPING_ADDRESS_UPDATION_MSG),"Default Shipping Address Updation msg is not present as expected");
+		defaultShippingAddressName = sfShippingInfoPage.getDefaultShippingAddressName();
+		nextCRPDeliveryAddressProfileNameAfterUpdation = sfShippingInfoPage.getProfileNameForNextCRPDeliveryAddress();
+		s_assert.assertTrue(defaultShippingAddressName.toLowerCase().contains(lastName.toLowerCase()),"Default Shipping profile name is not found as expected. Expected : " + lastName + " . Actual : " + defaultShippingAddressName);
+		s_assert.assertFalse(nextCRPDeliveryAddressProfileNameAfterUpdation.contains(lastName),"Next CRP address is not found as expected. Expected : " + nextCRPDeliveryAddressProfileName + ". Actual : " + nextCRPDeliveryAddressProfileName);
+
+		// Creating New Shipping Profile
+		sfShippingInfoPage.clickAddANewShippingAddressLink();
+		sfShippingInfoPage.enterConsultantShippingDetails(firstName, lastNameForSecondProfile, addressLine1, addressLine2,city, state, postalCode, phoneNumber);
+		sfShippingInfoPage.clickSaveButtonOfShippingAddress();
+		sfShippingInfoPage.clickUseAsEnteredButtonOnPopUp();
+		s_assert.assertTrue(sfShippingInfoPage.isShippingProfilePresent(lastNameForSecondProfile), "Shipping Profile " + lastNameForSecondProfile +  " is not present on UI");
+
+		//Selecting New Shipping Profile as default for Autoship and verifying it on Checkout page
+		sfShippingInfoPage.clickDefaultButtonForShippingProfile(lastNameForSecondProfile);
+		sfCheckoutPage = sfShippingInfoPage.clickUpdateMyAutoshipBtnOnUpdateAutoshipModal();
+		defaultAddressUpdationMsg = sfCheckoutPage.getActionSuccessMsg();
+		s_assert.assertTrue(defaultAddressUpdationMsg.contains(TestConstants.AUTOSHIP_DELIVERY_ADDRESS_UPDATION_MSG));
+		shippingProfileNameOnCheckcoutPage = sfCheckoutPage.getDefaultShippingAddressNameAtCheckoutPage();
+		s_assert.assertTrue(shippingProfileNameOnCheckcoutPage.contains(lastNameForSecondProfile),"Default Shipping address on Checkout page is not found as expected. Expected : " + lastNameForSecondProfile + ". Actual : " + shippingProfileNameOnCheckcoutPage);
+
+		// Navigating back to Shipping Info section for Verifying Next CRP Delivery address
+		sfCheckoutPage.clickRodanAndFieldsLogo();
+		sfHomePage.clickWelcomeDropdown();
+		sfShippingInfoPage = sfHomePage.navigateToShippingInfoPage();
+		defaultShippingAddressName = sfShippingInfoPage.getDefaultShippingAddressName();
+		nextCRPDeliveryAddressProfileNameAfterUpdation = sfShippingInfoPage.getProfileNameForNextCRPDeliveryAddress();
+		s_assert.assertTrue(defaultShippingAddressName.toLowerCase().contains(lastNameForSecondProfile.toLowerCase()),"Default Shipping profile name is not found as expected. Expected : " + lastNameForSecondProfile + " . Actual : " + defaultShippingAddressName);
+		s_assert.assertTrue(nextCRPDeliveryAddressProfileNameAfterUpdation.contains(lastNameForSecondProfile),"Next CRP address is not found as expected. Expected : " + lastNameForSecondProfile + ". Actual : " + nextCRPDeliveryAddressProfileNameAfterUpdation);
+		s_assert.assertAll();
 	}
 }

@@ -72,7 +72,6 @@ public class StoreFrontCheckoutPage extends StoreFrontWebsiteBasePage{
 	private final By QUEBEC_PROVINCE_FOR_SHIPPING_LOC=By.xpath("//option[@disabled='disabled' and text()='Quebec']");
 	private final By SELECTED_SHIPPING_METHOD_LOC = By.xpath("//li[@class='checked']/label");
 	private final By EDIT_LINK_OF_ORDERS_SUMMARY_LOC=By.xpath("//div[@class='price']/a[contains(text(),'Edit')]");
-	private final By CANCEL_BUTTON_LOC=By.xpath("//button[contains(text(),'Cancel')]");
 	private final By EDIT_LINK_OF_ACCOUNT_INFO_LOC=By.xpath("//a[@class='editIcon']");
 	private final By CONTINUE_WITHOUT_SPONSOR_LOC = By.xpath("//a[contains(text(),'Continue Without a Consultant')]");
 	private final By NEXT_BTN_AFTER_BILLING_LOC = By.id("reviewOrder");
@@ -379,20 +378,7 @@ public class StoreFrontCheckoutPage extends StoreFrontWebsiteBasePage{
 	public boolean isshippindAddressFieldsAreDisplayedAtCheckoutPage(){
 		return driver.findElement(FIRST_LAST_NAME_FOR_SHIPPING_AT_CHECKOUT_PAGE_LOC).isDisplayed();
 	}
-
-	/***
-	 * This method click on cancel button of shipping address at checkout page
-	 * 
-	 * @param
-	 * @return store front Checkout page object
-	 * 
-	 */
-	public StoreFrontCheckoutPage clickCancelButton(){
-		driver.click(CANCEL_BUTTON_LOC);
-		logger.info("Clicked on cancel button");
-		return this;
-	}
-
+	
 	/***
 	 * This method click on Edit of order summary section at checkout page
 	 * 
@@ -451,6 +437,7 @@ public class StoreFrontCheckoutPage extends StoreFrontWebsiteBasePage{
 	 * 
 	 */
 	public Boolean isUseAsEnteredPopupDisplayed(){
+		driver.pauseExecutionFor(2000);
 		return driver.isElementVisible(USE_AS_ENTERED_BUTTON_LOC);
 	}
 
@@ -1564,19 +1551,19 @@ public class StoreFrontCheckoutPage extends StoreFrontWebsiteBasePage{
 	}
 
 	/***
-	 * This method click on the confirm Autoship order button
-	 * 
-	 * @param 
-	 * @return StoreFrontCheckoutPage object 
-	 * 
-	 */
-	public StoreFrontCheckoutPage clickConfirmAutoshipOrderButton(){
-		driver.click(CONFIRM_CRP_ORDER_BTN_LOC);
-		driver.waitForPageLoad();
-		logger.info("confirm CRP order btn clicked");
-		driver.pauseExecutionFor(2000);
-		return this;
-	}
+	  * This method click on the confirm Autoship order button
+	  * 
+	  * @param 
+	  * @return StoreFrontCheckoutPage object 
+	  * 
+	  */
+	 public StoreFrontCheckoutPage clickConfirmAutoshipOrderButton(){
+	  driver.click(CONFIRM_CRP_ORDER_BTN_LOC);
+	  driver.waitForPageLoad();
+	  logger.info("confirm CRP order btn clicked");
+	  driver.pauseExecutionFor(2000);
+	  return this;
+	 }
 
 	/***
 	 * This method validates the presence of Confirm CRP Order Success Message

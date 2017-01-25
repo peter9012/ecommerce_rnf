@@ -22,6 +22,7 @@ public class StoreFrontAutoshipCartPage extends StoreFrontWebsiteBasePage{
 	private final By PC_PERKS_CHECKOUT_LOC = By.xpath("//a[contains(text(),'PC Perks Checkout')]");
 	private final By CRP_CHECKOUT_LOC = By.xpath("//a[contains(text(),'CRP Checkout')]");
 	private final By NEXT_BILL_SHIP_DATE_ON_AUTOSHIP_CART_PAGE_LOC = By.xpath("//td[text()='Ship & Bill Date']/following::td[1]");
+	private final By CRP_THRESHOLD_MSG_LOC = By.xpath("//div[@class='global-alerts']/div");
 
 	private String productQuantityLoc = "//li[@class='item-list-item'][%s]//input[@name='qty']";
 	private String productUpdateQuantityLinkLoc = "//li[@class='item-list-item'][%s]//input[@value='Update Qty']";
@@ -199,6 +200,34 @@ public class StoreFrontAutoshipCartPage extends StoreFrontWebsiteBasePage{
 		String productQty = driver.getAttribute(By.xpath(String.format(productQuantityInAutoshipCartLoc, productName)),"value");
 		logger.info("Quantity of "+productName+" is "+productQty);
 		return productQty;
+	}
+
+	/***
+	 * This method removes all product from autoship cart from and get threshold message
+	 * 
+	 * @param 
+	 * @return threshold message 
+	 * 
+	 */
+	public String getThresholdMessageWhileRemovingProductFromAutoshipCart(){
+		int count = getTotalNumberOfItemsFromCart();
+		if(count>0){
+			for(int i=1;i<=count;i++){
+				removeAnItemFromAutoshipCart("1");
+				driver.waitForPageLoad();
+				logger.info("Remove link of "+i+" is clicked");
+				if(driver.isElementVisible(CRP_THRESHOLD_MSG_LOC)){
+					logger.info("Threshole message is "+driver.getText(CRP_THRESHOLD_MSG_LOC));
+					return driver.getText(CRP_THRESHOLD_MSG_LOC);
+				}
+				else
+					continue;
+			}
+		}
+		else{
+			logger.info("There are no products in cart to remove.");
+		}
+		return null;
 	}
 
 }

@@ -17,7 +17,7 @@ public class SuccessfulUserLoginTest extends StoreFrontWebsiteBaseTest{
 	 */
 	@Test(enabled=true)
 	public void testUserloginFromCorp_27(){
-		sfHomePage.loginToStoreFront(TestConstants.CONSULTANT_EMAIL, password);
+		sfHomePage.loginToStoreFront(TestConstants.CONSULTANT_EMAIL_WITH_CRP_AND_PULSE, password);
 		s_assert.assertTrue(sfHomePage.isWelcomeUserElementDisplayed(),"user is NOT successfully logged in");
 		s_assert.assertTrue(sfHomePage.getCurrentURL().contains(sfHomePage.getBaseUrl()),"User is not on corp site after login");
 		s_assert.assertAll();
@@ -32,7 +32,7 @@ public class SuccessfulUserLoginTest extends StoreFrontWebsiteBaseTest{
 	 */
 	@Test(enabled=false)//TODO
 	public void testRememberMe_528(){
-		sfHomePage.loginToStoreFrontWithRememberMe(TestConstants.CONSULTANT_EMAIL, password);
+		sfHomePage.loginToStoreFrontWithRememberMe(TestConstants.CONSULTANT_EMAIL_WITH_CRP_AND_PULSE, password);
 		s_assert.assertTrue(sfHomePage.isWelcomeUserElementDisplayed(),"user is NOT successfully logged in");
 		closeCurrentWindow();
 		openTheBrowserAndApplication();
@@ -56,7 +56,7 @@ public class SuccessfulUserLoginTest extends StoreFrontWebsiteBaseTest{
 	@Test(enabled=true)
 	public void testResetPasswordFromLogin_536(){
 		sfHomePage.clickLoginIcon().clickForgetPasswordLink();
-		sfHomePage.enterPasswordRecoverEmail(TestConstants.CONSULTANT_EMAIL).clickSubmitBtnForPasswordRecovery();
+		sfHomePage.enterPasswordRecoverEmail(TestConstants.CONSULTANT_EMAIL_WITH_CRP_AND_PULSE).clickSubmitBtnForPasswordRecovery();
 		s_assert.assertTrue(sfHomePage.isPasswordRecoveryEmailMsgDisplayed(TestConstants.PASSWORD_RECOVERY_SUBMIT_SUCCESS_MESSAGE), "Success msg has NOT displayed after clicking submit btn for password recovery");
 		s_assert.assertAll();
 	}
@@ -78,7 +78,7 @@ public class SuccessfulUserLoginTest extends StoreFrontWebsiteBaseTest{
 		sfShopSkinCarePage.checkoutTheCartFromPopUp();
 		sfCheckoutPage=sfShopSkinCarePage.checkoutTheCart();
 		sfCheckoutPage.clickForgetPasswordLinkAtCheckout();
-		sfCheckoutPage.enterPasswordRecoverEmailAtCheckout(TestConstants.CONSULTANT_EMAIL).clickSubmitBtnForPasswordRecoveryAtCheckout();
+		sfCheckoutPage.enterPasswordRecoverEmailAtCheckout(TestConstants.CONSULTANT_EMAIL_WITH_CRP_AND_PULSE).clickSubmitBtnForPasswordRecoveryAtCheckout();
 		s_assert.assertTrue(sfCheckoutPage.isPasswordRecoveryEmailMsgDisplayed(TestConstants.PASSWORD_RECOVERY_SUBMIT_SUCCESS_MESSAGE), "Success msg has NOT displayed after clicking submit btn for password recovery");
 		s_assert.assertAll();
 	}
@@ -108,13 +108,13 @@ public class SuccessfulUserLoginTest extends StoreFrontWebsiteBaseTest{
 	 * 
 	 * 				
 	 */
-	@Test(enabled=false)
+	@Test(enabled=true)
 	public void testUserloginFromPWS_28(){
-		String pwsSite = TestConstants.CONSULTANT_PWS;
-		sfHomePage.navigateToUrl(pwsSite);
-		sfHomePage.loginToStoreFront(TestConstants.CONSULTANT_USERNAME_WITH_CRP_AND_PULSE, password);
+		String prefix = TestConstants.CONSULTANT_PWS_PREFIX;
+		sfHomePage.navigateToUrl(sfHomePage.getBaseUrl()+"/" +sfHomePage.getCountry() +"/pws/" + prefix);
+		sfHomePage.loginToStoreFront(TestConstants.CONSULTANT_EMAIL_WITH_CRP_AND_PULSE, password);
 		s_assert.assertTrue(sfHomePage.isWelcomeUserElementDisplayed(),"user is NOT successfully logged in");
-		s_assert.assertTrue(sfHomePage.getCurrentURL().contains(TestConstants.CONSULTANT_PREFIX),"User is not on PWS site after login");
+		s_assert.assertTrue(sfHomePage.getCurrentURL().contains(prefix),"User is not on PWS site after login");
 		s_assert.assertAll();
 	}
 }

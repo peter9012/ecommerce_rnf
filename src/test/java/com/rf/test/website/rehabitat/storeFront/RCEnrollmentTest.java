@@ -67,10 +67,10 @@ public class RCEnrollmentTest extends StoreFrontWebsiteBaseTest{
 	 */
 	@Test(enabled=true)//Redirect to corp site after enrollment from pws site
 	public void testRCEnrollmentFromPWSSite_551(){
-		String PWSSite = TestConstants.CONSULTANT_PWS;
+		String prefix = TestConstants.CONSULTANT_PWS_PREFIX;
 		String currentURL = null;
 		
-		sfHomePage.navigateToUrl(PWSSite);
+		sfHomePage.navigateToUrl(sfHomePage.getBaseUrl()+"/" +sfHomePage.getCountry() +"/pws/" + prefix);
 		sfCartPage = new StoreFrontCartPage(driver);
 		sfShopSkinCarePage = new StoreFrontShopSkinCarePage(driver);
 		sfHomePage.clickLoginIcon();
@@ -83,7 +83,7 @@ public class RCEnrollmentTest extends StoreFrontWebsiteBaseTest{
 		s_assert.assertAll();
 	}	
 	
-	@Test(enabled=false, groups="users")
+	@Test(enabled=true, groups="users")
 	public void testRCEnrollmentWithoutOrder(){
 		navigateToStoreFrontBaseURL();
 		sfCartPage = new StoreFrontCartPage(driver);
@@ -97,7 +97,7 @@ public class RCEnrollmentTest extends StoreFrontWebsiteBaseTest{
 		rcWithoutOrder=email;
 	}
 	
-	@Test(enabled=false, groups="users")
+	@Test(enabled=true, groups="users")
 	public void testRCEnrollmentWithOrder(){
 		navigateToStoreFrontBaseURL();
 		sfCartPage = new StoreFrontCartPage(driver);
@@ -113,8 +113,8 @@ public class RCEnrollmentTest extends StoreFrontWebsiteBaseTest{
 		sfCheckoutPage = sfCartPage.checkoutTheCart();
 		sfCheckoutPage.clickContinueWithoutConsultantLink();
 		sfCheckoutPage.clickSaveButton();
+		sfCheckoutPage.enterShippingDetails(firstName+" "+lastName, addressLine1, addressLine2, city, state, postalCode, phoneNumber);
 		sfCheckoutPage.clickShippingDetailsNextbutton();
-		sfCheckoutPage.clickAddNewBillingProfileButton();
 		sfCheckoutPage.enterUserBillingDetails(cardType, cardNumber, cardName, CVV);
 		sfCheckoutPage.clickBillingDetailsNextbutton();
 		sfCheckoutPage.selectTermsAndConditionsChkBox();

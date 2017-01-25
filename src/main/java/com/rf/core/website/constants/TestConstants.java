@@ -7,6 +7,7 @@ public class TestConstants {
 	public static final String DOT = ".";
 	public static final String FORWARD_SLASH = "/";
 
+	public static final String ABOUT_ME = "About Me";
 	public static final String BECOME_A_CONSULTANT = "Become A Consultant";
 	public static final String SHOP_SKINCARE = "Shop Skincare";
 	public static final String SPONSOR = "purush";
@@ -43,13 +44,13 @@ public class TestConstants {
 	public static final String WRONG_ADDRESS_LINE_1_US = "BAJCAC";
 	public static final String CITY_DALLAS_US = "Dallas";
 	public static final String DEFAULT_PROFILE_UPDATION_MESSAGE = "Default Payment Details are updated.";
-	public static final String CONSULTANT_PWS_PREFIX =  "autocons20170114150644";
+	//public static final String CONSULTANT_PWS_PREFIX =  "autocons20170114150644";
 	public static final String ABOUT_ME_PAGE_QUES_FROM_PREFIX_URL = "WHAT I LOVE MOST ABOUT R+F PRODUCTS";
 	public static final String ABOUT_ME_PAGE_QUES_FROM_JOIN_URL = "WHAT I LOVE MOST ABOUT MY R+F BUSINESS";
 	public static final String SHIPPING_ADDRESS_ADDED_MESSAGE = "Your address was created.";
 	public static final String SHIPPING_ADDRESS_REMOVED_MESSAGE = "Your address was removed.";
 	public static final String TITLE_OF_ALL_SKINCARE_PAGE = "All Skincare | Rodan and Fields";
-	
+
 	// Order page Details
 	public static final String TITLE_OF_ORDER_DETAILS_PAGE = "Order Details | Rodan and Fields";
 
@@ -159,32 +160,23 @@ public class TestConstants {
 	public static final String PC_PERKS_AUTOSHIP_PRODUCT_CATEGORY = "PC Perk Autoship";
 	public static final String PROMOTION_OVERLAY_MSG = "Your favourite Rodan + Fields® products automatically delivered to your doorstep";
 	public static final String ERROR_MSG_EXISTING_PREFIX = "Subscription Prefix Not available";
-	
+	public static final String DEFAULT_SHIPPING_ADDRESS_UPDATION_MSG = "Your default address was updated.";
+	public static final String AUTOSHIP_DELIVERY_ADDRESS_UPDATION_MSG = "Delivery Address has been Updated for your Cart.";
+
 	//Users
-	public static final String CONSULTANT_USERNAME = "AutoCons20170116103858@mailinator.com";
-	public static final String CONSULTANT_EMAIL = "AutoCons20170116103858@mailinator.com";
-	public static final String CONSULTANT_WITH_CRP_USERNAME = "autocon1515@mailinator.com";
-	public static final String CONSULTANT_USERNAME_HAVING_NO_RETURN_ORDERS = "AutoCons20170116103858@mailinator.com";
-	public static final String CONSULTANT_ENROLLED_IN_PULSE = "AutoCons20170117122201@mailinator.com";
-	public static final String CONSULTANT_EMAIL_WITHOUT_PWS = "AutoCons20170119113134@mailinator.com";
-	public static final String CONSULTANT_PWS = "https://www.qa1.rodanandfields.com/US/pws/alnameawaw";
-	public static final String CONSULTANT_USERNAME_SPONSOR_WITHOUT_PWS = "consponsorwiithoutpws1@mailinator.com";
-	public static final String CONSULTANT_USERNAME_WITH_CRP_AND_PULSE = "autocon2525@mailinator.com";
-	public static final String CONSULTANT_PREFIX = "alnamebttt";
-	public static final String PWS = "https://www.qa1.rodanandfields.com/US/pws/alnameawaw/";
-	public static final String CONSULTANT_EMAIL_WITHOUT_PULSE = "AutoCons20170123110857@mailinator.com";
-	
-	public static final String PC_USERNAME = "autopc1100@mailinator.com";
-	public static final String PC_EMAIL = "autopc1100@mailinator.com";
-	public static final String PC_EMAIL_HAVING_AUTOSHIP = "autopc1100@mailinator.com";
+	public static final String CONSULTANT_EMAIL_SPONSOR_WITHOUT_PWS = "consponsorwiithoutpws1@mailinator.com";
+	public static final String CONSULTANT_EMAIL_WITH_CRP_AND_PULSE = "AutoCons20170125091201@mailinator.com";
+	public static final String CONSULTANT_PWS_PREFIX = "autocons";
+	public static final String CONSULTANT_EMAIL_WITHOUT_CRP_AND_PULSE = "AutoCons20170124210537@mailinator.com";
+
+	public static final String PC_EMAIL_HAVING_AUTOSHIP = "AutoPC20170125104532@mailinator.com";
+	public static final String PC_EMAIL_HAVING_SINGLE_BILLING_PROFILE = "AutoPC20170125115552@mailinator.com";
 	public static final String PC_EMAIL_WHO_ENROLLED_UNDER_SPONSOR_WITH_PWS = "autopc1100@mailinator.com";
 	public static final String PC_USER_WHO_ENROLLED_UNDER_RF_CORPORATE_SPONSOR = "autoPc1901@mailinator.com";
 	public static final String PC_EMAIL_WHO_ENROLLED_UNDER_SPONSOR_WITHOUT_PWS = "autopc19012017@mailinator.com";
 
-	public static final String RC_USERNAME = "AutoRC20170113140808@mailinator.com";
-	public static final String RC_EMAIL = "AutoRC20170113140808@mailinator.com";
-	public static final String RC_USER_WITHOUT_ADDRESS = "autorc1717171@mailinator.com";
-	public static final String RC_EMAIL_HAVING_ORDER = "autorc1100@mailinator.com";
+	public static final String RC_EMAIL_WITHOUT_ORDER = "AutoRC20170125112634@mailinator.com";
+	public static final String RC_EMAIL_HAVING_ORDER = "AutoRC20170125114847@mailinator.com";
 
 }
 

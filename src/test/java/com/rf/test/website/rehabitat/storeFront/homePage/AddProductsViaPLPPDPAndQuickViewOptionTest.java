@@ -48,7 +48,7 @@ public class AddProductsViaPLPPDPAndQuickViewOptionTest extends StoreFrontWebsit
 		String productName = null;
 		String productNameOnCheckoutPopup = null;
 		String currentURL = null;
-		sfHomePage.loginToStoreFront(TestConstants.CONSULTANT_USERNAME, password);
+		sfHomePage.loginToStoreFront(TestConstants.CONSULTANT_EMAIL_WITH_CRP_AND_PULSE, password);
 		sfCartPage = sfHomePage.clickMiniCartBagLink();
 		sfCartPage.removeAllProductsFromCart();
 		sfCartPage.clickRodanAndFieldsLogo();
@@ -78,7 +78,7 @@ public class AddProductsViaPLPPDPAndQuickViewOptionTest extends StoreFrontWebsit
 		String textToAssertInURL = "autoship/cart";
 		String currentURL = null;
 		//Login to application.
-		sfHomePage.loginToStoreFront(TestConstants.PC_USERNAME, password);
+		sfHomePage.loginToStoreFront(TestConstants.PC_EMAIL_HAVING_AUTOSHIP, password);
 		sfShopSkinCarePage = sfHomePage.clickAllProducts();
 		selectedProductName = sfShopSkinCarePage.getFirstProductNameFromAllProductPage();
 		sfShopSkinCarePage.clickOnQuickViewLinkForProduct("1");
@@ -103,15 +103,16 @@ public class AddProductsViaPLPPDPAndQuickViewOptionTest extends StoreFrontWebsit
 	 * Description : This test validates the product added to cart from 
 	 * PLP page and verify at autoship cart
 	 */
-	@Test(enabled=false)
+	@Test(enabled=true)
 	public void testAddProductToCRPAutoshipCartFromPLP_116(){
 		String productName = null;
 		String productQuantity = null;
 		String updatedQuantity = null;
 		String updatedQuantityFromUI = null;
 		boolean isProductPresent = false;
-		sfHomePage.navigateToUrl(TestConstants.PWS);
-		sfHomePage.loginToStoreFront(TestConstants.CONSULTANT_WITH_CRP_USERNAME, password);
+		String prefix = TestConstants.CONSULTANT_PWS_PREFIX;
+		sfHomePage.navigateToUrl(sfHomePage.getBaseUrl()+"/" +sfHomePage.getCountry() +"/pws/" + prefix);
+		sfHomePage.loginToStoreFront(TestConstants.CONSULTANT_EMAIL_WITH_CRP_AND_PULSE, password);
 		sfShopSkinCarePage = sfHomePage.clickAllProducts();
 		sfShopSkinCarePage.refineProductByCategory(TestConstants.CONSULTANT_CRP_AUTOSHIP_PRODUCT_CATEGORY);
 		productName = sfShopSkinCarePage.getFirstProductNameFromAllProductPage();

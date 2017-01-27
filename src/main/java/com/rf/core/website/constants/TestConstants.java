@@ -59,7 +59,7 @@ public class TestConstants {
 	public static final String CONSULTANT_ACCOUNT_NUMBER = "";
 	public static final String FIRST_NAME = "AutoCons";
 	public static final String ADDRESS_LINE_1_US = "60 Spear St";
-	public static final String ADDRESS_LINE_2_US = "#600";
+	public static final String ADDRESS_LINE_2_US = "600";
 	public static final String CITY_US = "San Francisco";
 	public static final String POSTAL_CODE_US = "94105";
 	public static final String PHONE_NUMBER = "9842342342";
@@ -166,7 +166,7 @@ public class TestConstants {
 
 	//Users
 	public static final String CONSULTANT_EMAIL_SPONSOR_WITHOUT_PWS = "consponsorwiithoutpws1@mailinator.com";
-	public static final String CONSULTANT_EMAIL_WITH_CRP_AND_PULSE = "AutoConsWPWCRP20170127093848@mailinator.com";
+	public static final String CONSULTANT_EMAIL_WITH_CRP_AND_PULSE = "AutoConsWPWCRP20170127162954@mailinator.com";
 	public static final String CONSULTANT_EMAIL_WITH_CRP_AND_PULSE_FOR_CANCELLATION = "AutoConsWPWCRP20170127094455@mailinator.com";
 	public static final String CONSULTANT_PWS_PREFIX = "autocons";
 	public static final String CONSULTANT_EMAIL_WITHOUT_CRP_AND_PULSE = "AutoCons20170124210537@mailinator.com";

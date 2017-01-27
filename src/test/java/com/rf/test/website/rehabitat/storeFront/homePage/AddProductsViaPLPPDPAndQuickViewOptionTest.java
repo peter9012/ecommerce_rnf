@@ -7,8 +7,6 @@ import com.rf.test.website.rehabitat.storeFront.baseTest.StoreFrontWebsiteBaseTe
 
 public class AddProductsViaPLPPDPAndQuickViewOptionTest extends StoreFrontWebsiteBaseTest{
 
-
-
 	/***
 	 * qTest : TC-113 Add product to cart from PLP
 	 * Description : This test validates the product added to cart from 
@@ -80,11 +78,12 @@ public class AddProductsViaPLPPDPAndQuickViewOptionTest extends StoreFrontWebsit
 		//Login to application.
 		sfHomePage.loginToStoreFront(TestConstants.PC_EMAIL_HAVING_AUTOSHIP, password);
 		sfShopSkinCarePage = sfHomePage.clickAllProducts();
+		sfShopSkinCarePage.refineProductByCategory(TestConstants.PC_PERKS_AUTOSHIP_PRODUCT_CATEGORY);
 		selectedProductName = sfShopSkinCarePage.getFirstProductNameFromAllProductPage();
 		sfShopSkinCarePage.clickOnQuickViewLinkForProduct("1");
 		s_assert.assertTrue(sfShopSkinCarePage.isProductNamePresentAtQuickViewPopupAsExpected(selectedProductName),
 				"Product name is not present as expected on quick view poup");
-		sfShopSkinCarePage.clickPCPerksButtonFromQuickViewPopup();
+		sfShopSkinCarePage.addProductToCartFromQuickViewPopup(TestConstants.ORDER_TYPE_PC_PERKS);
 		s_assert.assertTrue(sfShopSkinCarePage.isAddedToYourShoppingCartHeadlinePresentOnCheckoutPopup(),
 				"Added to your shipping cart Headline is not present on Checkout popup");
 		sfAutoshipCartPage = sfShopSkinCarePage.checkoutTheCartFromPopUpForPCPerks();
@@ -96,7 +95,7 @@ public class AddProductsViaPLPPDPAndQuickViewOptionTest extends StoreFrontWebsit
 		s_assert.assertTrue((sfAutoshipCartPage.isProductAddedToCartPresentOnCartPage(selectedProductName)),
 				"Product added to PC Perks is not present on Cart page");
 		s_assert.assertAll();
-	} 
+	}
 
 	/***
 	 * qTest : TC-116 Add product to CRP Autoship Cart from PLP

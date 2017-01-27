@@ -497,7 +497,7 @@ public class AddAndDeleteShippingTest extends StoreFrontWebsiteBaseTest{
 	 * checkout page
 	 *     
 	 */
-	@Test(enabled=false)
+	@Test(enabled=true)
 	public void testDefaultShipAddressDisplayedInCheckoutSingleAddress_172(){
 		String firstName = TestConstants.FIRST_NAME;
 		String timeStamp = CommonUtils.getCurrentTimeStamp();
@@ -555,7 +555,7 @@ public class AddAndDeleteShippingTest extends StoreFrontWebsiteBaseTest{
 	 * 
 	 *     
 	 */
-	@Test(enabled=false)
+	@Test(enabled=true)
 	public void testAddShippingProfileBySelectingTheCheckboxForTheAutoship_525(){
 		String randomWord = CommonUtils.getRandomWord(5);
 		String randomWord2 = CommonUtils.getRandomWord(5);

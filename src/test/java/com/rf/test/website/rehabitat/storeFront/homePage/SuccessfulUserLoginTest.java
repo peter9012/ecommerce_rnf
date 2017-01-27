@@ -126,7 +126,7 @@ public class SuccessfulUserLoginTest extends StoreFrontWebsiteBaseTest{
 	 * 
 	 *     
 	 */
-	@Test(enabled=false)
+	@Test(enabled=true)
 	public void testUserAbleToAccessLoginFromPWS_352(){
 		//duplicate as TC-28 Verify user login from PWS site.
 	}

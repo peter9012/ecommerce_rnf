@@ -22,7 +22,6 @@ public class StoreFrontShopSkinCarePage extends StoreFrontWebsiteBasePage{
 			.getLogger(StoreFrontShopSkinCarePage.class.getName());
 
 	private final By CHECKOUT_BUTTON_POPUP_LOC = By.xpath("//a[contains(text(),'Checkout')]");
-	private final By ADD_TO_CART_ONE_TIME_ORDER_LOC = By.xpath("//div[@id='product_listing']/descendant::span[contains(text(),'One Time Order')][2]");
 	private final By SORT_FILTER_DD_LOC = By.id("sortOptions1");
 	private final By SHOP_BY_PRICE_FILTER_OPTION_HIGH_TO_LOW_LOC = By.xpath("//select[@id='sortOptions1']/descendant::option[2]");
 	private final By SHOP_BY_PRICE_FILTER_OPTION_LOW_TO_HIGH_LOC = By.xpath("//select[@id='sortOptions1']/descendant::option[3]");
@@ -54,7 +53,8 @@ public class StoreFrontShopSkinCarePage extends StoreFrontWebsiteBasePage{
 	private final By PC_PERKS_SAVE_AMOUNT_LOC = By.xpath("//span[@class='pcli']");
 	private final By SHOP_BY_PRICE_FILTER_OPTION_DEFAULT_LOC = By.xpath("//select[@id='sortOptions1']/descendant::option[1]");
 	private final By CLEAR_ALL_LINK_LOC = By.id("clear_all");
-	private final By ADD_TO_CART_BTN_LOC = By.xpath("//div[@id='product_listing']/descendant::button[text()='Add to cart'][2]");
+	private final By ADD_TO_CART_BTN_LOC = By.xpath("//div[@id='product_listing']/descendant::button[text()='Add to cart'][1]");
+	private final By ADD_TO_CART_ONE_TIME_ORDER_LOC = By.xpath("//div[@id='product_listing']/descendant::span[contains(text(),'One Time Order')][1]");
 
 	private String productPriceOnQuickViewPopupThroughOrderTypeLoc = "//*[@id='command']/descendant::span[contains(text(),'%s')]/following-sibling::span[contains(@class,'productPrice')]";
 	private String appliedFilterLoc = "//div[@id='applied_filters']/descendant::li[%s]";
@@ -75,27 +75,6 @@ public class StoreFrontShopSkinCarePage extends StoreFrontWebsiteBasePage{
 	private String productPriceThroughProductNumberLoc = "//div[@id='product_listing']/descendant::span[contains(text(),'%s')][%s]/following-sibling::span[contains(@class,'productPrice')]";
 	private String addToCartDDLoc = "//div[@id='product_listing']/descendant::span[contains(text(),'%s')][%s]";
 	private String randomCategoryName = randomProductCategoryCheckbox+"/following::span[1]/span[2]";
-
-	//	/***
-	//	 * This method click add to bag button for first product
-	//	 * 
-	//	 * @param
-	//	 * @return store front shop skincare page object
-	//	 * 
-	//	 */
-	//	public StoreFrontShopSkinCarePage addProductToAdhocCart(){
-	//		driver.pauseExecutionFor(5000);
-	//		driver.moveToElementByJS(ADD_TO_CART_BTN_LOC);
-	//		if(driver.isElementVisible(ADD_TO_CART_ONE_TIME_ORDER_LOC)){
-	//			driver.click(ADD_TO_CART_ONE_TIME_ORDER_LOC);
-	//		}else{
-	//			//driver.click(ADD_TO_CART_FIRST_PRODUCT_LOC);
-	//			Actions action = new Actions(RFWebsiteDriver.driver);
-	//			action.doubleClick(driver.findElement(ADD_TO_CART_BTN_LOC)).build().perform();
-	//		}
-	//		logger.info("First product added to the cart");
-	//		return this;
-	//	}
 
 	/***
 	 * This method select sort by price filter High to low
@@ -172,9 +151,9 @@ public class StoreFrontShopSkinCarePage extends StoreFrontWebsiteBasePage{
 	public boolean isPriceFilterLowToHighAppliedSuccessfully(){
 		int totalProducts = driver.findElements(TOTAL_PRODUCTS_LOC).size();
 		if(totalProducts>=3){
-			String firstProductPrice = driver.findElement(By.xpath(String.format(priceOfProductLoc, "2"))).getText().split("\\$")[1].trim();
-			String secondProductPrice = driver.findElement(By.xpath(String.format(priceOfProductLoc, "3"))).getText().split("\\$")[1].trim();
-			String thirdProductPrice = driver.findElement(By.xpath(String.format(priceOfProductLoc, "4"))).getText().split("\\$")[1].trim();
+			String firstProductPrice = driver.findElement(By.xpath(String.format(priceOfProductLoc, "1"))).getText().split("\\$")[1].trim();
+			String secondProductPrice = driver.findElement(By.xpath(String.format(priceOfProductLoc, "2"))).getText().split("\\$")[1].trim();
+			String thirdProductPrice = driver.findElement(By.xpath(String.format(priceOfProductLoc, "3"))).getText().split("\\$")[1].trim();
 			double priceFirstProduct = Double.parseDouble(firstProductPrice);
 			double priceSecondProduct = Double.parseDouble(secondProductPrice);
 			double priceThirdProduct = Double.parseDouble(thirdProductPrice);
@@ -199,9 +178,9 @@ public class StoreFrontShopSkinCarePage extends StoreFrontWebsiteBasePage{
 	 * 
 	 */
 	public StoreFrontShopSkinCarePage refineProductByCategory(String categoryName){
-		driver.click(REFINE_PRODUCT_CATEGORY_FILTER_DD_LOC);
+		driver.clickByJS(RFWebsiteDriver.driver,driver.findElement(REFINE_PRODUCT_CATEGORY_FILTER_DD_LOC));
 		logger.info("Refine category filter dropdown clicked");
-		driver.click(By.xpath(String.format(categoryNameLoc, categoryName)));
+		driver.clickByJS(RFWebsiteDriver.driver,driver.findElement(By.xpath(String.format(categoryNameLoc, categoryName))));
 		logger.info("Product category selected is "+categoryName);
 		driver.waitForPageLoad();
 		return this;
@@ -241,19 +220,6 @@ public class StoreFrontShopSkinCarePage extends StoreFrontWebsiteBasePage{
 		}
 		return productNumber;
 	}
-
-	//	/***
-	//	 * This method click add to bag button through product number
-	//	 * 
-	//	 * @param product number
-	//	 * @return Store front Shop skincare page obj
-	//	 * 
-	//	 */
-	//	public StoreFrontShopSkinCarePage addProductToBag(int productNumber){
-	//		driver.click(By.xpath(String.format(addToCartButtonThroughProductNumber, productNumber)));
-	//		logger.info("Added first product to the bag");
-	//		return this;
-	//	}
 
 	/***
 	 * This method get second product name from all product page
@@ -504,43 +470,6 @@ public class StoreFrontShopSkinCarePage extends StoreFrontWebsiteBasePage{
 	public boolean isAllProductPageDisplayed(){
 		return driver.isElementVisible(ADD_TO_CART_BTN_LOC);
 	}
-
-	//	/***
-	//	 * This method click add to cart button for first product after login and click add to crp
-	//	 * 
-	//	 * @param
-	//	 * @return store front shop skincare page object
-	//	 * 
-	//	 */
-	//	public StoreFrontShopSkinCarePage addProductToAutoshipCart(String userType){
-	//		driver.moveToElementByJS(ADD_TO_CART_BTN_LOC);
-	//		if(userType.equalsIgnoreCase("Consultant")){
-	//			driver.click(ADD_TO_CRP_OF_FIRST_PRODUCT);
-	//		}
-	//		else if(userType.equalsIgnoreCase("PC")){
-	//			driver.click(SUBSCRIBE_PLUS_SAVE_DD_OPTIONS_LOC);	
-	//		}
-	//		return this;
-	//	}
-
-	//	/***
-	//	 * This method click add to cart button for product after login and click add to crp
-	//	 * 
-	//	 * @param
-	//	 * @return store front shop skincare page object
-	//	 * 
-	//	 */
-	//	public StoreFrontShopSkinCarePage addProductToAutoshipCart(int productNumber,String userType){
-	//		driver.moveToElementByJS(ADD_TO_CART_BTN_LOC);
-	//		if(userType.equalsIgnoreCase("Consultant")){
-	//			driver.click(By.xpath(String.format(addToCRPButtonThroughProductNumber, productNumber)));
-	//		}
-	//		else if(userType.equalsIgnoreCase("PC")){
-	//			driver.click(By.xpath(String.format(addToPCPerksButtonThroughProductNumber, productNumber)));	
-	//		}
-	//		logger.info("Added "+productNumber+ "product to the AutoShip Cart");
-	//		return this;
-	//	}
 
 	/***
 	 * This method click on yes button on popup saying do you want to enroll in CRP
@@ -840,22 +769,6 @@ public class StoreFrontShopSkinCarePage extends StoreFrontWebsiteBasePage{
 		return this;
 	}
 
-	//	/***
-	//	 * This method click add to cart for  Specific product and return the price
-	//	 * 
-	//	 * @param
-	//	 * @return string price
-	//	 * 
-	//	 */
-	//	public String addProductTocartAndReturnProductPriceForProduct(int productNumber){
-	//		String priceToAssert = null;
-	//		priceToAssert = driver.getText(By.xpath(String.format(yourpriceOfProductLoc,productNumber))).replace("$","").split("Your Price:")[1];
-	//		driver.click(By.xpath(String.format(addToCartButtonThroughProductNumber, productNumber)));
-	//		logger.info("Clicked add to cart for"+productNumber+" product");
-	//		logger.info("Price to assert from PLP"+priceToAssert);
-	//		return priceToAssert;
-	//	}
-
 	/***
 	 * This method Refine Product by random category and return category name
 	 * 
@@ -954,23 +867,6 @@ public class StoreFrontShopSkinCarePage extends StoreFrontWebsiteBasePage{
 		driver.waitForPageLoad();
 		return this;
 	}
-
-	//	/***
-	//	 * This method click add to CRP button through product number
-	//	 * 
-	//	 * @param product number
-	//	 * @return Store front Shop skincare page obj
-	//	 * 
-	//	 */
-	//	public StoreFrontShopSkinCarePage addProductToAdhocCart(int productNumber){
-	//		driver.pauseExecutionFor(3000);
-	//		driver.moveToElement(By.xpath(String.format(addToCartButtonThroughProductNumber,productNumber)));
-	//		if(driver.isElementVisible(By.xpath(String.format(addToCartButtonThroughProductNumber,productNumber)))){
-	//			driver.clickByAction(By.xpath(String.format(addToCartButtonThroughProductNumber,productNumber)));
-	//		}
-	//		driver.pauseExecutionFor(2000);
-	//		return this;
-	//	}
 
 	/***
 	 * This method click on first product name on all product page
@@ -1133,36 +1029,5 @@ public class StoreFrontShopSkinCarePage extends StoreFrontWebsiteBasePage{
 		logger.info("Add To Cart clicked, order type is "+orderType);
 		return priceToAssert;
 	}
-
-
-	//	/***
-	//	 * This method click on add to cart button on all product page
-	//	 * 
-	//	 * @param
-	//	 * @return base page object
-	//	 * 
-	//	 */
-	//	public StoreFrontWebsiteBasePage clickAddToCartOfFirstProduct(){
-	//		Actions actions = new Actions(RFWebsiteDriver.driver);
-	//		actions.click(driver.findElement(ADD_TO_CART_FIRST_PRODUCT_LOC)).build().perform();
-	//		return this;
-	//	}
-	//	
-	//	/***
-	//	 * This method add first product to bag
-	//	 * 
-	//	 * @param
-	//	 * @return store front shop skincare page object
-	//	 * 
-	//	 */
-	//	public StoreFrontWebsiteBasePage addFirstProductToBag(){
-	//		driver.waitForElementToBeClickable(ADD_TO_CART_FIRST_PRODUCT_LOC, 30);
-	//		//driver.moveToElement(ADD_TO_CART_FIRST_PRODUCT_LOC);
-	//		//driver.moveToElementByJS(ADD_TO_CART_FIRST_PRODUCT_LOC);
-	//		driver.click(ADD_TO_CART_FIRST_PRODUCT_LOC);
-	//		logger.info("Added first product to the bag");
-	//		driver.pauseExecutionFor(2000);
-	//		return this;
-	//	}
 
 }

@@ -19,9 +19,13 @@ public class MiniCartTest extends StoreFrontWebsiteBaseTest{
 		String itemInAdhocCart= "1";
 		String noOfItemFromUI = null;   
 		sfHomePage.loginToStoreFront(TestConstants.CONSULTANT_EMAIL_WITH_CRP_AND_PULSE, password);
-		sfShopSkinCarePage = sfHomePage.clickAllProducts();
+		sfCartPage = sfHomePage.clickMiniCartBagLink();
+		sfCartPage.removeAllProductsFromCart();
+		s_assert.assertFalse(sfCartPage.isProductPresentInCart(),"No product expected in cart but product are present in cart");
+		sfCartPage.clickRodanAndFieldsLogo();
+		sfShopSkinCarePage = sfCartPage.clickAllProducts();
 		sfShopSkinCarePage.addProductToCart(TestConstants.PRODUCT_NUMBER, TestConstants.ORDER_TYPE_ADHOC);
-		sfCartPage = sfShopSkinCarePage.checkoutTheCartFromPopUp();
+		sfShopSkinCarePage.checkoutTheCartFromPopUp();
 		noOfItemFromUI = sfHomePage.getNumberOfItemFromMiniCart();
 		s_assert.assertTrue(noOfItemFromUI.equalsIgnoreCase(itemInAdhocCart), "Expected no of item is "+itemInAdhocCart+" Actual on UI is "+noOfItemFromUI);
 		sfCheckoutPage = sfCartPage.checkoutTheCart();
@@ -31,7 +35,7 @@ public class MiniCartTest extends StoreFrontWebsiteBaseTest{
 		sfCheckoutPage.selectTermsAndConditionsChkBox();
 		sfCheckoutPage.clickPlaceOrderButton();
 		s_assert.assertTrue(sfCheckoutPage.isOrderPlacedSuccessfully(), "Adhoc order is not placed successfully by consultant");
-		sfHomePage =sfCheckoutPage.clickRodanAndFieldsLogo();
+		sfCheckoutPage.clickRodanAndFieldsLogo();
 		noOfItemFromUI = sfHomePage.getNumberOfItemFromMiniCart();
 		s_assert.assertTrue(noOfItemFromUI.equalsIgnoreCase(noOfItem), "Expected no of item is "+noOfItem+" Actual on UI is "+noOfItemFromUI);
 		s_assert.assertAll();
@@ -44,30 +48,63 @@ public class MiniCartTest extends StoreFrontWebsiteBaseTest{
 	 */
 	@Test(enabled=true)
 	public void testViewMiniShippingBag_147(){
+		String firstProductName = null;
+		String secondProductName= null;
+		int totalNoOfItemsOnCartPage = 0;
+		String totalNoOfItemFromMiniCart = null;
+		String quantityOfFirstProduct = null;
+		String quantityOfSecondProduct = null;
+		String subTotalOnCartPage  = null;
+		String orderTotalOnCartPage = null;
+		String productNameInMiniCart = null;
+		String quantityOfProductInMiniCart = null;
+		String subTotalInMiniCart = null;
+		String totalOfProdutsInMiniCart = null;
+		String urlToAssert = "/cart";
+		String currentURL = null;
+
 		sfShopSkinCarePage = sfHomePage.clickAllProducts();
 		sfShopSkinCarePage.addProductToCart(TestConstants.PRODUCT_NUMBER, TestConstants.ORDER_TYPE_ADHOC);
 		sfCartPage = sfShopSkinCarePage.checkoutTheCartFromPopUp();
-		int totalNoOfItem = sfCartPage.getTotalNoOfItemsInCart();
-		String totalNoOfItemFromMiniCart = sfCartPage.getNumberOfItemFromMiniCart();
-		s_assert.assertTrue(totalNoOfItem==Integer.parseInt(totalNoOfItemFromMiniCart), "Expected total no of items in mini shopping bag icon is "+totalNoOfItem+" Actual on UI is "+totalNoOfItem);
-		sfCartPage.clickAddMoreItemsBtn();
-		sfShopSkinCarePage.addProductToCart(TestConstants.PRODUCT_NUMBER, TestConstants.ORDER_TYPE_ADHOC);
-		sfShopSkinCarePage.checkoutTheCartFromPopUp();
-		totalNoOfItem = sfCartPage.getTotalNoOfItemsInCart();
+		totalNoOfItemsOnCartPage = sfCartPage.getTotalNoOfItemsInCart();
 		totalNoOfItemFromMiniCart = sfCartPage.getNumberOfItemFromMiniCart();
-		s_assert.assertTrue(totalNoOfItem==Integer.parseInt(totalNoOfItemFromMiniCart), "Expected total no of items in mini shopping bag icon is after added another product "+totalNoOfItem+" Actual on UI is "+totalNoOfItem);
-		String productName = sfCartPage.getProductName("1").toLowerCase();
-		String quantityOfFirstProduct = sfCartPage.getQuantityOfProductFromCart("1");
-		String subTotal = sfCartPage.getSubtotalofItems();
+		s_assert.assertTrue(totalNoOfItemsOnCartPage == Integer.parseInt(totalNoOfItemFromMiniCart), "Expected total no of items in mini shopping bag icon is "+totalNoOfItemsOnCartPage+" Actual on UI is "+totalNoOfItemsOnCartPage);
+		sfCartPage.clickAddMoreItemsBtn();
+		sfShopSkinCarePage.addProductToCart("2", TestConstants.ORDER_TYPE_ADHOC);
+		sfShopSkinCarePage.checkoutTheCartFromPopUp();
+		totalNoOfItemsOnCartPage = sfCartPage.getTotalNoOfItemsInCart();
+		totalNoOfItemFromMiniCart = sfCartPage.getNumberOfItemFromMiniCart();
+		s_assert.assertTrue(totalNoOfItemsOnCartPage == Integer.parseInt(totalNoOfItemFromMiniCart), "Expected total no of items in mini shopping bag icon is after added another product "+totalNoOfItemsOnCartPage+" Actual on UI is "+totalNoOfItemsOnCartPage);
+		firstProductName = sfCartPage.getProductName("1").toLowerCase();
+		secondProductName = sfCartPage.getProductName("2").toLowerCase();
+		quantityOfFirstProduct = sfCartPage.getQuantityOfProductFromCart("1");
+		quantityOfSecondProduct = sfCartPage.getQuantityOfProductFromCart("2");
+		subTotalOnCartPage = sfCartPage.getSubtotalofItems();
+		orderTotalOnCartPage = sfCartPage.getOrderTotal();
 		sfCartPage.hoverOnMiniCartBagIcon();
 		int totalNoOfItemInMiniCart = sfCartPage.getTotalNumberOfItemsInMiniCart();
-		String productNameInMiniCart = sfCartPage.getProductNameFromMiniCart("1").toLowerCase();
-		String quantityOfFirstProductInMiniCart = sfCartPage.getQuantityOfProductFromMiniCart("1").split("\\:")[1].trim();
-		String subTotalInMiniCart = sfCartPage.getSubtotalofItemsFromMiniCart();
-		s_assert.assertTrue(totalNoOfItem==totalNoOfItemInMiniCart, "Expected total no of items in mini cart is "+totalNoOfItem+" Actual on UI is "+totalNoOfItemInMiniCart);
-		s_assert.assertTrue(quantityOfFirstProduct.contains(quantityOfFirstProductInMiniCart), "Expected quantity of first product in mini cart is "+quantityOfFirstProduct+" Actual on UI is "+quantityOfFirstProductInMiniCart);
-		s_assert.assertTrue(subTotal.contains(subTotalInMiniCart), "Expected quantity of subtotal in mini cart is "+subTotal+" Actual on UI is "+subTotalInMiniCart);
-		s_assert.assertTrue(productName.contains(productNameInMiniCart), "Expected first product name in mini cart is "+productName+" Actual on UI is "+productNameInMiniCart);
+		s_assert.assertTrue(totalNoOfItemsOnCartPage == totalNoOfItemInMiniCart, "Expected total no of items in mini cart is "+totalNoOfItemsOnCartPage+" Actual on UI is "+totalNoOfItemInMiniCart);
+		productNameInMiniCart = sfCartPage.getProductNameFromMiniCart("1").toLowerCase();
+		quantityOfProductInMiniCart = sfCartPage.getQuantityOfProductFromMiniCart("1").split("\\:")[1].trim();
+		s_assert.assertTrue(firstProductName.contains(productNameInMiniCart), "Expected first product name in mini cart is "+firstProductName+" Actual on UI is "+productNameInMiniCart);
+		s_assert.assertTrue(quantityOfFirstProduct.contains(quantityOfProductInMiniCart), "Expected quantity of first product in mini cart is "+quantityOfFirstProduct+" Actual on UI is "+quantityOfProductInMiniCart);
+		productNameInMiniCart = sfCartPage.getProductNameFromMiniCart("2").toLowerCase();
+		quantityOfProductInMiniCart = sfCartPage.getQuantityOfProductFromMiniCart("2").split("\\:")[1].trim();
+		s_assert.assertTrue(secondProductName.contains(productNameInMiniCart), "Expected Second product name in mini cart is "+secondProductName+" Actual on UI is "+productNameInMiniCart);
+		s_assert.assertTrue(quantityOfSecondProduct.contains(quantityOfProductInMiniCart), "Expected quantity of first product in mini cart is "+quantityOfSecondProduct+" Actual on UI is "+quantityOfProductInMiniCart);
+		subTotalInMiniCart = sfCartPage.getSubtotalofItemsFromMiniCart();
+		totalOfProdutsInMiniCart = sfCartPage.gettotalofItemsInMiniCart();
+		s_assert.assertTrue(subTotalOnCartPage.contains(totalOfProdutsInMiniCart), "Expected total in mini cart : "+subTotalOnCartPage+" Actual in mini cart : "+totalOfProdutsInMiniCart);
+		s_assert.assertTrue(orderTotalOnCartPage.contains(subTotalInMiniCart), "Expected order total in mini cart : "+orderTotalOnCartPage+" Actual in mini cart : "+subTotalInMiniCart);
+		sfCartPage.clickViewShoppingCartLink();
+		currentURL = sfCartPage.getCurrentURL();
+		s_assert.assertTrue(currentURL.contains(urlToAssert),"Expected URL should contain : " + urlToAssert + " . Actual URL : " + currentURL);
+		s_assert.assertTrue(sfCartPage.isYourShoppingCartHeaderPresentOnCartPage(),"Your Shopping cart Header is not present on cart page");
+		sfCartPage.clickRodanAndFieldsLogo();
+		sfCartPage.clickMiniCartBagLink();
+		currentURL = sfCartPage.getCurrentURL();
+		s_assert.assertTrue(currentURL.contains(urlToAssert),"Expected URL should contain : " + urlToAssert + " . Actual URL : " + currentURL);
+		s_assert.assertTrue(sfCartPage.isYourShoppingCartHeaderPresentOnCartPage(),"Your Shopping cart Header is not present on cart page");
 		s_assert.assertAll();
 	}
 
@@ -209,7 +246,7 @@ public class MiniCartTest extends StoreFrontWebsiteBaseTest{
 		s_assert.assertTrue(sfCartPage.isProductAddedToCartPresentOnCartPage(productNameAddedByUser),"Product added to cart : "+productNameToAddByUser+" as valid user is not present on the cart page");
 		s_assert.assertAll();
 	}
-	
+
 	/***
 	 * qTest : TC-565 PC or Consultant user adds products to the cart anonymously
 	 * Description : Description : This test validates that the product added by a anonymous user should be present

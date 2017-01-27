@@ -511,7 +511,7 @@ public class AutoshipTest extends StoreFrontWebsiteBaseTest{
 	 * page Update and click on save.
 	 *     
 	 */
-	@Test(enabled=false)
+	@Test(enabled=true)
 	public void testVerifyUpdateChangesOnAutoShipCartAfterClickSave_510(){
 		String currentURL = null;
 		String quantityOfProduct = null;
@@ -947,7 +947,7 @@ public class AutoshipTest extends StoreFrontWebsiteBaseTest{
 	 * 
 	 *     
 	 */
-	@Test(enabled=false)
+	@Test(enabled=true)
 	public void testUpdateAutoshipCartOrderSummary_326(){
 		int totalNoOfItemBeforeAdd = 0;
 		int totalNoOfItemAfterAdd = 0;
@@ -1000,7 +1000,7 @@ public class AutoshipTest extends StoreFrontWebsiteBaseTest{
 	 * 
 	 *     
 	 */
-	@Test(enabled=false)
+	@Test(enabled=true)
 	public void testUpdateAutoshipCart_327(){
 		//same as TC-326
 	}
@@ -1012,7 +1012,7 @@ public class AutoshipTest extends StoreFrontWebsiteBaseTest{
 	 * 
 	 *     
 	 */
-	@Test(enabled=false)
+	@Test(enabled=true)
 	public void testAddToAutoshipCartConsultant_396(){
 		String productName = null;
 		String productQuantity = null;
@@ -1210,7 +1210,7 @@ public class AutoshipTest extends StoreFrontWebsiteBaseTest{
 	 * for pulse
 	 *     
 	 */
-	@Test(enabled=false)
+	@Test(enabled=true)
 	public void testConsultantAutoshipCartPulseSubscriptionStatus_353(){
 		String nextBillAndShipDate = "	Next Bill Date";
 		String currentPulseStatus = "Current Subscription Status";
@@ -1227,13 +1227,29 @@ public class AutoshipTest extends StoreFrontWebsiteBaseTest{
 	 * Description : This test validates the threshold message for autoship 
 	 *     
 	 */
-	@Test(enabled=false)
+	@Test(enabled=true)
 	public void testCartPageTotalSVAndAdditionalSV_336(){
 		String thresholdMessage = null;
 		sfHomePage.loginToStoreFront(TestConstants.CONSULTANT_EMAIL_WITH_CRP_AND_PULSE, password);
 		sfAutoshipCartPage = sfHomePage.clickAutoshipLink();
 		thresholdMessage = sfAutoshipCartPage.getThresholdMessageWhileRemovingProductFromAutoshipCart();
 		s_assert.assertTrue(thresholdMessage.contains("minimum commitment"), "Expected threshold message should contain 'minimum commitment' for < 100$ SV but actual on UI is "+thresholdMessage);
+		s_assert.assertAll();
+	}
+
+	/***
+	 * qTest : TC-406 PC Autoship Cart- Maintenance and Threshold
+	 * Description : This test validates the threshold message of PC for autoship 
+	 *     
+	 */
+	@Test(enabled=false)
+	public void testPCAutoshipCartMaintenanceAndThreshold_406(){
+		String thresholdMessage = null;
+		String expectedThresholdMessage = "Please add minimum worth of USD$ 80 products excluding enrollment fee".toLowerCase();
+		sfHomePage.loginToStoreFront(TestConstants.PC_EMAIL_HAVING_AUTOSHIP, password);
+		sfAutoshipCartPage = sfHomePage.clickAutoshipLink();
+		thresholdMessage = sfAutoshipCartPage.getThresholdMessageWhileRemovingProductFromAutoshipCart().toLowerCase();
+		s_assert.assertTrue(thresholdMessage.contains(expectedThresholdMessage), "Expected threshold message is"+expectedThresholdMessage+" for Min SV but actual on UI is "+thresholdMessage);
 		s_assert.assertAll();
 	}
 }

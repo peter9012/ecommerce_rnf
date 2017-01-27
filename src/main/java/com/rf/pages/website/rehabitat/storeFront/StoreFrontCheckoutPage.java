@@ -143,7 +143,7 @@ public class StoreFrontCheckoutPage extends StoreFrontWebsiteBasePage{
 	private final By EXP_YEAR_DD_AFTER_EDIT_PROFILE_LOC= By.xpath("//div[@id='account-billing-container']//select[@id='ExpiryYear']");
 	private final By EXP_YEAR_AFTER_EDIT_PROFILE_LOC= By.xpath("//div[@id='account-billing-container']//select[@id='ExpiryYear']//option[11]");
 	private final By CVV_AFTER_EDIT_PROFILE_LOC= By.xpath("//div[@id='account-billing-container']//input[@id='card_cvNumber']");
-	private final By SPONSOR_NAME_ACCOUNT_INFO_LOC = By.xpath("//div[contains(@id,'findConsultantResultArea')]//span[@id='selectd-consultant']");
+	private final By SPONSOR_NAME_ACCOUNT_INFO_LOC = By.xpath("//div[contains(@id,'findConsultantResultArea')]/descendant::span[@id='selectd-consultant'][2]");
 	private final By NOT_YOUR_CONSULTAN_LINK_LOC = By.id("not-your-autoSponsor");
 	private final By CLOSE_BTN_OF_POPUP_LOC = By.id("close_popup");
 	private final By USE_SAVED_CARD_BTN_LOC = By.xpath("//button[contains(text(),'Use a saved card')]");
@@ -157,8 +157,9 @@ public class StoreFrontCheckoutPage extends StoreFrontWebsiteBasePage{
 	private final By EDIT_LINK_OF_SHIPPING_DETAILS = By.xpath("//div[contains(text(),'Shipping')]/following-sibling::a[contains(text(),'Edit')]");
 	private final By ORDER_NUMBER_AT_CONFIRMATION_PAGE_OF_PLACED_ORDER_LOC = By.xpath("//div[@class='orderHeading']");
 	private final By USE_MY_DELIVERY_ADDRESS_CHECKBOX_LOC = By.xpath("//input[@id='useDeliveryAddress']");
-
+	private final By SELECTED_SPONSOR_LOC = By.xpath("//span[@id='selectd-consultant']");
 	private final By ADDRESS_BOOK_BTN_LOC = By.xpath("//button[contains(text(),'Address Book')]");
+
 	private String useThisAddressBtnInAddressBookLoc = "//div[@id='addressbook']/descendant::form[@id='useShipAddressFromBook'][%s]//button";
 	private String profileNameFromAddressBookLoc = "//div[@id='addressbook']/descendant::strong[%s]";
 	private String useThisPaymentDetailsBtnInSavedCardLoc = "//div[@id='savedpaymentsbody']/descendant::button[contains(text(),'Use these payment details')][%s]";
@@ -378,7 +379,7 @@ public class StoreFrontCheckoutPage extends StoreFrontWebsiteBasePage{
 	public boolean isshippindAddressFieldsAreDisplayedAtCheckoutPage(){
 		return driver.findElement(FIRST_LAST_NAME_FOR_SHIPPING_AT_CHECKOUT_PAGE_LOC).isDisplayed();
 	}
-	
+
 	/***
 	 * This method click on Edit of order summary section at checkout page
 	 * 
@@ -461,7 +462,7 @@ public class StoreFrontCheckoutPage extends StoreFrontWebsiteBasePage{
 	 * @return same page object
 	 */
 	public StoreFrontCheckoutPage clickContinueWithoutConsultantLink(){
-		driver.click(CONTINUE_WITHOUT_SPONSOR_LOC);
+		driver.clickByJS(RFWebsiteDriver.driver, driver.findElement(CONTINUE_WITHOUT_SPONSOR_LOC));
 		logger.info("Continue without sponsor link clicked");
 		return this;
 	}
@@ -1313,6 +1314,7 @@ public class StoreFrontCheckoutPage extends StoreFrontWebsiteBasePage{
 	 * @return boolean
 	 */
 	public boolean isSponsorSearchBoxVisible(){
+		driver.waitForElementToBeVisible(SPONSOR_SEARCH_FIELD_LOC, 10);
 		return driver.isElementVisible(SPONSOR_SEARCH_FIELD_LOC);
 	}
 
@@ -1551,19 +1553,19 @@ public class StoreFrontCheckoutPage extends StoreFrontWebsiteBasePage{
 	}
 
 	/***
-	  * This method click on the confirm Autoship order button
-	  * 
-	  * @param 
-	  * @return StoreFrontCheckoutPage object 
-	  * 
-	  */
-	 public StoreFrontCheckoutPage clickConfirmAutoshipOrderButton(){
-	  driver.click(CONFIRM_CRP_ORDER_BTN_LOC);
-	  driver.waitForPageLoad();
-	  logger.info("confirm CRP order btn clicked");
-	  driver.pauseExecutionFor(2000);
-	  return this;
-	 }
+	 * This method click on the confirm Autoship order button
+	 * 
+	 * @param 
+	 * @return StoreFrontCheckoutPage object 
+	 * 
+	 */
+	public StoreFrontCheckoutPage clickConfirmAutoshipOrderButton(){
+		driver.click(CONFIRM_CRP_ORDER_BTN_LOC);
+		driver.waitForPageLoad();
+		logger.info("confirm CRP order btn clicked");
+		driver.pauseExecutionFor(2000);
+		return this;
+	}
 
 	/***
 	 * This method validates the presence of Confirm CRP Order Success Message
@@ -1801,6 +1803,16 @@ public class StoreFrontCheckoutPage extends StoreFrontWebsiteBasePage{
 		driver.click(By.xpath(String.format(useThisPaymentDetailsBtnInSavedCardLoc, profileNumber)));
 		logger.info(profileNumber+"st is selected as billing profile and profile name is "+name);
 		return name;
+	}
+
+	/**
+	 * This method verify the sponsor is selected or not
+	 * 
+	 * @param 
+	 * @return boolean
+	 */
+	public boolean isSponsorSelected(){
+		return driver.isElementVisible(SELECTED_SPONSOR_LOC);
 	}
 
 }

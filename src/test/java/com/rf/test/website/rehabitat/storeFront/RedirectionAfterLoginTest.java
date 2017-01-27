@@ -134,5 +134,42 @@ public class RedirectionAfterLoginTest extends StoreFrontWebsiteBaseTest{
 		s_assert.assertAll();
 	}
 
+	/***
+	 * qTest : TC-375 As a PC or Consultant, after logging in from PWS - Sponsor with PWS
+	 * Description : This test validates the URL, login with a consultant having PWS and click on R+F logo
+	 *     
+	 */
+	@Test(enabled=true)
+	public void testAsAPCOrConsultantAfterLoggingInFromPWSSponsorWithPWS_375(){
+		String homePageURL = null;
+		String currentURL = null;
+		String prefix = TestConstants.CONSULTANT_PWS_PREFIX;
+		homePageURL = sfHomePage.getCurrentURL();
+		sfHomePage.navigateToUrl(homePageURL + "/pws/" + prefix);
+		sfHomePage.loginToStoreFront(TestConstants.CONSULTANT_EMAIL_WITH_CRP_AND_PULSE, password);
+		currentURL = sfHomePage.getCurrentURL();
+		s_assert.assertTrue(currentURL.contains("pws"),"Current url should contain 'PWS' but actual on UI is "+currentURL);
+		sfHomePage.clickRodanAndFieldsLogo();
+		currentURL = sfHomePage.getCurrentURL();
+		s_assert.assertTrue(currentURL.contains("pws"),"Current url should redirected to PWS of sponser but actual on UI is "+currentURL);
+		s_assert.assertAll();
+	}
+
+
+	/***
+	 * qTest : TC-529 PC user enrolled under Sponsor PWS and logs in from the R+F corporate website
+	 * Description : This test validate the URL while login with a PC who's sponsor having pws
+	 *     
+	 */
+	@Test(enabled=true)
+	public void testPCUserEnrolledUnderSponsorPWSAndLogsInFromTheRFCorporateWebsite_529(){
+		String currentURL=null;
+		String sponser=TestConstants.SPONSOR;
+		sfHomePage.loginToStoreFront(TestConstants.PC_EMAIL_WHO_ENROLLED_UNDER_SPONSOR_WITH_PWS, password);
+		currentURL = sfHomePage.getCurrentURL().toLowerCase();
+		s_assert.assertTrue(currentURL.contains(sponser),"Current url should contain sponser name:"+sponser+" but actual URL on UI is "+currentURL);
+		s_assert.assertAll();
+	}
+
 
 }

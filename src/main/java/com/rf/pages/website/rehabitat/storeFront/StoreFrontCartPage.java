@@ -16,7 +16,7 @@ public class StoreFrontCartPage extends StoreFrontWebsiteBasePage{
 
 	private static final Logger logger = LogManager
 			.getLogger(StoreFrontCartPage.class.getName());
-
+	private final By ORDER_TOTAL_LOC = By.xpath("//td[contains(text(),'Order Total')]/following::td[1]");
 	private final By CHECKOUT_BTN_LOC = By.xpath("//div[@class='cart-container']/descendant::button[contains(text(),'Checkout')][2]");
 	private final By FIRST_ITEM_CODE_LOC = By.xpath("//ul[contains(@class,'cart__list')]/descendant::li[@class='item-list-item'][1]//div[@class='item-code']");
 	private final By FIRST_ITEM_PRODUCT_NAME_LOC = By.xpath("//ul[contains(@class,'cart__list')]/descendant::li[@class='item-list-item'][1]//span[@class='item-name']");
@@ -27,7 +27,6 @@ public class StoreFrontCartPage extends StoreFrontWebsiteBasePage{
 	private final By CART_LOGIN_LOC = By.xpath("//div[@class='cartLogin']//a[text()='Log in']");
 	private final By SHIPPING_METHOD_AFTER_ORDER_PLACED = By.xpath("//div[contains(text(),'Shipping Method')]");
 	private final By FIRST_ITEM_PRODUCT_PRICE_LOC = By.xpath("//ul[contains(@class,'cart__list')]/descendant::li[@class='item-list-item'][1]//div[@class='item-price'][1]");
-	private final By ORDER_TOTAL_LOC = By.xpath("//td[text()='Order Total']/following::td[1]");
 	private final By CHECKOUT_BTN_CONSULTANT_LOC = By.id("checkoutPopup");
 	private final By CLOSE_BTN_ON_CONFIRMATION_POPUP_LOC = By.xpath("//button[@id='cboxClose']");
 	private final By LEARN_MORE_LINK_LOC = By.xpath("//a[contains(text(),'Learn more')]");
@@ -38,7 +37,7 @@ public class StoreFrontCartPage extends StoreFrontWebsiteBasePage{
 	private String productPriceInAllItemsInCartLoc = "//li[@class='item-list-item']//div[@class='item-info']//span[@class='item-name' and contains(text(),'%s')]/ancestor::div[1]/following-sibling::div[@class='item-price-info']";
 	private String recentlyViewProductOnCartPageLoc = "//div[@id='recentlyViewedTitle']/following::div[@class='owl-item active']//a[contains(text(),'%s')]";
 	private String removeLinkForProductOnCartLoc = "removeEntry_";
-
+	private String productNameInCartLoc = "//ul[contains(@class,'cart__list')]/descendant::li[@class='item-list-item'][%s]//span[@class='item-name']";
 
 	/***
 	 * This method get product item code 
@@ -54,22 +53,6 @@ public class StoreFrontCartPage extends StoreFrontWebsiteBasePage{
 		}
 		logger.info("Item code of "+itemNumber+" is "+itemCode);
 		return itemCode;
-	}
-
-	/***
-	 * This method get product name of first item 
-	 * 
-	 * @param itemNumber
-	 * @return product name
-	 * 
-	 */
-	public String getProductName(String itemNumber){
-		String productName = null;
-		if(itemNumber.equalsIgnoreCase("1")){
-			productName = driver.findElement(FIRST_ITEM_PRODUCT_NAME_LOC).getText();
-		}
-		logger.info("product name of "+itemNumber+" is "+productName);
-		return productName;
 	}
 
 	/***
@@ -331,19 +314,6 @@ public class StoreFrontCartPage extends StoreFrontWebsiteBasePage{
 	}
 
 	/***
-	 * This method get Order Total
-	 * 
-	 * @param 
-	 * @return orderTotal
-	 * 
-	 */
-	public String getOrderTotal(){
-		String orderTotal=driver.findElement(ORDER_TOTAL_LOC).getText();
-		logger.info("Subtotal of product is "+orderTotal);
-		return orderTotal;
-	}
-
-	/***
 	 * This method click checkout button 
 	 * 
 	 * @param
@@ -463,6 +433,33 @@ public class StoreFrontCartPage extends StoreFrontWebsiteBasePage{
 	public StoreFrontCartPage pressEscapeKeyForDismissingPromotionOverlay(){
 		driver.pressEscapeKey();
 		return this;
+	}
+
+	/***
+	 * This method get Order Total
+	 * 
+	 * @param 
+	 * @return orderTotal
+	 * 
+	 */
+	public String getOrderTotal(){
+		String orderTotal=driver.findElement(ORDER_TOTAL_LOC).getText();
+		logger.info("Order total at Cart Page is "+orderTotal);
+		return orderTotal;
+	}
+
+	/***
+	 * This method get product name of first item 
+	 * 
+	 * @param itemNumber
+	 * @return product name
+	 * 
+	 */
+	public String getProductName(String itemNumber){
+		String productName = null;
+		productName = driver.getText(By.xpath(String.format(productNameInCartLoc, itemNumber))).trim();
+		logger.info("product name of "+itemNumber+" is "+productName);
+		return productName;
 	}
 }
 

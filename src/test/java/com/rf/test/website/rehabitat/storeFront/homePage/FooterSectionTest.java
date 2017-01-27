@@ -232,8 +232,8 @@ public class FooterSectionTest extends StoreFrontWebsiteBaseTest{
 		String disclaimer = "Disclaimer";
 		String rodanAndFieldPolicies="Rodan + Fields Policies & Procedures";
 		String incomeDisclosureStatement="Income Disclosure Statement";
-		String policyUrl="Policies_Procedures_CANADA.pdf";
-		String incomeDisclosureUrl="IncomeDisclosure.pdf";
+		String policyUrl="Policies_Procedures_USA.pdf";
+		String incomeDisclosureUrl="USAIncomeDisclosure.pdf";
 		String currentWindowID =null;
 		s_assert.assertTrue(sfHomePage.isTheFooterLinkDisplayed(disclaimer),"Disclaimer link is not present in footer section");
 		sfHomePage.clickFooterLink(disclaimer);

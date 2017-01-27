@@ -4,6 +4,7 @@ import java.awt.AWTException;
 import java.awt.Robot;
 import java.awt.event.KeyEvent;
 import java.util.Iterator;
+import java.util.List;
 import java.util.NoSuchElementException;
 import java.util.Set;
 
@@ -41,7 +42,10 @@ public class StoreFrontWebsiteBasePage extends RFBasePage {
 		super(driver);
 		this.driver = driver;
 	}
-
+	private final By SUBTOTAL_LOC = By.xpath("//td[contains(text(),'Subtotal')]/following::td[1]");
+	private final By TOTAL_PRICE_OF_ITEMS_IN_MINI_CART_LOC = By
+			.xpath("//ol/descendant::li[@class='mini-cart-item']//div[@class='price']");
+	private final By VIEW_SHOPPING_CART_LINK_LOC = By.xpath("//a[contains(text(),'view shopping cart')]");
 	protected String topNavigationLoc = "//div[contains(@class,'navbar-inverse')]";
 	protected final By TOTAL_PRODUCTS_LOC = By.xpath("//div[@id='product_listing']//following::div[@class='product-item']");
 	private final By CANCEL_BUTTON_LOC=By.xpath("//button[contains(text(),'Cancel')]");
@@ -233,7 +237,6 @@ public class StoreFrontWebsiteBasePage extends RFBasePage {
 	private final By UPDATE_LINK_OF_FIRST_PRODUCT_LOC = By
 			.xpath("//div[@class='qty']/descendant::input[@value='update'][1]");
 	protected final By BILLING_ADDRESS_DD_LOC = By.id("default-address");
-	private final By SUBTOTAL_LOC = By.xpath("//td[text()='Subtotal']/following::td[1]");
 	private final By PC_TERMS_AND_CONDITIONS_CHK_BOX_LOC = By
 			.xpath("//div[@class='step-body']/descendant::input[@id='Terms1']/following::label[1]");
 	private final By PC_PERKS_CART_HEADER_LOC = By.xpath("//h2[contains(text(),'YOUR NEXT PC PERKS CART')]");
@@ -282,6 +285,9 @@ public class StoreFrontWebsiteBasePage extends RFBasePage {
 	private final By ERROR_MESSAGE_EXISTING_PREFIX_LOC = By.xpath("//*[@id='command']//following::span[@class='prefix-error']");
 	private final By ABOUT_ME_LOC = By.xpath(topNavigationLoc + "//a[contains(@title,'About Me')]");
 
+	private String quantityOfSpecificItemInCart = "//div[@class='qty']//input[@id='quantity_%s']";
+	private String itemNameInMiniCart = "//ol/descendant::li[@class='mini-cart-item'][%s]//a[@class='name']";
+	private String itemQuantityInMiniCart = "//ol/descendant::li[@class='mini-cart-item'][%s]//div[@class='qty']";
 	private String stateForShippingDetailsForExistingBillingProfile = "//div[@id='checkoutEditBillingAddressForm']//option[text()='%s']";
 	protected String mandatoryFieldErrorMsgOfAddressForNewBillingProfileLoc = "//div[@id='billingAddressForm']//label[contains(@id,'%s-error') and contains(text(),'This field is required.')]";
 	private String productNameInAllItemsInCartLoc = "//span[@class='item-name' and contains(text(),'%s')]";
@@ -507,6 +513,7 @@ public class StoreFrontWebsiteBasePage extends RFBasePage {
 	 * 
 	 */
 	public boolean isSponsorResultDisplayed() {
+		driver.waitForElementToBeVisible(SPONSOR_SEARCH_RESULTS_LOC, 10);
 		return driver.isElementVisible(SPONSOR_SEARCH_RESULTS_LOC);
 	}
 
@@ -1739,7 +1746,7 @@ public class StoreFrontWebsiteBasePage extends RFBasePage {
 	 * 
 	 */
 	public StoreFrontWebsiteBasePage clickBillingDetailsNextbutton() {
-		driver.click(BILLING_NEXT_BUTTON_LOC);
+		driver.clickByJS(RFWebsiteDriver.driver, driver.findElement(BILLING_NEXT_BUTTON_LOC));
 		driver.pauseExecutionFor(1000);
 		logger.info("Next button clicked of billing details");
 		return this;
@@ -2199,38 +2206,6 @@ public class StoreFrontWebsiteBasePage extends RFBasePage {
 		int noOfItem = driver.findElements(TOTAL_NO_OF_ITEMS_IN_MINI_CART_LOC).size();
 		logger.info("total no of items are: " + noOfItem);
 		return noOfItem;
-	}
-
-	/***
-	 * This method get product name of first item in mini cart
-	 * 
-	 * @param itemNumber
-	 * @return product name
-	 * 
-	 */
-	public String getProductNameFromMiniCart(String itemNumber) {
-		String productName = null;
-		if (itemNumber.equalsIgnoreCase("1")) {
-			productName = driver.findElement(FIRST_ITEM_PRODUCT_NAME_IN_MINI_CART_LOC).getText();
-		}
-		logger.info("product name of " + itemNumber + " is " + productName);
-		return productName;
-	}
-
-	/***
-	 * This method get product quantity from mini cart
-	 * 
-	 * @param itemNumber
-	 * @return product quantity
-	 * 
-	 */
-	public String getQuantityOfProductFromMiniCart(String itemNumber) {
-		String productQuantity = null;
-		if (itemNumber.equalsIgnoreCase("1")) {
-			productQuantity = driver.findElement(QUANTITY_OF_FIRST_PRODUCT_IN_MINI_CART_LOC).getText();
-		}
-		logger.info("Quantity of " + itemNumber + " is " + productQuantity);
-		return productQuantity;
 	}
 
 	/***
@@ -2776,22 +2751,6 @@ public class StoreFrontWebsiteBasePage extends RFBasePage {
 	 */
 	public boolean isChangeSponserLinkDisplayed() {
 		return driver.isElementVisible(REMOVE_LINK_LOC);
-	}
-
-	/***
-	 * This method get product quantity
-	 * 
-	 * @param itemNumber
-	 * @return product quantity
-	 * 
-	 */
-	public String getQuantityOfProductFromCart(String itemNumber) {
-		String productQuantity = null;
-		if (itemNumber.equalsIgnoreCase("1")) {
-			productQuantity = driver.findElement(QUANTITY_OF_FIRST_PRODUCT_LOC).getAttribute("value");
-		}
-		logger.info("Quantity of " + itemNumber + " is " + productQuantity);
-		return productQuantity;
 	}
 
 	/***
@@ -3424,7 +3383,7 @@ public class StoreFrontWebsiteBasePage extends RFBasePage {
 	 * @return
 	 */
 	public boolean isLearnMoreAboutPCPromoPopupDisplayed(){
-		driver.waitForElementToBeVisible(PC_PROMO_POPUP_LOC, 10);
+		driver.pauseExecutionFor(4000); // due to slwo UI, will be replaced by wait
 		return driver.isElementVisible(PC_PROMO_POPUP_LOC);
 	}
 
@@ -3585,6 +3544,81 @@ public class StoreFrontWebsiteBasePage extends RFBasePage {
 		driver.click(ABOUT_ME_LOC);
 		logger.info("clicked on 'About Me'");
 		return new StoreFrontAboutMePage(driver);
+	}
+
+	/***
+	 * This method get total of all products in mini cart
+	 * 
+	 * @param
+	 * @return String total
+	 * 
+	 */
+	public String gettotalofItemsInMiniCart(){
+		List<WebElement> prices = driver.findElements(TOTAL_PRICE_OF_ITEMS_IN_MINI_CART_LOC);
+		float totalPrice = 0;
+
+		for(WebElement productPrice : prices){
+			float price = Float.parseFloat(productPrice.getText().replace("$", "").trim());
+			totalPrice = totalPrice + price;
+		}
+		logger.info("Total Price of Items in Cart : " + totalPrice);
+		return String.valueOf(totalPrice);
+	}
+
+	/***
+	 * This method get product quantity
+	 * 
+	 * @param itemNumber
+	 * @return product quantity
+	 * 
+	 */
+	public String getQuantityOfProductFromCart(String itemNumber) {
+		String productQuantity = null;
+		String productIndex = Integer.toString(Integer.parseInt(itemNumber) - 1);
+		productQuantity = driver.getAttribute(By.xpath(String.format(quantityOfSpecificItemInCart, productIndex)),"value");
+		logger.info("Quantity of " + itemNumber + " is " + productQuantity);
+		return productQuantity;
+	}
+
+	/***
+	 * This method get product name of first item in mini cart
+	 * 
+	 * @param itemNumber
+	 * @return product name
+	 * 
+	 */
+	public String getProductNameFromMiniCart(String itemNumber) {
+		String productName = null;
+		productName = driver.getText(By.xpath(String.format(itemNameInMiniCart, itemNumber))).trim();
+		logger.info("product name of " + itemNumber + " is " + productName);
+		return productName;
+	}
+
+	/***
+	 * This method get product quantity from mini cart
+	 * 
+	 * @param itemNumber
+	 * @return product quantity
+	 * 
+	 */
+	public String getQuantityOfProductFromMiniCart(String itemNumber) {
+		String productQuantity = null;
+		productQuantity = driver.getText(By.xpath(String.format(itemQuantityInMiniCart, itemNumber)));
+		logger.info("Quantity of " + itemNumber + " is " + productQuantity);
+		return productQuantity;
+	}
+
+	/***
+	 * This method click on View Shopping cart button on mini cart
+	 * 
+	 * @param
+	 * @return store front cart Page object
+	 * 
+	 */
+	public StoreFrontCartPage clickViewShoppingCartLink(){
+		driver.click(VIEW_SHOPPING_CART_LINK_LOC);
+		logger.info("View Shopping Cart Link Clicked");
+		return new StoreFrontCartPage(driver);
 	}
 
 }

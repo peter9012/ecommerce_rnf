@@ -281,7 +281,7 @@ public class StoreFrontWebsiteBasePage extends RFBasePage {
 	private final By PHONE_NUMBER_FOR_BILLING_ADDRESS_FOR_EXISTING_PROFILE_LOC=By.xpath("//div[@id='checkoutEditBillingAddressForm']//input[@id='address.phone']");
 	private final By ERROR_MESSAGE_EXISTING_PREFIX_LOC = By.xpath("//*[@id='command']//following::span[@class='prefix-error']");
 	private final By ABOUT_ME_LOC = By.xpath(topNavigationLoc + "//a[contains(@title,'About Me')]");
-	
+
 	private String stateForShippingDetailsForExistingBillingProfile = "//div[@id='checkoutEditBillingAddressForm']//option[text()='%s']";
 	protected String mandatoryFieldErrorMsgOfAddressForNewBillingProfileLoc = "//div[@id='billingAddressForm']//label[contains(@id,'%s-error') and contains(text(),'This field is required.')]";
 	private String productNameInAllItemsInCartLoc = "//span[@class='item-name' and contains(text(),'%s')]";
@@ -333,11 +333,13 @@ public class StoreFrontWebsiteBasePage extends RFBasePage {
 		} else if (element.equalsIgnoreCase(TestConstants.ABOUT_RF)) {
 			driver.moveToElement(ABOUT_RF_LOC);
 			logger.info("mouseHovered on 'About R+F'");
+		}else if(element.equalsIgnoreCase(TestConstants.ABOUT_ME)){
+			driver.moveToElement(ABOUT_ME_LOC);
+			logger.info("mouseHovered on 'Shop Skincare'");
 		}
 		driver.pauseExecutionFor(500);
 		return this;
 	}
-
 	/***
 	 * This method checks if CONSULTANT ONLY link under ShopSkincare is
 	 * displayed or not
@@ -3571,18 +3573,18 @@ public class StoreFrontWebsiteBasePage extends RFBasePage {
 		driver.pauseExecutionFor(2000);
 		return this;
 	}
-	
-	 /***
-	  * This method clicks on the About me link in Top Navigation
-	  * 
-	  * @param
-	  * @return
-	  */
-	 public StoreFrontAboutMePage clickAboutMe(){
-	  mouseHoverOn(TestConstants.ABOUT_ME);
-	  driver.click(ABOUT_ME_LOC);
-	  logger.info("clicked on 'About Me'");
-	  return new StoreFrontAboutMePage(driver);
-	 }
+
+	/***
+	 * This method clicks on the About me link in Top Navigation
+	 * 
+	 * @param
+	 * @return
+	 */
+	public StoreFrontAboutMePage clickAboutMe(){
+		mouseHoverOn(TestConstants.ABOUT_ME);
+		driver.click(ABOUT_ME_LOC);
+		logger.info("clicked on 'About Me'");
+		return new StoreFrontAboutMePage(driver);
+	}
 
 }

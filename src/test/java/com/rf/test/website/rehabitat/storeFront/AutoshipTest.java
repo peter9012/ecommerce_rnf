@@ -610,7 +610,7 @@ public class AutoshipTest extends StoreFrontWebsiteBaseTest{
 	@Test(enabled=true)
 	public void testConsultantAutoshipStatusCancelCRP_449(){
 		//Login to application.
-		sfHomePage.loginToStoreFront(TestConstants.CONSULTANT_EMAIL_WITH_CRP_AND_PULSE, password);
+		sfHomePage.loginToStoreFront(TestConstants.CONSULTANT_EMAIL_WITH_CRP_AND_PULSE_FOR_CANCELLATION, password);
 		sfHomePage.clickWelcomeDropdown();
 		sfAutoshipStatusPage = sfHomePage.navigateToAutoshipStatusPage();
 		s_assert.assertTrue(sfAutoshipStatusPage.getCurrentCRPStatus().contains("Enrolled"),"Consultant is not enrolled into CRP yet");

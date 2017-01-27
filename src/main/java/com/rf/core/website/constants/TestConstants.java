@@ -151,7 +151,8 @@ public class TestConstants {
 	public static final String MORE_THAN_200_CHARS = "This is the test message This is the test message This is the test message This is the test message "+
 			"This is the test message This is the test message This is the test message This is the test message T";
 	public static final String CANCELLED_CRP_ORDER_SUCCESS_MESSAGE = "Your CRP Order has been cancelled.";
-
+	public static final String PRODUCT_CATEGORY_REDEFINE = "REDEFINE";
+	
 	public static final String SECOND_ADDRESS_LINE_1_US = "1625 Sixth Street";
 	public static final String SECOND_ADDRESS_LINE_2_US = "Apt 211";
 	public static final String SECOND_CITY_US = "Concord";
@@ -165,7 +166,8 @@ public class TestConstants {
 
 	//Users
 	public static final String CONSULTANT_EMAIL_SPONSOR_WITHOUT_PWS = "consponsorwiithoutpws1@mailinator.com";
-	public static final String CONSULTANT_EMAIL_WITH_CRP_AND_PULSE = "AutoCons20170125091201@mailinator.com";
+	public static final String CONSULTANT_EMAIL_WITH_CRP_AND_PULSE = "AutoConsWPWCRP20170127093848@mailinator.com";
+	public static final String CONSULTANT_EMAIL_WITH_CRP_AND_PULSE_FOR_CANCELLATION = "AutoConsWPWCRP20170127094455@mailinator.com";
 	public static final String CONSULTANT_PWS_PREFIX = "autocons";
 	public static final String CONSULTANT_EMAIL_WITHOUT_CRP_AND_PULSE = "AutoCons20170124210537@mailinator.com";
 

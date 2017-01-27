@@ -428,42 +428,42 @@ public class TopNavigationTest extends StoreFrontWebsiteBaseTest{
 		s_assert.assertTrue(sfHomePage.isSponserSearchPageDisplayed(),"Sponser search page is not displayed");
 		s_assert.assertAll();
 	}
-	
-//	/***
-//	 * qTest : TC-183 Product Search- Name
-//	 * 
-//	 * Description : This test validates search icon functionality using product name
-//	 *     
-//	 */
-//	@Test(enabled=false)
-//	public void testProductSearchName_183(){
-//		String productName = TestConstants.PRODUCT_NAME;
-//		String productCategory = TestConstants.PRODUCT_CATEGORY_REDEFINE;
-//		String partialProductName = "AGI";
-//		String partialProductCategory = "RED";
-//		String productNameFromUI = null;
-//		sfHomePage.clickSearchIcon();
-//		//Search product by category name.
-//		sfHomePage.searchProduct(productCategory);
-//		s_assert.assertTrue(sfHomePage.isProductSearchResultsPresent(),"Product search results for category Redefine not present.");
-//		//Search product by product name.
-//		sfHomePage.clickSearchIcon();
-//		sfHomePage.searchProduct(productName);
-//		productNameFromUI = sfHomePage.getProductName().toLowerCase();
-//		productName = productName.toLowerCase();
-//		s_assert.assertTrue(productNameFromUI.contains(productName), "Expected product name is:"+productName+"Actual On UI is:"+productNameFromUI);
-//		//Search product by partial product name.
-//		sfHomePage.clickSearchIcon();
-//		sfHomePage.searchProduct(partialProductName);
-//		String errorMessage = sfHomePage.getErrorMessageForSearchedProduct().toLowerCase();
-//		s_assert.assertTrue(errorMessage.contains("sorry, we couldn't find any results for your search"), "Expected error message for 'Partial product name' is 'Sorry, we couldn't find any results for your search' Actual on UI is:"+errorMessage);
-//		//Search product by partial product category name.
-//		sfHomePage.clickSearchIcon();
-//		sfHomePage.searchProduct(partialProductCategory);
-//	    errorMessage = sfHomePage.getErrorMessageForSearchedProduct().toLowerCase();
-//		s_assert.assertTrue(errorMessage.contains("sorry, we couldn't find any results for your search"), "Expected error message for 'Partial Product category name' is 'Sorry, we couldn't find any results for your search' Actual on UI is:"+errorMessage);
-//		s_assert.assertAll();
-//	}
+
+	/***
+	 * qTest : TC-183 Product Search- Name
+	 * 
+	 * Description : This test validates search icon functionality using product name
+	 *     
+	 */
+	@Test(enabled=false)
+	public void testProductSearchName_183(){
+		String productName = TestConstants.PRODUCT_NAME;
+		String productCategory = TestConstants.PRODUCT_CATEGORY_REDEFINE;
+		String partialProductName = "AGI";
+		String partialProductCategory = "RED";
+		String productNameFromUI = null;
+		sfHomePage.clickSearchIcon();
+		//Search product by category name.
+		sfHomePage.searchProduct(productCategory);
+		s_assert.assertTrue(sfHomePage.isProductSearchResultsPresent(),"Product search results for category Redefine not present.");
+		//Search product by product name.
+		sfHomePage.clickSearchIcon();
+		sfHomePage.searchProduct(productName);
+		productNameFromUI = sfHomePage.getProductName().toLowerCase();
+		productName = productName.toLowerCase();
+		s_assert.assertTrue(productNameFromUI.contains(productName), "Expected product name is:"+productName+"Actual On UI is:"+productNameFromUI);
+		//Search product by partial product name.
+		sfHomePage.clickSearchIcon();
+		sfHomePage.searchProduct(partialProductName);
+		String errorMessage = sfHomePage.getErrorMessageForSearchedProduct().toLowerCase();
+		s_assert.assertTrue(errorMessage.contains("sorry, we couldn't find any results for your search"), "Expected error message for 'Partial product name' is 'Sorry, we couldn't find any results for your search' Actual on UI is:"+errorMessage);
+		//Search product by partial product category name.
+		sfHomePage.clickSearchIcon();
+		sfHomePage.searchProduct(partialProductCategory);
+		errorMessage = sfHomePage.getErrorMessageForSearchedProduct().toLowerCase();
+		s_assert.assertTrue(errorMessage.contains("sorry, we couldn't find any results for your search"), "Expected error message for 'Partial Product category name' is 'Sorry, we couldn't find any results for your search' Actual on UI is:"+errorMessage);
+		s_assert.assertAll();
+	}
 
 	/***
 	 * qTest : TC-184 Product Search - Auto-complete

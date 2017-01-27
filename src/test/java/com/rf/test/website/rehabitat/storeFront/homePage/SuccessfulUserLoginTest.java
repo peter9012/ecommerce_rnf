@@ -117,4 +117,17 @@ public class SuccessfulUserLoginTest extends StoreFrontWebsiteBaseTest{
 		s_assert.assertTrue(sfHomePage.getCurrentURL().contains(prefix),"User is not on PWS site after login");
 		s_assert.assertAll();
 	}
+
+	/***
+	 * qTest : TC-352 As a PC, RC, and consultant user, I will be able to access login from the Consultant Site homepage
+	 * 
+	 * Description : This test validates that the user login Icon on PWS
+	 * 
+	 * 
+	 *     
+	 */
+	@Test(enabled=false)
+	public void testUserAbleToAccessLoginFromPWS_352(){
+		//duplicate as TC-28 Verify user login from PWS site.
+	}
 }

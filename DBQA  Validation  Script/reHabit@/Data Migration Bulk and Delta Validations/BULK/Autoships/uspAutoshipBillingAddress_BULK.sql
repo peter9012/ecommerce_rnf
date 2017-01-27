@@ -60,6 +60,9 @@ AS
                                 JOIN RFOperations.Hybris.AutoshipItem ai ON ai.AutoshipID = asp.AutoShipID
                                 JOIN RFOperations.Hybris.AutoshipPayment ap ON ap.AutoShipID = asp.AutoshipID
                          WHERE  asp.AutoShipID = apa.AutoshipID )
+                AND EXISTS ( SELECT 1
+                             FROM   Hybris.dbo.users u
+                             WHERE  u.p_customerid = a.AccountID )
                 AND a.Active = 1
 
         SET @message = 'STEP: 2.RFOSource Table Loaded and Target Table Started to Load'

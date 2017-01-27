@@ -62,6 +62,9 @@ AS
                                 JOIN RFOperations.Hybris.AutoshipPayment ap ON ap.AutoshipID = asp.AutoShipID
                                 JOIN RFOperations.Hybris.AutoshipPaymentAddress apa ON apa.AutoShipID = asp.AutoShipID
                          WHERE  asp.AutoShipID = a.AutoshipID )
+                AND EXISTS ( SELECT 1
+                             FROM   Hybris.dbo.Users u
+                             WHERE  u.p_customerid = a.accountID )
                 AND a.Active = 1
                 AND ai.ServerModifiedDate BETWEEN @StartDate
                                           AND     @EndDate

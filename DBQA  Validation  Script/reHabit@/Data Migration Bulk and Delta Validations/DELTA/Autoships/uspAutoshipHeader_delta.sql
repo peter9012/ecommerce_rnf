@@ -85,7 +85,7 @@ FROM    RFOperations.Hybris.Autoship a
                    ) aus ON aus.AutoshipID = a.AutoshipID
 WHERE   EXISTS ( SELECT 1
                  FROM   Hybris.dbo.users u
-                 WHERE  u.p_customerid = ab.AccountNumber )
+                 WHERE  u.p_customerid = ab.AccountID )
         AND a.Active = 1
         AND a.AutoshipTypeID IN ( 1, 2 )
         AND a.ServerModifiedDate BETWEEN @StartDate

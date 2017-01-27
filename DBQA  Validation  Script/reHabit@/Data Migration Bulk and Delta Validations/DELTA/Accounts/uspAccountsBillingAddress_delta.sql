@@ -118,7 +118,7 @@ AS
                          WHERE  ab.accountID = ac.AcccountID
                                 AND ea.EmailAddressTypeID = 1
                                 AND ab.AccountNumber <> 'AnonymousRetailAccount'
-                                AND ( ab.AccountStatusID IN ( 1, 2, 9, 10 ) -- Active,Inactive,SoftVoluntary,SoftInvoluntary
+                                AND ( ab.AccountStatusID IN ( 1, 2, 8, 9 ) -- Active,Inactive,SoftVoluntary,SoftInvoluntary
                                       OR ( ab.AccountStatusID = 10
                                            AND EXISTS ( SELECT
                                                               1

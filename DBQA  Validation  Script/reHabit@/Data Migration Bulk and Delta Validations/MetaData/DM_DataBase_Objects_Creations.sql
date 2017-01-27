@@ -2,12 +2,11 @@ USE [master]
 GO
 /****** Object:  Database [DM_QA]    Script Date: 12/7/2016 2:59:16 PM ******/
 
-
+IF  DB_ID('DM_QA') IS   NULL 
 CREATE DATABASE DM_QA
 
 -- Validating If Exists or Not 
-IF  DB_ID('DM_QA') IS NOT  NULL 
-PRINT 'DataBase Created'
+
 ELSE 
 PRINT 'DataBase not Created Yet'
 
@@ -160,7 +159,7 @@ IF OBJECT_ID(N'dbqa.ErrorLog') IS NULL
           SourceValue NVARCHAR(50) ,
           TargetValue NVARCHAR(50) ,
           RunDate DATETIME DEFAULT GETDATE() ,
-          ExeCutedBy NVARCHAR(10) DEFAULT USER_NAME() ,
+          ExeCutedBy NVARCHAR(50) DEFAULT USER_NAME() ,
           ElapsedTime INT
         )
 

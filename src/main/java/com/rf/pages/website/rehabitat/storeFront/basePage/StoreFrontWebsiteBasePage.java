@@ -42,6 +42,8 @@ public class StoreFrontWebsiteBasePage extends RFBasePage {
 		super(driver);
 		this.driver = driver;
 	}
+	
+	private final By SHOPPING_CART_HEADLINE_ON_CHCKOUT_POPUP_LOC = By.xpath("//div[@id='cboxContent']//span[@class='headline-text' and contains(text(),'Added to Your Shopping Cart')]");
 	private final By SUBTOTAL_LOC = By.xpath("//td[contains(text(),'Subtotal')]/following::td[1]");
 	private final By TOTAL_PRICE_OF_ITEMS_IN_MINI_CART_LOC = By
 			.xpath("//ol/descendant::li[@class='mini-cart-item']//div[@class='price']");
@@ -202,8 +204,6 @@ public class StoreFrontWebsiteBasePage extends RFBasePage {
 			.xpath("//div[@class='add-to-cart-item']//div[@class='details']/a[@class='name']");
 	protected final By CHECKOUT_BUTTON_POPUP_LOC = By
 			.xpath("//div[@id='addToCartLayer']/a[contains(text(),'Checkout')]");
-	private final By SHOPPING_CART_HEADLINE_ON_CHCKOUT_POPUP_LOC = By.xpath(
-			"//div[@id='colorbox']//div[@class='headline']/span[@class='headline-text' and contains(text(),'Added to Your Shopping Cart')]");
 	private final By AUTOSHIP_CART_LINK_LOC = By
 			.xpath("//span[text()='AutoShip']/ancestor::a[contains(@class,'auto-ship-cart')]");
 	private final By RETURN_AUTHORIZATION_FORM_LINK = By

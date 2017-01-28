@@ -56,7 +56,7 @@ public class PCEnrollmentTest extends StoreFrontWebsiteBaseTest{
 		sfHomePage.clickLoginIcon();
 		sfCheckoutPage=sfHomePage.clickSignUpNowLink();
 		sfCheckoutPage.fillNewUserDetails(TestConstants.USER_TYPE_PC, firstName, lastName, email, password);
-		sfCheckoutPage.clickCreateAccountButton();
+		sfCheckoutPage.clickCreateAccountButton(TestConstants.USER_TYPE_PC);
 		s_assert.assertTrue(sfCartPage.isPcOneTimeFeeMsgDisplayed(),"PC one time joining fee msg has not displayed");
 		sfCartPage.clickAddMoreItemsBtn();
 		//sfShopSkinCarePage=sfCartPage.clickAllProducts();// this is a temporary patch
@@ -97,7 +97,7 @@ public class PCEnrollmentTest extends StoreFrontWebsiteBaseTest{
 		sfHomePage.clickLoginIcon();
 		sfCheckoutPage=sfHomePage.clickSignUpNowLink();
 		sfCheckoutPage.fillNewUserDetails(TestConstants.USER_TYPE_PC, firstName, lastName, email, password);
-		sfCheckoutPage.clickCreateAccountButton();
+		sfCheckoutPage.clickCreateAccountButton(TestConstants.USER_TYPE_PC);
 //		s_assert.assertTrue(sfCartPage.isPcOneTimeFeeMsgDisplayed(),"PC one time joining fee msg has not displayed");
 		s_assert.assertTrue(sfHomePage.isWelcomeUserElementDisplayed(), "PC has not been enrolled partially");
 		sfHomePage.clickWelcomeDropdown();
@@ -137,7 +137,7 @@ public class PCEnrollmentTest extends StoreFrontWebsiteBaseTest{
 		sfHomePage.clickLoginIcon();
 		sfCheckoutPage=sfHomePage.clickSignUpNowLink();
 		sfCheckoutPage.fillNewUserDetails(TestConstants.USER_TYPE_PC, firstName, lastName, email, password);
-		sfCheckoutPage.clickCreateAccountButton();
+		sfCheckoutPage.clickCreateAccountButton(TestConstants.USER_TYPE_PC);
 		s_assert.assertTrue(sfCartPage.isPcOneTimeFeeMsgDisplayed(),"PC one time joining fee msg has not displayed");
 		sfCartPage.clickAddMoreItemsBtn();
 		sfShopSkinCarePage.addProductToCart(TestConstants.PRODUCT_NUMBER, TestConstants.ORDER_TYPE_ADHOC);;
@@ -180,7 +180,7 @@ public class PCEnrollmentTest extends StoreFrontWebsiteBaseTest{
 		sfShopSkinCarePage.checkoutTheCartFromPopUp();
 		sfCheckoutPage=sfShopSkinCarePage.checkoutTheCart();
 		sfCheckoutPage.fillNewUserDetails(TestConstants.USER_TYPE_PC, firstName, lastName, email, password);
-		sfCheckoutPage.clickCreateAccountButton();
+		sfCheckoutPage.clickCreateAccountButton(TestConstants.USER_TYPE_PC);
 		sfCheckoutPage = sfCartPage.clickCheckoutBtn();
 		sfCheckoutPage.searchForConsultant(dummyConsultant);
 		s_assert.assertTrue(sfCheckoutPage.isNoResultFoundMsgDisplayedForSearchedConsultant(), "No results found for msg has NOT displayed for "+dummyConsultant);
@@ -217,7 +217,7 @@ public class PCEnrollmentTest extends StoreFrontWebsiteBaseTest{
 		sfHomePage.clickLoginIcon();
 		sfCheckoutPage=sfHomePage.clickSignUpNowLink();
 		sfCheckoutPage.fillNewUserDetails(TestConstants.USER_TYPE_PC, firstName, lastName, email, password);
-		sfCheckoutPage.clickCreateAccountButton();
+		sfCheckoutPage.clickCreateAccountButton(TestConstants.USER_TYPE_PC);
 		s_assert.assertTrue(sfCartPage.isPcOneTimeFeeMsgDisplayed(),"PC one time joining fee msg has not displayed");
 		sfCartPage.clickAddMoreItemsBtn();
 		sfShopSkinCarePage.addProductToCart(TestConstants.PRODUCT_NUMBER, TestConstants.ORDER_TYPE_ADHOC);;
@@ -272,7 +272,7 @@ public class PCEnrollmentTest extends StoreFrontWebsiteBaseTest{
 		sfHomePage.clickLoginIcon();
 		sfCheckoutPage=sfHomePage.clickSignUpNowLink();
 		sfCheckoutPage.fillNewUserDetails(TestConstants.USER_TYPE_PC, firstName, lastName, email, password);
-		sfCheckoutPage.clickCreateAccountButton();
+		sfCheckoutPage.clickCreateAccountButton(TestConstants.USER_TYPE_PC);
 		s_assert.assertTrue(sfCartPage.isPcOneTimeFeeMsgDisplayed(),"PC one time joining fee msg has not displayed");
 		sfCartPage.clickAddMoreItemsBtn();
 		sfShopSkinCarePage.addProductToCart(TestConstants.PRODUCT_NUMBER, TestConstants.ORDER_TYPE_ADHOC);;
@@ -326,7 +326,7 @@ public class PCEnrollmentTest extends StoreFrontWebsiteBaseTest{
 		sfHomePage.clickLoginIcon();
 		sfCheckoutPage=sfHomePage.clickSignUpNowLink();
 		sfCheckoutPage.fillNewUserDetails(TestConstants.USER_TYPE_PC, firstName, lastName, email, password);
-		sfCheckoutPage.clickCreateAccountButton();
+		sfCheckoutPage.clickCreateAccountButton(TestConstants.USER_TYPE_PC);
 		s_assert.assertTrue(sfCartPage.isPcOneTimeFeeMsgDisplayed(),"PC one time joining fee msg has not displayed");
 		sfCartPage.clickAddMoreItemsBtn();
 		sfShopSkinCarePage.addProductToCart(TestConstants.PRODUCT_NUMBER, TestConstants.ORDER_TYPE_ADHOC);;
@@ -373,7 +373,7 @@ public class PCEnrollmentTest extends StoreFrontWebsiteBaseTest{
 		sfHomePage.clickLoginIcon();
 		sfCheckoutPage=sfHomePage.clickSignUpNowLink();
 		sfCheckoutPage.fillNewUserDetails(TestConstants.USER_TYPE_PC, firstName, lastName, email, password);
-		sfCheckoutPage.clickCreateAccountButton();
+		sfCheckoutPage.clickCreateAccountButton(TestConstants.USER_TYPE_PC);
 		s_assert.assertTrue(sfCartPage.isPcOneTimeFeeMsgDisplayed(),"PC one time joining fee msg has not displayed");
 		sfCartPage.clickAddMoreItemsBtn();
 		sfShopSkinCarePage.addProductToCart(TestConstants.PRODUCT_NUMBER, TestConstants.ORDER_TYPE_ADHOC);;
@@ -409,7 +409,7 @@ public class PCEnrollmentTest extends StoreFrontWebsiteBaseTest{
 		sfHomePage.clickLoginIcon();
 		sfCheckoutPage=sfHomePage.clickSignUpNowLink();
 		sfCheckoutPage.fillNewUserDetails(TestConstants.USER_TYPE_PC, firstName, lastName, email, password);
-		sfCheckoutPage.clickCreateAccountButton();
+		sfCheckoutPage.clickCreateAccountButton(TestConstants.USER_TYPE_PC);
 		s_assert.assertTrue(sfCartPage.isPcOneTimeFeeMsgDisplayed(),"PC one time joining fee msg has not displayed");
 		sfCartPage.clickAddMoreItemsBtn();
 		//sfShopSkinCarePage=sfCartPage.clickAllProducts();// this is a temporary patch
@@ -445,7 +445,7 @@ public class PCEnrollmentTest extends StoreFrontWebsiteBaseTest{
 		sfHomePage.clickLoginIcon();
 		sfCheckoutPage=sfHomePage.clickSignUpNowLink();
 		sfCheckoutPage.fillNewUserDetails(TestConstants.USER_TYPE_PC, firstName, lastName, email, password);
-		sfCheckoutPage.clickCreateAccountButton();
+		sfCheckoutPage.clickCreateAccountButton(TestConstants.USER_TYPE_PC);
 		s_assert.assertTrue(sfCartPage.isPcOneTimeFeeMsgDisplayed(),"PC one time joining fee msg has not displayed");
 		sfCartPage.clickAddMoreItemsBtn();
 		sfShopSkinCarePage.addProductToCart(TestConstants.PRODUCT_NUMBER, TestConstants.ORDER_TYPE_ADHOC);;
@@ -489,7 +489,7 @@ public class PCEnrollmentTest extends StoreFrontWebsiteBaseTest{
 	  sfCartPage = sfShopSkinCarePage.checkoutTheCartFromPopUp();
 	  sfCheckoutPage=sfCartPage.checkoutTheCart();
 	  sfCheckoutPage.fillNewUserDetails(TestConstants.USER_TYPE_PC, firstName, lastName, email, password);
-	  sfCheckoutPage.clickCreateAccountButton();
+	  sfCheckoutPage.clickCreateAccountButton(TestConstants.USER_TYPE_PC);
 	  sfCheckoutPage = sfCartPage.clickCheckoutBtn();
 	  s_assert.assertTrue(sfCheckoutPage.isSponsorSelected(), "Sponsor is not selected by default");
 	  sfCheckoutPage.clickRemoveLink();

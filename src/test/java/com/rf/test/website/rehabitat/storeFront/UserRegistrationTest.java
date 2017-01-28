@@ -26,14 +26,14 @@ public class UserRegistrationTest extends StoreFrontWebsiteBaseTest{
 		sfShopSkinCarePage.addProductToCart(TestConstants.PRODUCT_NUMBER, TestConstants.ORDER_TYPE_ADHOC);
 		sfCartPage = sfShopSkinCarePage.checkoutTheCartFromPopUp();
 		sfCheckoutPage = sfCartPage.checkoutTheCart();
-		sfCheckoutPage.clickCreateAccountButton();
+		sfCheckoutPage.clickCreateAccountButton(TestConstants.USER_TYPE_PC);
 		s_assert.assertTrue(sfCheckoutPage.isAllErrorFieldsPresent(), "Errors are not present for all blank fields during registration");
 		sfCheckoutPage.fillNewUserDetails(TestConstants.USER_TYPE_PC,firstName, lastName, emailID, password);
 		errorMessageFromUI = sfCheckoutPage.getErrorMessageOfEmailField();
 		s_assert.assertTrue(errorMessageFromUI.contains(errorMessage), "Expected error message for invalid email is "+errorMessage+" but actual on UI is "+errorMessage);
 		emailID = TestConstants.FIRST_NAME+timeStamp+TestConstants.EMAIL_SUFFIX;
 		sfCheckoutPage.fillNewUserDetails(TestConstants.USER_TYPE_PC,firstName, lastName, emailID, password);
-		sfCheckoutPage.clickCreateAccountButton();
+		sfCheckoutPage.clickCreateAccountButton(TestConstants.USER_TYPE_PC);
 		s_assert.assertTrue(sfCheckoutPage.isPcOneTimeFeeMsgDisplayed(),"PC one time joining fee msg has not displayed");
 		s_assert.assertAll();		
 	}

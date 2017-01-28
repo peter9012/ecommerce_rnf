@@ -423,7 +423,7 @@ public class OrdersTest extends StoreFrontWebsiteBaseTest{
 		sfCartPage = sfShopSkinCarePage.checkoutTheCartFromPopUp();
 		sfCheckoutPage = sfCartPage.checkoutTheCart();
 		sfCheckoutPage.fillNewUserDetails(TestConstants.USER_TYPE_PC,firstName, lastName, emailID, password);
-		sfCheckoutPage.clickCreateAccountButton();
+		sfCheckoutPage.clickCreateAccountButton(TestConstants.USER_TYPE_PC);
 		sfCheckoutPage.checkoutTheCart();
 		sfCheckoutPage.clickContinueWithoutConsultantLink();
 		sfCheckoutPage.clickSaveButton();
@@ -454,7 +454,7 @@ public class OrdersTest extends StoreFrontWebsiteBaseTest{
 		sfCartPage = sfShopSkinCarePage.checkoutTheCartFromPopUp();
 		sfCheckoutPage = sfCartPage.clickCheckoutBtn();
 		sfCheckoutPage.fillNewUserDetails(TestConstants.USER_TYPE_PC,firstName, lastName, emailID, password);
-		sfCheckoutPage.clickCreateAccountButton();
+		sfCheckoutPage.clickCreateAccountButton(TestConstants.USER_TYPE_PC);
 		sfCartPage.clickCheckoutBtn();
 		sfCheckoutPage.clickContinueWithoutConsultantLink();
 		sfCheckoutPage.clickSaveButton();
@@ -967,7 +967,7 @@ public class OrdersTest extends StoreFrontWebsiteBaseTest{
 		sfCartPage = sfShopSkinCarePage.checkoutTheCartFromPopUp();
 		sfCheckoutPage = sfCartPage.checkoutTheCart();
 		sfCheckoutPage.fillNewUserDetails(TestConstants.USER_TYPE_PC,firstName, lastName, emailID, password);
-		sfCheckoutPage.clickCreateAccountButton();
+		sfCheckoutPage.clickCreateAccountButton(TestConstants.USER_TYPE_PC);
 		sfCheckoutPage.checkoutTheCart();
 		sfCheckoutPage.clickRemoveLink();
 		sfCheckoutPage.clickContinueWithoutConsultantLink();
@@ -1487,7 +1487,7 @@ public class OrdersTest extends StoreFrontWebsiteBaseTest{
 		sfCartPage = sfShopSkinCarePage.checkoutTheCartFromPopUp();
 		sfCheckoutPage = sfCartPage.checkoutTheCart();
 		sfCheckoutPage.fillNewUserDetails(TestConstants.USER_TYPE_RC,firstName, lastName, emailID, password);
-		sfCheckoutPage.clickCreateAccountButton();
+		sfCheckoutPage.clickCreateAccountButton(TestConstants.USER_TYPE_RC);
 		sfCheckoutPage.clickContinueWithoutConsultantLink();
 		sfCheckoutPage.clickSaveButton();
 		sfCheckoutPage.clickRodanAndFieldsLogo();
@@ -1535,7 +1535,7 @@ public class OrdersTest extends StoreFrontWebsiteBaseTest{
 		sfCartPage = sfShopSkinCarePage.checkoutTheCartFromPopUp();
 		sfCheckoutPage = sfCartPage.checkoutTheCart();
 		sfCheckoutPage.fillNewUserDetails(TestConstants.USER_TYPE_PC,firstName, lastName, emailID, password);
-		sfCheckoutPage.clickCreateAccountButton();
+		sfCheckoutPage.clickCreateAccountButton(TestConstants.USER_TYPE_PC);
 		sfCheckoutPage.checkoutTheCart();
 		sfCheckoutPage.clickContinueWithoutConsultantLink();
 		sponsorNameFromUI = sfCheckoutPage.getSponsorInfo();
@@ -1979,7 +1979,7 @@ public class OrdersTest extends StoreFrontWebsiteBaseTest{
 		sfCartPage = sfShopSkinCarePage.checkoutTheCartFromPopUp();
 		sfCheckoutPage = sfCartPage.checkoutTheCart();
 		sfCheckoutPage.fillNewUserDetails(TestConstants.USER_TYPE_RC,firstName, lastName, emailID, password);
-		sfCheckoutPage.clickCreateAccountButton();
+		sfCheckoutPage.clickCreateAccountButton(TestConstants.USER_TYPE_RC);
 		sfCheckoutPage.clickContinueWithoutConsultantLink();
 		sponsorNameFromUI = sfCheckoutPage.getSponsorInfo();
 		s_assert.assertTrue(sponsorNameFromUI.contains(sponsorName), "Expected sponsor name is "+sponsorName+" but actual on UI is "+sponsorNameFromUI);

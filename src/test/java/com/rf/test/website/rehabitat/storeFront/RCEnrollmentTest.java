@@ -54,7 +54,7 @@ public class RCEnrollmentTest extends StoreFrontWebsiteBaseTest{
 		sfHomePage.clickLoginIcon();
 		sfCheckoutPage=sfHomePage.clickSignUpNowLink();
 		sfCheckoutPage.fillNewUserDetails(TestConstants.USER_TYPE_RC, firstName, lastName, email, password);
-		sfCheckoutPage.clickCreateAccountButton();
+		sfCheckoutPage.clickCreateAccountButton(TestConstants.USER_TYPE_RC);
 		s_assert.assertTrue(sfHomePage.isWelcomeUserElementDisplayed(), "RC has not been enrolled successfully");
 		s_assert.assertAll();
 	}	
@@ -76,7 +76,7 @@ public class RCEnrollmentTest extends StoreFrontWebsiteBaseTest{
 		sfHomePage.clickLoginIcon();
 		sfCheckoutPage=sfHomePage.clickSignUpNowLink();
 		sfCheckoutPage.fillNewUserDetails(TestConstants.USER_TYPE_RC, firstName, lastName, email, password);
-		sfCheckoutPage.clickCreateAccountButton();
+		sfCheckoutPage.clickCreateAccountButton(TestConstants.USER_TYPE_RC);
 		s_assert.assertTrue(sfHomePage.isWelcomeUserElementDisplayed(), "RC has not been enrolled successfully");
 		/*currentURL = sfHomePage.getCurrentURL().toLowerCase();
 		s_assert.assertTrue(currentURL.contains(PWSSite), "Expected URL should contain"+PWSSite+"but actual on UI is"+currentURL);*/
@@ -91,7 +91,7 @@ public class RCEnrollmentTest extends StoreFrontWebsiteBaseTest{
 		sfHomePage.clickLoginIcon();
 		sfCheckoutPage=sfHomePage.clickSignUpNowLink();
 		sfCheckoutPage.fillNewUserDetails(TestConstants.USER_TYPE_RC, firstName, lastName, email, password);
-		sfCheckoutPage.clickCreateAccountButton();
+		sfCheckoutPage.clickCreateAccountButton(TestConstants.USER_TYPE_RC);
 		s_assert.assertTrue(sfHomePage.isWelcomeUserElementDisplayed(), "RC has not been enrolled successfully");
 		s_assert.assertAll();
 		rcWithoutOrder=email;
@@ -105,7 +105,7 @@ public class RCEnrollmentTest extends StoreFrontWebsiteBaseTest{
 		sfHomePage.clickLoginIcon();
 		sfCheckoutPage=sfHomePage.clickSignUpNowLink();
 		sfCheckoutPage.fillNewUserDetails(TestConstants.USER_TYPE_RC, firstName, lastName, email, password);
-		sfCheckoutPage.clickCreateAccountButton();
+		sfCheckoutPage.clickCreateAccountButton(TestConstants.USER_TYPE_RC);
 		s_assert.assertTrue(sfHomePage.isWelcomeUserElementDisplayed(), "RC has not been enrolled successfully");
 		sfShopSkinCarePage = sfHomePage.clickAllProducts();
 		sfShopSkinCarePage.addProductToCart(TestConstants.PRODUCT_NUMBER, TestConstants.ORDER_TYPE_ADHOC);;

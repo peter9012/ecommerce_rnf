@@ -937,7 +937,7 @@ public class ProductsAndCartDetailsTest extends StoreFrontWebsiteBaseTest{
 		sfCheckoutPage=sfShopSkinCarePage.checkoutTheCart();
 		s_assert.assertTrue(sfCheckoutPage.isLoginOrRegisterTextDisplayed()," user is not redirected to expected login page");
 		sfCheckoutPage.fillNewUserDetails(userType, firstName, lastName, email, password);
-		sfCheckoutPage.clickCreateAccountButton();
+		sfCheckoutPage.clickCreateAccountButton(TestConstants.USER_TYPE_PC);
 		String currentURL=sfCheckoutPage.getCurrentURL().toLowerCase();
 		s_assert.assertTrue(currentURL.contains("checkout"),"Current url should contain checkout but actual on UI is "+currentURL);
 		s_assert.assertAll();

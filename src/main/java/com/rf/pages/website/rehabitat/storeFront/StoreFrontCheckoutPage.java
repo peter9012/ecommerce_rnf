@@ -29,6 +29,7 @@ public class StoreFrontCheckoutPage extends StoreFrontWebsiteBasePage{
 	private final By CONFIRM_PASSWORD_LOC = By.xpath("//form[@id='registerForm']//input[@id='the-password-again']");
 	private final By PC_PERKS_CHECKBOX_LOC = By.xpath("//input[@id='c2']/following::label[1]");
 	private final By CREATE_ACCOUNT_BUTTON_LOC = By.id("next-button");
+	private final By NO_THANKS_BTN_LOC = By.xpath("//div[@id='cboxLoadedContent']/a[@id='registerRC']");
 	private final By ADD_NEW_SHIPPING_ADDRESS_BUTTON_LOC = By.xpath("//button[contains(text(),'Add New')]");
 	private final By SHIPPING_ADDRESS_NAME_LOC = By.xpath("//span[@id='defaultShippingAddress']");
 	private final By EDIT_LINK_OF_SHIPPING_ADDRESS_LOC=By.xpath("//div[@class='checkout-shipping']//a[1]");
@@ -207,9 +208,14 @@ public class StoreFrontCheckoutPage extends StoreFrontWebsiteBasePage{
 		return this;
 	}
 
-	public void clickCreateAccountButton(){
+	public void clickCreateAccountButton(String userType){
 		driver.click(CREATE_ACCOUNT_BUTTON_LOC);
 		logger.info("clicked on 'Create Account' button");
+		driver.pauseExecutionFor(1000);
+		if(userType.equals(TestConstants.USER_TYPE_RC)){
+			//driver.clickByJS(RFWebsiteDriver.driver, driver.findElement(NO_THANKS_BTN_LOC));
+			driver.click(NO_THANKS_BTN_LOC);
+		}
 		driver.waitForLoadingImageToDisappear();
 	}
 

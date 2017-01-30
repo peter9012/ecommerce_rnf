@@ -56,7 +56,7 @@ public class RFRefineRemovalTest extends StoreFrontWebsiteBaseTest{
 	 * Description : This test remove one filter and validates remiaing are same
 	 *     
 	 */
-	@Test(enabled=false)
+	@Test(enabled=true)
 	public void testRemovingOneFilter_55(){
 		int totalNoOfProduct = 0;
 		String priceRange0to49 = "0To49";

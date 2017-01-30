@@ -53,7 +53,7 @@ public class AddProductsViaPLPPDPAndQuickViewOptionTest extends StoreFrontWebsit
 		sfShopSkinCarePage = sfHomePage.clickOnCategoryFromShopSkinCare(category_redefine);
 		currentURL = sfShopSkinCarePage.getCurrentURL().toUpperCase();
 		s_assert.assertTrue(currentURL.contains(category_redefine), "Expected URL should contain "+category_redefine+" but actual on UI is"+currentURL);
-		sfProductDetailPage = sfShopSkinCarePage.clickNameOfFirstProduct();
+		sfProductDetailPage = sfShopSkinCarePage.clickNameOfFirstProduct(TestConstants.PRODUCT_NUMBER);
 		productName = sfProductDetailPage.getProductNameFromProductDetailsPage();
 		sfProductDetailPage.clickOnAddToCartButton();
 		productNameOnCheckoutPopup = sfProductDetailPage.getProductNameFromCheckoutPopup();
@@ -79,7 +79,7 @@ public class AddProductsViaPLPPDPAndQuickViewOptionTest extends StoreFrontWebsit
 		sfHomePage.loginToStoreFront(TestConstants.PC_EMAIL_HAVING_AUTOSHIP, password);
 		sfShopSkinCarePage = sfHomePage.clickAllProducts();
 		sfShopSkinCarePage.refineProductByCategory(TestConstants.PC_PERKS_AUTOSHIP_PRODUCT_CATEGORY);
-		selectedProductName = sfShopSkinCarePage.getFirstProductNameFromAllProductPage();
+		selectedProductName = sfShopSkinCarePage.getProductNameFromAllProductPage(TestConstants.PRODUCT_NUMBER);
 		sfShopSkinCarePage.clickOnQuickViewLinkForProduct("1");
 		s_assert.assertTrue(sfShopSkinCarePage.isProductNamePresentAtQuickViewPopupAsExpected(selectedProductName),
 				"Product name is not present as expected on quick view poup");
@@ -114,7 +114,7 @@ public class AddProductsViaPLPPDPAndQuickViewOptionTest extends StoreFrontWebsit
 		sfHomePage.loginToStoreFront(TestConstants.CONSULTANT_EMAIL_WITH_CRP_AND_PULSE, password);
 		sfShopSkinCarePage = sfHomePage.clickAllProducts();
 		sfShopSkinCarePage.refineProductByCategory(TestConstants.CONSULTANT_CRP_AUTOSHIP_PRODUCT_CATEGORY);
-		productName = sfShopSkinCarePage.getFirstProductNameFromAllProductPage();
+		productName = sfShopSkinCarePage.getProductNameFromAllProductPage(TestConstants.PRODUCT_NUMBER);
 		sfAutoshipCartPage = sfShopSkinCarePage.clickAutoshipLink();
 		if(sfAutoshipCartPage.isProductAddedToCartPresentOnCartPage(productName)){
 			productQuantity = sfAutoshipCartPage.getQuantityOfSpecificProductFromAutoshipCart(productName).trim(); 

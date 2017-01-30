@@ -90,7 +90,7 @@ public class StoreFrontCheckoutPage extends StoreFrontWebsiteBasePage{
 	private final By USER_NAME_LOC=By.xpath("//form[@id='LoginForm']//input[@id='username']");
 	private final By PASSWORD_FOR_LOGIN_LOC=By.xpath("//form[@id='LoginForm']//input[@id='password']");
 	private final By LOGIN_AND_CHECKOUT_BUTTON_LOC=By.xpath("//form[@id='LoginForm']//input[@value='Login and Checkout']");
-	private final By EDIT_LINK_OF_BILLING_PROFILE_LOC=By.xpath("//div[@id='default-payment-method']/a");
+	private final By EDIT_LINK_OF_DEFAULT_BILLING_PROFILE_LOC=By.xpath("//div[@id='default-payment-method']/a");
 	private final By FIRST_LAST_NAME_FOR_BILLING_ADDRESS_AT_CHECKOUT_PAGE_LOC=By.xpath("//div[@id='checkoutEditBillingAddressForm']//input[@id='address.firstName']");
 	private final By ADDRESS_LINE1_FOR_BILLING_ADDRESS_AT_CHECKOUT_PAGE_LOC=By.xpath("//div[@id='checkoutEditBillingAddressForm']//input[@id='address.line1']");
 	private final By ADDRESS_LINE_2_FOR_BILLING_ADDRESS_AT_CHECKOUT_PAGE_LOC=By.xpath("//div[@id='checkoutEditBillingAddressForm']//input[@id='address.line2']");
@@ -98,11 +98,11 @@ public class StoreFrontCheckoutPage extends StoreFrontWebsiteBasePage{
 	private final By STATE_DD_FOR_BILLING_ADDRESS_AT_CHECKOUT_PAGE_LOC=By.xpath("//div[@id='checkoutEditBillingAddressForm']//select[@id='address.region']");
 	private final By POSTAL_CODE_FOR_BILLING_ADDRESS_AT_CHECKOUT_PAGE_LOC=By.xpath("//div[@id='checkoutEditBillingAddressForm']//input[@id='address.postcode']");
 	private final By PHONE_NUMBER_FOR_BILLING_ADDRESS_AT_CHECKOUT_PAGE_LOC=By.xpath("//div[@id='checkoutEditBillingAddressForm']//input[@id='address.phone']");
-	private final By EDIT_LINK_OF_BILLING_ADDRESS_LOC=By.xpath("//div[contains(text(),'Billing Info')]/following::a[1]");
+	private final By EDIT_LINK_OF_BILLING_PROFILE_LOC=By.xpath("//div[contains(text(),'Billing Info')]/following::a[1]");
 	private final By CREDIT_CARD_DETAILS_LOC = By.xpath("//div[@id='default-payment-method']//span[@class='cardInfo']");
 	private final By INVALID_EXP_DATE_ERROR_MSG_LOC = By.id("valmsg-c-exyr");
 	private final By CVV_ERROR_MSG_LOC = By.id("card_cvNumber-error");
-	private final By CREDIT_CARD_ERROR_MSG_LOC = By.id("valmsg-c-cn");
+	private final By CREDIT_CARD_ERROR_MSG_LOC = By.id("card_error");
 	private final By SAVE_PAYMENT_BUTTON_LOC = By.id("updateBillingAddress");
 	private final By ADD_NEW_BILLING_PROFILE_BUTTON_LOC = By.xpath("//button[contains(text(),'Add New Billing Profile')]");
 	private final By FIRST_LAST_NAME_FOR_EDIT_BILLING_ADDRESS_LOC=By.xpath("//div[@id='checkoutEditBillingAddressForm']//input[@id='address.firstName']");
@@ -719,19 +719,6 @@ public class StoreFrontCheckoutPage extends StoreFrontWebsiteBasePage{
 	}
 
 	/***
-	 * This method click on Edit Billing Address at checkout page
-	 * 
-	 * @param
-	 * @return store front Checkout page object
-	 * 
-	 */
-	public StoreFrontCheckoutPage clickEditLinkOfBillingProfile(){
-		//driver.click(EDIT_LINK_OF_BILLING_PROFILE_LOC);
-		driver.clickByJS(RFWebsiteDriver.driver, driver.findElement(EDIT_LINK_OF_BILLING_PROFILE_LOC));
-		logger.info("Clicked on Edit link of Billing profile");
-		return this;
-	}
-	/***
 	 * This method validates billing address dropdown is enabled
 	 * 
 	 * @param
@@ -771,19 +758,6 @@ public class StoreFrontCheckoutPage extends StoreFrontWebsiteBasePage{
 	}
 
 	/***
-	 * This method click on Edit Billing Address at checkout page
-	 * 
-	 * @param
-	 * @return store front Checkout page object
-	 * 
-	 */
-	public StoreFrontCheckoutPage clickEditLinkOfBillingAddress(){
-		driver.click(EDIT_LINK_OF_BILLING_ADDRESS_LOC);
-		logger.info("Clicked on Edit link of Billing Address");
-		return this;
-	}
-
-	/***
 	 * This method get the credit card details
 	 * 
 	 * @param
@@ -805,12 +779,8 @@ public class StoreFrontCheckoutPage extends StoreFrontWebsiteBasePage{
 	 * 
 	 */
 	public String getCreditCardErrorMessage(){
-		driver.switchTo().frame(driver.findElement(IFRAME_LOC));
-		logger.info("Switched into iframe");
 		String creditCardErrorMsg = driver.findElement(CREDIT_CARD_ERROR_MSG_LOC).getText();
 		logger.info("credit card error message is "+creditCardErrorMsg);
-		driver.switchTo().defaultContent();
-		logger.info("Switched to default content");
 		return creditCardErrorMsg;
 	}
 
@@ -1757,6 +1727,7 @@ public class StoreFrontCheckoutPage extends StoreFrontWebsiteBasePage{
 	public StoreFrontCheckoutPage selectUseMyDeliveyAddressCheckbox(){
 		driver.clickByJS(RFWebsiteDriver.driver,driver.findElement(USE_MY_DELIVERY_ADDRESS_CHECKBOX_LOC));
 		logger.info("Use My delivery address checkbox checked");
+		driver.pauseExecutionFor(2000);
 		return this;
 	}
 
@@ -1819,6 +1790,41 @@ public class StoreFrontCheckoutPage extends StoreFrontWebsiteBasePage{
 	 */
 	public boolean isSponsorSelected(){
 		return driver.isElementVisible(SELECTED_SPONSOR_LOC);
+	}
+
+	/***
+	 * This method click on Edit Billing Profile at checkout page
+	 * 
+	 * @param
+	 * @return store front Checkout page object
+	 * 
+	 */
+	public StoreFrontCheckoutPage clickEditLinkOfBillingProfile(){
+		driver.click(EDIT_LINK_OF_BILLING_PROFILE_LOC);
+		logger.info("Clicked on Edit link of Billing Profile");
+		return this;
+	}
+
+	/***
+	 * This method click on default Billing Address at checkout page
+	 * 
+	 * @param
+	 * @return store front Checkout page object
+	 * 
+	 */
+	public StoreFrontCheckoutPage clickEditLinkOfDefaultBillingProfile(){
+		driver.clickByJS(RFWebsiteDriver.driver, driver.findElement(EDIT_LINK_OF_DEFAULT_BILLING_PROFILE_LOC));
+		logger.info("Clicked on Edit link of Default Billing profile");
+		return this;
+	}
+
+	/***
+	 * This method verify the not your Sponsor link
+	 * @param
+	 * @return boolean
+	 */
+	public boolean isNotYourConsultantLinkPresentForSponsor(){
+		return driver.isElementVisible(NOT_YOUR_CONSULTANT_LINK_LOC);
 	}
 
 }

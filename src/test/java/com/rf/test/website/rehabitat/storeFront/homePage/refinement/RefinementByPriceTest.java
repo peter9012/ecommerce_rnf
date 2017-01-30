@@ -13,7 +13,7 @@ public class RefinementByPriceTest extends StoreFrontWebsiteBaseTest{
 	 * while logged in through PC
 	 *     
 	 */
-	@Test(enabled=false)
+	@Test(enabled=true)
 	public void testRefinmentByPriceShouldBeWorkingOnPLP_120(){
 		sfHomePage.loginToStoreFront(TestConstants.PC_EMAIL_HAVING_AUTOSHIP, password);
 		int totalNoOfProduct = 0;
@@ -60,7 +60,7 @@ public class RefinementByPriceTest extends StoreFrontWebsiteBaseTest{
 	 * while logged in through PC
 	 *     
 	 */
-	@Test(enabled=false)
+	@Test(enabled=true)
 	public void testRefinmentByPriceShouldBeWorkingOnSearchPage_121(){
 		int totalNoOfProduct = 0;
 		String priceRange0to49 = "0To49";

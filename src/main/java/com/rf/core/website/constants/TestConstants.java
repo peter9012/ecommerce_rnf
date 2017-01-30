@@ -23,9 +23,10 @@ public class TestConstants {
 	public static final String USER_TYPE_PC = "PC";
 	public static final String USER_TYPE_RC = "RC";
 	public static final String ORDER_TYPE_ADHOC = "One Time Order";
-	public static final String ORDER_TYPE_PC_PERKS = "PC Perks Order";
+	public static final String ORDER_TYPE_PC_PERKS = "Add to PC Perks";
 	public static final String ORDER_TYPE_CRP= "Add to CRP";
 	public static final String PRODUCT_NUMBER = "2";
+//	public static final String OTHER_PRODUCT_NUMBER = "3";
 	public static final String PC_FIRST_NAME = "AutoPC";
 	public static final String RC_FIRST_NAME = "AutoRC";
 	public static final String LAST_NAME = "lName";
@@ -171,7 +172,7 @@ public class TestConstants {
 	public static final String CONSULTANT_PWS_PREFIX = "autocons";
 	public static final String CONSULTANT_EMAIL_WITHOUT_CRP_AND_PULSE = "AutoCons20170124210537@mailinator.com";
 
-	public static final String PC_EMAIL_HAVING_AUTOSHIP = "AutoPC20170125104532@mailinator.com";
+	public static final String PC_EMAIL_HAVING_AUTOSHIP = "AutoPC20170130113105@mailinator.com";
 	public static final String PC_EMAIL_HAVING_SINGLE_BILLING_PROFILE = "AutoPC20170125115552@mailinator.com";
 	public static final String PC_EMAIL_WHO_ENROLLED_UNDER_SPONSOR_WITH_PWS = "autopc1100@mailinator.com";
 	public static final String PC_USER_WHO_ENROLLED_UNDER_RF_CORPORATE_SPONSOR = "autoPc1901@mailinator.com";

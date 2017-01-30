@@ -244,7 +244,7 @@ public class TopNavigationTest extends StoreFrontWebsiteBaseTest{
 	public void testVerifyPLPUnderShopSkinCare_348(){
 		sfHomePage.loginToStoreFront(TestConstants.RC_EMAIL_HAVING_ORDER, password);
 		sfShopSkinCarePage=sfHomePage.clickAllProducts();
-		s_assert.assertTrue(sfShopSkinCarePage.isAllProductPageDisplayed(),"All product page not present after clicking continue shopping.");
+		s_assert.assertTrue(sfShopSkinCarePage.isProductsDisplayedOnPage(),"All product page not present after clicking continue shopping.");
 		s_assert.assertAll();
 	}
 
@@ -343,7 +343,7 @@ public class TopNavigationTest extends StoreFrontWebsiteBaseTest{
 		s_assert.assertTrue(sfHomePage.isHeaderIsConsistentOnAllPages(),"Header is not present on reverse product category page.");
 		sfShopSkinCarePage = sfHomePage.navigateToShopSkincareLink(allProductLinkUnderShopSkincare);
 		s_assert.assertTrue(sfShopSkinCarePage.isHeaderIsConsistentOnAllPages(),"Header is not present on All product page.");
-		sfProductDetailPage = sfShopSkinCarePage.clickNameOfFirstProduct();
+		sfProductDetailPage = sfShopSkinCarePage.clickNameOfFirstProduct(TestConstants.PRODUCT_NUMBER);
 		s_assert.assertTrue(sfProductDetailPage.isHeaderIsConsistentOnAllPages(),"Header is not present on product detail page.");
 		sfProductDetailPage.addProductToCartFromProductDetailPageAfterLogin();
 		sfCartPage = sfShopSkinCarePage.checkoutTheCartFromPopUp();
@@ -363,7 +363,7 @@ public class TopNavigationTest extends StoreFrontWebsiteBaseTest{
 	public void testAsAUserIWillBeAbleToAccessThePLPFromTheShopSkincareSection_542(){
 		String category="ALL PRODUCTS";
 		sfShopSkinCarePage=sfHomePage.navigateToShopSkincareLink(category);
-		s_assert.assertTrue(sfShopSkinCarePage.isAllProductPageDisplayed(),"Expected user is not redirected to all products page");
+		s_assert.assertTrue(sfShopSkinCarePage.isProductsDisplayedOnPage(),"Expected user is not redirected to all products page");
 		s_assert.assertAll();
 	}
 
@@ -449,7 +449,7 @@ public class TopNavigationTest extends StoreFrontWebsiteBaseTest{
 		//Search product by product name.
 		sfHomePage.clickSearchIcon();
 		sfHomePage.searchProduct(productName);
-		productNameFromUI = sfHomePage.getProductName().toLowerCase();
+		productNameFromUI = sfHomePage.getProductName(TestConstants.PRODUCT_NUMBER).toLowerCase();
 		productName = productName.toLowerCase();
 		s_assert.assertTrue(productNameFromUI.contains(productName), "Expected product name is:"+productName+"Actual On UI is:"+productNameFromUI);
 		//Search product by partial product name.

@@ -60,7 +60,7 @@ public class AutoshipTest extends StoreFrontWebsiteBaseTest{
 	 * 
 	 *     
 	 */
-	@Test(enabled=false)
+	@Test(enabled=true)
 	public void testUpdateAutoshipAddABillingProfileInvalid_422(){
 		String currentURL = null;
 		String randomWord = CommonUtils.getRandomWord(5);
@@ -166,7 +166,7 @@ public class AutoshipTest extends StoreFrontWebsiteBaseTest{
 	 * 
 	 *     
 	 */
-	@Test(enabled=true)
+	@Test(enabled=true)//Genuine fail
 	public void testUpdateAutoshipCartEditABillingProfilePC_401(){
 		String currentURL = null;
 		String randomWord = CommonUtils.getRandomWord(5);
@@ -185,16 +185,16 @@ public class AutoshipTest extends StoreFrontWebsiteBaseTest{
 		String updatedAddressLine2 = TestConstants.SECOND_ADDRESS_LINE_2_US;
 		String updatedCity = TestConstants.SECOND_CITY_US;
 		String updatedPostalCode = TestConstants.SECOND_POSTAL_CODE_US;
+		String stateAbbreviation = TestConstants.STATE_US_ABBREVIATION;
 		String billingDetailsOnUI = null;
 		String cardLastName = null;
-
 
 		//Login to application.
 		sfHomePage.loginToStoreFront(TestConstants.PC_EMAIL_HAVING_AUTOSHIP, password);
 		sfAutoshipCartPage = sfHomePage.clickOnAutoshipCartLink();
 		currentURL = sfAutoshipCartPage.getCurrentURL().toLowerCase();
 		s_assert.assertTrue(currentURL.contains(textToAssertInURL), "Expected URL should contain "+textToAssertInURL+" but actual on UI is "+currentURL);
-		sfCheckoutPage = sfAutoshipCartPage.clickOnCRPCheckoutButton();
+		sfCheckoutPage = sfAutoshipCartPage.clickOnPCPerksCheckoutButton();
 		sfCheckoutPage.clickSaveButton();
 		sfCheckoutPage.clickShippingDetailsNextbutton();
 
@@ -202,7 +202,7 @@ public class AutoshipTest extends StoreFrontWebsiteBaseTest{
 		sfCheckoutPage.clickAddNewBillingProfileButton();
 		sfCheckoutPage.enterUserBillingDetails(TestConstants.CARD_TYPE, cardNum, cardName, TestConstants.CVV);
 		sfCheckoutPage.checkUseMyDeliveryAddressChkBox();
-		sfCheckoutPage.enterBillingAddressDetailsAtCheckout(firstName, lastName, addressLine1, addressLine2, city, state, postalCode, phoneNumber);
+		sfCheckoutPage.enterBillingAddressDetails(firstName, lastName, addressLine1, addressLine2, city, state, postalCode, phoneNumber);
 		sfCheckoutPage.clickBillingDetailsNextbutton();
 		sfCheckoutPage.clickUseAsEnteredButtonOnPopUp();
 		cardLastName = sfCheckoutPage.getLastName(cardName);
@@ -210,22 +210,28 @@ public class AutoshipTest extends StoreFrontWebsiteBaseTest{
 
 		//Editing Billing Profile and entering Specific Address Type 2 and Save payment
 		sfCheckoutPage.clickEditLinkOfBillingProfile();
+		sfCheckoutPage.clickEditLinkOfDefaultBillingProfile();
 		sfCheckoutPage.checkUseMyDeliveryAddressChkBoxForExistingBillingProfile();
-		sfCheckoutPage.enterBillingAddressDetailsAtCheckout(firstName, lastName, updatedAddressLine1, updatedAddressLine2, updatedCity, state, updatedPostalCode, phoneNumber);
+		sfCheckoutPage.enterBillingAddressDetailsForExistingBillingProfile(firstName, lastName, updatedAddressLine1, updatedAddressLine2, updatedCity, state, updatedPostalCode, phoneNumber);
 		sfCheckoutPage.clickSavePaymentButton();
 		sfCheckoutPage.clickUseAsEnteredButtonOnPopUp();
 		billingDetailsOnUI = sfCheckoutPage.getBillingProfileDetailsFromBillingProfile();
-		s_assert.assertTrue(sfCheckoutPage.isBillingAddressOnUIIsFoundAsExpected(updatedAddressLine1, updatedCity, updatedPostalCode, state, billingDetailsOnUI),"Billing Address Details do not get updated for default billing profile at Checkout Page");
-
-
+		// Asserting Updated Address Fields
+		s_assert.assertTrue(sfCheckoutPage.isAddressFieldPresentAsExpectedOnUI(billingDetailsOnUI,updatedAddressLine1),"Address Line 1 : " + updatedAddressLine1 + " is not present in Actual Billing Address");
+		s_assert.assertTrue(sfCheckoutPage.isAddressFieldPresentAsExpectedOnUI(billingDetailsOnUI,updatedCity),"City : " + updatedCity + " is not present in Actual Billing Address");
+		s_assert.assertTrue(sfCheckoutPage.isAddressFieldPresentAsExpectedOnUI(billingDetailsOnUI,updatedPostalCode),"PostalCode : " + updatedPostalCode + " is not present in Actual Billing Address");
+		s_assert.assertTrue(sfCheckoutPage.isAddressFieldPresentAsExpectedOnUI(billingDetailsOnUI,stateAbbreviation),"State : " + stateAbbreviation + " is not present in Actual Billing Address");
 		//Editing Billing Profile and entering Specific Address Type 1 and cancel payment
-		sfCheckoutPage.clickEditLinkOfBillingProfile();
+		sfCheckoutPage.clickEditLinkOfDefaultBillingProfile();
 		sfCheckoutPage.checkUseMyDeliveryAddressChkBoxForExistingBillingProfile();
-		sfCheckoutPage.enterBillingAddressDetailsAtCheckout(firstName, lastName, addressLine1, addressLine2, city, state, postalCode, phoneNumber);
+		sfCheckoutPage.enterBillingAddressDetailsForExistingBillingProfile(firstName, lastName, addressLine1, addressLine2, city, state, postalCode, phoneNumber);
 		sfCheckoutPage.clickCancelButton();
 		billingDetailsOnUI = sfCheckoutPage.getBillingProfileDetailsFromBillingProfile();
-		s_assert.assertFalse(sfCheckoutPage.isBillingAddressOnUIIsFoundAsExpected(addressLine1, city, postalCode, state, billingDetailsOnUI),"Billing Address Details get updated for default billing profile at Checkout Page");
-		s_assert.assertTrue(sfCheckoutPage.isBillingAddressOnUIIsFoundAsExpected(updatedAddressLine1, updatedCity, updatedPostalCode, state, billingDetailsOnUI),"Billing Address Details are not found as initial at Checkout Page");
+		//Asserting initial Address after Clicking Cancel Button
+		s_assert.assertTrue(sfCheckoutPage.isAddressFieldPresentAsExpectedOnUI(billingDetailsOnUI,updatedAddressLine1),"Address Line 1 : " + updatedAddressLine1 + " is not present in Actual Billing Address");
+		s_assert.assertTrue(sfCheckoutPage.isAddressFieldPresentAsExpectedOnUI(billingDetailsOnUI,updatedCity),"City : " + updatedCity + " is not present in Actual Billing Address");
+		s_assert.assertTrue(sfCheckoutPage.isAddressFieldPresentAsExpectedOnUI(billingDetailsOnUI,updatedPostalCode),"PostalCode : " + updatedPostalCode + " is not present in Actual Billing Address");
+		s_assert.assertTrue(sfCheckoutPage.isAddressFieldPresentAsExpectedOnUI(billingDetailsOnUI,stateAbbreviation),"State : " + stateAbbreviation + " is not present in Actual Billing Address");
 		s_assert.assertAll();
 	}
 
@@ -297,16 +303,16 @@ public class AutoshipTest extends StoreFrontWebsiteBaseTest{
 		sfCheckoutPage = sfAutoshipCartPage.clickOnCRPCheckoutButton();
 		sfCheckoutPage.clickSaveButton();
 		sfCheckoutPage.clickShippingDetailsNextbutton();
-		sfCheckoutPage.clickEditLinkOfBillingProfile();
+		sfCheckoutPage.clickEditLinkOfDefaultBillingProfile();
 		sfCheckoutPage.checkUseMyDeliveryAddressChkBoxForExistingBillingProfile();
 
 		// Click Save Payment Button without filling any Billing Address details
 		sfCheckoutPage.clickSavePaymentButton();
-		s_assert.assertTrue(sfCheckoutPage.isErrrorMsgsForAllMandatoryFieldsForBillingAddressWithExistingProfileArePresent(),
+		s_assert.assertTrue(sfCheckoutPage.isErrrorMsgsForAllMandatoryFieldsForBillingAddressArePresent(),
 				"Mandatory Address Fields error messages for existing profile are not present as expected.");
 
 		// Enter Billing Details with invalid postal code
-		sfCheckoutPage.enterBillingAddressDetailsAtCheckout(firstName, lastName, addressLine1, addressLine2, city, state, invalidPostalCode, phoneNumber);
+		sfCheckoutPage.enterBillingAddressDetailsForExistingBillingProfile(firstName, lastName, addressLine1, addressLine2, city, state, invalidPostalCode, phoneNumber);
 		s_assert.assertTrue(sfCheckoutPage.getErrorMessageForInvalidPostalCode().contains(TestConstants.INVALID_POSTAL_CODE_MSG),"Error msg for Invalid postal code is not present as expected");
 		s_assert.assertAll();
 	}
@@ -352,15 +358,14 @@ public class AutoshipTest extends StoreFrontWebsiteBaseTest{
 		double newSubtotalAtAutoshipCart;
 		//Login to application.
 		sfHomePage.loginToStoreFront(TestConstants.PC_EMAIL_HAVING_AUTOSHIP, password);
-		//sfAutoshipCartPage = sfHomePage.clickOnAutoshipCartLink();
 		sfHomePage.clickWelcomeDropdown();
 		sfAutoshipCartPage = sfHomePage.navigateToEditPCPerksPage();
 		currentURL = sfAutoshipCartPage.getCurrentURL().toLowerCase();
 		s_assert.assertTrue(currentURL.contains(textToAssertInURL), "Expected URL should contain "+textToAssertInURL+" on Autoship cart page but actual on UI is "+currentURL);
 		subtotalAtAutoshipCart = sfAutoshipCartPage.getSubtotalofItemsAtCart();
 		sfShopSkinCarePage = sfAutoshipCartPage.clickAddMoreItemsBtn();
+		sfShopSkinCarePage.refineProductByCategory(TestConstants.PC_PERKS_AUTOSHIP_PRODUCT_CATEGORY);
 		sfShopSkinCarePage.addProductToCart(TestConstants.PRODUCT_NUMBER, TestConstants.ORDER_TYPE_PC_PERKS);
-		//sfShopSkinCarePage.addProductToAutoshipCart("PC");
 		sfShopSkinCarePage.checkoutTheCartFromPopUp();
 		newSubtotalAtAutoshipCart= sfAutoshipCartPage.getSubtotalofItemsAtCart();
 		s_assert.assertTrue(newSubtotalAtAutoshipCart>subtotalAtAutoshipCart,"Product is not been added to PC Autoship cart page.");
@@ -368,7 +373,7 @@ public class AutoshipTest extends StoreFrontWebsiteBaseTest{
 		currentURL = sfAutoshipCartPage.getCurrentURL().toLowerCase();
 		s_assert.assertTrue(currentURL.contains(checkoutPageURL), "Expected URL should contain "+checkoutPageURL+" on checkout page but actual on UI is "+currentURL);
 		s_assert.assertAll();
-	}	
+	}
 
 	/***
 	 * qTest : TC-398 Update Autoship Cart- Edit Ship Address - Consultant
@@ -422,6 +427,7 @@ public class AutoshipTest extends StoreFrontWebsiteBaseTest{
 	public void testUpdateAutoshipCartEditABillingProfileConsultant_400(){
 		String currentURL = null;
 		String randomWord = CommonUtils.getRandomWord(5);
+
 		String randomWord2 = CommonUtils.getRandomWord(5);
 		String cardName = TestConstants.CARD_NAME + randomWord;
 		String cardNum = TestConstants.CARD_NUMBER_2;
@@ -438,6 +444,7 @@ public class AutoshipTest extends StoreFrontWebsiteBaseTest{
 		String updatedAddressLine2 = TestConstants.SECOND_ADDRESS_LINE_2_US;
 		String updatedCity = TestConstants.SECOND_CITY_US;
 		String updatedPostalCode = TestConstants.SECOND_POSTAL_CODE_US;
+		String stateAbbreviation = TestConstants.STATE_US_ABBREVIATION;
 		String billingDetailsOnUI = null;
 		String cardLastName = null;
 
@@ -454,29 +461,35 @@ public class AutoshipTest extends StoreFrontWebsiteBaseTest{
 		sfCheckoutPage.clickAddNewBillingProfileButton();
 		sfCheckoutPage.enterUserBillingDetails(TestConstants.CARD_TYPE, cardNum, cardName, TestConstants.CVV);
 		sfCheckoutPage.checkUseMyDeliveryAddressChkBox();
-		sfCheckoutPage.enterBillingAddressDetailsAtCheckout(firstName, lastName, addressLine1, addressLine2, city, state, postalCode, phoneNumber);
+		sfCheckoutPage.enterBillingAddressDetails(firstName, lastName, addressLine1, addressLine2, city, state, postalCode, phoneNumber);
 		sfCheckoutPage.clickBillingDetailsNextbutton();
 		sfCheckoutPage.clickUseAsEnteredButtonOnPopUp();
 		cardLastName = sfCheckoutPage.getLastName(cardName);
 		s_assert.assertTrue(sfCheckoutPage.isNewBillingDetailsVisibleOnUI(cardLastName),"New Billing Details do not get updated as Default Billing details on Checkout Page");
-
 		//Editing Billing Profile and entering Specific Address Type 2 and Save payment
 		sfCheckoutPage.clickEditLinkOfBillingProfile();
+		sfCheckoutPage.clickEditLinkOfDefaultBillingProfile();
 		sfCheckoutPage.checkUseMyDeliveryAddressChkBoxForExistingBillingProfile();
-		sfCheckoutPage.enterBillingAddressDetailsAtCheckout(firstName, lastName, updatedAddressLine1, updatedAddressLine2, updatedCity, state, updatedPostalCode, phoneNumber);
+		sfCheckoutPage.enterBillingAddressDetailsForExistingBillingProfile(firstName, lastName, updatedAddressLine1, updatedAddressLine2, updatedCity, state, updatedPostalCode, phoneNumber);
 		sfCheckoutPage.clickSavePaymentButton();
 		sfCheckoutPage.clickUseAsEnteredButtonOnPopUp();
 		billingDetailsOnUI = sfCheckoutPage.getBillingProfileDetailsFromBillingProfile();
-		s_assert.assertTrue(sfCheckoutPage.isBillingAddressOnUIIsFoundAsExpected(updatedAddressLine1, updatedCity, updatedPostalCode, state, billingDetailsOnUI),"Billing Address Details do not get updated for default billing profile at Checkout Page");
-
+		// Asserting Updated Address Fields
+		s_assert.assertTrue(sfCheckoutPage.isAddressFieldPresentAsExpectedOnUI(billingDetailsOnUI,updatedAddressLine1),"Address Line 1 : " + updatedAddressLine1 + " is not present in Actual Billing Address");
+		s_assert.assertTrue(sfCheckoutPage.isAddressFieldPresentAsExpectedOnUI(billingDetailsOnUI,updatedCity),"City : " + updatedCity + " is not present in Actual Billing Address");
+		s_assert.assertTrue(sfCheckoutPage.isAddressFieldPresentAsExpectedOnUI(billingDetailsOnUI,updatedPostalCode),"PostalCode : " + updatedPostalCode + " is not present in Actual Billing Address");
+		s_assert.assertTrue(sfCheckoutPage.isAddressFieldPresentAsExpectedOnUI(billingDetailsOnUI,stateAbbreviation),"State : " + stateAbbreviation + " is not present in Actual Billing Address");
 		//Editing Billing Profile and entering Specific Address Type 1 and cancel payment
-		sfCheckoutPage.clickEditLinkOfBillingProfile();
+		sfCheckoutPage.clickEditLinkOfDefaultBillingProfile();
 		sfCheckoutPage.checkUseMyDeliveryAddressChkBoxForExistingBillingProfile();
-		sfCheckoutPage.enterBillingAddressDetailsAtCheckout(firstName, lastName, addressLine1, addressLine2, city, state, postalCode, phoneNumber);
+		sfCheckoutPage.enterBillingAddressDetailsForExistingBillingProfile(firstName, lastName, addressLine1, addressLine2, city, state, postalCode, phoneNumber);
 		sfCheckoutPage.clickCancelButton();
 		billingDetailsOnUI = sfCheckoutPage.getBillingProfileDetailsFromBillingProfile();
-		s_assert.assertFalse(sfCheckoutPage.isBillingAddressOnUIIsFoundAsExpected(addressLine1, city, postalCode, state, billingDetailsOnUI),"Billing Address Details get updated for default billing profile at Checkout Page");
-		s_assert.assertTrue(sfCheckoutPage.isBillingAddressOnUIIsFoundAsExpected(updatedAddressLine1, updatedCity, updatedPostalCode, state, billingDetailsOnUI),"Billing Address Details are not found as initial at Checkout Page");
+		//Asserting initial Address after Clicking Cancel Button
+		s_assert.assertTrue(sfCheckoutPage.isAddressFieldPresentAsExpectedOnUI(billingDetailsOnUI,updatedAddressLine1),"Address Line 1 : " + updatedAddressLine1 + " is not present in Actual Billing Address");
+		s_assert.assertTrue(sfCheckoutPage.isAddressFieldPresentAsExpectedOnUI(billingDetailsOnUI,updatedCity),"City : " + updatedCity + " is not present in Actual Billing Address");
+		s_assert.assertTrue(sfCheckoutPage.isAddressFieldPresentAsExpectedOnUI(billingDetailsOnUI,updatedPostalCode),"PostalCode : " + updatedPostalCode + " is not present in Actual Billing Address");
+		s_assert.assertTrue(sfCheckoutPage.isAddressFieldPresentAsExpectedOnUI(billingDetailsOnUI,stateAbbreviation),"State : " + stateAbbreviation + " is not present in Actual Billing Address");
 		s_assert.assertAll();
 	}
 
@@ -568,8 +581,8 @@ public class AutoshipTest extends StoreFrontWebsiteBaseTest{
 		profileLastName = sfCheckoutPage.getLastName(cardName);
 		defaultBillingProfileName = sfCheckoutPage.getDefaultBillingProfileName();
 		s_assert.assertTrue(defaultBillingProfileName.contains(profileLastName),"New Billing Profile Details do not get updated. Expected Profile Name : "+ cardName + ". Actual : " + defaultBillingProfileName);
-		sfCheckoutPage.selectTermsAndConditionsCheckBoxForConsulatntCRP();
-		sfCheckoutPage.selectCheckboxForPoliciesAndProcedures();
+//		sfCheckoutPage.selectTermsAndConditionsCheckBoxForConsulatntCRP();
+//		sfCheckoutPage.selectCheckboxForPoliciesAndProcedures();
 		sfCheckoutPage.clickConfirmAutoshipOrderButton();
 		sfCheckoutPage.clickOnAutoshipCartLink();
 		sfAutoshipCartPage.clickOnCRPCheckoutButton();
@@ -626,8 +639,8 @@ public class AutoshipTest extends StoreFrontWebsiteBaseTest{
 		sfCheckoutPage.clickSaveButton();
 		sfCheckoutPage.clickShippingDetailsNextbutton();
 		sfCheckoutPage.clickBillingDetailsNextbutton();
-		sfCheckoutPage.selectTermsAndConditionsCheckBoxForConsulatntCRP();
-		sfCheckoutPage.selectCheckboxForPoliciesAndProcedures();
+//		sfCheckoutPage.selectTermsAndConditionsCheckBoxForConsulatntCRP();
+//		sfCheckoutPage.selectCheckboxForPoliciesAndProcedures();
 		sfCheckoutPage.clickConfirmAutoshipOrderButton();
 		s_assert.assertTrue(sfCheckoutPage.isCRPOrderConfirmedSuccessMsgAppeared(),"CRP Order confirmed success messge is not appeared");
 		sfCheckoutPage.clickRodanAndFieldsLogo();
@@ -689,8 +702,8 @@ public class AutoshipTest extends StoreFrontWebsiteBaseTest{
 		sfCheckoutPage.clickSaveButton();
 		sfCheckoutPage.clickShippingDetailsNextbutton();
 		sfCheckoutPage.clickBillingDetailsNextbutton();
-		sfCheckoutPage.selectTermsAndConditionsCheckBoxForConsulatntCRP();
-		sfCheckoutPage.selectCheckboxForPoliciesAndProcedures();
+//		sfCheckoutPage.selectTermsAndConditionsCheckBoxForConsulatntCRP();
+//		sfCheckoutPage.selectCheckboxForPoliciesAndProcedures();
 		sfCheckoutPage.clickConfirmAutoshipOrderButton();
 		s_assert.assertTrue(sfCheckoutPage.isCRPOrderConfirmedSuccessMsgAppeared(),"CRP Order confirmed success messge is not appeared");
 		sfCheckoutPage.clickRodanAndFieldsLogo();
@@ -1022,7 +1035,7 @@ public class AutoshipTest extends StoreFrontWebsiteBaseTest{
 		sfHomePage.loginToStoreFront(TestConstants.CONSULTANT_EMAIL_WITH_CRP_AND_PULSE, password);
 		sfShopSkinCarePage = sfHomePage.clickAllProducts();
 		sfShopSkinCarePage.refineProductByCategory(TestConstants.CONSULTANT_CRP_AUTOSHIP_PRODUCT_CATEGORY);
-		productName = sfShopSkinCarePage.getFirstProductNameFromAllProductPage();
+		productName = sfShopSkinCarePage.getProductNameFromAllProductPage(TestConstants.PRODUCT_NUMBER);
 		sfAutoshipCartPage = sfShopSkinCarePage.clickAutoshipLink();
 		if(sfAutoshipCartPage.isProductAddedToCartPresentOnCartPage(productName)){
 			productQuantity = sfAutoshipCartPage.getQuantityOfSpecificProductFromAutoshipCart(productName).trim(); 
@@ -1031,7 +1044,7 @@ public class AutoshipTest extends StoreFrontWebsiteBaseTest{
 		sfAutoshipCartPage.clickRodanAndFieldsLogo();
 		sfAutoshipCartPage.clickAllProducts();
 		sfShopSkinCarePage.refineProductByCategory(TestConstants.CONSULTANT_CRP_AUTOSHIP_PRODUCT_CATEGORY);
-		sfShopSkinCarePage.addProductToCart("1", TestConstants.ORDER_TYPE_CRP);
+		sfShopSkinCarePage.addProductToCart(TestConstants.PRODUCT_NUMBER, TestConstants.ORDER_TYPE_CRP);
 		s_assert.assertTrue(sfShopSkinCarePage.isCheckoutPopupDisplayed(),"Expected checkout popup is not displayed while adding product from PLP");
 		sfShopSkinCarePage.checkoutTheCartFromPopUp();
 		if(isProductPresent){
@@ -1044,7 +1057,7 @@ public class AutoshipTest extends StoreFrontWebsiteBaseTest{
 		sfAutoshipCartPage.clickRodanAndFieldsLogo();
 		sfAutoshipCartPage.clickAllProducts();
 		sfShopSkinCarePage.refineProductByCategory(TestConstants.CONSULTANT_CRP_AUTOSHIP_PRODUCT_CATEGORY);
-		sfShopSkinCarePage.clickOnQuickViewLinkForProduct("1");
+		sfShopSkinCarePage.clickOnQuickViewLinkForProduct(TestConstants.PRODUCT_NUMBER);
 		sfShopSkinCarePage.addProductToCartFromQuickViewPopup(TestConstants.ORDER_TYPE_CRP);
 		s_assert.assertTrue(sfShopSkinCarePage.isCheckoutPopupDisplayed(),"Expected checkout popup is not displayed while adding product from Quick View popup");
 		sfShopSkinCarePage.checkoutTheCartFromPopUp();
@@ -1161,7 +1174,7 @@ public class AutoshipTest extends StoreFrontWebsiteBaseTest{
 		sfHomePage.loginToStoreFront(TestConstants.PC_EMAIL_HAVING_AUTOSHIP, password);
 		sfShopSkinCarePage = sfHomePage.clickAllProducts();
 		sfShopSkinCarePage.refineProductByCategory(TestConstants.PC_PERKS_AUTOSHIP_PRODUCT_CATEGORY);
-		productName = sfShopSkinCarePage.getFirstProductNameFromAllProductPage();
+		productName = sfShopSkinCarePage.getProductNameFromAllProductPage(TestConstants.PRODUCT_NUMBER);
 		sfAutoshipCartPage = sfShopSkinCarePage.clickAutoshipLink();
 		if(sfAutoshipCartPage.isProductAddedToCartPresentOnCartPage(productName)){
 			productQuantity = sfAutoshipCartPage.getQuantityOfSpecificProductFromAutoshipCart(productName).trim(); 
@@ -1242,7 +1255,7 @@ public class AutoshipTest extends StoreFrontWebsiteBaseTest{
 	 * Description : This test validates the threshold message of PC for autoship 
 	 *     
 	 */
-	@Test(enabled=false)
+	@Test(enabled=true)
 	public void testPCAutoshipCartMaintenanceAndThreshold_406(){
 		String thresholdMessage = null;
 		String expectedThresholdMessage = "Please add minimum worth of USD$ 80 products excluding enrollment fee".toLowerCase();

@@ -18,8 +18,8 @@ public class ProductQuickViewTest extends StoreFrontWebsiteBaseTest{
 	public void testProductQuickViewAnonymous_150(){
 		String selectedProductName = null;
 		sfShopSkinCarePage = sfHomePage.clickAllProducts();
-		selectedProductName = sfShopSkinCarePage.getFirstProductNameFromAllProductPage();
-		sfShopSkinCarePage.clickOnQuickViewLinkForProduct("1");
+		selectedProductName = sfShopSkinCarePage.getProductNameFromAllProductPage(TestConstants.PRODUCT_NUMBER);
+		sfShopSkinCarePage.clickOnQuickViewLinkForProduct(TestConstants.PRODUCT_NUMBER);
 		s_assert.assertTrue(sfShopSkinCarePage.isProductImagePresentAtQuickViewPopup(),
 				"Product image is not present at Quick view popup");
 		s_assert.assertTrue(sfShopSkinCarePage.isProductNamePresentAtQuickViewPopupAsExpected(selectedProductName),
@@ -51,8 +51,8 @@ public class ProductQuickViewTest extends StoreFrontWebsiteBaseTest{
 		sfHomePage.loginToStoreFront(TestConstants.PC_EMAIL_HAVING_AUTOSHIP, password);
 		sfShopSkinCarePage = sfHomePage.clickAllProducts();
 		sfShopSkinCarePage.refineProductByCategory(TestConstants.PC_PERKS_AUTOSHIP_PRODUCT_CATEGORY);
-		selectedProductName = sfShopSkinCarePage.getFirstProductNameFromAllProductPage();
-		sfShopSkinCarePage.clickOnQuickViewLinkForProduct("1");
+		selectedProductName = sfShopSkinCarePage.getProductNameFromAllProductPage(TestConstants.PRODUCT_NUMBER);
+		sfShopSkinCarePage.clickOnQuickViewLinkForProduct(TestConstants.PRODUCT_NUMBER);
 		s_assert.assertTrue(sfShopSkinCarePage.isProductImagePresentAtQuickViewPopup(),"Product image is not present at Quick view popup");
 		s_assert.assertTrue(sfShopSkinCarePage.isProductNamePresentAtQuickViewPopupAsExpected(selectedProductName),"Product name is not present as expected on quick view poup");
 		s_assert.assertTrue(sfShopSkinCarePage.isQuantityTextFieldPresentAtQuickViewPopup(),"Quantity Text field is not presnt on quick view poup");
@@ -72,8 +72,8 @@ public class ProductQuickViewTest extends StoreFrontWebsiteBaseTest{
 		sfAutoshipCartPage.clickRodanAndFieldsLogo();
 		sfHomePage.clickAllProducts();
 		sfShopSkinCarePage.refineProductByCategory(TestConstants.PC_PERKS_AUTOSHIP_PRODUCT_CATEGORY);
-		selectedProductName = sfShopSkinCarePage.getFirstProductNameFromAllProductPage();
-		sfShopSkinCarePage.clickOnQuickViewLinkForProduct("1");
+		selectedProductName = sfShopSkinCarePage.getProductNameFromAllProductPage(TestConstants.PRODUCT_NUMBER);
+		sfShopSkinCarePage.clickOnQuickViewLinkForProduct(TestConstants.PRODUCT_NUMBER);
 		sfProductDetailPage = sfShopSkinCarePage.clickOnViewProductDetailsLinkOnQuickViewPopup();
 		productNameOnPDPPage = sfProductDetailPage.getProductNameFromProductDetailsPage();
 		s_assert.assertTrue(productNameOnPDPPage.contains(selectedProductName),"Product Added to cart is different from the Product on PDP page");
@@ -90,8 +90,8 @@ public class ProductQuickViewTest extends StoreFrontWebsiteBaseTest{
 		String selectedProductName = null;
 		sfHomePage.loginToStoreFront(TestConstants.RC_EMAIL_HAVING_ORDER, password);
 		sfShopSkinCarePage = sfHomePage.clickAllProducts();
-		selectedProductName = sfShopSkinCarePage.getFirstProductNameFromAllProductPage();
-		sfShopSkinCarePage.clickOnQuickViewLinkForProduct("1");
+		selectedProductName = sfShopSkinCarePage.getProductNameFromAllProductPage(TestConstants.PRODUCT_NUMBER);
+		sfShopSkinCarePage.clickOnQuickViewLinkForProduct(TestConstants.PRODUCT_NUMBER);
 		s_assert.assertTrue(sfShopSkinCarePage.isProductImagePresentAtQuickViewPopup(),
 				"Product image is not present at Quick view popup");
 		s_assert.assertTrue(sfShopSkinCarePage.isProductNamePresentAtQuickViewPopupAsExpected(selectedProductName),
@@ -123,8 +123,8 @@ public class ProductQuickViewTest extends StoreFrontWebsiteBaseTest{
 		sfHomePage.loginToStoreFront(TestConstants.CONSULTANT_EMAIL_WITH_CRP_AND_PULSE, password);
 		sfShopSkinCarePage = sfHomePage.clickAllProducts();
 		sfShopSkinCarePage.refineProductByCategory(TestConstants.CONSULTANT_CRP_AUTOSHIP_PRODUCT_CATEGORY);
-		selectedProductName = sfShopSkinCarePage.getFirstProductNameFromAllProductPage();
-		sfShopSkinCarePage.clickOnQuickViewLinkForProduct("1");
+		selectedProductName = sfShopSkinCarePage.getProductNameFromAllProductPage(TestConstants.PRODUCT_NUMBER);
+		sfShopSkinCarePage.clickOnQuickViewLinkForProduct(TestConstants.PRODUCT_NUMBER);
 		s_assert.assertTrue(sfShopSkinCarePage.isProductImagePresentAtQuickViewPopup(),"Product image is not present at Quick view popup");
 		s_assert.assertTrue(sfShopSkinCarePage.isProductNamePresentAtQuickViewPopupAsExpected(selectedProductName),"Product name is not present as expected on quick view poup");
 		s_assert.assertTrue(sfShopSkinCarePage.isQuantityTextFieldPresentAtQuickViewPopup(),"Quantity Text field is not presnt on quick view poup");
@@ -144,8 +144,8 @@ public class ProductQuickViewTest extends StoreFrontWebsiteBaseTest{
 		sfAutoshipCartPage.clickRodanAndFieldsLogo();
 		sfHomePage.clickAllProducts();
 		sfShopSkinCarePage.refineProductByCategory(TestConstants.CONSULTANT_CRP_AUTOSHIP_PRODUCT_CATEGORY);
-		selectedProductName = sfShopSkinCarePage.getFirstProductNameFromAllProductPage();
-		sfShopSkinCarePage.clickOnQuickViewLinkForProduct("1");
+		selectedProductName = sfShopSkinCarePage.getProductNameFromAllProductPage(TestConstants.PRODUCT_NUMBER);
+		sfShopSkinCarePage.clickOnQuickViewLinkForProduct(TestConstants.PRODUCT_NUMBER);
 		sfProductDetailPage = sfShopSkinCarePage.clickOnViewProductDetailsLinkOnQuickViewPopup();
 		productNameOnPDPPage = sfProductDetailPage.getProductNameFromProductDetailsPage();
 		s_assert.assertTrue(productNameOnPDPPage.contains(selectedProductName),"Product Added to cart is different from the Product on PDP page");
@@ -167,8 +167,8 @@ public class ProductQuickViewTest extends StoreFrontWebsiteBaseTest{
 		sfHomePage.loginToStoreFront(TestConstants.CONSULTANT_EMAIL_WITH_CRP_AND_PULSE, password);
 		sfShopSkinCarePage = sfHomePage.clickAllProducts();
 		sfShopSkinCarePage.refineProductByCategory(TestConstants.CONSULTANT_CRP_AUTOSHIP_PRODUCT_CATEGORY);
-		selectedProductName = sfShopSkinCarePage.getFirstProductNameFromAllProductPage();
-		sfShopSkinCarePage.clickOnQuickViewLinkForProduct("1");
+		selectedProductName = sfShopSkinCarePage.getProductNameFromAllProductPage(TestConstants.PRODUCT_NUMBER);
+		sfShopSkinCarePage.clickOnQuickViewLinkForProduct(TestConstants.PRODUCT_NUMBER);
 		s_assert.assertTrue(sfShopSkinCarePage.isProductImagePresentAtQuickViewPopup(),"Product image is not present at Quick view popup");
 		s_assert.assertTrue(sfShopSkinCarePage.isProductNamePresentAtQuickViewPopupAsExpected(selectedProductName),"Product name is not present as expected on quick view poup");
 		s_assert.assertTrue(sfShopSkinCarePage.isQuantityTextFieldPresentAtQuickViewPopup(),"Quantity Text field is not presnt on quick view poup");
@@ -209,8 +209,8 @@ public class ProductQuickViewTest extends StoreFrontWebsiteBaseTest{
 		updateProductCount = sfHomePage.updateQuantityByOne(previousProductCount);
 		sfShopSkinCarePage = sfHomePage.clickAllProducts();
 		sfShopSkinCarePage.refineProductByCategory(TestConstants.PC_PERKS_AUTOSHIP_PRODUCT_CATEGORY);
-		selectedProductName = sfShopSkinCarePage.getFirstProductNameFromAllProductPage();
-		sfShopSkinCarePage.clickOnQuickViewLinkForProduct("1");
+		selectedProductName = sfShopSkinCarePage.getProductNameFromAllProductPage(TestConstants.PRODUCT_NUMBER);
+		sfShopSkinCarePage.clickOnQuickViewLinkForProduct(TestConstants.PRODUCT_NUMBER);
 		s_assert.assertTrue(sfShopSkinCarePage.isProductNamePresentAtQuickViewPopupAsExpected(selectedProductName),"Product name is not present as expected on quick view poup");
 		s_assert.assertTrue(sfShopSkinCarePage.isQuantityTextFieldPresentAtQuickViewPopup(),"Quantity Text field is not present on quick view poup");
 		sfShopSkinCarePage.enterQuantityOfProductOnQuickViewPopup(specialChar);

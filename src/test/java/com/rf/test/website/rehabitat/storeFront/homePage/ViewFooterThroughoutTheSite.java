@@ -3,6 +3,7 @@ package com.rf.test.website.rehabitat.storeFront.homePage;
 import org.testng.annotations.Test;
 
 import com.rf.core.utils.CommonUtils;
+import com.rf.core.website.constants.TestConstants;
 import com.rf.test.website.rehabitat.storeFront.baseTest.StoreFrontWebsiteBaseTest;
 
 public class ViewFooterThroughoutTheSite extends StoreFrontWebsiteBaseTest{
@@ -52,7 +53,7 @@ public class ViewFooterThroughoutTheSite extends StoreFrontWebsiteBaseTest{
 		s_assert.assertTrue(sfShopSkinCarePage.isTheFooterLinkDisplayed(dermRF),"derm rf link is not present in footer section on reverse category page");
 		s_assert.assertTrue(sfShopSkinCarePage.isTheFooterLinkDisplayed(rfConnection),"RF Connection link is not present in footer section on reverse category page");
 		//verify footer links on product detail page.
-		sfProductDetailPage = sfShopSkinCarePage.clickNameOfFirstProduct();
+		sfProductDetailPage = sfShopSkinCarePage.clickNameOfFirstProduct(TestConstants.PRODUCT_NUMBER);
 		s_assert.assertTrue(sfProductDetailPage.isTheFooterLinkDisplayed(contactUS),"Contact Us link is not present in footer section on product detail page");
 		s_assert.assertTrue(sfProductDetailPage.isTheFooterLinkDisplayed(careers),"Careers link is not present in footer section on reverse category page");
 		s_assert.assertTrue(sfProductDetailPage.isTheFooterLinkDisplayed(dermRF),"derm rf link is not present in footer section on reverse category page");

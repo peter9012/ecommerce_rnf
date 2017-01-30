@@ -23,7 +23,10 @@ public class StoreFrontAutoshipCartPage extends StoreFrontWebsiteBasePage{
 	private final By CRP_CHECKOUT_LOC = By.xpath("//a[contains(text(),'CRP Checkout')]");
 	private final By NEXT_BILL_SHIP_DATE_ON_AUTOSHIP_CART_PAGE_LOC = By.xpath("//td[text()='Ship & Bill Date']/following::td[1]");
 	private final By CRP_THRESHOLD_MSG_LOC = By.xpath("//div[@class='global-alerts']/div");
+	private final By SUBSCRIBE_TO_PULSE_BTN_LOC = By.id("confirmsubmitsubs");
+	private String quantityOfSpecificItemInCartLoc = "//ul[contains(@class,'item-list')]/descendant::input[contains(@class,'quantity-input')][%s]";
 
+	private String updateQuantityLinkForSpecificItemLoc  = "//ul[contains(@class,'item-list')]/descendant::input[contains(@value,'Update Qty')][%s]";
 	private String productQuantityLoc = "//li[@class='item-list-item'][%s]//input[@name='qty']";
 	private String productUpdateQuantityLinkLoc = "//li[@class='item-list-item'][%s]//input[@value='Update Qty']";
 	private String removeLinkOfAnItemAtAutoshipCartLoc = "//li[@class='item-list-item'][%s]//input[@id='autoship_remove'] ";
@@ -228,6 +231,46 @@ public class StoreFrontAutoshipCartPage extends StoreFrontWebsiteBasePage{
 			logger.info("There are no products in cart to remove.");
 		}
 		return null;
+	}
+
+	/***
+	 * This method get product quantity for specific product on Autoship cart page
+	 * 
+	 * @param productName
+	 * @return product quantity
+	 * 
+	 */
+	public String getQuantityOfProductFromAutoshipCart(String itemNumber){
+		String productQuantity = null;
+		productQuantity = driver.getAttribute(By.xpath(String.format(quantityOfSpecificItemInCartLoc, itemNumber)),"value");
+		logger.info("Quantity of " + itemNumber + " is " + productQuantity);
+		return productQuantity;
+	}
+
+	/***
+	 * This method enter product quantity
+	 * 
+	 * @param itemNumber, quantity
+	 * @return store front Autoship cart page
+	 * 
+	 */
+	public StoreFrontAutoshipCartPage updateQuantityOfItemInAutoshipCart(String itemNumber, String quantity) {
+		driver.type(By.xpath(String.format(quantityOfSpecificItemInCartLoc, itemNumber)), quantity);
+		logger.info("Qunatity updated as " + quantity + " for Item Number : " + itemNumber);
+		return this;
+	}
+
+	/***
+	 * This method click update link for the Quantity
+	 * 
+	 * @param itemNumber
+	 * @return store front Autoship cart page
+	 * 
+	 */
+	public StoreFrontAutoshipCartPage clickUpdateQuantityLink(String itemNumber) {
+		driver.click(By.xpath(String.format(updateQuantityLinkForSpecificItemLoc, itemNumber)));
+		logger.info("Clicked Update Quantity Link for Item Number : " + itemNumber);
+		return this;
 	}
 
 }

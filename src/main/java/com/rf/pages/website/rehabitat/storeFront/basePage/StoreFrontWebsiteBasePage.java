@@ -42,7 +42,7 @@ public class StoreFrontWebsiteBasePage extends RFBasePage {
 		super(driver);
 		this.driver = driver;
 	}
-	
+
 	private final By SHOPPING_CART_HEADLINE_ON_CHCKOUT_POPUP_LOC = By.xpath("//div[@id='cboxContent']//span[@class='headline-text' and contains(text(),'Added to Your Shopping Cart')]");
 	private final By SUBTOTAL_LOC = By.xpath("//td[contains(text(),'Subtotal')]/following::td[1]");
 	private final By TOTAL_PRICE_OF_ITEMS_IN_MINI_CART_LOC = By
@@ -61,8 +61,6 @@ public class StoreFrontWebsiteBasePage extends RFBasePage {
 	private final By RODAN_AND_FIELDS_IMAGE_LOC = By.xpath("//img[@title='Rodan and Fields']");
 	private final By FIND_A_CONSULTANT_LINK_LOC = By.xpath("//a[@title='FIND A CONSULTANT']");
 	protected final By SPONSOR_SEARCH_FIELD_LOC = By.id("sponserparam");
-	protected final By PRODUCTS_NAME_LINK_LOC = By
-			.xpath("//div[@id='product_listing']/descendant::div[@class='details'][1]//a");
 	private final By SEARCH_SPONSOR_LOC = By.id("search-sponsor-button");
 	private final By SEARCH_BOX_LOC = By.id("search-box");
 	private final By SELECT_AND_CONTINUE_LOC = By
@@ -285,6 +283,7 @@ public class StoreFrontWebsiteBasePage extends RFBasePage {
 	private final By ERROR_MESSAGE_EXISTING_PREFIX_LOC = By.xpath("//*[@id='command']//following::span[@class='prefix-error']");
 	private final By ABOUT_ME_LOC = By.xpath(topNavigationLoc + "//a[contains(@title,'About Me')]");
 
+	protected String productNameLinkLoc = "//div[@id='product_listing']/descendant::div[@class='details'][%s]//a";
 	private String quantityOfSpecificItemInCart = "//div[@class='qty']//input[@id='quantity_%s']";
 	private String itemNameInMiniCart = "//ol/descendant::li[@class='mini-cart-item'][%s]//a[@class='name']";
 	private String itemQuantityInMiniCart = "//ol/descendant::li[@class='mini-cart-item'][%s]//div[@class='qty']";
@@ -703,8 +702,8 @@ public class StoreFrontWebsiteBasePage extends RFBasePage {
 	 * @return product name
 	 * 
 	 */
-	public String getProductName() {
-		String productName = driver.findElement(PRODUCTS_NAME_LINK_LOC).getText();
+	public String getProductName(String productNumber) {
+		String productName = driver.findElement(By.xpath(String.format(productNameLinkLoc, productNumber))).getText();
 		logger.info("product name is: " + productName);
 		return productName;
 	}
@@ -1682,7 +1681,7 @@ public class StoreFrontWebsiteBasePage extends RFBasePage {
 		logger.info("Exp year dropdown clicked");
 		driver.click(EXP_YEAR_LOC);
 		logger.info("Exp year selected");
-		driver.type(CVV_LOC, CVV);
+		driver.type(CVV_LOC, CVV+"\t");
 		logger.info("Entered CVV as" + CVV);
 		driver.waitForTokenizing();
 		return this;
@@ -3619,6 +3618,18 @@ public class StoreFrontWebsiteBasePage extends RFBasePage {
 		driver.click(VIEW_SHOPPING_CART_LINK_LOC);
 		logger.info("View Shopping Cart Link Clicked");
 		return new StoreFrontCartPage(driver);
+	}
+
+	/***
+	 * This method validates the specific address field in Billing address on UI
+	 * Profile Overloaded method
+	 * 
+	 * @param String, String
+	 * @return boolean value
+	 * 
+	 */
+	public boolean isAddressFieldPresentAsExpectedOnUI(String billingAddressOnUI, String addressField) {
+		return billingAddressOnUI.contains(addressField);
 	}
 
 }

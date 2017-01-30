@@ -135,6 +135,9 @@ public class BillingProfileTest extends StoreFrontWebsiteBaseTest{
 		s_assert.assertAll();
 	}
 
+	/***
+	 * 
+	 */
 	@Test(enabled=true)
 	public void testAddNewBillingAddressToNewlyCreatedBillingProfile_386(){
 		String currentURL = null;

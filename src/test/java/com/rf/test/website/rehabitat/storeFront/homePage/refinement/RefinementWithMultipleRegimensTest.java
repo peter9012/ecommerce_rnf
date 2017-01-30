@@ -14,7 +14,7 @@ public class RefinementWithMultipleRegimensTest extends StoreFrontWebsiteBaseTes
 	 * applied successfully or not
 	 *     
 	 */
-	@Test(enabled=false)
+	@Test(enabled=true)
 	public void testRefinmentWithMultipleRegimens_122(){
 		String categoryUnblemish = "UNBLEMISH";
 		String categoryFeatured = "FEATURED";

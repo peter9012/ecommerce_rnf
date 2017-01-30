@@ -13,7 +13,7 @@ public class CategoryResultsPageTest extends StoreFrontWebsiteBaseTest{
 	 * 
 	 *     
 	 */
-	@Test(enabled=false)
+	@Test(enabled=true)
 	public void testVerifyResultsLinkForCategoryUnderShopSkincareOnCorpComAndBizSite_57(){
 		String prefix = TestConstants.CONSULTANT_PWS_PREFIX;
 		String currentURL = null;

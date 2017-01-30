@@ -473,7 +473,7 @@ public class PCEnrollmentTest extends StoreFrontWebsiteBaseTest{
 	  * Description : This test validates default selected sponsor while start from PWS 
 	  *     
 	  */
-	 @Test(enabled=false)
+	 @Test(enabled=true)
 	 public void testPCRegisteringFromPWSWillHaveDefaultsponsor_496(){
 	  String allProduct = "ALL PRODUCTS";
 	  firstName=TestConstants.PC_FIRST_NAME;

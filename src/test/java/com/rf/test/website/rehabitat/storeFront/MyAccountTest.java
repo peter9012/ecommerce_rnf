@@ -1345,7 +1345,7 @@ public class MyAccountTest extends StoreFrontWebsiteBaseTest{
 	  Description: This method re-enroll consultant in pulse with new prefix and existing autosuggested prefix .
 	 *
 	 */	
-	@Test(enabled=false)
+	@Test(enabled=true)
 	public void testReEnnrollmentInPulseWithin180DaysOfExistingAutoSuggestedPrefix_278(){
 		String prefix = TestConstants.FIRST_NAME+CommonUtils.getCurrentTimeStamp();
 		String autoSuggestedPrefixName = null;

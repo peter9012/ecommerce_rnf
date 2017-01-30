@@ -2013,4 +2013,14 @@ public class OrdersTest extends StoreFrontWebsiteBaseTest{
 		s_assert.assertTrue(sfCheckoutPage.isNotYourConsultantLinkPresent(), "Not your sponsor link is not present for consultant's sponsor");
 		s_assert.assertAll();
 	}
+	
+	/***
+	  * qTest : TC-487 Order History- Report a Problem-Product Level-With Empty fields
+	  * Description : This test validates the error messages for Report problem details Fields. 
+	  *     
+	  */
+	 @Test(enabled=true)
+	 public void testOrderHistoryReportAProblemProductLevelWithEmptyFields_487(){
+		//duplicate test Same as TC-483
+	    }
 }

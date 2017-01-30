@@ -110,7 +110,7 @@ public class AutoshipTest extends StoreFrontWebsiteBaseTest{
 	 * 
 	 *     
 	 */
-	@Test(enabled=false)
+	@Test(enabled=true)
 	public void testUpdateAutoshipAddABillingProfileInvalid_418(){
 		String currentURL = null;
 		String textToAssertInURL = "autoship/cart";

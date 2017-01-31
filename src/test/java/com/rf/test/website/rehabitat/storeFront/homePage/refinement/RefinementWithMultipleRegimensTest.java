@@ -26,7 +26,7 @@ public class RefinementWithMultipleRegimensTest extends StoreFrontWebsiteBaseTes
 		String categoryName1 = null;
 		String categoryName2 = null;
 		String appliedFilterName = null;
-		sfHomePage.loginToStoreFront(TestConstants.PC_EMAIL_HAVING_AUTOSHIP, password);
+		sfHomePage.loginToStoreFront(TestConstants.PC_EMAIL_HAVING_AUTOSHIP,  password,true);
 		sfHomePage.clickSearchIcon();
 		sfShopSkinCarePage = sfHomePage.searchEntityAndHitEnter("Redefine");
 		s_assert.assertTrue(sfShopSkinCarePage.isSearchResultsTextAppearedAsExpected("Redefine"), "search result page is not present");

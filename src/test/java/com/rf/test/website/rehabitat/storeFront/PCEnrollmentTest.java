@@ -102,7 +102,7 @@ public class PCEnrollmentTest extends StoreFrontWebsiteBaseTest{
 		s_assert.assertTrue(sfHomePage.isWelcomeUserElementDisplayed(), "PC has not been enrolled partially");
 		sfHomePage.clickWelcomeDropdown();
 		sfHomePage.logout();
-		sfHomePage.loginToStoreFront(email, password);
+		sfHomePage.loginToStoreFront(email,  password,true);
 		s_assert.assertFalse(sfHomePage.isWelcomeUserElementDisplayed(), "Incomplete enrolled PC user "+email+"  has successfuly logged in");
 		s_assert.assertAll();
 	}

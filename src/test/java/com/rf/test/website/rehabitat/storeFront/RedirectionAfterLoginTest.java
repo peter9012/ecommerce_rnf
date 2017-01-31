@@ -16,7 +16,7 @@ public class RedirectionAfterLoginTest extends StoreFrontWebsiteBaseTest{
 	@Test(enabled=true)
 	public void testAsAConsultantAfterLoggingInFromCorpSponsorWithPWS_374(){
 		String currentURL = null;
-		sfHomePage.loginToStoreFront(TestConstants.CONSULTANT_EMAIL_WITH_CRP_AND_PULSE, password);
+		sfHomePage.loginToStoreFront(TestConstants.CONSULTANT_EMAIL_WITH_CRP_AND_PULSE,  password,true);
 		currentURL = sfHomePage.getCurrentURL();
 		s_assert.assertTrue(currentURL.contains("pws"),"Current url should contain for consultant with pws is PWS but actual on UI is "+currentURL);
 		s_assert.assertAll();
@@ -46,7 +46,7 @@ public class RedirectionAfterLoginTest extends StoreFrontWebsiteBaseTest{
 	public void testConsultantWithPWSLoggingInFromCorpSite_530(){
 		String currentURL = null;
 		String prefix = TestConstants.CONSULTANT_PWS_PREFIX;
-		sfHomePage.loginToStoreFront(TestConstants.CONSULTANT_EMAIL_WITH_CRP_AND_PULSE, password);
+		sfHomePage.loginToStoreFront(TestConstants.CONSULTANT_EMAIL_WITH_CRP_AND_PULSE,  password,true);
 		sfHomePage.clickRodanAndFieldsLogo();
 		currentURL = sfHomePage.getCurrentURL();
 		s_assert.assertTrue(currentURL.contains("pws") && currentURL.contains(prefix),"Current url should contain for consultant with pws is PWS and "+prefix+" but actual on UI is "+currentURL);
@@ -65,7 +65,7 @@ public class RedirectionAfterLoginTest extends StoreFrontWebsiteBaseTest{
 		sfHomePage.navigateToUrl(sfHomePage.getBaseUrl()+"/" +sfHomePage.getCountry() +"/pws/" + prefix);
 		currentURL = sfHomePage.getCurrentURL();
 		s_assert.assertFalse(currentURL.contains(prefix),"Current url should contain for "+prefix+" but actual on UI is "+currentURL);
-		sfHomePage.loginToStoreFront(TestConstants.PC_EMAIL_WHO_ENROLLED_UNDER_SPONSOR_WITH_PWS, password);
+		sfHomePage.loginToStoreFront(TestConstants.PC_EMAIL_WHO_ENROLLED_UNDER_SPONSOR_WITH_PWS,  password,true);
 		currentURL = sfHomePage.getCurrentURL();
 		s_assert.assertTrue(currentURL.contains(prefix),"Current url should contain for "+prefix+" but after login actual on UI is "+currentURL);
 		s_assert.assertAll();
@@ -83,7 +83,7 @@ public class RedirectionAfterLoginTest extends StoreFrontWebsiteBaseTest{
 		sfHomePage.navigateToUrl(sfHomePage.getBaseUrl()+"/" +sfHomePage.getCountry() +"/pws/" + prefix);
 		currentURL = sfHomePage.getCurrentURL();
 		s_assert.assertFalse(currentURL.contains(prefix),"Current url should contain for "+prefix+" but actual on UI is "+currentURL);
-		sfHomePage.loginToStoreFront(TestConstants.CONSULTANT_EMAIL_WITH_CRP_AND_PULSE, password);
+		sfHomePage.loginToStoreFront(TestConstants.CONSULTANT_EMAIL_WITH_CRP_AND_PULSE,  password,true);
 		currentURL = sfHomePage.getCurrentURL();
 		s_assert.assertTrue(currentURL.contains(prefix),"Current url should contain for "+prefix+" but after login actual on UI is "+currentURL);
 		s_assert.assertAll();
@@ -98,7 +98,7 @@ public class RedirectionAfterLoginTest extends StoreFrontWebsiteBaseTest{
 	@Test(enabled=true)
 	public void testPCUserWhoHasRFCorporateAsSponsorShouldRedirectUserTOCorporateSite_533(){
 		String currentURL = null;
-		sfHomePage.loginToStoreFront(TestConstants.PC_USER_WHO_ENROLLED_UNDER_RF_CORPORATE_SPONSOR, password);
+		sfHomePage.loginToStoreFront(TestConstants.PC_USER_WHO_ENROLLED_UNDER_RF_CORPORATE_SPONSOR,  password,true);
 		currentURL = sfHomePage.getCurrentURL();
 		s_assert.assertTrue(!currentURL.contains("pws"),"Current url for PC with RF corporate as sponsor is containing 'PWS' and actual on UI is "+currentURL);
 		s_assert.assertAll();
@@ -113,7 +113,7 @@ public class RedirectionAfterLoginTest extends StoreFrontWebsiteBaseTest{
 	@Test(enabled=true)
 	public void testConsultantWhoDoesNotHavePWSAndLogsInFromRFCorp_534(){
 		String currentURL = null;
-		sfHomePage.loginToStoreFront(TestConstants.CONSULTANT_EMAIL_WITHOUT_CRP_AND_PULSE, password);
+		sfHomePage.loginToStoreFront(TestConstants.CONSULTANT_EMAIL_WITHOUT_CRP_AND_PULSE,  password,true);
 		currentURL = sfHomePage.getCurrentURL();
 		s_assert.assertTrue(!currentURL.contains("pws"),"Current url for consultant without PWS after login it is containing 'PWS' and actual on UI is "+currentURL);
 		s_assert.assertAll();
@@ -128,7 +128,7 @@ public class RedirectionAfterLoginTest extends StoreFrontWebsiteBaseTest{
 	@Test(enabled=true)
 	public void testPCUserWhoseSponsorDoesNotHavePWSAndLogsFromRFCorp_535(){
 		String currentURL = null;
-		sfHomePage.loginToStoreFront(TestConstants.PC_EMAIL_WHO_ENROLLED_UNDER_SPONSOR_WITHOUT_PWS, password);
+		sfHomePage.loginToStoreFront(TestConstants.PC_EMAIL_WHO_ENROLLED_UNDER_SPONSOR_WITHOUT_PWS,  password,true);
 		currentURL = sfHomePage.getCurrentURL();
 		s_assert.assertTrue(!currentURL.contains("pws"),"Current url for PC who enrolled under sponsor without PWS after login it is containing 'PWS' and actual on UI is "+currentURL);
 		s_assert.assertAll();
@@ -146,7 +146,7 @@ public class RedirectionAfterLoginTest extends StoreFrontWebsiteBaseTest{
 		String prefix = TestConstants.CONSULTANT_PWS_PREFIX;
 		homePageURL = sfHomePage.getCurrentURL();
 		sfHomePage.navigateToUrl(homePageURL + "/pws/" + prefix);
-		sfHomePage.loginToStoreFront(TestConstants.CONSULTANT_EMAIL_WITH_CRP_AND_PULSE, password);
+		sfHomePage.loginToStoreFront(TestConstants.CONSULTANT_EMAIL_WITH_CRP_AND_PULSE,  password,true);
 		currentURL = sfHomePage.getCurrentURL();
 		s_assert.assertTrue(currentURL.contains("pws"),"Current url should contain 'PWS' but actual on UI is "+currentURL);
 		sfHomePage.clickRodanAndFieldsLogo();
@@ -165,7 +165,7 @@ public class RedirectionAfterLoginTest extends StoreFrontWebsiteBaseTest{
 	public void testPCUserEnrolledUnderSponsorPWSAndLogsInFromTheRFCorporateWebsite_529(){
 		String currentURL=null;
 		String sponser=TestConstants.SPONSOR;
-		sfHomePage.loginToStoreFront(TestConstants.PC_EMAIL_WHO_ENROLLED_UNDER_SPONSOR_WITH_PWS, password);
+		sfHomePage.loginToStoreFront(TestConstants.PC_EMAIL_WHO_ENROLLED_UNDER_SPONSOR_WITH_PWS,  password,true);
 		currentURL = sfHomePage.getCurrentURL().toLowerCase();
 		s_assert.assertTrue(currentURL.contains(sponser),"Current url should contain sponser name:"+sponser+" but actual URL on UI is "+currentURL);
 		s_assert.assertAll();

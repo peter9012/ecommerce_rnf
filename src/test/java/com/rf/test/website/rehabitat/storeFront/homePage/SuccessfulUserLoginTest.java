@@ -17,7 +17,7 @@ public class SuccessfulUserLoginTest extends StoreFrontWebsiteBaseTest{
 	 */
 	@Test(enabled=true)
 	public void testUserloginFromCorp_27(){
-		sfHomePage.loginToStoreFront(TestConstants.CONSULTANT_EMAIL_WITH_CRP_AND_PULSE, password);
+		sfHomePage.loginToStoreFront(TestConstants.CONSULTANT_EMAIL_WITH_CRP_AND_PULSE,  password,true);
 		s_assert.assertTrue(sfHomePage.isWelcomeUserElementDisplayed(),"user is NOT successfully logged in");
 		s_assert.assertTrue(sfHomePage.getCurrentURL().contains(sfHomePage.getBaseUrl()),"User is not on corp site after login");
 		s_assert.assertAll();
@@ -112,7 +112,7 @@ public class SuccessfulUserLoginTest extends StoreFrontWebsiteBaseTest{
 	public void testUserloginFromPWS_28(){
 		String prefix = TestConstants.CONSULTANT_PWS_PREFIX;
 		sfHomePage.navigateToUrl(sfHomePage.getBaseUrl()+"/" +sfHomePage.getCountry() +"/pws/" + prefix);
-		sfHomePage.loginToStoreFront(TestConstants.CONSULTANT_EMAIL_WITH_CRP_AND_PULSE, password);
+		sfHomePage.loginToStoreFront(TestConstants.CONSULTANT_EMAIL_WITH_CRP_AND_PULSE,  password,true);
 		s_assert.assertTrue(sfHomePage.isWelcomeUserElementDisplayed(),"user is NOT successfully logged in");
 		s_assert.assertTrue(sfHomePage.getCurrentURL().contains(prefix),"User is not on PWS site after login");
 		s_assert.assertAll();

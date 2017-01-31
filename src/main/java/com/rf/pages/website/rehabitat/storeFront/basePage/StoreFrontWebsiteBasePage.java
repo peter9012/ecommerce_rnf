@@ -718,23 +718,23 @@ public class StoreFrontWebsiteBasePage extends RFBasePage {
 	 * 
 	 */
 
-	public StoreFrontWebsiteBasePage loginToStoreFront(String username, String password) {
-		clickLoginIcon();
-		driver.type(USERNAME_TXTFLD_LOC, username);
-		logger.info("username entered as " + username);
-		driver.type(PASSWORD_TXTFLD_LOC, password);
-		logger.info("password entered as  " + password);
-		driver.click(LOGIN_BTN_LOC);
-		logger.info("login button clicked");
-		if (driver.isElementVisible(NEW_POLICIES_PROCEDURES_POPUP_LOC)) {
-			driver.clickByJS(RFWebsiteDriver.driver,
-					driver.findElement(ACCEPT_RDBTN_NEW_POLICIES_PROCEDURES_POPUP_LOC));
-			driver.pauseExecutionFor(1000);
-			driver.clickByJS(RFWebsiteDriver.driver,
-					driver.findElement(CONTINUE_BTN_NEW_POLICIES_PROCEDURES_POPUP_LOC));
-		}
-		return this;
-	}
+//	public StoreFrontWebsiteBasePage loginToStoreFront(String username, String password) {
+//		clickLoginIcon();
+//		driver.type(USERNAME_TXTFLD_LOC, username);
+//		logger.info("username entered as " + username);
+//		driver.type(PASSWORD_TXTFLD_LOC, password);
+//		logger.info("password entered as  " + password);
+//		driver.click(LOGIN_BTN_LOC);
+//		logger.info("login button clicked");
+//		if (driver.isElementVisible(NEW_POLICIES_PROCEDURES_POPUP_LOC)) {
+//			driver.clickByJS(RFWebsiteDriver.driver,
+//					driver.findElement(ACCEPT_RDBTN_NEW_POLICIES_PROCEDURES_POPUP_LOC));
+//			driver.pauseExecutionFor(1000);
+//			driver.clickByJS(RFWebsiteDriver.driver,
+//					driver.findElement(CONTINUE_BTN_NEW_POLICIES_PROCEDURES_POPUP_LOC));
+//		}
+//		return this;
+//	}
 
 	public StoreFrontWebsiteBasePage loginToStoreFront(String username, String password, boolean closeCRPReminder) {
 		clickLoginIcon();

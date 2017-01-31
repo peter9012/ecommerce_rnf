@@ -91,7 +91,7 @@ public class SwitchCountryTogglesTest extends StoreFrontWebsiteBaseTest{
 	public void testToggleShouldBeDeactivatedIfUserIsLoggedIn_3(){
 		String country_CA = "CAN";
 		String countryNameFromUI =null;
-		sfHomePage.loginToStoreFront(TestConstants.CONSULTANT_EMAIL_WITH_CRP_AND_PULSE, password);
+		sfHomePage.loginToStoreFront(TestConstants.CONSULTANT_EMAIL_WITH_CRP_AND_PULSE,  password,true);
 		sfHomePage.clickToggleButtonOfCountry();
 		sfHomePage.selectCountryFromToggleButton(country_CA);
 		countryNameFromUI = sfHomePage.getDefaultSelectedCountryNameFromToggle().toUpperCase();

@@ -151,9 +151,9 @@ public class StoreFrontShopSkinCarePage extends StoreFrontWebsiteBasePage{
 	public boolean isPriceFilterLowToHighAppliedSuccessfully(){
 		int totalProducts = driver.findElements(TOTAL_PRODUCTS_LOC).size();
 		if(totalProducts>=3){
-			String firstProductPrice = driver.findElement(By.xpath(String.format(priceOfProductLoc, "10"))).getText().split("\\$")[1].trim();
-			String secondProductPrice = driver.findElement(By.xpath(String.format(priceOfProductLoc, "11"))).getText().split("\\$")[1].trim();
-			String thirdProductPrice = driver.findElement(By.xpath(String.format(priceOfProductLoc, "12"))).getText().split("\\$")[1].trim();
+			String firstProductPrice = driver.findElement(By.xpath(String.format(priceOfProductLoc, "7"))).getText().split("\\$")[1].trim();
+			String secondProductPrice = driver.findElement(By.xpath(String.format(priceOfProductLoc, "8"))).getText().split("\\$")[1].trim();
+			String thirdProductPrice = driver.findElement(By.xpath(String.format(priceOfProductLoc, "9"))).getText().split("\\$")[1].trim();
 			double priceFirstProduct = Double.parseDouble(firstProductPrice);
 			double priceSecondProduct = Double.parseDouble(secondProductPrice);
 			double priceThirdProduct = Double.parseDouble(thirdProductPrice);
@@ -285,6 +285,7 @@ public class StoreFrontShopSkinCarePage extends StoreFrontWebsiteBasePage{
 	 * 
 	 */
 	public boolean isCheckoutPopupDisplayed(){
+		driver.pauseExecutionFor(3000);
 		return driver.findElement(CHECKOUT_BUTTON_POPUP_LOC).isDisplayed();
 	}
 
@@ -776,6 +777,7 @@ public class StoreFrontShopSkinCarePage extends StoreFrontWebsiteBasePage{
 		driver.click(SHOP_BY_PRICE_FILTER_OPTION_LOW_TO_HIGH_LOC);
 		logger.info("Price filter 'LOW TO HIGH' selected");
 		driver.waitForPageLoad();
+		driver.pauseExecutionFor(2000);
 		return this;
 	}
 
@@ -976,8 +978,8 @@ public class StoreFrontShopSkinCarePage extends StoreFrontWebsiteBasePage{
 			driver.clickByAction(By.xpath(String.format(productPriceOnQuickViewPopupThroughOrderTypeLoc,TestConstants.ORDER_TYPE_ADHOC)));
 		}
 		else if(orderType.equals(TestConstants.ORDER_TYPE_PC_PERKS)&& driver.isElementVisible(By.xpath(String.format(productPriceOnQuickViewPopupThroughOrderTypeLoc,"subscribe + save")))){
-			priceToAssert = driver.getText(By.xpath(String.format(productPriceOnQuickViewPopupThroughOrderTypeLoc,"subscribe + save"))).replace("$","");
-			driver.clickByAction(By.xpath(String.format(productPriceOnQuickViewPopupThroughOrderTypeLoc,"subscribe + save")));
+			priceToAssert = driver.getText(By.xpath(String.format(productPriceOnQuickViewPopupThroughOrderTypeLoc,TestConstants.ORDER_TYPE_PC_PERKS))).replace("$","");
+			driver.clickByAction(By.xpath(String.format(productPriceOnQuickViewPopupThroughOrderTypeLoc,TestConstants.ORDER_TYPE_PC_PERKS)));
 		}
 		else if(orderType.equals(TestConstants.ORDER_TYPE_CRP)&& driver.isElementVisible(By.xpath(String.format(productPriceOnQuickViewPopupThroughOrderTypeLoc,TestConstants.ORDER_TYPE_CRP)))){
 			priceToAssert = driver.getText(By.xpath(String.format(productPriceOnQuickViewPopupThroughOrderTypeLoc,"Add to CRP"))).replace("$","");

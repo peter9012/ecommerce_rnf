@@ -9,85 +9,90 @@ import com.rf.test.website.rehabitat.storeFront.baseTest.StoreFrontWebsiteBaseTe
 public class BillingProfileTest extends StoreFrontWebsiteBaseTest{
 
 	/***
-	 * qTest : TC-385 Add New Billing Address on Existing Billing Profile
-	 * 
-	 * Description : This test will add and verify the new billing address into existing billing profile
-	 * 
-	 *     
-	 */
-	@Test(enabled=false)// Blocked
-	public void testAddNewBillingAddressToExistingBillingProfile_385(){
-		String currentURL = null;
-		String randomWord = CommonUtils.getRandomWord(5);
-		String suggestedBillingAddress = null;
-		String urlToAssert = "payment-details";
-		String cardName = TestConstants.CARD_NAME + randomWord;
-		String firstName = TestConstants.FIRST_NAME;
-		String lastName = TestConstants.LAST_NAME;
-		String addressLine1 = TestConstants.ADDRESS_LINE_1_US;
-		String addressLine2 = TestConstants.ADDRESS_LINE_2_US;
-		String city = TestConstants.CITY_US;
-		String state = TestConstants.STATE_US;
-		String postalCode = TestConstants.POSTAL_CODE_US;
-		String phoneNumber = TestConstants.PHONE_NUMBER;
-		String addressInWrongFormat = TestConstants.WRONG_ADDRESS_LINE_1_US;
-		String wrongCombinationCity = TestConstants.CITY_DALLAS_US;
-		String updatedAddressLine1 = TestConstants.SECOND_ADDRESS_LINE_1_US;
-		String updatedAddressLine2 = TestConstants.SECOND_ADDRESS_LINE_2_US;
-		String updatedCity = TestConstants.SECOND_CITY_US;
-		String updatedPostalCode = TestConstants.SECOND_POSTAL_CODE_US;
-		String stateAbbreviation = TestConstants.STATE_US_ABBREVIATION;
-		String cardLastName = null;
-		String billingAddressOnUI = null;
+	  * qTest : TC-385 Add New Billing Address on Existing Billing Profile
+	  * 
+	  * Description : This test will add and verify the new billing address into existing billing profile
+	  * 
+	  *     
+	  */
+	 @Test(enabled=true)
+	 public void testAddNewBillingAddressToExistingBillingProfile_385(){
+	  String currentURL = null;
+	  String randomWord = CommonUtils.getRandomWord(5);
+	  String suggestedBillingAddress = null;
+	  String urlToAssert = "payment-details";
+	  String cardName = TestConstants.CARD_NAME + randomWord;
+	  String firstName = TestConstants.FIRST_NAME;
+	  String lastName = TestConstants.LAST_NAME;
+	  String addressLine1 = TestConstants.ADDRESS_LINE_1_US;
+	  String addressLine2 = TestConstants.ADDRESS_LINE_2_US;
+	  String city = TestConstants.CITY_US;
+	  String state = TestConstants.STATE_US;
+	  String postalCode = TestConstants.POSTAL_CODE_US;
+	  String phoneNumber = TestConstants.PHONE_NUMBER;
+	  String addressInWrongFormat = TestConstants.WRONG_ADDRESS_LINE_1_US;
+	  String wrongCombinationCity = TestConstants.CITY_DALLAS_US;
+	  String updatedAddressLine1 = TestConstants.SECOND_ADDRESS_LINE_1_US;
+	  String updatedAddressLine2 = TestConstants.SECOND_ADDRESS_LINE_2_US;
+	  String updatedCity = TestConstants.SECOND_CITY_US;
+	  String updatedPostalCode = TestConstants.SECOND_POSTAL_CODE_US;
+	  String stateAbbreviation = TestConstants.STATE_US_ABBREVIATION;
+	  String cardLastName = null;
+	  String billingAddressOnUI = null;
 
-		// Login as Consultant User
-		sfHomePage.loginToStoreFront(TestConstants.CONSULTANT_EMAIL_WITH_CRP_AND_PULSE, password);
-		sfHomePage.clickWelcomeDropdown();
-		sfBillingInfoPage = sfHomePage.navigateToBillingInfoPage();
-		currentURL = sfBillingInfoPage.getCurrentURL().toLowerCase();
-		s_assert.assertTrue(currentURL.contains(urlToAssert), "Expected URL should contain "+urlToAssert+" but actual on UI is"+currentURL);
+	  // Login as Consultant User
+	  sfHomePage.loginToStoreFront(TestConstants.CONSULTANT_EMAIL_WITH_CRP_AND_PULSE, password,true);
+	  sfHomePage.clickWelcomeDropdown();
+	  sfBillingInfoPage = sfHomePage.navigateToBillingInfoPage();
+	  currentURL = sfBillingInfoPage.getCurrentURL().toLowerCase();
+	  s_assert.assertTrue(currentURL.contains(urlToAssert), "Expected URL should contain "+urlToAssert+" but actual on UI is"+currentURL);
 
-		// Adding a New Profile with Specific Address 1
-		sfBillingInfoPage.clickAddNewBillingProfileLink();
-		sfBillingInfoPage.enterUserBillingDetails(TestConstants.CARD_TYPE, TestConstants.CARD_NUMBER_2,cardName, TestConstants.CVV);
-		sfBillingInfoPage.clickAddNewBillingAddressLink();
-		s_assert.assertTrue(sfBillingInfoPage.isAddNewBillingAddressFormDisplayed(),"ADD NEW BILLING ADDRESS form Block is not Displayed");
-		sfBillingInfoPage.enterConsultantAddressDetails(firstName, lastName, addressLine1, addressLine2, city, state, postalCode, phoneNumber);
-		sfBillingInfoPage.clickBillingDetailsNextbutton();
-		sfBillingInfoPage.clickUseAsEnteredButtonOnPopUp();
-		cardLastName = sfBillingInfoPage.getLastName(cardName);
-		s_assert.assertTrue(sfBillingInfoPage.isNewBillingProfilePresentInRowList(cardLastName),"New Billing Profile is not present in Profiles List");
+	  // Adding a New Profile with Specific Address 1
+	  sfBillingInfoPage.clickAddNewBillingProfileLink();
+	  sfBillingInfoPage.enterUserBillingDetails(TestConstants.CARD_TYPE, TestConstants.CARD_NUMBER_2,cardName, TestConstants.CVV);
+	  sfBillingInfoPage.clickAddNewBillingAddressLink();
+	  s_assert.assertTrue(sfBillingInfoPage.isAddNewBillingAddressFormDisplayed(),"ADD NEW BILLING ADDRESS form Block is not Displayed");
+	  sfBillingInfoPage.enterConsultantAddressDetails(firstName, lastName, addressLine1, addressLine2, city, state, postalCode, phoneNumber);
+	  sfBillingInfoPage.clickBillingDetailsNextbutton();
+	  sfBillingInfoPage.clickUseAsEnteredButtonOnPopUp();
+	  cardLastName = sfBillingInfoPage.getLastName(cardName);
+	  s_assert.assertTrue(sfBillingInfoPage.isNewBillingProfilePresentInRowList(cardLastName),"New Billing Profile is not present in Profiles List");
 
-		// Edit Specific Billing Profile
-		sfBillingInfoPage.clickBillingProfileEditLink(cardLastName);
-		s_assert.assertTrue(sfBillingInfoPage.isCardDetailsFieldsDisabled(),"Card Details Fields are not Disabled after Editing Default Billing Profile");
-		s_assert.assertTrue(sfBillingInfoPage.isCardTypeIconsDisabled(),"Card Type Icons are not Disabled after Editing Default Billing Profile");
-		sfBillingInfoPage.clickAddNewBillingAddressLink();
-		s_assert.assertTrue(sfBillingInfoPage.isAddNewBillingAddressFormDisplayedForExistingProfile(),"ADD NEW BILLING ADDRESS form Block is not Displayed for existing billing profile");
+	  // Edit Specific Billing Profile
+	  sfBillingInfoPage.clickBillingProfileEditLink(cardLastName);
+	  s_assert.assertTrue(sfBillingInfoPage.isCardDetailsFieldsDisabled(),"Card Details Fields are not Disabled after Editing Default Billing Profile");
+	  s_assert.assertTrue(sfBillingInfoPage.isCardTypeIconsDisabled(),"Card Type Icons are not Disabled after Editing Default Billing Profile");
+	  sfBillingInfoPage.clickAddNewBillingAddressLink();
+	  s_assert.assertTrue(sfBillingInfoPage.isAddNewBillingAddressFormDisplayedForExistingProfile(),"ADD NEW BILLING ADDRESS form Block is not Displayed for existing billing profile");
 
-		// Filling Address in Wrong format.
-		sfBillingInfoPage.enterBillingAddressDetailsForExistingBillingProfile(firstName, lastName, addressInWrongFormat, addressLine2, city, state, postalCode, phoneNumber);
-		sfBillingInfoPage.clickSavePaymentButton();
-		s_assert.assertTrue(sfBillingInfoPage.isUnknownAddressErrorMessageIsPresentAsExpectedForExistingProfile(),"Unknown Address Error message is not present");
+	  // Filling Address in Wrong format.
+	  sfBillingInfoPage.enterBillingAddressDetailsForExistingBillingProfile(firstName, lastName, addressInWrongFormat, addressLine2, city, state, postalCode, phoneNumber);
+	  sfBillingInfoPage.clickSavePaymentButton();
+	  s_assert.assertTrue(sfBillingInfoPage.isUnknownAddressErrorMessageIsPresentAsExpectedForExistingProfile(),"Unknown Address Error message is not present");
 
-		// Filling Wrong combination of City and State in Billing address
-		sfBillingInfoPage.enterBillingAddressDetailsForExistingBillingProfile(firstName, lastName, addressLine1, addressLine2, wrongCombinationCity, state, postalCode, phoneNumber);
-		sfBillingInfoPage.clickSavePaymentButton();
-		suggestedBillingAddress = sfBillingInfoPage.getSuggestedBillingAddressFromBlock();
-		s_assert.assertTrue(suggestedBillingAddress.contains(city),"Suggested Address City is not found as expected. Expected City : "+city+". Actual City : "+wrongCombinationCity);
-		sfBillingInfoPage.clickOnAddressSuggestionModalCloseBtn();
+	  // Filling Wrong combination of City and State in Billing address
+	  sfBillingInfoPage.enterBillingAddressDetailsForExistingBillingProfile(firstName, lastName, addressLine1, addressLine2, wrongCombinationCity, state, postalCode, phoneNumber);
+	  sfBillingInfoPage.clickSavePaymentButton();
+	  suggestedBillingAddress = sfBillingInfoPage.getSuggestedBillingAddressFromBlock();
+	  s_assert.assertTrue(suggestedBillingAddress.contains(city),"Suggested Address City is not found as expected. Expected City : "+city+". Actual City : "+wrongCombinationCity);
+	  sfBillingInfoPage.clickOnAddressSuggestionModalCloseBtn();
 
-		// Filling Specific Address 2 in right format
-		sfBillingInfoPage.clickBillingProfileEditLink(cardLastName);
-		sfBillingInfoPage.clickAddNewBillingAddressLink();
-		s_assert.assertTrue(sfBillingInfoPage.isAddNewBillingAddressFormDisplayedForExistingProfile(),"ADD NEW BILLING ADDRESS form Block is not Displayed for existing billing profile");
-		sfBillingInfoPage.enterBillingAddressDetailsForExistingBillingProfile(firstName, lastName, updatedAddressLine1, updatedAddressLine2, updatedCity, state, updatedPostalCode, phoneNumber);
-		sfBillingInfoPage.clickSavePaymentButton();
-		sfBillingInfoPage.clickUseAsEnteredButtonOnPopUp();
-		billingAddressOnUI = sfBillingInfoPage.getBillingAddressForSpecificBillingProfile(cardLastName);
-		s_assert.assertTrue(sfBillingInfoPage.isBillingAddressOnUIIsFoundAsExpected(updatedAddressLine1, updatedAddressLine2, updatedCity, updatedPostalCode, stateAbbreviation, billingAddressOnUI),"Billing Address on UI is not found as expected after updation");
-		s_assert.assertAll();
-	}
+	  // Filling Specific Address 2 in right format
+	  sfBillingInfoPage.clickBillingProfileEditLink(cardLastName);
+	  sfBillingInfoPage.clickAddNewBillingAddressLink();
+	  s_assert.assertTrue(sfBillingInfoPage.isAddNewBillingAddressFormDisplayedForExistingProfile(),"ADD NEW BILLING ADDRESS form Block is not Displayed for existing billing profile");
+	  sfBillingInfoPage.enterBillingAddressDetailsForExistingBillingProfile(firstName, lastName, updatedAddressLine1, updatedAddressLine2, updatedCity, state, updatedPostalCode, phoneNumber);
+	  sfBillingInfoPage.clickSavePaymentButton();
+	  sfBillingInfoPage.clickUseAsEnteredButtonOnPopUp();
+	  billingAddressOnUI = sfBillingInfoPage.getBillingAddressForSpecificBillingProfile(cardLastName);
+	  s_assert.assertTrue(sfBillingInfoPage.isAddressFieldPresentAsExpectedOnUI(billingAddressOnUI,updatedAddressLine1),"Address Line 1 : " + updatedAddressLine1 + " is not present in updated Billing Address");
+	  s_assert.assertTrue(sfBillingInfoPage.isAddressFieldPresentAsExpectedOnUI(billingAddressOnUI,updatedAddressLine2),"Address Line 2 : " + updatedAddressLine2 + " is not present in updated Billing Address");
+	  s_assert.assertTrue(sfBillingInfoPage.isAddressFieldPresentAsExpectedOnUI(billingAddressOnUI,updatedCity),"City : " + updatedCity + " is not present in updated Billing Address");
+	  s_assert.assertTrue(sfBillingInfoPage.isAddressFieldPresentAsExpectedOnUI(billingAddressOnUI,updatedPostalCode),"PostalCode : " + updatedPostalCode + " is not present in updated Billing Address");
+	  s_assert.assertTrue(sfBillingInfoPage.isAddressFieldPresentAsExpectedOnUI(billingAddressOnUI,stateAbbreviation),"State : " + stateAbbreviation + " is not present in updated Billing Address");
+	  s_assert.assertAll();
+	 }
+	 
 	/***
 	 * qTest : TC-505 Billing information
 	 * 
@@ -100,7 +105,7 @@ public class BillingProfileTest extends StoreFrontWebsiteBaseTest{
 		String currentURL = null;
 		String urlToAssert = "payment-details";
 		//Login as PC user.
-		sfHomePage.loginToStoreFront(TestConstants.PC_EMAIL_HAVING_AUTOSHIP, password);
+		sfHomePage.loginToStoreFront(TestConstants.PC_EMAIL_HAVING_AUTOSHIP,  password,true);
 		sfHomePage.clickWelcomeDropdown();
 		sfBillingInfoPage = sfHomePage.navigateToBillingInfoPage();
 		currentURL = sfBillingInfoPage.getCurrentURL().toLowerCase();
@@ -111,7 +116,7 @@ public class BillingProfileTest extends StoreFrontWebsiteBaseTest{
 		sfHomePage.clickWelcomeDropdown();
 		sfBillingInfoPage.logout();
 		//Login as Consultant.
-		sfHomePage.loginToStoreFront(TestConstants.CONSULTANT_EMAIL_WITH_CRP_AND_PULSE, password);
+		sfHomePage.loginToStoreFront(TestConstants.CONSULTANT_EMAIL_WITH_CRP_AND_PULSE,  password,true);
 		sfHomePage.clickWelcomeDropdown();
 		sfBillingInfoPage = sfHomePage.navigateToBillingInfoPage();
 		currentURL = sfBillingInfoPage.getCurrentURL().toLowerCase();
@@ -122,7 +127,7 @@ public class BillingProfileTest extends StoreFrontWebsiteBaseTest{
 		sfHomePage.clickWelcomeDropdown();
 		sfBillingInfoPage.logout();
 		//Login as RC.
-		sfHomePage.loginToStoreFront(TestConstants.RC_EMAIL_HAVING_ORDER, password);
+		sfHomePage.loginToStoreFront(TestConstants.RC_EMAIL_HAVING_ORDER,  password,true);
 		sfHomePage.clickWelcomeDropdown();
 		sfBillingInfoPage = sfHomePage.navigateToBillingInfoPage();
 		currentURL = sfBillingInfoPage.getCurrentURL().toLowerCase();
@@ -158,7 +163,7 @@ public class BillingProfileTest extends StoreFrontWebsiteBaseTest{
 		String cardLastName = null;
 
 		//Login as consultant user.
-		sfHomePage.loginToStoreFront(TestConstants.CONSULTANT_EMAIL_WITH_CRP_AND_PULSE, password);
+		sfHomePage.loginToStoreFront(TestConstants.CONSULTANT_EMAIL_WITH_CRP_AND_PULSE,  password,true);
 		sfHomePage.clickWelcomeDropdown();
 		sfBillingInfoPage = sfHomePage.navigateToBillingInfoPage();
 		currentURL = sfBillingInfoPage.getCurrentURL().toLowerCase();
@@ -220,7 +225,7 @@ public class BillingProfileTest extends StoreFrontWebsiteBaseTest{
 		String stateAbbreviation = TestConstants.STATE_US_ABBREVIATION;
 		String cardLastName = null;
 		//Login as Consultant.
-		sfHomePage.loginToStoreFront(TestConstants.CONSULTANT_EMAIL_WITH_CRP_AND_PULSE, password);
+		sfHomePage.loginToStoreFront(TestConstants.CONSULTANT_EMAIL_WITH_CRP_AND_PULSE,  password,true);
 		sfHomePage.clickWelcomeDropdown();
 		sfBillingInfoPage = sfHomePage.navigateToBillingInfoPage();
 		currentURL = sfBillingInfoPage.getCurrentURL().toLowerCase();
@@ -271,7 +276,7 @@ public class BillingProfileTest extends StoreFrontWebsiteBaseTest{
 		String cardLastName = null;
 
 		//Login as Consultant.
-		sfHomePage.loginToStoreFront(TestConstants.CONSULTANT_EMAIL_WITH_CRP_AND_PULSE, password);
+		sfHomePage.loginToStoreFront(TestConstants.CONSULTANT_EMAIL_WITH_CRP_AND_PULSE,  password,true);
 		sfShopSkinCarePage = sfHomePage.clickAllProducts();
 		sfShopSkinCarePage.addProductToCart(TestConstants.PRODUCT_NUMBER, TestConstants.ORDER_TYPE_ADHOC);
 		sfCartPage = sfShopSkinCarePage.checkoutTheCartFromPopUp();
@@ -328,7 +333,7 @@ public class BillingProfileTest extends StoreFrontWebsiteBaseTest{
 
 
 		//Login as consultant user.
-		sfHomePage.loginToStoreFront(TestConstants.CONSULTANT_EMAIL_WITH_CRP_AND_PULSE, password);
+		sfHomePage.loginToStoreFront(TestConstants.CONSULTANT_EMAIL_WITH_CRP_AND_PULSE,  password,true);
 		sfHomePage.clickWelcomeDropdown();
 		sfBillingInfoPage = sfHomePage.navigateToBillingInfoPage();
 		currentURL = sfBillingInfoPage.getCurrentURL().toLowerCase();
@@ -390,7 +395,7 @@ public class BillingProfileTest extends StoreFrontWebsiteBaseTest{
 		String urlToAssert = "payment-details";
 		String nameOnCard = TestConstants.CARD_NAME + randomWord;
 		//Login as consultant user.
-		sfHomePage.loginToStoreFront(TestConstants.CONSULTANT_EMAIL_WITH_CRP_AND_PULSE, password);
+		sfHomePage.loginToStoreFront(TestConstants.CONSULTANT_EMAIL_WITH_CRP_AND_PULSE,  password,true);
 		sfHomePage.clickWelcomeDropdown();
 		sfBillingInfoPage = sfHomePage.navigateToBillingInfoPage();
 		currentURL = sfBillingInfoPage.getCurrentURL().toLowerCase();
@@ -425,7 +430,7 @@ public class BillingProfileTest extends StoreFrontWebsiteBaseTest{
 		String urlToAssert = "payment-details";
 
 		//Login as RC user.
-		sfHomePage.loginToStoreFront(TestConstants.RC_EMAIL_WITHOUT_ORDER, password);
+		sfHomePage.loginToStoreFront(TestConstants.RC_EMAIL_WITHOUT_ORDER,  password,true);
 		sfHomePage.clickWelcomeDropdown();
 		sfBillingInfoPage = sfHomePage.navigateToBillingInfoPage();
 		currentURL = sfBillingInfoPage.getCurrentURL().toLowerCase();
@@ -470,7 +475,7 @@ public class BillingProfileTest extends StoreFrontWebsiteBaseTest{
 		int addressIndex = 0;
 
 		//Login as Consultant user.
-		sfHomePage.loginToStoreFront(TestConstants.CONSULTANT_EMAIL_WITH_CRP_AND_PULSE, password);
+		sfHomePage.loginToStoreFront(TestConstants.CONSULTANT_EMAIL_WITH_CRP_AND_PULSE,  password,true);
 		sfHomePage.clickWelcomeDropdown();
 		sfBillingInfoPage = sfHomePage.navigateToBillingInfoPage();
 		currentURL = sfBillingInfoPage.getCurrentURL().toLowerCase();
@@ -525,7 +530,7 @@ public class BillingProfileTest extends StoreFrontWebsiteBaseTest{
 		int countOfDefaultProfiles = 0;
 
 		//Login as PC user.
-		sfHomePage.loginToStoreFront(TestConstants.PC_EMAIL_HAVING_AUTOSHIP, password);
+		sfHomePage.loginToStoreFront(TestConstants.PC_EMAIL_HAVING_SINGLE_BILLING_PROFILE, password,true);
 		sfHomePage.clickWelcomeDropdown();
 		sfBillingInfoPage = sfHomePage.navigateToBillingInfoPage();
 		currentURL = sfBillingInfoPage.getCurrentURL().toLowerCase();
@@ -569,7 +574,7 @@ public class BillingProfileTest extends StoreFrontWebsiteBaseTest{
 		int addressIndex = 0;
 
 		//Login as Consultant user.
-		sfHomePage.loginToStoreFront(TestConstants.CONSULTANT_EMAIL_WITH_CRP_AND_PULSE, password);
+		sfHomePage.loginToStoreFront(TestConstants.CONSULTANT_EMAIL_WITH_CRP_AND_PULSE,  password,true);
 		sfHomePage.clickWelcomeDropdown();
 		sfBillingInfoPage = sfHomePage.navigateToBillingInfoPage();
 		currentURL = sfBillingInfoPage.getCurrentURL().toLowerCase();

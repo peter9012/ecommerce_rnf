@@ -27,7 +27,7 @@ public class AddAndDeleteShippingTest extends StoreFrontWebsiteBaseTest{
 		String state = TestConstants.STATE_US;
 		String postalCode = TestConstants.POSTAL_CODE_US;
 		String phoneNumber = TestConstants.PHONE_NUMBER;
-		sfHomePage.loginToStoreFront(TestConstants.CONSULTANT_EMAIL_WITH_CRP_AND_PULSE, password);
+		sfHomePage.loginToStoreFront(TestConstants.CONSULTANT_EMAIL_WITH_CRP_AND_PULSE,password,true);
 		sfHomePage.clickWelcomeDropdown();
 		sfShippingInfoPage = sfHomePage.navigateToShippingInfoPage();
 		sfShippingInfoPage.clickAddANewShippingAddressLink();
@@ -56,7 +56,7 @@ public class AddAndDeleteShippingTest extends StoreFrontWebsiteBaseTest{
 		String state = TestConstants.STATE_US;
 		String postalCode = TestConstants.POSTAL_CODE_US;
 		String phoneNumber = TestConstants.PHONE_NUMBER;
-		sfHomePage.loginToStoreFront(TestConstants.CONSULTANT_EMAIL_WITH_CRP_AND_PULSE, password);
+		sfHomePage.loginToStoreFront(TestConstants.CONSULTANT_EMAIL_WITH_CRP_AND_PULSE,password,true);
 		sfHomePage.clickWelcomeDropdown();
 		sfShippingInfoPage = sfHomePage.navigateToShippingInfoPage();
 		sfShippingInfoPage.clickAddANewShippingAddressLink();
@@ -76,7 +76,7 @@ public class AddAndDeleteShippingTest extends StoreFrontWebsiteBaseTest{
 	 */
 	@Test(enabled=true)
 	public void testCheckingErrorMessageForTheAddressField_79(){
-		sfHomePage.loginToStoreFront(TestConstants.CONSULTANT_EMAIL_WITH_CRP_AND_PULSE, password);
+		sfHomePage.loginToStoreFront(TestConstants.CONSULTANT_EMAIL_WITH_CRP_AND_PULSE,password,true);
 		sfHomePage.clickWelcomeDropdown();
 		sfShippingInfoPage = sfHomePage.navigateToShippingInfoPage();
 		sfShippingInfoPage.clickAddANewShippingAddressLink();
@@ -102,7 +102,7 @@ public class AddAndDeleteShippingTest extends StoreFrontWebsiteBaseTest{
 		if(country.equalsIgnoreCase("au")){
 			String expectedCountryName = "australia";
 			String countryNameFromUI = null;
-			sfHomePage.loginToStoreFront(TestConstants.CONSULTANT_EMAIL_WITH_CRP_AND_PULSE, password);
+			sfHomePage.loginToStoreFront(TestConstants.CONSULTANT_EMAIL_WITH_CRP_AND_PULSE, password,true);
 			sfHomePage.clickWelcomeDropdown();
 			sfShippingInfoPage = sfHomePage.navigateToShippingInfoPage();
 			sfShippingInfoPage.clickAddANewShippingAddressLink();
@@ -135,7 +135,7 @@ public class AddAndDeleteShippingTest extends StoreFrontWebsiteBaseTest{
 		if(country.equalsIgnoreCase("ca")){
 			String expectedCountryName = "canada";
 			String countryNameFromUI = null;
-			sfHomePage.loginToStoreFront(TestConstants.CONSULTANT_EMAIL_WITH_CRP_AND_PULSE, password);
+			sfHomePage.loginToStoreFront(TestConstants.CONSULTANT_EMAIL_WITH_CRP_AND_PULSE,password,true);
 			sfHomePage.clickWelcomeDropdown();
 			sfShippingInfoPage = sfHomePage.navigateToShippingInfoPage();
 			sfShippingInfoPage.clickAddANewShippingAddressLink();
@@ -168,7 +168,7 @@ public class AddAndDeleteShippingTest extends StoreFrontWebsiteBaseTest{
 		if(country.equalsIgnoreCase("us")){
 			String expectedCountryName = "usa";
 			String countryNameFromUI = null;
-			sfHomePage.loginToStoreFront(TestConstants.CONSULTANT_EMAIL_WITH_CRP_AND_PULSE, password);
+			sfHomePage.loginToStoreFront(TestConstants.CONSULTANT_EMAIL_WITH_CRP_AND_PULSE,password,true);
 			sfHomePage.clickWelcomeDropdown();
 			sfShippingInfoPage = sfHomePage.navigateToShippingInfoPage();
 			sfShippingInfoPage.clickAddANewShippingAddressLink();
@@ -280,7 +280,7 @@ public class AddAndDeleteShippingTest extends StoreFrontWebsiteBaseTest{
 		String phoneNumber = TestConstants.PHONE_NUMBER;
 		String defaultShippingAddressName = null;
 		String defaultShippingAddressNameAfterUpdate = null;
-		sfHomePage.loginToStoreFront(TestConstants.CONSULTANT_EMAIL_WITH_CRP_AND_PULSE, password);
+		sfHomePage.loginToStoreFront(TestConstants.CONSULTANT_EMAIL_WITH_CRP_AND_PULSE,password,true);
 		sfHomePage.clickWelcomeDropdown();
 		sfShippingInfoPage = sfHomePage.navigateToShippingInfoPage();
 		sfShippingInfoPage.clickEditLinkOfDefaultShippingAddress();
@@ -314,7 +314,7 @@ public class AddAndDeleteShippingTest extends StoreFrontWebsiteBaseTest{
 		String state = TestConstants.STATE_US;
 		String postalCode = TestConstants.POSTAL_CODE_US;
 		String phoneNumber = TestConstants.PHONE_NUMBER;
-		sfHomePage.loginToStoreFront(TestConstants.CONSULTANT_EMAIL_WITH_CRP_AND_PULSE, password);
+		sfHomePage.loginToStoreFront(TestConstants.CONSULTANT_EMAIL_WITH_CRP_AND_PULSE,password,true);
 		sfHomePage.clickWelcomeDropdown();
 		sfShippingInfoPage = sfHomePage.navigateToShippingInfoPage();
 		sfShippingInfoPage.clickAddANewShippingAddressLink();
@@ -354,7 +354,7 @@ public class AddAndDeleteShippingTest extends StoreFrontWebsiteBaseTest{
 		String state = TestConstants.STATE_US;
 		String postalCode = TestConstants.POSTAL_CODE_US;
 		String phoneNumber = TestConstants.PHONE_NUMBER;
-		sfHomePage.loginToStoreFront(TestConstants.CONSULTANT_EMAIL_WITH_CRP_AND_PULSE, password);
+		sfHomePage.loginToStoreFront(TestConstants.CONSULTANT_EMAIL_WITH_CRP_AND_PULSE,password,true);
 		sfHomePage.clickWelcomeDropdown();
 		sfShippingInfoPage=sfHomePage.navigateToShippingInfoPage();
 		sfShippingInfoPage.clickEditLinkOfDefaultShippingAddress();
@@ -387,7 +387,7 @@ public class AddAndDeleteShippingTest extends StoreFrontWebsiteBaseTest{
 		String textToAssertInURL = "autoship/cart";
 		String shippingAddressNameInAccountInfo = null;
 		//Login to application.
-		sfHomePage.loginToStoreFront(TestConstants.CONSULTANT_EMAIL_WITH_CRP_AND_PULSE, password);
+		sfHomePage.loginToStoreFront(TestConstants.CONSULTANT_EMAIL_WITH_CRP_AND_PULSE,password,true);
 		sfAutoshipCartPage = sfHomePage.clickOnAutoshipCartLink();
 		currentURL = sfAutoshipCartPage.getCurrentURL().toLowerCase();
 		s_assert.assertTrue(currentURL.contains(textToAssertInURL), "Expected URL should contain "+textToAssertInURL+" but actual on UI is "+currentURL);
@@ -428,7 +428,7 @@ public class AddAndDeleteShippingTest extends StoreFrontWebsiteBaseTest{
 		String checkoutPageText = "Account Info";
 		String currentURL = null;
 		String CRPText = "Next CRP";
-		sfHomePage.loginToStoreFront(TestConstants.CONSULTANT_EMAIL_WITH_CRP_AND_PULSE, password);
+		sfHomePage.loginToStoreFront(TestConstants.CONSULTANT_EMAIL_WITH_CRP_AND_PULSE,password,true);
 		sfHomePage.clickWelcomeDropdown();
 		sfShippingInfoPage = sfHomePage.navigateToShippingInfoPage();
 		sfShippingInfoPage.clickAddANewShippingAddressLink();
@@ -470,7 +470,7 @@ public class AddAndDeleteShippingTest extends StoreFrontWebsiteBaseTest{
 		String autoShipShippingProfileLastName = null;
 		String checkoutPageText = "Account Info";
 		String currentURL = null;
-		sfHomePage.loginToStoreFront(TestConstants.CONSULTANT_EMAIL_WITH_CRP_AND_PULSE, password);
+		sfHomePage.loginToStoreFront(TestConstants.CONSULTANT_EMAIL_WITH_CRP_AND_PULSE, password,true);
 		sfHomePage.clickWelcomeDropdown();
 		sfShippingInfoPage = sfHomePage.navigateToShippingInfoPage();
 		sfShippingInfoPage.clickAddANewShippingAddressLink();
@@ -576,7 +576,7 @@ public class AddAndDeleteShippingTest extends StoreFrontWebsiteBaseTest{
 
 
 		// Login as CRP Enrolled consulatant
-		sfHomePage.loginToStoreFront(TestConstants.CONSULTANT_EMAIL_WITH_CRP_AND_PULSE, password);
+		sfHomePage.loginToStoreFront(TestConstants.CONSULTANT_EMAIL_WITH_CRP_AND_PULSE, password,true);
 		sfHomePage.clickWelcomeDropdown();
 		sfShippingInfoPage = sfHomePage.navigateToShippingInfoPage();
 

@@ -15,7 +15,7 @@ public class RefinementByPriceTest extends StoreFrontWebsiteBaseTest{
 	 */
 	@Test(enabled=true)
 	public void testRefinmentByPriceShouldBeWorkingOnPLP_120(){
-		sfHomePage.loginToStoreFront(TestConstants.PC_EMAIL_HAVING_AUTOSHIP, password);
+		sfHomePage.loginToStoreFront(TestConstants.PC_EMAIL_HAVING_AUTOSHIP,  password,true);
 		int totalNoOfProduct = 0;
 		String priceRange0to49 = "0To49";
 		String priceRange50to199 = "50To199";

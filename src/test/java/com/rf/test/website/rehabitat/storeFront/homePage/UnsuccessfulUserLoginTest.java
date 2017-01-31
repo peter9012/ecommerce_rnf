@@ -18,7 +18,7 @@ public class UnsuccessfulUserLoginTest extends StoreFrontWebsiteBaseTest{
 	@Test(enabled=true)
 	public void testLoginUnregisteredUsernamepassword_29(){
 		String unRegisteredUsername = "invalidUser1008@rf.com";
-		sfHomePage.loginToStoreFront(unRegisteredUsername, password);
+		sfHomePage.loginToStoreFront(unRegisteredUsername, password,true);
 		s_assert.assertTrue(sfHomePage.isLoginOrRegisterPageDisplayed()&& sfHomePage.getCurrentURL().contains("/login"), "'Login Or Register' page has not displayed");
 		s_assert.assertTrue(sfHomePage.isErrorMessageForIncorrectUsernamePasswordDisplayed(), "Error ");
 		s_assert.assertAll();
@@ -35,7 +35,7 @@ public class UnsuccessfulUserLoginTest extends StoreFrontWebsiteBaseTest{
 	@Test(enabled=true)
 	public void testUnsuccessfulUserLogin_30(){
 		String incorrectUsername = "invalidUser1008@rf.com";
-		sfHomePage.loginToStoreFront(incorrectUsername, password);
+		sfHomePage.loginToStoreFront(incorrectUsername,password,true);
 		s_assert.assertTrue(sfHomePage.isLoginOrRegisterPageDisplayed()&& sfHomePage.getCurrentURL().contains("/login"), "'Login Or Register' page has not displayed");
 		s_assert.assertTrue(sfHomePage.isErrorMessageForIncorrectUsernamePasswordDisplayed(), "Error ");
 		s_assert.assertAll();
@@ -53,7 +53,7 @@ public class UnsuccessfulUserLoginTest extends StoreFrontWebsiteBaseTest{
 	public void testUnsuccessfulUserLogin_31(){
 		String validUsername = TestConstants.CONSULTANT_EMAIL_WITH_CRP_AND_PULSE;
 		String incorrectpassword = "111maiden";
-		sfHomePage.loginToStoreFront(validUsername, incorrectpassword);
+		sfHomePage.loginToStoreFront(validUsername, incorrectpassword,true);
 		s_assert.assertTrue(sfHomePage.isLoginOrRegisterPageDisplayed()&& sfHomePage.getCurrentURL().contains("/login"), "'Login Or Register' page has not displayed");
 		s_assert.assertTrue(sfHomePage.isErrorMessageForIncorrectUsernamePasswordDisplayed(), "Error ");
 		s_assert.assertAll();
@@ -71,7 +71,7 @@ public class UnsuccessfulUserLoginTest extends StoreFrontWebsiteBaseTest{
 	public void testUnsuccessfulUserLogin_32(){
 		String invalidUsername = "invalidUser1008@rf.com";
 		String incorrectpassword = "111maiden";
-		sfHomePage.loginToStoreFront(invalidUsername, incorrectpassword);
+		sfHomePage.loginToStoreFront(invalidUsername, incorrectpassword,true);
 		s_assert.assertTrue(sfHomePage.isLoginOrRegisterPageDisplayed()&& sfHomePage.getCurrentURL().contains("/login"), "'Login Or Register' page has not displayed");
 		s_assert.assertTrue(sfHomePage.isErrorMessageForIncorrectUsernamePasswordDisplayed(), "Error ");
 		s_assert.assertAll();
@@ -88,11 +88,11 @@ public class UnsuccessfulUserLoginTest extends StoreFrontWebsiteBaseTest{
 	@Test(enabled=true)
 	public void testUnsuccessfulUserLogin_33(){
 		String invalidUsername = "invalidUser1008@rf.com";
-		sfHomePage.loginToStoreFront(invalidUsername, password);
+		sfHomePage.loginToStoreFront(invalidUsername, password,true);
 		s_assert.assertTrue(sfHomePage.isLoginOrRegisterPageDisplayed()&& sfHomePage.getCurrentURL().contains("/login"), "'Login Or Register' page has not displayed");
 		s_assert.assertTrue(sfHomePage.isErrorMessageForIncorrectUsernamePasswordDisplayed(), "Error ");
 		navigateToStoreFrontBaseURL();
-		sfHomePage.loginToStoreFront(invalidUsername, password);
+		sfHomePage.loginToStoreFront(invalidUsername,password,true);
 		s_assert.assertTrue(sfHomePage.isLoginOrRegisterPageDisplayed()&& sfHomePage.getCurrentURL().contains("/login"), "'Login Or Register' page has not displayed");
 		s_assert.assertTrue(sfHomePage.isErrorMessageForIncorrectUsernamePasswordDisplayed(), "Error ");
 		s_assert.assertAll();
@@ -109,11 +109,11 @@ public class UnsuccessfulUserLoginTest extends StoreFrontWebsiteBaseTest{
 	@Test(enabled=true)
 	public void testUnsuccessfulUserLogin_34(){
 		String invalidUsername = "invalidUser1008@rf.com";
-		sfHomePage.loginToStoreFront(invalidUsername, password);
+		sfHomePage.loginToStoreFront(invalidUsername,password,true);
 		s_assert.assertTrue(sfHomePage.isLoginOrRegisterPageDisplayed()&& sfHomePage.getCurrentURL().contains("/login"), "'Login Or Register' page has not displayed");
 		s_assert.assertTrue(sfHomePage.isErrorMessageForIncorrectUsernamePasswordDisplayed(), "Error ");
 		navigateToStoreFrontBaseURL();
-		sfHomePage.loginToStoreFront(invalidUsername, password);
+		sfHomePage.loginToStoreFront(invalidUsername, password,true);
 		s_assert.assertTrue(sfHomePage.isLoginOrRegisterPageDisplayed()&& sfHomePage.getCurrentURL().contains("/login"), "'Login Or Register' page has not displayed");
 		s_assert.assertTrue(sfHomePage.isErrorMessageForIncorrectUsernamePasswordDisplayed(), "Error ");
 		s_assert.assertAll();

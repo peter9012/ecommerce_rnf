@@ -138,7 +138,7 @@ public class AboutMeTest extends StoreFrontWebsiteBaseTest{
 		s_assert.assertTrue(currentURL.contains(urlToAssert),"Expected URL should contain "+urlToAssert+" but actual on UI is "+currentURL);
 		// For Consultant
 		sfHomePage.clickRodanAndFieldsLogo();
-		sfHomePage.loginToStoreFront(TestConstants.CONSULTANT_EMAIL_WITH_CRP_AND_PULSE,password);
+		sfHomePage.loginToStoreFront(TestConstants.CONSULTANT_EMAIL_WITH_CRP_AND_PULSE,password,true);
 		sfHomePage.clickSponsorNameLink();
 		currentURL = sfAboutMePage.getCurrentURL();
 		s_assert.assertTrue(sfAboutMePage.isContactMeHeaderPresentOnAboutMePage(),"Contact me header is not present on the about me page of sponsor");
@@ -147,7 +147,7 @@ public class AboutMeTest extends StoreFrontWebsiteBaseTest{
 		sfHomePage.logout();
 		// For PC
 		sfHomePage.clickRodanAndFieldsLogo();
-		sfHomePage.loginToStoreFront(TestConstants.PC_EMAIL_HAVING_AUTOSHIP,password);
+		sfHomePage.loginToStoreFront(TestConstants.PC_EMAIL_HAVING_AUTOSHIP,password,true);
 		sfHomePage.clickSponsorNameLink();
 		currentURL = sfAboutMePage.getCurrentURL();
 		s_assert.assertTrue(sfAboutMePage.isContactMeHeaderPresentOnAboutMePage(),"Contact me header is not present on the about me page of sponsor");
@@ -156,7 +156,7 @@ public class AboutMeTest extends StoreFrontWebsiteBaseTest{
 		sfHomePage.logout();
 		// For RC
 		sfHomePage.clickRodanAndFieldsLogo();
-		sfHomePage.loginToStoreFront(TestConstants.RC_EMAIL_HAVING_ORDER,password);
+		sfHomePage.loginToStoreFront(TestConstants.RC_EMAIL_HAVING_ORDER,password,true);
 		sfHomePage.clickSponsorNameLink();
 		currentURL = sfAboutMePage.getCurrentURL();
 		s_assert.assertTrue(sfAboutMePage.isContactMeHeaderPresentOnAboutMePage(),"Contact me header is not present on the about me page of sponsor");
@@ -210,7 +210,7 @@ public class AboutMeTest extends StoreFrontWebsiteBaseTest{
 
 		homePageURL = sfHomePage.getCurrentURL();
 		sfHomePage.navigateToUrl(homePageURL + "/pws/" + prefix);
-		sfHomePage.loginToStoreFront(TestConstants.CONSULTANT_EMAIL_WITH_CRP_AND_PULSE, password);
+		sfHomePage.loginToStoreFront(TestConstants.CONSULTANT_EMAIL_WITH_CRP_AND_PULSE, password,true);
 		sfHomePage.clickWelcomeDropdown();
 		sfAboutMePage=sfHomePage.navigateToEditPWSPage();
 		currentURL = sfAboutMePage.getCurrentURL();
@@ -244,7 +244,7 @@ public class AboutMeTest extends StoreFrontWebsiteBaseTest{
 		homePageURL = sfHomePage.getCurrentURL();
 
 		sfHomePage.navigateToUrl(homePageURL + "/pws/" + prefix);
-		sfHomePage.loginToStoreFront(TestConstants.CONSULTANT_EMAIL_WITH_CRP_AND_PULSE, password);
+		sfHomePage.loginToStoreFront(TestConstants.CONSULTANT_EMAIL_WITH_CRP_AND_PULSE, password,true);
 		sfHomePage.clickWelcomeDropdown();
 		sfAboutMePage=sfHomePage.navigateToEditPWSPage();
 		currentURL = sfAboutMePage.getCurrentURL();
@@ -278,7 +278,7 @@ public class AboutMeTest extends StoreFrontWebsiteBaseTest{
 
 		homePageURL = sfHomePage.getCurrentURL();
 		sfHomePage.navigateToUrl(homePageURL + "/pws/" + prefix);
-		sfHomePage.loginToStoreFront(TestConstants.CONSULTANT_EMAIL_WITH_CRP_AND_PULSE, password);
+		sfHomePage.loginToStoreFront(TestConstants.CONSULTANT_EMAIL_WITH_CRP_AND_PULSE, password,true);
 		sfHomePage.clickWelcomeDropdown();
 		sfAboutMePage=sfHomePage.navigateToEditPWSPage();
 		currentURL = sfAboutMePage.getCurrentURL();
@@ -319,7 +319,7 @@ public class AboutMeTest extends StoreFrontWebsiteBaseTest{
 
 		homePageURL = sfHomePage.getCurrentURL();
 		sfHomePage.navigateToUrl(homePageURL + "/pws/" + prefix);
-		sfHomePage.loginToStoreFront(TestConstants.CONSULTANT_EMAIL_WITH_CRP_AND_PULSE, password);
+		sfHomePage.loginToStoreFront(TestConstants.CONSULTANT_EMAIL_WITH_CRP_AND_PULSE, password,true);
 		sfHomePage.clickWelcomeDropdown();
 		sfAboutMePage=sfHomePage.navigateToEditPWSPage();
 		currentURL = sfAboutMePage.getCurrentURL();
@@ -351,7 +351,7 @@ public class AboutMeTest extends StoreFrontWebsiteBaseTest{
 
 		homePageURL = sfHomePage.getCurrentURL();
 		sfHomePage.navigateToUrl(homePageURL + "/pws/" + prefix);
-		sfHomePage.loginToStoreFront(TestConstants.CONSULTANT_EMAIL_WITH_CRP_AND_PULSE, password);
+		sfHomePage.loginToStoreFront(TestConstants.CONSULTANT_EMAIL_WITH_CRP_AND_PULSE, password,true);
 		sfHomePage.clickWelcomeDropdown();
 		sfAboutMePage=sfHomePage.navigateToEditPWSPage();
 		currentURL = sfAboutMePage.getCurrentURL();
@@ -383,7 +383,7 @@ public class AboutMeTest extends StoreFrontWebsiteBaseTest{
 
 		homePageURL = sfHomePage.getCurrentURL();
 		sfHomePage.navigateToUrl(homePageURL + "/pws/" + prefix);
-		sfHomePage.loginToStoreFront(TestConstants.CONSULTANT_EMAIL_WITH_CRP_AND_PULSE, password);
+		sfHomePage.loginToStoreFront(TestConstants.CONSULTANT_EMAIL_WITH_CRP_AND_PULSE, password,true);
 		sfHomePage.clickWelcomeDropdown();
 		sfAboutMePage=sfHomePage.navigateToEditPWSPage();
 		currentURL = sfAboutMePage.getCurrentURL();

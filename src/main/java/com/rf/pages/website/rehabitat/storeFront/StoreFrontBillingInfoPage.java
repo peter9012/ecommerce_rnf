@@ -394,7 +394,6 @@ public class StoreFrontBillingInfoPage extends StoreFrontWebsiteBasePage{
 	public StoreFrontBillingInfoPage clickOnAddressSuggestionModalCloseBtn(){
 		driver.clickByJS(RFWebsiteDriver.driver, driver.findElement(ADDRESS_SUGGESTION_MODAL_CLOSE_BTN_LOC));
 		logger.info("Address Suggestion Modal Close Button clicked");
-		driver.navigate().refresh();
 		return this;
 	}
 

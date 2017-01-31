@@ -333,7 +333,7 @@ public class OrdersTest extends StoreFrontWebsiteBaseTest{
 		errorMessageFromUI = sfCheckoutPage.getCreditCardErrorMessage();
 		s_assert.assertTrue(errorMessageFromUI.contains(errorMessage), "Expected error message for card number with char is "+errorMessage+" but actual on UI is "+errorMessageFromUI);
 		//wrong CVV
-		sfCheckoutPage.enterUserBillingDetails(cardType, cardNumber, cardName, CVVWithTwoDigit);
+		sfCheckoutPage.enterUserBillingDetails(cardType, cardNumber, cardName, CVVWithTwoDigit+"\t");
 		sfCheckoutPage.clickBillingDetailsNextbutton();
 		errorMessage = "Please enter at least 3 characters";
 		errorMessageFromUI = sfCheckoutPage.getCVVErrorMessage();

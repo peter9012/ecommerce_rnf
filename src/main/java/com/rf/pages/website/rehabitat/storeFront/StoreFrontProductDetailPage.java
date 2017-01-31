@@ -28,7 +28,7 @@ public class StoreFrontProductDetailPage extends StoreFrontWebsiteBasePage{
 	private final By CONTENT_UNDER_INGREDIENTS_TAB_LOC = By.xpath("//div[@class='productIngredientsText']");
 	private final By RECENTLY_VIEW_TAB_LOC = By.xpath("//div[@id='pdp_page']//following::li/a[contains(text(),'Recently Viewed')]");
 	private final By FORWARD_ARROW_OF_CAROUSEL_ON_PRODUCT_DETAIL_LOC = By.xpath("//div[@id='pdp_page']//following::div[@class='owl-next']/span");
-	private final By ADD_TO_CART_BUTTON_AT_PRODUCT_DETAIL_PAGE_LOGIN_LOC = By.xpath("//button[text()='Add to cart']");
+	private final By ADD_TO_CART_BUTTON_AT_PRODUCT_DETAIL_PAGE_LOGIN_LOC = By.xpath("//button[text()='Add to bag']");
 	private final By ADD_PRODUCT_TO_BAG_PRODUCT_DETAIL_LOGIN_LOC = By.xpath("//button[@id='addToCartButton']/span[contains(text(),'One Time Order')]");
 	private final By RETAIL_PRICE_ON_PDP_LOC = By.xpath("//div[@class='product-details']//span[@id='retail' and contains(text(),'Retail')]");
 	private final By ADD_TO_CART_BTN_AT_PDP_PAGE = By.xpath("//div[@class='addtocart-component']//button[contains(text(),'Add to cart')]");

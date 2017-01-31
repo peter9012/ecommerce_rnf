@@ -1681,7 +1681,7 @@ public class StoreFrontWebsiteBasePage extends RFBasePage {
 		logger.info("Exp year dropdown clicked");
 		driver.click(EXP_YEAR_LOC);
 		logger.info("Exp year selected");
-		driver.type(CVV_LOC, CVV+"\t");
+		driver.type(CVV_LOC, CVV);
 		logger.info("Entered CVV as" + CVV);
 		driver.waitForTokenizing();
 		return this;
@@ -1748,6 +1748,7 @@ public class StoreFrontWebsiteBasePage extends RFBasePage {
 		driver.clickByJS(RFWebsiteDriver.driver, driver.findElement(BILLING_NEXT_BUTTON_LOC));
 		driver.pauseExecutionFor(1000);
 		logger.info("Next button clicked of billing details");
+		driver.waitForPageLoad();
 		return this;
 	}
 

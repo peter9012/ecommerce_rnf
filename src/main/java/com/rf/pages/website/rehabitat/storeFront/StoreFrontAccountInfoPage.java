@@ -51,7 +51,7 @@ public class StoreFrontAccountInfoPage extends StoreFrontWebsiteBasePage{
 	private final By SPONSER_NAME_ON_ACCOUNT_INFO_LOC = By.xpath("//p[text()='R+F Independent Consultant']/preceding-sibling::p[1]");
 
 	private String spouseFirstNameValidationErrorLoc = " //*[@id='profile.spouseFirstname']/../label[contains(text(),'%s')][1]";
-	private String spouseLastNameValidationErrorLoc = " //*[@id='profile.spouseLastname']/../[contains(text(),'%s')][1]";
+	private String spouseLastNameValidationErrorLoc = " //*[@id='profile.spouseLastname']/../label[contains(text(),'%s')][1]";
 	private String stateForAccountDetails = "//select[@id='profile.region']//option[text()='%s']";
 	private String emailValidationErrorLoc ="//*[@id='profile.email']/../label[contains(text(),'%s')]";
 	private String currentPasswordValidationErrorLoc ="//*[@id='profile.currentPassword']/../label[contains(text(),'%s')]";
@@ -567,7 +567,7 @@ public class StoreFrontAccountInfoPage extends StoreFrontWebsiteBasePage{
 	 * 
 	 */
 	public String getFirstNameFromAccountInfo(){
-		String firstNameAccountInfo = driver.findElement(FIRST_NAME_LOC).getText(); 
+		String firstNameAccountInfo = driver.getAttribute(FIRST_NAME_LOC,"value");
 		logger.info("First Name on account info is: "+firstNameAccountInfo);
 		return firstNameAccountInfo.trim();
 	}
@@ -580,7 +580,7 @@ public class StoreFrontAccountInfoPage extends StoreFrontWebsiteBasePage{
 	 * 
 	 */
 	public String getLastNameFromAccountInfo(){
-		String lastNameAccountInfo = driver.findElement(LAST_NAME_LOC).getText(); 
+		String lastNameAccountInfo = driver.getAttribute(LAST_NAME_LOC,"value");
 		logger.info("Last Name on account info is: "+lastNameAccountInfo);
 		return lastNameAccountInfo.trim();
 	}

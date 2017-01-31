@@ -139,40 +139,6 @@ public class MyAccountTest extends StoreFrontWebsiteBaseTest{
 	}
 
 	/***
-	 * qTest : TC-250 Password format error validation
-	 * 
-	 * Description : This test do the validations of the password field on account info page for consultant.
-	 * 
-	 *     
-	 */
-	@Test(enabled=true)
-	public void testPasswordFormatErrorValidation_250(){
-		String passwordLessThan5Chars = "111M";
-		//Login as consultant user.
-		sfHomePage.loginToStoreFront(TestConstants.CONSULTANT_EMAIL_WITH_CRP_AND_PULSE,password,true);
-		sfHomePage.clickWelcomeDropdown();
-		sfAccountInfoPage = sfHomePage.navigateToAccountInfoPage();
-		String expectedValidationErrorMsg = TestConstants.PASSWORD_VALIDATION_ERROR_LESS_THAN_SIX_CHARS;
-		sfAccountInfoPage.enterOldPassword(password);
-		sfAccountInfoPage.enterNewPassword(passwordLessThan5Chars);
-		sfAccountInfoPage.enterConfirmPassword(passwordLessThan5Chars);
-		sfAccountInfoPage.saveAccountInfo();
-		s_assert.assertTrue(sfAccountInfoPage.isValidationMsgPresentForParticularField("new password", expectedValidationErrorMsg)," validation msg for less than 6 chars has not displayed for new password");
-		s_assert.assertTrue(sfAccountInfoPage.isValidationMsgPresentForParticularField("confirm password", expectedValidationErrorMsg),"validation msg for less than 6 chars has not displayed for confirm password");
-		sfAccountInfoPage.enterNewPassword("");
-		sfAccountInfoPage.enterConfirmPassword(password);
-		sfAccountInfoPage.saveAccountInfo();
-		expectedValidationErrorMsg = TestConstants.VALIDATION_ERROR_THIS_FIELD_IS_REQUIRED;
-		s_assert.assertTrue(sfAccountInfoPage.isValidationMsgPresentForParticularField("new password", expectedValidationErrorMsg),"<msg needs to be added>");		
-		sfAccountInfoPage.enterNewPassword(password);
-		sfAccountInfoPage.enterConfirmPassword("");
-		sfAccountInfoPage.saveAccountInfo();
-		expectedValidationErrorMsg = TestConstants.VALIDATION_ERROR_THIS_FIELD_IS_REQUIRED;
-		s_assert.assertTrue(sfAccountInfoPage.isValidationMsgPresentForParticularField("confirm password", expectedValidationErrorMsg),"<msg needs to be added>");
-		s_assert.assertAll();
-	}
-
-	/***
 	 * qTest : TC-230 Checkout- Viewing Main Account Info
 	 * 
 	 * Description : This test Updates First and Last name on  checkout page for consultant user.
@@ -730,7 +696,7 @@ public class MyAccountTest extends StoreFrontWebsiteBaseTest{
 		sfHomePage.clickWelcomeDropdown();
 		sfAccountInfoPage = sfHomePage.navigateToAccountInfoPage();
 		String expectedValidationErrorMsg = TestConstants.VALIDATION_ERROR_THIS_FIELD_IS_REQUIRED;
-		String expectedNewPasswordValidationErrorMsg = TestConstants.PASSWORD_VALIDATION_ERROR_LESS_THAN_SIX_CHARS;
+		String expectedNewPasswordValidationErrorMsg = TestConstants.PASSWORD_VALIDATION_ERROR_LESS_THAN_EIGHT_CHARS;
 		String expectedConfirmPasswordValidationErrorMsg = TestConstants.CONFIRM_PASSWORD_VALIDATION_ERROR_SAME_VALUE;
 		sfAccountInfoPage.enterOldPassword(password);
 		sfAccountInfoPage.enterConfirmPassword(password);
@@ -818,29 +784,6 @@ public class MyAccountTest extends StoreFrontWebsiteBaseTest{
 	}
 
 	/***
-	 * qTest : TC-358 User navigates to Report a Problem page from the order history
-	 * 
-	 * Description : This test verifies if Return Policy link works fine under 
-	 * Orders->Actions->Report Problems
-	 * 
-	 *     
-	 */
-	@Test(enabled=true)
-	public void testReportAProblemOrderHistory_358(){
-		String reportProblemsLink = "Report Problems";
-		sfHomePage.loginToStoreFront(TestConstants.CONSULTANT_EMAIL_WITH_CRP_AND_PULSE, password,true);
-		sfHomePage.clickWelcomeDropdown();
-		sfOrdersPage = sfHomePage.navigateToOrdersPage();
-		sfOrdersPage.chooselinkFromActionsDDUnderOrderHistoryForFirstOrder(reportProblemsLink);
-		sfOrdersPage.clickReadOurReturnPolicyLink();
-		String parentWin = CommonUtils.getCurrentWindowHandle();
-		sfOrdersPage.switchToChildWindow(parentWin);
-		s_assert.assertTrue(sfOrdersPage.isReturnPolicyPDFOpened(), "Return Policy PDF has not opened");
-		sfOrdersPage.switchToParentWindow(parentWin);
-		s_assert.assertAll();
-	}
-
-	/***
 	 * qTest : TC-387 Order History
 	 * 
 	 * Description : This test validates order history section, Return order section, order details page
@@ -898,7 +841,7 @@ public class MyAccountTest extends StoreFrontWebsiteBaseTest{
 	public void testPasswordResetIncorrectCurrentPwd_282(){
 		String incorrectCurrentPassword = "111Maiden";
 		//Login as consultant user.
-		sfHomePage.loginToStoreFront(TestConstants.CONSULTANT_EMAIL_WITH_CRP_AND_PULSE,password,true);
+		sfHomePage.loginToStoreFront(TestConstants.PC_EMAIL_HAVING_AUTOSHIP,password,true);
 		sfHomePage.clickWelcomeDropdown();
 		sfAccountInfoPage = sfHomePage.navigateToAccountInfoPage();
 		String expectedValidationErrorMsg = TestConstants.PASSWORD_VALIDATION_ERROR_DO_NOT_MATCH;
@@ -920,7 +863,7 @@ public class MyAccountTest extends StoreFrontWebsiteBaseTest{
 	public void testPasswordResetInvalidScenrios_283(){
 		String incorrectCurrentPassword = "111Maiden";
 		//Login as consultant user.
-		sfHomePage.loginToStoreFront(TestConstants.CONSULTANT_EMAIL_WITH_CRP_AND_PULSE,password,true);
+		sfHomePage.loginToStoreFront(TestConstants.PC_EMAIL_HAVING_AUTOSHIP,password,true);
 		sfHomePage.clickWelcomeDropdown();
 		sfAccountInfoPage = sfHomePage.navigateToAccountInfoPage();
 		String expectedValidationErrorMsg = TestConstants.CONFIRM_PASSWORD_VALIDATION_ERROR_SAME_VALUE;
@@ -1142,32 +1085,6 @@ public class MyAccountTest extends StoreFrontWebsiteBaseTest{
 	}
 
 	/***
-	 * qtest: TC-277 Consultant Autoship Status- Subscribe to Pulse (First Time Pulse Enrollment)
-	 * Description: This method subscribe the consultant with pulse and also cancels the same
-	 */	
-	@Test(enabled=true)//TODO
-	public void testConsultantFirstTimePulseEnrollment_277(){
-		String prefix = TestConstants.FIRST_NAME+CommonUtils.getCurrentTimeStamp();
-		sfHomePage.loginToStoreFront(TestConstants.CONSULTANT_EMAIL_WITH_CRP_AND_PULSE,password,true);
-		sfHomePage.clickWelcomeDropdown();
-		sfAutoshipStatusPage = sfHomePage.navigateToAutoshipStatusPage();
-		sfAutoshipStatusPage.clickSubscribeToPulseBtn();
-		sfAutoshipStatusPage.enterAvailablePrefix(prefix);
-		sfAutoshipStatusPage.clickNextBtn();
-		sfCheckoutPage = sfAutoshipStatusPage.clickConfirmSubscription().checkTheConfirmSubscriptionChkBoxAndSubscribe();
-		sfCheckoutPage.clickUseSavedCardBtn().clickBillingDetailsNextbutton().clickPlaceOrderButton();
-		s_assert.assertTrue(sfCheckoutPage.isPopUpForTermsAndConditionsCheckboxDisplayed(), "validation popup for terms and conditions not displayed");
-		sfCheckoutPage.closePopUp();
-		sfCheckoutPage.selectTermsAndConditionsChkBox().clickPlaceOrderButton();
-		s_assert.assertTrue(sfCheckoutPage.isOrderPlacedSuccessfully(),"Order is Not placed successfully");
-		sfHomePage.clickWelcomeDropdown();
-		sfHomePage.navigateToAutoshipStatusPage();
-		sfAutoshipStatusPage.clickCancelPulseSubscription().clickConfirmSubscription();
-		s_assert.assertTrue(sfAutoshipStatusPage.isSubscribeToPulseBtnDisplayed(), "Pulse subscription is NOT cancelled");
-		s_assert.assertAll();
-	}	
-
-	/***
 	 * qTest : TC-518 Edit PWS - User is subscribed to Pulse
 	 * 
 	 * Description : This test validates edits PWS functionality of user 
@@ -1341,48 +1258,6 @@ public class MyAccountTest extends StoreFrontWebsiteBaseTest{
 	}
 
 	/***
-	 * qtest: TC-278 Consultant Autoship Status- Subscribe to Pulse (Re-Enrollment within 180 days)
-	  Description: This method re-enroll consultant in pulse with new prefix and existing autosuggested prefix .
-	 *
-	 */	
-	@Test(enabled=true)
-	public void testReEnnrollmentInPulseWithin180DaysOfExistingAutoSuggestedPrefix_278(){
-		String prefix = TestConstants.FIRST_NAME+CommonUtils.getCurrentTimeStamp();
-		String autoSuggestedPrefixName = null;
-		//Subscribe to pulse with a new prefix.
-		sfCheckoutPage = new StoreFrontCheckoutPage(driver);
-		sfHomePage.loginToStoreFront(TestConstants.CONSULTANT_EMAIL_WITH_CRP_AND_PULSE,password,true);
-		sfHomePage.clickWelcomeDropdown();
-		sfAutoshipStatusPage = sfHomePage.navigateToAutoshipStatusPage();
-		sfAutoshipStatusPage.clickSubscribeToPulseBtn();
-		autoSuggestedPrefixName = sfAutoshipStatusPage.getAvailablePrefixName();
-		sfAutoshipStatusPage.enterAvailablePrefix(prefix);
-		sfAutoshipStatusPage.clickNextBtn();
-		sfAutoshipStatusPage.clickConfirmSubscription();
-		sfCheckoutPage.clickUseSavedCardBtn().clickBillingDetailsNextbutton().clickPlaceOrderButton();
-		s_assert.assertTrue(sfCheckoutPage.isPopUpForTermsAndConditionsCheckboxDisplayed(), "validation popup for terms and conditions not displayed");
-		sfCheckoutPage.closePopUp();
-		sfCheckoutPage.selectTermsAndConditionsChkBox().clickPlaceOrderButton();
-		s_assert.assertTrue(sfCheckoutPage.isOrderPlacedSuccessfully(),"Order is Not placed successfully");
-		//Cancel the pulse of user.
-		sfHomePage.clickWelcomeDropdown();
-		sfAutoshipStatusPage = sfHomePage.navigateToAutoshipStatusPage();
-		sfAutoshipStatusPage.clickCancelPulseSubscription().clickConfirmSubscription();
-		s_assert.assertTrue(sfAutoshipStatusPage.isSubscribeToPulseBtnDisplayed(), "Pulse subscription is NOT cancelled");
-		//Subscribe to pulse again with autosuggested prefix prefix.
-		sfAutoshipStatusPage.clickSubscribeToPulseBtn();
-		sfAutoshipStatusPage.enterAvailablePrefix(autoSuggestedPrefixName);
-		sfAutoshipStatusPage.clickNextBtn();
-		sfAutoshipStatusPage.clickConfirmSubscription();
-		sfCheckoutPage.clickUseSavedCardBtn().clickBillingDetailsNextbutton().clickPlaceOrderButton();
-		s_assert.assertTrue(sfCheckoutPage.isPopUpForTermsAndConditionsCheckboxDisplayed(), "validation popup for terms and conditions not displayed");
-		sfCheckoutPage.closePopUp();
-		sfCheckoutPage.selectTermsAndConditionsChkBox().clickPlaceOrderButton();
-		s_assert.assertTrue(sfCheckoutPage.isOrderPlacedSuccessfully(),"Order is Not placed successfully");
-		s_assert.assertAll();
-	}
-
-	/***
 	 * qTest : TC-287 Account Information- Consultant information
 	 * 
 	 * Description : This test validates sponser name on account info page.
@@ -1448,6 +1323,132 @@ public class MyAccountTest extends StoreFrontWebsiteBaseTest{
 		sfHomePage.loginToStoreFront(TestConstants.CONSULTANT_EMAIL_WITH_CRP_AND_PULSE,password,true);
 		sfAboutMePage = sfHomePage.clickAboutMe();
 		s_assert.assertTrue(sfAboutMePage.isSendButtonDisabled(), "Send button is enabled before enter captcha");
+		s_assert.assertAll();
+	}
+
+	/***
+	 * qtest: TC-277 Consultant Autoship Status- Subscribe to Pulse (First Time Pulse Enrollment)
+	 * Description: This method subscribe the consultant with pulse and also cancels the same
+	 */	
+	@Test(enabled=true)//TODO
+	public void testConsultantFirstTimePulseEnrollment_277(){
+		String prefix = TestConstants.FIRST_NAME+CommonUtils.getCurrentTimeStamp();
+		sfHomePage.loginToStoreFront(TestConstants.CONSULTANT_EMAIL_WITHOUT_CRP_AND_PULSE,password,true);
+		sfHomePage.clickWelcomeDropdown();
+		sfAutoshipStatusPage = sfHomePage.navigateToAutoshipStatusPage();
+		sfAutoshipStatusPage.clickSubscribeToPulseBtn();
+		sfAutoshipStatusPage.enterAvailablePrefix(prefix);
+		sfCheckoutPage = sfAutoshipStatusPage.clickConfirmSubscription();
+		sfCheckoutPage.clickSaveButton();
+		sfCheckoutPage.clickUseThesePaymentDetailsAndReturnBillingProfileName("1");
+		sfCheckoutPage.clickBillingDetailsNextbutton().clickPlaceOrderButton();
+		s_assert.assertTrue(sfCheckoutPage.isPopUpForTermsAndConditionsCheckboxDisplayed(), "validation popup for terms and conditions not displayed");
+		sfCheckoutPage.closePopUp();
+		sfCheckoutPage.selectTermsAndConditionsChkBox().clickPlaceOrderButton();
+		s_assert.assertTrue(sfCheckoutPage.isOrderPlacedSuccessfully(),"Order is Not placed successfully");
+		sfHomePage.clickWelcomeDropdown();
+		sfHomePage.navigateToAutoshipStatusPage();
+		sfAutoshipStatusPage.clickCancelPulseSubscription().clickConfirmSubscription();
+		s_assert.assertTrue(sfAutoshipStatusPage.isSubscribeToPulseBtnDisplayed(), "Pulse subscription is NOT cancelled");
+		s_assert.assertAll();
+	}	
+	/***
+	 * qTest : TC-250 Password format error validation
+	 * 
+	 * Description : This test do the validations of the password field on account info page for consultant.
+	 * 
+	 *     
+	 */
+	@Test(enabled=true)
+	public void testPasswordFormatErrorValidation_250(){
+		String passwordLessThan5Chars = "111M";
+		//Login as consultant user.
+		sfHomePage.loginToStoreFront(TestConstants.CONSULTANT_EMAIL_WITH_CRP_AND_PULSE,password,true);
+		sfHomePage.clickWelcomeDropdown();
+		sfAccountInfoPage = sfHomePage.navigateToAccountInfoPage();
+		String expectedValidationErrorMsg = TestConstants.PASSWORD_VALIDATION_ERROR_LESS_THAN_EIGHT_CHARS;
+		//sfAccountInfoPage.enterOldPassword(password);
+		sfAccountInfoPage.enterNewPassword(passwordLessThan5Chars);
+		sfAccountInfoPage.enterConfirmPassword(passwordLessThan5Chars);
+		sfAccountInfoPage.saveAccountInfo();
+		s_assert.assertTrue(sfAccountInfoPage.isValidationMsgPresentForParticularField("new password", expectedValidationErrorMsg)," validation msg for less than 6 chars has not displayed for new password");
+		s_assert.assertTrue(sfAccountInfoPage.isValidationMsgPresentForParticularField("confirm password", expectedValidationErrorMsg),"validation msg for less than 6 chars has not displayed for confirm password");
+		sfAccountInfoPage.enterNewPassword("");
+		sfAccountInfoPage.enterConfirmPassword(password);
+		sfAccountInfoPage.saveAccountInfo();
+		expectedValidationErrorMsg = TestConstants.CONFIRM_PASSWORD_VALIDATION_ERROR_SAME_VALUE;
+		s_assert.assertTrue(sfAccountInfoPage.isValidationMsgPresentForParticularField("confirm password", expectedValidationErrorMsg),"<msg needs to be added>");		
+		sfAccountInfoPage.enterNewPassword(password);
+		sfAccountInfoPage.enterConfirmPassword("");
+		sfAccountInfoPage.saveAccountInfo();
+		expectedValidationErrorMsg = TestConstants.CONFIRM_PASSWORD_VALIDATION_ERROR_SAME_VALUE;
+		s_assert.assertTrue(sfAccountInfoPage.isValidationMsgPresentForParticularField("confirm password", expectedValidationErrorMsg),"<msg needs to be added>");
+		s_assert.assertAll();
+	}
+	/***
+	 * qtest: TC-278 Consultant Autoship Status- Subscribe to Pulse (Re-Enrollment within 180 days)
+	  Description: This method re-enroll consultant in pulse with new prefix and existing autosuggested prefix .
+	 *
+	 */	
+	@Test(enabled=true)
+	public void testReEnnrollmentInPulseWithin180DaysOfExistingAutoSuggestedPrefix_278(){
+		String prefix = TestConstants.FIRST_NAME+CommonUtils.getCurrentTimeStamp();
+		String autoSuggestedPrefixName = null;
+		//Subscribe to pulse with a new prefix.
+		sfCheckoutPage = new StoreFrontCheckoutPage(driver);
+		sfHomePage.loginToStoreFront(TestConstants.CONSULTANT_EMAIL_WITHOUT_CRP_AND_PULSE,password,true);
+		sfHomePage.clickWelcomeDropdown();
+		sfAutoshipStatusPage = sfHomePage.navigateToAutoshipStatusPage();
+		sfAutoshipStatusPage.clickSubscribeToPulseBtn();
+		autoSuggestedPrefixName = sfAutoshipStatusPage.getAvailablePrefixName();
+		sfAutoshipStatusPage.enterAvailablePrefix(prefix);
+		sfCheckoutPage = sfAutoshipStatusPage.clickConfirmSubscription();
+		sfCheckoutPage.clickSaveButton();
+		sfCheckoutPage.clickUseThesePaymentDetailsAndReturnBillingProfileName("1");
+		sfCheckoutPage.clickBillingDetailsNextbutton().clickPlaceOrderButton();
+		s_assert.assertTrue(sfCheckoutPage.isPopUpForTermsAndConditionsCheckboxDisplayed(), "validation popup for terms and conditions not displayed");
+		sfCheckoutPage.closePopUp();
+		sfCheckoutPage.selectTermsAndConditionsChkBox().clickPlaceOrderButton();
+		s_assert.assertTrue(sfCheckoutPage.isOrderPlacedSuccessfully(),"Order is Not placed successfully");
+		//Cancel the pulse of user.
+		sfHomePage.clickWelcomeDropdown();
+		sfAutoshipStatusPage = sfHomePage.navigateToAutoshipStatusPage();
+		sfAutoshipStatusPage.clickCancelPulseSubscription().clickConfirmSubscription();
+		s_assert.assertTrue(sfAutoshipStatusPage.isSubscribeToPulseBtnDisplayed(), "Pulse subscription is NOT cancelled");
+		//Subscribe to pulse again with autosuggested prefix prefix.
+		sfAutoshipStatusPage.clickSubscribeToPulseBtn();
+		sfAutoshipStatusPage.enterAvailablePrefix(autoSuggestedPrefixName);
+		sfCheckoutPage = sfAutoshipStatusPage.clickConfirmSubscription();
+		sfCheckoutPage.clickSaveButton();
+		sfCheckoutPage.clickUseThesePaymentDetailsAndReturnBillingProfileName("1");
+		sfCheckoutPage.clickBillingDetailsNextbutton().clickPlaceOrderButton();
+		s_assert.assertTrue(sfCheckoutPage.isPopUpForTermsAndConditionsCheckboxDisplayed(), "validation popup for terms and conditions not displayed");
+		sfCheckoutPage.closePopUp();
+		sfCheckoutPage.selectTermsAndConditionsChkBox().clickPlaceOrderButton();
+		s_assert.assertTrue(sfCheckoutPage.isOrderPlacedSuccessfully(),"Order is Not placed successfully");
+		s_assert.assertAll();
+	}
+	
+	/***
+	 * qTest : TC-358 User navigates to Report a Problem page from the order history
+	 * 
+	 * Description : This test verifies if Return Policy link works fine under 
+	 * Orders->Actions->Report Problems
+	 * 
+	 *     
+	 */
+	@Test(enabled=true)
+	public void testReportAProblemOrderHistory_358(){
+		String reportProblemsLink = "Report Problems";
+		sfHomePage.loginToStoreFront(TestConstants.CONSULTANT_EMAIL_WITH_CRP_AND_PULSE, password,true);
+		sfHomePage.clickWelcomeDropdown();
+		sfOrdersPage = sfHomePage.navigateToOrdersPage();
+		sfOrdersPage.chooselinkFromActionsDDUnderOrderHistoryForFirstOrder(reportProblemsLink);
+		String parentWin = CommonUtils.getCurrentWindowHandle();
+		sfOrdersPage.clickReadOurReturnPolicyLink();
+		sfOrdersPage.switchToChildWindow(parentWin);
+		s_assert.assertTrue(sfOrdersPage.isReturnPolicyPDFOpened(), "Return Policy PDF has not opened");
+		sfOrdersPage.switchToParentWindow(parentWin);
 		s_assert.assertAll();
 	}
 }

@@ -177,8 +177,8 @@ public class StoreFrontOrdersPage extends StoreFrontWebsiteBasePage{
 	 * @return
 	 */
 	public boolean isReturnPolicyPDFOpened(){
-		String returnPolicyURL = "return-policy-for-pcperks-and-retails.pdf";
-		return driver.getCurrentUrl().contains(returnPolicyURL);
+		String returnPolicyURL = "Policies-Procedures";
+		return driver.getCurrentUrl().contains(returnPolicyURL)&&driver.getCurrentUrl().contains("pdf");
 	}
 
 	/***

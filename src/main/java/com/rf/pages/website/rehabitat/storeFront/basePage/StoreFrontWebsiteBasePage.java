@@ -718,23 +718,23 @@ public class StoreFrontWebsiteBasePage extends RFBasePage {
 	 * 
 	 */
 
-//	public StoreFrontWebsiteBasePage loginToStoreFront(String username, String password) {
-//		clickLoginIcon();
-//		driver.type(USERNAME_TXTFLD_LOC, username);
-//		logger.info("username entered as " + username);
-//		driver.type(PASSWORD_TXTFLD_LOC, password);
-//		logger.info("password entered as  " + password);
-//		driver.click(LOGIN_BTN_LOC);
-//		logger.info("login button clicked");
-//		if (driver.isElementVisible(NEW_POLICIES_PROCEDURES_POPUP_LOC)) {
-//			driver.clickByJS(RFWebsiteDriver.driver,
-//					driver.findElement(ACCEPT_RDBTN_NEW_POLICIES_PROCEDURES_POPUP_LOC));
-//			driver.pauseExecutionFor(1000);
-//			driver.clickByJS(RFWebsiteDriver.driver,
-//					driver.findElement(CONTINUE_BTN_NEW_POLICIES_PROCEDURES_POPUP_LOC));
-//		}
-//		return this;
-//	}
+	//	public StoreFrontWebsiteBasePage loginToStoreFront(String username, String password) {
+	//		clickLoginIcon();
+	//		driver.type(USERNAME_TXTFLD_LOC, username);
+	//		logger.info("username entered as " + username);
+	//		driver.type(PASSWORD_TXTFLD_LOC, password);
+	//		logger.info("password entered as  " + password);
+	//		driver.click(LOGIN_BTN_LOC);
+	//		logger.info("login button clicked");
+	//		if (driver.isElementVisible(NEW_POLICIES_PROCEDURES_POPUP_LOC)) {
+	//			driver.clickByJS(RFWebsiteDriver.driver,
+	//					driver.findElement(ACCEPT_RDBTN_NEW_POLICIES_PROCEDURES_POPUP_LOC));
+	//			driver.pauseExecutionFor(1000);
+	//			driver.clickByJS(RFWebsiteDriver.driver,
+	//					driver.findElement(CONTINUE_BTN_NEW_POLICIES_PROCEDURES_POPUP_LOC));
+	//		}
+	//		return this;
+	//	}
 
 	public StoreFrontWebsiteBasePage loginToStoreFront(String username, String password, boolean closeCRPReminder) {
 		clickLoginIcon();
@@ -2555,7 +2555,7 @@ public class StoreFrontWebsiteBasePage extends RFBasePage {
 		if (subtotal.isEmpty()) {
 			logger.info("There is no product in cart and hence subtotal is empty");
 		} else {
-			subtotal = subtotal.split("\\$")[1];
+			subtotal = subtotal.split("\\$")[1].replaceAll(",", "");
 			valueSubtotal = Double.parseDouble(subtotal);
 			logger.info("Subtotal of product is " + valueSubtotal);
 		}
@@ -3001,14 +3001,15 @@ public class StoreFrontWebsiteBasePage extends RFBasePage {
 	 * 
 	 * @return
 	 */
-	public StoreFrontWebsiteBasePage clickConfirmSubscription() {
-		driver.click(CONFIRM_PULSE_SUBSCRIPTION_BTN_LOC);
+	public StoreFrontCheckoutPage clickConfirmSubscription() {
+		driver.clickByJS(RFWebsiteDriver.driver, driver.findElement(CONFIRM_PULSE_SUBSCRIPTION_BTN_LOC));
 		logger.info("confirm sibscription btn clicked");
+		driver.pauseExecutionFor(2000);
 		if (driver.isElementVisible(OK_BTN_LOC)) {
 			driver.click(OK_BTN_LOC);
 			logger.info("OK btn on the confirm pulse subscription popup clicked");
 		}
-		return this;
+		return new StoreFrontCheckoutPage(driver);
 	}
 
 	/***

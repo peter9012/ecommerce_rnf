@@ -1092,7 +1092,7 @@ public class AutoshipTest extends StoreFrontWebsiteBaseTest{
 		sfAutoshipCartPage.clickRodanAndFieldsLogo();
 		sfAutoshipCartPage.clickAllProducts();
 		sfShopSkinCarePage.refineProductByCategory(TestConstants.CONSULTANT_CRP_AUTOSHIP_PRODUCT_CATEGORY);
-		sfProductDetailPage = sfShopSkinCarePage.clickNameOfProductOnAllProductPage("1");
+		sfProductDetailPage = sfShopSkinCarePage.clickNameOfProductOnAllProductPage(TestConstants.PRODUCT_NUMBER);
 		sfProductDetailPage.addProductToCartFromProductDetailPageAfterLogin(TestConstants.ORDER_TYPE_CRP);
 		s_assert.assertTrue(sfProductDetailPage.isCheckoutPopupDisplayed(),"Expected checkout popup is not displayed while adding product from Quick View popup");
 		sfProductDetailPage.checkoutTheCartFromPopUp();
@@ -1101,6 +1101,7 @@ public class AutoshipTest extends StoreFrontWebsiteBaseTest{
 		s_assert.assertTrue(updatedQuantityFromUI.equals(updatedQuantity), "Added item from PDP is not present into cart.  Expected Quantity : " + updatedQuantity + ". Actual Quantity : " + updatedQuantityFromUI);
 		s_assert.assertAll();
 	}
+	
 	/***
 	 * qTest : TC-397 Add to Autoship Cart - PC
 	 * Description : This test add a new product in to cart through PLP, Quick View Popup, PDP

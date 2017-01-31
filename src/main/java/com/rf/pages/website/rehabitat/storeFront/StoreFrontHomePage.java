@@ -76,7 +76,7 @@ public class StoreFrontHomePage extends StoreFrontWebsiteBasePage{
 	private final By LOGIN_OR_REGISTER_TXT_LOC = By.xpath("//h1[contains(text(),'LOG IN OR REGISTER') or contains(text(),'Log in') or contains(text(),'Log in or create an account')]");
 	private final By EMAIL_AVAILABLE_MSG_LOC = By.xpath("//div[@class='emailbox-available']//div[contains(text(),'Available')]");
 	private final By SPONSOR_NAME_LINK_LOC = By.xpath("//div[contains(@class,'findAConsultant')]/a[contains(@href,'/pws/') and contains(@href,'about-me')]");
-	private final By FIRST_PRODUCT_ADD_TO_CRP_BTN_LOC = By.xpath("//div[@id='product_category']/following-sibling::div/descendant::span[text()='Add to CRP'][1]/..");
+	private final By FIRST_PRODUCT_ADD_TO_CRP_BTN_LOC = By.xpath("//div[@id='product_category']/following-sibling::div/descendant::span[text()='Add to CRP'][1]");
 	private final By CRP_CHECKOUT_BTN_LOC = By.xpath("//button[contains(text(),'Checkout')]");
 	private final By SET_UP_CRP_BTN_LOC = By.xpath("//a[contains(text(),'SET UP CRP')]");
 	private final By SET_UP_CRP_LINK_LOC = By.xpath("//a[contains(text(),'SET UP CRP')]");

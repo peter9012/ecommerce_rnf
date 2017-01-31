@@ -487,17 +487,6 @@ public class OrdersTest extends StoreFrontWebsiteBaseTest{
 	}
 
 	/***
-	 * qTest : TC-315 Ship method- Ad Hoc carts
-	 * Description : //TODO
-	 * 
-	 *     
-	 */
-	@Test(enabled=false)//TODO
-	public void testShipMethodAdhocCarts(){
-
-	}
-
-	/***
 	 * qTest : TC-316 Consultants Cannot Ship to Quebec
 	 * Description : //TODO
 	 * 
@@ -1670,7 +1659,7 @@ public class OrdersTest extends StoreFrontWebsiteBaseTest{
 	 * 
 	 *     
 	 */
-	@Test(enabled=false)//Needs update, Test is marked as automated
+	@Test(enabled=true)
 	public void testShipMethodAdHocCarts_315(){
 		String selectedShippingMethodLabel = null;
 		String changedShippingMethodLabel = null;

@@ -111,7 +111,7 @@ public class AutoshipTest extends StoreFrontWebsiteBaseTest{
 	 *     
 	 */
 	@Test(enabled=true)
-	public void testUpdateAutoshipAddABillingProfileInvalid_418(){
+	public void testUpdateAutoshipNegativeUserCantAddABillingProfile_418(){
 		String currentURL = null;
 		String textToAssertInURL = "autoship/cart";
 		String cardType = TestConstants.CARD_TYPE;
@@ -568,7 +568,7 @@ public class AutoshipTest extends StoreFrontWebsiteBaseTest{
 	 *     
 	 */
 	@Test(enabled=true)
-	public void testUpdateAutoshipAddAbillingProfilePC_417(){
+	public void testUpdateAutoshipUserCantAddABillingProfilePC_417(){
 		String currentURL = null;
 		String textToAssertInURL = "autoship/cart";
 

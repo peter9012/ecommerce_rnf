@@ -977,7 +977,7 @@ public class StoreFrontShopSkinCarePage extends StoreFrontWebsiteBasePage{
 			priceToAssert = driver.getText(By.xpath(String.format(productPriceOnQuickViewPopupThroughOrderTypeLoc,TestConstants.ORDER_TYPE_ADHOC))).replace("$","");
 			driver.clickByAction(By.xpath(String.format(productPriceOnQuickViewPopupThroughOrderTypeLoc,TestConstants.ORDER_TYPE_ADHOC)));
 		}
-		else if(orderType.equals(TestConstants.ORDER_TYPE_PC_PERKS)&& driver.isElementVisible(By.xpath(String.format(productPriceOnQuickViewPopupThroughOrderTypeLoc,"subscribe + save")))){
+		else if(orderType.equals(TestConstants.ORDER_TYPE_PC_PERKS)&& driver.isElementVisible(By.xpath(String.format(productPriceOnQuickViewPopupThroughOrderTypeLoc,TestConstants.ORDER_TYPE_PC_PERKS)))){
 			priceToAssert = driver.getText(By.xpath(String.format(productPriceOnQuickViewPopupThroughOrderTypeLoc,TestConstants.ORDER_TYPE_PC_PERKS))).replace("$","");
 			driver.clickByAction(By.xpath(String.format(productPriceOnQuickViewPopupThroughOrderTypeLoc,TestConstants.ORDER_TYPE_PC_PERKS)));
 		}

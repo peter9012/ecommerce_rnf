@@ -1755,6 +1755,7 @@ public class StoreFrontWebsiteBasePage extends RFBasePage {
 		else
 			driver.clickByJS(RFWebsiteDriver.driver, driver.findElement(POLICIES_AND_PROCEDURES_CHK_BOX_PC_LOC));
 		logger.info("Policies & procedures checkbox selected");
+		driver.pauseExecutionFor(1000);
 		return this;
 	}
 
@@ -1769,6 +1770,7 @@ public class StoreFrontWebsiteBasePage extends RFBasePage {
 		driver.pauseExecutionFor(3000);
 		driver.click(I_ACKNOWLEDGE_CHK_BOX_LOC);
 		logger.info("I acknowledge checkbox selected");
+		driver.pauseExecutionFor(1000);
 		return this;
 	}
 
@@ -1801,6 +1803,7 @@ public class StoreFrontWebsiteBasePage extends RFBasePage {
 			driver.clickByJS(RFWebsiteDriver.driver, driver.findElement(TERMS_AND_CONDITIONS_CHK_BOX_PC_LOC));
 		}
 		logger.info("Terms & condition checkbox selected");
+		driver.pauseExecutionFor(1000);
 		return this;
 	}
 
@@ -1827,9 +1830,9 @@ public class StoreFrontWebsiteBasePage extends RFBasePage {
 	 * 
 	 */
 	public StoreFrontWebsiteBasePage selectConsentFormChkBox() {
-		driver.pauseExecutionFor(1000);
 		driver.clickByJS(RFWebsiteDriver.driver, driver.findElement(E_SIGN_CONSENT_FORM_CHK_BOX_LOC));
 		logger.info("E Sign Consent Form checkbox selected");
+		driver.pauseExecutionFor(1000);
 		return this;
 	}
 

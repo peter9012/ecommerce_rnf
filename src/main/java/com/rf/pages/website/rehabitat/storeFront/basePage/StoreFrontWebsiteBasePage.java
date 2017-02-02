@@ -43,6 +43,7 @@ public class StoreFrontWebsiteBasePage extends RFBasePage {
 		this.driver = driver;
 	}
 
+	private final By ENROLL_NOW_POPUP_LOC = By.xpath("//div[@id='enrollCRPModal' and contains(@style,'block')]//h3[contains(text(),'Do you want enroll for CRP')]");
 	private final By SHOPPING_CART_HEADLINE_ON_CHCKOUT_POPUP_LOC = By.xpath("//div[@id='cboxContent']//span[@class='headline-text' and contains(text(),'Added to Your Shopping Cart')]");
 	private final By SUBTOTAL_LOC = By.xpath("//td[contains(text(),'Subtotal')]/following::td[1]");
 	private final By TOTAL_PRICE_OF_ITEMS_IN_MINI_CART_LOC = By
@@ -166,7 +167,7 @@ public class StoreFrontWebsiteBasePage extends RFBasePage {
 	private final By REMOVE_LINK_LOC = By.xpath("//a[contains(text(),'REMOVE')]");
 	private final By CONSULTANT_ONLY_PRODUCTS_LINK_LOC = By
 			.xpath("//div[@class='navbar-inverse']//a[@title='CONSULTANT ONLY']");
-	private final By ERROR_MESSAGE_FOR_THRESHOLD = By.xpath("//div[@class='global-alerts']/div");
+	//private final By ERROR_MESSAGE_FOR_THRESHOLD = By.xpath("//div[@class='global-alerts']/div");
 	private final By TOTAL_NO_OF_PRODUCTS_LOC = By.xpath("//div[@class='product-item']");
 	private final By WELCOME_DD_EDIT_PC_PERKS_LOC = By.xpath("//a[text()='Edit PC Perks']");
 	private final By WELCOME_DD_PC_PERKS_FAQ_LOC = By.xpath("//a[text()='PC Perks FAQ']");
@@ -283,6 +284,8 @@ public class StoreFrontWebsiteBasePage extends RFBasePage {
 	private final By ERROR_MESSAGE_EXISTING_PREFIX_LOC = By.xpath("//*[@id='command']//following::span[@class='prefix-error']");
 	private final By ABOUT_ME_LOC = By.xpath(topNavigationLoc + "//a[contains(@title,'About Me')]");
 
+	private String errorMessageLoc = "//div[@class='global-alerts']/div[normalize-space(contains(text() , '%s'))]";
+	private String optionOnEnrollNowPopUpLoc = "//div[@id='enrollCRPModal' and contains(@style,'block')]//input[@value='%s']";
 	protected String productNameLinkLoc = "//div[@id='product_listing']/descendant::div[@class='details'][%s]//a";
 	private String quantityOfSpecificItemInCart = "//div[@class='qty']//input[@id='quantity_%s']";
 	private String itemNameInMiniCart = "//ol/descendant::li[@class='mini-cart-item'][%s]//a[@class='name']";
@@ -1089,20 +1092,6 @@ public class StoreFrontWebsiteBasePage extends RFBasePage {
 		logger.info("Entered postal code as " + postal);
 		driver.type(PHONE_NUMBER_FOR_ADDRESS_DETAILS_LOC, phoneNumber);
 		logger.info("Entered Phone number  as " + phoneNumber);
-		return this;
-	}
-
-	/***
-	 * This method click the save button
-	 * 
-	 * @param
-	 * @return store front Home page object
-	 * 
-	 */
-	public StoreFrontWebsiteBasePage clickSaveButton() {
-		driver.waitForLoadingImageToDisappear();
-		driver.click(SAVE_BUTTON_LOC);
-		logger.info("Save button clicked");
 		return this;
 	}
 
@@ -1918,12 +1907,7 @@ public class StoreFrontWebsiteBasePage extends RFBasePage {
 	 * 
 	 */
 	public boolean isErrorMessagePresentForThreshold(String message) {
-		String errorMessage = driver.findElement(ERROR_MESSAGE_FOR_THRESHOLD).getText();
-		if (errorMessage.contains("Message")) {
-			return true;
-		} else {
-			return false;
-		}
+		return driver.isElementVisible(By.xpath(String.format(errorMessageLoc, message)));
 	}
 
 	/***
@@ -2674,6 +2658,7 @@ public class StoreFrontWebsiteBasePage extends RFBasePage {
 		driver.waitForLoadingImageToDisappear();
 		driver.click(SHIPPING_NEXT_BUTTON_LOC);
 		logger.info("Next button clicked of shipping details");
+		driver.pauseExecutionFor(2000);
 		return this;
 	}
 
@@ -2972,18 +2957,6 @@ public class StoreFrontWebsiteBasePage extends RFBasePage {
 	}
 
 	/***
-	 * This method enters the pws prefix
-	 * 
-	 * @param prefix
-	 * @return
-	 */
-	public StoreFrontWebsiteBasePage enterAvailablePrefix(String prefix) {
-		driver.type(PWS_PREFIX_INPUT_FIELD_LOC, prefix);
-		logger.info("The pws prefix entered is " + prefix);
-		return this;
-	}
-
-	/***
 	 * This method clicks on the next btn
 	 * 
 	 * @return
@@ -3244,19 +3217,6 @@ public class StoreFrontWebsiteBasePage extends RFBasePage {
 	}
 
 	/***
-	 * This method will click on the confirm pulse subscription btn
-	 * 
-	 * 
-	 * 
-	 * @return
-	 */
-	public StoreFrontWebsiteBasePage clickConfirmSubscriptionButton() {
-		driver.clickByAction(CONFIRM_PULSE_SUBSCRIPTION_BTN_LOC);
-		logger.info("confirm sibscription btn clicked");
-		return this;
-	}
-
-	/***
 	 * This method enter the consultant Billing Address details
 	 * 
 	 * @param First
@@ -3459,6 +3419,7 @@ public class StoreFrontWebsiteBasePage extends RFBasePage {
 	 */
 	public StoreFrontWebsiteBasePage enterBillingAddressDetailsForExistingBillingProfile(String firstName, String lastName, String addressLine1, String addressLine2, String city, String state, String postal, String phoneNumber){
 		String completeName = firstName+" "+lastName;
+		driver.waitForElementToBeVisible(FIRST_LAST_NAME_FOR_BILLING_ADDRESS_FOR_EXISTING_PROFILE_LOC, 10);
 		driver.type(FIRST_LAST_NAME_FOR_BILLING_ADDRESS_FOR_EXISTING_PROFILE_LOC, completeName);
 		logger.info("Entered complete name as "+completeName);
 		driver.type(ADDRESS_LINE1_FOR_BILLING_ADDRESS_FOR_EXISTING_PROFILE_LOC, addressLine1);
@@ -3632,6 +3593,84 @@ public class StoreFrontWebsiteBasePage extends RFBasePage {
 	 */
 	public boolean isAddressFieldPresentAsExpectedOnUI(String billingAddressOnUI, String addressField) {
 		return billingAddressOnUI.contains(addressField);
+	}
+
+	/***
+	 * This method validate that enroll now popup is displayed
+	 * 
+	 * @param 
+	 * @return boolean
+	 * 
+	 */
+	public boolean isEnrollNowPopupIsDisplayed(){
+		driver.waitForElementToBeVisible(ENROLL_NOW_POPUP_LOC,10);
+		return driver.isElementVisible(ENROLL_NOW_POPUP_LOC);
+	}
+
+	/***
+	 * This method validate that enroll now popup is not displayed
+	 * 
+	 * @param 
+	 * @return boolean
+	 * 
+	 */
+	public boolean isEnrollNowPopupDisplayedAfterSelectingNoFromEnrollNowPopup(){
+		driver.waitForElementToBeInVisible(ENROLL_NOW_POPUP_LOC,10);
+		return driver.isElementVisible(ENROLL_NOW_POPUP_LOC);
+	}
+
+	/***
+	 * This method click on the specific option available on enroll now popup
+	 * 
+	 * @param 
+	 * @return StoreFrontWebsiteBasePage object
+	 * 
+	 */
+	public StoreFrontWebsiteBasePage clickOptionFromEnrollNowPopup(String option){
+		driver.click(By.xpath(String.format(optionOnEnrollNowPopUpLoc, option)));
+		logger.info(option + " Option selected from Enroll now Popup");
+		return this;
+	}
+
+	/***
+	 * This method click the save button
+	 * 
+	 * @param
+	 * @return store front Home page object
+	 * 
+	 */
+	public StoreFrontWebsiteBasePage clickSaveButton() {
+		driver.waitForLoadingImageToDisappear();
+		driver.click(SAVE_BUTTON_LOC);
+		logger.info("Save button clicked");
+		driver.waitForPageLoad();
+		return this;
+	}
+
+	/***
+	 * This method will click on the confirm pulse subscription btn
+	 * 
+	 * 
+	 * 
+	 * @return
+	 */
+	public StoreFrontWebsiteBasePage clickConfirmSubscriptionButton() {
+		driver.clickByJS(RFWebsiteDriver.driver, driver.findElement(CONFIRM_PULSE_SUBSCRIPTION_BTN_LOC));
+		logger.info("confirm sibscription btn clicked");
+		driver.pauseExecutionFor(2000);
+		return this;
+	}
+	/***
+	 * This method enters the pws prefix
+	 * 
+	 * @param prefix
+	 * @return
+	 */
+	public StoreFrontWebsiteBasePage enterAvailablePrefix(String prefix) {
+		driver.type(PWS_PREFIX_INPUT_FIELD_LOC, prefix);
+		logger.info("The pws prefix entered is " + prefix);
+		driver.pauseExecutionFor(2000);
+		return this;
 	}
 
 }

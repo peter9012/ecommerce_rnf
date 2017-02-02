@@ -464,17 +464,15 @@ public class ConsultantEnrollmentTest extends StoreFrontWebsiteBaseTest{
 	 * Description : This method completes the consultant enrollment by selecting pulse
 	 *     
 	 */
-	@Test//(enabled=false)//TODO //assertion for pulse order in order history is pending.
+	@Test
 	public void testConsultantEnrollmentWithPulseSubscription_467(){
 		timeStamp = CommonUtils.getCurrentTimeStamp();
 		randomWords = CommonUtils.getRandomWord(5);		
 		lastName = TestConstants.LAST_NAME+randomWords;
 		email = firstName+timeStamp+TestConstants.EMAIL_SUFFIX;
-		int randomNum = CommonUtils.getRandomNum(10000, 1000000);
 		String timeStamp = CommonUtils.getCurrentTimeStamp();
 		String socialInsuranceNumber = String.valueOf(CommonUtils.getRandomNum(100000000, 999999999));
 		String prefix = firstName+timeStamp;
-		String status = null;
 		sfHomePage.clickEnrollNow();
 		sfHomePage.searchSponsor(TestConstants.SPONSOR);
 		s_assert.assertTrue(sfHomePage.isSponsorResultDisplayed(),"No result found after searching the sponsor with name "+TestConstants.SPONSOR);
@@ -500,10 +498,12 @@ public class ConsultantEnrollmentTest extends StoreFrontWebsiteBaseTest{
 		s_assert.assertTrue(sfHomePage.isEnrollemntSuccessfulMsgDisplayed(), "Expected 'ENROLLMENT SUCCESSFUL' msg has NOT displayed"); 
 		sfHomePage.clickRodanAndFieldsLogo();
 		s_assert.assertTrue(sfHomePage.isWelcomeUserElementDisplayed(), "Welcome user locator has not displayed after consultant enrollment");
-		/*sfHomePage.clickWelcomeDropdown();
+		sfHomePage.clickWelcomeDropdown();
 		sfOrdersPage = sfHomePage.navigateToOrdersPage();
 		//Verify autoship order details.
-		s_assert.assertTrue(sfOrdersPage.isAutoshipOrderHistoryTableAppeared(),"Autoship Order history Table is not present on orders page");*/
+		s_assert.assertTrue(sfOrdersPage.isAutoshipOrderHistoryTableAppeared(),"Autoship Order history Table is not present on orders page");
+		sfOrdersPage.clickAndGetFirstOrderNumberFromOrderHistory();
+		s_assert.assertTrue(sfOrdersPage.isPulseProOrderPresentOnOrderDetailPage(),"Pulse pro order not present on pulse order detail page.");
 		s_assert.assertAll();
 
 	}
@@ -513,7 +513,7 @@ public class ConsultantEnrollmentTest extends StoreFrontWebsiteBaseTest{
 	 * Description : This method completes the consultant enrollment without selecting pulse
 	 *     
 	 */
-	@Test(enabled=false)//TODO //Assertion for pulse pro order pending on order history.
+	@Test
 	public void testConsultantEnrollmentWithoutPulseSubscription_468(){
 		timeStamp = CommonUtils.getCurrentTimeStamp();
 		randomWords = CommonUtils.getRandomWord(5);		
@@ -543,12 +543,13 @@ public class ConsultantEnrollmentTest extends StoreFrontWebsiteBaseTest{
 		s_assert.assertTrue(sfHomePage.isEnrollemntSuccessfulMsgDisplayed(), "Expected 'ENROLLMENT SUCCESSFUL' msg has NOT displayed"); 
 		sfHomePage.clickRodanAndFieldsLogo();
 		s_assert.assertTrue(sfHomePage.isWelcomeUserElementDisplayed(), "Welcome user locator has not displayed after consultant enrollment");
-		/*sfHomePage.clickWelcomeDropdown();
+		sfHomePage.clickWelcomeDropdown();
 		sfOrdersPage = sfHomePage.navigateToOrdersPage();
 		//Verify autoship order details.
-		s_assert.assertTrue(sfOrdersPage.isAutoshipOrderHistoryTableAppeared(),"Autoship Order history Table is not present on orders page");*/
+		s_assert.assertFalse(sfOrdersPage.isAutoshipOrderHistoryTableAppeared(),"Autoship Order history Table is present on orders page");
+		sfOrdersPage.clickAndGetFirstOrderNumberFromOrderHistory();
+		s_assert.assertFalse(sfOrdersPage.isPulseProOrderPresentOnOrderDetailPage(),"Pulse pro order present on order detail page.");
 		s_assert.assertAll();
-
 	}
 
 	/***
@@ -665,8 +666,8 @@ public class ConsultantEnrollmentTest extends StoreFrontWebsiteBaseTest{
 		sfCheckoutPage.clickSaveButton();
 		sfCheckoutPage.clickShippingDetailsNextbutton();
 		sfCheckoutPage.clickBillingDetailsNextbutton();
-//		sfCheckoutPage.selectTermsAndConditionsCheckBoxForConsulatntCRP();
-//		sfCheckoutPage.selectCheckboxForPoliciesAndProcedures();
+		//		sfCheckoutPage.selectTermsAndConditionsCheckBoxForConsulatntCRP();
+		//		sfCheckoutPage.selectCheckboxForPoliciesAndProcedures();
 		sfCheckoutPage.clickConfirmAutoshipOrderButton();
 		s_assert.assertTrue(sfCheckoutPage.isCRPOrderConfirmedSuccessMsgAppeared(),"CRP Order confirmed success messge is not appeared");
 		sfCheckoutPage.clickRodanAndFieldsLogo();

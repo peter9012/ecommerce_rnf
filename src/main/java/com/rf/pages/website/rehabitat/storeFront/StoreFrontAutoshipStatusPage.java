@@ -450,15 +450,15 @@ public class StoreFrontAutoshipStatusPage extends StoreFrontWebsiteBasePage{
 	}
 
 	/***
-	  * This method clicks on the subscribe to pulse button
-	  * @return
-	  */
-	 public StoreFrontAutoshipStatusPage clickSubscribeToPulseBtn(){
-	  driver.clickByJS(RFWebsiteDriver.driver,driver.findElement(SUBSCRIBE_TO_PULSE_BTN_LOC));
-	  logger.info("Subscribe to pulse btn clicked");
-	  return this;
-	 }
-	 
+	 * This method clicks on the subscribe to pulse button
+	 * @return
+	 */
+	public StoreFrontAutoshipStatusPage clickSubscribeToPulseBtn(){
+		driver.clickByJS(RFWebsiteDriver.driver,driver.findElement(SUBSCRIBE_TO_PULSE_BTN_LOC));
+		logger.info("Subscribe to pulse btn clicked");
+		return this;
+	}
+
 	/***
 	 * This method verifies whether subscribe to pulse button
 	 * is dislpayed or NOT
@@ -583,25 +583,6 @@ public class StoreFrontAutoshipStatusPage extends StoreFrontWebsiteBasePage{
 	}
 
 	/***
-	 * This method validates next Bill ship date on autoship status page
-	 * for Pulse
-	 * @param
-	 * @return boolean value
-	 * 
-	 */
-	public boolean isPulseCancellationPopupPresent(){
-		String popupText = null;
-		if(driver.isElementPresent(PULSE_CANCELLATION_POPUP_TEXT_LOC)){
-			popupText = driver.findElement(PULSE_CANCELLATION_POPUP_TEXT_LOC).getText().trim();	
-		}
-		if(popupText.contains("Are you sure you want to cancel the PULSE Subscription")){
-			return true;
-		}else{
-			logger.info("Pulse cancellation popup not present");
-			return false;
-		}
-	}	
-	/***
 	 * This method click on 'Cancel' on pulse cancellation popup
 	 * 
 	 * @param
@@ -614,5 +595,24 @@ public class StoreFrontAutoshipStatusPage extends StoreFrontWebsiteBasePage{
 		return new StoreFrontAutoshipCartPage(driver);
 	}
 
-
+	/***
+	 * This method validates next Bill ship date on autoship status page
+	 * for Pulse
+	 * @param
+	 * @return boolean value
+	 * 
+	 */
+	public boolean isPulseCancellationPopupPresent(){
+		String popupText = null;
+		boolean pulsePopup = false;
+		if(driver.isElementPresent(PULSE_CANCELLATION_POPUP_TEXT_LOC)){
+			popupText = driver.findElement(PULSE_CANCELLATION_POPUP_TEXT_LOC).getText().trim();	
+			if(popupText.contains("Are you sure you want to cancel the PULSE Subscription")){
+				pulsePopup  =true;
+			}
+		}else{
+			logger.info("Pulse cancellation popup not present");
+		}
+		return pulsePopup;
+	}
 }

@@ -535,9 +535,8 @@ public class AddAndDeleteShippingTest extends StoreFrontWebsiteBaseTest{
 		sfCheckoutPage.selectIAcknowledgePCChkBox();
 		sfCheckoutPage.selectPCTermsAndConditionsChkBox();
 		sfCheckoutPage.clickPlaceOrderButton();
-		sfCheckoutPage.clickRodanAndFieldsLogo();
 		s_assert.assertTrue(sfHomePage.hasPCEnrolledSuccessfully(), "PC has not been enrolled successfully");
-
+		sfCheckoutPage.clickRodanAndFieldsLogo();
 		// Adding product to cart and proceed to checkout
 		sfShippingInfoPage.clickAllProducts();
 		sfShopSkinCarePage.addProductToCart(TestConstants.PRODUCT_NUMBER, TestConstants.ORDER_TYPE_ADHOC);

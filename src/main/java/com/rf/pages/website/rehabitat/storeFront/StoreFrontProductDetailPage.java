@@ -31,14 +31,14 @@ public class StoreFrontProductDetailPage extends StoreFrontWebsiteBasePage{
 	private final By ADD_TO_CART_BUTTON_AT_PRODUCT_DETAIL_PAGE_LOGIN_LOC = By.xpath("//button[text()='Add to bag']");
 	private final By ADD_PRODUCT_TO_BAG_PRODUCT_DETAIL_LOGIN_LOC = By.xpath("//button[@id='addToCartButton']/span[contains(text(),'One Time Order')]");
 	private final By RETAIL_PRICE_ON_PDP_LOC = By.xpath("//div[@class='product-details']//span[@id='retail' and contains(text(),'Retail')]");
-	private final By ADD_TO_CART_BTN_AT_PDP_PAGE = By.xpath("//div[@class='addtocart-component']//button[contains(text(),'Add to cart')]");
 	private final By ONE_TIME_ORDER_BTN_LOC = By.xpath("//span[contains(text(),'One Time Order')]/ancestor::button[1]");
 	private final By PRODUCT_PRICE_ON_PDP_LOC = By.xpath("//div[@class='product-details']//span[@id='cust_price']");
 	private final By PRODUCT_IMAGE_LOC=By.xpath("//div[@id='pdp_page']//img");
 	private final By VIEW_LARGER_IMAGE_LOC=By.xpath("//span[contains(text(),'View Larger')]");
 	private final By CLOSE_ZOOM_LOC=By.xpath("//a[@class='closeZoom']");
 	private final By RECENTLY_VIEWED_PRODUCT_NAME_LOC=By.xpath("//div[@class='autoship-recentlyViewed']//div[@class='owl-item active'][1]//h3//a");
-
+	private final By ADD_TO_CART_BTN_AT_PDP_PAGE = By.xpath("//div[@class='addtocart-component']//button[contains(text(),'Add to bag')]");
+	
 	private String productPriceOnProductDetailsPageThroughOrderTypeLoc = "//span[contains(text(),'%s')]/following-sibling::span[contains(@class,'productPrice')]";
 	private String productUnderRecentlyViewTabLoc = "//div[@id='pdp_page']//div[@class='content']//following::div[@class='owl-item active']//a[contains(text(),'%s')]";
 	private String tabOnProductDetailPageLoc = "//div[@id='pdp_page']//following::li/a[contains(text(),'%s')]";

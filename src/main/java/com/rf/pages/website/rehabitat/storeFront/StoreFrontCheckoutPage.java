@@ -67,7 +67,6 @@ public class StoreFrontCheckoutPage extends StoreFrontWebsiteBasePage{
 	private final By SHIPPING_STATE_AT_CHECKOUT_PAGE_LOC=By.id("address.region");
 	private final By SHIPPING_POSTAL_CODE_AT_CHECKOUT_PAGE_LOC=By.id("address.postcode");
 	private final By SHIPPING_PHONE_NUMBER_AT_CHECKOUT_PAGE_LOC=By.id("address.phone");
-	private final By PROFILE_FOR_FUTURE_AUTOSHIP_CHECKBOX_LOC = By.xpath("//label[@for='futureAutoship']");
 	private final By TERMS_AND_CONDITIONS_CHCKBOX_FOR_CONSULTANT_CRP_LOC = By.xpath("//a[contains(text(),'terms and conditions')]/ancestor::label[1]/preceding-sibling::input[1]");
 	private final By POLICIES_AND_PROCEDURES_CHECBOX_LOC = By.xpath("//a[contains(text(),'policies and procedures')]/ancestor::label[1]/preceding-sibling::input[1]");
 	private final By QUEBEC_PROVINCE_FOR_SHIPPING_LOC=By.xpath("//option[@disabled='disabled' and text()='Quebec']");
@@ -160,6 +159,9 @@ public class StoreFrontCheckoutPage extends StoreFrontWebsiteBasePage{
 	private final By USE_MY_DELIVERY_ADDRESS_CHECKBOX_LOC = By.xpath("//input[@id='useDeliveryAddress']");
 	private final By SELECTED_SPONSOR_LOC = By.xpath("//span[@id='selectd-consultant']");
 	private final By ADDRESS_BOOK_BTN_LOC = By.xpath("//button[contains(text(),'Address Book')]");
+	private final By EMAIL_CONFIRMATION_MSG_LOC = By.xpath("//p[contains(text(),'A confirmation e-mail with your account information will be sent to your inbox shortly')]");
+	private final By PROFILE_FOR_FUTURE_AUTOSHIP_CHECKBOX_LOC = By.xpath("//div[@class='billingAddressForm']//label[@for='futureAutoship']");
+	private final By FUTURE_AUTOSHIP_CHECKBOX_FOR_EXISTING_PROFILE_LOC = By.xpath("//div[contains(@class,'editBillingAddressForm')]//label[@for='futureAutoship']");
 
 	private String useThisAddressBtnInAddressBookLoc = "//div[@id='addressbook']/descendant::form[@id='useShipAddressFromBook'][%s]//button";
 	private String profileNameFromAddressBookLoc = "//div[@id='addressbook']/descendant::strong[%s]";
@@ -1375,6 +1377,7 @@ public class StoreFrontCheckoutPage extends StoreFrontWebsiteBasePage{
 	 */
 	public StoreFrontCheckoutPage enterBillingAddressDetails(String firstName, String lastName, String addressLine1, String addressLine2, String city, String state, String postal, String phoneNumber){
 		String completeName = firstName+" "+lastName;
+		driver.waitForElementToBeVisible(FIRST_LAST_NAME_FOR_BILLING_ADDRESS_LOC, 10);
 		driver.type(FIRST_LAST_NAME_FOR_BILLING_ADDRESS_LOC, completeName);
 		logger.info("Entered complete name as "+completeName);
 		driver.type(ADDRESS_LINE1_FOR_BILLING_ADDRESS_LOC, addressLine1);
@@ -1825,6 +1828,28 @@ public class StoreFrontCheckoutPage extends StoreFrontWebsiteBasePage{
 	 */
 	public boolean isNotYourConsultantLinkPresentForSponsor(){
 		return driver.isElementVisible(NOT_YOUR_CONSULTANT_LINK_LOC);
+	}
+
+	/***
+	 * This method verify the email confirmation msg on checkout page
+	 * @param
+	 * @return boolean
+	 */
+	public boolean isEmailConfirmationMsgPresentAsExpected(){
+		return driver.isElementVisible(EMAIL_CONFIRMATION_MSG_LOC);
+	}
+
+	/***
+	 * This method select the checkbox for saving existing billing profile for future autoship 
+	 * 
+	 * @param 
+	 * @return StoreFrontCheckoutPage object 
+	 * 
+	 */
+	public StoreFrontCheckoutPage selectCheckboxForSavingExistingProfileForFutureAutoship(){
+		driver.click(FUTURE_AUTOSHIP_CHECKBOX_FOR_EXISTING_PROFILE_LOC);
+		logger.info("Selected checkbox for saving Existing Billing profile for future autoship");
+		return this;
 	}
 
 }

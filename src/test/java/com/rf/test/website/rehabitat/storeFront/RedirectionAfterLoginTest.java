@@ -30,7 +30,7 @@ public class RedirectionAfterLoginTest extends StoreFrontWebsiteBaseTest{
 	@Test(enabled=true)
 	public void testAsAConsultantAfterLoggingInFromCorpSponsorWithoutPWS_376(){
 		String currentURL = null;
-		sfHomePage.loginToStoreFront(TestConstants.CONSULTANT_EMAIL_WITHOUT_CRP_AND_PULSE, password, true);
+		sfHomePage.loginToStoreFront(TestConstants.PC_EMAIL_WHO_ENROLLED_UNDER_SPONSOR_WITHOUT_PWS, password, true);
 		sfHomePage.clickRodanAndFieldsLogo();
 		currentURL = sfHomePage.getCurrentURL();
 		s_assert.assertFalse(currentURL.contains("pws"),"Current url should contain for consultant with pws is PWS but actual on UI is "+currentURL);
@@ -64,10 +64,10 @@ public class RedirectionAfterLoginTest extends StoreFrontWebsiteBaseTest{
 		String prefix = TestConstants.CONSULTANT_PWS_PREFIX;
 		sfHomePage.navigateToUrl(sfHomePage.getBaseUrl()+"/" +sfHomePage.getCountry() +"/pws/" + prefix);
 		currentURL = sfHomePage.getCurrentURL();
-		s_assert.assertFalse(currentURL.contains(prefix),"Current url should contain for "+prefix+" but actual on UI is "+currentURL);
+		s_assert.assertTrue(currentURL.contains(prefix),"Current url should contain for "+prefix+" but actual on UI is "+currentURL);
 		sfHomePage.loginToStoreFront(TestConstants.PC_EMAIL_WHO_ENROLLED_UNDER_SPONSOR_WITH_PWS,  password,true);
 		currentURL = sfHomePage.getCurrentURL();
-		s_assert.assertTrue(currentURL.contains(prefix),"Current url should contain for "+prefix+" but after login actual on UI is "+currentURL);
+		s_assert.assertFalse(currentURL.contains(prefix),"Current url should  not contain "+prefix+" but after login actual on UI is "+currentURL);
 		s_assert.assertAll();
 	}
 
@@ -113,7 +113,7 @@ public class RedirectionAfterLoginTest extends StoreFrontWebsiteBaseTest{
 	@Test(enabled=true)
 	public void testConsultantWhoDoesNotHavePWSAndLogsInFromRFCorp_534(){
 		String currentURL = null;
-		sfHomePage.loginToStoreFront(TestConstants.CONSULTANT_EMAIL_WITHOUT_CRP_AND_PULSE,  password,true);
+		sfHomePage.loginToStoreFront(TestConstants.CONSULTANT_EMAIL_SPONSOR_WITHOUT_PWS,  password,true);
 		currentURL = sfHomePage.getCurrentURL();
 		s_assert.assertTrue(!currentURL.contains("pws"),"Current url for consultant without PWS after login it is containing 'PWS' and actual on UI is "+currentURL);
 		s_assert.assertAll();

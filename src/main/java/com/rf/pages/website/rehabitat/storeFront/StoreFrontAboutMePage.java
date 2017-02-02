@@ -116,6 +116,13 @@ public class StoreFrontAboutMePage extends StoreFrontWebsiteBasePage{
 		return driver.isElementVisible(SUBMISSION_GUIDELINES_LOC);
 	}
 
+	/***
+	 * This method verify user clicked on personalize my profile button or not
+	 * 
+	 * @param 
+	 * @return boolean value
+	 * 
+	 */ 
 	public StoreFrontAboutMePage clickSubmissionGuidelinesLink(){
 		driver.click(SUBMISSION_GUIDELINES_LOC);
 		return this;
@@ -189,12 +196,25 @@ public class StoreFrontAboutMePage extends StoreFrontWebsiteBasePage{
 		return driver.isElementPresent(LABEL_SHOW_SINCE_LOC);
 	}
 
-
+	/***
+	 * This method get show since text from about me page header
+	 * 
+	 * @param 
+	 * @return show since text
+	 * 
+	 */ 
 	public String getShowSinceTextOnAboutMePageHeader(){
 		driver.pauseExecutionFor(3000);
 		return driver.getText(SHOW_SINCE_HEADER_LOC);
 	}
 
+	/***
+	 * This method unselect show since checkbox
+	 * 
+	 * @param 
+	 * @return StoreFrontAboutMePage obj
+	 * 
+	 */ 
 	public StoreFrontAboutMePage deSelectCheckboxShowSince(){
 		driver.click(LABEL_SHOW_SINCE_LOC);
 		logger.info("checkbox show since is deselected");
@@ -216,11 +236,24 @@ public class StoreFrontAboutMePage extends StoreFrontWebsiteBasePage{
 		return this;
 	}
 
-
+	/***
+	 * This method get phone number from about me page header
+	 * 
+	 * @param 
+	 * @return phone number
+	 * 
+	 */ 
 	public String getPhoneNumberFromAboutMePageHeader(){
 		return driver.getText(PHONE_NUMBER_ON_PAGE_HEADER_LOC);
 	}
 
+	/***
+	 * This method get email from about me page header
+	 * 
+	 * @param 
+	 * @return email
+	 * 
+	 */
 	public String getEmailFromAboutMePageHeader(){
 		return driver.getText(EMAIL_ON_PAGE_HEADER_LOC);
 	}

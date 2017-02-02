@@ -1159,13 +1159,14 @@ public class ProductsAndCartDetailsTest extends StoreFrontWebsiteBaseTest{
 	 * Description : This test validates the checkout confirmation popup for PC user.
 	 *     
 	 */ 
-	@Test(enabled=false)//popup for checkout confirmation not present.
+	@Test
 	public void testProceedToCheckoutConfirmationAlertForAdhocOrdersPC_603(){
 		String currentURL = null;
 		String urlToAssertForCartPage = "cart";
 		String urlToAssertForCheckoutPage = "checkout";
 		sfHomePage.loginToStoreFront(TestConstants.PC_EMAIL_HAVING_AUTOSHIP, password,true);
 		sfShopSkinCarePage = sfHomePage.clickAllProducts();
+		sfShopSkinCarePage.refineProductByCategory(TestConstants.PC_PERKS_AUTOSHIP_PRODUCT_CATEGORY);
 		sfShopSkinCarePage.addProductToCart(TestConstants.PRODUCT_NUMBER, TestConstants.ORDER_TYPE_ADHOC);
 		sfCartPage = sfShopSkinCarePage.checkoutTheCartFromPopUp();
 		sfCartPage.clickCheckoutTheCartFromCartPage();

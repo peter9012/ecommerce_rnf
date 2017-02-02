@@ -121,17 +121,6 @@ public class OrdersTest extends StoreFrontWebsiteBaseTest{
 	}
 
 	/***
-	 * qTest : TC-233 Shipping method cost should reduce for consultant adhoc order with an SV 100+
-	 * Description : //TODO
-	 * 
-	 *     
-	 */
-	@Test(enabled=false)//TODO
-	public void testShippingMethodCostShouldReduceForConsultantAdhocOrderWithMoreThanHundredSVValue_233(){
-
-	}
-
-	/***
 	 * qTest : TC-295 Checkout page edits - Check Edit options
 	 * Description : this test validates all edit links at checkout page
 	 * 
@@ -590,29 +579,6 @@ public class OrdersTest extends StoreFrontWebsiteBaseTest{
 	@Test(enabled=false)//TODO
 	public void testCartPagePCPerksTermsAndConditions_335(){
 
-	}
-
-	/***
-	 * qTest : TC-354 PC user is in the process of placing an adhoc order less than 90$
-	 * Description : This test case validates threshold message for less than 90$
-	 *  at cart page
-	 *     
-	 */
-	@Test(enabled=false)//TODO
-	public void testPCUserIsInTheProcessOfPlacingAnAdhocOrderLessThan90_354(){
-		String errorMessage = "more to your cart to qualify for FREE shipping";
-		sfHomePage.loginToStoreFront(TestConstants.PC_EMAIL_HAVING_AUTOSHIP,password,true);
-		sfShopSkinCarePage = sfHomePage.clickAllProducts();
-		sfShopSkinCarePage.productPriceFilterLowToHigh();
-		int totalNoOfProduct = sfShopSkinCarePage.getTotalNoOfProduct();
-		int productNumber = sfShopSkinCarePage.getProductNumberAccordingToPriceRange(totalNoOfProduct, 0.00);
-		System.out.println("product"+productNumber);
-		sfShopSkinCarePage.addProductToCart(String.valueOf(productNumber), TestConstants.ORDER_TYPE_ADHOC);
-		sfCartPage = sfShopSkinCarePage.checkoutTheCartFromPopUp();
-		sfCartPage.clickMiniCartBagLink();
-		s_assert.assertTrue(sfCartPage.isErrorMessagePresentForThreshold(errorMessage), "Threshold message is present for a product more than 90$");
-		//sfCheckoutPage=sfCartPage.checkoutTheCart();
-		s_assert.assertAll();
 	}
 
 	/***
@@ -2003,4 +1969,94 @@ public class OrdersTest extends StoreFrontWebsiteBaseTest{
 	public void testOrderHistoryReportAProblemProductLevelWithEmptyFields_487(){
 		//duplicate test Same as TC-483
 	}
+	
+	/***
+	 * qTest : TC-233 Shipping method cost should reduce for consultant adhoc order with an SV 100+
+	 * Description : This test case validates shipping method cost should reduce while adding a product > 100$
+	 *     
+	 */
+	@Test(enabled=true)
+	public void testShippingMethodCostShouldReduceForConsultantAdhocOrderWithMoreThanHundredSVValue_233(){
+		double shippingMethodWithCostBefore = 0.00;
+		double shippingMethodWithCostAfter = 0.00;
+		sfHomePage.loginToStoreFront(TestConstants.CONSULTANT_EMAIL_WITH_CRP_AND_PULSE, password,true);
+		sfCartPage = sfHomePage.clickMiniCartBagLink();
+		sfCartPage.removeAllProductsFromCart();
+		sfCartPage.clickRodanAndFieldsLogo();
+		sfShopSkinCarePage = sfHomePage.clickAllProducts();
+		sfShopSkinCarePage.productPriceFilterLowToHigh();
+		sfShopSkinCarePage.addProductToCart(TestConstants.PRODUCT_NUMBER, TestConstants.ORDER_TYPE_ADHOC);;
+		sfShopSkinCarePage.checkoutTheCartFromPopUp();
+		sfCheckoutPage=sfShopSkinCarePage.checkoutTheCart();
+		sfCheckoutPage.clickSaveButton();
+		shippingMethodWithCostBefore = Double.parseDouble(sfCheckoutPage.getSelectedShippingMethodName().split("\\$")[1]);
+		sfCheckoutPage.clickRodanAndFieldsLogo();
+		sfCheckoutPage.clickAllProducts();
+		sfShopSkinCarePage.addProductToCart(TestConstants.PRODUCT_NUMBER, TestConstants.ORDER_TYPE_ADHOC);;
+		sfShopSkinCarePage.checkoutTheCartFromPopUp();
+		sfCheckoutPage=sfShopSkinCarePage.checkoutTheCart();
+		sfCheckoutPage.clickSaveButton();
+		shippingMethodWithCostAfter = Double.parseDouble(sfCheckoutPage.getSelectedShippingMethodName().split("\\$")[1]);
+		s_assert.assertTrue(shippingMethodWithCostAfter<shippingMethodWithCostBefore, "Expected shipping method cost should be less than from"+shippingMethodWithCostBefore+" but actual on UI is "+shippingMethodWithCostAfter);
+		s_assert.assertAll();
+	}
+
+/***
+	 * qTest : TC-354 PC user is in the process of placing an adhoc order less than 90$
+	 * Description : This test case validates threshold message for less than 90$
+	 *  at cart page
+	 *     
+	 */
+	@Test(enabled=true)
+	public void testPCUserIsInTheProcessOfPlacingAnAdhocOrderLessThan90_354(){
+		double deliverCharges = 0.00; 
+		String errorMessage = "more to your cart to qualify for FREE shipping";
+		sfHomePage.loginToStoreFront(TestConstants.PC_EMAIL_HAVING_AUTOSHIP,password,true);
+		sfCartPage = sfHomePage.clickMiniCartBagLink();
+		sfCartPage.removeAllProductsFromCart();
+		sfCartPage.clickRodanAndFieldsLogo();
+		sfShopSkinCarePage = sfHomePage.clickAllProducts();
+		sfShopSkinCarePage.productPriceFilterLowToHigh();
+		sfShopSkinCarePage.addProductToCart("1", TestConstants.ORDER_TYPE_ADHOC);
+		sfShopSkinCarePage.checkoutTheCartFromPopUp();
+		sfCartPage.clickMiniCartBagLink();
+		s_assert.assertTrue(sfCartPage.isErrorMessagePresentForThreshold(errorMessage), "Threshold message is present for a product more than 90$");
+		sfCheckoutPage=sfCartPage.checkoutTheCart();
+		sfCheckoutPage.clickSaveButton();
+		sfCheckoutPage.clickShippingDetailsNextbutton();
+		sfCheckoutPage.clickBillingDetailsNextbutton();
+		deliverCharges = Double.parseDouble(sfCheckoutPage.getDeliveryChargesAtOrderReviewPage().split("\\$")[1]);
+		s_assert.assertTrue(deliverCharges>0.00, "Deliver charges not applied for the order total < 100$");
+		s_assert.assertAll();
+	}
+	
+	/***
+	 * qTest : TC-355 PC user is in the process of placing an adhoc order more than 90$
+	 * Description : This test case validates threshold message & delivery charges for more than 90$
+	 *  at cart page
+	 *     
+	 */
+	@Test(enabled=true)
+	public void testPCUserIsInTheProcessOfPlacingAnAdhocOrderMoreThan90_355(){
+		String deliveryCharges = null; 
+		String errorMessage = "more to your cart to qualify for FREE shipping";
+		sfHomePage.loginToStoreFront(TestConstants.PC_EMAIL_HAVING_AUTOSHIP,password,true);
+		sfCartPage = sfHomePage.clickMiniCartBagLink();
+		sfCartPage.removeAllProductsFromCart();
+		sfCartPage.clickRodanAndFieldsLogo();
+		sfShopSkinCarePage = sfHomePage.clickAllProducts();
+		sfShopSkinCarePage.addProductToCart("1", TestConstants.ORDER_TYPE_ADHOC);
+		sfShopSkinCarePage.checkoutTheCartFromPopUp();
+		sfCartPage.clickMiniCartBagLink();
+		s_assert.assertFalse(sfCartPage.isErrorMessagePresentForThreshold(errorMessage), "Threshold message is present for a product more than 90$");
+		sfCheckoutPage=sfCartPage.checkoutTheCart();
+		sfCheckoutPage.clickSaveButton();
+		sfCheckoutPage.clickShippingDetailsNextbutton();
+		sfCheckoutPage.clickBillingDetailsNextbutton();
+		deliveryCharges = sfCheckoutPage.getDeliveryChargesAtOrderReviewPage().toLowerCase();
+		s_assert.assertTrue(deliveryCharges.contains("free"), "Delivery charges applied for the order total > 100$ actual on UI is "+deliveryCharges);
+		s_assert.assertAll();
+	}
+
+
 }

@@ -17,6 +17,8 @@ public class StoreFrontOrdersPage extends StoreFrontWebsiteBasePage{
 	private static final Logger logger = LogManager
 			.getLogger(StoreFrontOrdersPage.class.getName());
 
+
+private final By PULSE_ORDER_ITEM_ON_ORDER_DETAIL_PAGE_LOC = By.xpath("//li[@class='orderItemsHeading']/following::p[text()='Pulse Pro-1 Month']");
 	private final By FIRST_ORDER_STATUS_IN_AUTOSHIP_ORDER_HISTORY_LOC = By.xpath("//div[contains(text(),'PENDING AUTOSHIP ORDERS')]/following-sibling::div//tbody//a[contains(text(),'Edit')]/../preceding-sibling::td[@class='status']");
 	private final By FIRST_ORDER_NUMBER_UNDER_ORDER_HISTORY_LOC = By.xpath("//div[@id='orderHistoryContentArea']//tr[2]//td[2]/a");
 	private final By FIRST_ACTIONS_DD_UNDER_ORDER_HISTORY_LOC = By.xpath("//div[@id='orderHistoryContentArea']//tr[2]//div[contains(text(),'Actions')]");
@@ -506,20 +508,6 @@ public class StoreFrontOrdersPage extends StoreFrontWebsiteBasePage{
 	}
 
 	/***
-	 * This method click get first order number from order history 
-	 * 
-	 * @param
-	 * @return order number
-	 * 
-	 */
-	public String clickAndGetFirstOrderNumberFromOrderHistory(){
-		String orderNumber = driver.findElement(FIRST_ORDER_NUMBER_UNDER_ORDER_HISTORY_LOC).getText();
-		driver.click(FIRST_ORDER_NUMBER_UNDER_ORDER_HISTORY_LOC);
-		logger.info("Order number is "+orderNumber);
-		return orderNumber;
-	}
-
-	/***
 	 * This method get next bill and ship date for autoship order on order detail page.
 	 * 
 	 * @param
@@ -537,7 +525,6 @@ public class StoreFrontOrdersPage extends StoreFrontWebsiteBasePage{
 			return nextBillShipDate;
 		}
 	}
-	//---
 
 	/***
 	 * This method get email id from order report problem page 
@@ -685,6 +672,29 @@ public class StoreFrontOrdersPage extends StoreFrontWebsiteBasePage{
 		return this;
 	}
 
-
+	/***
+	 * This method click get first order number from order history 
+	 * 
+	 * @param
+	 * @return order number
+	 * 
+	 */
+	public String clickAndGetFirstOrderNumberFromOrderHistory(){
+		String orderNumber = driver.findElement(FIRST_ORDER_NUMBER_UNDER_ORDER_HISTORY_LOC).getText();
+		driver.click(FIRST_ORDER_NUMBER_UNDER_ORDER_HISTORY_LOC);
+		logger.info("Order number is "+orderNumber);
+		driver.waitForPageLoad();
+		return orderNumber;
+	}
+	
+	/***
+	 * This method validates pulse pro order from order detail page 
+	 * @param
+	 * @return boolean
+	 */
+	public boolean isPulseProOrderPresentOnOrderDetailPage(){
+		return driver.isElementVisible(PULSE_ORDER_ITEM_ON_ORDER_DETAIL_PAGE_LOC);
+	}
+	
 }
 

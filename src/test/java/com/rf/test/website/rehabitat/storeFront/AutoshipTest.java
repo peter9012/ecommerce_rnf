@@ -1201,7 +1201,29 @@ public class AutoshipTest extends StoreFrontWebsiteBaseTest{
 		sfShopSkinCarePage.refineProductByCategory(TestConstants.CONSULTANT_CRP_AUTOSHIP_PRODUCT_CATEGORY);
 		sfProductDetailPage = sfShopSkinCarePage.clickNameOfProductOnAllProductPage(productNumber);
 		sfProductDetailPage.addProductToCartFromProductDetailPageAfterLogin(orderType);
-		s_assert.assertTrue(sfShopSkinCarePage.isEnrollNowPopupIsDisplayed(),"Enroll now popup does not get displayed");
+		s_assert.assertTrue(sfShopSkinCarePage.isEnrollNowPopupIsDisplayed(),"Enroll now popup does not get displayed after Clicking Add to CRP Button from PDP Page");
+		sfShopSkinCarePage.clickOptionFromEnrollNowPopup("Yes");
+		sfHomePage.addProductForCRPCheckout(TestConstants.PRODUCT_NUMBER);
+		sfHomePage.checkoutCRPBag();
+		sfCheckoutPage.clickSaveButton();
+		sfCheckoutPage.clickShippingDetailsNextbutton();
+		sfCheckoutPage.clickBillingDetailsNextbutton();
+		sfCheckoutPage.clickConfirmAutoshipOrderButton();
+		s_assert.assertTrue(sfCheckoutPage.isCRPOrderConfirmedSuccessMsgAppeared(),"CRP Order confirmed success messge is not appeared");
+		sfCheckoutPage.clickRodanAndFieldsLogo();
+		sfCheckoutPage.clickWelcomeDropdown();
+		sfOrdersPage = sfCheckoutPage.navigateToOrdersPage();
+		s_assert.assertTrue(sfOrdersPage.isAutoshipOrderHistoryTableAppeared(),"Autoship Order history Table is not present on orders page");
+		status = sfOrdersPage.getStatusOfFirstOrderPresentInAutoshipOrderHistory();
+		s_assert.assertTrue(status.contains("Active"),"Status of CRP is not found as expected. Expected : Active. Actual : "+status);
+
+		// Removing Consultant from CRP Enrollment
+		sfHomePage.clickWelcomeDropdown();
+		sfHomePage.navigateToAutoshipStatusPage();
+		sfAutoshipStatusPage.clickCancelCRPLink();
+		sfAutoshipStatusPage.clickCancelCRPButton();
+		s_assert.assertTrue(sfAutoshipStatusPage.getActionSucccessMsgOnAutoshipStatusPage().contains(TestConstants.CANCELLED_CRP_ORDER_SUCCESS_MESSAGE),"Cancelled CRP Order Success Message is not present as expected");
+		s_assert.assertTrue(sfAutoshipStatusPage.isEnrollIntoCRPButtonPresent(),"Enroll in CRP Button is not present After cancelling CRP for consulatnt");
 		s_assert.assertAll();
 	}
 
@@ -1410,7 +1432,7 @@ public class AutoshipTest extends StoreFrontWebsiteBaseTest{
 		s_assert.assertTrue(sfCheckoutPage.isAddressFieldPresentAsExpectedOnUI(billingDetailsOnUI,stateAbbreviation),"State : " + stateAbbreviation + " is not present in Actual Billing Address");
 		s_assert.assertAll();
 	}
-	
+
 	/***
 	 * qTest : TC-539 CRP Replenishment Order confirmation
 	 * 
@@ -1479,7 +1501,7 @@ public class AutoshipTest extends StoreFrontWebsiteBaseTest{
 		s_assert.assertTrue(status.contains("Active"),"Status of CRP is not found as expected. Expected : Active. Actual : "+status);
 		s_assert.assertAll();
 	}
-	
+
 	/***
 	 * qTest : TC-509 User selects Update CTA after making changes in the autoship cart
 	 * Description : This test validates the Autoship cart page changes for PC/Consultant Autoship

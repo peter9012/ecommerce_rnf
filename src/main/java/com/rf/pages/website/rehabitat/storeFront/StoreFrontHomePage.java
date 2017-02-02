@@ -81,7 +81,7 @@ public class StoreFrontHomePage extends StoreFrontWebsiteBasePage{
 	private final By SET_UP_CRP_LINK_LOC = By.xpath("//a[contains(text(),'SET UP CRP')]");
 	private final By PRODUCT_SEARCH_AUTOSUGGESTION_LOC = By.xpath("//div[@class='name']");
 	private final By MEET_THE_DOCTORS_TXT_LOC = By.xpath("//h1[contains(text(),'Meet the Doctors')]");
-	
+
 	private String specificProductAddToCRPBtnLoc = "//div[@id='product_category']/following-sibling::div/descendant::span[text()='Add to CRP'][%s]";
 	private String viewDetailsLinkLoc = "//div[contains(@class,'enrollmentKit-wrapper')]/descendant::a[contains(text(),'View Details')][%s]";
 	private String expandedKitDescriptionLoc = "//div[contains(@class,'enrollmentKit-wrapper')]/div[%s]//div[@class='detailed-description']";
@@ -928,7 +928,7 @@ public class StoreFrontHomePage extends StoreFrontWebsiteBasePage{
 	 * 
 	 */
 	public StoreFrontHomePage addFirstProductForCRPCheckout(){
-		driver.click(FIRST_PRODUCT_ADD_TO_CRP_BTN_LOC);
+		driver.clickByJS(RFWebsiteDriver.driver, driver.findElement(FIRST_PRODUCT_ADD_TO_CRP_BTN_LOC));
 		logger.info("Clicked Add to CRP button of First Product");
 		return this;
 	}
@@ -971,17 +971,17 @@ public class StoreFrontHomePage extends StoreFrontWebsiteBasePage{
 		logger.info("is product search autosuggestion = "+isProductSearchAutosuggestionPresent);
 		return isProductSearchAutosuggestionPresent;
 	}
-	
+
 	/***
-	  * This method clicked the Add to CRP button for Specific Index Product
-	  * 
-	  * @param
-	  * @return store front home page object
-	  * 
-	  */
-	 public StoreFrontHomePage addProductForCRPCheckout(String productNum){
-	  driver.click(By.xpath(String.format(specificProductAddToCRPBtnLoc, productNum)));
-	  logger.info("Clicked Add to CRP button of Product Number : " + productNum);
-	  return this;
-	 }
+	 * This method clicked the Add to CRP button for Specific Index Product
+	 * 
+	 * @param
+	 * @return store front home page object
+	 * 
+	 */
+	public StoreFrontHomePage addProductForCRPCheckout(String productNum){
+		driver.click(By.xpath(String.format(specificProductAddToCRPBtnLoc, productNum)));
+		logger.info("Clicked Add to CRP button of Product Number : " + productNum);
+		return this;
+	}
 }

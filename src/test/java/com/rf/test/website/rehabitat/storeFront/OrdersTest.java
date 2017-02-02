@@ -108,18 +108,6 @@ public class OrdersTest extends StoreFrontWebsiteBaseTest{
 		}
 	}
 
-
-	/***
-	 * qTest : TC-229 Checkout- Viewing Main Account Info
-	 * Description : //TODO
-	 * 
-	 *     
-	 */
-	@Test(enabled=false)//TODO
-	public void testCheckoutViewingMainAccountInfo_323(){
-
-	}
-
 	/***
 	 * qTest : TC-295 Checkout page edits - Check Edit options
 	 * Description : this test validates all edit links at checkout page
@@ -337,50 +325,6 @@ public class OrdersTest extends StoreFrontWebsiteBaseTest{
 	}
 
 	/***
-	 * qTest : TC-306 Tax Rules- Consultant- USA- Ad-hoc order
-	 * Description : //TODO
-	 * 
-	 *     
-	 */
-	@Test(enabled=false)//TODO
-	public void testTaxRulesConsultantUSAAdhocOrder_306(){
-
-	}
-
-	/***
-	 * qTest : TC-307 Tax Rules- Consultant- USA- Autoship order
-	 * Description : //TODO
-	 * 
-	 *     
-	 */
-	@Test(enabled=false)//TODO
-	public void testTaxRulesConsultantUSAAutoshipOrder_307(){
-
-	}
-
-	/***
-	 * qTest : TC-308 Display Tax- Order history details
-	 * Description : //TODO
-	 * 
-	 *     
-	 */
-	@Test(enabled=false)//TODO
-	public void testDisplayTaxOrderHistoryDetails_308(){
-
-	}
-
-	/***
-	 * qTest : TC-309 Display Tax- Checkout
-	 * Description : //TODO
-	 * 
-	 *     
-	 */
-	@Test(enabled=false)//TODO
-	public void testDisplayTaxCheckout_309(){
-
-	}
-
-	/***
 	 * qTest : TC-310 Add a payment method-Checkout
 	 * Description : This test case validates billing profile details are in editable mode
 	 * 
@@ -444,17 +388,6 @@ public class OrdersTest extends StoreFrontWebsiteBaseTest{
 	}
 
 	/***
-	 * qTest : TC-312 Ship Method-PC - select PC checkbox on checkout
-	 * Description : //TODO
-	 * 
-	 *     
-	 */
-	@Test(enabled=false)//TODO
-	public void testShippingMethodPCSelectPCCheckboxOnCheckout_312(){
-
-	}
-
-	/***
 	 * qTest : TC-314 Ship Method-PC - Existing PC places Ad-hoc order
 	 * Description : This testcase validates shipping method name and cost for PC
 	 * During Adhoc order
@@ -474,18 +407,6 @@ public class OrdersTest extends StoreFrontWebsiteBaseTest{
 		s_assert.assertTrue(shippingMethodWithCost.contains("$0") && shippingMethodWithCost.contains(shippingMethodName), "Expected shipping method name is "+shippingMethodName+" and shipping cost should contain $0 but actual on UI is "+shippingMethodWithCost);
 		s_assert.assertAll();
 	}
-
-	/***
-	 * qTest : TC-316 Consultants Cannot Ship to Quebec
-	 * Description : //TODO
-	 * 
-	 *     
-	 */
-	@Test(enabled=false)//TODO
-	public void testConsultantsCannotShipToQuebec_316(){
-
-	}
-
 
 	/***
 	 * qTest : TC-319 Shipping to PO/RR boxes
@@ -557,39 +478,6 @@ public class OrdersTest extends StoreFrontWebsiteBaseTest{
 		shippingProfileNameFromUI = sfCheckoutPage.getDefaultShippingAddressNameAtCheckoutPage();
 		s_assert.assertTrue(shippingProfileNameFromUI.contains(lastName) &&shippingProfileNameFromUI.contains(city)&& shippingProfileNameFromUI.contains(state) && shippingProfileNameFromUI.contains(postalCode) , "For DPO addressShipping profile name should contain "+lastName+ "City "+city+" State "+state+"Postal code "+postalCode+" Actual on UI is "+shippingProfileNameFromUI);
 		s_assert.assertAll();
-	}
-
-	/***
-	 * qTest : TC-332 Cart Page- Product Messaging for Non-replenishable products
-	 * Description : //TODO
-	 * 
-	 *     
-	 */
-	@Test(enabled=false)//TODO
-	public void testCartPageProductMessagingForNonReplenishableProducts_332(){
-
-	}
-
-	/***
-	 * qTest : TC-335 Cart Page- PC Perks Terms and Conditions
-	 * Description : //TODO
-	 * 
-	 *     
-	 */
-	@Test(enabled=false)//TODO
-	public void testCartPagePCPerksTermsAndConditions_335(){
-
-	}
-
-	/***
-	 * qTest : TC-355 PC user is in the process of placing an adhoc order more than 90$
-	 * Description : //TODO
-	 * 
-	 *     
-	 */
-	@Test(enabled=false)//TODO
-	public void testPCUserIsInTheProcessOfPlacingAnAdhocOrderMoreThan90$_355(){
-
 	}
 
 	/***
@@ -717,17 +605,6 @@ public class OrdersTest extends StoreFrontWebsiteBaseTest{
 		billingProfileDetails = sfCheckoutPage.getBillingProfileDetailsFromBillingProfile();
 		s_assert.assertTrue(billingProfileDetails.contains(billingLastName), "Billing profile name should contain "+lastName+" but actual On UI is"+billingProfileDetails);
 		s_assert.assertAll();
-	}
-
-	/***
-	 * qTest : TC-368 Shipping to PO/RR with PO number as address detail
-	 * Description : //TODO
-	 * 
-	 *     
-	 */
-	@Test(enabled=false)//TODO
-	public void testShippingToPORRWithPONumberAsAddressDetail_368(){
-
 	}
 
 	/***
@@ -870,17 +747,6 @@ public class OrdersTest extends StoreFrontWebsiteBaseTest{
 	}
 
 	/***
-	 * qTest : TC-365 Order Details and Return Order Details- Link to Pulse
-	 * Description : //TODO
-	 * 
-	 *     
-	 */
-	@Test(enabled=false)
-	public void testOrderDetailsAndReturnOrderDetailsLinkToPulse_365(){
-
-	}
-
-	/***
 	 * qTest : TC-458 Choose a consultant- R+F Corporate sponsor - PC First checkout from PWS
 	 * Description :  This test case validates the sponsor functionality and before enrolled PC
 	 * & after enrollment PC can not change the sponsor start from PWS
@@ -953,9 +819,9 @@ public class OrdersTest extends StoreFrontWebsiteBaseTest{
 	 * 
 	 *     
 	 */
-	@Test(enabled=false)
+	@Test(enabled=true)
 	public void testReviewAndPlaceOrder_470(){
-		// same as 409
+		// Duplicate, same as 409
 	}
 
 	/***
@@ -1833,6 +1699,7 @@ public class OrdersTest extends StoreFrontWebsiteBaseTest{
 		s_assert.assertTrue(productNameAtOrderDetailsPage.contains(productName),"Product name is not matching. Expected is:"+productName+"But found is "+productNameAtOrderDetailsPage);
 		s_assert.assertAll();
 	}
+	
 	/***
 	 * qTest : TC-477 Retail User Checkout- Choose a Consultant - multiple search
 	 * Description : This test case  search sponsor multiple times and validate the last selected sponsor
@@ -1863,7 +1730,7 @@ public class OrdersTest extends StoreFrontWebsiteBaseTest{
 	 * 
 	 *     
 	 */
-	@Test(enabled=false)//Makng browser die, need to debug
+	@Test(enabled=true)
 	public void testShipMethodPCExistingPCChangesShippingMethod_313(){
 		String shippingMethodWithCost = null;
 		String deliveryCharge = null;
@@ -1902,7 +1769,7 @@ public class OrdersTest extends StoreFrontWebsiteBaseTest{
 	 * & after enrollment RC can change the sponsor
 	 *     
 	 */
-	@Test(enabled=false)
+	@Test(enabled=true)
 	public void testChooseAConsultantRFCorporateSponsorRCCheckoutFromCorporate_459(){
 		String timeStamp = CommonUtils.getCurrentTimeStamp();
 		String firstName = TestConstants.FIRST_NAME;
@@ -1969,7 +1836,7 @@ public class OrdersTest extends StoreFrontWebsiteBaseTest{
 	public void testOrderHistoryReportAProblemProductLevelWithEmptyFields_487(){
 		//duplicate test Same as TC-483
 	}
-	
+
 	/***
 	 * qTest : TC-233 Shipping method cost should reduce for consultant adhoc order with an SV 100+
 	 * Description : This test case validates shipping method cost should reduce while adding a product > 100$
@@ -2001,7 +1868,7 @@ public class OrdersTest extends StoreFrontWebsiteBaseTest{
 		s_assert.assertAll();
 	}
 
-/***
+	/***
 	 * qTest : TC-354 PC user is in the process of placing an adhoc order less than 90$
 	 * Description : This test case validates threshold message for less than 90$
 	 *  at cart page
@@ -2029,7 +1896,7 @@ public class OrdersTest extends StoreFrontWebsiteBaseTest{
 		s_assert.assertTrue(deliverCharges>0.00, "Deliver charges not applied for the order total < 100$");
 		s_assert.assertAll();
 	}
-	
+
 	/***
 	 * qTest : TC-355 PC user is in the process of placing an adhoc order more than 90$
 	 * Description : This test case validates threshold message & delivery charges for more than 90$
@@ -2057,6 +1924,4 @@ public class OrdersTest extends StoreFrontWebsiteBaseTest{
 		s_assert.assertTrue(deliveryCharges.contains("free"), "Delivery charges applied for the order total > 100$ actual on UI is "+deliveryCharges);
 		s_assert.assertAll();
 	}
-
-
 }

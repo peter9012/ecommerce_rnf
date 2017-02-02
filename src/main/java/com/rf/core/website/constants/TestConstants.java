@@ -155,7 +155,7 @@ public class TestConstants {
 	public static final String PRODUCT_CATEGORY_REDEFINE = "REDEFINE";
 	
 	public static final String SECOND_ADDRESS_LINE_1_US = "1625 Sixth Street";
-	public static final String SECOND_ADDRESS_LINE_2_US = "Apt 211";
+	public static final String SECOND_ADDRESS_LINE_2_US = "211";
 	public static final String SECOND_CITY_US = "Concord";
 	public static final String SECOND_POSTAL_CODE_US = "94519";
 	public static final String CONSULTANT_CRP_AUTOSHIP_PRODUCT_CATEGORY = "CRP Autoship";

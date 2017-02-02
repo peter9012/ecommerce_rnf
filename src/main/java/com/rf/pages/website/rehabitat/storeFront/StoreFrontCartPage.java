@@ -36,7 +36,7 @@ public class StoreFrontCartPage extends StoreFrontWebsiteBasePage{
 
 	private String productPriceInAllItemsInCartLoc = "//li[@class='item-list-item']//div[@class='item-info']//span[@class='item-name' and contains(text(),'%s')]/ancestor::div[1]/following-sibling::div[@class='item-price-info']";
 	private String recentlyViewProductOnCartPageLoc = "//div[@id='recentlyViewedTitle']/following::div[@class='owl-item active']//a[contains(text(),'%s')]";
-	private String removeLinkForProductOnCartLoc = "removeEntry_";
+	private String removeLinkForProductOnCartLoc = "//button[@id='removeEntry_%s']";
 	private String productNameInCartLoc = "//ul[contains(@class,'cart__list')]/descendant::li[@class='item-list-item'][%s]//span[@class='item-name']";
 
 	/***
@@ -194,17 +194,13 @@ public class StoreFrontCartPage extends StoreFrontWebsiteBasePage{
 	 * 
 	 */
 	public StoreFrontCartPage removeAllProductsFromCart(){
-		int count = getProductCountInAdhocCart();
-		if(count>0){
-			for(int i=0;i<count;i++){
-				String removalLink = removeLinkForProductOnCartLoc+"0";
-				driver.click(By.id(removalLink));
-				driver.waitForPageLoad();
-				logger.info("Remove link of "+i+" is clicked");
+		while(true){
+			if(driver.isElementPresent(By.xpath(String.format(removeLinkForProductOnCartLoc, "0")))){
+				driver.click(By.xpath(String.format(removeLinkForProductOnCartLoc, "0")));
+				logger.info("Remove link clicked");
+			}else{
+				break;
 			}
-		}
-		else{
-			logger.info("There are no products in cart to remove.");
 		}
 		return this;
 	}

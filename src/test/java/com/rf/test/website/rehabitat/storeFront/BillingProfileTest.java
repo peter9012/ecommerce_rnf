@@ -449,7 +449,7 @@ public class BillingProfileTest extends StoreFrontWebsiteBaseTest{
 	 * 
 	 *     
 	 */
-	@Test(enabled=false)// Need to Verify
+	@Test(enabled=true)// Need to Verify
 	public void testBillingProfileSelectAnBillingAddressExistingProfile_427(){
 		String currentURL = null;
 		String randomWord = CommonUtils.getRandomWord(5);

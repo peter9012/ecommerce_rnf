@@ -1246,10 +1246,10 @@ public class MyAccountTest extends StoreFrontWebsiteBaseTest{
 
 	/***
 	 * qtest: TC-369 Consultant Autoship Status- Subscribe to Pulse (Using some other Prefix less than 180 days)
-	  Description: This method re-enroll consultant in pulse with existing autosuggested prefix and other consultant prefix.
+	   Description: This method re-enroll consultant in pulse with existing autosuggested prefix and other consultant prefix.
 	 *
-	 */	
-	@Test(enabled=false)
+	 */ 
+	@Test(enabled=true)//Accepting inactive prefix less than 180 days.
 	public void testReEnnrollmentInPulseWithin180DaysWithOtherUserPrefix_369(){
 		String autoSuggestedPrefixName = null;
 		String otherUserPrefix = TestConstants.CONSULTANT_PWS_PREFIX;
@@ -1257,19 +1257,22 @@ public class MyAccountTest extends StoreFrontWebsiteBaseTest{
 		String expectedErrorMsgForPrefix = TestConstants.ERROR_MSG_EXISTING_PREFIX;
 		//Subscribe to pulse with a new prefix.
 		sfCheckoutPage = new StoreFrontCheckoutPage(driver);
-		sfHomePage.loginToStoreFront(TestConstants.CONSULTANT_EMAIL_WITH_CRP_AND_PULSE,password,true);
+		sfHomePage.loginToStoreFront(TestConstants.CONSULTANT_EMAIL_WITHOUT_CRP_AND_PULSE,password,true);
 		sfHomePage.clickWelcomeDropdown();
 		sfAutoshipStatusPage = sfHomePage.navigateToAutoshipStatusPage();
 		sfAutoshipStatusPage.clickSubscribeToPulseBtn();
 		autoSuggestedPrefixName = sfAutoshipStatusPage.getAvailablePrefixName();
 		sfAutoshipStatusPage.enterAvailablePrefix(otherUserPrefix);
-		sfAutoshipStatusPage.clickNextBtn();
+		//sfCheckoutPage = sfAutoshipStatusPage.clickConfirmSubscription();
+		//sfAutoshipStatusPage.clickNextBtn();
 		errorMessage = sfAutoshipStatusPage.getErrorMessageForExistingPrefixName();
 		s_assert.assertTrue(errorMessage.contains(expectedErrorMsgForPrefix),"Error message for existing prefix name not available Expected"+expectedErrorMsgForPrefix+"while Actual"+errorMessage);
 		sfAutoshipStatusPage.enterAvailablePrefix(autoSuggestedPrefixName);
-		sfAutoshipStatusPage.clickNextBtn();
-		sfAutoshipStatusPage.clickConfirmSubscription();
-		sfCheckoutPage.clickUseSavedCardBtn().clickBillingDetailsNextbutton().clickPlaceOrderButton();
+		sfCheckoutPage = sfAutoshipStatusPage.clickConfirmSubscription();
+		sfCheckoutPage.clickSaveButton();
+		sfCheckoutPage.clickUseSavedCardBtnOnly();
+		sfCheckoutPage.clickUseThesePaymentDetailsAndReturnBillingProfileName("1");
+		sfCheckoutPage.clickBillingDetailsNextbutton().clickPlaceOrderButton();
 		s_assert.assertTrue(sfCheckoutPage.isPopUpForTermsAndConditionsCheckboxDisplayed(), "validation popup for terms and conditions not displayed");
 		sfCheckoutPage.closePopUp();
 		sfCheckoutPage.selectTermsAndConditionsChkBox().clickPlaceOrderButton();
@@ -1429,6 +1432,7 @@ public class MyAccountTest extends StoreFrontWebsiteBaseTest{
 		s_assert.assertTrue(sfAutoshipStatusPage.isSubscribeToPulseBtnDisplayed(), "Pulse subscription is NOT cancelled");
 		s_assert.assertAll();
 	}
+
 	/***
 	 * qtest: TC-380 Cancel Pulse Subscription From My Account Autoship page
 	 * Description: This method cancel pulse from autoship status page.

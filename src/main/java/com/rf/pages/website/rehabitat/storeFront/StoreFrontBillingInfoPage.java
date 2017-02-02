@@ -30,12 +30,7 @@ public class StoreFrontBillingInfoPage extends StoreFrontWebsiteBasePage{
 	private final By ADDRESS_SUGGESTION_MODAL_CLOSE_BTN_LOC = By.xpath("//button[@id='cboxClose']");
 	private final By CARD_DETAILS_SUCCESSFULLY_ADDED_MSG_LOC = By.xpath("//div[@class='global-alerts']/div[@class='alert alert-info alert-dismissable']");
 	private final By DEFAULT_BILLING_PROFILE_EDIT_BTN_LOC = By.xpath("//div[@class='account-paymentdetails account-list']//strong[contains(text(),'Default')]//ancestor::ul[1]/following-sibling::div/a[contains(text(),'Edit')]");
-	private final By NAME_ON_CARD_TF_LOC  = By.xpath("//input[@id='card_nameOnCard']");
-	private final By ACCOUNT_NUM_ON_CARD_TF_LOC = By.xpath("//input[@id='card_accountNumber']");
 	private final By CARD_TYPE_DD_LOC = By.xpath("//input[@id='card_cardType']");
-	private final By CARD_EXPIRY_MONTH_DD_LOC = By.xpath("//select[@id='card_ExpiryMonth']");
-	private final By CARD_EXPIRY_YEAR_DD_LOC = By.xpath("//select[@id='card_ExpiryYear']");
-	private final By CARD_CVV_NUM_TF_LOC = By.xpath("//input[@id='card_cvNumber']");
 	private final By BILLING_PROFILE_SECTION_HEADER = By.xpath("//h3[@class='sub-header' and contains(text(),'BILLING PROFILE')]");
 	private final By BILLING_PROFILES_DETAILS_LIST_LOC = By.xpath("//div[@class='account-paymentdetails account-list']");
 	private final By BILLING_INFO_SECTION_HEADER_LOC = By.xpath("//h2[contains(@class,'account-section-header') and contains(text(),'BILLING INFO')]");
@@ -52,6 +47,11 @@ public class StoreFrontBillingInfoPage extends StoreFrontWebsiteBasePage{
 	private final By BILLING_ADDRESS_DD_OPTIONS_FOR_EXISTING_PROFILE_LOC = By.xpath("//select[@id='addressId']/option[not(@label)]");
 	private final By BILLING_ADDRESS_FORM_FOR_EXISTING_PROFILE_LOC = By.xpath("//div[@id='checkoutEditBillingAddressForm']//div[@id='billingAddressForm']");
 	private final By STREET_ERROR_MSG_FOR_EXISTING_PROFILE_LOC = By.xpath("//div[@id='checkoutEditBillingAddressForm']//p[@id='errorMessage']");
+	private final By NAME_ON_CARD_TF_LOC  = By.xpath("//form[@id='editBillingAddressForm']//input[@id='card_nameOnCard']");
+	private final By ACCOUNT_NUM_ON_CARD_TF_LOC = By.xpath("//form[@id='editBillingAddressForm']/descendant::input[@id='card_accountNumber'][1]");
+	private final By CARD_EXPIRY_MONTH_DD_LOC = By.xpath("//form[@id='editBillingAddressForm']//select[@id='ExpiryMonth']");
+	private final By CARD_EXPIRY_YEAR_DD_LOC = By.xpath("//form[@id='editBillingAddressForm']//select[@id='ExpiryYear']");
+	private final By CARD_CVV_NUM_TF_LOC = By.xpath("//form[@id='editBillingAddressForm']//input[@id='card_cvNumber']");
 
 	private String editLinkForSpecificBillingProfileLoc = "//div[@class='account-paymentdetails account-list']//li[contains(text(),'%s')]//ancestor::ul[1]/following-sibling::div/a[contains(text(),'Edit')]";
 	private String billingProfileFirstNameLoc = "//div[@class='account-paymentdetails account-list']//li[contains(text(),'%s')]";

@@ -281,7 +281,7 @@ public class StoreFrontWebsiteBasePage extends RFBasePage {
 	private final By STATE_DD_FOR_BILLING_ADDRESS_FOR_EXISTING_PROFILE_LOC=By.xpath("//div[@id='checkoutEditBillingAddressForm']//select[@id='address.region']");
 	private final By POSTAL_CODE_FOR_BILLING_ADDRESS_FOR_EXISTING_PROFILE_LOC=By.xpath("//div[@id='checkoutEditBillingAddressForm']//input[@id='address.postcode']");
 	private final By PHONE_NUMBER_FOR_BILLING_ADDRESS_FOR_EXISTING_PROFILE_LOC=By.xpath("//div[@id='checkoutEditBillingAddressForm']//input[@id='address.phone']");
-	private final By ERROR_MESSAGE_EXISTING_PREFIX_LOC = By.xpath("//*[@id='command']//following::span[@class='prefix-error']");
+	private final By ERROR_MESSAGE_EXISTING_PREFIX_LOC = By.id("errorSubPrefix");
 	private final By ABOUT_ME_LOC = By.xpath(topNavigationLoc + "//a[contains(@title,'About Me')]");
 
 	private String errorMessageLoc = "//div[@class='global-alerts']/div[normalize-space(contains(text() , '%s'))]";
@@ -1654,6 +1654,7 @@ public class StoreFrontWebsiteBasePage extends RFBasePage {
 		String javascript = "document.getElementById('card_accountNumber').value=" + cardNumber + ";"
 				+ "document.getElementById('card_accountNumber').innerHTML=" + cardNumber + ";";
 		driver.pauseExecutionFor(2000);
+		driver.waitForElementPresent(NAME_ON_CARD_LOC);
 		((JavascriptExecutor) RFWebsiteDriver.driver).executeScript(javascript);
 		logger.info("Entered card number as" + cardNumber);
 		driver.pauseExecutionFor(1000);
@@ -2882,9 +2883,11 @@ public class StoreFrontWebsiteBasePage extends RFBasePage {
 	}
 
 	public void clickUseAsEnteredButtonOnPopUp() {
+		driver.pauseExecutionFor(5000);
 		if (driver.isElementVisible(USE_AS_ENTERED_BUTTON_LOC) == true) {
 			driver.click(USE_AS_ENTERED_BUTTON_LOC);
-			driver.pauseExecutionFor(40000); // UI is slow, will be removed
+			driver.waitForElementToBeInVisible(USE_AS_ENTERED_BUTTON_LOC, 40);
+			//driver.pauseExecutionFor(40000); // UI is slow, will be removed
 			logger.info("'Used as entered' button clicked");
 		}
 	}

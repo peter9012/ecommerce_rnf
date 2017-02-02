@@ -1506,7 +1506,6 @@ public class AutoshipTest extends StoreFrontWebsiteBaseTest{
 	 * qTest : TC-509 User selects Update CTA after making changes in the autoship cart
 	 * Description : This test validates the Autoship cart page changes for PC/Consultant Autoship
 	 * page Update and click on save.
-	 *     
 	 */
 	@Test(enabled=true)
 	public void testVerifyUpdateChangesOnAutoShipCartAfterClickSave_509(){

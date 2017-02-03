@@ -273,7 +273,7 @@ public class ProductsAndCartDetailsTest extends StoreFrontWebsiteBaseTest{
 	 * Description : This test validates add a product to cart and checkout the product
 	 *     
 	 */
-	@Test(enabled=false)//TODO Unable to login at checkout page
+	@Test(enabled=true)//TODO Unable to login at checkout page
 	public void testCartPageCheckoutCTAAnonymousLogin_499(){
 		sfShopSkinCarePage=sfHomePage.clickAllProducts();
 		sfShopSkinCarePage.addProductToCart(TestConstants.PRODUCT_NUMBER, TestConstants.ORDER_TYPE_ADHOC);
@@ -1151,7 +1151,6 @@ public class ProductsAndCartDetailsTest extends StoreFrontWebsiteBaseTest{
 		s_assert.assertFalse(sfShopSkinCarePage.isPriceFilterLowToHighAppliedSuccessfully(),"Selected Price filter 'Low To High' is still applied after clicking clear all link.");
 		s_assert.assertAll();
 	}
-
 
 	/***
 	 * qTest : TC-603 Proceed to Checkout Confirmation alert for Ad-hoc orders - PC

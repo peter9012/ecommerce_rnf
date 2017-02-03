@@ -1094,7 +1094,6 @@ public class MyAccountTest extends StoreFrontWebsiteBaseTest{
 	 */
 	@Test(enabled=true)
 	public void testEditPWSOfUserSubscribedToPulse_518(){
-
 		//Login as consultant user and verify about me page.
 		sfHomePage.loginToStoreFront(TestConstants.CONSULTANT_EMAIL_WITH_CRP_AND_PULSE,password,true);
 		sfHomePage.clickWelcomeDropdown();

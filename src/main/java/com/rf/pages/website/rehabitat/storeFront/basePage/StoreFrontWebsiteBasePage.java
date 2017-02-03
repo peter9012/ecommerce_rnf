@@ -255,6 +255,7 @@ public class StoreFrontWebsiteBasePage extends RFBasePage {
 	private final By PULSE_SUBSCRIPTION_CHKBOX_LOC = By.id("subscription-checkbox");
 	private final By PULSE_SUBSCRIBE_BTN_LOC = By.id("confirmprefixaction");
 	private final By NEW_POLICIES_PROCEDURES_POPUP_LOC = By.id("updateCondition_popup");
+	private final By SET_UP_CRP_POPUP_CLOSE_LOC = By.xpath("//div[@class='close']");
 	private final By ACCEPT_RDBTN_NEW_POLICIES_PROCEDURES_POPUP_LOC = By
 			.xpath("//form[@id='updateConditionForm']//input[@id='terms-accept']");
 	private final By CONTINUE_BTN_NEW_POLICIES_PROCEDURES_POPUP_LOC = By
@@ -284,6 +285,7 @@ public class StoreFrontWebsiteBasePage extends RFBasePage {
 	private final By ERROR_MESSAGE_EXISTING_PREFIX_LOC = By.id("errorSubPrefix");
 	private final By ABOUT_ME_LOC = By.xpath(topNavigationLoc + "//a[contains(@title,'About Me')]");
 
+	protected String addToCartButtonLoc = "//div[contains(@class,'product__listing')]/descendant::span[@id='cust_price'][contains(text(),'$')][1]/following::button[text()='Add to bag'][%s]";
 	private String errorMessageLoc = "//div[@class='global-alerts']/div[normalize-space(contains(text() , '%s'))]";
 	private String optionOnEnrollNowPopUpLoc = "//div[@id='enrollCRPModal' and contains(@style,'block')]//input[@value='%s']";
 	protected String productNameLinkLoc = "//div[@id='product_listing']/descendant::div[@class='details'][%s]//a";
@@ -747,6 +749,7 @@ public class StoreFrontWebsiteBasePage extends RFBasePage {
 		logger.info("password entered as  " + password);
 		driver.click(LOGIN_BTN_LOC);
 		logger.info("login button clicked");
+		driver.waitForPageLoad();
 		if (driver.isElementVisible(NEW_POLICIES_PROCEDURES_POPUP_LOC)) {
 			driver.clickByJS(RFWebsiteDriver.driver,
 					driver.findElement(ACCEPT_RDBTN_NEW_POLICIES_PROCEDURES_POPUP_LOC));
@@ -754,8 +757,8 @@ public class StoreFrontWebsiteBasePage extends RFBasePage {
 			driver.clickByJS(RFWebsiteDriver.driver,
 					driver.findElement(CONTINUE_BTN_NEW_POLICIES_PROCEDURES_POPUP_LOC));
 		}
-		if (closeCRPReminder == true && (driver.isElementVisible(By.xpath("//div[@class='close']")))) {
-			driver.click(By.xpath("//div[@class='close']"));
+		if (closeCRPReminder == true && (driver.isElementVisible(SET_UP_CRP_POPUP_CLOSE_LOC))) {
+			driver.click(SET_UP_CRP_POPUP_CLOSE_LOC);
 		}
 		return this;
 	}
@@ -3677,6 +3680,17 @@ public class StoreFrontWebsiteBasePage extends RFBasePage {
 		logger.info("The pws prefix entered is " + prefix);
 		driver.pauseExecutionFor(2000);
 		return this;
+	}
+
+	/***
+	 * This method validates products displayed for selected category
+	 * 
+	 * @param 
+	 * @return Boolean
+	 * 
+	 */
+	public boolean isProductsDisplayedOnPage(){
+		return driver.isElementVisible(By.xpath(String.format(addToCartButtonLoc,"1")));
 	}
 
 }

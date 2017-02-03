@@ -2,16 +2,11 @@
 <suite name="testUsersCreationSuite">
 	<tests>
 		<test name="testUsersCreationTest">
-			<packages>
-				<package
-					name="com.rf.test.website.rehabitat.storeFront">
-					<groups>
-						<run>
-							<include name="users"></include>
-						</run>
-					</groups>
-				</package>
-			</packages>
+			<classes>
+				<class name="com.rf.test.website.rehabitat.storeFront.ConsultantEnrollmentTest" />
+				<class name="com.rf.test.website.rehabitat.storeFront.PCEnrollmentTest" />
+				<class name="com.rf.test.website.rehabitat.storeFront.RCEnrollmentTest" />
+			</classes>
 		</test>
 	</tests>
 </suite>

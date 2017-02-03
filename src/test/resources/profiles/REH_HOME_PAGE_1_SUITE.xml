@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<suite name="storeFrontHomePageSuite_1">
+	<listeners>
+		<listener class-name="org.uncommons.reportng.HTMLReporter" />
+		<listener class-name="org.uncommons.reportng.JUnitXMLReporter" />
+		<listener class-name="com.rf.core.listeners.RetryListener" />
+		<listener class-name="com.rf.core.listeners.TestListner" />
+	</listeners>
+	<test name="storeFrontHomePageTest_1">
+			<classes>
+				<class name="com.rf.test.website.rehabitat.storeFront.homePage.AccessCategoryLandingPageFromHeaderTest"></class>
+				<class name="com.rf.test.website.rehabitat.storeFront.homePage.AccessContentPagesUnderAboutRFSectionTest"></class>
+				<class name="com.rf.test.website.rehabitat.storeFront.homePage.AccessContentPagesUnderBecomeAConsultantTest"></class>
+				<class name="com.rf.test.website.rehabitat.storeFront.homePage.AccessFooterLinksTest"></class>
+				<class name="com.rf.test.website.rehabitat.storeFront.homePage.AccessLinkToCreateNewRFAccountTest"></class>
+				<class name="com.rf.test.website.rehabitat.storeFront.homePage.AccessLoginFromHomePageTest"></class>
+				<class name="com.rf.test.website.rehabitat.storeFront.homePage.AddProductsViaPLPPDPAndQuickViewOptionTest"></class>
+				<class name="com.rf.test.website.rehabitat.storeFront.homePage.CategoryLandingPageTest"></class>
+				<class name="com.rf.test.website.rehabitat.storeFront.homePage.FindAConsultantLinkTest"></class>
+				<class name="com.rf.test.website.rehabitat.storeFront.homePage.FooterSectionTest"></class>
+				<class name="com.rf.test.website.rehabitat.storeFront.homePage.MeetTheDoctorsTest"></class>
+				<class name="com.rf.test.website.rehabitat.storeFront.homePage.MiniCartTest"></class>
+		</classes>
+	</test>
+</suite>
+
+
+					

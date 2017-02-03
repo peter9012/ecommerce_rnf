@@ -121,6 +121,6 @@ public class RCEnrollmentTest extends StoreFrontWebsiteBaseTest{
 		sfCheckoutPage.clickPlaceOrderButton();
 		s_assert.assertTrue(sfCheckoutPage.isOrderPlacedSuccessfully(), "Adhoc order is not placed successfully by PC");
 		s_assert.assertAll();
-		rcWithoutOrder=email;		
+		rcWithOrder=email;		
 	}
 }

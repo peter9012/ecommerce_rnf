@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<suite name="storeFrontMyAccountSuite_1">
+	<listeners>
+		<listener class-name="org.uncommons.reportng.HTMLReporter" />
+		<listener class-name="org.uncommons.reportng.JUnitXMLReporter" />
+		<listener class-name="com.rf.core.listeners.RetryListener" />
+		<listener class-name="com.rf.core.listeners.TestListner" />
+	</listeners>
+	<test name="storeFrontMyAccountTest_1">
+		<classes>
+			<class name="com.rf.test.website.rehabitat.storeFront.MyAccountTest">
+				<methods>
+					<include name="testVerifyAccountInfoPageForUsers_178"></include>
+					<include name="testDisabledUsernameOnAccountInfoPageForUsers_179"></include>
+					<include name="testEmailIDFormatErrorValidation_249"></include>
+					<include name="testUpdateFirstAndLastNameOnCheckoutPageForUser_230"></include>
+					<include name="testAccountInfoPageMandatoryFieldValidation_248"></include>
+					<include name="testViewPulseDetails_276"></include>
+					<include name="testUpdateSpouseInformation_284"></include>
+					<include name="testUpdateInvalidSpouseInformation_370"></include>
+					<include name="testUpdateAccountInfoWithValidDetails_288"></include>
+					<include name="testUpdateAccountInfoWithInvalidDetails_289"></include>
+					<include name="testUpdateAccountInfoWithInvalidDetails_301"></include>
+					<include name="testVerifyLogoutFunctionality_329"></include>
+					<include name="testVerifyLoginFunctionalityInMultipleTabs_330"></include>
+					<include name="testVerifyCRPAutoShipPage_331"></include>
+					<include name="testVerifyCheckMyPulsePage_357"></include>
+					<include name="testUpdateAndVerifyPasswordForUser_392"></include>
+					<include name="testEmailYourConsultantValid_285"></include>
+					<include name="testEmailYourConsultantInvalid_286"></include>
+					<include name="testOrderHistory_387"></include>
+					<include name="testPasswordResetIncorrectCurrentPwd_282"></include>
+				</methods>
+			</class>
+		</classes>
+	</test>
+</suite>
+
+
+					

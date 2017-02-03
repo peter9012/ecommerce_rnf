@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<suite name="storeFrontAutoshipSuite_2">
+	<listeners>
+		<listener class-name="org.uncommons.reportng.HTMLReporter" />
+		<listener class-name="org.uncommons.reportng.JUnitXMLReporter" />
+		<listener class-name="com.rf.core.listeners.RetryListener" />
+		<listener class-name="com.rf.core.listeners.TestListner" />
+	</listeners>
+	<test name="storeFrontAutoshipTest_2">
+		<classes>
+			<class name="com.rf.test.website.rehabitat.storeFront.AutoshipTest">
+				<methods>
+					<include name="testDelayPCAutoshipBy60Days_456"></include>
+					<include name="testUpdateAutoshipAddAbillingAddressToNewProfile_420"></include>
+					<include name="testUpdateAutoshipCartOrderSummary_326"></include>
+					<include name="testUpdateAutoshipCart_327"></include>
+					<include name="testVerifyUpdateChangesOnAutoShipCartWithoutClickSave_510"></include>
+					<include name="testConsultantAutoshipCartPulseSubscriptionStatus_353"></include>
+					<include name="testCartPageTotalSVAndAdditionalSV_336"></include>
+					<include name="testAddToAutoshipCartConsultant_396"></include>
+					<include name="testAddToAutoshipCartPC_397"></include>
+					<include name="testPCAutoshipCartMaintenanceAndThreshold_406"></include>
+					<include name="testUpdateAutoshipAddAbillingAddressToNewProfilePC_421"></include>
+					<include name="testConsultantAutoshipCartCRPEnrollmentProductsSectionCancel_403"></include>
+					<include name="testConsultantAutoshipCartCRPEnrollmentProductsSectionConfirm_404"></include>
+					<include name="testPCReplenishmentOrderConfirmation_541"></include>
+					<include name="testUpdateAutoshipAddAbillingAddressToExistingProfileConsultant_423"></include>
+					<include name="testUpdateAutoshipAddABillingAddressToExistingProfilePC_424"></include>
+					<include name="testEnrollInCRPAfterConsultantEnrollment_539"></include>
+					<include name="testVerifyUpdateChangesOnAutoShipCartAfterClickSave_509"></include>
+				</methods>
+			</class>
+		</classes>
+	</test>
+</suite>
+
+
+					

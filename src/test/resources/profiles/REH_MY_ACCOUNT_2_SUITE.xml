@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<suite name="storeFrontMyAccountSuite_2">
+	<listeners>
+		<listener class-name="org.uncommons.reportng.HTMLReporter" />
+		<listener class-name="org.uncommons.reportng.JUnitXMLReporter" />
+		<listener class-name="com.rf.core.listeners.RetryListener" />
+		<listener class-name="com.rf.core.listeners.TestListner" />
+	</listeners>
+	<test name="storeFrontMyAccountTest_2">
+		<classes>
+			<class name="com.rf.test.website.rehabitat.storeFront.MyAccountTest">
+				<methods>
+					<include name="testPasswordResetInvalidScenrios_283"></include>
+					<include name="testResetPasswordValidDetails_281"></include>
+					<include name="testDelayPCAutoshipBy30Days_440"></include>
+					<include name="testDelayPCAutoshipBy60Days_441"></include>
+					<include name="testDelayPCAutoshipBy30DaysWithoutClickUpdate_442"></include>
+					<include
+						name="testVerifyPCPerksAutoshipCartPageFromAutoShipDetailsPage_279"></include>
+					<include name="testVerifyPCPerksAutoshipDetails_280"></include>
+					<include name="testEditPWSOfUserSubscribedToPulse_518"></include>
+					<include name="testEditPWSOfUserNotSubscribedToPulse_519"></include>
+					<include name="testEnrollUserInPulseFromOrderHistoryPage_359"></include>
+					<include name="testVerifyPulseLinkOnOrderPage_360"></include>
+					<include name="testVerifyPulseStatusAndNextBillShipDate_361"></include>
+					<include name="testVerifySponserNameOnAccountInfoPage_287"></include>
+					<include
+						name="testReEnnrollmentInPulseWithin180DaysWithOtherUserPrefix_369"></include>
+					<include name="testReCaptchaSubmitAsUnselected_473"></include>
+					<include name="testConsultantFirstTimePulseEnrollment_277"></include>
+					<include name="testPasswordFormatErrorValidation_250"></include>
+					<include name="testReportAProblemOrderHistory_358"></include>
+					<include
+						name="testReEnnrollmentInPulseWithin180DaysOfExistingAutoSuggestedPrefix_278"></include>
+					<include name="testConsultantFirstTimePulseEnrollment_380"></include>
+				</methods>
+			</class>
+		</classes>
+	</test>
+</suite>
+
+
+					

@@ -617,7 +617,6 @@ public class AutoshipTest extends StoreFrontWebsiteBaseTest{
 		sfHomePage.clickNextButton();
 		sfHomePage.clickSaveButton();
 		sfHomePage.enterConsultantShippingDetails(firstName, lastName, addressLine1, addressLine2 ,city, state, postalCode, phoneNumber);
-		sfHomePage.clickUseAsEnteredButtonOnPopUp();
 		sfHomePage.clickShippingDetailsNextbutton();
 		sfHomePage.enterUserBillingDetails(cardType, cardNumber, cardName, CVV);
 		sfHomePage.clickBillingDetailsNextbutton();
@@ -1092,7 +1091,7 @@ public class AutoshipTest extends StoreFrontWebsiteBaseTest{
 		s_assert.assertTrue(defaultBillingProfileName.contains(cardLastName),"Billing details is not found as expected for Autoship. Expected Profile Name : "+ cardName + ". Actual : " + defaultBillingProfileName);
 		s_assert.assertAll();
 	}
-	//----
+
 	/***
 	 * qTest : TC-403 Consultant Autoship Cart (CRP) Enrollment - Products section - Cancel
 	 * Description : This test validates the enroll in crp popup for consultant who is not enrolled in crp.
@@ -1471,7 +1470,6 @@ public class AutoshipTest extends StoreFrontWebsiteBaseTest{
 		sfHomePage.clickNextButton();
 		sfHomePage.clickSaveButton();
 		sfHomePage.enterConsultantShippingDetails(firstName, lastName, addressLine1, addressLine2 ,city, state, postalCode, phoneNumber);
-		sfHomePage.clickUseAsEnteredButtonOnPopUp();
 		sfHomePage.clickShippingDetailsNextbutton();
 		sfHomePage.enterUserBillingDetails(cardType, cardNumber, cardName, CVV);
 		sfHomePage.clickBillingDetailsNextbutton();

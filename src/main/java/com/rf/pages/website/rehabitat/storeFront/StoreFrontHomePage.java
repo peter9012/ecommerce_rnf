@@ -480,18 +480,6 @@ public class StoreFrontHomePage extends StoreFrontWebsiteBasePage{
 	}
 
 	/***
-	 * This method verify add to cart button is present for first product
-	 * 
-	 * @param
-	 * @return boolean value.
-	 * 
-	 */
-
-	public boolean isAddToCartPresentForFirstProduct(){
-		return driver.isElementVisible(ADD_TO_CART_FIRST_PRODUCT_LOC);
-	}
-
-	/***
 	 * This method select the first filter option under shop by price filter
 	 * 
 	 * @param

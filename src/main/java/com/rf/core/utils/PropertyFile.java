@@ -34,7 +34,7 @@ public class PropertyFile {
 	public void setProperty(String key, String value) {
 		props.setProperty(key, value);
 	}
-	
+
 	public void storeProperty(FileOutputStream out) {
 		try {
 			props.store(out, null);
@@ -43,14 +43,14 @@ public class PropertyFile {
 			e.printStackTrace();
 		}
 	}
-	
+
 	public void setAndWriteProperty(String key, String value,String fileName) {
-		 try {
-				outputStream = new FileOutputStream(path+fileName);
-			} catch (FileNotFoundException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
-			}
+		try {
+			outputStream = new FileOutputStream(path+fileName);
+		} catch (FileNotFoundException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
 		setProperty(key, value);
 		try {
 			props.store(outputStream, null);
@@ -59,7 +59,11 @@ public class PropertyFile {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
-		
+
 	}
-	
+
+	public void clearProperty(){
+		props.clear();
+	}
+
 }

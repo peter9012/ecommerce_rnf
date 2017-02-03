@@ -1,0 +1,50 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<suite name="storeFrontOrdersSuite_1">
+	<listeners>
+		<listener class-name="org.uncommons.reportng.HTMLReporter" />
+		<listener class-name="org.uncommons.reportng.JUnitXMLReporter" />
+		<listener class-name="com.rf.core.listeners.RetryListener" />
+		<listener class-name="com.rf.core.listeners.TestListner" />
+	</listeners>
+	<test name="storeFrontOrdersTest_1">
+		<classes>
+			<class name="com.rf.test.website.rehabitat.storeFront.OrdersTest">
+				<methods>
+					<include name="testOrderHistoryLinkToOrderDetails_180"></include>
+					<include name="testCheckoutPageEditsEditShippingInformation_298"></include>
+					<include name="testCheckoutPageEditsCheckEditOptions_295"></include>
+					<include name="testCheckoutPageEditsEditShippingMethod_299"></include>
+					<include name="testCheckoutPageEditsEditCart_300"></include>
+					<include name="testBillingProfileAddAnAddressToExistingProfile_302"></include>
+					<include name="testBillingProfileAddAnAddressToNewProfile_303"></include>
+					<include name="testAddingAPaymentMethodErrors_305"></include>
+					<include name="testAddAPaymentMethodCheckout_310"></include>
+					<include name="testShippingMethodPCDirectPCEnrollment_311"></include>
+					<include name="testShipMethodPCExistingPCPlaceAdhocOrder_314"></include>
+					<include name="testShippingToPORRboxes_319"></include>
+					<include
+						name="testBillingProfileAddAnAddressWithInvalidDetailsToExistingProfile_366"></include>
+					<include
+						name="testBillingProfileAddAnAddressWithInvalidDetailsToNewProfile_367"></include>
+					<include name="testOrderConfirmationForAdhocOrders_409"></include>
+					<include
+						name="testUserShouldntAbleToChangeTheSponsorAfterConsultantAccountCreated_414"></include>
+					<include
+						name="testUserShouldntAbleToChangeTheSponsorAfterPCAccountCreated_415"></include>
+					<include
+						name="testChooseAConsultantRFCorporateSponsorPCFirstCheckoutFromPWS_458"></include>
+					<include name="testReviewAndPlaceOrder_470"></include>
+					<include name="testAddAShipAddressCheckoutExistingUser_324"></include>
+					<include name="testAddressVerificationShippingProfile_317"></include>
+					<include
+						name="testOrderHistoryReportAProlemOrderLevelAllFieldsFilled_482"></include>
+					<include name="testOrderDetailsActionDetailslink_521"></include>
+					<include name="testOrderDetailsTrackOrderStatusForNewOrder_543"></include>
+				</methods>
+			</class>
+		</classes>
+	</test>
+</suite>
+
+
+					

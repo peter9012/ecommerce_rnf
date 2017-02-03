@@ -98,7 +98,7 @@ public class PCEnrollmentTest extends StoreFrontWebsiteBaseTest{
 		sfCheckoutPage=sfHomePage.clickSignUpNowLink();
 		sfCheckoutPage.fillNewUserDetails(TestConstants.USER_TYPE_PC, firstName, lastName, email, password);
 		sfCheckoutPage.clickCreateAccountButton(TestConstants.USER_TYPE_PC);
-//		s_assert.assertTrue(sfCartPage.isPcOneTimeFeeMsgDisplayed(),"PC one time joining fee msg has not displayed");
+		//		s_assert.assertTrue(sfCartPage.isPcOneTimeFeeMsgDisplayed(),"PC one time joining fee msg has not displayed");
 		s_assert.assertTrue(sfHomePage.isWelcomeUserElementDisplayed(), "PC has not been enrolled partially");
 		sfHomePage.clickWelcomeDropdown();
 		sfHomePage.logout();
@@ -360,14 +360,47 @@ public class PCEnrollmentTest extends StoreFrontWebsiteBaseTest{
 		s_assert.assertTrue(sfCheckoutPage.isChangeSponserLinkDisplayed(),"Change sponser link is present on account info page.");
 		s_assert.assertAll();
 	}
-	
+
+	/***
+	 * qTest : TC-496 PC registering from PWS will have default sposnor
+	 * Description : This test validates default selected sponsor while start from PWS 
+	 *     
+	 */
+	@Test(enabled=true)
+	public void testPCRegisteringFromPWSWillHaveDefaultsponsor_496(){
+		String allProduct = "ALL PRODUCTS";
+		firstName=TestConstants.PC_FIRST_NAME;
+		timeStamp = CommonUtils.getCurrentTimeStamp();
+		randomWords = CommonUtils.getRandomWord(5);  
+		lastName = TestConstants.LAST_NAME+randomWords;
+		email = firstName+timeStamp+TestConstants.EMAIL_SUFFIX;
+		String homePageURL = sfHomePage.getCurrentURL();
+		String prefix = TestConstants.CONSULTANT_PWS_PREFIX;
+		sfHomePage.navigateToUrl(homePageURL + "/pws/" + prefix);
+		sfShopSkinCarePage = sfHomePage.navigateToShopSkincareLink(allProduct);
+		sfShopSkinCarePage.addProductToCart(TestConstants.PRODUCT_NUMBER, TestConstants.ORDER_TYPE_ADHOC);;
+		sfCartPage = sfShopSkinCarePage.checkoutTheCartFromPopUp();
+		sfCheckoutPage=sfCartPage.checkoutTheCart();
+		sfCheckoutPage.fillNewUserDetails(TestConstants.USER_TYPE_PC, firstName, lastName, email, password);
+		sfCheckoutPage.clickCreateAccountButton(TestConstants.USER_TYPE_PC);
+		sfCheckoutPage = sfCartPage.clickCheckoutBtn();
+		s_assert.assertTrue(sfCheckoutPage.isSponsorSelected(), "Sponsor is not selected by default");
+		sfCheckoutPage.clickRemoveLink();
+		sfCheckoutPage.searchSponsor(TestConstants.SPONSOR);
+		sfHomePage.selectFirstSponsorFromList();
+		s_assert.assertTrue(sfCheckoutPage.isSponsorSelected(), "Searched sponsor is not selected");
+		s_assert.assertAll();
+	}
+
+	//------------------------TEST USERS CREATION SCRIPTS--------------------------------------------------------------------------------------------------------------------------------
+
 	@Test(enabled=true,groups="users")
 	public void testPCEnrollmentWithPWSSponsor(){
 		navigateToStoreFrontBaseURL();
 		timeStamp = CommonUtils.getCurrentTimeStamp();
 		randomWords = CommonUtils.getRandomWord(5);		
 		lastName = TestConstants.LAST_NAME+randomWords;
-		email = firstName+timeStamp+TestConstants.EMAIL_SUFFIX;
+		email = firstName+"WPWSSPONSOR"+timeStamp+TestConstants.EMAIL_SUFFIX;
 		sfCartPage = new StoreFrontCartPage(driver);
 		sfShopSkinCarePage = new StoreFrontShopSkinCarePage(driver);
 		sfHomePage.clickLoginIcon();
@@ -396,14 +429,14 @@ public class PCEnrollmentTest extends StoreFrontWebsiteBaseTest{
 		s_assert.assertAll();
 		pcUserWithPWSSponsor=email;
 	}
-	
+
 	@Test(enabled=true,groups="users")
 	public void testPCEnrollmentWithoutSponsor(){
 		navigateToStoreFrontBaseURL();
 		timeStamp = CommonUtils.getCurrentTimeStamp();
 		randomWords = CommonUtils.getRandomWord(5);		
 		lastName = TestConstants.LAST_NAME+randomWords;
-		email = firstName+timeStamp+TestConstants.EMAIL_SUFFIX;
+		email = firstName+"WOSPONSOR"+timeStamp+TestConstants.EMAIL_SUFFIX;
 		sfCartPage = new StoreFrontCartPage(driver);
 		sfShopSkinCarePage = new StoreFrontShopSkinCarePage(driver);
 		sfHomePage.clickLoginIcon();
@@ -433,13 +466,13 @@ public class PCEnrollmentTest extends StoreFrontWebsiteBaseTest{
 		s_assert.assertAll();
 		pcUserWithoutSponsor = email;
 	}
-	
-	@Test(enabled=false,groups="users")//TODO
+
+	@Test(enabled=true,groups="users")
 	public void testPCEnrollmentWithoutPWSSponsor(){
 		timeStamp = CommonUtils.getCurrentTimeStamp();
 		randomWords = CommonUtils.getRandomWord(5);		
 		lastName = TestConstants.LAST_NAME+randomWords;
-		email = firstName+timeStamp+TestConstants.EMAIL_SUFFIX;
+		email = firstName+"WOPWSSponsor"+timeStamp+TestConstants.EMAIL_SUFFIX;
 		sfCartPage = new StoreFrontCartPage(driver);
 		sfShopSkinCarePage = new StoreFrontShopSkinCarePage(driver);
 		sfHomePage.clickLoginIcon();
@@ -466,36 +499,44 @@ public class PCEnrollmentTest extends StoreFrontWebsiteBaseTest{
 		sfCheckoutPage.clickRodanAndFieldsLogo();
 		s_assert.assertTrue(sfHomePage.hasPCEnrolledSuccessfully(), "PC has not been enrolled successfully");
 		s_assert.assertAll();
+		pcUserWithoutPWSSponsor = email;
 	}
 
-	/***
-	  * qTest : TC-496 PC registering from PWS will have default sposnor
-	  * Description : This test validates default selected sponsor while start from PWS 
-	  *     
-	  */
-	 @Test(enabled=true)
-	 public void testPCRegisteringFromPWSWillHaveDefaultsponsor_496(){
-	  String allProduct = "ALL PRODUCTS";
-	  firstName=TestConstants.PC_FIRST_NAME;
-	  timeStamp = CommonUtils.getCurrentTimeStamp();
-	  randomWords = CommonUtils.getRandomWord(5);  
-	  lastName = TestConstants.LAST_NAME+randomWords;
-	  email = firstName+timeStamp+TestConstants.EMAIL_SUFFIX;
-	  String homePageURL = sfHomePage.getCurrentURL();
-	  String prefix = TestConstants.CONSULTANT_PWS_PREFIX;
-	  sfHomePage.navigateToUrl(homePageURL + "/pws/" + prefix);
-	  sfShopSkinCarePage = sfHomePage.navigateToShopSkincareLink(allProduct);
-	  sfShopSkinCarePage.addProductToCart(TestConstants.PRODUCT_NUMBER, TestConstants.ORDER_TYPE_ADHOC);;
-	  sfCartPage = sfShopSkinCarePage.checkoutTheCartFromPopUp();
-	  sfCheckoutPage=sfCartPage.checkoutTheCart();
-	  sfCheckoutPage.fillNewUserDetails(TestConstants.USER_TYPE_PC, firstName, lastName, email, password);
-	  sfCheckoutPage.clickCreateAccountButton(TestConstants.USER_TYPE_PC);
-	  sfCheckoutPage = sfCartPage.clickCheckoutBtn();
-	  s_assert.assertTrue(sfCheckoutPage.isSponsorSelected(), "Sponsor is not selected by default");
-	  sfCheckoutPage.clickRemoveLink();
-	  sfCheckoutPage.searchSponsor(TestConstants.SPONSOR);
-	  sfHomePage.selectFirstSponsorFromList();
-	  s_assert.assertTrue(sfCheckoutPage.isSponsorSelected(), "Searched sponsor is not selected");
-	  s_assert.assertAll();
-	 }
+	//For PC_EMAIL_HAVING_SINGLE_BILLING_PROFILE
+	@Test(enabled=true,groups="users")
+	public void testPCEnrollmentHavingSingleBillingProfile(){
+		navigateToStoreFrontBaseURL();
+		timeStamp = CommonUtils.getCurrentTimeStamp();
+		randomWords = CommonUtils.getRandomWord(5);		
+		lastName = TestConstants.LAST_NAME+randomWords;
+		email = firstName+"WSINGLEBILLING"+timeStamp+TestConstants.EMAIL_SUFFIX;
+		sfCartPage = new StoreFrontCartPage(driver);
+		sfShopSkinCarePage = new StoreFrontShopSkinCarePage(driver);
+		sfHomePage.clickLoginIcon();
+		sfCheckoutPage=sfHomePage.clickSignUpNowLink();
+		sfCheckoutPage.fillNewUserDetails(TestConstants.USER_TYPE_PC, firstName, lastName, email, password);
+		sfCheckoutPage.clickCreateAccountButton(TestConstants.USER_TYPE_PC);
+		s_assert.assertTrue(sfCartPage.isPcOneTimeFeeMsgDisplayed(),"PC one time joining fee msg has not displayed");
+		sfCartPage.clickAddMoreItemsBtn();
+		//sfShopSkinCarePage=sfCartPage.clickAllProducts();// this is a temporary patch
+		sfShopSkinCarePage.addProductToCart(TestConstants.PRODUCT_NUMBER, TestConstants.ORDER_TYPE_ADHOC);;
+		sfCartPage = sfShopSkinCarePage.checkoutTheCartFromPopUp();
+		sfCartPage.enterQuantityOfProductAtCart("1", "2");
+		sfCartPage.clickOnUpdateLinkThroughItemNumber("1");
+		sfCartPage.clickCheckoutBtn();
+		sfCheckoutPage.clickContinueWithoutConsultantLink();
+		sfCheckoutPage.clickSaveButton();
+		sfCheckoutPage.enterShippingDetails(firstName+" "+lastName, addressLine1, addressLine2, city, state, postalCode, phoneNumber);
+		sfCheckoutPage.clickShippingDetailsNextbutton();
+		sfCheckoutPage.enterUserBillingDetails(cardType, cardNumber, cardName, CVV);
+		//		sfCheckoutPage.checkUseMyDeliveryAddressChkBox();
+		sfCheckoutPage.clickBillingDetailsNextbutton();
+		sfCheckoutPage.selectIAcknowledgePCChkBox();
+		sfCheckoutPage.selectPCTermsAndConditionsChkBox();
+		sfCheckoutPage.clickPlaceOrderButton();
+		sfCheckoutPage.clickRodanAndFieldsLogo();
+		s_assert.assertTrue(sfHomePage.hasPCEnrolledSuccessfully(), "PC has not been enrolled successfully");
+		s_assert.assertAll();
+		pcUserHavingSingleBillingProfile = email;
+	}
 }

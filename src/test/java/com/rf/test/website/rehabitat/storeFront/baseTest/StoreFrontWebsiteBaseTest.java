@@ -1,6 +1,7 @@
 package com.rf.test.website.rehabitat.storeFront.baseTest;
 
 import java.io.FileOutputStream;
+import java.io.IOException;
 import java.net.MalformedURLException;
 import java.util.ArrayList;
 import java.util.List;
@@ -73,16 +74,18 @@ public class StoreFrontWebsiteBaseTest extends RFBaseTest {
 	protected String countryId=null;
 	protected String country=null;
 	protected boolean runBaseURLOrLogoutExecutionCode = true;
+
 	protected static String conultantWithPulseAndWithCRP = null;
 	protected static String conultantWithoutPulseAndWithoutCRP = null;
+	protected static String conultantWithPulseAndWithCRPForCancellation = null;
+	protected static String conultantHavingSponsorWithoutPWS = null;
 	protected static String rcWithoutOrder = null;
 	protected static String rcWithOrder = null;
 	protected static String pcUserWithoutSponsor = null;
 	protected static String pcUserWithPWSSponsor = null;
-
-	//	protected String conultantWithPulseAndWithoutCRP = null;
-	//	protected String conultantWithCRPAndWithoutPulse = null;
-	protected String pwsPrefix = null;
+	protected static String pcUserWithoutPWSSponsor = null;
+	protected static String pcUserHavingSingleBillingProfile = null;
+	protected static String pwsPrefix = null;
 
 	private static final Logger logger = LogManager
 			.getLogger(StoreFrontWebsiteBaseTest.class.getName());
@@ -113,14 +116,19 @@ public class StoreFrontWebsiteBaseTest extends RFBaseTest {
 	}
 
 	@AfterGroups(alwaysRun=true,groups="users")
-	public void afterGroup(){
+	public void afterGroup() throws IOException{
 		logger.info("After Group");
 		userPropertyFile.loadProps(userProps);
+		userPropertyFile.clearProperty();
 		setUsers("conultantWithPulseAndWithCRP", conultantWithPulseAndWithCRP);
 		setUsers("pwsPrefix", pwsPrefix);
 		setUsers("conultantWithoutPulseAndWithoutCRP", conultantWithoutPulseAndWithoutCRP);
+		setUsers("conultantWithPulseAndWithCRPForCancellation", conultantWithPulseAndWithCRPForCancellation);
+		setUsers("conultantHavingSponsorWithoutPWS", conultantHavingSponsorWithoutPWS);
 		setUsers("pcUserWithPWSSponsor", pcUserWithPWSSponsor);
 		setUsers("pcUserWithoutSponsor", pcUserWithoutSponsor);
+		setUsers("pcUserWithoutPWSSponsor", pcUserWithoutPWSSponsor);
+		setUsers("pcUserHavingSingleBillingProfile", pcUserHavingSingleBillingProfile);
 		setUsers("rcWithOrder", rcWithOrder);
 		setUsers("rcWithoutOrder", rcWithoutOrder);
 	}
@@ -163,7 +171,7 @@ public class StoreFrontWebsiteBaseTest extends RFBaseTest {
 		driver.get(driver.getURL()+"/"+country.toUpperCase());
 		logger.info("Navigated to base URL");
 	}
-	
+
 	public void navigateToStoreFrontBaseURLWithoutCountry(){
 		driver.get(driver.getURL());
 		logger.info("Navigated to base URL without country");
@@ -217,13 +225,13 @@ public class StoreFrontWebsiteBaseTest extends RFBaseTest {
 		}
 		return allReturnedValuesFromQuery;
 	}
-	
+
 	public String getConultantWithPulseAndWithCRP(){
-			return userPropertyFile.getProperty("conultantWithPulseAndWithCRP");
+		return userPropertyFile.getProperty("conultantWithPulseAndWithCRP");
 	}
-	
+
 	public String getConultantWithoutPulseAndWithoutCRP(){
 		return userPropertyFile.getProperty("conultantWithPulseAndWithCRP");
-}
+	}
 
 }

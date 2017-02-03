@@ -1,0 +1,52 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<suite name="storeFrontOrdersSuite_2">
+	<listeners>
+		<listener class-name="org.uncommons.reportng.HTMLReporter" />
+		<listener class-name="org.uncommons.reportng.JUnitXMLReporter" />
+		<listener class-name="com.rf.core.listeners.RetryListener" />
+		<listener class-name="com.rf.core.listeners.TestListner" />
+	</listeners>
+	<test name="storeFrontOrdersTest_2">
+		<classes>
+			<class name="com.rf.test.website.rehabitat.storeFront.OrdersTest">
+				<methods>
+					<include
+						name="testOrderHistoryReportAProblemProductLevelWithEmptyFields_483"></include>
+					<include name="testRetailUserCheckoutChooseAConsultantSingleSearch_476"></include>
+					<include
+						name="testRetailUserCheckoutChooseAConsultantChangeSelectedSponsor_478"></include>
+					<include
+						name="testRetailUserCheckoutChooseAConsultantCheckoutWithCorporate_479"></include>
+					<include name="testEditAShipAddressCheckoutInvalidDetails_322"></include>
+					<include name="testEditAShipAddressCheckoutValidDetails_321"></include>
+					<include name="testReviewAndPlaceOrderEditCart_471"></include>
+					<include name="testAddAShipAddressCheckoutFirstTime_323"></include>
+					<include
+						name="testChooseAConsultantRFCorporateSponsorPCFirstCheckoutFromCorp_457"></include>
+					<include name="testOrderHistoryReportAProblemFieldValidations_227"></include>
+					<include name="testOrderHistoryReportAProblemConfirmationPage_228"></include>
+					<include name="testShipMethodAdHocCarts_315"></include>
+					<include name="testAddressVerificationBillingProfile_318"></include>
+					<include name="testOrderHistoryReturnOrderReturnDoNotExist_517"></include>
+					<include name="testOrderDetailsOrderNumberLink_520"></include>
+					<include
+						name="testRetailUserCheckoutChooseAConsultantMultipleSearch_477"></include>
+					<include name="testShipMethodPCExistingPCChangesShippingMethod_313"></include>
+					<include
+						name="testChooseAConsultantRFCorporateSponsorRCCheckoutFromCorporate_459"></include>
+					<include
+						name="testOrderHistoryReportAProblemProductLevelWithEmptyFields_487"></include>
+					<include
+						name="testShippingMethodCostShouldReduceForConsultantAdhocOrderWithMoreThanHundredSVValue_233"></include>
+					<include
+						name="testPCUserIsInTheProcessOfPlacingAnAdhocOrderLessThan90_354"></include>
+					<include
+						name="testPCUserIsInTheProcessOfPlacingAnAdhocOrderMoreThan90_355"></include>
+				</methods>
+			</class>
+		</classes>
+	</test>
+</suite>
+
+
+					

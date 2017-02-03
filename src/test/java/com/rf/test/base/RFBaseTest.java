@@ -106,12 +106,12 @@ public class RFBaseTest{
 
 		// set the location of the source directories of logs,output and test-output folder
 		String srcLogsDirectory = System.getProperty("user.dir")+"\\logs";
-		String srcOutputDirectory = System.getProperty("user.dir")+"\\output";
+		String srcOutputDirectory = System.getProperty("user.dir")+"/output";
 		String srcTestOutputDirectory = System.getProperty("user.dir")+"\\test-output";
 
 		// set the location of the destination directories of logs,output and test-output folder under buildHistory folder
 		String destinationLogsDirectory = System.getProperty("user.dir")+"\\buildHistory\\logs\\logs-"+timeStamp;
-		String destinationOutputDirectory = System.getProperty("user.dir")+"\\buildHistory\\output\\output-"+timeStamp;
+		String destinationOutputDirectory = System.getProperty("user.dir")+"\\buildHistory\\output/output-"+timeStamp;
 		String destinationTestOutputDirectory = System.getProperty("user.dir")+"\\buildHistory\\test-output\\test-output-"+timeStamp;
 
 		// create new folders for logs,output and test-output directories

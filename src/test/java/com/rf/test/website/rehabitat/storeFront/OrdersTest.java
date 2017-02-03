@@ -409,6 +409,21 @@ public class OrdersTest extends StoreFrontWebsiteBaseTest{
 	}
 
 	/***
+<<<<<<< HEAD
+	 * qTest : TC-316 Consultants Cannot Ship to Quebec
+	 * Description : //TODO
+	 * 
+	 *     
+	 */
+	@Test(enabled=false)//TODO
+	public void testConsultantsCannotShipToQuebec_316(){
+
+	}
+
+
+	/***
+=======
+>>>>>>> dd44ca7b8ebcd8e14bb227a14e31502cc5ad074c
 	 * qTest : TC-319 Shipping to PO/RR boxes
 	 * Description : This test cases edit the shipping address with different different type of address
 	 * like PO box, RR, APO,DPO,FPO and validates it

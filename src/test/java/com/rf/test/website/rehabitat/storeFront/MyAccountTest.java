@@ -1284,8 +1284,8 @@ public class MyAccountTest extends StoreFrontWebsiteBaseTest{
 		s_assert.assertAll();
 	}
 
-	/***
-	 * qtest: TC-473 reCaptcha - Submit as Unselected
+
+	 /* qtest: TC-473 reCaptcha - Submit as Unselected
 	   Description: This test validate the send button is disabled or not while not selecting the captcha
 	 *
 	 */ 
@@ -1294,6 +1294,42 @@ public class MyAccountTest extends StoreFrontWebsiteBaseTest{
 		sfHomePage.loginToStoreFront(TestConstants.CONSULTANT_EMAIL_WITH_CRP_AND_PULSE,password,true);
 		sfAboutMePage = sfHomePage.clickAboutMe();
 		s_assert.assertTrue(sfAboutMePage.isSendButtonDisabled(), "Send button is enabled before enter captcha");
+		s_assert.assertAll();
+	}
+
+	
+	/***
+	 * qtest: TC-380 Cancel Pulse Subscription From My Account Autoship page
+	 * Description: This method cancel pulse from autoship status page.
+	 */	
+	@Test(enabled=true)
+	public void testConsultantFirstTimePulseEnrollment_380(){
+		String prefix = TestConstants.FIRST_NAME+CommonUtils.getCurrentTimeStamp();
+		sfCheckoutPage = new StoreFrontCheckoutPage(driver);
+		sfHomePage.loginToStoreFront(TestConstants.CONSULTANT_EMAIL_WITHOUT_CRP_AND_PULSE,password,true);
+		sfHomePage.clickWelcomeDropdown();
+		sfAutoshipStatusPage = sfHomePage.navigateToAutoshipStatusPage();
+		sfAutoshipStatusPage.clickSubscribeToPulseBtn();
+		sfAutoshipStatusPage.enterAvailablePrefix(prefix);
+		sfCheckoutPage = sfAutoshipStatusPage.clickConfirmSubscription();
+		sfCheckoutPage.clickSaveButton();
+		sfCheckoutPage.clickUseSavedCardBtnOnly();
+		sfCheckoutPage.clickUseThesePaymentDetailsAndReturnBillingProfileName("1");
+		sfCheckoutPage.clickBillingDetailsNextbutton().clickPlaceOrderButton();
+		s_assert.assertTrue(sfCheckoutPage.isPopUpForTermsAndConditionsCheckboxDisplayed(), "validation popup for terms and conditions not displayed");
+		sfCheckoutPage.closePopUp();
+		sfCheckoutPage.selectTermsAndConditionsChkBox().clickPlaceOrderButton();
+		s_assert.assertTrue(sfCheckoutPage.isOrderPlacedSuccessfully(),"Order is Not placed successfully");
+		//Cancel pulse of user.
+		sfHomePage.clickWelcomeDropdown();
+		sfHomePage.navigateToAutoshipStatusPage();
+		sfAutoshipStatusPage.clickCancelPulseSubscription();
+		sfAutoshipStatusPage.clickConfirmSubscriptionButton();
+		s_assert.assertTrue(sfAutoshipStatusPage.isPulseCancellationPopupPresent(),"Pulse cancellation popup is not present.");
+		sfAutoshipStatusPage.clickCancelOnPulseCancellationPopup();
+		s_assert.assertFalse(sfAutoshipStatusPage.isPulseCancellationPopupPresent(),"Pulse cancellation popup is present after clicking cancel button.");
+		sfAutoshipStatusPage.clickConfirmSubscription();
+		s_assert.assertTrue(sfAutoshipStatusPage.isSubscribeToPulseBtnDisplayed(), "Pulse subscription is NOT cancelled");
 		s_assert.assertAll();
 	}
 
@@ -1356,8 +1392,50 @@ public class MyAccountTest extends StoreFrontWebsiteBaseTest{
 		s_assert.assertTrue(sfAccountInfoPage.isValidationMsgPresentForParticularField("confirm password", expectedValidationErrorMsg),"<msg needs to be added>");
 		s_assert.assertAll();
 	}
-
-
+	/***
+	 * qtest: TC-278 Consultant Autoship Status- Subscribe to Pulse (Re-Enrollment within 180 days)
+	  Description: This method re-enroll consultant in pulse with new prefix and existing autosuggested prefix .
+	 *
+	 */	
+	@Test(enabled=true)
+	public void testReEnnrollmentInPulseWithin180DaysOfExistingAutoSuggestedPrefix_278(){
+		String prefix = TestConstants.FIRST_NAME+CommonUtils.getCurrentTimeStamp();
+		String autoSuggestedPrefixName = null;
+		//Subscribe to pulse with a new prefix.
+		sfCheckoutPage = new StoreFrontCheckoutPage(driver);
+		sfHomePage.loginToStoreFront(TestConstants.CONSULTANT_EMAIL_WITHOUT_CRP_AND_PULSE,password,true);
+		sfHomePage.clickWelcomeDropdown();
+		sfAutoshipStatusPage = sfHomePage.navigateToAutoshipStatusPage();
+		sfAutoshipStatusPage.clickSubscribeToPulseBtn();
+		autoSuggestedPrefixName = sfAutoshipStatusPage.getAvailablePrefixName();
+		sfAutoshipStatusPage.enterAvailablePrefix(prefix);
+		sfCheckoutPage = sfAutoshipStatusPage.clickConfirmSubscription();
+		sfCheckoutPage.clickSaveButton();
+		sfCheckoutPage.clickUseThesePaymentDetailsAndReturnBillingProfileName("1");
+		sfCheckoutPage.clickBillingDetailsNextbutton().clickPlaceOrderButton();
+		s_assert.assertTrue(sfCheckoutPage.isPopUpForTermsAndConditionsCheckboxDisplayed(), "validation popup for terms and conditions not displayed");
+		sfCheckoutPage.closePopUp();
+		sfCheckoutPage.selectTermsAndConditionsChkBox().clickPlaceOrderButton();
+		s_assert.assertTrue(sfCheckoutPage.isOrderPlacedSuccessfully(),"Order is Not placed successfully");
+		//Cancel the pulse of user.
+		sfHomePage.clickWelcomeDropdown();
+		sfAutoshipStatusPage = sfHomePage.navigateToAutoshipStatusPage();
+		sfAutoshipStatusPage.clickCancelPulseSubscription().clickConfirmSubscription();
+		s_assert.assertTrue(sfAutoshipStatusPage.isSubscribeToPulseBtnDisplayed(), "Pulse subscription is NOT cancelled");
+		//Subscribe to pulse again with autosuggested prefix prefix.
+		sfAutoshipStatusPage.clickSubscribeToPulseBtn();
+		sfAutoshipStatusPage.enterAvailablePrefix(autoSuggestedPrefixName);
+		sfCheckoutPage = sfAutoshipStatusPage.clickConfirmSubscription();
+		sfCheckoutPage.clickSaveButton();
+		sfCheckoutPage.clickUseThesePaymentDetailsAndReturnBillingProfileName("1");
+		sfCheckoutPage.clickBillingDetailsNextbutton().clickPlaceOrderButton();
+		s_assert.assertTrue(sfCheckoutPage.isPopUpForTermsAndConditionsCheckboxDisplayed(), "validation popup for terms and conditions not displayed");
+		sfCheckoutPage.closePopUp();
+		sfCheckoutPage.selectTermsAndConditionsChkBox().clickPlaceOrderButton();
+		s_assert.assertTrue(sfCheckoutPage.isOrderPlacedSuccessfully(),"Order is Not placed successfully");
+		s_assert.assertAll();
+	}
+	
 	/***
 	 * qTest : TC-358 User navigates to Report a Problem page from the order history
 	 * 
@@ -1378,92 +1456,6 @@ public class MyAccountTest extends StoreFrontWebsiteBaseTest{
 		sfOrdersPage.switchToChildWindow(parentWin);
 		s_assert.assertTrue(sfOrdersPage.isReturnPolicyPDFOpened(), "Return Policy PDF has not opened");
 		sfOrdersPage.switchToParentWindow(parentWin);
-		s_assert.assertAll();
-	}
-
-	/***
-	 * qtest: TC-278 Consultant Autoship Status- Subscribe to Pulse (Re-Enrollment within 180 days)
-	  Description: This method re-enroll consultant in pulse with new prefix and existing autosuggested prefix .
-	 *
-	 */	
-	@Test(enabled=true)
-	public void testReEnnrollmentInPulseWithin180DaysOfExistingAutoSuggestedPrefix_278(){
-		String prefix = TestConstants.FIRST_NAME+CommonUtils.getCurrentTimeStamp();
-		String autoSuggestedPrefixName = null;
-		//Subscribe to pulse with a new prefix.
-		sfCheckoutPage = new StoreFrontCheckoutPage(driver);
-		sfHomePage.loginToStoreFront(TestConstants.CONSULTANT_EMAIL_WITHOUT_CRP_AND_PULSE,password,true);
-		sfHomePage.clickWelcomeDropdown();
-		sfAutoshipStatusPage = sfHomePage.navigateToAutoshipStatusPage();
-		sfAutoshipStatusPage.clickSubscribeToPulseBtn();
-		autoSuggestedPrefixName = sfAutoshipStatusPage.getAvailablePrefixName();
-		sfAutoshipStatusPage.enterAvailablePrefix(prefix);
-		sfCheckoutPage = sfAutoshipStatusPage.clickConfirmSubscription();
-		sfCheckoutPage.clickSaveButton();
-		sfCheckoutPage.clickUseSavedCardBtnOnly();
-		sfCheckoutPage.clickUseThesePaymentDetailsAndReturnBillingProfileName("1");
-		sfCheckoutPage.clickBillingDetailsNextbutton().clickPlaceOrderButton();
-		s_assert.assertTrue(sfCheckoutPage.isPopUpForTermsAndConditionsCheckboxDisplayed(), "validation popup for terms and conditions not displayed");
-		sfCheckoutPage.closePopUp();
-		sfCheckoutPage.selectTermsAndConditionsChkBox().clickPlaceOrderButton();
-		s_assert.assertTrue(sfCheckoutPage.isOrderPlacedSuccessfully(),"Order is Not placed successfully");
-		//Cancel the pulse of user.
-		sfHomePage.clickWelcomeDropdown();
-		sfAutoshipStatusPage = sfHomePage.navigateToAutoshipStatusPage();
-		sfAutoshipStatusPage.clickCancelPulseSubscription().clickConfirmSubscription();
-		s_assert.assertTrue(sfAutoshipStatusPage.isSubscribeToPulseBtnDisplayed(), "Pulse subscription is NOT cancelled");
-		//Subscribe to pulse again with autosuggested prefix prefix.
-		sfAutoshipStatusPage.clickSubscribeToPulseBtn();
-		sfAutoshipStatusPage.enterAvailablePrefix(autoSuggestedPrefixName);
-		sfCheckoutPage = sfAutoshipStatusPage.clickConfirmSubscription();
-		sfCheckoutPage.clickSaveButton();
-		sfCheckoutPage.clickUseSavedCardBtnOnly();
-		sfCheckoutPage.clickUseThesePaymentDetailsAndReturnBillingProfileName("1");
-		sfCheckoutPage.clickBillingDetailsNextbutton().clickPlaceOrderButton();
-		s_assert.assertTrue(sfCheckoutPage.isPopUpForTermsAndConditionsCheckboxDisplayed(), "validation popup for terms and conditions not displayed");
-		sfCheckoutPage.closePopUp();
-		sfCheckoutPage.selectTermsAndConditionsChkBox().clickPlaceOrderButton();
-		s_assert.assertTrue(sfCheckoutPage.isOrderPlacedSuccessfully(),"Order is Not placed successfully");
-		//Cancel the pulse of user.
-		sfHomePage.clickWelcomeDropdown();
-		sfAutoshipStatusPage = sfHomePage.navigateToAutoshipStatusPage();
-		sfAutoshipStatusPage.clickCancelPulseSubscription().clickConfirmSubscription();
-		s_assert.assertTrue(sfAutoshipStatusPage.isSubscribeToPulseBtnDisplayed(), "Pulse subscription is NOT cancelled");
-		s_assert.assertAll();
-	}
-
-	/***
-	 * qtest: TC-380 Cancel Pulse Subscription From My Account Autoship page
-	 * Description: This method cancel pulse from autoship status page.
-	 */	
-	@Test(enabled=true)
-	public void testConsultantFirstTimePulseEnrollment_380(){
-		String prefix = TestConstants.FIRST_NAME+CommonUtils.getCurrentTimeStamp();
-		sfCheckoutPage = new StoreFrontCheckoutPage(driver);
-		sfHomePage.loginToStoreFront(TestConstants.CONSULTANT_EMAIL_WITHOUT_CRP_AND_PULSE,password,true);
-		sfHomePage.clickWelcomeDropdown();
-		sfAutoshipStatusPage = sfHomePage.navigateToAutoshipStatusPage();
-		sfAutoshipStatusPage.clickSubscribeToPulseBtn();
-		sfAutoshipStatusPage.enterAvailablePrefix(prefix);
-		sfCheckoutPage = sfAutoshipStatusPage.clickConfirmSubscription();
-		sfCheckoutPage.clickSaveButton();
-		sfCheckoutPage.clickUseSavedCardBtnOnly();
-		sfCheckoutPage.clickUseThesePaymentDetailsAndReturnBillingProfileName("1");
-		sfCheckoutPage.clickBillingDetailsNextbutton().clickPlaceOrderButton();
-		s_assert.assertTrue(sfCheckoutPage.isPopUpForTermsAndConditionsCheckboxDisplayed(), "validation popup for terms and conditions not displayed");
-		sfCheckoutPage.closePopUp();
-		sfCheckoutPage.selectTermsAndConditionsChkBox().clickPlaceOrderButton();
-		s_assert.assertTrue(sfCheckoutPage.isOrderPlacedSuccessfully(),"Order is Not placed successfully");
-		//Cancel pulse of user.
-		sfHomePage.clickWelcomeDropdown();
-		sfHomePage.navigateToAutoshipStatusPage();
-		sfAutoshipStatusPage.clickCancelPulseSubscription();
-		sfAutoshipStatusPage.clickConfirmSubscriptionButton();
-		s_assert.assertTrue(sfAutoshipStatusPage.isPulseCancellationPopupPresent(),"Pulse cancellation popup is not present.");
-		sfAutoshipStatusPage.clickCancelOnPulseCancellationPopup();
-		s_assert.assertFalse(sfAutoshipStatusPage.isPulseCancellationPopupPresent(),"Pulse cancellation popup is present after clicking cancel button.");
-		sfAutoshipStatusPage.clickConfirmSubscription();
-		s_assert.assertTrue(sfAutoshipStatusPage.isSubscribeToPulseBtnDisplayed(), "Pulse subscription is NOT cancelled");
 		s_assert.assertAll();
 	}
 }

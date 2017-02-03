@@ -36,6 +36,7 @@ import org.openqa.selenium.interactions.Actions;
 import org.openqa.selenium.remote.BrowserType;
 import org.openqa.selenium.remote.CapabilityType;
 import org.openqa.selenium.remote.DesiredCapabilities;
+import org.openqa.selenium.safari.SafariDriver;
 import org.openqa.selenium.support.ui.ExpectedCondition;
 import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.openqa.selenium.support.ui.Select;
@@ -54,7 +55,7 @@ import com.rf.core.utils.PropertyFile;
 public class RFWebsiteDriver implements RFDriver,WebDriver {
 	public static WebDriver driver; // added static and changed visibility from public to private
 	private PropertyFile propertyFile;
-	private static int DEFAULT_TIMEOUT = 30;
+	private static int DEFAULT_TIMEOUT = 50;
 	private static int DEFAULT_TIMEOUT_CSCOCKPIT = 70;
 	String browser = null;
 	String dbIP = null;
@@ -109,6 +110,21 @@ public class RFWebsiteDriver implements RFDriver,WebDriver {
 			// for clearing cache
 			capabilities.setCapability(CapabilityType.ForSeleniumServer.ENSURING_CLEAN_SESSION, true);
 			driver = new InternetExplorerDriver(capabilities);
+		}
+		else if(propertyFile.getProperty("browser").equalsIgnoreCase("safari"))
+		{ 
+			System.setProperty("webdriver.safari.noinstall", "false");
+			DesiredCapabilities capabilities = new DesiredCapabilities();
+			// for clearing cache
+			capabilities.setCapability(CapabilityType.ACCEPT_SSL_CERTS, true);
+			capabilities.setCapability(CapabilityType.ForSeleniumServer.ENSURING_CLEAN_SESSION, true);
+			capabilities.setCapability(CapabilityType.HAS_NATIVE_EVENTS, true);
+			capabilities.setCapability(CapabilityType.ENABLE_PERSISTENT_HOVERING, true);
+			capabilities.setCapability(CapabilityType.SUPPORTS_JAVASCRIPT, true);
+			capabilities.setCapability(CapabilityType.SUPPORTS_FINDING_BY_CSS, true);
+			capabilities.setCapability(CapabilityType.SUPPORTS_ALERTS, true);
+			driver = new SafariDriver(capabilities);
+			pauseExecutionFor(2000);
 		}
 		driver.manage().timeouts().implicitlyWait(30, TimeUnit.SECONDS);
 		driver.manage().window().maximize();
@@ -539,7 +555,7 @@ public class RFWebsiteDriver implements RFDriver,WebDriver {
 
 	public void moveToElement(By locator) {
 		Actions build = new Actions(driver);
-		build.moveToElement(driver.findElement(locator)).click().build().perform();
+		build.moveToElement(driver.findElement(locator)).pause(1000).click(driver.findElement(locator)).build().perform();
 		pauseExecutionFor(1000);
 	}
 
@@ -548,6 +564,16 @@ public class RFWebsiteDriver implements RFDriver,WebDriver {
 				+ "var mouseEventObj = document.createEvent('MouseEvents');"
 				+ "mouseEventObj.initEvent( 'mouseover', true, true );"
 				+ "element.dispatchEvent(mouseEventObj);";
+		JavascriptExecutor js =  (JavascriptExecutor)RFWebsiteDriver.driver;
+		js.executeScript(strJavaScript, driver.findElement(locator));
+		pauseExecutionFor(1000);
+	}
+
+	public void dblClickByJS(By locator) {		
+		String strJavaScript = "var targLink  = arguments[0];"
+				+" var clickEvent  = document.createEvent ('MouseEvents');"
+				+"clickEvent.initEvent ('dblclick', true, true);"
+				+"targLink.dispatchEvent (clickEvent);";
 		JavascriptExecutor js =  (JavascriptExecutor)RFWebsiteDriver.driver;
 		js.executeScript(strJavaScript, driver.findElement(locator));
 		pauseExecutionFor(1000);
@@ -582,9 +608,11 @@ public class RFWebsiteDriver implements RFDriver,WebDriver {
 		 */		
 		// quickWaitForElementPresent(locator);
 		try{
+			//clickByJS(driver, findElement(locator));
 			findElement(locator).clear();
 		}catch(Exception e){
 			pauseExecutionFor(2000);
+			//			clickByJS(driver, findElement(locator));
 			findElement(locator).clear();	
 		}
 		findElement(locator).sendKeys(input);
@@ -762,6 +790,26 @@ public class RFWebsiteDriver implements RFDriver,WebDriver {
 		WebElement element = wait.until(ExpectedConditions
 				.visibilityOfElementLocated(locator));
 		return isElementVisible(locator);
+	}
+
+	/**
+	 * 
+	 * Purpose:Waits for element to be visible with no timeout exception
+	 * 
+	 * @author: 
+	 * @date:
+	 * @returnType: void
+	 */
+	public void waitForElementVisibleNoTimeOut(By locator, int timeInterval){
+		for(int time =1;time<=timeInterval;time++){
+			if(isElementVisible(locator)==true){
+				break;
+			}
+			else{
+				pauseExecutionFor(1000);
+				continue;
+			}
+		}
 	}
 
 	/**

@@ -22,9 +22,9 @@
 					</run>
 				</groups>
 			</class>
-			<class
+			<!-- <class
 				name="com.rf.test.website.rehabitat.storeFront.UserRegistrationTest">
-			</class>
+			</class> -->
 		</classes>
 	</test>
 </suite>

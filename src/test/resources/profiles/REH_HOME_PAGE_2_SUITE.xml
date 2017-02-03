@@ -8,18 +8,16 @@
 	</listeners>
 	<test name="storeFrontHomePageTest_2">
 			<classes>
-				<class name="com.rf.test.website.rehabitat.storeFront.homePage.NavigateToHomePageFromLogoTest"></class>
-				<class name="com.rf.test.website.rehabitat.storeFront.homePage.NewRFAccountTest"></class>
-				<class name="com.rf.test.website.rehabitat.storeFront.homePage.PartialSearchTest"></class>
-				<class name="com.rf.test.website.rehabitat.storeFront.homePage.ProductQuickViewTest"></class>
-				<class name="com.rf.test.website.rehabitat.storeFront.homePage.RFSocialMediaLinksTest"></class>
-				<class name="com.rf.test.website.rehabitat.storeFront.homePage.SuccessfulUserLoginTest"></class>
-				<class name="com.rf.test.website.rehabitat.storeFront.homePage.SwitchCountryTogglesTest"></class>
-				<class name="com.rf.test.website.rehabitat.storeFront.homePage.TermsAndConditionsTest"></class>
-				<class name="com.rf.test.website.rehabitat.storeFront.homePage.UnsuccessfulUserLoginTest"></class>
-				<class name="com.rf.test.website.rehabitat.storeFront.homePage.ViewAreasOfSiteFromHomePageTest"></class>
-				<class name="com.rf.test.website.rehabitat.storeFront.homePage.ViewFooterThroughoutTheSite"></class>
-				<class name="com.rf.test.website.rehabitat.storeFront.homePage.ViewSearchBoxInHeaderNavigationTest"></class>
+				<class name="com.rf.test.website.rehabitat.storeFront.homePage.refinement.RefinementByPriceTest"></class>
+				<class name="com.rf.test.website.rehabitat.storeFront.homePage.refinement.RefinementByRegimenTest"></class>
+				<class name="com.rf.test.website.rehabitat.storeFront.homePage.refinement.RefinementWithMultipleRegimensTest"></class>
+				<class name="com.rf.test.website.rehabitat.storeFront.homePage.refinement.RFRefineRemovalTest"></class>
+								
+				<class name="com.rf.test.website.rehabitat.storeFront.homePage.shopSkincareHeaderNavigation.CategoryFAQPageTest"></class>
+				<class name="com.rf.test.website.rehabitat.storeFront.homePage.shopSkincareHeaderNavigation.CategoryResultsPageTest"></class>
+				<class name="com.rf.test.website.rehabitat.storeFront.homePage.shopSkincareHeaderNavigation.FeatureProductTest"></class>
+				
+				<class name="com.rf.test.website.rehabitat.storeFront.TopNavigationTest"></class>
 		</classes>
 	</test>
 </suite>

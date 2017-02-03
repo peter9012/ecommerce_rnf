@@ -3,6 +3,7 @@ package com.rf.pages.website.rehabitat.storeFront;
 import org.openqa.selenium.Alert;
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebElement;
+import org.openqa.selenium.support.ui.Select;
 
 import com.rf.core.driver.website.RFWebsiteDriver;
 import com.rf.core.utils.CommonUtils;
@@ -211,12 +212,13 @@ public class StoreFrontCheckoutPage extends StoreFrontWebsiteBasePage{
 	}
 
 	public void clickCreateAccountButton(String userType){
+		driver.pauseExecutionFor(2000);
 		driver.click(CREATE_ACCOUNT_BUTTON_LOC);
 		logger.info("clicked on 'Create Account' button");
-		driver.pauseExecutionFor(1000);
 		if(userType.equals(TestConstants.USER_TYPE_RC)){
-			//driver.clickByJS(RFWebsiteDriver.driver, driver.findElement(NO_THANKS_BTN_LOC));
+			driver.waitForElementToBeVisible(NO_THANKS_BTN_LOC, 10);
 			driver.click(NO_THANKS_BTN_LOC);
+			driver.waitForElementToBeInVisible(NO_THANKS_BTN_LOC, 50);
 		}
 		driver.waitForLoadingImageToDisappear();
 	}
@@ -336,16 +338,15 @@ public class StoreFrontCheckoutPage extends StoreFrontWebsiteBasePage{
 	 * @return
 	 */
 	public StoreFrontCheckoutPage enterShippingDetails(String name, String addressLine1, String addressLine2, String city, String state, String postalCode, String phoneNumber){
-		driver.type(SHIPPING_NAME_AT_CHECKOUT_PAGE_LOC, name);
-		logger.info("Entered shipping name as "+name);
+		driver.waitForPageLoad();
 		driver.type(SHIPPING_ADDRESS_LINE_1_AT_CHECKOUT_PAGE_LOC, addressLine1);
 		logger.info("Entered shipping address Line 1 as "+addressLine1);
+		driver.type(SHIPPING_NAME_AT_CHECKOUT_PAGE_LOC, name);
+		logger.info("Entered shipping name as "+name);
 		driver.type(SHIPPING_ADDRESS_LINE_2_AT_CHECKOUT_PAGE_LOC, addressLine2);
 		logger.info("Entered shipping address Line 2 as "+addressLine2);
 		driver.type(SHIPPING_CITY_AT_CHECKOUT_PAGE_LOC, city);
-		logger.info("Entered shipping city as "+city);
-		driver.findElement(SHIPPING_STATE_AT_CHECKOUT_PAGE_LOC).sendKeys(state);
-		logger.info("Entered shipping state as "+state);
+		selectShippingState(state);
 		driver.type(SHIPPING_POSTAL_CODE_AT_CHECKOUT_PAGE_LOC, postalCode);
 		logger.info("Entered shipping postal code as "+postalCode);
 		driver.type(SHIPPING_PHONE_NUMBER_AT_CHECKOUT_PAGE_LOC, phoneNumber);
@@ -470,6 +471,7 @@ public class StoreFrontCheckoutPage extends StoreFrontWebsiteBasePage{
 	 * @return same page object
 	 */
 	public StoreFrontCheckoutPage clickContinueWithoutConsultantLink(){
+		driver.waitForElementPresent(CONTINUE_WITHOUT_SPONSOR_LOC);
 		driver.clickByJS(RFWebsiteDriver.driver, driver.findElement(CONTINUE_WITHOUT_SPONSOR_LOC));
 		logger.info("Continue without sponsor link clicked");
 		return this;
@@ -1829,6 +1831,21 @@ public class StoreFrontCheckoutPage extends StoreFrontWebsiteBasePage{
 	public boolean isNotYourConsultantLinkPresentForSponsor(){
 		return driver.isElementVisible(NOT_YOUR_CONSULTANT_LINK_LOC);
 	}
+	
+	/***
+	 * This method select the shipping state
+	 * 
+	 * @param
+	 * @return store front Checkout page object
+	 * 
+	 */
+	public StoreFrontCheckoutPage selectShippingState(String state ){
+		Select select = new Select(driver.findElement(STATE_DD_FOR_REGISTRATION_LOC));
+		select.selectByVisibleText(state);
+		logger.info("State for Shippping selected as " + state);
+		return this;
+	}
+	
 
 	/***
 	 * This method verify the email confirmation msg on checkout page

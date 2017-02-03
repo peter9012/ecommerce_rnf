@@ -70,6 +70,7 @@ public class StoreFrontShopSkinCarePage extends StoreFrontWebsiteBasePage{
 	private String priceOfProductLoc = "//div[contains(@class,'product__listing')]//div[@class='product-item'][%s]//span[@id='cust_price']";
 	private String categoryNameLoc = "//div[@id='product-facet']//descendant::ul[2]/li/descendant::span[contains(text(),'%s')]/preceding::label[1]";
 	private String randomProductCategoryCheckbox = "//div[@id='product-facet']//descendant::ul[2]/li[%s]//descendant::label[2]";
+	private String addToCartButtonLoc = "//div[contains(@class,'product__listing')]/descendant::span[@id='cust_price'][contains(text(),'$')][1]/following::button[text()='Add to bag'][%s]";
 	private String yourpriceOfProductLoc = "//div[contains(@class,'product__listing')]//div[@class='product-item'][%s]//em[contains(text(),'Your Price')]/..";
 	private String productPriceThroughProductNumberLoc = "//div[@id='product_listing']/descendant::span[contains(text(),'%s')][%s]/following-sibling::span[contains(@class,'productPrice')]";
 	private String addToCartDDLoc = "//div[@id='product_listing']/descendant::span[contains(text(),'%s')][%s]";
@@ -479,6 +480,17 @@ public class StoreFrontShopSkinCarePage extends StoreFrontWebsiteBasePage{
 	public String getProductRetailAndSVPrice(String productNumber){
 		logger.info("Retail values are "+driver.findElement(By.xpath(String.format(retailAndSVPriceLoc, productNumber))).getText());
 		return driver.findElement(By.xpath(String.format(retailAndSVPriceLoc, productNumber))).getText(); 
+	}
+
+	/***
+	 * This method validates products displayed for selected category
+	 * 
+	 * @param 
+	 * @return Boolean
+	 * 
+	 */
+	public boolean isProductsDisplayedOnPage(){
+		return driver.isElementVisible(By.xpath(String.format(addToCartButtonLoc, "1")));
 	}
 
 	/***
@@ -987,17 +999,21 @@ public class StoreFrontShopSkinCarePage extends StoreFrontWebsiteBasePage{
 	public String addProductToCart(String productNumber,String orderType){
 		String priceToAssert = null;
 		driver.pauseExecutionFor(3000);
+		driver.waitForElementPresent(By.xpath(String.format(addToCartButtonLoc, productNumber)));
 		driver.moveToElementByJS(By.xpath(String.format(addToCartButtonLoc, productNumber)));
-		driver.clickByAction(By.xpath(String.format(addToCartButtonLoc, productNumber)));
-		if(orderType.equals(TestConstants.ORDER_TYPE_ADHOC)&& driver.isElementVisible(By.xpath(String.format(productPriceThroughProductNumberLoc,TestConstants.ORDER_TYPE_ADHOC,productNumber)))){
+		driver.pauseExecutionFor(1000);
+		driver.dblClickByJS(By.xpath(String.format(addToCartButtonLoc, productNumber)));
+		if(orderType.equals(TestConstants.ORDER_TYPE_ADHOC)){
+			System.out.println("**************************");
 			priceToAssert = driver.getText(By.xpath(String.format(productPriceThroughProductNumberLoc,TestConstants.ORDER_TYPE_ADHOC,productNumber))).replace("$","");
-			driver.clickByAction(By.xpath(String.format(addToCartDDLoc,TestConstants.ORDER_TYPE_ADHOC,productNumber)));
+			driver.clickByJS(RFWebsiteDriver.driver, driver.findElement(By.xpath(String.format(addToCartDDLoc, TestConstants.ORDER_TYPE_ADHOC,productNumber))));
+			System.out.println("double clicked**************************");
 		}
-		else if(orderType.equals(TestConstants.ORDER_TYPE_PC_PERKS)&& driver.isElementVisible(By.xpath(String.format(productPriceThroughProductNumberLoc,TestConstants.ORDER_TYPE_PC_PERKS,productNumber)))){
+		else if(orderType.equals(TestConstants.ORDER_TYPE_PC_PERKS)){
 			priceToAssert = driver.getText(By.xpath(String.format(productPriceThroughProductNumberLoc,TestConstants.ORDER_TYPE_PC_PERKS,productNumber))).replace("$","");
 			driver.clickByAction(By.xpath(String.format(addToCartDDLoc,TestConstants.ORDER_TYPE_PC_PERKS,productNumber)));
 		}
-		else if(orderType.equals(TestConstants.ORDER_TYPE_CRP)&& driver.isElementVisible(By.xpath(String.format(productPriceThroughProductNumberLoc,TestConstants.ORDER_TYPE_CRP,productNumber)))){
+		else if(orderType.equals(TestConstants.ORDER_TYPE_CRP)){
 			priceToAssert = driver.getText(By.xpath(String.format(productPriceThroughProductNumberLoc,"Add to CRP",productNumber))).replace("$","");
 			driver.clickByAction(By.xpath(String.format(addToCartDDLoc,"Add to CRP",productNumber)));
 		}

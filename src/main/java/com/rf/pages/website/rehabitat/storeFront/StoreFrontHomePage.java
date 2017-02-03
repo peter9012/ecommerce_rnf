@@ -480,6 +480,18 @@ public class StoreFrontHomePage extends StoreFrontWebsiteBasePage{
 	}
 
 	/***
+	 * This method verify add to cart button is present for first product
+	 * 
+	 * @param
+	 * @return boolean value.
+	 * 
+	 */
+
+	public boolean isAddToCartPresentForFirstProduct(){
+		return driver.isElementVisible(ADD_TO_CART_FIRST_PRODUCT_LOC);
+	}
+
+	/***
 	 * This method select the first filter option under shop by price filter
 	 * 
 	 * @param
@@ -763,6 +775,7 @@ public class StoreFrontHomePage extends StoreFrontWebsiteBasePage{
 	 *ii) autoship element on the page
 	 */
 	public boolean hasPCEnrolledSuccessfully(){
+		driver.waitForElementVisibleNoTimeOut(WELCOME_DROPDOWN_LOC, 30);
 		return driver.isElementVisible(WELCOME_DROPDOWN_LOC)
 				&& driver.isElementVisible(AUTOSHIP_TEXT_LOC);		
 	}

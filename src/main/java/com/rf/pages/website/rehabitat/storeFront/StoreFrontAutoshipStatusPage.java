@@ -449,8 +449,8 @@ public class StoreFrontAutoshipStatusPage extends StoreFrontWebsiteBasePage{
 		}
 	}
 
-	/***
-	 * This method clicks on the subscribe to pulse button
+	
+	 /* This method clicks on the subscribe to pulse button
 	 * @return
 	 */
 	public StoreFrontAutoshipStatusPage clickSubscribeToPulseBtn(){

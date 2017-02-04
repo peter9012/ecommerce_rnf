@@ -625,7 +625,7 @@ public class AutoshipTest extends StoreFrontWebsiteBaseTest{
 		sfHomePage.selectTermsAndConditionsChkBox();
 		sfHomePage.selectConsentFormChkBox();
 		sfHomePage.clickBecomeAConsultant();
-		s_assert.assertTrue(sfHomePage.isEnrollemntSuccessfulMsgDisplayed(), "Expected 'ENROLLMENT SUCCESSFUL' msg has NOT displayed"); 
+		s_assert.assertTrue(sfHomePage.isEnrollemntSuccessfulMsgDisplayed(), "Expected 'Your order number is' msg has NOT displayed"); 
 		sfHomePage.clickRodanAndFieldsLogo();
 		// Click Set up CRP from Banner
 		sfHomePage.clickSetUpCRP();

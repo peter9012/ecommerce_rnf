@@ -109,7 +109,7 @@ public class AboutMeTest extends StoreFrontWebsiteBaseTest{
 		sfHomePage.selectTermsAndConditionsChkBox();
 		sfHomePage.selectConsentFormChkBox();
 		sfHomePage.clickBecomeAConsultant();
-		s_assert.assertTrue(sfHomePage.isEnrollemntSuccessfulMsgDisplayed(), "Expected 'ENROLLMENT SUCCESSFUL' msg has NOT displayed"); 
+		s_assert.assertTrue(sfHomePage.isEnrollemntSuccessfulMsgDisplayed(), "Expected 'Your order number is' msg has NOT displayed"); 
 		sfHomePage.clickRodanAndFieldsLogo();
 		currentURL = sfHomePage.getCurrentURL();
 		s_assert.assertTrue(currentURL.contains(urlToAssert),"Expected URL should contain "+urlToAssert+" but actual on UI is "+currentURL);

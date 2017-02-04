@@ -172,7 +172,7 @@ public class TestConstants {
 	public static final String CONSULTANT_PWS_PREFIX = "autocons";
 	public static final String CONSULTANT_EMAIL_WITHOUT_CRP_AND_PULSE = "AutoCons20170201150551@mailinator.com";
 
-	public static final String PC_EMAIL_HAVING_AUTOSHIP = "AutoPC20170202113611@mailinator.com";
+	public static final String PC_EMAIL_HAVING_AUTOSHIP = "AutoPCWOSPONSOR20170203123700@mailinator.com";
 	public static final String PC_EMAIL_HAVING_SINGLE_BILLING_PROFILE = "AutoPC20170125115552@mailinator.com";
 	public static final String PC_EMAIL_WHO_ENROLLED_UNDER_SPONSOR_WITH_PWS = "autopc1100@mailinator.com";
 	public static final String PC_EMAIL_WHO_ENROLLED_UNDER_SPONSOR_WITHOUT_PWS = "autopc19012017@mailinator.com";

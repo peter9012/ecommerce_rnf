@@ -1766,7 +1766,8 @@ public class StoreFrontCheckoutPage extends StoreFrontWebsiteBasePage{
 	 * @return Store Front Checkout page obj.
 	 */
 	public StoreFrontCheckoutPage clickUseSavedCardBtnOnly(){
-		driver.click(USE_SAVED_CARD_BTN_LOC);
+		driver.clickByJS(RFWebsiteDriver.driver, driver.findElement(USE_SAVED_CARD_BTN_LOC));
+		//driver.click(USE_SAVED_CARD_BTN_LOC);
 		logger.info("clicked on the 'Use a saved card' btn on the cart");
 		return this;
 	}

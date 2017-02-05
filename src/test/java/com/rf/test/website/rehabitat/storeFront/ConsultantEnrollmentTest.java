@@ -90,6 +90,7 @@ public class ConsultantEnrollmentTest extends StoreFrontWebsiteBaseTest{
 		sfHomePage.clickNextButton();
 		s_assert.assertFalse(sfHomePage.isNextButtonEnabledBeforeSelectingKit(), "Next Button is NOT disabled before selecting kit");
 		sfHomePage.chooseProductFromKitPage();
+		sfHomePage.selectSubscribeToPulseCheckBox();
 		sfHomePage.clickNextButton();
 		sfHomePage.clickSaveButton();
 		sfHomePage.enterConsultantShippingDetails(firstName, lastName, addressLine1, addressLine2 ,city, state, postalCode, phoneNumber);
@@ -481,7 +482,7 @@ public class ConsultantEnrollmentTest extends StoreFrontWebsiteBaseTest{
 		sfHomePage.clickNextButton();
 		s_assert.assertFalse(sfHomePage.isNextButtonEnabledBeforeSelectingKit(), "Next Button is NOT disabled before selecting kit");
 		sfHomePage.chooseProductFromKitPage();
-		sfHomePage.selectSubscribeToPulseCheckBox();
+//		sfHomePage.selectSubscribeToPulseCheckBox();
 		sfHomePage.enterPrefix(prefix);
 		s_assert.assertTrue(sfHomePage.isPrefixAvailable(), "entered prefix "+prefix+" is NOT available");
 		sfHomePage.clickNextButton();
@@ -528,6 +529,7 @@ public class ConsultantEnrollmentTest extends StoreFrontWebsiteBaseTest{
 		sfHomePage.clickNextButton();
 		s_assert.assertFalse(sfHomePage.isNextButtonEnabledBeforeSelectingKit(), "Next Button is NOT disabled before selecting kit");
 		sfHomePage.chooseProductFromKitPage();
+		sfHomePage.selectSubscribeToPulseCheckBox();
 		sfHomePage.clickNextButton();
 		sfHomePage.clickSaveButton();
 		sfHomePage.enterConsultantShippingDetails(firstName, lastName, addressLine1, addressLine2 ,city, state, postalCode, phoneNumber);
@@ -574,7 +576,7 @@ public class ConsultantEnrollmentTest extends StoreFrontWebsiteBaseTest{
 		sfHomePage.clickNextButton();
 		s_assert.assertFalse(sfHomePage.isNextButtonEnabledBeforeSelectingKit(), "Next Button is NOT disabled before selecting kit");
 		sfHomePage.chooseProductFromKitPage();
-		sfHomePage.selectSubscribeToPulseCheckBox();
+//		sfHomePage.selectSubscribeToPulseCheckBox();
 		sfHomePage.enterPrefix(existingPrefix);
 		s_assert.assertFalse(sfHomePage.isPrefixAvailable(), "entered prefix "+existingPrefix+" is available");
 		s_assert.assertFalse(sfHomePage.isNextButtonEnabledBeforeSelectingKit(), "Next Button is NOT disabled before selecting valid prefix.");
@@ -647,7 +649,7 @@ public class ConsultantEnrollmentTest extends StoreFrontWebsiteBaseTest{
 		sfHomePage.enterConsultantEnrollmentDetails(firstName, lastName, email, password, socialInsuranceNumber);
 		sfHomePage.clickNextButton();
 		sfHomePage.chooseProductFromKitPage();
-		sfHomePage.selectSubscribeToPulseCheckBox();
+//		sfHomePage.selectSubscribeToPulseCheckBox();
 		sfHomePage.enterPrefix(prefix);
 		sfHomePage.clickNextButton();
 		sfHomePage.clickSaveButton();
@@ -667,7 +669,7 @@ public class ConsultantEnrollmentTest extends StoreFrontWebsiteBaseTest{
 		sfCheckoutPage.clickSaveButton();
 		sfCheckoutPage.clickShippingDetailsNextbutton();
 		sfCheckoutPage.clickBillingDetailsNextbutton();
-		//		sfCheckoutPage.selectTermsAndConditionsCheckBoxForConsulatntCRP();
+		sfCheckoutPage.selectTermsAndConditionsCheckBoxForConsulatntCRP();
 		//		sfCheckoutPage.selectCheckboxForPoliciesAndProcedures();
 		sfCheckoutPage.clickConfirmAutoshipOrderButton();
 		s_assert.assertTrue(sfCheckoutPage.isCRPOrderConfirmedSuccessMsgAppeared(),"CRP Order confirmed success messge is not appeared");
@@ -693,6 +695,7 @@ public class ConsultantEnrollmentTest extends StoreFrontWebsiteBaseTest{
 		sfHomePage.clickNextButton();
 		s_assert.assertFalse(sfHomePage.isNextButtonEnabledBeforeSelectingKit(), "Next Button is NOT disabled before selecting kit");
 		sfHomePage.chooseProductFromKitPage();
+		sfHomePage.selectSubscribeToPulseCheckBox();
 		sfHomePage.clickNextButton();
 		sfHomePage.clickSaveButton();
 		sfHomePage.enterConsultantShippingDetails(firstName, lastName, addressLine1, addressLine2 ,city, state, postalCode, phoneNumber);
@@ -731,7 +734,7 @@ public class ConsultantEnrollmentTest extends StoreFrontWebsiteBaseTest{
 		sfHomePage.enterConsultantEnrollmentDetails(firstName, lastName, email, password, socialInsuranceNumber);
 		sfHomePage.clickNextButton();
 		sfHomePage.chooseProductFromKitPage();
-		sfHomePage.selectSubscribeToPulseCheckBox();
+		//sfHomePage.selectSubscribeToPulseCheckBox();
 		sfHomePage.enterPrefix(prefix);
 		sfHomePage.clickNextButton();
 		sfHomePage.clickSaveButton();
@@ -751,7 +754,7 @@ public class ConsultantEnrollmentTest extends StoreFrontWebsiteBaseTest{
 		sfCheckoutPage.clickSaveButton();
 		sfCheckoutPage.clickShippingDetailsNextbutton();
 		sfCheckoutPage.clickBillingDetailsNextbutton();
-		//		sfCheckoutPage.selectTermsAndConditionsCheckBoxForConsulatntCRP();
+		sfCheckoutPage.selectTermsAndConditionsCheckBoxForConsulatntCRP();
 		//		sfCheckoutPage.selectCheckboxForPoliciesAndProcedures();
 		sfCheckoutPage.clickConfirmAutoshipOrderButton();
 		s_assert.assertTrue(sfCheckoutPage.isCRPOrderConfirmedSuccessMsgAppeared(),"CRP Order confirmed success messge is not appeared");

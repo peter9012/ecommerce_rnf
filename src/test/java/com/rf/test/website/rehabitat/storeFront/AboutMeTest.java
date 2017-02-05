@@ -94,7 +94,7 @@ public class AboutMeTest extends StoreFrontWebsiteBaseTest{
 		sfHomePage.clickNextButton();
 		s_assert.assertFalse(sfHomePage.isNextButtonEnabledBeforeSelectingKit(), "Next Button is NOT disabled before selecting kit");
 		sfHomePage.chooseProductFromKitPage();
-		sfHomePage.selectSubscribeToPulseCheckBox();
+//		sfHomePage.selectSubscribeToPulseCheckBox();
 		sfHomePage.enterPrefix(prefix);
 		s_assert.assertTrue(sfHomePage.isEmailAvailableMsgAppearedForPWS(),"Email available msg is not present for entered prefix : " + prefix);
 		sfHomePage.clickNextButton();

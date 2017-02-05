@@ -166,15 +166,15 @@ public class TestConstants {
 	public static final String AUTOSHIP_DELIVERY_ADDRESS_UPDATION_MSG = "Delivery Address has been Updated for your Cart.";
 
 	//Users
-	public static final String CONSULTANT_EMAIL_SPONSOR_WITHOUT_PWS = "consponsorwiithoutpws1@mailinator.com";
-	public static final String CONSULTANT_EMAIL_WITH_CRP_AND_PULSE = "AutoConsWPWCRP20170203093048@mailinator.com";
+	public static final String CONSULTANT_EMAIL_SPONSOR_WITHOUT_PWS = "AutoConsSPONSORWOPWS20170205014252@mailinator.com";
+	public static final String CONSULTANT_EMAIL_WITH_CRP_AND_PULSE = "autocon2017@mailinator.com";
 	public static final String CONSULTANT_EMAIL_WITH_CRP_AND_PULSE_FOR_CANCELLATION = "AutoConsWPWCRP20170127094455@mailinator.com";
 	public static final String CONSULTANT_PWS_PREFIX = "autocons";
 	public static final String CONSULTANT_EMAIL_WITHOUT_CRP_AND_PULSE = "AutoCons20170201150551@mailinator.com";
 
-	public static final String PC_EMAIL_HAVING_AUTOSHIP = "AutoPCWOSPONSOR20170203123700@mailinator.com";
-	public static final String PC_EMAIL_HAVING_SINGLE_BILLING_PROFILE = "AutoPC20170125115552@mailinator.com";
-	public static final String PC_EMAIL_WHO_ENROLLED_UNDER_SPONSOR_WITH_PWS = "autopc1100@mailinator.com";
+	public static final String PC_EMAIL_HAVING_AUTOSHIP = "AutoPCWOSPONSOR20170205013716@mailinator.com";
+	public static final String PC_EMAIL_HAVING_SINGLE_BILLING_PROFILE = "AutoPCWSINGLEBILLING20170205012657@mailinator.com";
+	public static final String PC_EMAIL_WHO_ENROLLED_UNDER_SPONSOR_WITH_PWS = "AutoPCWPWSSPONSOR20170205013053@mailinator.com";
 	public static final String PC_EMAIL_WHO_ENROLLED_UNDER_SPONSOR_WITHOUT_PWS = "autopc19012017@mailinator.com";
 
 	public static final String RC_EMAIL_WITHOUT_ORDER = "AutoRC20170125112634@mailinator.com";

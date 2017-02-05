@@ -29,7 +29,7 @@ public class StoreFrontCheckoutPage extends StoreFrontWebsiteBasePage{
 	private final By CONFIRM_PASSWORD_LOC = By.xpath("//form[@id='registerForm']//input[@id='the-password-again']");
 	private final By PC_PERKS_CHECKBOX_LOC = By.xpath("//input[@id='c2']/following::label[1]");
 	private final By CREATE_ACCOUNT_BUTTON_LOC = By.id("next-button");
-	private final By NO_THANKS_BTN_LOC = By.xpath("//div[@id='cboxLoadedContent']/a[@id='registerRC']");
+	private final By NO_THANKS_BTN_LOC = By.xpath("//div[@id='cboxLoadedContent']//a[@id='registerRC']");
 	private final By ADD_NEW_SHIPPING_ADDRESS_BUTTON_LOC = By.xpath("//button[contains(text(),'Add New')]");
 	private final By SHIPPING_ADDRESS_NAME_LOC = By.xpath("//span[@id='defaultShippingAddress']");
 	private final By EDIT_LINK_OF_SHIPPING_ADDRESS_LOC=By.xpath("//div[@class='checkout-shipping']//a[1]");
@@ -67,13 +67,13 @@ public class StoreFrontCheckoutPage extends StoreFrontWebsiteBasePage{
 	private final By SHIPPING_STATE_AT_CHECKOUT_PAGE_LOC=By.id("address.region");
 	private final By SHIPPING_POSTAL_CODE_AT_CHECKOUT_PAGE_LOC=By.id("address.postcode");
 	private final By SHIPPING_PHONE_NUMBER_AT_CHECKOUT_PAGE_LOC=By.id("address.phone");
-	private final By TERMS_AND_CONDITIONS_CHCKBOX_FOR_CONSULTANT_CRP_LOC = By.xpath("//a[contains(text(),'terms and conditions')]/ancestor::label[1]/preceding-sibling::input[1]");
+	private final By TERMS_AND_CONDITIONS_CHCKBOX_FOR_CONSULTANT_CRP_LOC = By.xpath("//a[contains(text(),'Terms & Conditions')]/ancestor::label[1]/preceding-sibling::input[1]");
 	private final By POLICIES_AND_PROCEDURES_CHECBOX_LOC = By.xpath("//a[contains(text(),'policies and procedures')]/ancestor::label[1]/preceding-sibling::input[1]");
 	private final By QUEBEC_PROVINCE_FOR_SHIPPING_LOC=By.xpath("//option[@disabled='disabled' and text()='Quebec']");
 	private final By SELECTED_SHIPPING_METHOD_LOC = By.xpath("//li[@class='checked']/label");
 	private final By EDIT_LINK_OF_ORDERS_SUMMARY_LOC=By.xpath("//div[@class='price']/a[contains(text(),'Edit')]");
 	private final By EDIT_LINK_OF_ACCOUNT_INFO_LOC=By.xpath("//a[@class='editIcon']");
-	private final By CONTINUE_WITHOUT_SPONSOR_LOC = By.xpath("//a[contains(text(),'Continue Without a Consultant')]");
+	private final By CONTINUE_WITHOUT_SPONSOR_LOC = By.xpath("//a[contains(text(),'Continue without a Consultant')]");
 	private final By NEXT_BTN_AFTER_BILLING_LOC = By.id("reviewOrder");
 	private final By EDIT_LINK_OF_SHIPPING_PROFILE_LOC=By.xpath("//span[@id='defaultShippingAddress']/a");
 	private final By CONSULTANT_NAME_ID_FIELD_LOC = By.id("sponserparam");
@@ -150,7 +150,7 @@ public class StoreFrontCheckoutPage extends StoreFrontWebsiteBasePage{
 	private final By USE_THESE_PAYMENT_DETAILS_BTN_LOC = By.xpath("//button[contains(text(),'Use these payment details')]");
 	private final By SHIPPING_METHOD_AFTER_ORDER_PLACED = By.xpath("//div[contains(text(),'Shipping Method')]");
 	private final By DEFAULT_BILLING_PROFILE_NAME_LOC = By.xpath("//div[@id='default-payment-method']//strong");
-	private final By CONFIRM_CRP_ORDER_MSG_LOC = By.xpath("//h2[contains(text(),'CRP ORDER CONFIRMED')]");
+	private final By CONFIRM_CRP_ORDER_MSG_LOC = By.xpath("//h2[contains(text(),'YOUR ENROLLMENT IS SUCCESFUL')]");
 	private final By BILLING_PROFILE_AFTER_ORDER_PLACED = By.xpath("//div[@class='orderBillingAddress']");
 	private final By BILLING_PROFILE_NAME_LOC = By.xpath("//div[@id='default-payment-method']//strong");
 	private final By CREDIT_CARD_NUMBER_AT_ORDER_CONFIRMATION_PAGE = By.xpath("//div[@class='orderBillingDetails']/div[2]");

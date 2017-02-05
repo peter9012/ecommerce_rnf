@@ -76,7 +76,7 @@ public class StoreFrontHomePage extends StoreFrontWebsiteBasePage{
 	private final By EMAIL_AVAILABLE_MSG_LOC = By.xpath("//div[@class='emailbox-available']//div[contains(text(),'Available')]");
 	private final By SPONSOR_NAME_LINK_LOC = By.xpath("//div[contains(@class,'findAConsultant')]/a[contains(@href,'/pws/') and contains(@href,'about-me')]");
 	private final By FIRST_PRODUCT_ADD_TO_CRP_BTN_LOC = By.xpath("//div[@id='product_category']/following-sibling::div/descendant::span[text()='Add to CRP'][1]");
-	private final By CRP_CHECKOUT_BTN_LOC = By.xpath("//button[contains(text(),'Checkout')]");
+	private final By CRP_CHECKOUT_BTN_LOC = By.xpath("//button[contains(text(),'Next')]");
 	private final By SET_UP_CRP_BTN_LOC = By.xpath("//a[contains(text(),'SET UP CRP')]");
 	private final By SET_UP_CRP_LINK_LOC = By.xpath("//a[contains(text(),'SET UP CRP')]");
 	private final By PRODUCT_SEARCH_AUTOSUGGESTION_LOC = By.xpath("//div[@class='name']");
@@ -930,7 +930,7 @@ public class StoreFrontHomePage extends StoreFrontWebsiteBasePage{
 	 */
 	public StoreFrontCheckoutPage checkoutCRPBag(){
 		driver.click(CRP_CHECKOUT_BTN_LOC);
-		logger.info("Clicked CRP checkout button");
+		logger.info("Clicked next button");
 		return new StoreFrontCheckoutPage(driver);
 	}
 

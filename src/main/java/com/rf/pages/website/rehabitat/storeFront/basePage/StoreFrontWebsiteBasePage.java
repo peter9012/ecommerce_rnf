@@ -198,13 +198,13 @@ public class StoreFrontWebsiteBasePage extends RFBasePage {
 			.xpath("//div[contains(@class,'autoship-cart-popup')]//li[@class='mini-cart-item']");
 	private final By VIEW_PC_PERKS_CART_BUTTON_LOC = By.xpath("//a[contains(text(),'VIEW PC PERKS CART')]");
 	protected final By MINI_CART_NUMBER_OF_ITEMS_LOC = By.xpath("//span[@class='nav-items-total']");
-	protected final By AUTOSHIP_TEXT_LOC = By.xpath("//span[text()='AutoShip']");
+	protected final By AUTOSHIP_TEXT_LOC = By.xpath("//span[text()='Auto-ship']");
 	private final By PRODUCT_NAME_ON_CHECKOUT_POPUP_LOC = By
 			.xpath("//div[@class='add-to-cart-item']//div[@class='details']/a[@class='name']");
 	protected final By CHECKOUT_BUTTON_POPUP_LOC = By
 			.xpath("//div[@id='addToCartLayer']/a[contains(text(),'Checkout')]");
 	private final By AUTOSHIP_CART_LINK_LOC = By
-			.xpath("//span[text()='AutoShip']/ancestor::a[contains(@class,'auto-ship-cart')]");
+			.xpath("//span[text()='Auto-ship']/ancestor::a[contains(@class,'auto-ship-cart')]");
 	private final By RETURN_AUTHORIZATION_FORM_LINK = By
 			.xpath("//div[@class='container']/following::ul//a[text()='Return Authorization Form']");
 	private final By POLICY_AND_PROCEDURE_LINK_ON_SATISFACTION_GUARANTEE_LOC = By

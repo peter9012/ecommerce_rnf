@@ -16,8 +16,9 @@ public class StoreFrontAutoshipStatusPage extends StoreFrontWebsiteBasePage{
 	private static final Logger logger = LogManager
 			.getLogger(StoreFrontAutoshipStatusPage.class.getName());
 
+	private final By VIEW_DETAILS_LINK_AUTOSHIP_STATUS_LOC = By.xpath("//a[text()='View details']");
 	private final By CLOSE_ICON_PULSE_OVERLAY_LOC = By.id("cboxClose");
-	private final By LEARN_MORE_ABOUT_PULSE_LOC = By.xpath("//a[contains(text(),'Learn more about Pulse')]");
+	private final By LEARN_MORE_ABOUT_PULSE_LOC = By.xpath("//a[contains(text(),'Learn more about PULSE')]");
 	private final By PULSE_POPUP_LOC = By.xpath("//h1[contains(text(),'Pulse Business Management')]");
 	private final By PC_PERKS_AUTOSHIP_STATUS_LOC = By.xpath("//div[contains(@class,'pcPerks-statusPage')]/div[contains(text(),'PC Perks Status')]");
 	private final By DELAY_OR_CANCEL_PC_PERKS_LOC = By.xpath("//a[text()='Delay or Cancel PC Perks']");
@@ -33,11 +34,10 @@ public class StoreFrontAutoshipStatusPage extends StoreFrontWebsiteBasePage{
 	private final By NEXT_BILL_SHIP_DATE_LOC = By.id("strtDate");
 	private final By NEXT_BILL_SHIP_DATE_TEXTBOX_LOC = By.id("pcDelayDate");
 	private final By SUBMIT_QUERY_BUTTON = By.xpath("//*[@id='command']/input[@type='submit']");
-	private final By VIEW_DETAILS_LINK_AUTOSHIP_STATUS_LOC = By.xpath("//a[text()='view details']");
 	private final By PC_PERKS_STATUS_ON_AUTOSHIP_STATUS_PAGE = By.xpath("//div[contains(text(),'Current PC Perks Status')]/following::div[1]");
 	private final By SUBSCRIBE_TO_PULSE_BTN_LOC = By.id("confirmsubmitsubs");
 	private final By CANCEL_PULSE_SUBSCRIPTION_BTN_LOC = By.xpath("//a[contains(text(),'Cancel my Pulse subscription')]");
-	private final By ENROLL_IN_CRP_BTN_LOC = By.xpath("//input[@value='Enroll In CRP']");
+	private final By ENROLL_IN_CRP_BTN_LOC = By.xpath("//input[@value='Enroll in CRP']");
 	private final By CANCEL_MY_CRP_LINK_LOC = By.xpath("//a[@id='cancelCRPStatus']");
 	private final By CANCEL_CRP_BUTTON_LOC = By.xpath("//input[@value='CANCEL CRP']");
 	private final By ACTION_SUCCESS_MSG_ON_AUTOSHIP_STATUS_PAGE_LOC = By.xpath("//div[@class='alert alert-info alert-dismissable']"); 
@@ -615,4 +615,5 @@ public class StoreFrontAutoshipStatusPage extends StoreFrontWebsiteBasePage{
 		}
 		return pulsePopup;
 	}
+	
 }

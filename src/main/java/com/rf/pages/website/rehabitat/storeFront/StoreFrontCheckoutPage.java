@@ -67,7 +67,6 @@ public class StoreFrontCheckoutPage extends StoreFrontWebsiteBasePage{
 	private final By SHIPPING_STATE_AT_CHECKOUT_PAGE_LOC=By.id("address.region");
 	private final By SHIPPING_POSTAL_CODE_AT_CHECKOUT_PAGE_LOC=By.id("address.postcode");
 	private final By SHIPPING_PHONE_NUMBER_AT_CHECKOUT_PAGE_LOC=By.id("address.phone");
-	private final By TERMS_AND_CONDITIONS_CHCKBOX_FOR_CONSULTANT_CRP_LOC = By.xpath("//a[contains(text(),'Terms & Conditions')]/ancestor::label[1]/preceding-sibling::input[1]");
 	private final By POLICIES_AND_PROCEDURES_CHECBOX_LOC = By.xpath("//a[contains(text(),'policies and procedures')]/ancestor::label[1]/preceding-sibling::input[1]");
 	private final By QUEBEC_PROVINCE_FOR_SHIPPING_LOC=By.xpath("//option[@disabled='disabled' and text()='Quebec']");
 	private final By SELECTED_SHIPPING_METHOD_LOC = By.xpath("//li[@class='checked']/label");
@@ -97,7 +96,6 @@ public class StoreFrontCheckoutPage extends StoreFrontWebsiteBasePage{
 	private final By STATE_DD_FOR_BILLING_ADDRESS_AT_CHECKOUT_PAGE_LOC=By.xpath("//div[@id='checkoutEditBillingAddressForm']//select[@id='address.region']");
 	private final By POSTAL_CODE_FOR_BILLING_ADDRESS_AT_CHECKOUT_PAGE_LOC=By.xpath("//div[@id='checkoutEditBillingAddressForm']//input[@id='address.postcode']");
 	private final By PHONE_NUMBER_FOR_BILLING_ADDRESS_AT_CHECKOUT_PAGE_LOC=By.xpath("//div[@id='checkoutEditBillingAddressForm']//input[@id='address.phone']");
-	private final By EDIT_LINK_OF_BILLING_PROFILE_LOC=By.xpath("//div[contains(text(),'Billing Info')]/following::a[1]");
 	private final By CREDIT_CARD_DETAILS_LOC = By.xpath("//div[@id='default-payment-method']//span[@class='cardInfo']");
 	private final By INVALID_EXP_DATE_ERROR_MSG_LOC = By.id("valmsg-c-exyr");
 	private final By CVV_ERROR_MSG_LOC = By.id("card_cvNumber-error");
@@ -162,6 +160,8 @@ public class StoreFrontCheckoutPage extends StoreFrontWebsiteBasePage{
 	private final By EMAIL_CONFIRMATION_MSG_LOC = By.xpath("//p[contains(text(),'A confirmation e-mail with your account information will be sent to your inbox shortly')]");
 	private final By PROFILE_FOR_FUTURE_AUTOSHIP_CHECKBOX_LOC = By.xpath("//div[@class='billingAddressForm']//label[@for='futureAutoship']");
 	private final By FUTURE_AUTOSHIP_CHECKBOX_FOR_EXISTING_PROFILE_LOC = By.xpath("//div[contains(@class,'editBillingAddressForm')]//label[@for='futureAutoship']");
+	private final By TERMS_AND_CONDITIONS_CHCKBOX_FOR_CONSULTANT_CRP_LOC = By.xpath("//a[contains(text(),'Consultant Replenishment Program Terms & Conditions')]/ancestor::label[1]/preceding-sibling::input[1]");
+	private final By EDIT_LINK_OF_BILLING_PROFILE_LOC=By.xpath("//div[contains(text(),'Billing')]/following::a[1]");
 
 	private String useThisAddressBtnInAddressBookLoc = "//div[@id='addressbook']/descendant::form[@id='useShipAddressFromBook'][%s]//button";
 	private String profileNameFromAddressBookLoc = "//div[@id='addressbook']/descendant::strong[%s]";
@@ -1532,21 +1532,6 @@ public class StoreFrontCheckoutPage extends StoreFrontWebsiteBasePage{
 	}
 
 	/***
-	 * This method click on the confirm Autoship order button
-	 * 
-	 * @param 
-	 * @return StoreFrontCheckoutPage object 
-	 * 
-	 */
-	public StoreFrontCheckoutPage clickConfirmAutoshipOrderButton(){
-		driver.click(CONFIRM_CRP_ORDER_BTN_LOC);
-		driver.waitForPageLoad();
-		logger.info("confirm CRP order btn clicked");
-		driver.pauseExecutionFor(2000);
-		return this;
-	}
-
-	/***
 	 * This method validates the presence of Confirm CRP Order Success Message
 	 * 
 	 * @param 
@@ -1850,6 +1835,21 @@ public class StoreFrontCheckoutPage extends StoreFrontWebsiteBasePage{
 	public StoreFrontCheckoutPage selectCheckboxForSavingExistingProfileForFutureAutoship(){
 		driver.click(FUTURE_AUTOSHIP_CHECKBOX_FOR_EXISTING_PROFILE_LOC);
 		logger.info("Selected checkbox for saving Existing Billing profile for future autoship");
+		return this;
+	}
+
+	/***
+	 * This method click on the confirm Autoship order button
+	 * 
+	 * @param 
+	 * @return StoreFrontCheckoutPage object 
+	 * 
+	 */
+	public StoreFrontCheckoutPage clickConfirmAutoshipOrderButton(){
+		driver.clickByJS(RFWebsiteDriver.driver,driver.findElement(CONFIRM_CRP_ORDER_BTN_LOC));
+		driver.waitForPageLoad();
+		logger.info("confirm CRP order btn clicked");
+		driver.pauseExecutionFor(2000);
 		return this;
 	}
 

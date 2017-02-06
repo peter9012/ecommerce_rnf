@@ -15,6 +15,7 @@ import org.openqa.selenium.JavascriptExecutor;
 import org.openqa.selenium.Keys;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.interactions.Actions;
+import org.openqa.selenium.support.ui.Select;
 import org.testng.Reporter;
 
 import com.rf.core.driver.website.RFWebsiteDriver;
@@ -43,6 +44,7 @@ public class StoreFrontWebsiteBasePage extends RFBasePage {
 		this.driver = driver;
 	}
 
+	private final By ERROR_MESSAGE_EMPTY_PREFIX_LOC = By.xpath("//*[@id='prefixForm']//label[@class='field-error']");
 	private final By ENROLL_NOW_POPUP_LOC = By.xpath("//div[@id='enrollCRPModal' and contains(@style,'block')]//h3[contains(text(),'Do you want enroll for CRP')]");
 	private final By SHOPPING_CART_HEADLINE_ON_CHCKOUT_POPUP_LOC = By.xpath("//div[@id='cboxContent']//span[@class='headline-text' and contains(text(),'Added to Your Shopping Cart')]");
 	private final By SUBTOTAL_LOC = By.xpath("//td[contains(text(),'Subtotal')]/following::td[1]");
@@ -102,7 +104,7 @@ public class StoreFrontWebsiteBasePage extends RFBasePage {
 	private final By COUNTRY_LOC = By.xpath("//span[@class='selected-country']/preceding::input[1]");
 	private final By COUNTRY_NAME_LOC = By.xpath("//span[@class='selected-country']");
 	protected final By SAVE_BUTTON_LOC = By.id("deliveryAccountSubmit");
-	private final By WELCOME_DD_AUTOSHIP_STATUS_LOC = By.xpath("//a[text()='Autoship Status']");
+	private final By WELCOME_DD_AUTOSHIP_STATUS_LOC = By.xpath("//a[text()='Auto-ship Status']");
 	private final By WELCOME_DD_ORDERS_LOC = By.xpath("//a[text()='Orders']");
 	private final By SAVE_BUTTON_OF_SHIPPING_ADDRESS_LOC = By.xpath("//button[contains(text(),'Save')]");
 	protected final By ERROR_MESSAGE_FOR_ADDRESS_LINE_1_LOC = By.id("address.line1-error");
@@ -168,7 +170,7 @@ public class StoreFrontWebsiteBasePage extends RFBasePage {
 	private final By CONSULTANT_ONLY_PRODUCTS_LINK_LOC = By
 			.xpath("//div[@class='navbar-inverse']//a[@title='CONSULTANT ONLY']");
 	//private final By ERROR_MESSAGE_FOR_THRESHOLD = By.xpath("//div[@class='global-alerts']/div");
-	private final By TOTAL_NO_OF_PRODUCTS_LOC = By.xpath("//div[@class='product-item']");
+	private final By TOTAL_NO_OF_PRODUCTS_LOC = By.xpath("//div[contains(@class,'product__listing')]/descendant::span[@id='cust_price'][contains(text(),'$')]");
 	private final By WELCOME_DD_EDIT_PC_PERKS_LOC = By.xpath("//a[text()='Edit PC Perks']");
 	private final By WELCOME_DD_PC_PERKS_FAQ_LOC = By.xpath("//a[text()='PC Perks FAQ']");
 	private final By WELCOME_DD_PC_PERKS_STATUS_LOC = By.xpath("//a[text()='PC Perks Status']");
@@ -565,6 +567,56 @@ public class StoreFrontWebsiteBasePage extends RFBasePage {
 		mouseHoverOn(TestConstants.BECOME_A_CONSULTANT);
 		driver.click(EVENTS_LOC);
 		logger.info("clicked on 'Events link'");
+		return this;
+	}
+
+	/***
+	 * This method clicks on the event button PWS site
+	 * @return
+	 */
+	public StoreFrontWebsiteBasePage clickEventsOnPWSJoin(){
+		driver.click(By.xpath("//a[@href='events']"));
+		logger.info("clicked on 'Events' button on pws join site");
+		return this;
+	}
+
+	/***
+	 * This method clicks on the enroll Now button PWS site
+	 * @return
+	 */
+	public StoreFrontWebsiteBasePage clickEnrollOnPWSJoin(){
+		driver.click(By.xpath("//a[text()='ENROLL NOW']"));
+		logger.info("clicked on 'Enroll Now' button on pws join site");
+		return this;
+	}
+
+	/***
+	 * This method clicks on the programs and incentives button PWS site
+	 * @return
+	 */
+	public StoreFrontWebsiteBasePage clickProgramsIncentivesOnPWSJoin(){
+		driver.click(By.xpath("//a[@href='programs-incentives']"));
+		logger.info("clicked on 'prgrams and incentives' button on pws join site");
+		return this;
+	}
+
+	/***
+	 * This method clicks on the Meet Our Community button PWS site
+	 * @return
+	 */
+	public StoreFrontWebsiteBasePage clickMeetOurCommunityOnPWSJoin(){
+		driver.click(By.xpath("//a[@href='meet-our-community']"));
+		logger.info("clicked on 'Meet Our Community' button on pws join site");
+		return this;
+	}
+
+	/***
+	 * This method clicks on the Why RF button PWS site
+	 * @return
+	 */
+	public StoreFrontWebsiteBasePage clickWhyRFOnPWSJoin(){
+		driver.click(By.xpath("//a[@href='why-rf']"));
+		logger.info("clicked on 'Why R+F' button on pws join site");
 		return this;
 	}
 
@@ -3691,6 +3743,45 @@ public class StoreFrontWebsiteBasePage extends RFBasePage {
 	 */
 	public boolean isProductsDisplayedOnPage(){
 		return driver.isElementVisible(By.xpath(String.format(addToCartButtonLoc,"1")));
+	}
+
+	/***
+	 * This method clear the all Billing address field at checkout page
+	 * 
+	 * @param
+	 * @return
+	 * 
+	 */
+	public StoreFrontWebsiteBasePage clearAllFieldsOfBillingAddressDetailsForExistingBillingProfile(){
+		driver.clear(FIRST_LAST_NAME_FOR_BILLING_ADDRESS_FOR_EXISTING_PROFILE_LOC);
+		logger.info("Cleared Field First last Name");
+		driver.clear(ADDRESS_LINE1_FOR_BILLING_ADDRESS_FOR_EXISTING_PROFILE_LOC);
+		logger.info("Cleared Field Address line 1");
+		driver.clear(ADDRESS_LINE_2_FOR_BILLING_ADDRESS_FOR_EXISTING_PROFILE_LOC);
+		logger.info("Cleared Field Address line 2");
+		driver.clear(CITY_FOR_BILLING_ADDRESS_FOR_EXISTING_PROFILE_LOC);
+		logger.info("Cleared Field City");
+		Select select = new Select(driver.findElement(STATE_DD_FOR_BILLING_ADDRESS_FOR_EXISTING_PROFILE_LOC));
+		select.selectByIndex(1);
+		logger.info("Cleared Field State");
+		driver.clear(POSTAL_CODE_FOR_BILLING_ADDRESS_FOR_EXISTING_PROFILE_LOC);
+		logger.info("Cleared Field Postal Code");
+		driver.clear(PHONE_NUMBER_FOR_BILLING_ADDRESS_FOR_EXISTING_PROFILE_LOC);
+		logger.info("Cleared Field Phone number");
+		return this;
+	}
+
+	/***
+	 * This method get available autosuggested prefix name
+	 * 
+	 * @param
+	 * @return autosuggested prefix name
+	 * 
+	 */
+	public String getErrorMessageForEmptyPrefixName() {
+		String existingPrefixMsg = driver.findElement(ERROR_MESSAGE_EMPTY_PREFIX_LOC).getText();
+		logger.info("Error msg for Empty prefix name" + existingPrefixMsg);
+		return existingPrefixMsg;
 	}
 
 }

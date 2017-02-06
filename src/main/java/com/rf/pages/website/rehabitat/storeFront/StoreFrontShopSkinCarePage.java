@@ -21,6 +21,7 @@ public class StoreFrontShopSkinCarePage extends StoreFrontWebsiteBasePage{
 	private static final Logger logger = LogManager
 			.getLogger(StoreFrontShopSkinCarePage.class.getName());
 
+	private final By ADD_TO_CART_BTN_ON_QUICK_VIEW_POPUP_LOC = By.xpath("//div[@id='myModal' and contains(@style,'display')]//button[contains(text(),'Add to cart')]");
 	private final By CHECKOUT_BUTTON_POPUP_LOC = By.xpath("//a[contains(text(),'Checkout')]");
 	private final By SORT_FILTER_DD_LOC = By.id("sortOptions1");
 	private final By SHOP_BY_PRICE_FILTER_OPTION_HIGH_TO_LOW_LOC = By.xpath("//select[@id='sortOptions1']/descendant::option[2]");
@@ -44,7 +45,6 @@ public class StoreFrontShopSkinCarePage extends StoreFrontWebsiteBasePage{
 	private final By PRODUCT_POPUP_LOC=By.id("cboxClose");
 	private final By SPECIFIC_PRICE_QUICK_VIEW_POPUP_LOC = By.xpath("//div[@id='myModal']//span[@id='cust_price' and contains(text(),'Your Price')]");
 	private final By RETAIL_PRICE_QUICK_VIEW_POPUP_LOC = By.xpath("//div[@id='myModal']//span[@id='retail' and contains(text(),'Retail')]");
-	private final By ADD_TO_CART_BTN_ON_QUICK_VIEW_POPUP_LOC = By.xpath("//div[@id='myModal' and contains(@style,'display')]//button[contains(text(),'Add to bag')]");
 	private final By PC_PERKS_ORDER_BTN_ON_QUICK_VIEW_POPUP_LOC = By.xpath("//div[@id='myModal' and contains(@style,'display')]//button[contains(text(),'Add to bag')]/following-sibling::div//button[contains(@class,'addToCartButton_perks')]");
 	private final By ONE_TIME_ORDER_BTN_ON_QUICK_VIEW_POPUP_LOC = By.xpath("//div[@id='myModal' and contains(@style,'display')]//button[contains(text(),'Add to bag')]/following-sibling::div//span[contains(text(),'One Time Order')]/ancestor::button");
 	private final By PRODUCT_IMG_ON_QUICK_VIEW_POPUP_LOC = By.xpath("//div[@id='myModal' and contains(@style,'display')]//div[contains(@class,'product-image')]//img");

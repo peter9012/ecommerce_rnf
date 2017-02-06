@@ -77,8 +77,7 @@ public class StoreFrontHomePage extends StoreFrontWebsiteBasePage{
 	private final By SPONSOR_NAME_LINK_LOC = By.xpath("//div[contains(@class,'findAConsultant')]/a[contains(@href,'/pws/') and contains(@href,'about-me')]");
 	private final By FIRST_PRODUCT_ADD_TO_CRP_BTN_LOC = By.xpath("//div[@id='product_category']/following-sibling::div/descendant::span[text()='Add to CRP'][1]");
 	private final By CRP_CHECKOUT_BTN_LOC = By.xpath("//button[contains(text(),'Next')]");
-	private final By SET_UP_CRP_BTN_LOC = By.xpath("//a[contains(text(),'SET UP CRP')]");
-	private final By SET_UP_CRP_LINK_LOC = By.xpath("//a[contains(text(),'SET UP CRP')]");
+	private final By SET_UP_CRP_BTN_LOC = By.xpath("//a[contains(text(),'JOIN CRP')]");
 	private final By PRODUCT_SEARCH_AUTOSUGGESTION_LOC = By.xpath("//div[@class='name']");
 	private final By MEET_THE_DOCTORS_TXT_LOC = By.xpath("//h1[contains(text(),'Meet the Doctors')]");
 
@@ -87,7 +86,7 @@ public class StoreFrontHomePage extends StoreFrontWebsiteBasePage{
 	private String expandedKitDescriptionLoc = "//div[contains(@class,'enrollmentKit-wrapper')]/div[%s]//div[@class='detailed-description']";
 	private String closeBtnForKitDetailsLoc = "//div[contains(@class,'enrollmentKit-wrapper')]/div[%s]//a[@class='enrollKit-close']";
 	private String kitNameLoc = "//label[text()='%s']/preceding::input[1]";
-	private String priceOfProductLoc = "//div[contains(@class,'product__listing')]//div[@class='product-item'][%s]//span[@id='cust_price']";
+	private String priceOfProductLoc = "//div[contains(@class,'product__listing')]/descendant::span[@id='cust_price'][contains(text(),'$')][%s]";
 	private String socialMediaIconLoc = "//div[@class='container']//a[contains(@href,'%s')]";
 	private String teamMemberNameLoc = "//div[@id='modal_front']/div[%s]//div[@class='title']/h4";
 	private String categoryUnderShopSkinCareLoc = topNavigationLoc+"//a[@title='%s']";

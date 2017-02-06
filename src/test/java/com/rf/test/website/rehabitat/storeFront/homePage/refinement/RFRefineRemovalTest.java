@@ -73,7 +73,7 @@ public class RFRefineRemovalTest extends StoreFrontWebsiteBaseTest{
 		}
 		sfHomePage.selectSecondOptionInShopByPriceFilter();
 		totalNoOfProduct = sfHomePage.getTotalNoOfProduct();
-		s_assert.assertTrue(sfHomePage.isShopByPriceFilterRemovedSuccessfully(totalNoOfProduct, priceRange50to199), "50 to 199 Filter not removed successfully");
+		s_assert.assertFalse(sfHomePage.isShopByPriceFilterRemovedSuccessfully(totalNoOfProduct, priceRange50to199), "50 to 199 Filter not removed successfully");
 		s_assert.assertAll();
 	}
 }

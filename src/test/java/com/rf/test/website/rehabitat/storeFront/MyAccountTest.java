@@ -1102,59 +1102,6 @@ public class MyAccountTest extends StoreFrontWebsiteBaseTest{
 		s_assert.assertAll();
 	}
 
-	/***
-	 * qTest : TC-519 Edit PWS - User is not subscribed to Pulse
-	 * 
-	 * Description : This test validates edits PWS functionality of user 
-	 * who is not subscribed to pulse.
-	 * 
-	 *     
-	 */
-	@Test(enabled=true)
-	public void testEditPWSOfUserNotSubscribedToPulse_519(){
-		String timeStamp = CommonUtils.getCurrentTimeStamp();
-		String socialInsuranceNumber = String.valueOf(CommonUtils.getRandomNum(100000000, 999999999));
-		String firstName = TestConstants.FIRST_NAME;
-		String lastName = TestConstants.LAST_NAME;
-		String emailID = TestConstants.FIRST_NAME+timeStamp+TestConstants.EMAIL_SUFFIX;
-		String addressLine1 = TestConstants.ADDRESS_LINE_1_US;
-		String addressLine2 = TestConstants.ADDRESS_LINE_2_US;
-		String city = TestConstants.CITY_US;
-		String state = TestConstants.STATE_US;
-		String postalCode = TestConstants.POSTAL_CODE_US;
-		String phoneNumber = TestConstants.PHONE_NUMBER;
-		String cardType = TestConstants.CARD_TYPE;
-		String cardNumber = TestConstants.CARD_NUMBER;
-		String cardName = TestConstants.CARD_NAME;
-		String CVV = TestConstants.CVV;
-
-		//Enroll consultant user.
-		sfHomePage.clickEnrollNow();
-		sfHomePage.searchSponsor(TestConstants.SPONSOR);
-		s_assert.assertTrue(sfHomePage.isSponsorResultDisplayed(),"No result found after searching the sponsor with name "+TestConstants.SPONSOR);
-		sfHomePage.selectFirstSponsorFromList();
-		sfHomePage.enterConsultantEnrollmentDetails(firstName, lastName, emailID, password, socialInsuranceNumber);
-		sfHomePage.clickNextButton();
-		s_assert.assertFalse(sfHomePage.isNextButtonEnabledBeforeSelectingKit(), "Next Button is NOT disabled before selecting kit");
-		sfHomePage.chooseProductFromKitPage();
-		sfHomePage.clickNextButton();
-		sfHomePage.clickSaveButton();
-		sfHomePage.enterConsultantShippingDetails(firstName, lastName, addressLine1, addressLine2 ,city, state, postalCode, phoneNumber);
-		sfHomePage.clickUseAsEnteredButtonOnPopUp();
-		sfHomePage.clickShippingDetailsNextbutton();
-		sfHomePage.enterUserBillingDetails(cardType, cardNumber, cardName, CVV);
-		sfHomePage.clickBillingDetailsNextbutton();
-		sfHomePage.selectPoliciesAndProceduresChkBox();
-		sfHomePage.selectIAcknowledgeChkBox();
-		sfHomePage.selectTermsAndConditionsChkBox();
-		sfHomePage.selectConsentFormChkBox();
-		sfHomePage.clickBecomeAConsultant();
-		s_assert.assertTrue(sfHomePage.isEnrollemntSuccessfulMsgDisplayed(), "Expected 'Your order number is' msg has NOT displayed"); 
-		sfHomePage.clickRodanAndFieldsLogo();
-		sfHomePage.clickWelcomeDropdown();
-		s_assert.assertFalse(sfHomePage.isEditPWSLinkPresentInWelcomeDD(),"Edit PWS link is present for user not subscribed to pulse.");
-		s_assert.assertAll();
-	}
 
 	/***
 	 * qTest : TC-359 Enroll into pulse from my account order page
@@ -1186,37 +1133,6 @@ public class MyAccountTest extends StoreFrontWebsiteBaseTest{
 		sfOrdersPage = sfHomePage.navigateToOrdersPage();
 		currentWindowID = CommonUtils.getCurrentWindowHandle();
 		sfOrdersPage.clickPulseLink();
-		sfHomePage.switchToChildWindow(currentWindowID);
-		currentURL = sfHomePage.getCurrentURL().toLowerCase();
-		s_assert.assertTrue(currentURL.contains(urlToAssert), "Expected URL should contain "+urlToAssert+" but actual on UI is"+currentURL);
-		sfHomePage.switchToParentWindow(currentWindowID);
-		s_assert.assertAll();
-	}
-
-	/***
-	 * qTest : TC-361 View Pulse autoship status and next bill date from Autoship status page in my account
-	 * 
-	 * Description : This test validate pulse autoship status and next bill ship date
-	 * from autoship status page.
-	 * 				
-	 */
-	@Test(enabled=true) //Not auto loggedIn in pulse.
-	public void testVerifyPulseStatusAndNextBillShipDate_361(){
-		String currentURL = null;
-		String currentWindowID = null;
-		String currentPulseStatus = null;
-		String urlToAssert = "myrfpulse";
-		//Login as consultant user.
-		sfHomePage.loginToStoreFront(TestConstants.CONSULTANT_EMAIL_WITH_CRP_AND_PULSE,password,true);
-		sfHomePage.clickWelcomeDropdown();
-		sfAutoshipStatusPage = sfHomePage.navigateToAutoshipStatusPage();
-		s_assert.assertFalse(sfAutoshipStatusPage.isSubscribeToPulseBtnDisplayed(),"User is not subscribed to pulse");
-		currentPulseStatus = sfAutoshipStatusPage.getCurrentPulseStatus();
-		s_assert.assertTrue(currentPulseStatus.contains("Enrolled"),"Consultant is not enrolled into Pulse yet expected 'Enrolled' and Actual"+currentPulseStatus);
-		s_assert.assertTrue(sfAutoshipStatusPage.isNextPulseAutoshipBillShipDatePresent(),"Pulse next Bill ship date not present on autoship status page.");
-		sfHomePage.clickWelcomeDropdown();
-		currentWindowID = CommonUtils.getCurrentWindowHandle();
-		sfHomePage.navigateToCheckMyPulsePage();
 		sfHomePage.switchToChildWindow(currentWindowID);
 		currentURL = sfHomePage.getCurrentURL().toLowerCase();
 		s_assert.assertTrue(currentURL.contains(urlToAssert), "Expected URL should contain "+urlToAssert+" but actual on UI is"+currentURL);
@@ -1297,66 +1213,6 @@ public class MyAccountTest extends StoreFrontWebsiteBaseTest{
 		s_assert.assertAll();
 	}
 
-	/***
-	 * qtest: TC-277 Consultant Autoship Status- Subscribe to Pulse (First Time Pulse Enrollment)
-	 * Description: This method subscribe the consultant with pulse and also cancels the same
-	 */	
-	@Test(enabled=true)//TODO
-	public void testConsultantFirstTimePulseEnrollment_277(){
-		String timeStamp = CommonUtils.getCurrentTimeStamp();
-		String socialInsuranceNumber = String.valueOf(CommonUtils.getRandomNum(100000000, 999999999));
-		String firstName = TestConstants.FIRST_NAME;
-		String lastName = TestConstants.LAST_NAME;
-		String emailID = TestConstants.FIRST_NAME+timeStamp+TestConstants.EMAIL_SUFFIX;
-		String addressLine1 = TestConstants.ADDRESS_LINE_1_US;
-		String addressLine2 = TestConstants.ADDRESS_LINE_2_US;
-		String city = TestConstants.CITY_US;
-		String state = TestConstants.STATE_US;
-		String postalCode = TestConstants.POSTAL_CODE_US;
-		String phoneNumber = TestConstants.PHONE_NUMBER;
-		String cardType = TestConstants.CARD_TYPE;
-		String cardNumber = TestConstants.CARD_NUMBER;
-		String cardName = TestConstants.CARD_NAME;
-		String CVV = TestConstants.CVV;
-		String prefix = TestConstants.FIRST_NAME+CommonUtils.getCurrentTimeStamp();
-		//Enroll consultant user.
-		sfHomePage.clickEnrollNow();
-		sfHomePage.searchSponsor(TestConstants.SPONSOR);
-		s_assert.assertTrue(sfHomePage.isSponsorResultDisplayed(),"No result found after searching the sponsor with name "+TestConstants.SPONSOR);
-		sfHomePage.selectFirstSponsorFromList();
-		sfHomePage.enterConsultantEnrollmentDetails(firstName, lastName, emailID, password, socialInsuranceNumber);
-		sfHomePage.clickNextButton();
-		s_assert.assertFalse(sfHomePage.isNextButtonEnabledBeforeSelectingKit(), "Next Button is NOT disabled before selecting kit");
-		sfHomePage.chooseProductFromKitPage();
-		sfHomePage.clickNextButton();
-		sfHomePage.clickSaveButton();
-		sfHomePage.enterConsultantShippingDetails(firstName, lastName, addressLine1, addressLine2 ,city, state, postalCode, phoneNumber);
-		sfHomePage.clickUseAsEnteredButtonOnPopUp();
-		sfHomePage.clickShippingDetailsNextbutton();
-		sfHomePage.enterUserBillingDetails(cardType, cardNumber, cardName, CVV);
-		sfHomePage.clickBillingDetailsNextbutton();
-		sfHomePage.selectPoliciesAndProceduresChkBox();
-		sfHomePage.selectIAcknowledgeChkBox();
-		sfHomePage.selectTermsAndConditionsChkBox();
-		sfHomePage.selectConsentFormChkBox();
-		sfHomePage.clickBecomeAConsultant();
-		s_assert.assertTrue(sfHomePage.isEnrollemntSuccessfulMsgDisplayed(), "Expected 'Your order number is' msg has NOT displayed"); 
-		sfHomePage.clickRodanAndFieldsLogo();
-		sfHomePage.clickWelcomeDropdown();
-		sfAutoshipStatusPage = sfHomePage.navigateToAutoshipStatusPage();
-		sfAutoshipStatusPage.clickSubscribeToPulseBtn();
-		sfAutoshipStatusPage.enterAvailablePrefix(prefix);
-		sfCheckoutPage = sfAutoshipStatusPage.clickConfirmSubscription();
-		sfCheckoutPage.clickSaveButton();
-		sfCheckoutPage.clickUseSavedCardBtnOnly();
-		sfCheckoutPage.clickUseThesePaymentDetailsAndReturnBillingProfileName("1");
-		sfCheckoutPage.clickBillingDetailsNextbutton().clickPlaceOrderButton();
-		s_assert.assertTrue(sfCheckoutPage.isPopUpForTermsAndConditionsCheckboxDisplayed(), "validation popup for terms and conditions not displayed");
-		sfCheckoutPage.closePopUp();
-		sfCheckoutPage.selectTermsAndConditionsChkBox().clickPlaceOrderButton();
-		s_assert.assertTrue(sfCheckoutPage.isOrderPlacedSuccessfully(),"User enrolled in pulse successfully");
-		s_assert.assertAll();
-	}
 
 	/***
 	 * qTest : TC-250 Password format error validation
@@ -1498,6 +1354,127 @@ public class MyAccountTest extends StoreFrontWebsiteBaseTest{
 		sfAutoshipStatusPage.clickCancelOnPulseCancellationPopup();
 		s_assert.assertFalse(sfAutoshipStatusPage.isPulseCancellationPopupPresent(),"Pulse cancellation popup is present after clicking cancel button.");
 		sfAutoshipStatusPage.clickConfirmSubscription();
+		s_assert.assertTrue(sfAutoshipStatusPage.isSubscribeToPulseBtnDisplayed(), "Pulse subscription is NOT cancelled");
+		s_assert.assertAll();
+	}
+	
+	/***
+	 * qTest : TC-519 Edit PWS - User is not subscribed to Pulse
+	 * 
+	 * Description : This test validates edits PWS functionality of user 
+	 * who is not subscribed to pulse.
+	 * 
+	 *     
+	 */
+	@Test(enabled=true)
+	public void testEditPWSOfUserNotSubscribedToPulse_519(){
+		String timeStamp = CommonUtils.getCurrentTimeStamp();
+		String socialInsuranceNumber = String.valueOf(CommonUtils.getRandomNum(100000000, 999999999));
+		String firstName = TestConstants.FIRST_NAME;
+		String lastName = TestConstants.LAST_NAME;
+		String emailID = TestConstants.FIRST_NAME+timeStamp+TestConstants.EMAIL_SUFFIX;
+		String addressLine1 = TestConstants.ADDRESS_LINE_1_US;
+		String addressLine2 = TestConstants.ADDRESS_LINE_2_US;
+		String city = TestConstants.CITY_US;
+		String state = TestConstants.STATE_US;
+		String postalCode = TestConstants.POSTAL_CODE_US;
+		String phoneNumber = TestConstants.PHONE_NUMBER;
+		String cardType = TestConstants.CARD_TYPE;
+		String cardNumber = TestConstants.CARD_NUMBER;
+		String cardName = TestConstants.CARD_NAME;
+		String CVV = TestConstants.CVV;
+
+		//Enroll consultant user.
+		sfHomePage.clickEnrollNow();
+		sfHomePage.searchSponsor(TestConstants.SPONSOR);
+		s_assert.assertTrue(sfHomePage.isSponsorResultDisplayed(),"No result found after searching the sponsor with name "+TestConstants.SPONSOR);
+		sfHomePage.selectFirstSponsorFromList();
+		sfHomePage.enterConsultantEnrollmentDetails(firstName, lastName, emailID, password, socialInsuranceNumber);
+		sfHomePage.clickNextButton();
+		s_assert.assertFalse(sfHomePage.isNextButtonEnabledBeforeSelectingKit(), "Next Button is NOT disabled before selecting kit");
+		sfHomePage.chooseProductFromKitPage();
+		sfHomePage.selectSubscribeToPulseCheckBox();
+		sfHomePage.clickNextButton();
+		sfHomePage.clickSaveButton();
+		sfHomePage.enterConsultantShippingDetails(firstName, lastName, addressLine1, addressLine2 ,city, state, postalCode, phoneNumber);
+		sfHomePage.clickUseAsEnteredButtonOnPopUp();
+		sfHomePage.clickShippingDetailsNextbutton();
+		sfHomePage.enterUserBillingDetails(cardType, cardNumber, cardName, CVV);
+		sfHomePage.clickBillingDetailsNextbutton();
+		sfHomePage.selectPoliciesAndProceduresChkBox();
+		sfHomePage.selectIAcknowledgeChkBox();
+		sfHomePage.selectTermsAndConditionsChkBox();
+		sfHomePage.selectConsentFormChkBox();
+		sfHomePage.clickBecomeAConsultant();
+		s_assert.assertTrue(sfHomePage.isEnrollemntSuccessfulMsgDisplayed(), "Expected 'Your order number is' msg has NOT displayed"); 
+		sfHomePage.clickRodanAndFieldsLogo();
+		sfHomePage.clickWelcomeDropdown();
+		s_assert.assertFalse(sfHomePage.isEditPWSLinkPresentInWelcomeDD(),"Edit PWS link is present for user not subscribed to pulse.");
+		s_assert.assertAll();
+	}
+/***
+	 * qTest : TC-361 View Pulse autoship status and next bill date from Autoship status page in my account
+	 * 
+	 * Description : This test validate pulse autoship status and next bill ship date
+	 * from autoship status page.
+	 * 				
+	 */
+	@Test(enabled=true) //Not auto loggedIn in pulse.
+	public void testVerifyPulseStatusAndNextBillShipDate_361(){
+		String currentURL = null;
+		String currentWindowID = null;
+		String currentPulseStatus = null;
+		String urlToAssert = "myrfpulse";
+		//Login as consultant user.
+		sfHomePage.loginToStoreFront(TestConstants.CONSULTANT_EMAIL_WITH_CRP_AND_PULSE,password,true);
+		sfHomePage.clickWelcomeDropdown();
+		sfAutoshipStatusPage = sfHomePage.navigateToAutoshipStatusPage();
+		s_assert.assertFalse(sfAutoshipStatusPage.isSubscribeToPulseBtnDisplayed(),"User is not subscribed to pulse");
+		currentPulseStatus = sfAutoshipStatusPage.getCurrentPulseStatus();
+		s_assert.assertTrue(currentPulseStatus.contains("ACTIVE"),"Consultant is not enrolled into Pulse yet expected 'ACTIVE' and Actual"+currentPulseStatus);
+		s_assert.assertTrue(sfAutoshipStatusPage.isNextPulseAutoshipBillShipDatePresent(),"Pulse next Bill ship date not present on autoship status page.");
+		sfHomePage.clickWelcomeDropdown();
+		currentWindowID = CommonUtils.getCurrentWindowHandle();
+		sfHomePage.navigateToCheckMyPulsePage();
+		sfHomePage.switchToChildWindow(currentWindowID);
+		currentURL = sfHomePage.getCurrentURL().toLowerCase();
+		s_assert.assertTrue(currentURL.contains(urlToAssert), "Expected URL should contain "+urlToAssert+" but actual on UI is"+currentURL);
+		sfHomePage.switchToParentWindow(currentWindowID);
+		s_assert.assertAll();
+	}
+/***
+	 * qtest: TC-277 Consultant Autoship Status- Subscribe to Pulse (First Time Pulse Enrollment)
+	 * Description: This method subscribe the consultant with pulse and also cancels the same
+	 */	
+	@Test(enabled=true)//TODO
+	public void testConsultantFirstTimePulseEnrollment_277(){
+		String prefix = TestConstants.FIRST_NAME+CommonUtils.getCurrentTimeStamp();
+		String emptyPrefix = "";
+		String errorMsg = TestConstants.VALIDATION_ERROR_THIS_FIELD_IS_REQUIRED;
+		String error = null;
+		//Login with consultant not enrolled in pulse.
+		sfHomePage.loginToStoreFront(TestConstants.CONSULTANT_EMAIL_WITHOUT_CRP_AND_PULSE,password,true);
+		//Enroll user in pulse.
+		sfHomePage.clickWelcomeDropdown();
+		sfAutoshipStatusPage = sfHomePage.navigateToAutoshipStatusPage();
+		sfAutoshipStatusPage.clickSubscribeToPulseBtn();
+		sfAutoshipStatusPage.enterAvailablePrefix(emptyPrefix);
+		error = sfAutoshipStatusPage.getErrorMessageForEmptyPrefixName();
+		s_assert.assertTrue(error.contains(errorMsg),"Error message for empty prefix name Expected"+errorMsg+"while Actual"+error);
+		sfAutoshipStatusPage.enterAvailablePrefix(prefix);
+		sfCheckoutPage = sfAutoshipStatusPage.clickConfirmSubscription();
+		sfCheckoutPage.clickSaveButton();
+		sfCheckoutPage.clickUseSavedCardBtnOnly();
+		sfCheckoutPage.clickUseThesePaymentDetailsAndReturnBillingProfileName("1");
+		sfCheckoutPage.clickBillingDetailsNextbutton().clickPlaceOrderButton();
+		s_assert.assertTrue(sfCheckoutPage.isPopUpForTermsAndConditionsCheckboxDisplayed(), "validation popup for terms and conditions not displayed");
+		sfCheckoutPage.closePopUp();
+		sfCheckoutPage.selectTermsAndConditionsChkBox().clickPlaceOrderButton();
+		s_assert.assertTrue(sfCheckoutPage.isOrderPlacedSuccessfully(),"User enrolled in pulse successfully");
+		//Cancel the pulse of user.
+		sfHomePage.clickWelcomeDropdown();
+		sfAutoshipStatusPage = sfHomePage.navigateToAutoshipStatusPage();
+		sfAutoshipStatusPage.clickCancelPulseSubscription().clickConfirmSubscription();
 		s_assert.assertTrue(sfAutoshipStatusPage.isSubscribeToPulseBtnDisplayed(), "Pulse subscription is NOT cancelled");
 		s_assert.assertAll();
 	}

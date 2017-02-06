@@ -176,7 +176,7 @@ public class AutoshipTest extends StoreFrontWebsiteBaseTest{
 		//Editing Billing Profile and entering Specific Address Type 2 and Save payment
 		sfCheckoutPage.clickEditLinkOfBillingProfile();
 		sfCheckoutPage.clickEditLinkOfDefaultBillingProfile();
-		sfCheckoutPage.checkUseMyDeliveryAddressChkBoxForExistingBillingProfile();
+		//		sfCheckoutPage.checkUseMyDeliveryAddressChkBoxForExistingBillingProfile();
 		sfCheckoutPage.enterBillingAddressDetailsForExistingBillingProfile(firstName, lastName, updatedAddressLine1, updatedAddressLine2, updatedCity, state, updatedPostalCode, phoneNumber);
 		sfCheckoutPage.clickSavePaymentButton();
 		sfCheckoutPage.clickUseAsEnteredButtonOnPopUp();
@@ -269,9 +269,10 @@ public class AutoshipTest extends StoreFrontWebsiteBaseTest{
 		sfCheckoutPage.clickSaveButton();
 		sfCheckoutPage.clickShippingDetailsNextbutton();
 		sfCheckoutPage.clickEditLinkOfDefaultBillingProfile();
-		sfCheckoutPage.checkUseMyDeliveryAddressChkBoxForExistingBillingProfile();
+		//  sfCheckoutPage.checkUseMyDeliveryAddressChkBoxForExistingBillingProfile();
 
 		// Click Save Payment Button without filling any Billing Address details
+		sfCheckoutPage.clearAllFieldsOfBillingAddressDetailsForExistingBillingProfile();
 		sfCheckoutPage.clickSavePaymentButton();
 		s_assert.assertTrue(sfCheckoutPage.isErrrorMsgsForAllMandatoryFieldsForBillingAddressArePresent(),
 				"Mandatory Address Fields error messages for existing profile are not present as expected.");
@@ -392,8 +393,6 @@ public class AutoshipTest extends StoreFrontWebsiteBaseTest{
 	public void testUpdateAutoshipCartEditABillingProfileConsultant_400(){
 		String currentURL = null;
 		String randomWord = CommonUtils.getRandomWord(5);
-
-		String randomWord2 = CommonUtils.getRandomWord(5);
 		String cardName = TestConstants.CARD_NAME + randomWord;
 		String cardNum = TestConstants.CARD_NUMBER_2;
 		String textToAssertInURL = "autoship/cart";
@@ -434,7 +433,7 @@ public class AutoshipTest extends StoreFrontWebsiteBaseTest{
 		//Editing Billing Profile and entering Specific Address Type 2 and Save payment
 		sfCheckoutPage.clickEditLinkOfBillingProfile();
 		sfCheckoutPage.clickEditLinkOfDefaultBillingProfile();
-		sfCheckoutPage.checkUseMyDeliveryAddressChkBoxForExistingBillingProfile();
+		//		sfCheckoutPage.checkUseMyDeliveryAddressChkBoxForExistingBillingProfile();
 		sfCheckoutPage.enterBillingAddressDetailsForExistingBillingProfile(firstName, lastName, updatedAddressLine1, updatedAddressLine2, updatedCity, state, updatedPostalCode, phoneNumber);
 		sfCheckoutPage.clickSavePaymentButton();
 		sfCheckoutPage.clickUseAsEnteredButtonOnPopUp();
@@ -514,7 +513,7 @@ public class AutoshipTest extends StoreFrontWebsiteBaseTest{
 		profileLastName = sfCheckoutPage.getLastName(cardName);
 		defaultBillingProfileName = sfCheckoutPage.getDefaultBillingProfileName();
 		s_assert.assertTrue(defaultBillingProfileName.contains(profileLastName),"New Billing Profile Details do not get updated. Expected Profile Name : "+ cardName + ". Actual : " + defaultBillingProfileName);
-		//		sfCheckoutPage.selectTermsAndConditionsCheckBoxForConsulatntCRP();
+		sfCheckoutPage.selectTermsAndConditionsCheckBoxForConsulatntCRP();
 		//		sfCheckoutPage.selectCheckboxForPoliciesAndProcedures();
 		sfCheckoutPage.clickConfirmAutoshipOrderButton();
 		sfCheckoutPage.clickOnAutoshipCartLink();
@@ -572,7 +571,7 @@ public class AutoshipTest extends StoreFrontWebsiteBaseTest{
 		sfCheckoutPage.clickSaveButton();
 		sfCheckoutPage.clickShippingDetailsNextbutton();
 		sfCheckoutPage.clickBillingDetailsNextbutton();
-		//		sfCheckoutPage.selectTermsAndConditionsCheckBoxForConsulatntCRP();
+		sfCheckoutPage.selectTermsAndConditionsCheckBoxForConsulatntCRP();
 		//		sfCheckoutPage.selectCheckboxForPoliciesAndProcedures();
 		sfCheckoutPage.clickConfirmAutoshipOrderButton();
 		s_assert.assertTrue(sfCheckoutPage.isCRPOrderConfirmedSuccessMsgAppeared(),"CRP Order confirmed success messge is not appeared");
@@ -634,7 +633,7 @@ public class AutoshipTest extends StoreFrontWebsiteBaseTest{
 		sfCheckoutPage.clickSaveButton();
 		sfCheckoutPage.clickShippingDetailsNextbutton();
 		sfCheckoutPage.clickBillingDetailsNextbutton();
-		//		sfCheckoutPage.selectTermsAndConditionsCheckBoxForConsulatntCRP();
+		sfCheckoutPage.selectTermsAndConditionsCheckBoxForConsulatntCRP();
 		//		sfCheckoutPage.selectCheckboxForPoliciesAndProcedures();
 		sfCheckoutPage.clickConfirmAutoshipOrderButton();
 		s_assert.assertTrue(sfCheckoutPage.isCRPOrderConfirmedSuccessMsgAppeared(),"CRP Order confirmed success messge is not appeared");
@@ -643,7 +642,7 @@ public class AutoshipTest extends StoreFrontWebsiteBaseTest{
 		sfOrdersPage = sfCheckoutPage.navigateToOrdersPage();
 		s_assert.assertTrue(sfOrdersPage.isAutoshipOrderHistoryTableAppeared(),"Autoship Order history Table is not present on orders page");
 		status = sfOrdersPage.getStatusOfFirstOrderPresentInAutoshipOrderHistory();
-		s_assert.assertTrue(status.contains("Active"),"Status of CRP is not found as expected. Expected : Active. Actual : "+status);
+		s_assert.assertTrue(status.toLowerCase().contains("active"),"Status of CRP is not found as expected. Expected : Active. Actual : "+status);
 		s_assert.assertAll();
 	}
 
@@ -742,8 +741,8 @@ public class AutoshipTest extends StoreFrontWebsiteBaseTest{
 		s_assert.assertTrue(defaultBillingProfileName.contains(cardLastName),"New Billing Profile Details do not get updated. Expected Profile Name : "+ cardName + ". Actual : " + defaultBillingProfileName);
 
 		// Confirming order
-		/*sfCheckoutPage.selectCheckboxForPoliciesAndProcedures();
-	     sfCheckoutPage.selectTermsAndConditionsCheckBoxForConsulatntCRP();*/
+		//		sfCheckoutPage.selectCheckboxForPoliciesAndProcedures();
+		sfCheckoutPage.selectTermsAndConditionsCheckBoxForConsulatntCRP();
 		sfCheckoutPage.clickConfirmAutoshipOrderButton();
 
 		// Navigate again to Autoship checkout to verify billing profile for future autoship.
@@ -1487,6 +1486,7 @@ public class AutoshipTest extends StoreFrontWebsiteBaseTest{
 		sfCheckoutPage.clickSaveButton();
 		sfCheckoutPage.clickShippingDetailsNextbutton();
 		sfCheckoutPage.clickBillingDetailsNextbutton();
+		sfCheckoutPage.selectTermsAndConditionsCheckBoxForConsulatntCRP();
 		/*sfCheckoutPage.selectIAcknowledgePCChkBox();*/
 		sfCheckoutPage.clickConfirmAutoshipOrderButton();
 		s_assert.assertTrue(sfCheckoutPage.isCRPOrderConfirmedSuccessMsgAppeared(),"CRP order confirmation text not present.");
@@ -1496,7 +1496,7 @@ public class AutoshipTest extends StoreFrontWebsiteBaseTest{
 		//Verify autoship order details.
 		s_assert.assertTrue(sfOrdersPage.isAutoshipOrderHistoryTableAppeared(),"Autoship Order history Table is not present on orders page");
 		status = sfOrdersPage.getStatusOfFirstOrderPresentInAutoshipOrderHistory();
-		s_assert.assertTrue(status.contains("Active"),"Status of CRP is not found as expected. Expected : Active. Actual : "+status);
+		s_assert.assertTrue(status.toLowerCase().contains("active"),"Status of CRP is not found as expected. Expected : Active. Actual : "+status);
 		s_assert.assertAll();
 	}
 
@@ -1523,8 +1523,8 @@ public class AutoshipTest extends StoreFrontWebsiteBaseTest{
 		sfCheckoutPage.clickUseSavedCardBtnOnly();
 		billingProfileNameFromSavedCard = sfCheckoutPage.clickUseThesePaymentDetailsAndReturnBillingProfileName("1");
 		sfCheckoutPage.clickBillingDetailsNextbutton();
-		/*sfCheckoutPage.selectTermsAndConditionsCheckBoxForConsulatntCRP();
-		sfCheckoutPage.selectIAcknowledgeChkBox();*/
+		sfCheckoutPage.selectTermsAndConditionsCheckBoxForConsulatntCRP();
+		//		sfCheckoutPage.selectIAcknowledgeChkBox();
 		sfCheckoutPage.clickConfirmAutoshipOrderButton();
 		sfCheckoutPage.clickAutoshipLink();
 		sfAutoshipCartPage.clickOnCRPCheckoutButton();

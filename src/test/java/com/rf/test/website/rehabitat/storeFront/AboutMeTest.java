@@ -29,31 +29,30 @@ public class AboutMeTest extends StoreFrontWebsiteBaseTest{
 		homePageURL = sfHomePage.getCurrentURL();
 		sfHomePage.navigateToUrl(homePageURL + "/pws/" + prefix + "/join");
 		// Navigating to Events Link 
-		sfHomePage.clickEvents();
+		sfHomePage.clickEventsOnPWSJoin();
 		currentURL = sfHomePage.getCurrentURL().toLowerCase();
 		s_assert.assertTrue(currentURL.endsWith(urlToAssertForEventsLink),"Expected URL should contain "+urlToAssertForEventsLink+" but actual on UI is "+currentURL);
 		s_assert.assertTrue(sfHomePage.isEventsPageHeaderDisplayed(),"Events page header is not displayed");
 		// Navigating to Enroll now Link
-		sfHomePage.clickRodanAndFieldsLogo();
-		sfHomePage.clickEnrollNow();
+		sfHomePage.navigateToUrl(homePageURL + "/pws/" + prefix + "/join");
+		sfHomePage.clickEnrollOnPWSJoin();
 		currentURL = sfHomePage.getCurrentURL().toLowerCase();
 		s_assert.assertTrue(currentURL.endsWith(urlToAssertForEnrollNowLink),"Expected URL should contain "+urlToAssertForEnrollNowLink+" but actual on UI is "+currentURL);
-		s_assert.assertTrue(sfHomePage.isEnrollAsConsultantPageHeaderDisplayed(),"Enroll as consultant page header is not displayed");
 		// Navigating to Programs and Incentives Link 
-		sfHomePage.clickRodanAndFieldsLogo();
-		sfHomePage.clickProgramsAndIncentives();
+		sfHomePage.navigateToUrl(homePageURL + "/pws/" + prefix + "/join");
+		sfHomePage.clickProgramsIncentivesOnPWSJoin();
 		currentURL = sfHomePage.getCurrentURL().toLowerCase();
 		s_assert.assertTrue(currentURL.endsWith(urlToAssertForProgramsAndIncentivesLink),"Expected URL should contain "+urlToAssertForProgramsAndIncentivesLink+" but actual on UI is "+currentURL);
 		s_assert.assertTrue(sfHomePage.isProgramsAndIncentivesPageHeaderDisplayed(),"Programs and incentives page header is not displayed");
 		// Navigating to Meet our community Link
-		sfHomePage.clickRodanAndFieldsLogo();
-		sfHomePage.clickMeetOurCommunityLink();
+		sfHomePage.navigateToUrl(homePageURL + "/pws/" + prefix + "/join");
+		sfHomePage.clickMeetOurCommunityOnPWSJoin();
 		currentURL = sfHomePage.getCurrentURL().toLowerCase();
 		s_assert.assertTrue(currentURL.endsWith(urlToAssertForMeetOurCommunityLink),"Expected URL should contain "+urlToAssertForMeetOurCommunityLink+" but actual on UI is "+currentURL);
 		s_assert.assertTrue(sfHomePage.isMeetOurCommunityPageHeaderDisplayed(),"Meet our community page header is not displayed");
 		// Navigating to Why RF Link 
-		sfHomePage.clickRodanAndFieldsLogo();
-		sfHomePage.clickWhyRF();
+		sfHomePage.navigateToUrl(homePageURL + "/pws/" + prefix + "/join");
+		sfHomePage.clickWhyRFOnPWSJoin();
 		currentURL = sfHomePage.getCurrentURL().toLowerCase();
 		s_assert.assertTrue(currentURL.endsWith(urlToAssertForWhyRFLink),"Expected URL should contain "+urlToAssertForWhyRFLink+" but actual on UI is "+currentURL);
 		s_assert.assertTrue(sfHomePage.isWhyRFPageHeaderDisplayed(),"Why RF page header is not displayed");
@@ -147,7 +146,7 @@ public class AboutMeTest extends StoreFrontWebsiteBaseTest{
 		sfHomePage.logout();
 		// For PC
 		sfHomePage.clickRodanAndFieldsLogo();
-		sfHomePage.loginToStoreFront(TestConstants.PC_EMAIL_HAVING_AUTOSHIP,password,true);
+		sfHomePage.loginToStoreFront(TestConstants.PC_EMAIL_WHO_ENROLLED_UNDER_SPONSOR_WITH_PWS,password,true);
 		sfHomePage.clickSponsorNameLink();
 		currentURL = sfAboutMePage.getCurrentURL();
 		s_assert.assertTrue(sfAboutMePage.isContactMeHeaderPresentOnAboutMePage(),"Contact me header is not present on the about me page of sponsor");

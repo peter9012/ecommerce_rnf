@@ -48,8 +48,8 @@ public class TestConstants {
 	//public static final String CONSULTANT_PWS_PREFIX =  "autocons20170114150644";
 	public static final String ABOUT_ME_PAGE_QUES_FROM_PREFIX_URL = "WHAT I LOVE MOST ABOUT R+F PRODUCTS";
 	public static final String ABOUT_ME_PAGE_QUES_FROM_JOIN_URL = "WHAT I LOVE MOST ABOUT MY R+F BUSINESS";
-	public static final String SHIPPING_ADDRESS_ADDED_MESSAGE = "Your address was created.";
-	public static final String SHIPPING_ADDRESS_REMOVED_MESSAGE = "Your address was removed.";
+	public static final String SHIPPING_ADDRESS_ADDED_MESSAGE = "Address created successfully";
+	 public static final String SHIPPING_ADDRESS_REMOVED_MESSAGE = "Address removed successfully";
 	public static final String TITLE_OF_ALL_SKINCARE_PAGE = "All Skincare | Rodan and Fields";
 
 	// Order page Details
@@ -151,7 +151,7 @@ public class TestConstants {
 	public static final String PHONE_NUMBER_MANDATORY_MSG = "Please specify a valid phone number.";
 	public static final String MORE_THAN_200_CHARS = "This is the test message This is the test message This is the test message This is the test message "+
 			"This is the test message This is the test message This is the test message This is the test message T";
-	public static final String CANCELLED_CRP_ORDER_SUCCESS_MESSAGE = "Your CRP Order has been cancelled.";
+	public static final String CANCELLED_CRP_ORDER_SUCCESS_MESSAGE = "Your CRP Order has been canceled.";
 	public static final String PRODUCT_CATEGORY_REDEFINE = "REDEFINE";
 	
 	public static final String SECOND_ADDRESS_LINE_1_US = "1625 Sixth Street";
@@ -161,16 +161,15 @@ public class TestConstants {
 	public static final String CONSULTANT_CRP_AUTOSHIP_PRODUCT_CATEGORY = "CRP Autoship";
 	public static final String PC_PERKS_AUTOSHIP_PRODUCT_CATEGORY = "PC Perk Autoship";
 	public static final String PROMOTION_OVERLAY_MSG = "Your favourite Rodan + Fields® products automatically delivered to your doorstep";
-	public static final String ERROR_MSG_EXISTING_PREFIX = "Subscription Prefix Not available";
 	public static final String DEFAULT_SHIPPING_ADDRESS_UPDATION_MSG = "Your default address was updated.";
 	public static final String AUTOSHIP_DELIVERY_ADDRESS_UPDATION_MSG = "Delivery Address has been Updated for your Cart.";
-
+	public static final String ERROR_MSG_EXISTING_PREFIX = "Subscription Prefix not available";
 	//Users
-	public static final String CONSULTANT_EMAIL_SPONSOR_WITHOUT_PWS = "AutoConsSPONSORWOPWS20170205014252@mailinator.com";
+	public static final String CONSULTANT_EMAIL_SPONSOR_WITHOUT_PWS = "AutoConsSPONSORWOPWS20170206165559@mailinator.com";
 	public static final String CONSULTANT_EMAIL_WITH_CRP_AND_PULSE = "autocon2017@mailinator.com";
 	public static final String CONSULTANT_EMAIL_WITH_CRP_AND_PULSE_FOR_CANCELLATION = "AutoConsWPWCRP20170127094455@mailinator.com";
-	public static final String CONSULTANT_PWS_PREFIX = "autocons";
-	public static final String CONSULTANT_EMAIL_WITHOUT_CRP_AND_PULSE = "AutoCons20170201150551@mailinator.com";
+	public static final String CONSULTANT_PWS_PREFIX = "flname0";
+	public static final String CONSULTANT_EMAIL_WITHOUT_CRP_AND_PULSE = "AutoConsSPONSORWOPWS20170206165559@mailinator.com";
 
 	public static final String PC_EMAIL_HAVING_AUTOSHIP = "AutoPCWOSPONSOR20170205013716@mailinator.com";
 	public static final String PC_EMAIL_HAVING_SINGLE_BILLING_PROFILE = "AutoPCWSINGLEBILLING20170205012657@mailinator.com";

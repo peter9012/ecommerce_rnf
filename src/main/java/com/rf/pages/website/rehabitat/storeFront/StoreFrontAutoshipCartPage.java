@@ -85,18 +85,6 @@ public class StoreFrontAutoshipCartPage extends StoreFrontWebsiteBasePage{
 	}
 
 	/***
-	 * This method click on the CRP Checkout button
-	 * 
-	 * @param
-	 * @return StoreFrontCheckoutPage object
-	 */
-	public StoreFrontCheckoutPage clickOnCRPCheckoutButton(){
-		driver.click(CRP_CHECKOUT_LOC);
-		logger.info("Clicked on CRP checkout button");
-		return new StoreFrontCheckoutPage(driver);
-	}
-
-	/***
 	 * This method validates Items on autoship cart page.
 	 * 
 	 * @param
@@ -272,5 +260,17 @@ public class StoreFrontAutoshipCartPage extends StoreFrontWebsiteBasePage{
 		logger.info("Clicked Update Quantity Link for Item Number : " + itemNumber);
 		return this;
 	}
+	
+	/***
+	  * This method click on the CRP Checkout button
+	  * 
+	  * @param
+	  * @return StoreFrontCheckoutPage object
+	  */
+	 public StoreFrontCheckoutPage clickOnCRPCheckoutButton(){
+	  driver.clickByJS(RFWebsiteDriver.driver,driver.findElement(CRP_CHECKOUT_LOC));
+	  logger.info("Clicked on CRP checkout button");
+	  return new StoreFrontCheckoutPage(driver);
+	 }
 
 }

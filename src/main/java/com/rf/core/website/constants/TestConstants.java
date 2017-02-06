@@ -40,7 +40,7 @@ public class TestConstants {
 	public static final String CONFIRM_PASSWORD_VALIDATION_ERROR_SAME_VALUE = "Please enter the same value";
 	public static final String POSTAL_VALIDATION_ERROR_VALID_POSTAL_CODE = "Please enter valid postal code";
 	public static final String VALIDATION_ERROR_LESS_THAN_200_CHARS = "Please enter no more than 200 characters";
-	public static final String SHIPPING_ADDRESS_UPDATE_MESSAGE = "Your address was updated.";
+	public static final String SHIPPING_ADDRESS_UPDATE_MESSAGE = "Address updated successfully";
 	public static final String ADD_TO_BAG = "Add to Bag";
 	public static final String WRONG_ADDRESS_LINE_1_US = "BAJCAC";
 	public static final String CITY_DALLAS_US = "Dallas";

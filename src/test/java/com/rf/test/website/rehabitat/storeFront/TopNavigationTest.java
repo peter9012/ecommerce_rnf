@@ -362,7 +362,7 @@ public class TopNavigationTest extends StoreFrontWebsiteBaseTest{
 	@Test(enabled=false)
 	public void testAsAUserIWillBeAbleToAccessThePLPFromTheShopSkincareSection_542(){
 		String category="ALL PRODUCTS";
-		sfShopSkinCarePage=sfHomePage.navigateToShopSkincareLink(category);
+		sfShopSkinCarePage = sfHomePage.clickAllProducts();
 		s_assert.assertTrue(sfShopSkinCarePage.isProductsDisplayedOnPage(),"Expected user is not redirected to all products page");
 		s_assert.assertAll();
 	}

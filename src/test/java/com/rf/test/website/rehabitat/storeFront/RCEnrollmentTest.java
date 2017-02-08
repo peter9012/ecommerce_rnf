@@ -25,10 +25,8 @@ public class RCEnrollmentTest extends StoreFrontWebsiteBaseTest{
 	String timeStamp; 
 
 	public RCEnrollmentTest() {
-		timeStamp = CommonUtils.getCurrentTimeStamp();
 		firstName=TestConstants.RC_FIRST_NAME;
 		lastName = TestConstants.LAST_NAME;
-		email = firstName+timeStamp+TestConstants.EMAIL_SUFFIX;
 		addressLine1 = TestConstants.ADDRESS_LINE_1_US;
 		addressLine2 = TestConstants.ADDRESS_LINE_2_US;
 		city = TestConstants.CITY_US;
@@ -49,6 +47,8 @@ public class RCEnrollmentTest extends StoreFrontWebsiteBaseTest{
 	 */
 	@Test(enabled=true)
 	public void testRCEnrollment_550(){
+		timeStamp = CommonUtils.getCurrentTimeStamp();
+		email = firstName+timeStamp+TestConstants.EMAIL_SUFFIX;
 		sfCartPage = new StoreFrontCartPage(driver);
 		sfShopSkinCarePage = new StoreFrontShopSkinCarePage(driver);
 		sfHomePage.clickLoginIcon();
@@ -67,6 +67,8 @@ public class RCEnrollmentTest extends StoreFrontWebsiteBaseTest{
 	 */
 	@Test(enabled=true)//Redirect to corp site after enrollment from pws site
 	public void testRCEnrollmentFromPWSSite_551(){
+		timeStamp = CommonUtils.getCurrentTimeStamp();
+		email = firstName+timeStamp+TestConstants.EMAIL_SUFFIX;
 		String prefix = TestConstants.CONSULTANT_PWS_PREFIX;
 		String currentURL = null;
 		
@@ -85,6 +87,8 @@ public class RCEnrollmentTest extends StoreFrontWebsiteBaseTest{
 	
 	@Test(enabled=true, groups="users")
 	public void testRCEnrollmentWithoutOrder(){
+		timeStamp = CommonUtils.getCurrentTimeStamp();
+		email = firstName+timeStamp+TestConstants.EMAIL_SUFFIX;
 		navigateToStoreFrontBaseURL();
 		sfCartPage = new StoreFrontCartPage(driver);
 		sfShopSkinCarePage = new StoreFrontShopSkinCarePage(driver);
@@ -99,6 +103,8 @@ public class RCEnrollmentTest extends StoreFrontWebsiteBaseTest{
 	
 	@Test(enabled=true, groups="users")
 	public void testRCEnrollmentWithOrder(){
+		timeStamp = CommonUtils.getCurrentTimeStamp();
+		email = firstName+timeStamp+TestConstants.EMAIL_SUFFIX;
 		navigateToStoreFrontBaseURL();
 		sfCartPage = new StoreFrontCartPage(driver);
 		sfShopSkinCarePage = new StoreFrontShopSkinCarePage(driver);

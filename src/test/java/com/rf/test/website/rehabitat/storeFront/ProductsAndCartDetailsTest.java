@@ -104,7 +104,7 @@ public class ProductsAndCartDetailsTest extends StoreFrontWebsiteBaseTest{
 		//Verify product detail page.
 		s_assert.assertTrue(sfProductDetailPage.getProductNameFromProductDetailsPage().contains(firstProductName),"User is not redirecting to product details page after clicking on product name from cart page");
 		//View more products from product detail page.
-		sfShopSkinCarePage = sfHomePage.navigateToShopSkincareLink(allProduct);
+		sfShopSkinCarePage = sfHomePage.clickAllProducts();
 		thirdProductName = sfShopSkinCarePage.getProductNameFromAllProductPage(String.valueOf(Integer.parseInt(TestConstants.PRODUCT_NUMBER)+2));
 		sfProductDetailPage = sfShopSkinCarePage.clickNameOfProductOnAllProductPage(String.valueOf(Integer.parseInt(TestConstants.PRODUCT_NUMBER)+2));
 		sfProductDetailPage.navigateToBackPage();
@@ -787,7 +787,7 @@ public class ProductsAndCartDetailsTest extends StoreFrontWebsiteBaseTest{
 	@Test(enabled=true)
 	public void testSortProductBaseOnPriceFilter_61(){
 		String allProduct = "ALL PRODUCTS";
-		sfShopSkinCarePage = sfHomePage.navigateToShopSkincareLink(allProduct);
+		sfShopSkinCarePage = sfHomePage.clickAllProducts();
 		sfShopSkinCarePage.productPriceFilterLowToHigh();
 		s_assert.assertTrue(sfShopSkinCarePage.isPriceFilterLowToHighAppliedSuccessfully(),"Selected Price filter 'Low To High' is not applied to product successfully");
 		sfShopSkinCarePage.productPriceFilterHighToLow();

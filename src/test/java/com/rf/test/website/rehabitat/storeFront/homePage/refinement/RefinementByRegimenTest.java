@@ -13,7 +13,7 @@ public class RefinementByRegimenTest extends StoreFrontWebsiteBaseTest{
 	 * Description : This test validates refinmen
 	 *     
 	 */
-	@Test(enabled=false)
+	@Test(enabled=true)
 	public void testRefinmentByRegimen_118(){
 		String categoryUnblemish = "UNBLEMISH";
 		String categoryFeatured = "FEATURED";

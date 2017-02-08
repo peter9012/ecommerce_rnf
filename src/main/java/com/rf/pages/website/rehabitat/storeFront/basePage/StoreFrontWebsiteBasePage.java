@@ -44,13 +44,14 @@ public class StoreFrontWebsiteBasePage extends RFBasePage {
 		this.driver = driver;
 	}
 
+	private final By VIEW_SHOPPING_CART_LINK_LOC = By.xpath("//a[contains(text(),'View shopping cart')]");
+	private final By TOGGLE_BUTTON_OF_COUNTRY_LOC = By.xpath("//form[@id='country-form']//div[@class='form-group']/div");
 	private final By ERROR_MESSAGE_EMPTY_PREFIX_LOC = By.xpath("//*[@id='prefixForm']//label[@class='field-error']");
 	private final By ENROLL_NOW_POPUP_LOC = By.xpath("//div[@id='enrollCRPModal' and contains(@style,'block')]//h3[contains(text(),'Do you want enroll for CRP')]");
 	private final By SHOPPING_CART_HEADLINE_ON_CHCKOUT_POPUP_LOC = By.xpath("//div[@id='cboxContent']//span[@class='headline-text' and contains(text(),'Added to Your Shopping Cart')]");
 	private final By SUBTOTAL_LOC = By.xpath("//td[contains(text(),'Subtotal')]/following::td[1]");
 	private final By TOTAL_PRICE_OF_ITEMS_IN_MINI_CART_LOC = By
 			.xpath("//ol/descendant::li[@class='mini-cart-item']//div[@class='price']");
-	private final By VIEW_SHOPPING_CART_LINK_LOC = By.xpath("//a[contains(text(),'view shopping cart')]");
 	protected String topNavigationLoc = "//div[contains(@class,'navbar-inverse')]";
 	protected final By TOTAL_PRODUCTS_LOC = By.xpath("//div[@id='product_listing']//following::div[@class='product-item']");
 	private final By CANCEL_BUTTON_LOC=By.xpath("//button[contains(text(),'Cancel')]");
@@ -89,7 +90,6 @@ public class StoreFrontWebsiteBasePage extends RFBasePage {
 	private final By CLOSE_ICON_OF_SEARCH_TEXT_BOX_IN_HEADER_NAVIGATION_LOC = By
 			.xpath("//div[@class='yCmsComponent']//span[contains(@class,'icon-close')]");
 	private final By DEFAULT_COUNTRY_NAME_IN_TOGGLE_LOC = By.xpath("//div[contains(@class,'wSelect-selected')]");
-	private final By TOGGLE_BUTTON_OF_COUNTRY_LOC = By.xpath("//div[@class='form-group']/div");
 	private final By MINI_CART_ICON_LOC = By.xpath("//a[contains(@class,'mini-cart-link')]");
 	private final By SIGN_UP_NOW_LINK_LOC = By.xpath("//a[contains(text(),'Sign up now')]");
 	private final By WELCOME_DD_ACCOUNT_INFO_LOC = By.xpath("//a[text()='Account Info']");
@@ -287,6 +287,7 @@ public class StoreFrontWebsiteBasePage extends RFBasePage {
 	private final By ERROR_MESSAGE_EXISTING_PREFIX_LOC = By.id("errorSubPrefix");
 	private final By ABOUT_ME_LOC = By.xpath(topNavigationLoc + "//a[contains(@title,'About Me')]");
 
+	private String productNameAllItemsInCartLoc = "//span[@class='item-name' and contains(text(),%s)]";
 	protected String addToCartButtonLoc = "//div[contains(@class,'product__listing')]/descendant::span[@id='cust_price'][contains(text(),'$')][1]/following::button[text()='Add to bag'][%s]";
 	private String errorMessageLoc = "//div[@class='global-alerts']/div[normalize-space(contains(text() , '%s'))]";
 	private String optionOnEnrollNowPopUpLoc = "//div[@id='enrollCRPModal' and contains(@style,'block')]//input[@value='%s']";
@@ -404,10 +405,10 @@ public class StoreFrontWebsiteBasePage extends RFBasePage {
 	 * @return
 	 */
 	public StoreFrontShopSkinCarePage clickAllProducts() {
-//		mouseHoverOn(TestConstants.SHOP_SKINCARE);
-//		driver.click(ALL_PRODUCTS_LOC);
-//		 clickCategoryLink("ESSENTIALS");
-		driver.get(driver.getCurrentUrl()+"All-Skincare/c/shopskincare");
+		//		mouseHoverOn(TestConstants.SHOP_SKINCARE);
+		//		driver.click(ALL_PRODUCTS_LOC);
+		//		 clickCategoryLink("ESSENTIALS");
+		driver.get(driver.getCurrentUrl()+"/All-Skincare/c/shopskincare");
 		logger.info("clicked on 'All Products'");
 		driver.waitForPageLoad();
 		return new StoreFrontShopSkinCarePage(driver);
@@ -572,56 +573,6 @@ public class StoreFrontWebsiteBasePage extends RFBasePage {
 	}
 
 	/***
-	 * This method clicks on the event button PWS site
-	 * @return
-	 */
-	public StoreFrontWebsiteBasePage clickEventsOnPWSJoin(){
-		driver.click(By.xpath("//a[@href='events']"));
-		logger.info("clicked on 'Events' button on pws join site");
-		return this;
-	}
-
-	/***
-	 * This method clicks on the enroll Now button PWS site
-	 * @return
-	 */
-	public StoreFrontWebsiteBasePage clickEnrollOnPWSJoin(){
-		driver.click(By.xpath("//a[text()='ENROLL NOW']"));
-		logger.info("clicked on 'Enroll Now' button on pws join site");
-		return this;
-	}
-
-	/***
-	 * This method clicks on the programs and incentives button PWS site
-	 * @return
-	 */
-	public StoreFrontWebsiteBasePage clickProgramsIncentivesOnPWSJoin(){
-		driver.click(By.xpath("//a[@href='programs-incentives']"));
-		logger.info("clicked on 'prgrams and incentives' button on pws join site");
-		return this;
-	}
-
-	/***
-	 * This method clicks on the Meet Our Community button PWS site
-	 * @return
-	 */
-	public StoreFrontWebsiteBasePage clickMeetOurCommunityOnPWSJoin(){
-		driver.click(By.xpath("//a[@href='meet-our-community']"));
-		logger.info("clicked on 'Meet Our Community' button on pws join site");
-		return this;
-	}
-
-	/***
-	 * This method clicks on the Why RF button PWS site
-	 * @return
-	 */
-	public StoreFrontWebsiteBasePage clickWhyRFOnPWSJoin(){
-		driver.click(By.xpath("//a[@href='why-rf']"));
-		logger.info("clicked on 'Why R+F' button on pws join site");
-		return this;
-	}
-
-	/***
 	 * This method switch the window
 	 * 
 	 * @param parent
@@ -726,19 +677,6 @@ public class StoreFrontWebsiteBasePage extends RFBasePage {
 	public StoreFrontWebsiteBasePage clickSearchIcon() {
 		driver.click(SEARCH_ICON_LOC);
 		logger.info("clicked on Search Icon");
-		return this;
-	}
-
-	/***
-	 * This method will close search text box in header navigation.
-	 * 
-	 * @param
-	 * @return store front base page object
-	 * 
-	 */
-	public StoreFrontWebsiteBasePage clickCloseIconOfSearchTextBoxPopup() {
-		driver.click(CLOSE_ICON_OF_SEARCH_TEXT_BOX_IN_HEADER_NAVIGATION_LOC);
-		driver.pauseExecutionFor(3000);
 		return this;
 	}
 
@@ -858,6 +796,7 @@ public class StoreFrontWebsiteBasePage extends RFBasePage {
 	public StoreFrontWebsiteBasePage clickFooterLink(String linkName) {
 		driver.click(By.xpath(String.format(footerLinkLoc, linkName)));
 		logger.info("clicked on link " + "'" + linkName + "'");
+		driver.pauseExecutionFor(2000);
 		driver.waitForLoadingImageToDisappear();
 		driver.waitForPageLoad();
 		return this;
@@ -891,19 +830,6 @@ public class StoreFrontWebsiteBasePage extends RFBasePage {
 		String countryName = driver.findElement(DEFAULT_COUNTRY_NAME_IN_TOGGLE_LOC).getText();
 		logger.info("Country name is: " + countryName);
 		return countryName;
-	}
-
-	/***
-	 * This method click on toggle button of country
-	 * 
-	 * @param
-	 * @return store front website base page object
-	 * 
-	 */
-	public StoreFrontWebsiteBasePage clickToggleButtonOfCountry() {
-		driver.click(TOGGLE_BUTTON_OF_COUNTRY_LOC);
-		logger.info("clicked on toggle button of country");
-		return this;
 	}
 
 	/***
@@ -2577,16 +2503,6 @@ public class StoreFrontWebsiteBasePage extends RFBasePage {
 	}
 
 	/***
-	 * This method click pc terms and conditions link
-	 * 
-	 * @param
-	 * @return StoreFrontCartPage object
-	 */
-	public boolean isProductAddedToCartPresentOnCartPage(String productName) {
-		return driver.isElementVisible(By.xpath(String.format(productNameInAllItemsInCartLoc, productName)));
-	}
-
-	/***
 	 * This method get subtotal of items in double data type
 	 * 
 	 * @param
@@ -2617,26 +2533,6 @@ public class StoreFrontWebsiteBasePage extends RFBasePage {
 		logger.info("Clicked on autoship cart link in top navigation");
 		driver.waitForPageLoad();
 		return new StoreFrontAutoshipCartPage(driver);
-	}
-
-	/***
-	 * This method hover on shopSkincare and click link mentioned in argument.
-	 * 
-	 * @param
-	 * @return store front website base page object
-	 * 
-	 */
-	public StoreFrontShopSkinCarePage navigateToShopSkincareLink(String linkName) {
-		mouseHoverOn(TestConstants.SHOP_SKINCARE);
-		if (driver.isElementVisible(By.xpath(String.format(topNavigationSublinksWithTextLoc, linkName))) == false) {
-			driver.pauseExecutionFor(2000);
-			mouseHoverOn(TestConstants.SHOP_SKINCARE);
-		}
-		driver.click(By.xpath(String.format(topNavigationSublinksWithTextLoc, linkName)));
-		logger.info("clicked on" + "'" + linkName + "'" + "under shopskincare");
-		driver.waitForLoadingImageToDisappear();
-		driver.waitForPageLoad();
-		return new StoreFrontShopSkinCarePage(driver);
 	}
 
 	/***
@@ -3785,4 +3681,125 @@ public class StoreFrontWebsiteBasePage extends RFBasePage {
 		return existingPrefixMsg;
 	}
 
+	/***
+	 * This method will close search text box in header navigation.
+	 * 
+	 * @param
+	 * @return store front base page object
+	 * 
+	 */
+	public StoreFrontWebsiteBasePage clickCloseIconOfSearchTextBoxPopup() {
+		driver.clickByJS(RFWebsiteDriver.driver, driver.findElement(CLOSE_ICON_OF_SEARCH_TEXT_BOX_IN_HEADER_NAVIGATION_LOC));
+		driver.pauseExecutionFor(3000);
+		return this;
+	}
+
+	/***
+	 * This method click on toggle button of country
+	 * 
+	 * @param
+	 * @return store front website base page object
+	 * 
+	 */
+	public StoreFrontWebsiteBasePage clickToggleButtonOfCountry() {
+		driver.clickByJS(RFWebsiteDriver.driver, driver.findElement(TOGGLE_BUTTON_OF_COUNTRY_LOC));
+		driver.pauseExecutionFor(1000);
+		logger.info("clicked on toggle button of country");
+		return this;
+	}
+
+	/***
+	 * This method hover on shopSkincare and click link mentioned in argument.
+	 * 
+	 * @param
+	 * @return store front website base page object
+	 * 
+	 */
+	public StoreFrontShopSkinCarePage navigateToShopSkincareLink(String linkName) {
+		if(linkName.equals("ALL PRODUCTS")){
+			driver.get(driver.getCurrentUrl()+"All-Skincare/c/shopskincare");
+		}
+		else{
+			mouseHoverOn(TestConstants.SHOP_SKINCARE);
+			if (driver.isElementVisible(By.xpath(String.format(topNavigationSublinksWithTextLoc, linkName))) == false) {
+				driver.pauseExecutionFor(2000);
+				mouseHoverOn(TestConstants.SHOP_SKINCARE);
+			}
+			driver.click(By.xpath(String.format(topNavigationSublinksWithTextLoc, linkName)));
+		}
+		logger.info("clicked on" + "'" + linkName + "'" + "under shopskincare");
+		driver.waitForLoadingImageToDisappear();
+		driver.waitForPageLoad();
+		return new StoreFrontShopSkinCarePage(driver);
+	}
+
+	/***
+	 * This method clicks on the event button PWS site
+	 * @return
+	 */
+	public StoreFrontWebsiteBasePage clickEventsOnPWSJoin(){
+		driver.clickByJS(RFWebsiteDriver.driver,driver.findElement(By.xpath("//a[@href='events']")));
+		driver.pauseExecutionFor(2000);
+		logger.info("clicked on 'Events' button on pws join site");
+		return this;
+	}
+
+	/***
+	 * This method clicks on the enroll Now button PWS site
+	 * @return
+	 */
+	public StoreFrontWebsiteBasePage clickEnrollOnPWSJoin(){
+		driver.clickByJS(RFWebsiteDriver.driver,driver.findElement(By.xpath("//a[text()='ENROLL NOW']")));
+		driver.pauseExecutionFor(2000);
+		logger.info("clicked on 'Enroll Now' button on pws join site");
+		return this;
+	}
+
+	/***
+	 * This method clicks on the programs and incentives button PWS site
+	 * @return
+	 */
+	public StoreFrontWebsiteBasePage clickProgramsIncentivesOnPWSJoin(){
+		driver.clickByJS(RFWebsiteDriver.driver,driver.findElement(By.xpath("//a[@href='programs-incentives']")));
+		driver.pauseExecutionFor(2000);
+		logger.info("clicked on 'prgrams and incentives' button on pws join site");
+		return this;
+	}
+
+	/***
+	 * This method clicks on the Meet Our Community button PWS site
+	 * @return
+	 */
+	public StoreFrontWebsiteBasePage clickMeetOurCommunityOnPWSJoin(){
+		driver.clickByJS(RFWebsiteDriver.driver,driver.findElement(By.xpath("//a[@href='meet-our-community']")));
+		driver.pauseExecutionFor(2000);
+		logger.info("clicked on 'Meet Our Community' button on pws join site");
+		return this;
+	}
+
+	/***
+	 * This method clicks on the Why RF button PWS site
+	 * @return
+	 */
+	public StoreFrontWebsiteBasePage clickWhyRFOnPWSJoin(){
+		driver.clickByJS(RFWebsiteDriver.driver,driver.findElement(By.xpath("//a[@href='why-rf']")));
+		driver.pauseExecutionFor(2000);
+		logger.info("clicked on 'Why R+F' button on pws join site");
+		return this;
+	}
+
+	/***
+	 * This method click pc terms and conditions link
+	 * 
+	 * @param
+	 * @return StoreFrontCartPage object
+	 */
+	public boolean isProductAddedToCartPresentOnCartPage(String productName) {
+		if(productName.contains("'")){
+			productName = "\""+productName+"\"";
+			return driver.isElementVisible(By.xpath(String.format(productNameAllItemsInCartLoc, productName)));
+		}else{
+			return driver.isElementVisible(By.xpath(String.format(productNameInAllItemsInCartLoc, productName)));
+		}
+	}
 }

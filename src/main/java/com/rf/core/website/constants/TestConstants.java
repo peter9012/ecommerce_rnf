@@ -52,7 +52,8 @@ public class TestConstants {
 	 public static final String SHIPPING_ADDRESS_REMOVED_MESSAGE = "Address removed successfully";
 	public static final String TITLE_OF_ALL_SKINCARE_PAGE = "All Skincare | Rodan and Fields";
 	public static final String CONFIRMATION_MSG_FOR_REPORT_PROBLEMS = "we have sent your problem to our customer service department, and they will review the issue and respond within 48 hours";
-
+	public static final String PASSWORD_RECOVERY_SUBMIT_SUCCESS_MESSAGE = "Password reset instructions have been sent to your email address. Please contact customer support if you require additional assistance";
+	public static final String PASSWORD_RECOVERY_SUBMIT_EMAIL_NOT_REGISTERED_MESSAGE = "You do not have an account with us. Please create your account";
 	// Order page Details
 	public static final String TITLE_OF_ORDER_DETAILS_PAGE = "Order Details | Rodan and Fields";
 
@@ -90,8 +91,6 @@ public class TestConstants {
 	public static final String STATE_US_ABBREVIATION = "CA";
 	public static final String BILLING_PROFILE_UPDATION_MESSAGE = "Successfully updated Payment Details.";
 	public static final String BILLING_PROFILE_ADDED_MESSAGE = "Card details are added successfully.";
-	public static final String PASSWORD_RECOVERY_SUBMIT_SUCCESS_MESSAGE = "Password reset instructions have been sent to your e-mail address. Please contact customer support if you require additional assistance";
-	public static final String PASSWORD_RECOVERY_SUBMIT_EMAIL_NOT_REGISTERED_MESSAGE = "You do not have account with us. Please create your account";
 
 	//PO address details
 	public static final String PO_ADDRESS_LINE_1_US = "P.O. Box 283 8562 Fusce Rd";

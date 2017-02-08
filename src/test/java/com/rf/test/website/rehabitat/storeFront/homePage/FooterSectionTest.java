@@ -9,45 +9,11 @@ import com.rf.test.website.rehabitat.storeFront.baseTest.StoreFrontWebsiteBaseTe
 public class FooterSectionTest extends StoreFrontWebsiteBaseTest{
 
 	/***
-	 * qTest : TC-82 Contact us link on the all the pages except for checkout flow
-	 * 
-	 * Description : This test validates contact us link on all pages except checkout page. 
-	 */
-	@Test(enabled=true)
-	public void testVerifyContactUSLinkOnAllPagesExceptCheckout_82(){
-		String currentURL = null;
-		String reverseLinkUnderShopSkincare = "REVERSE";
-		String allProductLinkUnderShopSkincare = "ALL PRODUCTS";
-		String contactUS = "Contact Us";
-		String contactUsURL = "contact";
-
-		//Verify contact us link on product category page
-		sfShopSkinCarePage = sfHomePage.navigateToShopSkincareLink(reverseLinkUnderShopSkincare);
-		s_assert.assertTrue(sfShopSkinCarePage.isTheFooterLinkDisplayed(contactUS),"Contact us link is not present in footer section on reverse category page");
-		//Verify contact us link on all products page
-		sfShopSkinCarePage = sfHomePage.navigateToShopSkincareLink(allProductLinkUnderShopSkincare);
-		s_assert.assertTrue(sfShopSkinCarePage.isTheFooterLinkDisplayed(contactUS),"Contact Us link is not present in footer section on all products page");
-		//verify contact us link on product detail page.
-		sfProductDetailPage = sfShopSkinCarePage.clickNameOfFirstProduct(TestConstants.PRODUCT_NUMBER);
-		s_assert.assertTrue(sfProductDetailPage.isTheFooterLinkDisplayed(contactUS),"Contact Us link is not present in footer section on product detail page");
-		sfProductDetailPage.addProductToCartFromProductDetailPage();
-		sfCartPage = sfProductDetailPage.checkoutTheCartFromPopUp();
-		s_assert.assertTrue(sfCartPage.isTheFooterLinkDisplayed(contactUS),"Contact Us link is not present in footer section on cart page");
-		sfCheckoutPage = sfCartPage.clickCheckoutBtn();
-		s_assert.assertTrue(sfCheckoutPage.isTheFooterLinkDisplayed(contactUS),"Contact Us link is not present in footer section on checkout page");
-		//Click contact us link.
-		sfCheckoutPage.clickFooterLink(contactUS);
-		currentURL = sfCheckoutPage.getCurrentURL();
-		s_assert.assertTrue(currentURL.contains(contactUsURL), "Expected URL should contain "+contactUsURL+" but actual on UI is"+currentURL);
-		s_assert.assertAll();
-
-	}
-	/***
 	 * qTest : TC-83 Careers link on footer on all pages except checkout flow
 	 * 
 	 * Description : This test validates Careers link on all pages except checkout page. 
 	 */
-	@Test(enabled=false)
+	@Test(enabled=true)
 	public void testVerifyCareersLinkOnAllPagesExceptCheckout_83(){
 		String currentURL = null;
 		String reverseLinkUnderShopSkincare = "REVERSE";
@@ -81,7 +47,7 @@ public class FooterSectionTest extends StoreFrontWebsiteBaseTest{
 	 * 
 	 * Description : This test validates DSA link on all pages except checkout page. 
 	 */
-	@Test(enabled=false)
+	@Test(enabled=true)
 	public void testVerifyDSALinkOnAllPagesExceptCheckout_84(){
 		String currentURL = null;
 		String reverseLinkUnderShopSkincare = "REVERSE";
@@ -115,7 +81,7 @@ public class FooterSectionTest extends StoreFrontWebsiteBaseTest{
 	 * 
 	 * Description : This test validates satisfaction guarantee link on all pages except checkout page. 
 	 */
-	@Test(enabled=false)
+	@Test(enabled=true)
 	public void testVerifySatisfactionGuaranteeLinkOnAllPagesExceptCheckout_98(){
 		String currentWindowID = null;
 		String currentURL = null;
@@ -223,6 +189,40 @@ public class FooterSectionTest extends StoreFrontWebsiteBaseTest{
 	}
 
 	/***
+	 * qTest : TC-82 Contact us link on the all the pages except for checkout flow
+	 * 
+	 * Description : This test validates contact us link on all pages except checkout page. 
+	 */
+	@Test(enabled=true)
+	public void testVerifyContactUSLinkOnAllPagesExceptCheckout_82(){
+		String currentURL = null;
+		String reverseLinkUnderShopSkincare = "REVERSE";
+		String contactUS = "Contact Us";
+		String contactUsURL = "contact";
+
+		//Verify contact us link on product category page
+		sfShopSkinCarePage = sfHomePage.navigateToShopSkincareLink(reverseLinkUnderShopSkincare);
+		s_assert.assertTrue(sfShopSkinCarePage.isTheFooterLinkDisplayed(contactUS),"Contact us link is not present in footer section on reverse category page");
+		//Verify contact us link on all products page
+		sfShopSkinCarePage = sfHomePage.clickAllProducts();
+		s_assert.assertTrue(sfShopSkinCarePage.isTheFooterLinkDisplayed(contactUS),"Contact Us link is not present in footer section on all products page");
+		//verify contact us link on product detail page.
+		sfProductDetailPage = sfShopSkinCarePage.clickNameOfFirstProduct(TestConstants.PRODUCT_NUMBER);
+		s_assert.assertTrue(sfProductDetailPage.isTheFooterLinkDisplayed(contactUS),"Contact Us link is not present in footer section on product detail page");
+		sfProductDetailPage.addProductToCartFromProductDetailPage();
+		sfCartPage = sfProductDetailPage.checkoutTheCartFromPopUp();
+		s_assert.assertTrue(sfCartPage.isTheFooterLinkDisplayed(contactUS),"Contact Us link is not present in footer section on cart page");
+		sfCheckoutPage = sfCartPage.clickCheckoutBtn();
+		s_assert.assertTrue(sfCheckoutPage.isTheFooterLinkDisplayed(contactUS),"Contact Us link is not present in footer section on checkout page");
+		//Click contact us link.
+		sfCheckoutPage.clickFooterLink(contactUS);
+		currentURL = sfCheckoutPage.getCurrentURL();
+		s_assert.assertTrue(currentURL.contains(contactUsURL), "Expected URL should contain "+contactUsURL+" but actual on UI is"+currentURL);
+		s_assert.assertAll();
+
+	}
+
+/***
 	 * qTest : TC-26 Verify the links in the Disclaimer page
 	 * 
 	 * Description : This test validates the links in the Disclaimer page
@@ -234,7 +234,7 @@ public class FooterSectionTest extends StoreFrontWebsiteBaseTest{
 		String rodanAndFieldPolicies="Rodan + Fields Policies & Procedures";
 		String incomeDisclosureStatement="Income Disclosure Statement";
 		String policyUrl="Policies_Procedures_USA.pdf";
-		String incomeDisclosureUrl="USAIncomeDisclosure.pdf";
+		String incomeDisclosureUrl="IncomeDisclosure.pdf";
 		String currentWindowID =null;
 		s_assert.assertTrue(sfHomePage.isTheFooterLinkDisplayed(disclaimer),"Disclaimer link is not present in footer section");
 		sfHomePage.clickFooterLink(disclaimer);

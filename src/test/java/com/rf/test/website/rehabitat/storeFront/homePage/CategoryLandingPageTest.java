@@ -117,10 +117,10 @@ public class CategoryLandingPageTest extends StoreFrontWebsiteBaseTest{
 	 */
 	@Test(enabled=true)
 	public void testAllProductsLandingPage_95(){
-		String category_AllProducts = "ALL PRODUCTS";
 		String currentURL = null;
 		String allProducts = "shopskincare";
-		sfHomePage.clickCategoryLink(category_AllProducts);
+		
+		sfShopSkinCarePage = sfHomePage.clickAllProducts();
 		currentURL = sfHomePage.getCurrentURL().toLowerCase();
 		s_assert.assertTrue(currentURL.contains(allProducts), "Expected URL should contain "+allProducts+" but actual on UI is"+currentURL);
 		s_assert.assertTrue(sfHomePage.isProductsDisplayedOnPage(), "Add to cart is not present for first product on Category Landing page");

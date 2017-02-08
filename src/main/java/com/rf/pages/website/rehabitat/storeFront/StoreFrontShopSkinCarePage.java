@@ -67,7 +67,7 @@ public class StoreFrontShopSkinCarePage extends StoreFrontWebsiteBasePage{
 	private String addToPCPerksButtonThroughProductNumber = "//div[@class='product-item'][%s]//span[contains(text(),'subscribe + save')]";
 	private String quickViewForSpecificProductLoc = "//div[@class='product__listing product__grid']//div[@class='product-item'][%s]/a[@class='thumb']";
 	private String productNameLoc = "//div[@class='product__listing product__grid']//a[contains(text(),'%s')]";
-	private String priceOfProductLoc = "//div[contains(@class,'product__listing')]//div[@class='product-item'][%s]//span[@id='cust_price']";
+	private String priceOfProductLoc = "//div[contains(@class,'product__listing')]/descendant::span[@id='cust_price'][contains(text(),'$')][%s]";
 	private String categoryNameLoc = "//div[@id='product-facet']//descendant::ul[2]/li/descendant::span[contains(text(),'%s')]/preceding::label[1]";
 	private String randomProductCategoryCheckbox = "//div[@id='product-facet']//descendant::ul[2]/li[%s]//descendant::label[2]";
 	private String yourpriceOfProductLoc = "//div[contains(@class,'product__listing')]//div[@class='product-item'][%s]//em[contains(text(),'Your Price')]/..";
@@ -138,21 +138,12 @@ public class StoreFrontShopSkinCarePage extends StoreFrontWebsiteBasePage{
 		return this;
 	}
 
-	/***
-	 * This method verify the product price filter Low to High applied successfully
-	 * 
-	 * 
-	 * @param
-	 * @return boolean value.
-	 * 
-	 */
-
 	public boolean isPriceFilterLowToHighAppliedSuccessfully(){
 		int totalProducts = driver.findElements(TOTAL_PRODUCTS_LOC).size();
 		if(totalProducts>=3){
-			String firstProductPrice = driver.findElement(By.xpath(String.format(priceOfProductLoc, "7"))).getText().split("\\$")[1].trim();
-			String secondProductPrice = driver.findElement(By.xpath(String.format(priceOfProductLoc, "8"))).getText().split("\\$")[1].trim();
-			String thirdProductPrice = driver.findElement(By.xpath(String.format(priceOfProductLoc, "9"))).getText().split("\\$")[1].trim();
+			String firstProductPrice = driver.findElement(By.xpath(String.format(priceOfProductLoc, "1"))).getText().split("\\$")[1].trim();
+			String secondProductPrice = driver.findElement(By.xpath(String.format(priceOfProductLoc, "2"))).getText().split("\\$")[1].trim();
+			String thirdProductPrice = driver.findElement(By.xpath(String.format(priceOfProductLoc, "3"))).getText().split("\\$")[1].trim();
 			double priceFirstProduct = Double.parseDouble(firstProductPrice);
 			double priceSecondProduct = Double.parseDouble(secondProductPrice);
 			double priceThirdProduct = Double.parseDouble(thirdProductPrice);

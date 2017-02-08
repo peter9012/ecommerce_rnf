@@ -113,7 +113,7 @@ public class RedirectionAfterLoginTest extends StoreFrontWebsiteBaseTest{
 	@Test(enabled=true)
 	public void testConsultantWhoDoesNotHavePWSAndLogsInFromRFCorp_534(){
 		String currentURL = null;
-		sfHomePage.loginToStoreFront(TestConstants.CONSULTANT_EMAIL_WITHOUT_CRP_AND_PULSE,  password,true);
+		sfHomePage.loginToStoreFront(TestConstants.CONSULTANT_EMAIL_WITHOUT_PWS,  password,true);
 		currentURL = sfHomePage.getCurrentURL();
 		s_assert.assertFalse(currentURL.contains("pws"),"Current url for consultant without PWS after login it is containing 'pws' and actual on UI is "+currentURL);
 		s_assert.assertAll();

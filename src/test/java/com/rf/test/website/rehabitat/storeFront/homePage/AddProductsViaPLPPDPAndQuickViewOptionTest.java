@@ -123,7 +123,7 @@ public class AddProductsViaPLPPDPAndQuickViewOptionTest extends StoreFrontWebsit
 		sfAutoshipCartPage.clickRodanAndFieldsLogo();
 		sfAutoshipCartPage.clickAllProducts();
 		sfShopSkinCarePage.refineProductByCategory(TestConstants.CONSULTANT_CRP_AUTOSHIP_PRODUCT_CATEGORY);
-		sfShopSkinCarePage.addProductToCart("1", TestConstants.ORDER_TYPE_CRP);
+		sfShopSkinCarePage.addProductToCart(TestConstants.PRODUCT_NUMBER, TestConstants.ORDER_TYPE_CRP);
 		s_assert.assertTrue(sfShopSkinCarePage.isCheckoutPopupDisplayed(),"Expected checkout popup is not displayed while adding product from PLP");
 		sfShopSkinCarePage.checkoutTheCartFromPopUp();
 		if(isProductPresent){

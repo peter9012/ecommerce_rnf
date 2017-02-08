@@ -606,8 +606,8 @@ public class StoreFrontAutoshipStatusPage extends StoreFrontWebsiteBasePage{
 		String popupText = null;
 		boolean pulsePopup = false;
 		if(driver.isElementPresent(PULSE_CANCELLATION_POPUP_TEXT_LOC)){
-			popupText = driver.findElement(PULSE_CANCELLATION_POPUP_TEXT_LOC).getText().trim();	
-			if(popupText.contains("Are you sure you want to cancel the PULSE Subscription")){
+			popupText = driver.findElement(PULSE_CANCELLATION_POPUP_TEXT_LOC).getText().trim(); 
+			if(popupText.contains("Are you sure you want to cancel the PULSE subscription")){
 				pulsePopup  =true;
 			}
 		}else{
@@ -615,5 +615,5 @@ public class StoreFrontAutoshipStatusPage extends StoreFrontWebsiteBasePage{
 		}
 		return pulsePopup;
 	}
-	
+
 }

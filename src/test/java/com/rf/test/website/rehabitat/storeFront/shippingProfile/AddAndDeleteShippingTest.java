@@ -16,7 +16,7 @@ public class AddAndDeleteShippingTest extends StoreFrontWebsiteBaseTest{
 	 * 
 	 *     
 	 */
-	@Test(enabled=true)
+	@Test (enabled=true)
 	public void testAddShippingAddressFromMyAccount_77(){
 		String randomWord = CommonUtils.getRandomWord(5);
 		String firstName = TestConstants.FIRST_NAME;
@@ -45,7 +45,7 @@ public class AddAndDeleteShippingTest extends StoreFrontWebsiteBaseTest{
 	 * 
 	 *     
 	 */
-	@Test(enabled=true)
+	@Test (enabled=true)
 	public void testCancellingAddingOftheShippingProfile_78(){
 		String randomWord = CommonUtils.getRandomWord(5);
 		String firstName = TestConstants.FIRST_NAME;
@@ -74,7 +74,7 @@ public class AddAndDeleteShippingTest extends StoreFrontWebsiteBaseTest{
 	 * 
 	 *     
 	 */
-	@Test(enabled=true)
+	@Test (enabled=true)
 	public void testCheckingErrorMessageForTheAddressField_79(){
 		sfHomePage.loginToStoreFront(TestConstants.CONSULTANT_EMAIL_WITH_CRP_AND_PULSE,password,true);
 		sfHomePage.clickWelcomeDropdown();
@@ -97,7 +97,7 @@ public class AddAndDeleteShippingTest extends StoreFrontWebsiteBaseTest{
 	 * 
 	 *     
 	 */
-	@Test(enabled=false) //AU test
+	@Test (enabled=false) //AU test
 	public void testAddingAShipAddressDefaultCountryAUSite_176(){
 		if(country.equalsIgnoreCase("au")){
 			String expectedCountryName = "australia";
@@ -130,7 +130,7 @@ public class AddAndDeleteShippingTest extends StoreFrontWebsiteBaseTest{
 	 * 
 	 *     
 	 */
-	@Test(enabled=false) //CA test
+	@Test (enabled=false) //CA test
 	public void testAddingAShipAddressDefaultCountryCASite_175(){
 		if(country.equalsIgnoreCase("ca")){
 			String expectedCountryName = "canada";
@@ -163,7 +163,7 @@ public class AddAndDeleteShippingTest extends StoreFrontWebsiteBaseTest{
 	 * 
 	 *     
 	 */
-	@Test(enabled=true)//TODO Incomplete
+	@Test (enabled=true)//TODO Incomplete
 	public void testAddingAShipAddressDefaultCountryUSSite_174(){
 		if(country.equalsIgnoreCase("us")){
 			String expectedCountryName = "usa";
@@ -195,7 +195,7 @@ public class AddAndDeleteShippingTest extends StoreFrontWebsiteBaseTest{
 	 * checkout page
 	 *     
 	 */
-	@Test(enabled=true)
+	@Test (enabled=true)
 	public void testDefaultShipAddressDisplayedInCheckoutMultipleAddress_173(){
 		String firstName = TestConstants.FIRST_NAME;
 		String timeStamp = CommonUtils.getCurrentTimeStamp();
@@ -265,7 +265,7 @@ public class AddAndDeleteShippingTest extends StoreFrontWebsiteBaseTest{
 	 * and validates it
 	 *    
 	 */
-	@Test(enabled=true)
+	@Test (enabled=true)
 	public void testEditAShippingAddressAndCancel_371(){
 		String randomWord = CommonUtils.getRandomWord(5);
 		String randomWord1 = CommonUtils.getRandomWord(5);
@@ -303,7 +303,7 @@ public class AddAndDeleteShippingTest extends StoreFrontWebsiteBaseTest{
 	 * Description : This test validates delete shipping profile which is not a part of autoship
 	 *     
 	 */
-	@Test(enabled=true)
+	@Test (enabled=true)
 	public void testDeleteShippingProfile_377(){
 		String randomWord = CommonUtils.getRandomWord(5);
 		String firstName = TestConstants.FIRST_NAME;
@@ -343,7 +343,7 @@ public class AddAndDeleteShippingTest extends StoreFrontWebsiteBaseTest{
 	 * at shipping info page 
 	 * 
 	 */
-	@Test(enabled=true)
+	@Test (enabled=true)
 	public void testShippingProfileEditAShipAddressAndSave_320(){
 		String randomWord = CommonUtils.getRandomWord(5);
 		String firstName = TestConstants.FIRST_NAME;
@@ -372,7 +372,7 @@ public class AddAndDeleteShippingTest extends StoreFrontWebsiteBaseTest{
 	 * 
 	 *     
 	 */
-	@Test(enabled=true)
+	@Test (enabled=true)
 	public void testAddAShippingAddressOnUpdateAutoshipCart_506(){
 		String currentURL = null;
 		String randomWord = CommonUtils.getRandomWord(5);
@@ -413,7 +413,7 @@ public class AddAndDeleteShippingTest extends StoreFrontWebsiteBaseTest{
 	 * while delete a shipping profile selected for CRP 
 	 *     
 	 */
-	@Test(enabled=true)
+	@Test (enabled=true)
 	public void testAutoshipInformationShouldAppearOnTheShippingProfilePage_384(){
 		String randomWord = CommonUtils.getRandomWord(5);
 		String firstName = TestConstants.FIRST_NAME;
@@ -456,7 +456,7 @@ public class AddAndDeleteShippingTest extends StoreFrontWebsiteBaseTest{
 	 * while delete a shipping profile selected for CRP
 	 *     
 	 */
-	@Test(enabled=true)
+	@Test (enabled=true)
 	public void testDeleteAutoshipShippingProfile_378(){
 		String randomWord = CommonUtils.getRandomWord(5);
 		String firstName = TestConstants.FIRST_NAME;
@@ -497,7 +497,7 @@ public class AddAndDeleteShippingTest extends StoreFrontWebsiteBaseTest{
 	 * checkout page
 	 *     
 	 */
-	@Test(enabled=true)
+	@Test (enabled=true)
 	public void testDefaultShipAddressDisplayedInCheckoutSingleAddress_172(){
 		String firstName = TestConstants.FIRST_NAME;
 		String timeStamp = CommonUtils.getCurrentTimeStamp();
@@ -554,7 +554,7 @@ public class AddAndDeleteShippingTest extends StoreFrontWebsiteBaseTest{
 	 * 
 	 *     
 	 */
-	@Test(enabled=true)
+	@Test (enabled=true)
 	public void testAddShippingProfileBySelectingTheCheckboxForTheAutoship_525(){
 		String randomWord = CommonUtils.getRandomWord(5);
 		String randomWord2 = CommonUtils.getRandomWord(5);

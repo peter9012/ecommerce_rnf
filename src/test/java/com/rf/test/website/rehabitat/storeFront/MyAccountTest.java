@@ -137,63 +137,6 @@ public class MyAccountTest extends StoreFrontWebsiteBaseTest{
 		s_assert.assertFalse(sfAccountInfoPage.isValidationMsgPresentForParticularField("email", expectedValidationErrorMsg),TestConstants.VALIDATION_ERROR_THIS_FIELD_IS_REQUIRED+" msg displayed");
 		s_assert.assertAll();
 	}
-
-	/***
-	 * qTest : TC-230 Checkout- Viewing Main Account Info
-	 * 
-	 * Description : This test Updates First and Last name on  checkout page for consultant user.
-	 * 
-	 *     
-	 */
-	@Test(enabled=true)
-	public void testUpdateFirstAndLastNameOnCheckoutPageForUser_230(){
-		String category_AllProduct = "ALL PRODUCTS";
-		String randomWord = CommonUtils.getRandomWord(4);
-		String updatedFirstName = "updFname"+randomWord;
-		String updatedLastName = "updLname"+randomWord;
-		String firstNameAccountInfo = "";
-		String lastNameAccountInfo = "";
-		//Login as consultant user.
-		sfHomePage.loginToStoreFront(TestConstants.CONSULTANT_EMAIL_WITH_CRP_AND_PULSE,password,true);
-		sfShopSkinCarePage = sfHomePage.navigateToShopSkincareLink(category_AllProduct);
-		sfShopSkinCarePage.addProductToCart(TestConstants.PRODUCT_NUMBER, TestConstants.ORDER_TYPE_ADHOC);
-		sfShopSkinCarePage.checkoutTheCartFromPopUp();
-		sfCheckoutPage = sfHomePage.checkoutTheCart();
-		sfCheckoutPage.clickSaveButton();
-		//Verify first And Last name are updated successfully.
-		sfCheckoutPage.editMainAccountInfo();
-		sfCheckoutPage.updateFirstName(updatedFirstName);
-		sfCheckoutPage.updateLastName(updatedLastName);
-		sfCheckoutPage.clickSaveButton();
-		sfCheckoutPage.editMainAccountInfo();
-		s_assert.assertTrue(sfCheckoutPage.getMainFirstNameOfUser().contains(updatedFirstName), "FirstName was not edited");
-		s_assert.assertTrue(sfCheckoutPage.getMainLastNameOfUser().contains(updatedLastName), "LastName was not edited");
-		//Verify consultant can not edit sponser details.
-		s_assert.assertFalse(sfCheckoutPage.isChangeSponserLinkDisplayed(),"Change sponser link is present on account info page for consultant user");
-		sfCheckoutPage.clickRodanAndFieldsLogo();
-		sfCheckoutPage.clickWelcomeDropdown();
-		sfAccountInfoPage = sfCheckoutPage.navigateToAccountInfoPage();
-		firstNameAccountInfo = sfAccountInfoPage.getFirstNameFromAccountInfo();
-		lastNameAccountInfo = sfAccountInfoPage.getLastNameFromAccountInfo();
-		//verify first and last name on account info page.
-		s_assert.assertTrue(firstNameAccountInfo.equalsIgnoreCase(updatedFirstName.trim()),"Updated first name is not present on account info page.");
-		s_assert.assertTrue(lastNameAccountInfo.equalsIgnoreCase(updatedLastName.trim()),"Updated Last name is not present on account info page.");
-		sfCheckoutPage.clickWelcomeDropdown();
-		sfCheckoutPage.logout();
-		//Login as PC user
-		navigateToStoreFrontBaseURL();
-		sfHomePage.loginToStoreFront(TestConstants.PC_EMAIL_HAVING_AUTOSHIP,password,true);
-		sfShopSkinCarePage = sfHomePage.navigateToShopSkincareLink(category_AllProduct);
-		sfShopSkinCarePage.addProductToCart(TestConstants.PRODUCT_NUMBER, TestConstants.ORDER_TYPE_ADHOC);
-		sfShopSkinCarePage.checkoutTheCartFromPopUp();
-		sfCheckoutPage = sfHomePage.checkoutTheCart();
-		sfCheckoutPage.clickSaveButton();
-		//Verify PC can not edit sponser details.
-		sfCheckoutPage.editMainAccountInfo();
-		s_assert.assertFalse(sfCheckoutPage.isChangeSponserLinkDisplayed(),"Change sponser link is present on account info page for PC user");
-		s_assert.assertAll();
-	}
-
 	/***
 	 * qTest : TC-248 All Mandatory fields should display message
 	 * 
@@ -250,7 +193,7 @@ public class MyAccountTest extends StoreFrontWebsiteBaseTest{
 	 * 
 	 * 				
 	 */
-	@Test(enabled=false) //TODO Incomplete as on spouse details confirmation popup cancel button not present.
+	@Test(enabled=true) //TODO Incomplete as on spouse details confirmation popup cancel button not present.
 	public void testUpdateSpouseInformation_284(){
 		String spouseFirstName = TestConstants.SPOUSE_FIRST_NAME;
 		String spouseLastName = TestConstants.SPOUSE_LAST_NAME;
@@ -505,7 +448,7 @@ public class MyAccountTest extends StoreFrontWebsiteBaseTest{
 	 * Invalid details and save account info clicked.
 	 *
 	 */
-	@Test(enabled=false) //TODO Issue numbers are not accepted in first and last name fields and phone number with special char not accepted.
+	@Test(enabled=true) //TODO Issue numbers are not accepted in first and last name fields and phone number with special char not accepted.
 	public void testUpdateAccountInfoWithInvalidDetails_301(){
 		String profileUpdationMessage = null;
 		String randomWord = CommonUtils.getRandomWord(5);
@@ -740,7 +683,7 @@ public class MyAccountTest extends StoreFrontWebsiteBaseTest{
 	 * 
 	 *     
 	 */
-	@Test(enabled=false)//TODO
+	@Test(enabled=true)//TODO
 	public void testEmailYourConsultantValid_285(){
 		sfHomePage.loginToStoreFront(TestConstants.PC_EMAIL_HAVING_AUTOSHIP,password,true);
 		sfHomePage.clickWelcomeDropdown();
@@ -782,52 +725,6 @@ public class MyAccountTest extends StoreFrontWebsiteBaseTest{
 
 		s_assert.assertAll();
 	}
-
-	/***
-	 * qTest : TC-387 Order History
-	 * 
-	 * Description : This test validates order history section, Return order section, order details page
-	 *     
-	 */
-	@Test(enabled=true)
-	public void testOrderHistory_387(){
-		String orderNumberTitle = "Order Number";
-		String orderDateTitle = "Order Date";
-		String grandTotalTitle = "Grand Total";
-		String statusAndTrackingNumberTitle = "Status / Tracking Number";
-		String detailsLink = "Details";
-		String reportProblems = "Report Problems";
-		String orderDetailsText = "Order Details";
-		String orderNumber = null;
-		String currentURL = null;
-		sfHomePage.loginToStoreFront(TestConstants.CONSULTANT_EMAIL_WITH_CRP_AND_PULSE, password,true);
-		sfHomePage.clickWelcomeDropdown();
-		sfOrdersPage = sfHomePage.navigateToOrdersPage();
-		s_assert.assertTrue(sfOrdersPage.isOrderHistorySectionPresent(), "Order history section is not present on UI");
-		s_assert.assertTrue(sfOrdersPage.isReturnOrderSectionPresent(), "Return order section is not present on UI");
-		s_assert.assertTrue(sfOrdersPage.isHeaderTitlePresentInOrderHistorySection(orderNumberTitle), orderNumberTitle+" is not present in order history section");
-		s_assert.assertTrue(sfOrdersPage.isHeaderTitlePresentInOrderHistorySection(orderDateTitle), orderDateTitle+" is not present in order history section");
-		s_assert.assertTrue(sfOrdersPage.isHeaderTitlePresentInOrderHistorySection(grandTotalTitle), orderNumberTitle+" is not present in order history section");
-		s_assert.assertTrue(sfOrdersPage.isHeaderTitlePresentInOrderHistorySection(statusAndTrackingNumberTitle), statusAndTrackingNumberTitle+" is not present in order history section");
-		s_assert.assertTrue(sfOrdersPage.isActionsDDPresentInOrderHistorySection(), "Action DD is not present in order history section on UI");
-		sfOrdersPage.clickFirstActionDDUnderOrderHistorySection();
-		s_assert.assertTrue(sfOrdersPage.isOptionsPresentUnderActionsDDInOrderHistroySection(detailsLink), detailsLink+" is not present in order history section");
-		s_assert.assertTrue(sfOrdersPage.isOptionsPresentUnderActionsDDInOrderHistroySection(reportProblems), reportProblems+" is not present in order history section");
-		//In Return Order section
-		s_assert.assertTrue(sfOrdersPage.isHeaderTitlePresentInReturnOrderSection(orderNumberTitle), orderNumberTitle+" is not present in return order section");
-		s_assert.assertTrue(sfOrdersPage.isHeaderTitlePresentInReturnOrderSection(orderDateTitle), orderDateTitle+" is not present in return order section");
-		s_assert.assertTrue(sfOrdersPage.isHeaderTitlePresentInReturnOrderSection(grandTotalTitle), orderNumberTitle+" is not present in return order section");
-		s_assert.assertTrue(sfOrdersPage.isHeaderTitlePresentInReturnOrderSection(statusAndTrackingNumberTitle), statusAndTrackingNumberTitle+" is not present in return order section");
-		s_assert.assertTrue(sfOrdersPage.isActionsDDPresentInReturnOrderSection(), "Action DD is not present in return  order section on UI");
-		sfOrdersPage.clickFirstActionDDUnderReturnOrderSection();
-		s_assert.assertTrue(sfOrdersPage.isOptionsPresentUnderActionsDDInReturnOrderSection(detailsLink), detailsLink+" is not present in return order section");
-		s_assert.assertTrue(sfOrdersPage.isOptionsPresentUnderActionsDDInReturnOrderSection(reportProblems), reportProblems+" is not present in return order section");
-		orderNumber = sfOrdersPage.clickAndGetFirstOrderNumberFromOrderHistory();
-		currentURL = sfOrdersPage.getCurrentURL();
-		s_assert.assertTrue(currentURL.contains(orderNumber) && sfOrdersPage.isTextPresent(orderDetailsText),"Current url should contain for consultant "+orderNumber+"but actual on UI is "+currentURL+" and order details page is not present");
-		s_assert.assertAll();
-	}
-
 
 	/***
 	 * qTest : TC-282 Account Information- Reset password - Invalid Current Password
@@ -1357,7 +1254,7 @@ public class MyAccountTest extends StoreFrontWebsiteBaseTest{
 		s_assert.assertTrue(sfAutoshipStatusPage.isSubscribeToPulseBtnDisplayed(), "Pulse subscription is NOT cancelled");
 		s_assert.assertAll();
 	}
-	
+
 	/***
 	 * qTest : TC-519 Edit PWS - User is not subscribed to Pulse
 	 * 
@@ -1412,7 +1309,7 @@ public class MyAccountTest extends StoreFrontWebsiteBaseTest{
 		s_assert.assertFalse(sfHomePage.isEditPWSLinkPresentInWelcomeDD(),"Edit PWS link is present for user not subscribed to pulse.");
 		s_assert.assertAll();
 	}
-/***
+	/***
 	 * qTest : TC-361 View Pulse autoship status and next bill date from Autoship status page in my account
 	 * 
 	 * Description : This test validate pulse autoship status and next bill ship date
@@ -1442,7 +1339,7 @@ public class MyAccountTest extends StoreFrontWebsiteBaseTest{
 		sfHomePage.switchToParentWindow(currentWindowID);
 		s_assert.assertAll();
 	}
-/***
+	/***
 	 * qtest: TC-277 Consultant Autoship Status- Subscribe to Pulse (First Time Pulse Enrollment)
 	 * Description: This method subscribe the consultant with pulse and also cancels the same
 	 */	
@@ -1476,6 +1373,106 @@ public class MyAccountTest extends StoreFrontWebsiteBaseTest{
 		sfAutoshipStatusPage = sfHomePage.navigateToAutoshipStatusPage();
 		sfAutoshipStatusPage.clickCancelPulseSubscription().clickConfirmSubscription();
 		s_assert.assertTrue(sfAutoshipStatusPage.isSubscribeToPulseBtnDisplayed(), "Pulse subscription is NOT cancelled");
+		s_assert.assertAll();
+	}
+
+	/***
+	 * qTest : TC-230 Checkout- Viewing Main Account Info
+	 * 
+	 * Description : This test Updates First and Last name on  checkout page for consultant user.
+	 * 
+	 *     
+	 */
+	@Test(enabled=true)
+	public void testUpdateFirstAndLastNameOnCheckoutPageForUser_230(){
+		String randomWord = CommonUtils.getRandomWord(4);
+		String updatedFirstName = "updFname"+randomWord;
+		String updatedLastName = "updLname"+randomWord;
+		String firstNameAccountInfo = "";
+		String lastNameAccountInfo = "";
+		//Login as consultant user.
+		sfHomePage.loginToStoreFront(TestConstants.CONSULTANT_EMAIL_WITH_CRP_AND_PULSE,password,true);
+		sfShopSkinCarePage = sfHomePage.clickAllProducts();
+		sfShopSkinCarePage.addProductToCart(TestConstants.PRODUCT_NUMBER, TestConstants.ORDER_TYPE_ADHOC);
+		sfShopSkinCarePage.checkoutTheCartFromPopUp();
+		sfCheckoutPage = sfHomePage.checkoutTheCart();
+		sfCheckoutPage.clickSaveButton();
+		//Verify first And Last name are updated successfully.
+		sfCheckoutPage.editMainAccountInfo();
+		sfCheckoutPage.updateFirstName(updatedFirstName);
+		sfCheckoutPage.updateLastName(updatedLastName);
+		sfCheckoutPage.clickSaveButton();
+		sfCheckoutPage.editMainAccountInfo();
+		s_assert.assertTrue(sfCheckoutPage.getMainFirstNameOfUser().contains(updatedFirstName), "FirstName was not edited");
+		s_assert.assertTrue(sfCheckoutPage.getMainLastNameOfUser().contains(updatedLastName), "LastName was not edited");
+		//Verify consultant can not edit sponser details.
+		s_assert.assertFalse(sfCheckoutPage.isChangeSponserLinkDisplayed(),"Change sponser link is present on account info page for consultant user");
+		sfCheckoutPage.clickRodanAndFieldsLogo();
+		sfCheckoutPage.clickWelcomeDropdown();
+		sfAccountInfoPage = sfCheckoutPage.navigateToAccountInfoPage();
+		firstNameAccountInfo = sfAccountInfoPage.getFirstNameFromAccountInfo();
+		lastNameAccountInfo = sfAccountInfoPage.getLastNameFromAccountInfo();
+		//verify first and last name on account info page.
+		s_assert.assertTrue(firstNameAccountInfo.equalsIgnoreCase(updatedFirstName.trim()),"Updated first name is not present on account info page.");
+		s_assert.assertTrue(lastNameAccountInfo.equalsIgnoreCase(updatedLastName.trim()),"Updated Last name is not present on account info page.");
+		sfCheckoutPage.clickWelcomeDropdown();
+		sfCheckoutPage.logout();
+		//Login as PC user
+		navigateToStoreFrontBaseURL();
+		sfHomePage.loginToStoreFront(TestConstants.PC_EMAIL_HAVING_AUTOSHIP,password,true);
+		sfShopSkinCarePage = sfHomePage.clickAllProducts();
+		sfShopSkinCarePage.addProductToCart(TestConstants.PRODUCT_NUMBER, TestConstants.ORDER_TYPE_ADHOC);
+		sfShopSkinCarePage.checkoutTheCartFromPopUp();
+		sfCheckoutPage = sfHomePage.checkoutTheCart();
+		sfCheckoutPage.clickSaveButton();
+		//Verify PC can not edit sponser details.
+		sfCheckoutPage.editMainAccountInfo();
+		s_assert.assertFalse(sfCheckoutPage.isChangeSponserLinkDisplayed(),"Change sponser link is present on account info page for PC user");
+		s_assert.assertAll();
+	}
+
+	/***
+	 * qTest : TC-387 Order History
+	 * 
+	 * Description : This test validates order history section, Return order section, order details page
+	 *     
+	 */
+	@Test(enabled=true)
+	public void testOrderHistory_387(){
+		String orderNumberTitle = "Order Number";
+		String orderDateTitle = "Order Date";
+		String grandTotalTitle = "Grand Total";
+		String statusAndTrackingNumberTitle = "Status/Tracking Number";
+		String detailsLink = "Details";
+		String reportProblems = "Report Problems";
+		/*String orderDetailsText = "Order Details";
+	  String orderNumber = null;
+	  String currentURL = null;*/
+		sfHomePage.loginToStoreFront(TestConstants.CONSULTANT_EMAIL_WITH_CRP_AND_PULSE, password,true);
+		sfHomePage.clickWelcomeDropdown();
+		sfOrdersPage = sfHomePage.navigateToOrdersPage();
+		s_assert.assertTrue(sfOrdersPage.isOrderHistorySectionPresent(), "Order history section is not present on UI");
+		s_assert.assertTrue(sfOrdersPage.isReturnOrderSectionPresent(), "Return order section is not present on UI");
+		s_assert.assertTrue(sfOrdersPage.isHeaderTitlePresentInOrderHistorySection(orderNumberTitle), orderNumberTitle+" is not present in order history section");
+		s_assert.assertTrue(sfOrdersPage.isHeaderTitlePresentInOrderHistorySection(orderDateTitle), orderDateTitle+" is not present in order history section");
+		s_assert.assertTrue(sfOrdersPage.isHeaderTitlePresentInOrderHistorySection(grandTotalTitle), orderNumberTitle+" is not present in order history section");
+		s_assert.assertTrue(sfOrdersPage.isHeaderTitlePresentInOrderHistorySection(statusAndTrackingNumberTitle), statusAndTrackingNumberTitle+" is not present in order history section");
+		s_assert.assertTrue(sfOrdersPage.isActionsDDPresentInOrderHistorySection(), "Action DD is not present in order history section on UI");
+		sfOrdersPage.clickFirstActionDDUnderOrderHistorySection();
+		s_assert.assertTrue(sfOrdersPage.isOptionsPresentUnderActionsDDInOrderHistroySection(detailsLink), detailsLink+" is not present in order history section");
+		s_assert.assertTrue(sfOrdersPage.isOptionsPresentUnderActionsDDInOrderHistroySection(reportProblems), reportProblems+" is not present in order history section");
+		//In Return Order section
+		/*s_assert.assertTrue(sfOrdersPage.isHeaderTitlePresentInReturnOrderSection(orderNumberTitle), orderNumberTitle+" is not present in return order section");
+	  s_assert.assertTrue(sfOrdersPage.isHeaderTitlePresentInReturnOrderSection(orderDateTitle), orderDateTitle+" is not present in return order section");
+	  s_assert.assertTrue(sfOrdersPage.isHeaderTitlePresentInReturnOrderSection(grandTotalTitle), orderNumberTitle+" is not present in return order section");
+	  s_assert.assertTrue(sfOrdersPage.isHeaderTitlePresentInReturnOrderSection(statusAndTrackingNumberTitle), statusAndTrackingNumberTitle+" is not present in return order section");
+	  s_assert.assertTrue(sfOrdersPage.isActionsDDPresentInReturnOrderSection(), "Action DD is not present in return  order section on UI");
+	  sfOrdersPage.clickFirstActionDDUnderReturnOrderSection();
+	  s_assert.assertTrue(sfOrdersPage.isOptionsPresentUnderActionsDDInReturnOrderSection(detailsLink), detailsLink+" is not present in return order section");
+	  s_assert.assertTrue(sfOrdersPage.isOptionsPresentUnderActionsDDInReturnOrderSection(reportProblems), reportProblems+" is not present in return order section");
+	  orderNumber = sfOrdersPage.clickAndGetFirstOrderNumberFromOrderHistory();
+	  currentURL = sfOrdersPage.getCurrentURL();
+	  s_assert.assertTrue(currentURL.contains(orderNumber) && sfOrdersPage.isTextPresent(orderDetailsText),"Current url should contain for consultant "+orderNumber+"but actual on UI is "+currentURL+" and order details page is not present");*/
 		s_assert.assertAll();
 	}
 }

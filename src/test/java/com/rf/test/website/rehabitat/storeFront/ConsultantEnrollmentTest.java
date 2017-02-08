@@ -773,7 +773,7 @@ public class ConsultantEnrollmentTest extends StoreFrontWebsiteBaseTest{
 		email = firstName+"SPONSORWOPWS"+timeStamp+TestConstants.EMAIL_SUFFIX;
 		String socialInsuranceNumber = String.valueOf(CommonUtils.getRandomNum(100000000, 999999999));
 		sfHomePage.clickEnrollNow();
-		sfHomePage.searchSponsor(TestConstants.CONSULTANT_EMAIL_WITHOUT_CRP_AND_PULSE);
+		sfHomePage.searchSponsor(conultantWithoutPulseAndWithoutCRP);
 		s_assert.assertTrue(sfHomePage.isSponsorResultDisplayed(),"No result found after searching the sponsor with name "+TestConstants.SPONSOR);
 		sfHomePage.selectFirstSponsorFromList();
 		sfHomePage.enterConsultantEnrollmentDetails(firstName, lastName, email, password, socialInsuranceNumber);

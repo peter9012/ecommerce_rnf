@@ -22,6 +22,7 @@ public class StoreFrontCheckoutPage extends StoreFrontWebsiteBasePage{
 	private static final Logger logger = LogManager
 			.getLogger(StoreFrontCheckoutPage.class.getName());
 
+	private final By DELIVERY_AT_ORDER_REVIEW_PAGE_LOC = By.xpath("//div[contains(text(),'Order Summary')]/following::p[contains(text(),'Delivery')]/following::span[1]");
 	private final By FIRST_NAME_LOC = By.id("first-name");
 	private final By LAST_NAME_LOC = By.id("last-name");
 	private final By EMAIL_LOC = By.id("email-account");
@@ -82,7 +83,6 @@ public class StoreFrontCheckoutPage extends StoreFrontWebsiteBasePage{
 	private final By VALIDATION_MSG_FOR_SEARCHED_CONSULTANT_LOC = By.id("sponserparam-error");
 	private final By TOTAL_NO_OF_ITEMS_LOC = By.xpath("//div[contains(text(),'Order Summary')]/following::li[contains(@class,'list-items')]//div[@class='thumb']");
 	private final By SUBTOTAL_AT_ORDER_REVIEW_PAGE_LOC = By.xpath("//div[contains(text(),'Order Summary')]/following::p[text()='Subtotal:']/following::span[1]");
-	private final By DELIVERY_AT_ORDER_REVIEW_PAGE_LOC = By.xpath("//div[contains(text(),'Order Summary')]/following::p[text()='Delivery']/following::span[1]");
 	private final By FIRST_ITEM_PRODUCT_NAME_REVIEW_PAGE_LOC = By.xpath("//div[contains(text(),'Order Summary')]/following::li[contains(@class,'list-items')][1]//div[@class='name']/a");
 	private final By LOGIN_REGISTER_TEXT_LOC=By.xpath("//div[@class='logpage']/h1");
 	private final By USER_NAME_LOC=By.xpath("//form[@id='LoginForm']//input[@id='username']");

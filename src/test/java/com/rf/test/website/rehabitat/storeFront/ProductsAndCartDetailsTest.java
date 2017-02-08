@@ -45,7 +45,7 @@ public class ProductsAndCartDetailsTest extends StoreFrontWebsiteBaseTest{
 		String usageNoteTab = "Usage Notes";
 		String ingredientsTab = "Ingredients";
 
-		sfShopSkinCarePage = sfHomePage.navigateToShopSkincareLink(allProduct);
+		sfShopSkinCarePage = sfHomePage.clickAllProducts();
 		productName = sfShopSkinCarePage.getProductNameFromAllProductPage(TestConstants.PRODUCT_NUMBER);
 		sfProductDetailPage = sfShopSkinCarePage.clickNameOfFirstProduct(TestConstants.PRODUCT_NUMBER);
 		s_assert.assertTrue(sfProductDetailPage.getProductNameFromProductDetailsPage().contains(productName),"User is not redirecting to product details page after clicking on product name");
@@ -501,7 +501,7 @@ public class ProductsAndCartDetailsTest extends StoreFrontWebsiteBaseTest{
 	 * Description : This test validates quantity with different values
 	 *     
 	 */
-	@Test(enabled=false) //TODO Incomplete as no quantity update link present on overlay.
+	@Test(enabled=true) //TODO Incomplete as no quantity update link present on overlay.
 	public void testProductDetailsPageQty_157(){
 		String productQty=null;
 		String updatedQty=null;
@@ -510,6 +510,7 @@ public class ProductsAndCartDetailsTest extends StoreFrontWebsiteBaseTest{
 		sfShopSkinCarePage.clickOnFirstProductQuickViewButtonAndReturnProductName();
 		productQty=sfShopSkinCarePage.getProductQuantityFromQuickViewOption();
 		updatedQty = sfCartPage.updateQuantityByOne(productQty);
+		s_assert.assertTrue(false);//Deliberately added this to make the test fail and team gets notified to check for this functionality
 		s_assert.assertAll();
 	}
 
@@ -898,7 +899,7 @@ public class ProductsAndCartDetailsTest extends StoreFrontWebsiteBaseTest{
 		String newItemsOfProduct = null;
 		String updatedQuantity = null;
 
-		sfShopSkinCarePage = sfHomePage.navigateToShopSkincareLink(allProduct);
+		sfShopSkinCarePage = sfHomePage.clickAllProducts();
 		sfShopSkinCarePage.addProductToCart(TestConstants.PRODUCT_NUMBER, TestConstants.ORDER_TYPE_ADHOC);
 		sfCartPage=sfShopSkinCarePage.checkoutTheCartFromPopUp();
 		numberOfProductInCart=sfCartPage.getProductCountInAdhocCart();
@@ -1133,24 +1134,24 @@ public class ProductsAndCartDetailsTest extends StoreFrontWebsiteBaseTest{
 	}
 
 	/***
-	 * qTest : TC-63 Sort/Order Removal by clicking Clear All link
-	 * 
-	 * Description : This test validates the sorting of product base on price filter applied
-	 * and also Unsorting of product when filter removed by clicking clear all link.
-	 * 				
-	 */ 
-	@Test(enabled=false)//No price present for first 3 products.
-	public void testSortAndUnsortProductBaseOnPriceFilterApplied_63(){
-		String allProduct = "ALL PRODUCTS";
-		sfShopSkinCarePage=sfHomePage.navigateToShopSkincareLink(allProduct);
-		sfShopSkinCarePage.refineProductByCategoryAndReturnCategoryName();
-		sfShopSkinCarePage.productPriceFilterLowToHighSelect();
-		s_assert.assertTrue(sfShopSkinCarePage.isPriceFilterLowToHighAppliedSuccessfully(),"Selected Price filter 'Low To High' is not applied to product successfully");
-		//Click clear all link and verify all filters are removed.
-		sfShopSkinCarePage.selectClearAllLink(); 
-		s_assert.assertFalse(sfShopSkinCarePage.isPriceFilterLowToHighAppliedSuccessfully(),"Selected Price filter 'Low To High' is still applied after clicking clear all link.");
-		s_assert.assertAll();
-	}
+	  * qTest : TC-63 Sort/Order Removal by clicking Clear All link
+	  * 
+	  * Description : This test validates the sorting of product base on price filter applied
+	  * and also Unsorting of product when filter removed by clicking clear all link.
+	  *     
+	  */ 
+	 @Test(enabled=true)//No price present for first 3 products.
+	 public void testSortAndUnsortProductBaseOnPriceFilterApplied_63(){
+	  
+	  sfShopSkinCarePage=sfHomePage.clickAllProducts();
+	  sfShopSkinCarePage.refineProductByCategoryAndReturnCategoryName();
+	  sfShopSkinCarePage.productPriceFilterLowToHighSelect();
+	  s_assert.assertTrue(sfShopSkinCarePage.isPriceFilterLowToHighAppliedSuccessfully(),"Selected Price filter 'Low To High' is not applied to product successfully");
+	  //Click clear all link and verify all filters are removed.
+	  sfShopSkinCarePage.selectClearAllLink(); 
+	  s_assert.assertFalse(sfShopSkinCarePage.isPriceFilterLowToHighAppliedSuccessfully(),"Selected Price filter 'Low To High' is still applied after clicking clear all link.");
+	  s_assert.assertAll();
+	 }
 
 	/***
 	 * qTest : TC-603 Proceed to Checkout Confirmation alert for Ad-hoc orders - PC

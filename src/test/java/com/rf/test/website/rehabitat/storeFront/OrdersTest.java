@@ -488,10 +488,6 @@ public class OrdersTest extends StoreFrontWebsiteBaseTest{
 	 */
 	@Test(enabled=true)
 	public void testBillingProfileAddAnAddressWithInvalidDetailsToExistingProfile_366(){
-		String cardType = TestConstants.CARD_TYPE;
-		String cardNumber = TestConstants.CARD_NUMBER;
-		String cardName = TestConstants.CARD_NAME;
-		String CVV = TestConstants.CVV;
 		String randomWord = CommonUtils.getRandomWord(5);
 		String firstName = TestConstants.FIRST_NAME;
 		String lastName = TestConstants.LAST_NAME+randomWord;
@@ -511,24 +507,11 @@ public class OrdersTest extends StoreFrontWebsiteBaseTest{
 		sfCheckoutPage=sfShopSkinCarePage.checkoutTheCart();
 		sfCheckoutPage.clickSaveButton();
 		sfCheckoutPage.clickShippingDetailsNextbutton();
-		sfCheckoutPage.clickAddNewBillingProfileButton();
-		sfCheckoutPage.enterUserBillingDetails(cardType, cardNumber, cardName, CVV);
-		sfCheckoutPage.clickBillingDetailsNextbutton();
-		sfCheckoutPage.clickEditLinkOfBillingProfile();
 		sfCheckoutPage.clickEditLinkOfDefaultBillingProfile();
+		sfCheckoutPage.clearAllFieldsOfBillingAddressDetailsForExistingBillingProfile();
 		sfCheckoutPage.clickSavePaymentButton();
-		errorMessage = "Name must contain first name and last name with no special characters";
-		s_assert.assertTrue(sfCheckoutPage.isErrorMessagePresentForBillingAddressFields(errorMessage), "Error message is not displayed for first and last name");
-		errorMessage = "Please enter valid address";
-		s_assert.assertTrue(sfCheckoutPage.isErrorMessagePresentForBillingAddressFields(errorMessage), "Error message is not displayed for address line1");
-		errorMessage = "Please enter valid city";
-		s_assert.assertTrue(sfCheckoutPage.isErrorMessagePresentForBillingAddressFields(errorMessage), "Error message is not displayed for City");
-		errorMessage = "Please select a Province";
-		s_assert.assertTrue(sfCheckoutPage.isErrorMessagePresentForBillingAddressFields(errorMessage), "Error message is not displayed for province");
-		errorMessage = "Please enter valid postal code";
-		s_assert.assertTrue(sfCheckoutPage.isErrorMessagePresentForBillingAddressFields(errorMessage), "Error message is not displayed for postal code");
-		errorMessage = "Please specify a valid phone number";
-		s_assert.assertTrue(sfCheckoutPage.isErrorMessagePresentForBillingAddressFields(errorMessage), "Error message is not displayed for phone number");
+		s_assert.assertTrue(sfCheckoutPage.isErrrorMsgsForAllMandatoryFieldsForBillingAddressArePresent(),
+				"Mandatory Address Fields error messages for existing profile are not present as expected.");
 		// enter invalid address
 		sfCheckoutPage.enterEditBillingAddressDetailsAtCheckout(firstName, lastName, addressLine1, addressLine2, city, state, postalCode, phoneNumber);
 		sfCheckoutPage.clickSavePaymentButton();
@@ -906,7 +889,7 @@ public class OrdersTest extends StoreFrontWebsiteBaseTest{
 		String orderNumber = "Order Number";
 		String productName = "Item # and Name";
 		String name = "Name";
-		String emailID = "E-mail Address";
+		String emailID = "Email Address";
 		String problemReason = "Problem Reason";
 		String messageTag = "Message";
 
@@ -1021,7 +1004,7 @@ public class OrdersTest extends StoreFrontWebsiteBaseTest{
 		sfOrdersPage = sfHomePage.navigateToOrdersPage();
 		orderStatus = sfOrdersPage.getStatusOfOrderFromOrderHistory(orderNum).trim();
 		s_assert.assertTrue(sfOrdersPage.isOrderPresentInOrderHistory(orderNum),"Order number : " + orderNum + " is not present in Order history");
-		s_assert.assertTrue(orderStatus.contains("Submitted")|| orderStatus.contains("In progress"),"Status of Order is not fund as expected. Expected : Submitted/In progress. Actual : "+orderStatus);
+		s_assert.assertTrue(orderStatus.contains("Submitted")|| orderStatus.contains("In Process"),"Status of Order is not fund as expected. Expected : Submitted/In Process. Actual : "+orderStatus);
 		s_assert.assertAll();
 	}
 
@@ -1394,7 +1377,7 @@ public class OrdersTest extends StoreFrontWebsiteBaseTest{
 		String reasonNeedToReturnAnItem = "\"Need to return an item or an order\"";
 		String reasonDontKnowWasEnrolledInAutoship = "\"DIdn't know was enrolled in an autoship\"";
 		String reasonShipmentWasDamaged = "\"My Shipment was damaged or missing items\"";
-		String expectedConfirmationMessage = "We have sent your problem to our customer service and they will review the issue and respond within 48 hours";
+		String expectedConfirmationMessage = TestConstants.CONFIRMATION_MSG_FOR_REPORT_PROBLEMS;
 		String confirmationMessageFromUI = null;
 		String prefix = TestConstants.CONSULTANT_PWS_PREFIX;
 		sfHomePage.navigateToUrl(sfHomePage.getBaseUrl()+"/" +sfHomePage.getCountry() +"/pws/" + prefix);
@@ -1434,10 +1417,10 @@ public class OrdersTest extends StoreFrontWebsiteBaseTest{
 	 * Description : This test validates return order request & details
 	 *     
 	 */
-	@Test(enabled=true)//TODO incomplete
+	@Test(enabled=true)
 	public void testOrderHistoryReportAProblemConfirmationPage_228(){
 		String reportProblemsLink = "Report Problems";
-		String expectedConfirmationMessage = "We have sent your problem to our customer service and they will review the issue and respond within 48 hours";
+		String expectedConfirmationMessage = TestConstants.CONFIRMATION_MSG_FOR_REPORT_PROBLEMS;
 		String confirmationMessageFromUI = null;
 		String message = "For Automation";
 		String orderNumberAtReportProblemPage = null;
@@ -1454,9 +1437,12 @@ public class OrdersTest extends StoreFrontWebsiteBaseTest{
 		String orderNumber = "Order Number";
 		String productName = "Item # and Name";
 		String name = "Name";
-		String emailID = "E-mail Address";
+		String emailID = "Email Address";
 		String problemReason = "Problem Reason";
 		String messageTag = "Message";
+		String prefix = TestConstants.CONSULTANT_PWS_PREFIX;
+		String homePageURL = sfHomePage.getCurrentURL();
+		sfHomePage.navigateToUrl(homePageURL + "/pws/" + prefix);
 		sfHomePage.loginToStoreFront(TestConstants.CONSULTANT_EMAIL_WITH_CRP_AND_PULSE, password,true);
 		sfHomePage.clickWelcomeDropdown();
 		sfOrdersPage = sfHomePage.navigateToOrdersPage();
@@ -1481,7 +1467,7 @@ public class OrdersTest extends StoreFrontWebsiteBaseTest{
 		s_assert.assertTrue(productNameAtReportConfirmationPage.contains(productNameAtReportProblemPage), "Expected product name at report confirmation page is "+productNameAtReportProblemPage+" Actual on UI is "+productNameAtReportConfirmationPage);
 		s_assert.assertTrue(orderNumberAtReportConfirmationPage.contains(orderNumberAtReportProblemPage), "Expected order number at report confirmation page is "+productNameAtReportProblemPage+" Actual on UI is "+orderNumberAtReportConfirmationPage);
 		s_assert.assertTrue(problemReasonAtReportProblemPage.contains(ProblemReasonAtReportConfirmationPage), "Expected Problem reason at report confirmation page is "+problemReasonAtReportProblemPage+" Actual on UI is "+ProblemReasonAtReportConfirmationPage);
-		s_assert.assertTrue(MessageAtReportConfirmationPage.contains(message), "Expected order number at report confirmation page is "+message+" Actual on UI is "+MessageAtReportConfirmationPage);
+		s_assert.assertTrue(MessageAtReportConfirmationPage.contains(message), "Expected confirmation message is "+message+" Actual on UI is "+MessageAtReportConfirmationPage);
 		s_assert.assertAll();
 	}
 
@@ -1584,7 +1570,7 @@ public class OrdersTest extends StoreFrontWebsiteBaseTest{
 	 */
 	@Test(enabled=true)
 	public void testOrderHistoryReturnOrderReturnDoNotExist_517(){
-		String noReturnOrderMessage = "There are no return orders or credit for the user";
+		String noReturnOrderMessage = "You have no Return orders";
 		sfHomePage.loginToStoreFront(TestConstants.CONSULTANT_EMAIL_WITH_CRP_AND_PULSE,password,true);
 		sfHomePage.clickWelcomeDropdown();
 		sfOrdersPage = sfHomePage.navigateToOrdersPage();
@@ -1699,7 +1685,7 @@ public class OrdersTest extends StoreFrontWebsiteBaseTest{
 		s_assert.assertTrue(productNameAtOrderDetailsPage.contains(productName),"Product name is not matching. Expected is:"+productName+"But found is "+productNameAtOrderDetailsPage);
 		s_assert.assertAll();
 	}
-	
+
 	/***
 	 * qTest : TC-477 Retail User Checkout- Choose a Consultant - multiple search
 	 * Description : This test case  search sponsor multiple times and validate the last selected sponsor
@@ -1741,7 +1727,7 @@ public class OrdersTest extends StoreFrontWebsiteBaseTest{
 		sfShopSkinCarePage = sfCartPage.clickAllProducts();
 		sfShopSkinCarePage.addProductToCart(TestConstants.PRODUCT_NUMBER, TestConstants.ORDER_TYPE_ADHOC);;
 		sfCartPage = sfShopSkinCarePage.checkoutTheCartFromPopUp();
-		sfCheckoutPage = sfCartPage.clickCheckoutBtn();
+		sfCheckoutPage = sfCartPage.checkoutTheCart();
 		sfCheckoutPage.clickSaveButton();
 		shippingMethodWithCost = sfCheckoutPage.getSelectedShippingMethodName();
 		sfCheckoutPage.clickNextbuttonOfShippingDetails();

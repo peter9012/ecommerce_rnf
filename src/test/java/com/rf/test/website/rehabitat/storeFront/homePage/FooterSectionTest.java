@@ -250,6 +250,7 @@ public class FooterSectionTest extends StoreFrontWebsiteBaseTest{
 		sfHomePage.switchToChildWindow(currentWindowID);
 		currentUrl=sfHomePage.getCurrentURL();
 		s_assert.assertTrue(currentUrl.contains(incomeDisclosureUrl),"Expected ' Income Disclosure Statement' pdf url should contain: "+incomeDisclosureUrl+" But actual on UI is:"+currentUrl);
+		sfHomePage.switchToParentWindow(currentWindowID);
 		s_assert.assertAll();
 	}
 }

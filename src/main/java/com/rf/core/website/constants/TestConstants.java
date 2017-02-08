@@ -51,6 +51,7 @@ public class TestConstants {
 	public static final String SHIPPING_ADDRESS_ADDED_MESSAGE = "Address created successfully";
 	 public static final String SHIPPING_ADDRESS_REMOVED_MESSAGE = "Address removed successfully";
 	public static final String TITLE_OF_ALL_SKINCARE_PAGE = "All Skincare | Rodan and Fields";
+	public static final String CONFIRMATION_MSG_FOR_REPORT_PROBLEMS = "we have sent your problem to our customer service department, and they will review the issue and respond within 48 hours";
 
 	// Order page Details
 	public static final String TITLE_OF_ORDER_DETAILS_PAGE = "Order Details | Rodan and Fields";
@@ -166,11 +167,12 @@ public class TestConstants {
 	public static final String ERROR_MSG_EXISTING_PREFIX = "Subscription Prefix not available";
 	//Users
 	public static final String CONSULTANT_EMAIL_SPONSOR_WITHOUT_PWS = "AutoConsSPONSORWOPWS20170206165559@mailinator.com";
-	public static final String CONSULTANT_EMAIL_WITH_CRP_AND_PULSE = "autocon2017@mailinator.com";
+	public static final String CONSULTANT_EMAIL_WITH_CRP_AND_PULSE = "AutoConsWPWCRP20170207113946@mailinator.com";
 	public static final String CONSULTANT_EMAIL_WITH_CRP_AND_PULSE_FOR_CANCELLATION = "AutoConsWPWCRP20170127094455@mailinator.com";
-	public static final String CONSULTANT_PWS_PREFIX = "flname0";
+	public static final String CONSULTANT_PWS_PREFIX = "autocons20170207113946";
 	public static final String CONSULTANT_EMAIL_WITHOUT_CRP_AND_PULSE = "AutoConsSPONSORWOPWS20170206165559@mailinator.com";
-
+	public static final String CONSULTANT_EMAIL_WITHOUT_PWS = "fincon3@mailinator.com";
+	
 	public static final String PC_EMAIL_HAVING_AUTOSHIP = "AutoPCWOSPONSOR20170205013716@mailinator.com";
 	public static final String PC_EMAIL_HAVING_SINGLE_BILLING_PROFILE = "AutoPCWSINGLEBILLING20170205012657@mailinator.com";
 	public static final String PC_EMAIL_WHO_ENROLLED_UNDER_SPONSOR_WITH_PWS = "AutoPCWPWSSPONSOR20170205013053@mailinator.com";
@@ -180,4 +182,3 @@ public class TestConstants {
 	public static final String RC_EMAIL_HAVING_ORDER = "AutoRC20170125114847@mailinator.com";
 
 }
-

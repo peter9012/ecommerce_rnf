@@ -58,7 +58,7 @@ public class RCEnrollmentTest extends StoreFrontWebsiteBaseTest{
 		s_assert.assertTrue(sfHomePage.isWelcomeUserElementDisplayed(), "RC has not been enrolled successfully");
 		s_assert.assertAll();
 	}	
-	
+
 	/***
 	 * qTest : TC-551 Retail user enrollment - From PWS site
 	 * Description : This test is for successfully enrolling a RC user from pws site
@@ -67,12 +67,12 @@ public class RCEnrollmentTest extends StoreFrontWebsiteBaseTest{
 	 */
 	@Test(enabled=true)//Redirect to corp site after enrollment from pws site
 	public void testRCEnrollmentFromPWSSite_551(){
-		timeStamp = CommonUtils.getCurrentTimeStamp();
-		email = firstName+timeStamp+TestConstants.EMAIL_SUFFIX;
 		String prefix = TestConstants.CONSULTANT_PWS_PREFIX;
 		String currentURL = null;
-		
-		sfHomePage.navigateToUrl(sfHomePage.getBaseUrl()+"/" +sfHomePage.getCountry() +"/pws/" + prefix);
+		String pwsURL=sfHomePage.getBaseUrl()+"//" +sfHomePage.getCountry() +"/pws/" + prefix;
+		timeStamp = CommonUtils.getCurrentTimeStamp();
+		email = firstName+timeStamp+TestConstants.EMAIL_SUFFIX;
+		sfHomePage.navigateToUrl(pwsURL);
 		sfCartPage = new StoreFrontCartPage(driver);
 		sfShopSkinCarePage = new StoreFrontShopSkinCarePage(driver);
 		sfHomePage.clickLoginIcon();
@@ -80,11 +80,11 @@ public class RCEnrollmentTest extends StoreFrontWebsiteBaseTest{
 		sfCheckoutPage.fillNewUserDetails(TestConstants.USER_TYPE_RC, firstName, lastName, email, password);
 		sfCheckoutPage.clickCreateAccountButton(TestConstants.USER_TYPE_RC);
 		s_assert.assertTrue(sfHomePage.isWelcomeUserElementDisplayed(), "RC has not been enrolled successfully");
-		/*currentURL = sfHomePage.getCurrentURL().toLowerCase();
-		s_assert.assertTrue(currentURL.contains(PWSSite), "Expected URL should contain"+PWSSite+"but actual on UI is"+currentURL);*/
+		currentURL = sfHomePage.getCurrentURL().toLowerCase();
+		s_assert.assertTrue(currentURL.toLowerCase().contains(pwsURL.toLowerCase()), "Expected URL should contain"+pwsURL+"but actual on UI is"+currentURL);
 		s_assert.assertAll();
-	}	
-	
+	}
+
 	@Test(enabled=true, groups="users")
 	public void testRCEnrollmentWithoutOrder(){
 		timeStamp = CommonUtils.getCurrentTimeStamp();
@@ -100,7 +100,7 @@ public class RCEnrollmentTest extends StoreFrontWebsiteBaseTest{
 		s_assert.assertAll();
 		rcWithoutOrder=email;
 	}
-	
+
 	@Test(enabled=true, groups="users")
 	public void testRCEnrollmentWithOrder(){
 		timeStamp = CommonUtils.getCurrentTimeStamp();

@@ -42,7 +42,7 @@ public class StoreFrontBillingInfoPage extends StoreFrontWebsiteBasePage{
 	private final By SUCCESSFUL_ACTION_MSG_LOC = By.xpath("//div[@class='global-alerts']/div[@class='alert alert-info alert-dismissable']");
 	private final By ADD_NEW_BILLING_ADDRESS_BLOCK_LOC = By.xpath("//div[@id='billingAddressForm']");
 	private final By STREET_ERROR_MSG_LOC = By.xpath("//div[@id='accountBillingForm']//p[@id='errorMessage']");
-	private final By CARD_ICONS_LOC = By.xpath("//div[@class='form-group']//div[@class='card-icons']/span");
+	private final By CARD_ICONS_LOC = By.xpath("//div[@id='editBillingForm']//div[contains(@class,'card-icons')]/span");
 	private final By BILLING_ADDRESS_DD_FOR_EXISTING_PROFILE_LOC = By.id("addressId");
 	private final By BILLING_ADDRESS_DD_OPTIONS_FOR_EXISTING_PROFILE_LOC = By.xpath("//select[@id='addressId']/option[not(@label)]");
 	private final By BILLING_ADDRESS_FORM_FOR_EXISTING_PROFILE_LOC = By.xpath("//div[@id='checkoutEditBillingAddressForm']//div[@id='billingAddressForm']");
@@ -391,11 +391,11 @@ public class StoreFrontBillingInfoPage extends StoreFrontWebsiteBasePage{
 	 * @return store front billing info page object
 	 * 
 	 */
-	public StoreFrontBillingInfoPage clickOnAddressSuggestionModalCloseBtn(){
-		driver.clickByJS(RFWebsiteDriver.driver, driver.findElement(ADDRESS_SUGGESTION_MODAL_CLOSE_BTN_LOC));
-		logger.info("Address Suggestion Modal Close Button clicked");
-		return this;
-	}
+//	public StoreFrontBillingInfoPage clickOnAddressSuggestionModalCloseBtn(){
+//		driver.clickByJS(RFWebsiteDriver.driver, driver.findElement(ADDRESS_SUGGESTION_MODAL_CLOSE_BTN_LOC));
+//		logger.info("Address Suggestion Modal Close Button clicked");
+//		return this;
+//	}
 
 	/***
 	 * This method clicked on add a New Billing Address link 

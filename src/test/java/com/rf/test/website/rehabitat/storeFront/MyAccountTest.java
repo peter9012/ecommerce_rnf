@@ -1181,7 +1181,7 @@ public class MyAccountTest extends StoreFrontWebsiteBaseTest{
 		String autoSuggestedPrefixName = null;
 		//Subscribe to pulse with a new prefix.
 		sfCheckoutPage = new StoreFrontCheckoutPage(driver);
-		sfHomePage.loginToStoreFront(TestConstants.CONSULTANT_EMAIL_WITHOUT_PWS,password,true);
+		sfHomePage.loginToStoreFront(TestConstants.CONSULTANT_EMAIL_WITHOUT_CRP_AND_PULSE,password,true);
 		sfHomePage.clickWelcomeDropdown();
 		sfAutoshipStatusPage = sfHomePage.navigateToAutoshipStatusPage();
 		sfAutoshipStatusPage.clickSubscribeToPulseBtn();
@@ -1229,7 +1229,7 @@ public class MyAccountTest extends StoreFrontWebsiteBaseTest{
 	public void testConsultantFirstTimePulseEnrollment_380(){
 		String prefix = TestConstants.FIRST_NAME+CommonUtils.getCurrentTimeStamp();
 		sfCheckoutPage = new StoreFrontCheckoutPage(driver);
-		sfHomePage.loginToStoreFront(TestConstants.CONSULTANT_EMAIL_WITHOUT_PWS,password,true);
+		sfHomePage.loginToStoreFront(TestConstants.CONSULTANT_EMAIL_WITHOUT_CRP_AND_PULSE,password,true);
 		sfHomePage.clickWelcomeDropdown();
 		sfAutoshipStatusPage = sfHomePage.navigateToAutoshipStatusPage();
 		sfAutoshipStatusPage.clickSubscribeToPulseBtn();

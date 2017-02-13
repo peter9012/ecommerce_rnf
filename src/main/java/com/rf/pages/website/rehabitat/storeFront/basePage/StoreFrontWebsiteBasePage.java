@@ -44,6 +44,7 @@ public class StoreFrontWebsiteBasePage extends RFBasePage {
 		this.driver = driver;
 	}
 
+	private final By YES_BUTTON_ON_ADDRESS_SUGGESTION_MODAL_LOC  =  By.xpath("//div[@id='cboxContent']//button[@id='suggestedAddress']");
 	private final By VIEW_SHOPPING_CART_LINK_LOC = By.xpath("//a[contains(text(),'View shopping cart')]");
 	private final By TOGGLE_BUTTON_OF_COUNTRY_LOC = By.xpath("//form[@id='country-form']//div[@class='form-group']/div");
 	private final By ERROR_MESSAGE_EMPTY_PREFIX_LOC = By.xpath("//*[@id='prefixForm']//label[@class='field-error']");
@@ -117,7 +118,7 @@ public class StoreFrontWebsiteBasePage extends RFBasePage {
 	private final By LOGOUT_LOC = By.xpath("//a[text()='Sign Out']");
 	private final By WELCOME_DD_EDIT_CRP_LOC = By.xpath("//a[text()='Edit CRP']");
 	private final By WELCOME_DD_CHECK_MY_PULSE_LOC = By.xpath("//a[text()='Check My Pulse']");
-	private final By I_DONT_HAVE_SPONSOR_CHKBOX_LOC = By.xpath("//label[text()=\"I DON'T HAVE SPONSOR\"]");
+	private final By I_DONT_HAVE_SPONSOR_CHKBOX_LOC = By.xpath("//label[text()='I DO NOT HAVE A SPONSOR']");
 	private final By SUBMIT_BTN_ON_REQUIRED_SPONSOR_POPUP_LOC = By.id("consultant-sponsor-submit");
 	private final By SPONSOR_FIRST_NAME_LOC = By
 			.xpath("//div[@class='enroll-page']/descendant::input[@id='sponsor.firstName'][1]");
@@ -165,7 +166,7 @@ public class StoreFrontWebsiteBasePage extends RFBasePage {
 	private final By I_ACKNOWLEDGE_PC_CHK_BOX_LOC = By.xpath("//input[@id='Terms2']");
 	private final By BILLING_NEXT_BUTTON_LOC = By.id("cmdSubmit");
 	private final By BECOME_A_CONSULTANT_BTN_LOC = By.id("placeOrder");
-	private final By ENROLLMENT_SUCCESSFUL_MSG_LOC = By.xpath("//*[contains(text(),'Your order number is')]");
+	private final By ENROLLMENT_SUCCESSFUL_MSG_LOC = By.xpath("//*[contains(text(),'ENROLLMENT SUCCESSFUL')]");
 	private final By REMOVE_LINK_LOC = By.xpath("//a[contains(text(),'REMOVE')]");
 	private final By CONSULTANT_ONLY_PRODUCTS_LINK_LOC = By
 			.xpath("//div[@class='navbar-inverse']//a[@title='CONSULTANT ONLY']");
@@ -399,16 +400,31 @@ public class StoreFrontWebsiteBasePage extends RFBasePage {
 		return new StoreFrontConsultantEnrollNowPage(driver);
 	}
 
+	//	/***
+	//	 * This method clicks on the All products link from Top Navigation
+	//	 * 
+	//	 * @return
+	//	 */
+	//	public StoreFrontShopSkinCarePage clickAllProducts() {
+	//		//		mouseHoverOn(TestConstants.SHOP_SKINCARE);
+	//		//		driver.click(ALL_PRODUCTS_LOC);
+	//		//		 clickCategoryLink("ESSENTIALS");
+	//		driver.get(driver.getCurrentUrl()+"/All-Skincare/c/shopskincare");
+	//		logger.info("clicked on 'All Products'");
+	//		driver.waitForPageLoad();
+	//		return new StoreFrontShopSkinCarePage(driver);
+	//	}
+
 	/***
 	 * This method clicks on the All products link from Top Navigation
 	 * 
 	 * @return
 	 */
 	public StoreFrontShopSkinCarePage clickAllProducts() {
-		//		mouseHoverOn(TestConstants.SHOP_SKINCARE);
-		//		driver.click(ALL_PRODUCTS_LOC);
-		//		 clickCategoryLink("ESSENTIALS");
-		driver.get(driver.getCurrentUrl()+"/All-Skincare/c/shopskincare");
+		mouseHoverOn(TestConstants.SHOP_SKINCARE);
+		//  driver.click(ALL_PRODUCTS_LOC);
+		clickCategoryLink("UNBLEMISH");
+		//driver.get(driver.getCurrentUrl()+"/All-Skincare/c/shopskincare");
 		logger.info("clicked on 'All Products'");
 		driver.waitForPageLoad();
 		return new StoreFrontShopSkinCarePage(driver);
@@ -497,6 +513,7 @@ public class StoreFrontWebsiteBasePage extends RFBasePage {
 		logger.info("Entered sponsor as " + sponsor);
 		driver.click(SEARCH_SPONSOR_LOC);
 		logger.info("Clicked on 'Search' button");
+		driver.pauseExecutionFor(2000);
 		return this;
 	}
 
@@ -532,7 +549,8 @@ public class StoreFrontWebsiteBasePage extends RFBasePage {
 	 * @return boolean
 	 */
 	public boolean isNoResultMessagePresent() {
-		return driver.isElementVisible(NO_RESULT_FOUND_MSG_LOC);
+		driver.quickWaitForElementPresent(NO_RESULT_FOUND_MSG_LOC);
+		return driver.isElementPresent(NO_RESULT_FOUND_MSG_LOC);
 	}
 
 	/***
@@ -1132,6 +1150,7 @@ public class StoreFrontWebsiteBasePage extends RFBasePage {
 		driver.pauseExecutionFor(3000);
 		driver.clickByJS(RFWebsiteDriver.driver, driver.findElement(CHECKOUT_BUTTON_LOC));
 		logger.info("Clicked on checkout button");
+		driver.pauseExecutionFor(2000);
 		if (driver.isElementPresent(CHECKOUT_CONFIRMATION_OK_BUTTON_LOC) == true) {
 			driver.click(CHECKOUT_CONFIRMATION_OK_BUTTON_LOC);
 			logger.info("Clicked on OK button at checkout confirmation popup");
@@ -3393,7 +3412,7 @@ public class StoreFrontWebsiteBasePage extends RFBasePage {
 		driver.type(POSTAL_CODE_FOR_BILLING_ADDRESS_FOR_EXISTING_PROFILE_LOC, postal);
 		logger.info("Entered postal code as "+postal);
 		driver.type(PHONE_NUMBER_FOR_BILLING_ADDRESS_FOR_EXISTING_PROFILE_LOC, phoneNumber);
-		logger.info("Entered Phone number  as "+phoneNumber);
+		logger.info("Entered Phone number  as "+phoneNumber);		
 		return this;
 	}
 
@@ -3801,5 +3820,18 @@ public class StoreFrontWebsiteBasePage extends RFBasePage {
 		}else{
 			return driver.isElementVisible(By.xpath(String.format(productNameInAllItemsInCartLoc, productName)));
 		}
+	}
+	
+	/***
+	  * This method click Yes Button on Address Suggestion Popup
+	  * 
+	  * @param
+	  * @return StorefrontWebsiteBasePage
+	  */
+	 public StoreFrontWebsiteBasePage clickYesButtonOnAddressSuggestionPopUp() {
+	  driver.pauseExecutionFor(3000);
+	  driver.click(YES_BUTTON_ON_ADDRESS_SUGGESTION_MODAL_LOC);
+	  logger.info("Clicked Yes Button from Address Suggestion Popup");
+	  return this;
 	}
 }

@@ -26,7 +26,7 @@ public class TestConstants {
 	public static final String ORDER_TYPE_PC_PERKS = "Add to PC Perks";
 	public static final String ORDER_TYPE_CRP= "Add to CRP";
 	public static final String PRODUCT_NUMBER = "2";
-//	public static final String OTHER_PRODUCT_NUMBER = "3";
+	//	public static final String OTHER_PRODUCT_NUMBER = "3";
 	public static final String PC_FIRST_NAME = "AutoPC";
 	public static final String RC_FIRST_NAME = "AutoRC";
 	public static final String LAST_NAME = "lName";
@@ -49,7 +49,7 @@ public class TestConstants {
 	public static final String ABOUT_ME_PAGE_QUES_FROM_PREFIX_URL = "WHAT I LOVE MOST ABOUT R+F PRODUCTS";
 	public static final String ABOUT_ME_PAGE_QUES_FROM_JOIN_URL = "WHAT I LOVE MOST ABOUT MY R+F BUSINESS";
 	public static final String SHIPPING_ADDRESS_ADDED_MESSAGE = "Address created successfully";
-	 public static final String SHIPPING_ADDRESS_REMOVED_MESSAGE = "Address removed successfully";
+	public static final String SHIPPING_ADDRESS_REMOVED_MESSAGE = "Address removed successfully";
 	public static final String TITLE_OF_ALL_SKINCARE_PAGE = "All Skincare | Rodan and Fields";
 	public static final String CONFIRMATION_MSG_FOR_REPORT_PROBLEMS = "we have sent your problem to our customer service department, and they will review the issue and respond within 48 hours";
 	public static final String PASSWORD_RECOVERY_SUBMIT_SUCCESS_MESSAGE = "Password reset instructions have been sent to your email address. Please contact customer support if you require additional assistance";
@@ -153,7 +153,7 @@ public class TestConstants {
 			"This is the test message This is the test message This is the test message This is the test message T";
 	public static final String CANCELLED_CRP_ORDER_SUCCESS_MESSAGE = "Your CRP Order has been canceled.";
 	public static final String PRODUCT_CATEGORY_REDEFINE = "REDEFINE";
-	
+
 	public static final String SECOND_ADDRESS_LINE_1_US = "1625 Sixth Street";
 	public static final String SECOND_ADDRESS_LINE_2_US = "211";
 	public static final String SECOND_CITY_US = "Concord";
@@ -165,19 +165,19 @@ public class TestConstants {
 	public static final String AUTOSHIP_DELIVERY_ADDRESS_UPDATION_MSG = "Delivery Address has been Updated for your Cart.";
 	public static final String ERROR_MSG_EXISTING_PREFIX = "Subscription Prefix not available";
 	//Users
-	public static final String CONSULTANT_EMAIL_SPONSOR_WITHOUT_PWS = "AutoConsSPONSORWOPWS20170206165559@mailinator.com";
-	public static final String CONSULTANT_EMAIL_WITH_CRP_AND_PULSE = "AutoConsWPWCRP20170207113946@mailinator.com";
-	public static final String CONSULTANT_EMAIL_WITH_CRP_AND_PULSE_FOR_CANCELLATION = "AutoConsWPWCRP20170127094455@mailinator.com";
-	public static final String CONSULTANT_PWS_PREFIX = "autocons20170207113946";
-	public static final String CONSULTANT_EMAIL_WITHOUT_CRP_AND_PULSE = "AutoConsSPONSORWOPWS20170206165559@mailinator.com";
-	public static final String CONSULTANT_EMAIL_WITHOUT_PWS = "fincon3@mailinator.com";
-	
-	public static final String PC_EMAIL_HAVING_AUTOSHIP = "AutoPCWOSPONSOR20170205013716@mailinator.com";
-	public static final String PC_EMAIL_HAVING_SINGLE_BILLING_PROFILE = "AutoPCWSINGLEBILLING20170205012657@mailinator.com";
-	public static final String PC_EMAIL_WHO_ENROLLED_UNDER_SPONSOR_WITH_PWS = "AutoPCWPWSSPONSOR20170205013053@mailinator.com";
-	public static final String PC_EMAIL_WHO_ENROLLED_UNDER_SPONSOR_WITHOUT_PWS = "autopc19012017@mailinator.com";
+	public static final String CONSULTANT_EMAIL_SPONSOR_WITHOUT_PWS = "AutoConsSPONSORWOPWS20170210122626@mailinator.com";
+	public static final String CONSULTANT_EMAIL_WITH_CRP_AND_PULSE = "AutoConsWPWCRP20170210115650@mailinator.com";
+	public static final String CONSULTANT_EMAIL_WITH_CRP_AND_PULSE_FOR_CANCELLATION = "AutoConsWPWCRPFORCANCELLATION20170210121829@mailinator.com";
+	public static final String CONSULTANT_PWS_PREFIX = "AutoCons20170210115650";
+	public static final String CONSULTANT_EMAIL_WITHOUT_CRP_AND_PULSE = "AutoConsWOCRPWOP20170210121334@mailinator.com";
+	public static final String CONSULTANT_EMAIL_WITHOUT_PWS = "AutoConsWOCRPWOP20170210123702@mailinator.com";
 
-	public static final String RC_EMAIL_WITHOUT_ORDER = "AutoRC20170125112634@mailinator.com";
-	public static final String RC_EMAIL_HAVING_ORDER = "AutoRC20170125114847@mailinator.com";
+	public static final String PC_EMAIL_HAVING_AUTOSHIP = "AutoPCWOSPONSOR20170210150359@mailinator.com";
+	public static final String PC_EMAIL_HAVING_SINGLE_BILLING_PROFILE = "AutoPCWSINGLEBILLING20170210115502@mailinator.com";
+	public static final String PC_EMAIL_WHO_ENROLLED_UNDER_SPONSOR_WITH_PWS = "AutoPCWPWSSPONSOR20170210114419@mailinator.com";
+	public static final String PC_EMAIL_WHO_ENROLLED_UNDER_SPONSOR_WITHOUT_PWS = "AutoPCWOPWSSponsor20170210124547@mailinator.com";
+
+	public static final String RC_EMAIL_WITHOUT_ORDER = "AutoRC20170210115909@mailinator.com";
+	public static final String RC_EMAIL_HAVING_ORDER = "AutoRC20170210120130@mailinator.com";
 
 }

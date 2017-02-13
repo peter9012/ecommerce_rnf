@@ -90,7 +90,7 @@ public class ConsultantEnrollmentTest extends StoreFrontWebsiteBaseTest{
 		sfHomePage.clickNextButton();
 		s_assert.assertFalse(sfHomePage.isNextButtonEnabledBeforeSelectingKit(), "Next Button is NOT disabled before selecting kit");
 		sfHomePage.chooseProductFromKitPage();
-		sfHomePage.selectSubscribeToPulseCheckBox();
+		//sfHomePage.selectSubscribeToPulseCheckBox();
 		sfHomePage.clickNextButton();
 		sfHomePage.clickSaveButton();
 		sfHomePage.enterConsultantShippingDetails(firstName, lastName, addressLine1, addressLine2 ,city, state, postalCode, phoneNumber);
@@ -204,7 +204,6 @@ public class ConsultantEnrollmentTest extends StoreFrontWebsiteBaseTest{
 		String kitName = "BUSINESS PORTFOLIO";
 		sfHomePage.clickEnrollNow();
 		sfHomePage.searchSponsor(TestConstants.SPONSOR);
-		s_assert.assertTrue(sfHomePage.isSponsorResultDisplayed(),"No result found after searching the sponsor with name "+TestConstants.SPONSOR);
 		sfHomePage.selectFirstSponsorFromList();
 		sfHomePage.enterConsultantEnrollmentDetails(firstName, lastName, email, password, socialInsuranceNumber);
 		sfHomePage.clickNextButton();

@@ -39,6 +39,8 @@ public class StoreFrontAboutMePage extends StoreFrontWebsiteBasePage{
 	private final By TWITTER_LOC=By.id("twiiterUrl");
 	private final By PINTEREST_LOC=By.id("pinterestUrl");
 	private final By INSTAGRAM_LOC=By.id("instagramUrl");
+	public final By SAVE_BUTTON_LOC=By.xpath("//input[@value='Save']");
+	public final By CANCEL_BUTTON_LOC=By.xpath("//input[@value='Cancel']");
 
 	private String quesOnAboutMePageLoc = "//form[@id='aboutmeFormData']//h2[contains(text(),'%s')]";
 	private String answerOnAboutMePageLoc = "//form[@id='aboutmeFormData']//h2[contains(text(),'%s')]/following-sibling::p";
@@ -344,5 +346,128 @@ public class StoreFrontAboutMePage extends StoreFrontWebsiteBasePage{
 	 */
 	public boolean isSendButtonDisabled(){
 		return driver.isElementVisible(DISABLED_SEND_BUTTON_LOC);
+	}
+
+	/***
+	 * This method get facebook id from about me page header 
+	 * 
+	 * @param 
+	 * @return facebook id
+	 * 
+	 */ 
+	public String getFacebookIDFromAboutMePageHeader(){
+		return driver.findElement(FACEBOOK_ON_ABOUT_ME_PAGE_HEADER).getAttribute("href");
+	}
+
+	/***
+	 * This method get twitter id from about me page header 
+	 * 
+	 * @param 
+	 * @return twitter id
+	 * 
+	 */ 
+	public String getTwitterIDFromAboutMePageHeader(){
+		return driver.findElement(TWITTER_ON_ABOUT_ME_PAGE_HEADER).getAttribute("href");
+	}
+
+	/***
+	 * This method get pinterest id from about me page header 
+	 * 
+	 * @param 
+	 * @return pinterest id
+	 * 
+	 */ 
+	public String getPinterestIDFromAboutMePageHeader(){
+		return driver.findElement(PINTEREST_ON_ABOUT_ME_PAGE_HEADER).getAttribute("href");
+	}
+
+	/***
+	 * This method verify phone number displayed on about me page header 
+	 * 
+	 * @param 
+	 * @return boolean
+	 * 
+	 */ 
+	public boolean isPhoneNumberPresentOnAboutMePageHeader(){
+		return driver.isElementVisible(PHONE_NUMBER_ON_PAGE_HEADER_LOC);
+	}
+
+	/***
+	 * This method verify email displayed on about me page header 
+	 * 
+	 * @param 
+	 * @return boolean
+	 * 
+	 */ 
+	public boolean isEmailIDPresentOnAboutMePageHeader(){
+		return driver.isElementVisible(EMAIL_ON_PAGE_HEADER_LOC);
+	}
+
+	/***
+	 * This method verify city displayed on about me page header 
+	 * 
+	 * @param 
+	 * @return boolean
+	 * 
+	 */ 
+	public boolean isCityPresentOnAboutMePageHeader(){
+		return driver.isElementVisible(CITY_STATE_HEADER_LOC);
+	}
+
+	/***
+	 * This method verify facebook id displayed on about me page header 
+	 * 
+	 * @param 
+	 * @return boolean
+	 * 
+	 */ 
+	public boolean isFacebookIDPresentOnAboutMePageHeader(){
+		return driver.isElementVisible(FACEBOOK_ON_ABOUT_ME_PAGE_HEADER);
+	}
+
+	/***
+	 * This method verify twitter id displayed on about me page header 
+	 * 
+	 * @param 
+	 * @return boolean
+	 * 
+	 */ 
+	public boolean isTwitterIDPresentOnAboutMePageHeader(){
+		return driver.isElementVisible(TWITTER_ON_ABOUT_ME_PAGE_HEADER);
+	}
+
+	/***
+	 * This method verify pinterest id displayed on about me page header 
+	 * 
+	 * @param 
+	 * @return boolean
+	 * 
+	 */ 
+	public boolean isPinterestIDPresentOnAboutMePageHeader(){
+		return driver.isElementVisible(PINTEREST_ON_ABOUT_ME_PAGE_HEADER);
+	}
+
+	/***
+	 * This method click on Save button at about me page header 
+	 * 
+	 * @param 
+	 * @return StoreFrontAboutMePage obj
+	 * 
+	 */ 
+	public StoreFrontAboutMePage clickSaveButtonAboutMePage(){
+		driver.click(SAVE_BUTTON_LOC);
+		return this;
+	}
+
+	/***
+	 * This method click on Cancel button at about me page header 
+	 * 
+	 * @param 
+	 * @return StoreFrontAboutMePage obj
+	 * 
+	 */ 
+	public StoreFrontAboutMePage clickCancelButtonAboutMePage(){
+		driver.click(CANCEL_BUTTON_LOC);
+		return this;
 	}
 }

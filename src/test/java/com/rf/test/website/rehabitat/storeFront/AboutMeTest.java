@@ -93,7 +93,7 @@ public class AboutMeTest extends StoreFrontWebsiteBaseTest{
 		sfHomePage.clickNextButton();
 		s_assert.assertFalse(sfHomePage.isNextButtonEnabledBeforeSelectingKit(), "Next Button is NOT disabled before selecting kit");
 		sfHomePage.chooseProductFromKitPage();
-//		sfHomePage.selectSubscribeToPulseCheckBox();
+		//		sfHomePage.selectSubscribeToPulseCheckBox();
 		sfHomePage.enterPrefix(prefix);
 		s_assert.assertTrue(sfHomePage.isEmailAvailableMsgAppearedForPWS(),"Email available msg is not present for entered prefix : " + prefix);
 		sfHomePage.clickNextButton();
@@ -197,7 +197,7 @@ public class AboutMeTest extends StoreFrontWebsiteBaseTest{
 	 * Description : This test validates Personalizing PWS (About Me Page) - Submission Guidelines
 	 *    
 	 */
-	@Test(enabled=false)
+	@Test(enabled=true)
 	public void testPersonalizingPWSAboutMePageSubmissionGuidelines_581(){
 		String homePageURL = null;
 		String currentURL = null;
@@ -224,13 +224,13 @@ public class AboutMeTest extends StoreFrontWebsiteBaseTest{
 		s_assert.assertTrue(currentURL.contains(submissionGuidelineUrl), "Expected URL should contain "+submissionGuidelineUrl+" but actual on UI is"+currentURL);
 		s_assert.assertAll();
 	}
-	
+
 	/***
 	 * qTest : TC-618 Add City and Province to Consultants About me page
 	 * Description : This test validates add city and province on consultant about me page
 	 *    
 	 */
-	@Test(enabled=false)
+	@Test(enabled=true)
 	public void testAddCityAndProvinceToConsultantsAboutMePage_618(){
 		String homePageURL = null;
 		String currentURL = null;
@@ -259,13 +259,13 @@ public class AboutMeTest extends StoreFrontWebsiteBaseTest{
 		s_assert.assertTrue(pageHeader.contains(visibleStateName),"Expected about me page header should contains:"+visibleStateName+ "But actual on UI is"+pageHeader);
 		s_assert.assertAll();
 	}
-	
+
 	/***
 	 * qTest : TC-619 Add Year information on the About Me page
 	 * Description : This test validates add year information on the About Me page and verify the year is editable or not
 	 *    
 	 */
-	@Test(enabled=false)
+	@Test(enabled=true)
 	public void testAddYearInformationOnTheAboutMePage_619(){
 		String homePageURL = null;
 		String currentURL = null;
@@ -298,7 +298,7 @@ public class AboutMeTest extends StoreFrontWebsiteBaseTest{
 		s_assert.assertFalse(sfAboutMePage.isShowSincePresentOnAboutMePageHeader(),"Expected show since consultant should not be present on about me page after deselect checkbox");
 		s_assert.assertAll();
 	}
-	
+
 	/***
 	 * qTest : TC-620 Add phone number and email address on the About Me page
 	 * Description : This test validates Add phone number and email address on the About Me page
@@ -393,6 +393,184 @@ public class AboutMeTest extends StoreFrontWebsiteBaseTest{
 		sfAboutMePage.enterSocialMediaFieldsOnAboutMePage(fbId, twitterID, pinterestId);
 		sfAboutMePage.clickSaveButton();
 		s_assert.assertFalse(sfAboutMePage.isInstagramLinkDisplayedOnAboutMePage(),"Expected Instagram details should not be displayed on about me page");
+		s_assert.assertAll();
+	}
+
+	/***
+	 * qTest : TC-579 Personalizing PWS (About Me Page) - Save changes
+	 * Description : This test validates Personalizing PWS (About Me Page) - Save changes
+	 *    
+	 */
+	@Test(enabled=false)
+	public void testPersonalizingPWSAboutMePageSaveChanges_579(){
+		String homePageURL = null;
+		String currentURL = null;
+		String phoneOnAboutMePage=null;
+		String cityOnAboutMePage=null;
+		String facebookOnAboutMePage=null;
+		String twitterOnAboutMePage=null;
+		String pinterestOnAboutMePage=null;
+		String emailOnAboutMePage=null;
+		String urlToAssert = "about-me";
+		String aboutMeEdit="about-me/edit";
+		String phoneNo=TestConstants.PHONE_NUMBER;
+		String city=TestConstants.CITY_US;
+		String email="AutoEmail@xyz.com";
+		String fbId="facebook@xyz.com";
+		String twitterID="twitter@xyz.com";
+		String pinterestId="pinterest@xyz.com";
+		String prefix = TestConstants.CONSULTANT_PWS_PREFIX;
+
+		homePageURL = sfHomePage.getCurrentURL();
+		sfHomePage.navigateToUrl(homePageURL + "/pws/" + prefix);
+		sfHomePage.loginToStoreFront(TestConstants.CONSULTANT_EMAIL_WITH_CRP_AND_PULSE, password,true);
+		sfHomePage.clickWelcomeDropdown();
+		sfAboutMePage=sfHomePage.navigateToEditPWSPage();
+		currentURL = sfAboutMePage.getCurrentURL();
+		s_assert.assertTrue(currentURL.contains(urlToAssert),"Expected URL should contain "+urlToAssert+" but actual on UI is "+currentURL);
+		sfAboutMePage.clickPersonalizeMyProfileButton();
+
+		currentURL = sfAboutMePage.getCurrentURL();
+		s_assert.assertTrue(sfAboutMePage.isSubmissionGuidelinesDisplayed() && currentURL.contains(aboutMeEdit),"Expected user should redirected to: "+aboutMeEdit +" Page after click on 'personalize My profile' button but actual user is redirected to "+currentURL);
+		sfAboutMePage.typePhoneAndEmailOnAboutMePage(phoneNo, email);
+		sfAboutMePage.typeCityOnAboutMePage(city);
+		sfAboutMePage.enterSocialMediaFieldsOnAboutMePage(fbId, twitterID, pinterestId);
+		sfAboutMePage.clickSaveButtonAboutMePage();
+
+		phoneNo=sfAboutMePage.getPhoneNumberFromAboutMePageHeader();
+		s_assert.assertTrue(phoneNo.contains(TestConstants.PHONE_NUMBER),"Expected Phone number should be '9842342342' But actual on UI is:"+phoneNo);
+		email=sfAboutMePage.getEmailFromAboutMePageHeader();
+		s_assert.assertTrue(email.contains("AutoEmail@xyz.com"),"Expected email should be 'AutoEmail@xyz.com' but actual on UI is"+email);
+		city=sfAboutMePage.getCityStateTextOnAboutMePageHeader();
+		s_assert.assertTrue(city.contains(TestConstants.CITY_US),"Expected city should be 'San Francisco' but actual on UI is"+city);
+		fbId=sfAboutMePage.getFacebookIDFromAboutMePageHeader();
+		s_assert.assertTrue(fbId.contains("facebook@xyz.com"),"Expected facebook id should be 'facebook@xyz.com'  but actual on UI is"+fbId);
+		twitterID=sfAboutMePage.getTwitterIDFromAboutMePageHeader();
+		s_assert.assertTrue(twitterID.contains("twitter@xyz.com"),"Expected twitter id should be 'twitter@xyz.com'  but actual on UI is"+twitterID);
+		pinterestId=sfAboutMePage.getPinterestIDFromAboutMePageHeader();
+		s_assert.assertTrue(pinterestId.contains("pinterest@xyz.com"),"Expected pinterest id should be 'pinterest@xyz.com'  but actual on UI is"+pinterestId);
+
+		sfAboutMePage.clickWelcomeDropdown();
+		sfAboutMePage.logout();
+		sfAboutMePage.loginToStoreFront(TestConstants.RC_EMAIL_WITHOUT_ORDER, password,true);
+		sfAboutMePage.clickAboutMe();
+		phoneOnAboutMePage=sfAboutMePage.getPhoneNumberFromAboutMePageHeader();
+		s_assert.assertTrue(phoneOnAboutMePage.contains(phoneNo),"Expected phone number is:"+phoneNo+"But actual on UI is"+phoneOnAboutMePage);
+		emailOnAboutMePage=sfAboutMePage.getEmailFromAboutMePageHeader();
+		s_assert.assertTrue(emailOnAboutMePage.contains(email),"Expected email id is:"+email+"But actual on UI is"+emailOnAboutMePage);
+		cityOnAboutMePage=sfAboutMePage.getCityStateTextOnAboutMePageHeader();
+		s_assert.assertTrue(cityOnAboutMePage.contains(city),"Expected city on about me page is:"+city+"But actual on UI is"+cityOnAboutMePage);
+		facebookOnAboutMePage=sfAboutMePage.getFacebookIDFromAboutMePageHeader();
+		s_assert.assertTrue(facebookOnAboutMePage.contains(fbId),"Expected facebook id on about me page is:"+fbId+"But actual on UI is"+facebookOnAboutMePage);
+		twitterOnAboutMePage=sfAboutMePage.getTwitterIDFromAboutMePageHeader();
+		s_assert.assertTrue(twitterOnAboutMePage.contains(twitterID),"Expected twitter id on about me page is:"+twitterID+"But actual on UI is"+twitterOnAboutMePage);
+		pinterestOnAboutMePage=sfAboutMePage.getPinterestIDFromAboutMePageHeader();
+		s_assert.assertTrue(pinterestOnAboutMePage.contains(pinterestId),"Expected pinterest id on about me page is:"+pinterestId+"But actual on UI is"+pinterestOnAboutMePage);
+		s_assert.assertAll();
+	}
+	/***
+	 * qTest : TC-580 Personalizing PWS (About Me Page) - Discard changes
+	 * Description : This test validates Personalizing PWS (About Me Page) - Discard changes
+	 *    
+	 */
+	@Test(enabled=false)
+	public void testPersonalizingPWSAboutMePageDiscardChanges_580(){
+		String homePageURL = null;
+		String currentURL = null;
+		String phoneOnAboutMePage=null;
+		String cityOnAboutMePage=null;
+		String facebookOnAboutMePage=null;
+		String twitterOnAboutMePage=null;
+		String pinterestOnAboutMePage=null;
+		String emailOnAboutMePage=null;
+		boolean flag=false;
+		String urlToAssert = "about-me";
+		String aboutMeEdit="about-me/edit";
+		String phoneNo=TestConstants.PHONE_NUMBER;
+		String city=TestConstants.CITY_US;
+		String email="AutoEmail@xyz.com";
+		String fbId="facebook@xyz.com";
+		String twitterID="twitter@xyz.com";
+		String pinterestId="pinterest@xyz.com";
+		String prefix = TestConstants.CONSULTANT_PWS_PREFIX;
+
+		homePageURL = sfHomePage.getCurrentURL();
+		sfHomePage.navigateToUrl(homePageURL + "/pws/" + prefix);
+		sfHomePage.loginToStoreFront(TestConstants.CONSULTANT_EMAIL_WITH_CRP_AND_PULSE, password,true);
+		sfHomePage.clickWelcomeDropdown();
+		sfAboutMePage=sfHomePage.navigateToEditPWSPage();
+		currentURL = sfAboutMePage.getCurrentURL();
+		s_assert.assertTrue(currentURL.contains(urlToAssert),"Expected URL should contain "+urlToAssert+" but actual on UI is "+currentURL);
+
+		flag=sfAboutMePage.isPhoneNumberPresentOnAboutMePageHeader();
+		if(flag){
+			phoneNo=sfAboutMePage.getPhoneNumberFromAboutMePageHeader();
+		}
+
+		flag=sfAboutMePage.isEmailIDPresentOnAboutMePageHeader();
+		if(flag){
+			email=sfAboutMePage.getEmailFromAboutMePageHeader();
+		}
+
+		flag=sfAboutMePage.isCityPresentOnAboutMePageHeader();
+		if(flag){
+			city=sfAboutMePage.getCityStateTextOnAboutMePageHeader();
+		}
+
+		flag=sfAboutMePage.isFacebookIDPresentOnAboutMePageHeader();
+		if(flag==true){
+			fbId=sfAboutMePage.getFacebookIDFromAboutMePageHeader();
+		}
+		flag=sfAboutMePage.isTwitterIDPresentOnAboutMePageHeader();
+		if(flag){
+			twitterID=sfAboutMePage.getTwitterIDFromAboutMePageHeader();
+		}
+		flag=sfAboutMePage.isPinterestIDPresentOnAboutMePageHeader();
+		if(flag){
+			pinterestId=sfAboutMePage.getPinterestIDFromAboutMePageHeader();
+		}
+
+		sfAboutMePage.clickPersonalizeMyProfileButton();
+		currentURL = sfAboutMePage.getCurrentURL();
+		s_assert.assertTrue(sfAboutMePage.isSubmissionGuidelinesDisplayed() && currentURL.contains(aboutMeEdit),"Expected user should redirected to: "+aboutMeEdit +" Page after click on 'personalize My profile' button but actual user is redirected to "+currentURL);
+		sfAboutMePage.typePhoneAndEmailOnAboutMePage(phoneNo, email);
+		sfAboutMePage.typeCityOnAboutMePage(city);
+		sfAboutMePage.enterSocialMediaFieldsOnAboutMePage(fbId, twitterID, pinterestId);
+		sfAboutMePage.clickCancelButtonAboutMePage();
+		sfAboutMePage.clickWelcomeDropdown();
+		sfAboutMePage.logout();
+		sfAboutMePage.loginToStoreFront(TestConstants.RC_EMAIL_WITHOUT_ORDER, password,true);
+		sfAboutMePage.clickAboutMe();
+
+		phoneOnAboutMePage=sfAboutMePage.getPhoneNumberFromAboutMePageHeader();
+		if (phoneNo!=null) {
+			s_assert.assertTrue(phoneOnAboutMePage.contains(phoneNo),"Expected phone number should be:"+phoneNo+"But actual on UI is"+phoneOnAboutMePage);
+		}
+
+		emailOnAboutMePage=sfAboutMePage.getEmailFromAboutMePageHeader();
+		if (email!=null) {
+			s_assert.assertTrue(emailOnAboutMePage.contains(email),"Expected email id should be:"+email+"But actual on UI is"+emailOnAboutMePage);
+		}
+
+		cityOnAboutMePage=sfAboutMePage.getCityStateTextOnAboutMePageHeader();
+		if (city!=null) {
+			s_assert.assertTrue(cityOnAboutMePage.contains(city),"Expected city on about me page should be:"+city+"But actual on UI is"+cityOnAboutMePage);
+		}
+
+		facebookOnAboutMePage=sfAboutMePage.getFacebookIDFromAboutMePageHeader();
+		if (fbId!=null) {
+			s_assert.assertTrue(facebookOnAboutMePage.contains(fbId),"Expected facebook id on about me page should be:"+fbId+"But actual on UI is"+facebookOnAboutMePage);
+		}
+
+		twitterOnAboutMePage=sfAboutMePage.getTwitterIDFromAboutMePageHeader();
+		if (twitterID!=null) {
+			s_assert.assertTrue(twitterOnAboutMePage.contains(twitterID),"Expected twitter id on about me page should be:"+twitterID+"But actual on UI is"+twitterOnAboutMePage);
+		}
+
+		pinterestOnAboutMePage=sfAboutMePage.getPinterestIDFromAboutMePageHeader();
+		if (pinterestId!=null) {
+			s_assert.assertTrue(pinterestOnAboutMePage.contains(pinterestId),"Expected pinterest id on about me page should be:"+pinterestId+"But actual on UI is"+pinterestOnAboutMePage);
+		}
 		s_assert.assertAll();
 	}
 

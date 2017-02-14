@@ -166,18 +166,18 @@ public class TestConstants {
 	public static final String ERROR_MSG_EXISTING_PREFIX = "Subscription Prefix not available";
 	//Users
 	public static final String CONSULTANT_EMAIL_SPONSOR_WITHOUT_PWS = "AutoConsSPONSORWOPWS20170210122626@mailinator.com";
-	public static final String CONSULTANT_EMAIL_WITH_CRP_AND_PULSE = "AutoConsWPWCRP20170210115650@mailinator.com";
+	public static final String CONSULTANT_EMAIL_WITH_CRP_AND_PULSE = " AutoConsWPWCRP20170214121819@mailinator.com";
 	public static final String CONSULTANT_EMAIL_WITH_CRP_AND_PULSE_FOR_CANCELLATION = "AutoConsWPWCRPFORCANCELLATION20170210121829@mailinator.com";
 	public static final String CONSULTANT_PWS_PREFIX = "AutoCons20170210115650";
 	public static final String CONSULTANT_EMAIL_WITHOUT_CRP_AND_PULSE = "AutoConsWOCRPWOP20170210121334@mailinator.com";
 	public static final String CONSULTANT_EMAIL_WITHOUT_PWS = "AutoConsWOCRPWOP20170210123702@mailinator.com";
 
-	public static final String PC_EMAIL_HAVING_AUTOSHIP = "AutoPCWOSPONSOR20170210150359@mailinator.com";
+	public static final String PC_EMAIL_HAVING_AUTOSHIP = "AutoPCWOSPONSOR20170214121328@mailinator.com";
 	public static final String PC_EMAIL_HAVING_SINGLE_BILLING_PROFILE = "AutoPCWSINGLEBILLING20170210115502@mailinator.com";
-	public static final String PC_EMAIL_WHO_ENROLLED_UNDER_SPONSOR_WITH_PWS = "AutoPCWPWSSPONSOR20170210114419@mailinator.com";
+	public static final String PC_EMAIL_WHO_ENROLLED_UNDER_SPONSOR_WITH_PWS = "pcuser1dev1@mailinator.com";
 	public static final String PC_EMAIL_WHO_ENROLLED_UNDER_SPONSOR_WITHOUT_PWS = "AutoPCWOPWSSponsor20170210124547@mailinator.com";
 
 	public static final String RC_EMAIL_WITHOUT_ORDER = "AutoRC20170210115909@mailinator.com";
-	public static final String RC_EMAIL_HAVING_ORDER = "AutoRC20170210120130@mailinator.com";
+	public static final String RC_EMAIL_HAVING_ORDER = "AutoRC20170214122358@mailinator.com";
 
 }

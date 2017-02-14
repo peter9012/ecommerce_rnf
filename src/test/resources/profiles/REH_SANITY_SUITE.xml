@@ -1,12 +1,12 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<suite name="storefrontMiniRegressionTest">
+<suite name="storefrontSanityTest">
 	<listeners>
 		<listener class-name="org.uncommons.reportng.HTMLReporter" />
 		<listener class-name="org.uncommons.reportng.JUnitXMLReporter" />
-		<listener class-name="com.rf.core.listeners.RetryListener" />
+		<!-- <listener class-name="com.rf.core.listeners.RetryListener" /> -->
 		<listener class-name="com.rf.core.listeners.TestListner" />
 	</listeners>
-	<test name="storefrontMiniRegressionTest">
+	<test name="storefrontSanityTest">
 		<classes>
 			<class	name="com.rf.test.website.rehabitat.storeFront.ConsultantEnrollmentTest">
 				<methods>

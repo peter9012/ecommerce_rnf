@@ -105,7 +105,7 @@ public class ConsultantEnrollmentTest extends StoreFrontWebsiteBaseTest{
 		sfHomePage.selectTermsAndConditionsChkBox();
 		sfHomePage.selectConsentFormChkBox();
 		sfHomePage.clickBecomeAConsultant();
-		//s_assert.assertTrue(sfHomePage.isEnrollemntSuccessfulMsgDisplayed(), "Expected 'Your order number is' msg has NOT displayed"); 
+		s_assert.assertTrue(sfHomePage.isEnrollemntSuccessfulMsgDisplayed(), "Expected 'Your order number is' msg has NOT displayed"); 
 		sfHomePage.clickRodanAndFieldsLogo();
 		s_assert.assertTrue(sfHomePage.isWelcomeUserElementDisplayed(), "Welcome user locator has not displayed after consultant enrollment");
 		s_assert.assertAll();
@@ -192,16 +192,16 @@ public class ConsultantEnrollmentTest extends StoreFrontWebsiteBaseTest{
 	 * 
 	 * Description : This test validates that consultant enrollment by selecting
 	 * Personal Business Potfolio
-	 * 				
+	 *     
 	 */
 	@Test(enabled=true)
 	public void testConsultantEnrollmentPersonalBusinessPortfolio_290(){
 		timeStamp = CommonUtils.getCurrentTimeStamp();
-		randomWords = CommonUtils.getRandomWord(5);		
+		randomWords = CommonUtils.getRandomWord(5);  
 		lastName = TestConstants.LAST_NAME+randomWords;
 		email = firstName+timeStamp+TestConstants.EMAIL_SUFFIX;
 		String socialInsuranceNumber = String.valueOf(CommonUtils.getRandomNum(100000000, 999999999));
-		String kitName = "BUSINESS PORTFOLIO";
+		String kitName = "Business Portfolio";
 		sfHomePage.clickEnrollNow();
 		sfHomePage.searchSponsor(TestConstants.SPONSOR);
 		sfHomePage.selectFirstSponsorFromList();
@@ -481,7 +481,7 @@ public class ConsultantEnrollmentTest extends StoreFrontWebsiteBaseTest{
 		sfHomePage.clickNextButton();
 		s_assert.assertFalse(sfHomePage.isNextButtonEnabledBeforeSelectingKit(), "Next Button is NOT disabled before selecting kit");
 		sfHomePage.chooseProductFromKitPage();
-//		sfHomePage.selectSubscribeToPulseCheckBox();
+		//		sfHomePage.selectSubscribeToPulseCheckBox();
 		sfHomePage.enterPrefix(prefix);
 		s_assert.assertTrue(sfHomePage.isPrefixAvailable(), "entered prefix "+prefix+" is NOT available");
 		sfHomePage.clickNextButton();
@@ -575,7 +575,7 @@ public class ConsultantEnrollmentTest extends StoreFrontWebsiteBaseTest{
 		sfHomePage.clickNextButton();
 		s_assert.assertFalse(sfHomePage.isNextButtonEnabledBeforeSelectingKit(), "Next Button is NOT disabled before selecting kit");
 		sfHomePage.chooseProductFromKitPage();
-//		sfHomePage.selectSubscribeToPulseCheckBox();
+		//		sfHomePage.selectSubscribeToPulseCheckBox();
 		sfHomePage.enterPrefix(existingPrefix);
 		s_assert.assertFalse(sfHomePage.isPrefixAvailable(), "entered prefix "+existingPrefix+" is available");
 		s_assert.assertFalse(sfHomePage.isNextButtonEnabledBeforeSelectingKit(), "Next Button is NOT disabled before selecting valid prefix.");
@@ -648,7 +648,7 @@ public class ConsultantEnrollmentTest extends StoreFrontWebsiteBaseTest{
 		sfHomePage.enterConsultantEnrollmentDetails(firstName, lastName, email, password, socialInsuranceNumber);
 		sfHomePage.clickNextButton();
 		sfHomePage.chooseProductFromKitPage();
-//		sfHomePage.selectSubscribeToPulseCheckBox();
+		//		sfHomePage.selectSubscribeToPulseCheckBox();
 		sfHomePage.enterPrefix(prefix);
 		sfHomePage.clickNextButton();
 		sfHomePage.clickSaveButton();

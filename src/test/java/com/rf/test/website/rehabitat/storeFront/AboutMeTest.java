@@ -401,7 +401,7 @@ public class AboutMeTest extends StoreFrontWebsiteBaseTest{
 	 * Description : This test validates Personalizing PWS (About Me Page) - Save changes
 	 *    
 	 */
-	@Test(enabled=false)
+	@Test(enabled=true)
 	public void testPersonalizingPWSAboutMePageSaveChanges_579(){
 		String homePageURL = null;
 		String currentURL = null;
@@ -468,6 +468,7 @@ public class AboutMeTest extends StoreFrontWebsiteBaseTest{
 		s_assert.assertTrue(pinterestOnAboutMePage.contains(pinterestId),"Expected pinterest id on about me page is:"+pinterestId+"But actual on UI is"+pinterestOnAboutMePage);
 		s_assert.assertAll();
 	}
+	
 	/***
 	 * qTest : TC-580 Personalizing PWS (About Me Page) - Discard changes
 	 * Description : This test validates Personalizing PWS (About Me Page) - Discard changes

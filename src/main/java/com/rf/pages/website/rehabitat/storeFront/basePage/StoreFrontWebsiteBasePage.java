@@ -2854,10 +2854,10 @@ public class StoreFrontWebsiteBasePage extends RFBasePage {
 	}
 
 	public void clickUseAsEnteredButtonOnPopUp() {
-		driver.pauseExecutionFor(5000);
+		driver.pauseExecutionFor(1000);
 		if (driver.isElementVisible(USE_AS_ENTERED_BUTTON_LOC) == true) {
 			driver.click(USE_AS_ENTERED_BUTTON_LOC);
-			driver.waitForElementToBeInVisible(USE_AS_ENTERED_BUTTON_LOC, 40);
+			driver.waitForElementToBeInVisible(USE_AS_ENTERED_BUTTON_LOC, 20);
 			//driver.pauseExecutionFor(40000); // UI is slow, will be removed
 			logger.info("'Used as entered' button clicked");
 		}

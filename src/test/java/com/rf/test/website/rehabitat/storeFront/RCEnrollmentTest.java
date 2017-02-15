@@ -46,9 +46,10 @@ public class RCEnrollmentTest extends StoreFrontWebsiteBaseTest{
 	 *     
 	 */
 	@Test(enabled=true)
-	public void testRCEnrollment_550(){
+	public void testRCEnrollmentWithoutSponsor_550(){
 		timeStamp = CommonUtils.getCurrentTimeStamp();
 		email = firstName+timeStamp+TestConstants.EMAIL_SUFFIX;
+		navigateToStoreFrontBaseURL();
 		sfCartPage = new StoreFrontCartPage(driver);
 		sfShopSkinCarePage = new StoreFrontShopSkinCarePage(driver);
 		sfHomePage.clickLoginIcon();
@@ -56,6 +57,19 @@ public class RCEnrollmentTest extends StoreFrontWebsiteBaseTest{
 		sfCheckoutPage.fillNewUserDetails(TestConstants.USER_TYPE_RC, firstName, lastName, email, password);
 		sfCheckoutPage.clickCreateAccountButton(TestConstants.USER_TYPE_RC);
 		s_assert.assertTrue(sfHomePage.isWelcomeUserElementDisplayed(), "RC has not been enrolled successfully");
+		sfShopSkinCarePage = sfHomePage.clickAllProducts();
+		sfShopSkinCarePage.addProductToCart(TestConstants.PRODUCT_NUMBER, TestConstants.ORDER_TYPE_ADHOC);;
+		sfCartPage = sfShopSkinCarePage.checkoutTheCartFromPopUp();
+		sfCheckoutPage = sfCartPage.checkoutTheCart();
+		sfCheckoutPage.clickContinueWithoutConsultantLink();
+		sfCheckoutPage.clickSaveButton();
+		sfCheckoutPage.enterShippingDetails(firstName+" "+lastName, addressLine1, addressLine2, city, state, postalCode, phoneNumber);
+		sfCheckoutPage.clickShippingDetailsNextbutton();
+		sfCheckoutPage.enterUserBillingDetails(cardType, cardNumber, cardName, CVV);
+		sfCheckoutPage.clickBillingDetailsNextbutton();
+		sfCheckoutPage.selectTermsAndConditionsChkBox();
+		sfCheckoutPage.clickPlaceOrderButton();
+		s_assert.assertTrue(sfCheckoutPage.isOrderPlacedSuccessfully(), "Adhoc order is not placed successfully by PC");
 		s_assert.assertAll();
 	}	
 
@@ -128,5 +142,34 @@ public class RCEnrollmentTest extends StoreFrontWebsiteBaseTest{
 		s_assert.assertTrue(sfCheckoutPage.isOrderPlacedSuccessfully(), "Adhoc order is not placed successfully by PC");
 		s_assert.assertAll();
 		rcWithOrder=email;		
+	}
+	
+	@Test
+	public void testRCEnrollmentWithSponsor(){
+		timeStamp = CommonUtils.getCurrentTimeStamp();
+		email = firstName+timeStamp+TestConstants.EMAIL_SUFFIX;
+		navigateToStoreFrontBaseURL();
+		sfCartPage = new StoreFrontCartPage(driver);
+		sfShopSkinCarePage = new StoreFrontShopSkinCarePage(driver);
+		sfHomePage.clickLoginIcon();
+		sfCheckoutPage=sfHomePage.clickSignUpNowLink();
+		sfCheckoutPage.fillNewUserDetails(TestConstants.USER_TYPE_RC, firstName, lastName, email, password);
+		sfCheckoutPage.clickCreateAccountButton(TestConstants.USER_TYPE_RC);
+		s_assert.assertTrue(sfHomePage.isWelcomeUserElementDisplayed(), "RC has not been enrolled successfully");
+		sfShopSkinCarePage = sfHomePage.clickAllProducts();
+		sfShopSkinCarePage.addProductToCart(TestConstants.PRODUCT_NUMBER, TestConstants.ORDER_TYPE_ADHOC);;
+		sfCartPage = sfShopSkinCarePage.checkoutTheCartFromPopUp();
+		sfCheckoutPage = sfCartPage.checkoutTheCart();
+		sfCartPage.searchSponsor(TestConstants.SPONSOR);
+		sfHomePage.selectFirstSponsorFromList();
+		sfCheckoutPage.clickSaveButton();
+		sfCheckoutPage.enterShippingDetails(firstName+" "+lastName, addressLine1, addressLine2, city, state, postalCode, phoneNumber);
+		sfCheckoutPage.clickShippingDetailsNextbutton();
+		sfCheckoutPage.enterUserBillingDetails(cardType, cardNumber, cardName, CVV);
+		sfCheckoutPage.clickBillingDetailsNextbutton();
+		sfCheckoutPage.selectTermsAndConditionsChkBox();
+		sfCheckoutPage.clickPlaceOrderButton();
+		s_assert.assertTrue(sfCheckoutPage.isOrderPlacedSuccessfully(), "Adhoc order is not placed successfully by PC");
+		s_assert.assertAll();
 	}
 }

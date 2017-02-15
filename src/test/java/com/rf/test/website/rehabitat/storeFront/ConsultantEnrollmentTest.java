@@ -684,7 +684,7 @@ public class ConsultantEnrollmentTest extends StoreFrontWebsiteBaseTest{
 		timeStamp = CommonUtils.getCurrentTimeStamp();
 		randomWords = CommonUtils.getRandomWord(5);		
 		lastName = TestConstants.LAST_NAME+randomWords;
-		email = firstName+"WOCRPWOP"+timeStamp+TestConstants.EMAIL_SUFFIX;
+		email = firstName+"wocrpwop"+timeStamp+TestConstants.EMAIL_SUFFIX;
 		String socialInsuranceNumber = String.valueOf(CommonUtils.getRandomNum(100000000, 999999999));
 		sfHomePage.clickEnrollNow();
 		sfHomePage.searchSponsor(TestConstants.SPONSOR);

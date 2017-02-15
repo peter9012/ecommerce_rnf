@@ -27,9 +27,9 @@ public class TestConstants {
 	public static final String ORDER_TYPE_CRP= "Add to CRP";
 	public static final String PRODUCT_NUMBER = "2";
 	//	public static final String OTHER_PRODUCT_NUMBER = "3";
-	public static final String PC_FIRST_NAME = "AutoPC";
-	public static final String RC_FIRST_NAME = "AutoRC";
-	public static final String LAST_NAME = "lName";
+	public static final String PC_FIRST_NAME = "autopc";
+	public static final String RC_FIRST_NAME = "autorc";
+	public static final String LAST_NAME = "lname";
 	public static final String EMAIL_SUFFIX = "@mailinator.com";
 	public static final String ABOUT_RF = "ABOUT R+F";
 	public static final String PRODUCT_NAME = "Aging REDEFINED Special";
@@ -60,8 +60,8 @@ public class TestConstants {
 	//Consultant user details
 	public static final String CONSULTANT_ACCOUNT_ID = "";
 	public static final String CONSULTANT_ACCOUNT_NUMBER = "";
-	public static final String FIRST_NAME = "AutoCons";
-	public static final String ADDRESS_LINE_1_US = "60 Spear St";
+	public static final String FIRST_NAME = "autocons";
+	public static final String ADDRESS_LINE_1_US = "60 spear st";
 	public static final String ADDRESS_LINE_2_US = "600";
 	public static final String CITY_US = "San Francisco";
 	public static final String POSTAL_CODE_US = "94105";
@@ -72,8 +72,8 @@ public class TestConstants {
 	public static final String POSTAL_CODE_ND_US = "58503";
 	public static final String STATE_ND_US = "North Dakota";
 
-	public static final String FIRST_NAME_BILLING_ADDRESS = "BAFirstName";
-	public static final String LAST_NAME_BILLING_ADDRESS = "BALastName";
+	public static final String FIRST_NAME_BILLING_ADDRESS = "BAFirstname";
+	public static final String LAST_NAME_BILLING_ADDRESS = "BALastname";
 
 	public static final String DAY_OF_BIRTH = "14";
 	public static final String MONTH_OF_BIRTH = "Jun";

@@ -110,7 +110,7 @@ public class RFWebsiteDriver implements RFDriver,WebDriver {
 			capabilities.setCapability(CapabilityType.ForSeleniumServer.ENSURING_CLEAN_SESSION, true);
 			driver = new InternetExplorerDriver(capabilities);
 		}
-		driver.manage().timeouts().implicitlyWait(30, TimeUnit.SECONDS);
+		driver.manage().timeouts().implicitlyWait(20, TimeUnit.SECONDS);
 		driver.manage().window().maximize();
 		if (browser.equalsIgnoreCase("firefox")){
 			System.out.println(driver.manage().window().getSize());
@@ -910,7 +910,7 @@ public class RFWebsiteDriver implements RFDriver,WebDriver {
 	}
 
 	public void turnOffImplicitWaits() {
-		driver.manage().timeouts().implicitlyWait(3, TimeUnit.SECONDS);
+		driver.manage().timeouts().implicitlyWait(10, TimeUnit.SECONDS);
 	}
 
 	public void turnOnImplicitWaits() {

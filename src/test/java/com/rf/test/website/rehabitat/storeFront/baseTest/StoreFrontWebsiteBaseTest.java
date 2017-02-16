@@ -108,11 +108,12 @@ public class StoreFrontWebsiteBaseTest extends RFBaseTest {
 		setCountry();
 		setCountryId();
 		checkAndCloseMoreThanOneWindows();
-		navigateToStoreFrontBaseURL();
+		driver.pauseExecutionFor(2000);
 		if(sfHomePage.isWelcomeUserElementDisplayed()==true){
 			sfHomePage.clickWelcomeDropdown();
 			sfHomePage.logout();
 		}
+		navigateToStoreFrontBaseURL();
 	}
 
 	@AfterGroups(alwaysRun=true,groups="users")

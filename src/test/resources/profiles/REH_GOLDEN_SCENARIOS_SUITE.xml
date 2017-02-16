@@ -22,6 +22,9 @@
 					<include name="testAddNewBillingAddressToNewlyCreatedBillingProfile_386"></include>
 					<include name="testAddEditBillingProfileFromMyAccountForPC"></include>
 					<include name="testAddEditBillingProfileFromMyAccountForRC"></include>
+					<include name="testAddEditBillingProfileAtAdhocCartForConsultant"></include>
+					<include name="testAddEditBillingProfileAtAdhocCartForPC"></include>
+					<include name="testAddEditBillingProfileAtAdhocCartForRC"></include>
 				</methods>
 			</class>
 
@@ -33,6 +36,9 @@
 					<include name="testAddEditShippingAddressFromMyAccountForPC"></include>
 					<include name="testAddEditShippingAddressFromMyAccountForRC"></include>
 					<include name="testAddAShippingAddressOnUpdateAutoshipCart_506"></include>
+					<include name="testAddEditShippingProfileAtAdhocCartForConsultant"></include>
+					<include name="testAddEditShippingProfileAtAdhocCartForPC"></include>
+					<include name="testAddEditShippingProfileAtAdhocCartForRC"></include>
 				</methods>
 			</class>
 
@@ -57,7 +63,6 @@
 					<include name="testPlacedAnAutoshipOrderForConsultant"></include>
 				</methods>
 			</class>
-
 			<class name="com.rf.test.website.rehabitat.storeFront.PCEnrollmentTest">
 				<methods>
 					<include name="testPCEnrollmentWithoutSponsor"></include>

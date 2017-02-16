@@ -1606,7 +1606,6 @@ public class OrdersTest extends StoreFrontWebsiteBaseTest{
 		String text_OrderTotal = "Order Total";
 		String productSVValue = null;
 		String yourPrice = null;
-		String totalOfOrder = null;
 		String shippingProfileFromOrderConfirmationPage = null;
 		String shippingMethodFromOrderConfirmationPage = null;
 		String billingProfileNameFromOrderConfirmationPage = null;
@@ -1618,7 +1617,6 @@ public class OrdersTest extends StoreFrontWebsiteBaseTest{
 		String productQtyAtOrderDetailsPage = null;
 		String productSVAtOrderDetailsPage = null;
 		String productUnitPriceAtOrderDetailsPage = null;
-		String orderTotalAtOrderDetailsPage = null;
 		String productNameAtOrderDetailsPage = null;
 
 		sfHomePage.loginToStoreFront(TestConstants.CONSULTANT_EMAIL_WITH_CRP_AND_PULSE, password,true);
@@ -1632,10 +1630,9 @@ public class OrdersTest extends StoreFrontWebsiteBaseTest{
 		sfShopSkinCarePage.checkoutTheCartFromPopUp();
 		productName = sfCartPage.getProductName("1");
 		productQuantity = sfCartPage.getQuantityOfProductFromCart("1");
-		totalOfOrder = sfCartPage.getOrderTotal().trim();
 		sfCheckoutPage=sfCartPage.checkoutTheCart();
 		sfCheckoutPage.clickSaveButton();
-		shippingMethodBeforeOrderPlaced =  sfCheckoutPage.getSelectedShippingMethodName();
+		//shippingMethodBeforeOrderPlaced =  sfCheckoutPage.getSelectedShippingMethodName();
 		shippingProfile = sfCheckoutPage.getDefaultShippingAddressNameAtCheckoutPage();
 		sfCheckoutPage.clickShippingDetailsNextbutton();
 		sfCheckoutPage.clickAddNewBillingProfileButton();
@@ -1657,11 +1654,9 @@ public class OrdersTest extends StoreFrontWebsiteBaseTest{
 		sfCheckoutPage.clickWelcomeDropdown();
 		sfOrdersPage = sfCheckoutPage.navigateToOrdersPage();
 		sfOrdersPage.clickOrderNumber(orderNumber);
-		productQtyAtOrderDetailsPage = sfOrdersPage.getProductQuantityOfAnItem("2");
-		productSVAtOrderDetailsPage = sfOrdersPage.getProductSVOfAnItem("2").trim();
+		productQtyAtOrderDetailsPage = sfOrdersPage.getQuantityOfSpecificProductFromOrdersPage(productName);
+		//productSVAtOrderDetailsPage = sfOrdersPage.getProductSVOfAnItem("2").trim();
 		//productUnitPriceAtOrderDetailsPage = sfOrdersPage.getProductUnitPriceOfAnItem("2");
-		orderTotalAtOrderDetailsPage = sfOrdersPage.getProductOrderTotalOfAnItem("2");
-		productNameAtOrderDetailsPage = sfOrdersPage.getProductNameOfAnItem("2");
 		shippingProfileFromOrderConfirmationPage = sfCheckoutPage.getShippingProfileFromConfirmationPage();
 		shippingMethodFromOrderConfirmationPage = sfCheckoutPage.getShippingMethodAfterPlacedOrder().split("\\:")[1].trim();
 		billingProfileNameFromOrderConfirmationPage = sfCheckoutPage.getBillingProfileAfterPlacedOrder();
@@ -1671,7 +1666,7 @@ public class OrdersTest extends StoreFrontWebsiteBaseTest{
 		shippingChargeAtOrderConfirmationPage = sfCheckoutPage.getChargesAccordingToLabelAtOrderConfirmationPage(text_Shipping);
 		subTotalAtOrderConfirmationPage = sfCheckoutPage.getChargesAccordingToLabelAtOrderConfirmationPage(text_Subtotal);
 		s_assert.assertTrue(shippingProfile.contains(shippingProfileFromOrderConfirmationPage), "Shipping Profile is not matching on confirmation page. Expected is :"+shippingProfile+" But found is :"+shippingProfileFromOrderConfirmationPage);
-		s_assert.assertTrue(shippingMethodBeforeOrderPlaced.contains(shippingMethodFromOrderConfirmationPage), "Shipping Method is not matching on confirmation page. Expected is :"+shippingMethodBeforeOrderPlaced+" But found is :"+shippingMethodFromOrderConfirmationPage);
+		//s_assert.assertTrue(shippingMethodBeforeOrderPlaced.contains(shippingMethodFromOrderConfirmationPage), "Shipping Method is not matching on confirmation page. Expected is :"+shippingMethodBeforeOrderPlaced+" But found is :"+shippingMethodFromOrderConfirmationPage);
 		s_assert.assertTrue(billingProfileNameFromOrderConfirmationPage.contains(billingProfileLastName),"Billing Profile is not matching on confirmation page. Expected is :"+billingProfileLastName+" But found is :"+billingProfileNameFromOrderConfirmationPage);
 		s_assert.assertTrue(lastFourDigitOfCCFromOrderConfirmationPage.equals(ccfourDigits), "Credit Card Last 4 digits are not matching. Expected is :"+ccfourDigits+" But found is :"+lastFourDigitOfCCFromOrderConfirmationPage);
 		s_assert.assertTrue(expDateOfCCFromOrderConfirmationPage.equals(ccExpiryDate), "Credit Card Expiry Date is not matching. Expected is :"+ccExpiryDate+" But found is :"+expDateOfCCFromOrderConfirmationPage);
@@ -1679,10 +1674,9 @@ public class OrdersTest extends StoreFrontWebsiteBaseTest{
 		s_assert.assertTrue(shippingChargeAtOrderConfirmationPage.equals(shippingCharges),"Shipping charge is not matching. Expected is:"+shippingCharges+"But found is "+shippingChargeAtOrderConfirmationPage);
 		s_assert.assertTrue(subTotalAtOrderConfirmationPage.equals(subTotal),"Subtotal is not matching. Expected is:"+subTotal+"But found is "+subTotalAtOrderConfirmationPage);
 		s_assert.assertTrue(productQtyAtOrderDetailsPage.contains(productQuantity),"Product qty is not matching. Expected is:"+productQuantity+"But found is "+productQtyAtOrderDetailsPage);
-		s_assert.assertTrue(productSVValue.contains(productSVAtOrderDetailsPage),"Product SV value is not matching. Expected is:"+productSVValue+"But found is "+productSVAtOrderDetailsPage);
-		s_assert.assertTrue(productUnitPriceAtOrderDetailsPage.contains(yourPrice),"Product unit price is not matching. Expected is:"+yourPrice+"But found is "+productUnitPriceAtOrderDetailsPage);
-		s_assert.assertTrue(orderTotalAtOrderDetailsPage.contains(totalOfOrder),"Product order total is not matching. Expected is:"+totalOfOrder+"But found is "+orderTotalAtOrderDetailsPage);
-		s_assert.assertTrue(productNameAtOrderDetailsPage.contains(productName),"Product name is not matching. Expected is:"+productName+"But found is "+productNameAtOrderDetailsPage);
+		s_assert.assertTrue(sfOrdersPage.isProductNamePresentOnOrderDetailPage(productName),"Product name is not matching. Expected is:"+productName+"But not found");
+		//s_assert.assertTrue(productSVValue.contains(productSVAtOrderDetailsPage),"Product SV value is not matching. Expected is:"+productSVValue+"But found is "+productSVAtOrderDetailsPage);
+		//s_assert.assertTrue(productUnitPriceAtOrderDetailsPage.contains(yourPrice),"Product unit price is not matching. Expected is:"+yourPrice+"But found is "+productUnitPriceAtOrderDetailsPage);
 		s_assert.assertAll();
 	}
 
@@ -1911,6 +1905,7 @@ public class OrdersTest extends StoreFrontWebsiteBaseTest{
 		s_assert.assertAll();
 	}
 
+
 	//PC Adhoc Order
 	@Test
 	public void testPlacedAnAdhocOrderFromPC(){
@@ -1933,7 +1928,6 @@ public class OrdersTest extends StoreFrontWebsiteBaseTest{
 		String text_OrderTotal = "Order Total";
 		String productSVValue = null;
 		String yourPrice = null;
-		String totalOfOrder = null;
 		String shippingProfileFromOrderConfirmationPage = null;
 		String shippingMethodFromOrderConfirmationPage = null;
 		String billingProfileNameFromOrderConfirmationPage = null;
@@ -1945,8 +1939,6 @@ public class OrdersTest extends StoreFrontWebsiteBaseTest{
 		String productQtyAtOrderDetailsPage = null;
 		String productSVAtOrderDetailsPage = null;
 		String productUnitPriceAtOrderDetailsPage = null;
-		String orderTotalAtOrderDetailsPage = null;
-		String productNameAtOrderDetailsPage = null;
 
 		sfHomePage.loginToStoreFront(TestConstants.PC_EMAIL_HAVING_AUTOSHIP, password,true);
 		sfCartPage = sfHomePage.clickMiniCartBagLink();
@@ -1959,7 +1951,6 @@ public class OrdersTest extends StoreFrontWebsiteBaseTest{
 		sfShopSkinCarePage.checkoutTheCartFromPopUp();
 		productName = sfCartPage.getProductName("1");
 		productQuantity = sfCartPage.getQuantityOfProductFromCart("1");
-		totalOfOrder = sfCartPage.getOrderTotal().trim();
 		sfCheckoutPage=sfCartPage.checkoutTheCart();
 		sfCheckoutPage.clickSaveButton();
 		//shippingMethodBeforeOrderPlaced =  sfCheckoutPage.getSelectedShippingMethodName();
@@ -1984,11 +1975,9 @@ public class OrdersTest extends StoreFrontWebsiteBaseTest{
 		sfCheckoutPage.clickWelcomeDropdown();
 		sfOrdersPage = sfCheckoutPage.navigateToOrdersPage();
 		sfOrdersPage.clickOrderNumber(orderNumber);
-		productQtyAtOrderDetailsPage = sfOrdersPage.getProductQuantityOfAnItem("2");
+		productQtyAtOrderDetailsPage = sfOrdersPage.getQuantityOfSpecificProductFromOrdersPage(productName);
 		//productSVAtOrderDetailsPage = sfOrdersPage.getProductSVOfAnItem("2").trim();
 		productUnitPriceAtOrderDetailsPage = sfOrdersPage.getProductUnitPriceOfAnItem("2");
-		orderTotalAtOrderDetailsPage = sfOrdersPage.getProductOrderTotalOfAnItem("2");
-		productNameAtOrderDetailsPage = sfOrdersPage.getProductNameOfAnItem("2");
 		shippingProfileFromOrderConfirmationPage = sfCheckoutPage.getShippingProfileFromConfirmationPage();
 		//shippingMethodFromOrderConfirmationPage = sfCheckoutPage.getShippingMethodAfterPlacedOrder().split("\\:")[1].trim();
 		billingProfileNameFromOrderConfirmationPage = sfCheckoutPage.getBillingProfileAfterPlacedOrder();
@@ -2005,11 +1994,10 @@ public class OrdersTest extends StoreFrontWebsiteBaseTest{
 		s_assert.assertTrue(grandTotalAtOrderConfirmationPage.equals(orderTotal),"Order total is not matching. Expected is:"+orderTotal+"But found is "+grandTotalAtOrderConfirmationPage);
 		s_assert.assertTrue(shippingChargeAtOrderConfirmationPage.equals(shippingCharges),"Shipping charge is not matching. Expected is:"+shippingCharges+"But found is "+shippingChargeAtOrderConfirmationPage);
 		s_assert.assertTrue(subTotalAtOrderConfirmationPage.equals(subTotal),"Subtotal is not matching. Expected is:"+subTotal+"But found is "+subTotalAtOrderConfirmationPage);
-		s_assert.assertTrue(productQtyAtOrderDetailsPage.contains(productQuantity),"Product qty is not matching. Expected is:"+productQuantity+"But found is "+productQtyAtOrderDetailsPage);
 		//s_assert.assertTrue(productSVValue.contains(productSVAtOrderDetailsPage),"Product SV value is not matching. Expected is:"+productSVValue+"But found is "+productSVAtOrderDetailsPage);
-		s_assert.assertTrue(productUnitPriceAtOrderDetailsPage.contains(yourPrice),"Product unit price is not matching. Expected is:"+yourPrice+"But found is "+productUnitPriceAtOrderDetailsPage);
-		s_assert.assertTrue(orderTotalAtOrderDetailsPage.contains(totalOfOrder),"Product order total is not matching. Expected is:"+totalOfOrder+"But found is "+orderTotalAtOrderDetailsPage);
-		s_assert.assertTrue(productNameAtOrderDetailsPage.contains(productName),"Product name is not matching. Expected is:"+productName+"But found is "+productNameAtOrderDetailsPage);
+		//s_assert.assertTrue(productUnitPriceAtOrderDetailsPage.contains(yourPrice),"Product unit price is not matching. Expected is:"+yourPrice+"But found is "+productUnitPriceAtOrderDetailsPage);
+		s_assert.assertTrue(productQtyAtOrderDetailsPage.contains(productQuantity),"Product qty is not matching. Expected is:"+productQuantity+"But found is "+productQtyAtOrderDetailsPage);
+		s_assert.assertTrue(sfOrdersPage.isProductNamePresentOnOrderDetailPage(productName),"Product name is not matching. Expected is:"+productName+"But not found");
 		s_assert.assertAll();
 	}
 
@@ -2035,7 +2023,6 @@ public class OrdersTest extends StoreFrontWebsiteBaseTest{
 		String text_OrderTotal = "Order Total";
 		String productSVValue = null;
 		String yourPrice = null;
-		String totalOfOrder = null;
 		String shippingProfileFromOrderConfirmationPage = null;
 		String shippingMethodFromOrderConfirmationPage = null;
 		String billingProfileNameFromOrderConfirmationPage = null;
@@ -2047,8 +2034,6 @@ public class OrdersTest extends StoreFrontWebsiteBaseTest{
 		String productQtyAtOrderDetailsPage = null;
 		String productSVAtOrderDetailsPage = null;
 		String productUnitPriceAtOrderDetailsPage = null;
-		String orderTotalAtOrderDetailsPage = null;
-		String productNameAtOrderDetailsPage = null;
 
 		sfHomePage.loginToStoreFront(TestConstants.RC_EMAIL_HAVING_ORDER, password,true);
 		sfCartPage = sfHomePage.clickMiniCartBagLink();
@@ -2060,7 +2045,6 @@ public class OrdersTest extends StoreFrontWebsiteBaseTest{
 		sfShopSkinCarePage.checkoutTheCartFromPopUp();
 		productName = sfCartPage.getProductName("1");
 		productQuantity = sfCartPage.getQuantityOfProductFromCart("1");
-		totalOfOrder = sfCartPage.getOrderTotal().trim();
 		sfCheckoutPage=sfCartPage.checkoutTheCart();
 		sfCheckoutPage.clickContinueWithoutConsultantLink();
 		sfCheckoutPage.clickSaveButton();
@@ -2086,11 +2070,9 @@ public class OrdersTest extends StoreFrontWebsiteBaseTest{
 		sfCheckoutPage.clickWelcomeDropdown();
 		sfOrdersPage = sfCheckoutPage.navigateToOrdersPage();
 		sfOrdersPage.clickOrderNumber(orderNumber);
-		productQtyAtOrderDetailsPage = sfOrdersPage.getProductQuantityOfAnItem("2");
+		productQtyAtOrderDetailsPage = sfOrdersPage.getQuantityOfSpecificProductFromOrdersPage(productName);
 		//productSVAtOrderDetailsPage = sfOrdersPage.getProductSVOfAnItem("2").trim();
 		productUnitPriceAtOrderDetailsPage = sfOrdersPage.getProductUnitPriceOfAnItem("2");
-		orderTotalAtOrderDetailsPage = sfOrdersPage.getProductOrderTotalOfAnItem("2");
-		productNameAtOrderDetailsPage = sfOrdersPage.getProductNameOfAnItem("2");
 		shippingProfileFromOrderConfirmationPage = sfCheckoutPage.getShippingProfileFromConfirmationPage();
 		//shippingMethodFromOrderConfirmationPage = sfCheckoutPage.getShippingMethodAfterPlacedOrder().split("\\:")[1].trim();
 		billingProfileNameFromOrderConfirmationPage = sfCheckoutPage.getBillingProfileAfterPlacedOrder();
@@ -2107,11 +2089,10 @@ public class OrdersTest extends StoreFrontWebsiteBaseTest{
 		s_assert.assertTrue(grandTotalAtOrderConfirmationPage.equals(orderTotal),"Order total is not matching. Expected is:"+orderTotal+"But found is "+grandTotalAtOrderConfirmationPage);
 		s_assert.assertTrue(shippingChargeAtOrderConfirmationPage.equals(shippingCharges),"Shipping charge is not matching. Expected is:"+shippingCharges+"But found is "+shippingChargeAtOrderConfirmationPage);
 		s_assert.assertTrue(subTotalAtOrderConfirmationPage.equals(subTotal),"Subtotal is not matching. Expected is:"+subTotal+"But found is "+subTotalAtOrderConfirmationPage);
-		s_assert.assertTrue(productQtyAtOrderDetailsPage.contains(productQuantity),"Product qty is not matching. Expected is:"+productQuantity+"But found is "+productQtyAtOrderDetailsPage);
 		//s_assert.assertTrue(productSVValue.contains(productSVAtOrderDetailsPage),"Product SV value is not matching. Expected is:"+productSVValue+"But found is "+productSVAtOrderDetailsPage);
 		//s_assert.assertTrue(productUnitPriceAtOrderDetailsPage.contains(yourPrice),"Product unit price is not matching. Expected is:"+yourPrice+"But found is "+productUnitPriceAtOrderDetailsPage);
-		s_assert.assertTrue(orderTotalAtOrderDetailsPage.contains(totalOfOrder),"Product order total is not matching. Expected is:"+totalOfOrder+"But found is "+orderTotalAtOrderDetailsPage);
-		s_assert.assertTrue(productNameAtOrderDetailsPage.contains(productName),"Product name is not matching. Expected is:"+productName+"But found is "+productNameAtOrderDetailsPage);
+		s_assert.assertTrue(productQtyAtOrderDetailsPage.contains(productQuantity),"Product qty is not matching. Expected is:"+productQuantity+"But found is "+productQtyAtOrderDetailsPage);
+		s_assert.assertTrue(sfOrdersPage.isProductNamePresentOnOrderDetailPage(productName),"Product name is not matching. Expected is:"+productName+"But not found");
 		s_assert.assertAll();
 	}
 }

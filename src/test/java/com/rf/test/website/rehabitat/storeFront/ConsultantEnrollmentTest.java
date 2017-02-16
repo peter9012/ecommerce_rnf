@@ -590,7 +590,7 @@ public class ConsultantEnrollmentTest extends StoreFrontWebsiteBaseTest{
 	 * State and empty billing address selected.
 	 *     
 	 */
-	@Test(enabled=true)
+	@Test(enabled=false)//test needs update
 	public void testNortDakotaConsultantEnrollmentEmptyBillingAddress_486(){
 		timeStamp = CommonUtils.getCurrentTimeStamp();
 		randomWords = CommonUtils.getRandomWord(5);		

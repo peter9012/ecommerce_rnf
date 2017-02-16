@@ -38,7 +38,7 @@ public class StoreFrontHomePage extends StoreFrontWebsiteBasePage{
 	private final By BILLING_ADDRESS_DD_LOC= By.id("default-address");
 	private final By BILLING_ADDRESS_OPTION_VALUE_LOC= By.xpath("//select[@id='default-address']//option[2]");
 	private final By BIG_BUSNINESS_KIT_PAGE_LOC = By.xpath("//input[@id='ENROLL_KIT_0002']");
-	private final By PERSONAL_RESULTS_KIT_PAGE_LOC = By.xpath("//input[@id='ENROLL_KIT_0003']");
+	private final By PERSONAL_RESULTS_KIT_PAGE_LOC = By.xpath("//input[@id='PRKT']");
 	private final By FIRST_NAME_FOR_REGISTRATION_LOC = By.id("register.firstName");
 	private final By LAST_NAME_FOR_REGISTRATION_LOC = By.id("register.lastName");
 	private final By EMAIL_ID_FOR_REGISTRATION_LOC = By.id("register.email");
@@ -56,7 +56,7 @@ public class StoreFrontHomePage extends StoreFrontWebsiteBasePage{
 	private final By WELCOME_USER_LOC = By.xpath("//div[@class='loginBlock']/div");
 	private final By CONFIRMATION_MSG_OF_CONSULTANT_ENROLLMENT_LOC = By.xpath("//div[@class='global-alerts']/div");
 	private final By POLICIES_AND_PROCEDURES_LINK_LOC = By.xpath("//a[contains(text(),'Rodan+Fields Policies and Procedure')]");
-	private final By PULSE_PRO_T_C_LINK_LOC = By.xpath("//a[contains(text(),'Pulse Pro Terms and Conditions')]");
+	private final By PULSE_PRO_T_C_LINK_LOC = By.xpath("//a[contains(text(),'Pulse Pro')]");
 	private final By CRP_T_C_LINK_LOC = By.xpath("//a[contains(text(),'Consultant Replenishment Program (CRP) Terms and Conditions')]");
 	private final By NORTH_DAKOTA_CHKBOX_LOC = By.xpath("//label[@for='noEnrollmentKit']/..");
 	private final By ALL_KIT_SECTION_LOC = By.xpath("//div[@class='enrollmentKit-wrapper row']/div");
@@ -75,11 +75,12 @@ public class StoreFrontHomePage extends StoreFrontWebsiteBasePage{
 	private final By LOGIN_OR_REGISTER_TXT_LOC = By.xpath("//h1[contains(text(),'LOG IN OR REGISTER') or contains(text(),'Log in') or contains(text(),'Log in or create an account')]");
 	private final By EMAIL_AVAILABLE_MSG_LOC = By.xpath("//div[@class='emailbox-available']//div[contains(text(),'Available')]");
 	private final By SPONSOR_NAME_LINK_LOC = By.xpath("//div[contains(@class,'findAConsultant')]/a[contains(@href,'/pws/') and contains(@href,'about-me')]");
-	private final By FIRST_PRODUCT_ADD_TO_CRP_BTN_LOC = By.xpath("//div[@id='product_category']/following-sibling::div/descendant::span[text()='Add to CRP'][1]");
+	private final By FIRST_PRODUCT_ADD_TO_CRP_BTN_LOC = By.xpath("//div[@id='product_category']/following-sibling::div/descendant::span[text()='Add to CRP'][2]");
 	private final By CRP_CHECKOUT_BTN_LOC = By.xpath("//button[contains(text(),'Next')]");
 	private final By SET_UP_CRP_BTN_LOC = By.xpath("//a[contains(text(),'JOIN CRP')]");
 	private final By PRODUCT_SEARCH_AUTOSUGGESTION_LOC = By.xpath("//div[@class='name']");
 	private final By MEET_THE_DOCTORS_TXT_LOC = By.xpath("//h1[contains(text(),'Meet the Doctors')]");
+	private final By CONTINUE_SHOPPING_CRP_BTN_LOC = By.xpath("//button[contains(text(),'Continue')]");
 
 	private String specificProductAddToCRPBtnLoc = "//div[@id='product_category']/following-sibling::div/descendant::span[text()='Add to CRP'][%s]";
 	private String viewDetailsLinkLoc = "//div[contains(@class,'enrollmentKit-wrapper')]/descendant::a[contains(text(),'View Details')][%s]";
@@ -451,7 +452,7 @@ public class StoreFrontHomePage extends StoreFrontWebsiteBasePage{
 		 * @return boolean
 		 */
 		public boolean isWelcomeUserElementDisplayed(){
-			return driver.isElementVisible(WELCOME_DROPDOWN_LOC);
+			return driver.isElementPresent(WELCOME_DROPDOWN_LOC);
 		}
 
 
@@ -700,7 +701,7 @@ public class StoreFrontHomePage extends StoreFrontWebsiteBasePage{
 		 * @return
 		 */
 		public boolean isHomePageBannerDisplayed(){
-			return driver.isElementVisible(By.xpath("//div[@class='hpage-banner-box']"));
+			return driver.isElementVisible(By.xpath("//div[contains(@class,'rf-home')]"));
 		}
 
 		/***
@@ -750,6 +751,7 @@ public class StoreFrontHomePage extends StoreFrontWebsiteBasePage{
 		 * @return
 		 */
 		public StoreFrontHomePage enterPrefix(String prefix){
+			logger.info("Prefix is "+prefix);
 			driver.type(PREFIX_FIELD_LOC, prefix);
 			return this;
 		}
@@ -923,6 +925,13 @@ public class StoreFrontHomePage extends StoreFrontWebsiteBasePage{
 		public StoreFrontHomePage addFirstProductForCRPCheckout(){
 			driver.clickByJS(RFWebsiteDriver.driver, driver.findElement(FIRST_PRODUCT_ADD_TO_CRP_BTN_LOC));
 			logger.info("Clicked Add to CRP button of First Product");
+			driver.pauseExecutionFor(2000);
+			while(driver.isElementPresent(CRP_CHECKOUT_BTN_LOC)==false){
+				driver.clickByJS(RFWebsiteDriver.driver, driver.findElement(CONTINUE_SHOPPING_CRP_BTN_LOC));
+				driver.pauseExecutionFor(1000);
+				driver.clickByJS(RFWebsiteDriver.driver, driver.findElement(FIRST_PRODUCT_ADD_TO_CRP_BTN_LOC));
+				logger.info("Clicked Add to CRP button of First Product");
+			}
 			return this;
 		}
 

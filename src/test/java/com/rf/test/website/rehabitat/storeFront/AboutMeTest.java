@@ -7,7 +7,8 @@ import com.rf.core.website.constants.TestConstants;
 import com.rf.test.website.rehabitat.storeFront.baseTest.StoreFrontWebsiteBaseTest;
 
 public class AboutMeTest extends StoreFrontWebsiteBaseTest{
-
+	private String timeStamp=null;
+	
 	/***
 	 * qTest : TC-578 PWS sites - Access Join URL
 	 * Description : This test validate the Enroll Now, Events, Meet Our Community,
@@ -403,6 +404,7 @@ public class AboutMeTest extends StoreFrontWebsiteBaseTest{
 	 */
 	@Test(enabled=true)
 	public void testPersonalizingPWSAboutMePageSaveChanges_579(){
+		timeStamp = CommonUtils.getCurrentTimeStamp();
 		String homePageURL = null;
 		String currentURL = null;
 		String phoneOnAboutMePage=null;
@@ -415,10 +417,10 @@ public class AboutMeTest extends StoreFrontWebsiteBaseTest{
 		String aboutMeEdit="about-me/edit";
 		String phoneNo=TestConstants.PHONE_NUMBER;
 		String city=TestConstants.CITY_US;
-		String email="AutoEmail@xyz.com";
-		String fbId="facebook@xyz.com";
-		String twitterID="twitter@xyz.com";
-		String pinterestId="pinterest@xyz.com";
+		String email="AutoEmail"+timeStamp+"@xyz.com";
+		String fbId="facebook"+timeStamp+"@xyz.com";
+		String twitterID="twitter"+timeStamp+"@xyz.com";
+		String pinterestId="pinterest"+timeStamp+"@xyz.com";
 		String prefix = TestConstants.CONSULTANT_PWS_PREFIX;
 
 		homePageURL = sfHomePage.getCurrentURL();
@@ -440,19 +442,19 @@ public class AboutMeTest extends StoreFrontWebsiteBaseTest{
 		phoneNo=sfAboutMePage.getPhoneNumberFromAboutMePageHeader();
 		s_assert.assertTrue(phoneNo.contains(TestConstants.PHONE_NUMBER),"Expected Phone number should be '9842342342' But actual on UI is:"+phoneNo);
 		email=sfAboutMePage.getEmailFromAboutMePageHeader();
-		s_assert.assertTrue(email.contains("AutoEmail@xyz.com"),"Expected email should be 'AutoEmail@xyz.com' but actual on UI is"+email);
+		s_assert.assertTrue(email.contains("AutoEmail"+timeStamp+"@xyz.com"),"Expected email should be 'AutoEmail@xyz.com' but actual on UI is"+email);
 		city=sfAboutMePage.getCityStateTextOnAboutMePageHeader();
 		s_assert.assertTrue(city.contains(TestConstants.CITY_US),"Expected city should be 'San Francisco' but actual on UI is"+city);
 		fbId=sfAboutMePage.getFacebookIDFromAboutMePageHeader();
-		s_assert.assertTrue(fbId.contains("facebook@xyz.com"),"Expected facebook id should be 'facebook@xyz.com'  but actual on UI is"+fbId);
+		s_assert.assertTrue(fbId.contains("facebook"+timeStamp+"@xyz.com"),"Facebook id not updated");
 		twitterID=sfAboutMePage.getTwitterIDFromAboutMePageHeader();
-		s_assert.assertTrue(twitterID.contains("twitter@xyz.com"),"Expected twitter id should be 'twitter@xyz.com'  but actual on UI is"+twitterID);
+		s_assert.assertTrue(twitterID.contains("twitter"+timeStamp+"@xyz.com"),"twitter id not updated");
 		pinterestId=sfAboutMePage.getPinterestIDFromAboutMePageHeader();
-		s_assert.assertTrue(pinterestId.contains("pinterest@xyz.com"),"Expected pinterest id should be 'pinterest@xyz.com'  but actual on UI is"+pinterestId);
+		s_assert.assertTrue(pinterestId.contains("pinterest"+timeStamp+"@xyz.com"),"pinterest id not updated");
 
 		sfAboutMePage.clickWelcomeDropdown();
 		sfAboutMePage.logout();
-		sfAboutMePage.loginToStoreFront(TestConstants.RC_EMAIL_WITHOUT_ORDER, password,true);
+		sfAboutMePage.loginToStoreFront(TestConstants.RC_EMAIL_HAVING_ORDER, password,true);
 		sfAboutMePage.clickAboutMe();
 		phoneOnAboutMePage=sfAboutMePage.getPhoneNumberFromAboutMePageHeader();
 		s_assert.assertTrue(phoneOnAboutMePage.contains(phoneNo),"Expected phone number is:"+phoneNo+"But actual on UI is"+phoneOnAboutMePage);

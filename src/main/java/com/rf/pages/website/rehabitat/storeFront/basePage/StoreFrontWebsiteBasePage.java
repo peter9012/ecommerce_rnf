@@ -430,6 +430,15 @@ public class StoreFrontWebsiteBasePage extends RFBasePage {
 		return new StoreFrontShopSkinCarePage(driver);
 	}
 
+	//temp method, till we have All Products not having required products
+	public StoreFrontShopSkinCarePage clickAllProductsCRP() {
+		mouseHoverOn(TestConstants.SHOP_SKINCARE);
+		driver.click(ALL_PRODUCTS_LOC);
+		logger.info("clicked on 'All Products'");
+		driver.waitForPageLoad();
+		return new StoreFrontShopSkinCarePage(driver);
+	}
+
 	/***
 	 * This method clicks on the 'Executive Team' link in Top Navigation
 	 * 
@@ -477,9 +486,10 @@ public class StoreFrontWebsiteBasePage extends RFBasePage {
 	 */
 	public StoreFrontHomePage clickRodanAndFieldsLogo() {
 		if (driver.isElementVisible(RODAN_AND_FIELDS_LOGO_LOC)) {
-			driver.click(RODAN_AND_FIELDS_LOGO_LOC);
+			//driver.click(RODAN_AND_FIELDS_LOGO_LOC);
+			driver.clickByJS(RFWebsiteDriver.driver, driver.findElement(RODAN_AND_FIELDS_LOGO_LOC));
 		} else {
-			driver.click(RODAN_AND_FIELDS_IMAGE_LOC);
+			driver.clickByJS(RFWebsiteDriver.driver, driver.findElement(RODAN_AND_FIELDS_IMAGE_LOC));
 		}
 		logger.info("Rodan and Fields logo clicked");
 		driver.waitForPageLoad();
@@ -1043,6 +1053,12 @@ public class StoreFrontWebsiteBasePage extends RFBasePage {
 	 * 
 	 */
 	public StoreFrontWebsiteBasePage clickWelcomeDropdown() {
+		driver.pauseExecutionFor(2000);
+		if (driver.isElementPresent(SET_UP_CRP_POPUP_CLOSE_LOC)) {
+			driver.click(SET_UP_CRP_POPUP_CLOSE_LOC);
+			logger.info("JOIN CRP banner closed");
+		}
+		driver.pauseExecutionFor(1000);
 		driver.clickByJS(RFWebsiteDriver.driver, driver.findElement(WELCOME_DROPDOWN_LOC));
 		logger.info("Welcome dropdown clicked");
 		driver.pauseExecutionFor(2000);
@@ -1475,6 +1491,7 @@ public class StoreFrontWebsiteBasePage extends RFBasePage {
 		logger.info("logout link clicked from welcome dropdown");
 		driver.waitForLoadingImageToDisappear();
 		driver.waitForPageLoad();
+		driver.pauseExecutionFor(2000);
 		return new StoreFrontHomePage(driver);
 	}
 
@@ -3821,17 +3838,17 @@ public class StoreFrontWebsiteBasePage extends RFBasePage {
 			return driver.isElementVisible(By.xpath(String.format(productNameInAllItemsInCartLoc, productName)));
 		}
 	}
-	
+
 	/***
-	  * This method click Yes Button on Address Suggestion Popup
-	  * 
-	  * @param
-	  * @return StorefrontWebsiteBasePage
-	  */
-	 public StoreFrontWebsiteBasePage clickYesButtonOnAddressSuggestionPopUp() {
-	  driver.pauseExecutionFor(3000);
-	  driver.click(YES_BUTTON_ON_ADDRESS_SUGGESTION_MODAL_LOC);
-	  logger.info("Clicked Yes Button from Address Suggestion Popup");
-	  return this;
+	 * This method click Yes Button on Address Suggestion Popup
+	 * 
+	 * @param
+	 * @return StorefrontWebsiteBasePage
+	 */
+	public StoreFrontWebsiteBasePage clickYesButtonOnAddressSuggestionPopUp() {
+		driver.pauseExecutionFor(3000);
+		driver.click(YES_BUTTON_ON_ADDRESS_SUGGESTION_MODAL_LOC);
+		logger.info("Clicked Yes Button from Address Suggestion Popup");
+		return this;
 	}
 }

@@ -18,7 +18,7 @@ public class StoreFrontOrdersPage extends StoreFrontWebsiteBasePage{
 			.getLogger(StoreFrontOrdersPage.class.getName());
 
 
-private final By PULSE_ORDER_ITEM_ON_ORDER_DETAIL_PAGE_LOC = By.xpath("//li[@class='orderItemsHeading']/following::p[text()='Pulse Pro-1 Month']");
+	private final By PULSE_ORDER_ITEM_ON_ORDER_DETAIL_PAGE_LOC = By.xpath("//li[@class='orderItemsHeading']/following::p[text()='Pulse Pro-1 Month']");
 	private final By FIRST_ORDER_STATUS_IN_AUTOSHIP_ORDER_HISTORY_LOC = By.xpath("//div[contains(text(),'PENDING AUTOSHIP ORDERS')]/following-sibling::div//tbody//a[contains(text(),'Edit')]/../preceding-sibling::td[@class='status']");
 	private final By FIRST_ORDER_NUMBER_UNDER_ORDER_HISTORY_LOC = By.xpath("//div[@id='orderHistoryContentArea']//tr[2]//td[2]/a");
 	private final By FIRST_ACTIONS_DD_UNDER_ORDER_HISTORY_LOC = By.xpath("//div[@id='orderHistoryContentArea']//tr[2]//div[contains(text(),'Actions')]");
@@ -51,6 +51,8 @@ private final By PULSE_ORDER_ITEM_ON_ORDER_DETAIL_PAGE_LOC = By.xpath("//li[@cla
 	private final By AUTOSHIP_ORDER_HISTORY_TABLE_LOC = By.xpath("//div[contains(text(),'PENDING AUTOSHIP ORDERS')]/following-sibling::div//tbody");
 	private final By PULSE_LINK_ORDER_PAGE = By.xpath("//div[@class='account-orderhistory']//a[text()='Pulse']");
 
+	private String productNameLoc = "//p[contains(text(),'%s')]";
+	private String productQuantityLoc = "//p[contains(text(),'%s')]/../following::div[@class='orderQty']";
 	private String orderNumberLoc = "//a[contains(text(),'%s')]";
 	private String optionsLinkUnderReturnOrderSectionLoc = "//div[contains(text(),'RETURN ORDERS AND CREDITS')]/../../descendant::a[contains(text(),'%s')]";
 	private String headerTitleInOrderHistorySection = "//div[@id='orderHistoryContentArea']//th[contains(text(),'%s')]";
@@ -686,7 +688,7 @@ private final By PULSE_ORDER_ITEM_ON_ORDER_DETAIL_PAGE_LOC = By.xpath("//li[@cla
 		driver.waitForPageLoad();
 		return orderNumber;
 	}
-	
+
 	/***
 	 * This method validates pulse pro order from order detail page 
 	 * @param
@@ -695,6 +697,29 @@ private final By PULSE_ORDER_ITEM_ON_ORDER_DETAIL_PAGE_LOC = By.xpath("//li[@cla
 	public boolean isPulseProOrderPresentOnOrderDetailPage(){
 		return driver.isElementVisible(PULSE_ORDER_ITEM_ON_ORDER_DETAIL_PAGE_LOC);
 	}
-	
+
+	/***
+	 * This method validates product name at orders page 
+	 * @param
+	 * @return boolean
+	 */
+	public boolean isProductNamePresentOnOrderDetailPage(String productName){
+		return driver.isElementPresent(By.xpath(String.format(productNameLoc, productName)));
+	}
+
+
+	/***
+	 * This method get product quantity for specific product
+	 * 
+	 * @param productName
+	 * @return product quantity
+	 * 
+	 */
+	public String getQuantityOfSpecificProductFromOrdersPage(String productName) {
+		String productQty = driver.getText(By.xpath(String.format(productQuantityLoc, productName)));
+		logger.info("Quantity of " + productName + " is " + productQty);
+		return productQty;
+	}
+
 }
 

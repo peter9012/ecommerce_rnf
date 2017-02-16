@@ -763,7 +763,7 @@ public class ConsultantEnrollmentTest extends StoreFrontWebsiteBaseTest{
 	}
 
 	//For CONSULTANT_EMAIL_SPONSOR_WITHOUT_PWS
-	@Test(enabled=true, groups={"users"},dependsOnMethods={"testConsultantEnrollmentWithoutCRPAndWithoutPulse"})
+	@Test(enabled=false, groups={"users"},dependsOnMethods={"testConsultantEnrollmentWithoutCRPAndWithoutPulse"})
 	public void testConsultantEnrollmentHavingSponsorWithoutPWS(){
 		navigateToStoreFrontBaseURL();
 		timeStamp = CommonUtils.getCurrentTimeStamp();

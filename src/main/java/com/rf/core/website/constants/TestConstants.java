@@ -165,20 +165,21 @@ public class TestConstants {
 	public static final String DEFAULT_SHIPPING_ADDRESS_UPDATION_MSG = "Your default address was updated.";
 	public static final String AUTOSHIP_DELIVERY_ADDRESS_UPDATION_MSG = "Delivery Address has been Updated for your Cart.";
 	public static final String ERROR_MSG_EXISTING_PREFIX = "Subscription Prefix not available";
-	//Users
-	public static final String CONSULTANT_EMAIL_SPONSOR_WITHOUT_PWS = "AutoConsSPONSORWOPWS20170210122626@mailinator.com";
-	public static final String CONSULTANT_EMAIL_WITH_CRP_AND_PULSE = "autoconsWPWCRP20170216005408@mailinator.com";//Dev1
-	public static final String CONSULTANT_EMAIL_WITH_CRP_AND_PULSE_FOR_CANCELLATION = "AutoConsWPWCRPFORCANCELLATION20170210121829@mailinator.com";
-	public static final String CONSULTANT_PWS_PREFIX = "autocons20170216005408"; //Dev1
-	public static final String CONSULTANT_EMAIL_WITHOUT_CRP_AND_PULSE = "AutoConsWOCRPWOP20170210121334@mailinator.com";
-	public static final String CONSULTANT_EMAIL_WITHOUT_PWS = "AutoConsWOCRPWOP20170210123702@mailinator.com";
+	
+	//DEV Users
+	//public static final String CONSULTANT_EMAIL_SPONSOR_WITHOUT_PWS = "AutoConsSPONSORWOPWS20170210122626@mailinator.com";
+	public static final String CONSULTANT_EMAIL_WITH_CRP_AND_PULSE = " autoconsWPWCRP20170216141800@mailinator.com";//qa2
+	public static final String CONSULTANT_EMAIL_WITH_CRP_AND_PULSE_FOR_CANCELLATION = "autoconsWPWCRPFORCANCELLATION20170216115235@mailinator.com";//dev1
+	public static final String CONSULTANT_PWS_PREFIX = "autocons20170216114117"; //dev1
+	public static final String CONSULTANT_EMAIL_WITHOUT_CRP_AND_PULSE = "autoconswocrpwop20170216142422@mailinator.com";//qa2
+	//public static final String CONSULTANT_EMAIL_WITHOUT_PWS = "AutoConsWOCRPWOP20170210123702@mailinator.com";
 
-	public static final String PC_EMAIL_HAVING_AUTOSHIP = "autopcWOSPONSOR20170216010222@mailinator.com"; //Dev1
-	public static final String PC_EMAIL_HAVING_SINGLE_BILLING_PROFILE = "AutoPCWSINGLEBILLING20170210115502@mailinator.com";
-	public static final String PC_EMAIL_WHO_ENROLLED_UNDER_SPONSOR_WITH_PWS = "pcuser1dev1@mailinator.com";
-	public static final String PC_EMAIL_WHO_ENROLLED_UNDER_SPONSOR_WITHOUT_PWS = "AutoPCWOPWSSponsor20170210124547@mailinator.com";
+	public static final String PC_EMAIL_HAVING_AUTOSHIP = "autopc20170216134503@mailinator.com"; //qa2
+	public static final String PC_EMAIL_HAVING_SINGLE_BILLING_PROFILE = "autopcWSINGLEBILLING20170216115900@mailinator.com";//dev1
+	public static final String PC_EMAIL_WHO_ENROLLED_UNDER_SPONSOR_WITH_PWS = "autopcWPWSSPONSOR20170216120449@mailinator.com";//dev1
+	//public static final String PC_EMAIL_WHO_ENROLLED_UNDER_SPONSOR_WITHOUT_PWS = "AutoPCWOPWSSponsor20170210124547@mailinator.com";
 
-	public static final String RC_EMAIL_WITHOUT_ORDER = "AutoRC20170210115909@mailinator.com";
-	public static final String RC_EMAIL_HAVING_ORDER = "autorc20170216010149@mailinator.com";//Dev1
-
+	public static final String RC_EMAIL_WITHOUT_ORDER = "autorc20170216122345@mailinator.com";//dev1
+	public static final String RC_EMAIL_HAVING_ORDER = "autorc20170216135358@mailinator.com";//qa2
+	
 }

@@ -1651,7 +1651,7 @@ public class AutoshipTest extends StoreFrontWebsiteBaseTest{
 	public void testPlacedAnAutoshipOrderForConsultant(){
 		String currentURL = null;
 		sfHomePage.loginToStoreFront(TestConstants.CONSULTANT_EMAIL_WITH_CRP_AND_PULSE, password,true);
-		sfShopSkinCarePage = sfHomePage.clickAllProducts();
+		sfShopSkinCarePage = sfHomePage.clickAllProductsCRP();
 		sfShopSkinCarePage.refineProductByCategory(TestConstants.CONSULTANT_CRP_AUTOSHIP_PRODUCT_CATEGORY);
 		sfShopSkinCarePage.addProductToCart(TestConstants.PRODUCT_NUMBER, TestConstants.ORDER_TYPE_CRP);
 		sfAutoshipCartPage = sfShopSkinCarePage.checkoutTheCartFromPopUpForAutoship();
@@ -1674,7 +1674,7 @@ public class AutoshipTest extends StoreFrontWebsiteBaseTest{
 	public void testPlacedAnAutoshipOrderForPC(){
 		String currentURL = null;
 		sfHomePage.loginToStoreFront(TestConstants.PC_EMAIL_HAVING_AUTOSHIP, password,true);
-		sfShopSkinCarePage = sfHomePage.clickAllProducts();
+		sfShopSkinCarePage = sfHomePage.clickAllProductsCRP();
 		sfShopSkinCarePage.refineProductByCategory(TestConstants.PC_PERKS_AUTOSHIP_PRODUCT_CATEGORY);
 		sfShopSkinCarePage.addProductToCart(TestConstants.PRODUCT_NUMBER, TestConstants.ORDER_TYPE_PC_PERKS);
 		sfAutoshipCartPage = sfShopSkinCarePage.checkoutTheCartFromPopUpForAutoship();

@@ -34,9 +34,11 @@ public class RFBaseTest{
 	// Added for local testing and will be removed later
 	public String defaultProps = "defaultenv.properties";
 	public String userProps = "user.properties";
+	public String testUserProps = "user.properties";
 
 	protected static PropertyFile propertyFile = new PropertyFile();
 	protected static PropertyFile userPropertyFile = new PropertyFile();
+	protected static PropertyFile testUserPropertyFile = new PropertyFile();
 	
 	private static final Logger logger = LogManager
 			.getLogger(RFBaseTest.class.getName());
@@ -56,6 +58,10 @@ public class RFBaseTest{
 			propertyFile.loadProps(envproperties);
 			logger.debug("Environment properties recieved and preparing the environment for "
 					+ envproperties); 
+			if(envproperties.equalsIgnoreCase("qa2env.properties")){
+				testUserPropertyFile.loadProps("testUsersQA2");
+				System.out.println(testUserPropertyFile.getProperty("consultantUserWithCRPAndPulse"));
+			}
 		} else {
 			System.out.println("Started execution with " + " " + defaultProps);
 			propertyFile.loadProps(defaultProps);
@@ -67,7 +73,11 @@ public class RFBaseTest{
 			logger.info("Default DB IP is  ------ "+propertyFile.getProperty("dbIP"));
 			logger.info("Default DB Username is  ------ "+propertyFile.getProperty("dbUsername"));
 			logger.info("Default DB Password is  ------ "+propertyFile.getProperty("dbPassword"));
-			logger.info("Default DB Domain is  ------ "+propertyFile.getProperty("dbDomain"));			
+			logger.info("Default DB Domain is  ------ "+propertyFile.getProperty("dbDomain"));	
+			
+			if(propertyFile.getProperty("environment").equalsIgnoreCase("qa2")){
+				testUserPropertyFile.loadProps("testUsersQA2.properties");
+			}
 		}
 		// clear screenshots folder
 		try {

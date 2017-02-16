@@ -239,4 +239,5 @@ public class StoreFrontWebsiteBaseTest extends RFBaseTest {
 		return userPropertyFile.getProperty("conultantWithPulseAndWithCRP");
 	}
 	
+	
 }

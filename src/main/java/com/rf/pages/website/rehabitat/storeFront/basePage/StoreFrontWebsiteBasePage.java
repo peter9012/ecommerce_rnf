@@ -2650,8 +2650,8 @@ public class StoreFrontWebsiteBasePage extends RFBasePage {
 	 * 
 	 */
 	public StoreFrontWebsiteBasePage clickNextbuttonOfShippingDetails() {
-		driver.waitForLoadingImageToDisappear();
-		driver.click(SHIPPING_NEXT_BUTTON_LOC);
+		driver.quickWaitForElementPresent(SHIPPING_NEXT_BUTTON_LOC);
+		driver.clickByJS(RFWebsiteDriver.driver, driver.findElement(SHIPPING_NEXT_BUTTON_LOC));
 		logger.info("Next button clicked of shipping details");
 		driver.pauseExecutionFor(2000);
 		return this;

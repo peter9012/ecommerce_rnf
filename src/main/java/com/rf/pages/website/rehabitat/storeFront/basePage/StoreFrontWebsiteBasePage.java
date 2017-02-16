@@ -3637,8 +3637,8 @@ public class StoreFrontWebsiteBasePage extends RFBasePage {
 	 * 
 	 */
 	public StoreFrontWebsiteBasePage clickSaveButton() {
-		driver.waitForLoadingImageToDisappear();
-		driver.click(SAVE_BUTTON_LOC);
+		driver.quickWaitForElementPresent(SAVE_BUTTON_LOC);
+		driver.clickByJS(RFWebsiteDriver.driver,driver.findElement(SAVE_BUTTON_LOC));
 		logger.info("Save button clicked");
 		driver.waitForPageLoad();
 		return this;

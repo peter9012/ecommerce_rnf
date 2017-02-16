@@ -327,7 +327,6 @@ public class StoreFrontHomePage extends StoreFrontWebsiteBasePage{
 		driver.clickByJS(RFWebsiteDriver.driver,driver.findElement(NEXT_BUTTON_LOC));
 		logger.info("Next button clicked");
 		driver.waitForPageLoad();
-		driver.waitForLoadingImageToDisappear();
 		return this;
 	}
 

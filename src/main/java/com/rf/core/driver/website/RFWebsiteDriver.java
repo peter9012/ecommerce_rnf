@@ -392,7 +392,7 @@ public class RFWebsiteDriver implements RFDriver,WebDriver {
 	}
 
 	public void waitForTokenizing() {
-		int timeout = 30;
+		int timeout = 20;
 		turnOffImplicitWaits();
 		boolean isElementFound = false;
 		for(int i=1;i<=timeout;i++){  

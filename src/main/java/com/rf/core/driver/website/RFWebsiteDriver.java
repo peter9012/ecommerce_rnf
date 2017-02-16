@@ -227,7 +227,7 @@ public class RFWebsiteDriver implements RFDriver,WebDriver {
 
 	public void quickWaitForElementPresent(By locator){
 		logger.info("quick wait started for "+locator);
-		int timeout = 2;
+		int timeout = 10;
 		turnOffImplicitWaits();
 		for(int i=1;i<=timeout;i++){
 			try{

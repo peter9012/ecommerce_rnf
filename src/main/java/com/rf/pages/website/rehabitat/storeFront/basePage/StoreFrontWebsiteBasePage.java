@@ -1675,7 +1675,7 @@ public class StoreFrontWebsiteBasePage extends RFBasePage {
 		String javascript = "document.getElementById('card_accountNumber').value=" + cardNumber + ";"
 				+ "document.getElementById('card_accountNumber').innerHTML=" + cardNumber + ";";
 		driver.pauseExecutionFor(2000);
-		driver.waitForElementPresent(NAME_ON_CARD_LOC);
+		driver.quickWaitForElementPresent(NAME_ON_CARD_LOC);
 		((JavascriptExecutor) RFWebsiteDriver.driver).executeScript(javascript);
 		logger.info("Entered card number as" + cardNumber);
 		driver.pauseExecutionFor(1000);

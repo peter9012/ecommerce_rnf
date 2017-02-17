@@ -78,14 +78,12 @@
 				</methods>
 			</class>
 
-
 			<class name="com.rf.test.website.rehabitat.storeFront.MyAccountTest">
 				<methods>
 					<include name="testConsultantFirstTimePulseEnrollment_380"></include>
 					<include name="testVerifyPCPerksAutoshipDetails_280"></include>
 				</methods>
 			</class>
-
 			<class name="com.rf.test.website.rehabitat.storeFront.AboutMeTest">
 				<methods>
 					<include name="testPersonalizingPWSAboutMePageSaveChanges_579"></include>

@@ -116,7 +116,7 @@ public class RCEnrollmentTest extends StoreFrontWebsiteBaseTest{
 	}
 
 	@Test(enabled=true, groups="users")
-	public void testRCEnrollmentWithOrder(){
+	public void testRCEnrollmentWithOrderWithoutSponsor(){
 		timeStamp = CommonUtils.getCurrentTimeStamp();
 		email = firstName+timeStamp+TestConstants.EMAIL_SUFFIX;
 		navigateToStoreFrontBaseURL();
@@ -140,8 +140,11 @@ public class RCEnrollmentTest extends StoreFrontWebsiteBaseTest{
 		sfCheckoutPage.selectTermsAndConditionsChkBox();
 		sfCheckoutPage.clickPlaceOrderButton();
 		s_assert.assertTrue(sfCheckoutPage.isOrderPlacedSuccessfully(), "Adhoc order is not placed successfully by PC");
+		rcWithOrderWithoutSponsor=email;
+		userPropertyFile.loadProps(userProps);
+		setUsers("rcWithOrderWithoutSponsor", rcWithOrderWithoutSponsor);
 		s_assert.assertAll();
-		rcWithOrder=email;		
+				
 	}
 	
 	@Test

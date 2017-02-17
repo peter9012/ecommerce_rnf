@@ -1619,7 +1619,8 @@ public class OrdersTest extends StoreFrontWebsiteBaseTest{
 		String productUnitPriceAtOrderDetailsPage = null;
 		String productNameAtOrderDetailsPage = null;
 
-		sfHomePage.loginToStoreFront(TestConstants.CONSULTANT_EMAIL_WITH_CRP_AND_PULSE, password,true);
+		//sfHomePage.loginToStoreFront(TestConstants.CONSULTANT_EMAIL_WITH_CRP_AND_PULSE, password,true);
+		sfHomePage.loginToStoreFront(consultantWithPulseAndWithCRP(), password,true);
 		sfCartPage = sfHomePage.clickMiniCartBagLink();
 		sfCartPage.removeAllProductsFromCart();
 		sfCartPage.clickRodanAndFieldsLogo();
@@ -1940,7 +1941,8 @@ public class OrdersTest extends StoreFrontWebsiteBaseTest{
 		String productSVAtOrderDetailsPage = null;
 		String productUnitPriceAtOrderDetailsPage = null;
 
-		sfHomePage.loginToStoreFront(TestConstants.PC_EMAIL_HAVING_AUTOSHIP, password,true);
+		//sfHomePage.loginToStoreFront(TestConstants.PC_EMAIL_HAVING_AUTOSHIP, password,true);
+		sfHomePage.loginToStoreFront(pcUserWithPWSSponsor(), password,true);
 		sfCartPage = sfHomePage.clickMiniCartBagLink();
 		sfCartPage.removeAllProductsFromCart();
 		sfCartPage.clickRodanAndFieldsLogo();
@@ -2035,7 +2037,8 @@ public class OrdersTest extends StoreFrontWebsiteBaseTest{
 		String productSVAtOrderDetailsPage = null;
 		String productUnitPriceAtOrderDetailsPage = null;
 
-		sfHomePage.loginToStoreFront(TestConstants.RC_EMAIL_HAVING_ORDER, password,true);
+		//sfHomePage.loginToStoreFront(TestConstants.RC_EMAIL_HAVING_ORDER, password,true);
+		sfHomePage.loginToStoreFront(rcWithOrderWithoutSponsor, password,true);
 		sfCartPage = sfHomePage.clickMiniCartBagLink();
 		sfCartPage.removeAllProductsFromCart();
 		sfCartPage.clickRodanAndFieldsLogo();

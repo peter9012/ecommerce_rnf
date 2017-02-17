@@ -12,6 +12,7 @@ import java.util.Set;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.openqa.selenium.By;
+import org.testng.ITestContext;
 import org.testng.annotations.AfterGroups;
 import org.testng.annotations.AfterSuite;
 import org.testng.annotations.BeforeMethod;
@@ -75,12 +76,12 @@ public class StoreFrontWebsiteBaseTest extends RFBaseTest {
 	protected String country=null;
 	protected boolean runBaseURLOrLogoutExecutionCode = true;
 
-	protected static String conultantWithPulseAndWithCRP = null;
-	protected static String conultantWithoutPulseAndWithoutCRP = null;
-	protected static String conultantWithPulseAndWithCRPForCancellation = null;
-	protected static String conultantHavingSponsorWithoutPWS = null;
+	protected static String consultantWithPulseAndWithCRP = null;
+	protected static String consultantWithoutPulseAndWithoutCRP = null;
+	protected static String consultantWithPulseAndWithCRPForCancellation = null;
+	protected static String consultantHavingSponsorWithoutPWS = null;
 	protected static String rcWithoutOrder = null;
-	protected static String rcWithOrder = null;
+	protected static String rcWithOrderWithoutSponsor = null;
 	protected static String pcUserWithoutSponsor = null;
 	protected static String pcUserWithPWSSponsor = null;
 	protected static String pcUserWithoutPWSSponsor = null;
@@ -96,7 +97,11 @@ public class StoreFrontWebsiteBaseTest extends RFBaseTest {
 	 *             for the tests
 	 */
 	@BeforeSuite(alwaysRun=true)
-	public void setUp() throws Exception {
+	public void setUp(ITestContext context) throws Exception {
+		if(getSuiteName(context).equalsIgnoreCase("storeFrontMiniRegressionSuite")){
+			userPropertyFile.loadProps(userProps);
+			userPropertyFile.clearProperty();
+		}
 		driver.loadApplication();
 		driver.setDBConnectionString();
 	}
@@ -120,23 +125,22 @@ public class StoreFrontWebsiteBaseTest extends RFBaseTest {
 		}
 	}
 
-	@AfterGroups(alwaysRun=true,groups="users")
-	public void afterGroup() throws IOException{
-		logger.info("After Group");
-		userPropertyFile.loadProps(userProps);
-		userPropertyFile.clearProperty();
-		setUsers("conultantWithPulseAndWithCRP", conultantWithPulseAndWithCRP);
-		setUsers("pwsPrefix", pwsPrefix);
-		setUsers("conultantWithoutPulseAndWithoutCRP", conultantWithoutPulseAndWithoutCRP);
-		setUsers("conultantWithPulseAndWithCRPForCancellation", conultantWithPulseAndWithCRPForCancellation);
-		setUsers("conultantHavingSponsorWithoutPWS", conultantHavingSponsorWithoutPWS);
-		setUsers("pcUserWithPWSSponsor", pcUserWithPWSSponsor);
-		setUsers("pcUserWithoutSponsor", pcUserWithoutSponsor);
-		setUsers("pcUserWithoutPWSSponsor", pcUserWithoutPWSSponsor);
-		setUsers("pcUserHavingSingleBillingProfile", pcUserHavingSingleBillingProfile);
-		setUsers("rcWithOrder", rcWithOrder);
-		setUsers("rcWithoutOrder", rcWithoutOrder);
-	}
+//	@AfterGroups(alwaysRun=true,groups="users")
+//	public void afterGroup() throws IOException{
+//		logger.info("After Group");
+//		userPropertyFile.loadProps(userProps);
+//		setUsers("consultantWithPulseAndWithCRP", consultantWithPulseAndWithCRP);
+//		setUsers("pwsPrefix", pwsPrefix);
+//		setUsers("consultantWithoutPulseAndWithoutCRP", consultantWithoutPulseAndWithoutCRP);
+//		//setUsers("consultantWithPulseAndWithCRPForCancellation", consultantWithPulseAndWithCRPForCancellation);
+//		//		setUsers("consultantHavingSponsorWithoutPWS", consultantHavingSponsorWithoutPWS);
+//		setUsers("pcUserWithPWSSponsor", pcUserWithPWSSponsor);
+//		//		setUsers("pcUserWithoutSponsor", pcUserWithoutSponsor);
+//		//		setUsers("pcUserWithoutPWSSponsor", pcUserWithoutPWSSponsor);
+//		//		setUsers("pcUserHavingSingleBillingProfile", pcUserHavingSingleBillingProfile);
+//		setUsers("rcWithOrder", rcWithOrder);
+//		//		setUsers("rcWithoutOrder", rcWithoutOrder);
+//	}
 
 	public void setUsers(String key,String value){
 		if(value!=null)
@@ -231,13 +235,29 @@ public class StoreFrontWebsiteBaseTest extends RFBaseTest {
 		return allReturnedValuesFromQuery;
 	}
 
-	public String getConultantWithPulseAndWithCRP(){
-		return userPropertyFile.getProperty("conultantWithPulseAndWithCRP");
+	public String consultantWithPulseAndWithCRP(){
+		return userPropertyFile.getProperty("consultantWithPulseAndWithCRP");
 	}
 
-	public String getConultantWithoutPulseAndWithoutCRP(){
-		return userPropertyFile.getProperty("conultantWithPulseAndWithCRP");
+	public String consultantWithoutPulseAndWithoutCRP(){
+		return userPropertyFile.getProperty("consultantWithoutPulseAndWithoutCRP");
 	}
 	
+	public String pcUserWithPWSSponsor(){
+		return userPropertyFile.getProperty("pcUserWithPWSSponsor");
+	}
 	
+	public String pwsPrefix(){
+		return userPropertyFile.getProperty("pwsPrefix");
+	}
+	
+	public String rcWithOrderWithoutSponsor(){
+		return userPropertyFile.getProperty("rcWithOrderWithoutSponsor");
+	}
+
+	public static String getSuiteName(ITestContext context){
+		String suiteName = context.getCurrentXmlTest().getSuite().getName();
+		return suiteName;
+	}
+
 }

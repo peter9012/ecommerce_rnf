@@ -427,8 +427,11 @@ public class PCEnrollmentTest extends StoreFrontWebsiteBaseTest{
 		s_assert.assertTrue(sfHomePage.getCurrentURL().contains("pws"), "PC has to be on pws after enrollment");
 		sfCheckoutPage.clickRodanAndFieldsLogo();
 		s_assert.assertTrue(sfHomePage.hasPCEnrolledSuccessfully(), "PC has not been enrolled successfully");
-		s_assert.assertAll();
 		pcUserWithPWSSponsor=email;
+		userPropertyFile.loadProps(userProps);
+		setUsers("pcUserWithPWSSponsor", pcUserWithPWSSponsor);
+		s_assert.assertAll();
+		
 	}
 
 	@Test(enabled=true,groups="users")

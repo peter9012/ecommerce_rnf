@@ -421,11 +421,12 @@ public class AboutMeTest extends StoreFrontWebsiteBaseTest{
 		String fbId="facebook"+timeStamp+"@xyz.com";
 		String twitterID="twitter"+timeStamp+"@xyz.com";
 		String pinterestId="pinterest"+timeStamp+"@xyz.com";
-		String prefix = TestConstants.CONSULTANT_PWS_PREFIX;
+		String prefix = pwsPrefix();
 
 		homePageURL = sfHomePage.getCurrentURL();
 		sfHomePage.navigateToUrl(homePageURL + "/pws/" + prefix);
-		sfHomePage.loginToStoreFront(TestConstants.CONSULTANT_EMAIL_WITH_CRP_AND_PULSE, password,true);
+		//sfHomePage.loginToStoreFront(TestConstants.CONSULTANT_EMAIL_WITH_CRP_AND_PULSE, password,true);
+		sfHomePage.loginToStoreFront(consultantWithPulseAndWithCRP(), password,true);
 		sfHomePage.clickWelcomeDropdown();
 		sfAboutMePage=sfHomePage.navigateToEditPWSPage();
 		currentURL = sfAboutMePage.getCurrentURL();

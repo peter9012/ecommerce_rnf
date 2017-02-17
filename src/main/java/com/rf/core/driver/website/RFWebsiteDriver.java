@@ -392,12 +392,12 @@ public class RFWebsiteDriver implements RFDriver,WebDriver {
 	}
 
 	public void waitForTokenizing() {
-		int timeout = 20;
-		turnOffImplicitWaits();
+		int timeout = 5;
+		turnOffImplicitWaits(0);
 		boolean isElementFound = false;
 		for(int i=1;i<=timeout;i++){  
 			try{
-				if(driver.findElements(By.xpath("//div[@class='card-icons']//span[not(contains(@class,'disabled'))]")).size()==0){
+				if(driver.findElements(By.xpath("//*[@id='card_accountNumber'][@style='']")).size()==0){
 					pauseExecutionFor(1000);
 					logger.info("waiting...");
 					continue;
@@ -915,6 +915,14 @@ public class RFWebsiteDriver implements RFDriver,WebDriver {
 
 	public void turnOnImplicitWaits() {
 		driver.manage().timeouts().implicitlyWait(15, TimeUnit.SECONDS);
+	}
+	
+	public void turnOffImplicitWaits(int time) {
+		driver.manage().timeouts().implicitlyWait(time, TimeUnit.SECONDS);
+	}
+
+	public void turnOnImplicitWaits(int time) {
+		driver.manage().timeouts().implicitlyWait(time, TimeUnit.SECONDS);
 	}
 
 	public void clickByJS(WebDriver driver, WebElement element) {

@@ -94,7 +94,7 @@ public class ConsultantEnrollmentTest extends StoreFrontWebsiteBaseTest{
 		sfHomePage.clickNextButton();
 		sfHomePage.clickSaveButton();
 		sfHomePage.enterConsultantShippingDetails(firstName, lastName, addressLine1, addressLine2 ,city, state, postalCode, phoneNumber);
-		sfHomePage.clickUseAsEnteredButtonOnPopUp();
+		//sfHomePage.clickUseAsEnteredButtonOnPopUp();
 		sfHomePage.clickShippingDetailsNextbutton();
 		sfHomePage.enterUserBillingDetails(cardType, cardNumber, cardName, CVV);
 		//sfHomePage.selectBillingAddressFromDD();
@@ -105,7 +105,7 @@ public class ConsultantEnrollmentTest extends StoreFrontWebsiteBaseTest{
 		sfHomePage.selectTermsAndConditionsChkBox();
 		sfHomePage.selectConsentFormChkBox();
 		sfHomePage.clickBecomeAConsultant();
-		s_assert.assertTrue(sfHomePage.isEnrollemntSuccessfulMsgDisplayed(), "Expected 'Your order number is' msg has NOT displayed"); 
+		s_assert.assertTrue(sfHomePage.isEnrollemntSuccessfulMsgDisplayed(), "Expected 'ENROLLMENT SUCCESSFUL' msg has NOT displayed"); 
 		sfHomePage.clickRodanAndFieldsLogo();
 		s_assert.assertTrue(sfHomePage.isWelcomeUserElementDisplayed(), "Welcome user locator has not displayed after consultant enrollment");
 		s_assert.assertAll();
@@ -673,9 +673,12 @@ public class ConsultantEnrollmentTest extends StoreFrontWebsiteBaseTest{
 		sfCheckoutPage.clickConfirmAutoshipOrderButton();
 		s_assert.assertTrue(sfCheckoutPage.isCRPOrderConfirmedSuccessMsgAppeared(),"CRP Order confirmed success messge is not appeared");
 		sfCheckoutPage.clickRodanAndFieldsLogo();
-		s_assert.assertAll();	
-		conultantWithPulseAndWithCRP=email;
-		pwsPrefix=prefix;	
+		consultantWithPulseAndWithCRP=email;
+		pwsPrefix=prefix;
+		userPropertyFile.loadProps(userProps);
+		setUsers("consultantWithPulseAndWithCRP", consultantWithPulseAndWithCRP);
+		setUsers("pwsPrefix", pwsPrefix);
+		s_assert.assertAll();			
 	}
 
 	@Test(enabled=true, groups={"users"})
@@ -712,9 +715,10 @@ public class ConsultantEnrollmentTest extends StoreFrontWebsiteBaseTest{
 		s_assert.assertTrue(sfHomePage.isEnrollemntSuccessfulMsgDisplayed(), "Expected 'Your order number is' msg has NOT displayed"); 
 		sfHomePage.clickRodanAndFieldsLogo();
 		s_assert.assertTrue(sfHomePage.isWelcomeUserElementDisplayed(), "Welcome user locator has not displayed after consultant enrollment");
-		conultantWithoutPulseAndWithoutCRP=email;
-		s_assert.assertAll();
-		conultantWithoutPulseAndWithoutCRP=email;
+		consultantWithoutPulseAndWithoutCRP=email;
+		userPropertyFile.loadProps(userProps);
+		setUsers("consultantWithoutPulseAndWithoutCRP", consultantWithoutPulseAndWithoutCRP);
+		s_assert.assertAll();		
 	}
 
 	//CONSULTANT_EMAIL_WITH_CRP_AND_PULSE_FOR_CANCELLATION
@@ -758,8 +762,9 @@ public class ConsultantEnrollmentTest extends StoreFrontWebsiteBaseTest{
 		sfCheckoutPage.clickConfirmAutoshipOrderButton();
 		s_assert.assertTrue(sfCheckoutPage.isCRPOrderConfirmedSuccessMsgAppeared(),"CRP Order confirmed success messge is not appeared");
 		sfCheckoutPage.clickRodanAndFieldsLogo();
+		consultantWithPulseAndWithCRPForCancellation=email;
 		s_assert.assertAll();	
-		conultantWithPulseAndWithCRPForCancellation=email;
+		
 	}
 
 	//For CONSULTANT_EMAIL_SPONSOR_WITHOUT_PWS
@@ -772,7 +777,7 @@ public class ConsultantEnrollmentTest extends StoreFrontWebsiteBaseTest{
 		email = firstName+"SPONSORWOPWS"+timeStamp+TestConstants.EMAIL_SUFFIX;
 		String socialInsuranceNumber = String.valueOf(CommonUtils.getRandomNum(100000000, 999999999));
 		sfHomePage.clickEnrollNow();
-		sfHomePage.searchSponsor(conultantWithoutPulseAndWithoutCRP);
+		sfHomePage.searchSponsor(consultantWithoutPulseAndWithoutCRP);
 		s_assert.assertTrue(sfHomePage.isSponsorResultDisplayed(),"No result found after searching the sponsor with name "+TestConstants.SPONSOR);
 		sfHomePage.selectFirstSponsorFromList();
 		sfHomePage.enterConsultantEnrollmentDetails(firstName, lastName, email, password, socialInsuranceNumber);
@@ -797,10 +802,9 @@ public class ConsultantEnrollmentTest extends StoreFrontWebsiteBaseTest{
 		s_assert.assertTrue(sfHomePage.isEnrollemntSuccessfulMsgDisplayed(), "Expected 'Your order number is' msg has NOT displayed"); 
 		sfHomePage.clickRodanAndFieldsLogo();
 		s_assert.assertTrue(sfHomePage.isWelcomeUserElementDisplayed(), "Welcome user locator has not displayed after consultant enrollment");
-		conultantHavingSponsorWithoutPWS=email;
+		consultantHavingSponsorWithoutPWS=email;
 		s_assert.assertAll();
 	}
-
 
 	//	//Test Case Hybris Phase 2-3720 :: Version : 1 :: Perform Consultant Account termination through my account
 	//	@Test(enabled=false)//Duplicate test,covered in Enrollment validation TC-4308

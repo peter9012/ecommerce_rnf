@@ -114,7 +114,7 @@ public class StoreFrontWebsiteBasePage extends RFBasePage {
 	private final By ERROR_MESSAGE_FOR_POSTAL_CODE_LOC = By.id("address.postcode-error");
 	private final By ERROR_MESSAGE_FOR_PHONE_NUMBER_LOC = By.id("address.phone-error");
 	private final By ERROR_MESSAGE_FOR_FIRST_LAST_NAME_LOC = By.id("address.firstName-error");
-	private final By SHIPPING_NEXT_BUTTON_LOC = By.id("deliveryAddressSubmit");
+	private final By SHIPPING_NEXT_BUTTON_LOC = By.xpath("//button[@id='deliveryAddressSubmit']");
 	private final By LOGOUT_LOC = By.xpath("//a[text()='Sign Out']");
 	private final By WELCOME_DD_EDIT_CRP_LOC = By.xpath("//a[text()='Edit CRP']");
 	private final By WELCOME_DD_CHECK_MY_PULSE_LOC = By.xpath("//a[text()='Check My Pulse']");
@@ -2874,7 +2874,6 @@ public class StoreFrontWebsiteBasePage extends RFBasePage {
 	}
 
 	public void clickUseAsEnteredButtonOnPopUp() {
-		driver.pauseExecutionFor(1000);
 		if (driver.isElementVisible(USE_AS_ENTERED_BUTTON_LOC) == true) {
 			driver.click(USE_AS_ENTERED_BUTTON_LOC);
 			driver.waitForElementToBeInVisible(USE_AS_ENTERED_BUTTON_LOC, 20);

@@ -455,6 +455,7 @@ public class StoreFrontHomePage extends StoreFrontWebsiteBasePage{
 		 * @return boolean
 		 */
 		public boolean isWelcomeUserElementDisplayed(){
+			driver.quickWaitForElementPresent(WELCOME_DROPDOWN_LOC);
 			return driver.isElementPresent(WELCOME_DROPDOWN_LOC);
 		}
 

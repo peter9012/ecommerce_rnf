@@ -219,7 +219,6 @@ public class StoreFrontCheckoutPage extends StoreFrontWebsiteBasePage{
 			//driver.clickByJS(RFWebsiteDriver.driver, driver.findElement(NO_THANKS_BTN_LOC));
 			driver.click(NO_THANKS_BTN_LOC);
 		}
-		driver.waitForLoadingImageToDisappear();
 	}
 
 	/***

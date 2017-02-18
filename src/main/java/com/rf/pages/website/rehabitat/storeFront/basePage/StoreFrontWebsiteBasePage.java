@@ -2639,6 +2639,7 @@ public class StoreFrontWebsiteBasePage extends RFBasePage {
 	 * @return
 	 */
 	public boolean isPcOneTimeFeeMsgDisplayed() {
+		driver.quickWaitForElementPresent(PC_ONE_TIME_FEE_MSG_LOC);
 		return driver.isElementVisible(PC_ONE_TIME_FEE_MSG_LOC);
 	}
 

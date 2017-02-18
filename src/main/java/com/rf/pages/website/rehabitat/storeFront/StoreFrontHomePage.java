@@ -313,6 +313,7 @@ public class StoreFrontHomePage extends StoreFrontWebsiteBasePage{
 		logger.info("Entered confirm password as "+password);
 		driver.type(SSN_FOR_REGISTRATION_LOC, SSN);
 		logger.info("Entered SSN  as "+SSN);
+		driver.findElement(SSN_FOR_REGISTRATION_LOC).sendKeys(Keys.TAB);
 		return this;
 	}
 
@@ -324,7 +325,9 @@ public class StoreFrontHomePage extends StoreFrontWebsiteBasePage{
 	 * 
 	 */
 	public StoreFrontHomePage clickNextButton(){
-		driver.clickByJS(RFWebsiteDriver.driver,driver.findElement(NEXT_BUTTON_LOC));
+		driver.quickWaitForElementPresent(NEXT_BUTTON_LOC);
+		//driver.click(NEXT_BUTTON_LOC);
+		driver.clickByAction(NEXT_BUTTON_LOC);//(RFWebsiteDriver.driver,driver.findElement(NEXT_BUTTON_LOC));
 		logger.info("Next button clicked");
 		driver.waitForPageLoad();
 		return this;
@@ -398,6 +401,7 @@ public class StoreFrontHomePage extends StoreFrontWebsiteBasePage{
 	 * 
 	 */
 	public StoreFrontHomePage chooseProductFromKitPage(){
+		driver.quickWaitForElementPresent(PERSONAL_RESULTS_KIT_PAGE_LOC);
 		driver.clickByJS(RFWebsiteDriver.driver, driver.findElement(PERSONAL_RESULTS_KIT_PAGE_LOC));
 		logger.info("selected the personal result kit");
 		return this;

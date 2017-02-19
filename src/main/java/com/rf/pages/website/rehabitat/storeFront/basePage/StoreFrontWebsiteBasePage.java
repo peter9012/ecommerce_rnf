@@ -2880,11 +2880,14 @@ public class StoreFrontWebsiteBasePage extends RFBasePage {
 	}
 
 	public void clickUseAsEnteredButtonOnPopUp() {
-		if (driver.isElementVisible(USE_AS_ENTERED_BUTTON_LOC) == true) {
+		try{
+			driver.turnOffImplicitWaits(3);
 			driver.click(USE_AS_ENTERED_BUTTON_LOC);
-			driver.waitForElementToBeInVisible(USE_AS_ENTERED_BUTTON_LOC, 20);
+			driver.waitForElementToBeInVisible(USE_AS_ENTERED_BUTTON_LOC, 50);
 			//driver.pauseExecutionFor(40000); // UI is slow, will be removed
 			logger.info("'Used as entered' button clicked");
+		}finally{
+			driver.turnOnImplicitWaits();
 		}
 	}
 
@@ -3409,6 +3412,7 @@ public class StoreFrontWebsiteBasePage extends RFBasePage {
 	public StoreFrontWebsiteBasePage clickSavePaymentButton(){
 		driver.click(SAVE_PAYMENT_BUTTON_LOC);
 		logger.info("Save payment button clicked of billing details");
+		driver.pauseExecutionFor(2000);
 		return this;
 	}
 

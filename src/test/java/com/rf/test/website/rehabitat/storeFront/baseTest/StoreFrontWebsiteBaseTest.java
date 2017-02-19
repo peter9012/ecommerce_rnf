@@ -100,7 +100,7 @@ public class StoreFrontWebsiteBaseTest extends RFBaseTest {
 	public void setUp(ITestContext context) throws Exception {
 		userPropertyFile.loadProps(userProps);
 		if(getSuiteName(context).equalsIgnoreCase("storeFrontMiniRegressionSuite")){
-			userPropertyFile.clearProperty();
+			//userPropertyFile.clearProperty();
 		}
 		driver.loadApplication();
 		driver.setDBConnectionString();
@@ -113,16 +113,12 @@ public class StoreFrontWebsiteBaseTest extends RFBaseTest {
 		setCountry();
 		setCountryId();
 		checkAndCloseMoreThanOneWindows();
-		//driver.pauseExecutionFor(2000);
-		if(sfHomePage.isWelcomeUserElementDisplayed()==true){
-			sfHomePage.clickWelcomeDropdown();
-			sfHomePage.logout();
-		}
 		navigateToStoreFrontBaseURL();
 		if(sfHomePage.isWelcomeUserElementDisplayed()==true){
 			sfHomePage.clickWelcomeDropdown();
 			sfHomePage.logout();
 		}
+		navigateToStoreFrontBaseURL();	
 	}
 
 //	@AfterGroups(alwaysRun=true,groups="users")

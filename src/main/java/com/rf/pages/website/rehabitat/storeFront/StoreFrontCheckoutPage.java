@@ -837,6 +837,7 @@ public class StoreFrontCheckoutPage extends StoreFrontWebsiteBasePage{
 	public StoreFrontCheckoutPage clickSavePaymentButton(){
 		driver.click(SAVE_PAYMENT_BUTTON_LOC);
 		logger.info("Save payment button clicked of billing details");
+		driver.pauseExecutionFor(2000);
 		return this;
 	}
 

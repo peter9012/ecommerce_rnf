@@ -2038,7 +2038,7 @@ public class OrdersTest extends StoreFrontWebsiteBaseTest{
 		String productUnitPriceAtOrderDetailsPage = null;
 
 		//sfHomePage.loginToStoreFront(TestConstants.RC_EMAIL_HAVING_ORDER, password,true);
-		sfHomePage.loginToStoreFront(rcWithOrderWithoutSponsor, password,true);
+		sfHomePage.loginToStoreFront(rcWithOrderWithoutSponsor(), password,true);
 		sfCartPage = sfHomePage.clickMiniCartBagLink();
 		sfCartPage.removeAllProductsFromCart();
 		sfCartPage.clickRodanAndFieldsLogo();

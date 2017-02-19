@@ -3,7 +3,7 @@
 	<listeners>
 		<listener class-name="org.uncommons.reportng.HTMLReporter" />
 		<listener class-name="org.uncommons.reportng.JUnitXMLReporter" />
-		<listener class-name="com.rf.core.listeners.RetryListener" />
+		<!-- <listener class-name="com.rf.core.listeners.RetryListener" /> -->
 		<listener class-name="com.rf.core.listeners.TestListner" />
 	</listeners>
 	<test name="storeFrontMiniRegressionTest">
@@ -46,7 +46,6 @@
 					<include name="testAddEditShippingAddressFromMyAccountForConsultant"></include>
 					<include name="testAddEditShippingAddressFromMyAccountForPC"></include>
 					<include name="testAddEditShippingAddressFromMyAccountForRC"></include>
-					<include name="testAddAShippingAddressOnUpdateAutoshipCart_506"></include>
 					<include name="testAddEditShippingProfileAtAdhocCartForConsultant"></include>
 					<include name="testAddEditShippingProfileAtAdhocCartForPC"></include>
 					<include name="testAddEditShippingProfileAtAdhocCartForRC"></include>
@@ -63,7 +62,8 @@
 				<methods>
 					<include name="testAddToAutoshipCartConsultant"></include>
 					<include name="testAddToAutoshipCartPC"></include>
-					<include name="testConsultantAutoshipCartCRPEnrollmentCRPReminderBanner_405"></include>
+					<include
+						name="testConsultantAutoshipCartCRPEnrollmentCRPReminderBanner_405"></include>
 					<include name="testPlaceConsultantAutoshipOrderAndVerifyDateAndStatus"></include>
 					<include name="testPlacePCAutoshipOrderAndVerifyDateAndStatus"></include>
 					<include name="testPlacePulseAutoshipOrderAndVerifyDateAndStatus"></include>

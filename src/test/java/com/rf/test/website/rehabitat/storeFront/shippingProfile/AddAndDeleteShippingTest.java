@@ -841,7 +841,7 @@ public class AddAndDeleteShippingTest extends StoreFrontWebsiteBaseTest{
 	  String shippingProfile = null;
 	  String updatedShippingProfileName = null;
 	  //sfHomePage.loginToStoreFront(TestConstants.RC_EMAIL_HAVING_ORDER, password,true);
-	  sfHomePage.loginToStoreFront(rcWithOrderWithoutSponsor, password,true);
+	  sfHomePage.loginToStoreFront(rcWithOrderWithoutSponsor(), password,true);
 	  sfShopSkinCarePage = sfHomePage.clickAllProducts();
 	  sfShopSkinCarePage.addProductToCart(TestConstants.PRODUCT_NUMBER, TestConstants.ORDER_TYPE_ADHOC);;
 	  sfCartPage = sfShopSkinCarePage.checkoutTheCartFromPopUp();

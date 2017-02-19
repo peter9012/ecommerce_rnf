@@ -2886,7 +2886,7 @@ public class StoreFrontWebsiteBasePage extends RFBasePage {
 			driver.waitForElementToBeInVisible(USE_AS_ENTERED_BUTTON_LOC, 50);
 			//driver.pauseExecutionFor(40000); // UI is slow, will be removed
 			logger.info("'Used as entered' button clicked");
-		}finally{
+		}catch(Exception e){
 			driver.turnOnImplicitWaits();
 		}
 	}

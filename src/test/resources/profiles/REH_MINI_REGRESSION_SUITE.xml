@@ -12,7 +12,7 @@
 				name="com.rf.test.website.rehabitat.storeFront.ConsultantEnrollmentTest">
 				<methods>
 					<include name="testConsultantEnrollmentWithPulseAndCRP"></include>
-					<include name="testConsultantEnrollmentWithoutCRPAndWithoutPulse"></include> 
+					<include name="testConsultantEnrollmentWithoutCRPAndWithoutPulse"></include>
 					<include name="testConsultantEnrollmentPersonalBusinessPortfolio_290"></include>
 				</methods>
 			</class>
@@ -29,14 +29,14 @@
 					<include name="testRCEnrollmentWithSponsor"></include>
 				</methods>
 			</class>
-			 <class name="com.rf.test.website.rehabitat.storeFront.BillingProfileTest">
+			<class name="com.rf.test.website.rehabitat.storeFront.BillingProfileTest">
 				<methods>
 					<include name="testAddEditBillingProfileFromMyAccountForConsultant"></include>
 					<include name="testAddEditBillingProfileFromMyAccountForPC"></include>
 					<include name="testAddEditBillingProfileFromMyAccountForRC"></include>
 					<include name="testAddEditBillingProfileAtAdhocCartForConsultant"></include>
 					<include name="testAddEditBillingProfileAtAdhocCartForPC"></include>
-					<include name="testAddEditBillingProfileAtAdhocCartForRC"></include> 
+					<include name="testAddEditBillingProfileAtAdhocCartForRC"></include>
 				</methods>
 			</class>
 
@@ -64,7 +64,10 @@
 					<include name="testAddToAutoshipCartConsultant"></include>
 					<include name="testAddToAutoshipCartPC"></include>
 					<include name="testConsultantAutoshipCartCRPEnrollmentCRPReminderBanner_405"></include>
-					</methods>
+					<include name="testPlaceConsultantAutoshipOrderAndVerifyDateAndStatus"></include>
+					<include name="testPlacePCAutoshipOrderAndVerifyDateAndStatus"></include>
+					<include name="testPlacePulseAutoshipOrderAndVerifyDateAndStatus"></include>
+				</methods>
 			</class>
 			<class name="com.rf.test.website.rehabitat.storeFront.MyAccountTest">
 				<methods>

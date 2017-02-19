@@ -57,7 +57,6 @@ public class StoreFrontCheckoutPage extends StoreFrontWebsiteBasePage{
 	private final By POSTAL_CODE_FOR_BILLING_ADDRESS_LOC=By.xpath("//div[@id='account-billing-container']//input[@id='address.postcode']");
 	private final By PHONE_NUMBER_FOR_BILLING_ADDRESS_LOC=By.xpath("//div[@id='account-billing-container']//input[@id='address.phone']");
 	private final By CHECKOUT_BTN_CONSULTANT_LOC = By.id("checkoutPopup");
-	private final By CONFIRMATION_MSG_OF_PLACED_ORDER_LOC = By.xpath("//div[@class='orderHeading']/h1");
 	private final By ADDRESS_NAME_ERROR_MGS_LOC =  By.xpath("//span[@id='billTo_firstName.errors' and contains(text(),'Name must contain first name and last name with no special characters.')]");
 	private final By SHIPPING_LINK_AT_CHECKOUT_PAGE_LOC = By.xpath("//div[contains(text(),'Shipping')]/ancestor::a[1]");
 	private final By BILLING_LINK_AT_CHECKOUT_PAGE_LOC = By.xpath("//div[contains(text(),'Billing')]/ancestor::a[1]");
@@ -153,7 +152,6 @@ public class StoreFrontCheckoutPage extends StoreFrontWebsiteBasePage{
 	private final By BILLING_PROFILE_NAME_LOC = By.xpath("//div[@id='default-payment-method']//strong");
 	private final By CREDIT_CARD_NUMBER_AT_ORDER_CONFIRMATION_PAGE = By.xpath("//div[@class='orderBillingDetails']/div[2]");
 	private final By EDIT_LINK_OF_SHIPPING_DETAILS = By.xpath("//div[contains(text(),'Shipping')]/following-sibling::a[contains(text(),'Edit')]");
-	private final By ORDER_NUMBER_AT_CONFIRMATION_PAGE_OF_PLACED_ORDER_LOC = By.xpath("//div[@class='orderHeading']");
 	private final By USE_MY_DELIVERY_ADDRESS_CHECKBOX_LOC = By.xpath("//input[@id='useDeliveryAddress']");
 	private final By SELECTED_SPONSOR_LOC = By.xpath("//span[@id='selectd-consultant']");
 	private final By ADDRESS_BOOK_BTN_LOC = By.xpath("//button[contains(text(),'Address Book')]");
@@ -163,7 +161,7 @@ public class StoreFrontCheckoutPage extends StoreFrontWebsiteBasePage{
 	private final By TERMS_AND_CONDITIONS_CHCKBOX_FOR_CONSULTANT_CRP_LOC = By.xpath("//a[contains(text(),'Consultant Replenishment Program Terms & Conditions')]/ancestor::label[1]/preceding-sibling::input[1]");
 	private final By EDIT_LINK_OF_BILLING_PROFILE_LOC=By.xpath("//div[contains(text(),'Billing')]/following::a[1]");
 	private final By EDIT_LINK_OF_SHIPPING_SECTION_LOC=By.xpath("//div[@class='checkout-shipping']//a[1]");
-	
+
 	private String useThisAddressBtnInAddressBookLoc = "//div[@id='addressbook']/descendant::form[@id='useShipAddressFromBook'][%s]//button";
 	private String profileNameFromAddressBookLoc = "//div[@id='addressbook']/descendant::strong[%s]";
 	private String useThisPaymentDetailsBtnInSavedCardLoc = "//div[@id='savedpaymentsbody']/descendant::button[contains(text(),'Use these payment details')][%s]";
@@ -219,6 +217,7 @@ public class StoreFrontCheckoutPage extends StoreFrontWebsiteBasePage{
 			//driver.clickByJS(RFWebsiteDriver.driver, driver.findElement(NO_THANKS_BTN_LOC));
 			driver.click(NO_THANKS_BTN_LOC);
 		}
+		driver.waitForElementNotPresent(CREATE_ACCOUNT_BUTTON_LOC);
 		driver.waitForPageLoad();
 	}
 
@@ -1469,22 +1468,6 @@ public class StoreFrontCheckoutPage extends StoreFrontWebsiteBasePage{
 	}
 
 	/***
-	 * This method get the confirmation message of consultant enrollment
-	 * 
-	 * @param
-	 * @return boolean
-	 * 
-	 */
-	public boolean isOrderPlacedSuccessfully(){
-		driver.quickWaitForElementPresent(CONFIRMATION_MSG_OF_PLACED_ORDER_LOC);
-//		String confirmationText= driver.getText(CONFIRMATION_MSG_OF_PLACED_ORDER_LOC);
-		if(driver.isElementPresent(CONFIRMATION_MSG_OF_PLACED_ORDER_LOC)){
-			return true;
-		}else
-			return false;
-	}
-
-	/***
 	 * This method clicks on the 'Use a saved card' btn on the cart
 	 * Also clicks on the 'Use these payment details' btn
 	 * @return
@@ -1608,18 +1591,6 @@ public class StoreFrontCheckoutPage extends StoreFrontWebsiteBasePage{
 		return this;
 	}
 
-
-	/***
-	 * This method get the Order Number after Successful Checkout 
-	 * 
-	 * @param 
-	 * @return String
-	 * 
-	 */
-	public String getOrderNumberAfterCheckout(){
-		String orderNumber = driver.getText(ORDER_NUMBER_AT_CONFIRMATION_PAGE_OF_PLACED_ORDER_LOC).replaceAll("[^-?0-9]+","");
-		return orderNumber;
-	}
 
 	/***
 	 * This method get the shipping method after Successful Checkout 
@@ -1842,22 +1813,22 @@ public class StoreFrontCheckoutPage extends StoreFrontWebsiteBasePage{
 		driver.pauseExecutionFor(2000);
 		return this;
 	}
-	
-	 /***
-	  * This method click on Edit Shipping Address at checkout page
-	  * 
-	  * @param
-	  * @return store front Checkout page object
-	  * 
-	  */
-	 public StoreFrontCheckoutPage clickEditLinkOfShippingAddress(){
-	  if(driver.isElementVisible(EDIT_LINK_OF_SHIPPING_SECTION_LOC)){
-	   driver.click(EDIT_LINK_OF_SHIPPING_SECTION_LOC);
-	  }else{
-	  driver.click(EDIT_LINK_OF_SHIPPING_ADDRESS_LOC);
-	  }
-	  logger.info("Clicked on Edit link of Shipping Address");
-	  return this;
-	 }
+
+	/***
+	 * This method click on Edit Shipping Address at checkout page
+	 * 
+	 * @param
+	 * @return store front Checkout page object
+	 * 
+	 */
+	public StoreFrontCheckoutPage clickEditLinkOfShippingAddress(){
+		if(driver.isElementVisible(EDIT_LINK_OF_SHIPPING_SECTION_LOC)){
+			driver.click(EDIT_LINK_OF_SHIPPING_SECTION_LOC);
+		}else{
+			driver.click(EDIT_LINK_OF_SHIPPING_ADDRESS_LOC);
+		}
+		logger.info("Clicked on Edit link of Shipping Address");
+		return this;
+	}
 
 }

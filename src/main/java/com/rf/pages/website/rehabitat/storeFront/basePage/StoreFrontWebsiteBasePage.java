@@ -287,7 +287,9 @@ public class StoreFrontWebsiteBasePage extends RFBasePage {
 	private final By PHONE_NUMBER_FOR_BILLING_ADDRESS_FOR_EXISTING_PROFILE_LOC=By.xpath("//div[@id='checkoutEditBillingAddressForm']//input[@id='address.phone']");
 	private final By ERROR_MESSAGE_EXISTING_PREFIX_LOC = By.id("errorSubPrefix");
 	private final By ABOUT_ME_LOC = By.xpath(topNavigationLoc + "//a[contains(@title,'About Me')]");
-
+	private final By CONFIRMATION_MSG_OF_PLACED_ORDER_LOC = By.xpath("//div[@class='orderHeading']/h1");
+	private final By ORDER_NUMBER_AT_CONFIRMATION_PAGE_OF_PLACED_ORDER_LOC = By.xpath("//div[@class='orderHeading']");
+	
 	private String productNameAllItemsInCartLoc = "//span[@class='item-name' and contains(text(),%s)]";
 	protected String addToCartButtonLoc = "//div[contains(@class,'product__listing')]/descendant::span[@id='cust_price'][contains(text(),'$')][1]/following::button[text()='Add to bag'][%s]";
 	private String errorMessageLoc = "//div[@class='global-alerts']/div[normalize-space(contains(text() , '%s'))]";
@@ -2642,7 +2644,7 @@ public class StoreFrontWebsiteBasePage extends RFBasePage {
 	 */
 	public boolean isPcOneTimeFeeMsgDisplayed() {
 		driver.quickWaitForElementPresent(PC_ONE_TIME_FEE_MSG_LOC);
-		return driver.isElementVisible(PC_ONE_TIME_FEE_MSG_LOC);
+		return driver.isElementPresent(PC_ONE_TIME_FEE_MSG_LOC);
 	}
 
 	/***
@@ -3856,5 +3858,34 @@ public class StoreFrontWebsiteBasePage extends RFBasePage {
 		driver.click(YES_BUTTON_ON_ADDRESS_SUGGESTION_MODAL_LOC);
 		logger.info("Clicked Yes Button from Address Suggestion Popup");
 		return this;
+	}
+	
+	/***
+	 * This method get the confirmation message of consultant enrollment
+	 * 
+	 * @param
+	 * @return boolean
+	 * 
+	 */
+	public boolean isOrderPlacedSuccessfully(){
+		driver.quickWaitForElementPresent(CONFIRMATION_MSG_OF_PLACED_ORDER_LOC);
+		//		String confirmationText= driver.getText(CONFIRMATION_MSG_OF_PLACED_ORDER_LOC);
+		if(driver.isElementPresent(CONFIRMATION_MSG_OF_PLACED_ORDER_LOC)){
+			return true;
+		}else
+			return false;
+	}
+	
+	/***
+	 * This method get the Order Number after Successful Checkout 
+	 * 
+	 * @param 
+	 * @return String
+	 * 
+	 */
+	public String getOrderNumberAfterCheckout(){
+		String orderNumber = driver.getText(ORDER_NUMBER_AT_CONFIRMATION_PAGE_OF_PLACED_ORDER_LOC).replaceAll("[^-?0-9]+","");
+		logger.info("Order Number is "+orderNumber);
+		return orderNumber;
 	}
 }

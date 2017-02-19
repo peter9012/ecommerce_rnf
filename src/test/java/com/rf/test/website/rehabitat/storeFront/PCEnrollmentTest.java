@@ -431,7 +431,6 @@ public class PCEnrollmentTest extends StoreFrontWebsiteBaseTest{
 		userPropertyFile.loadProps(userProps);
 		setUsers("pcUserWithPWSSponsor", pcUserWithPWSSponsor);
 		s_assert.assertAll();
-		
 	}
 
 	@Test(enabled=true,groups="users")

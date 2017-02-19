@@ -1776,15 +1776,66 @@ public class AutoshipTest extends StoreFrontWebsiteBaseTest{
 		s_assert.assertAll();
 	}
 	
+	/***
+	 * This test checks the status of the consultant CRP and place CRP order
+	 */
 	@Test
 	public void testPlaceConsultantAutoshipOrderAndVerifyDateAndStatus(){
-		sfHomePage.loginToStoreFront(consultantWithPulseAndWithCRP, password,true);
+		String orderNumber = null;
+		sfHomePage.loginToStoreFront(consultantWithPulseAndWithCRP(), password,true);
 		sfHomePage.clickWelcomeDropdown();
 		sfOrdersPage = sfHomePage.navigateToOrdersPage();
 		s_assert.assertTrue(sfOrdersPage.getAutoshipStatus("2").equalsIgnoreCase("active"),"Autoship status is not ACTIVE");
 		sfOrdersPage.clickRunAutoshipOrder("2");
-		
-		
-		
+		s_assert.assertTrue(sfOrdersPage.isOrderPlacedSuccessfully(),"Order not placed. Thank you message is not displayed");
+		s_assert.assertTrue(sfOrdersPage.isTextPresent("Order #"),"Order Number is not present on the confirmation page");
+		orderNumber = sfOrdersPage.getOrderNumberAfterCheckout();
+		sfOrdersPage.clickWelcomeDropdown();
+		sfOrdersPage = sfOrdersPage.navigateToOrdersPage();
+		sfOrdersPage.clickOrderNumber(orderNumber);
+		s_assert.assertTrue(sfOrdersPage.getOrderTypeFromOrderDetailsTemplate().contains("consultant autoship"),"expected status of autoship order is incorrect");
+		s_assert.assertAll();
+	}
+	
+	/***
+	 * This test checks the status of the pc autoship and place autoship order
+	 */
+	@Test
+	public void testPlacePCAutoshipOrderAndVerifyDateAndStatus(){
+		String orderNumber = null;
+		sfHomePage.loginToStoreFront(pcUserWithPWSSponsor(), password,true);
+		sfHomePage.clickWelcomeDropdown();
+		sfOrdersPage = sfHomePage.navigateToOrdersPage();
+		s_assert.assertTrue(sfOrdersPage.getAutoshipStatus("1").equalsIgnoreCase("active"),"Autoship status is not ACTIVE");
+		sfOrdersPage.clickRunAutoshipOrder("1");
+		s_assert.assertTrue(sfOrdersPage.isOrderPlacedSuccessfully(),"Order not placed. Thank you message is not displayed");
+		s_assert.assertTrue(sfOrdersPage.isTextPresent("Order #"),"Order Number is not present on the confirmation page");
+		orderNumber = sfOrdersPage.getOrderNumberAfterCheckout();
+		sfOrdersPage.clickWelcomeDropdown();
+		sfOrdersPage = sfOrdersPage.navigateToOrdersPage();
+		sfOrdersPage.clickOrderNumber(orderNumber);
+		s_assert.assertTrue(sfOrdersPage.getOrderTypeFromOrderDetailsTemplate().contains("pc autoship"),"expected status of autoship order is incorrect");
+		s_assert.assertAll();
+	}
+	
+	/***
+	 * This test checks the status of the consultant pulse and place pulse order
+	 */
+	@Test
+	public void testPlacePulseAutoshipOrderAndVerifyDateAndStatus(){
+		String orderNumber = null;
+		sfHomePage.loginToStoreFront(consultantWithPulseAndWithCRP(), password,true);
+		sfHomePage.clickWelcomeDropdown();
+		sfOrdersPage = sfHomePage.navigateToOrdersPage();
+		s_assert.assertTrue(sfOrdersPage.getAutoshipStatus("1").equalsIgnoreCase("active"),"Autoship status is not ACTIVE");
+		sfOrdersPage.clickRunAutoshipOrder("1");
+		s_assert.assertTrue(sfOrdersPage.isOrderPlacedSuccessfully(),"Order not placed. Thank you message is not displayed");
+		s_assert.assertTrue(sfOrdersPage.isTextPresent("Order #"),"Order Number is not present on the confirmation page");
+		orderNumber = sfOrdersPage.getOrderNumberAfterCheckout();
+		sfOrdersPage.clickWelcomeDropdown();
+		sfOrdersPage = sfOrdersPage.navigateToOrdersPage();
+		sfOrdersPage.clickOrderNumber(orderNumber);
+		s_assert.assertTrue(sfOrdersPage.getOrderTypeFromOrderDetailsTemplate().contains("pulse"),"expected status of autoship order is incorrect");
+		s_assert.assertAll();
 	}
 }

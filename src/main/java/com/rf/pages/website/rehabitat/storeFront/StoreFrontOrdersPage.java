@@ -50,6 +50,8 @@ public class StoreFrontOrdersPage extends StoreFrontWebsiteBasePage{
 	private final By SELECTED_PROBLEEM_REASON_AT_ORDER_PROBLEM_PAGE_LOC = By.id("itemCodeValue");
 	private final By AUTOSHIP_ORDER_HISTORY_TABLE_LOC = By.xpath("//div[contains(text(),'PENDING AUTOSHIP ORDERS')]/following-sibling::div//tbody");
 	private final By PULSE_LINK_ORDER_PAGE = By.xpath("//div[@class='account-orderhistory']//a[text()='Pulse']");
+	private final By CONFIRM_AUTOSHIP_ORDER_BTN_LOC = By.xpath("//input[@id='asmrunnowconfirmsubmit']");
+	private final By ORDER_TYPE_FROM_ORDER_DETAILS_LOC = By.xpath("//span[@class='orderLabel' and contains(text(),'Type')]/following-sibling::span[@class='orderValue'][1]");
 
 	private String productNameLoc = "//p[contains(text(),'%s')]";
 	private String productQuantityLoc = "//p[contains(text(),'%s')]/../following::div[@class='orderQty']";
@@ -64,7 +66,7 @@ public class StoreFrontOrdersPage extends StoreFrontWebsiteBasePage{
 	private String informationAtOrderReportConfirmationPage = "//div[text()='%s:']/following::div[1]";
 	private String autoshipStatusLoc = "//div[@class='account-section']/descendant::div[@class='account-orderhistory'][1]//tr[@class='responsive-table-item'][%s]//td[@class='status'][1]";
 	private String autoshipOrderRunNowLoc = "//div[@class='account-section']/descendant::div[@class='account-orderhistory'][1]//tr[@class='responsive-table-item'][%s]//a[text()='Run Now']";
-	
+
 	/***
 	 * This method get first order number from order history 
 	 * 
@@ -722,16 +724,28 @@ public class StoreFrontOrdersPage extends StoreFrontWebsiteBasePage{
 		logger.info("Quantity of " + productName + " is " + productQty);
 		return productQty;
 	}
-	
+
 	public String getAutoshipStatus(String row){
 		String status = driver.getText(By.xpath(String.format(autoshipStatusLoc, row)));
 		logger.info("Autoship status is "+status);
 		return status.trim().toLowerCase();
 	}
-	
+
 	public void clickRunAutoshipOrder(String row){
 		driver.click(By.xpath(String.format(autoshipOrderRunNowLoc, row)));
 		logger.info("Autoship run now link clicked for row "+row);
+		driver.quickWaitForElementPresent(CONFIRM_AUTOSHIP_ORDER_BTN_LOC);
+		driver.click(CONFIRM_AUTOSHIP_ORDER_BTN_LOC);
+		logger.info("CONFIRM button from the popup clicked");
+		driver.pauseExecutionFor(5000);// the functionality taking time, so deliberately added
+		driver.waitForPageLoad();
+	}
+
+	public String getOrderTypeFromOrderDetailsTemplate(){
+		driver.quickWaitForElementPresent(ORDER_TYPE_FROM_ORDER_DETAILS_LOC);
+		String orderType = driver.getText(ORDER_TYPE_FROM_ORDER_DETAILS_LOC);
+		logger.info("Order Type "+orderType);
+		return orderType.trim().toLowerCase();
 	}
 
 }

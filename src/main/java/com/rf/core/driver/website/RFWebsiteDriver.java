@@ -182,7 +182,7 @@ public class RFWebsiteDriver implements RFDriver,WebDriver {
 	 * @return
 	 */
 	public boolean isElementPresent(By locator) {
-		turnOffImplicitWaits();
+		turnOffImplicitWaits(3);
 		try{
 			if (driver.findElements(locator).size() > 0) {
 				return true;
@@ -202,7 +202,7 @@ public class RFWebsiteDriver implements RFDriver,WebDriver {
 	public void waitForElementPresent(By locator) {
 		logger.info("wait started for "+locator);
 		int timeout = 30;
-		turnOffImplicitWaits();
+		turnOffImplicitWaits(1);
 		boolean isElementFound = false;
 		for(int i=1;i<=timeout;i++){		
 			try{
@@ -227,8 +227,8 @@ public class RFWebsiteDriver implements RFDriver,WebDriver {
 
 	public void quickWaitForElementPresent(By locator){
 		logger.info("quick wait started for "+locator);
-		int timeout = 10;
-		turnOffImplicitWaits();
+		int timeout = 5;
+		turnOffImplicitWaits(1);
 		for(int i=1;i<=timeout;i++){
 			try{
 				if(driver.findElements(locator).size()==0){
@@ -258,8 +258,8 @@ public class RFWebsiteDriver implements RFDriver,WebDriver {
 	}
 
 	public void waitForLoadingImageToDisappear(){
-		int DEFAULT_TIMEOUT = 50;
-		turnOffImplicitWaits();
+		int DEFAULT_TIMEOUT = 10;
+		turnOffImplicitWaits(1);
 		//		By locator = By.xpath("//div[@id='blockUIBody']");
 		By locator = By.xpath("//html[@class='loader']");
 		logger.info("Waiting for loading image to get disappear");
@@ -282,7 +282,7 @@ public class RFWebsiteDriver implements RFDriver,WebDriver {
 	}
 
 	public void waitForCSCockpitLoadingImageToDisappear(){
-		turnOffImplicitWaits();
+		turnOffImplicitWaits(1);
 		By locator = By.xpath("//div[@class='z-loading-indicator']");
 		logger.info("Waiting for cscockpit loading image to get disappear");
 		for(int i=1;i<=DEFAULT_TIMEOUT_CSCOCKPIT;i++){			
@@ -304,7 +304,7 @@ public class RFWebsiteDriver implements RFDriver,WebDriver {
 	}
 
 	public void waitForCSCockpitLoadingImageToDisappear(int time){
-		turnOffImplicitWaits();
+		turnOffImplicitWaits(1);
 		By locator = By.xpath("//div[@class='z-loading-indicator']");
 		logger.info("Waiting for cscockpit loading image to get disappear");
 		for(int i=1;i<=time;i++){			
@@ -326,7 +326,7 @@ public class RFWebsiteDriver implements RFDriver,WebDriver {
 	}
 
 	public void waitForCRMLoadingImageToDisappear(){
-		turnOffImplicitWaits();
+		turnOffImplicitWaits(2);
 		By locator = By.xpath("//span[contains(text(),'Loading')]");
 		logger.info("Waiting for crm loading image to get disappear");
 		for(int i=1;i<=DEFAULT_TIMEOUT;i++){			
@@ -348,7 +348,7 @@ public class RFWebsiteDriver implements RFDriver,WebDriver {
 	}	
 
 	public void waitForLoadingImageToAppear(){
-		turnOffImplicitWaits();
+		turnOffImplicitWaits(2);
 		By locator = By.xpath("//div[@id='blockUIBody']");
 		int timeout = 3;
 
@@ -371,7 +371,7 @@ public class RFWebsiteDriver implements RFDriver,WebDriver {
 	}
 
 	public void waitForSpinImageToDisappear(){
-		turnOffImplicitWaits();
+		turnOffImplicitWaits(1);
 		By locator = By.xpath("//span[@id='email-ajax-spinner'][contains(@style,'display: inline;')]");
 		logger.info("Waiting for spin image to get disappear");
 		for(int i=1;i<=DEFAULT_TIMEOUT;i++){
@@ -417,7 +417,7 @@ public class RFWebsiteDriver implements RFDriver,WebDriver {
 	}
 
 	public void waitForStorfrontLegacyLoadingImageToDisappear(){
-		turnOffImplicitWaits();
+		turnOffImplicitWaits(2);
 		By locator = By.xpath("//div[contains(@id,'UpdateProgress')][contains(@style,'display: block;')]");
 		logger.info("Waiting for storefront legacy loading image to get disappear");
 		for(int i=1;i<=DEFAULT_TIMEOUT;i++){   
@@ -439,7 +439,7 @@ public class RFWebsiteDriver implements RFDriver,WebDriver {
 	}
 
 	public void waitForNSCore4LoadingImageToDisappear(){
-		turnOffImplicitWaits();
+		turnOffImplicitWaits(1);
 		By locator = By.xpath("//div[@style='display: block;']/img");
 		logger.info("Waiting for NSCore4 loading image to get disappear");
 		for(int i=1;i<=DEFAULT_TIMEOUT;i++){   
@@ -461,7 +461,7 @@ public class RFWebsiteDriver implements RFDriver,WebDriver {
 	}
 
 	public void waitForNSCore4ProcessImageToDisappear(){
-		turnOffImplicitWaits();
+		turnOffImplicitWaits(1);
 		By locator = By.xpath("//div[@class='HModalOverlay']");
 		logger.info("Waiting for NSCore4 process loading image to get disappear");
 		for(int i=1;i<=DEFAULT_TIMEOUT;i++){   
@@ -482,7 +482,7 @@ public class RFWebsiteDriver implements RFDriver,WebDriver {
 	}
 
 	public void waitForLSDJustAMomentImageToDisappear(){
-		turnOffImplicitWaits();
+		turnOffImplicitWaits(1);
 		By locator = By.xpath("//div[@id='preload'][not(@style='display:none')]");
 		logger.info("Waiting for LSD loading image to get disappear");
 		for(int i=1;i<=DEFAULT_TIMEOUT;i++){   
@@ -503,7 +503,7 @@ public class RFWebsiteDriver implements RFDriver,WebDriver {
 	}
 
 	public void waitForLSDLoaderAnimationImageToDisappear(){
-		turnOffImplicitWaits();
+		turnOffImplicitWaits(1);
 		By locator = By.xpath("//div[contains(@class,'loader-animation')][(@style='')]");
 		logger.info("Waiting for LSD loading image to get disappear");
 		for(int i=1;i<=DEFAULT_TIMEOUT;i++){   
@@ -562,7 +562,7 @@ public class RFWebsiteDriver implements RFDriver,WebDriver {
 	public void click(By locator) {		
 		waitForElementToBeClickable(locator, DEFAULT_TIMEOUT);
 		//movetToElementJavascript(locator);
-		turnOffImplicitWaits();
+		turnOffImplicitWaits(1);
 		try{
 			findElement(locator).click();			
 		}catch(Exception e){
@@ -728,7 +728,7 @@ public class RFWebsiteDriver implements RFDriver,WebDriver {
 	 */
 	public boolean isElementVisible(By by) {
 		try{
-			turnOffImplicitWaits(5);
+			turnOffImplicitWaits(1);
 			return driver.findElement(by).isDisplayed() ? true : false;
 		}catch(Exception ex){
 			return false;
@@ -909,9 +909,9 @@ public class RFWebsiteDriver implements RFDriver,WebDriver {
 				"arguments[0].scrollIntoView(true);", element);
 	}
 
-	public void turnOffImplicitWaits() {
-		driver.manage().timeouts().implicitlyWait(10, TimeUnit.SECONDS);
-	}
+//	public void turnOffImplicitWaits() {
+//		driver.manage().timeouts().implicitlyWait(10, TimeUnit.SECONDS);
+//	}
 
 	public void turnOnImplicitWaits() {
 		driver.manage().timeouts().implicitlyWait(15, TimeUnit.SECONDS);

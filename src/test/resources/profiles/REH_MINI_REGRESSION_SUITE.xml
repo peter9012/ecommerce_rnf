@@ -31,8 +31,7 @@
 			</class>
 			 <class name="com.rf.test.website.rehabitat.storeFront.BillingProfileTest">
 				<methods>
-					<include name="testAddNewBillingAddressToExistingBillingProfile_385"></include>
-					<include name="testAddNewBillingAddressToNewlyCreatedBillingProfile_386"></include>
+					<include name="testAddEditBillingProfileFromMyAccountForConsultant"></include>
 					<include name="testAddEditBillingProfileFromMyAccountForPC"></include>
 					<include name="testAddEditBillingProfileFromMyAccountForRC"></include>
 					<include name="testAddEditBillingProfileAtAdhocCartForConsultant"></include>
@@ -44,8 +43,7 @@
 			<class
 				name="com.rf.test.website.rehabitat.storeFront.shippingProfile.AddAndDeleteShippingTest">
 				<methods>
-					<include name="testAddShippingAddressFromMyAccount_77"></include>
-					<include name="testEditAShippingAddressAndCancel_371"></include>
+					<include name="testAddEditShippingAddressFromMyAccountForConsultant"></include>
 					<include name="testAddEditShippingAddressFromMyAccountForPC"></include>
 					<include name="testAddEditShippingAddressFromMyAccountForRC"></include>
 					<include name="testAddAShippingAddressOnUpdateAutoshipCart_506"></include>
@@ -54,7 +52,6 @@
 					<include name="testAddEditShippingProfileAtAdhocCartForRC"></include>
 				</methods>
 			</class>
-
 			<class name="com.rf.test.website.rehabitat.storeFront.OrdersTest">
 				<methods>
 					<include name="testOrderDetailsOrderNumberLink_520"></include>
@@ -62,26 +59,16 @@
 					<include name="testPlacedAnAdhocOrderFromRC"></include>
 				</methods>
 			</class>
-
 			<class name="com.rf.test.website.rehabitat.storeFront.AutoshipTest">
 				<methods>
-					<include name="testAddToAutoshipCartConsultant_396"></include>
-					<include name="testAddToAutoshipCartPC_397"></include>
-					<include
-						name="testConsultantAutoshipCartCRPEnrollmentCRPReminderBanner_405"></include>
-					<include name="testConsultantAutoshipCartPulseSubscriptionStatus_353"></include>
-					<include name="testUpdateAutoshipCartAddEditABillingProfilePC"></include>
-					<include name="testUpdateAutoshipCartEditABillingProfileConsultant_400"></include>
-					<include name="testUpdateAutoshipCartEditShipAddressPC_399"></include>
-					<include name="testUpdateAutoshipCartEditShipAddressConsultant_398"></include>
-					<include name="testPlacedAnAutoshipOrderForConsultant"></include>
-				</methods>
+					<include name="testAddToAutoshipCartConsultant"></include>
+					<include name="testAddToAutoshipCartPC"></include>
+					<include name="testConsultantAutoshipCartCRPEnrollmentCRPReminderBanner_405"></include>
+					</methods>
 			</class>
-
 			<class name="com.rf.test.website.rehabitat.storeFront.MyAccountTest">
 				<methods>
 					<include name="testConsultantFirstTimePulseEnrollment_380"></include>
-					<include name="testVerifyPCPerksAutoshipDetails_280"></include>
 				</methods>
 			</class>
 			<class name="com.rf.test.website.rehabitat.storeFront.AboutMeTest">

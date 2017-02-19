@@ -62,7 +62,9 @@ public class StoreFrontOrdersPage extends StoreFrontWebsiteBasePage{
 	private String detailsLinkUnderOrderHistoryLoc = "//div[@id='orderHistoryContentArea']//tr[2]//a[contains(text(),'%s')]";
 	private String problemDropdownOptionsLoc = "//select[@id='problemReasonCode']//option[contains(text(),%s)]";
 	private String informationAtOrderReportConfirmationPage = "//div[text()='%s:']/following::div[1]";
-
+	private String autoshipStatusLoc = "//div[@class='account-section']/descendant::div[@class='account-orderhistory'][1]//tr[@class='responsive-table-item'][%s]//td[@class='status'][1]";
+	private String autoshipOrderRunNowLoc = "//div[@class='account-section']/descendant::div[@class='account-orderhistory'][1]//tr[@class='responsive-table-item'][%s]//a[text()='Run Now']";
+	
 	/***
 	 * This method get first order number from order history 
 	 * 
@@ -719,6 +721,17 @@ public class StoreFrontOrdersPage extends StoreFrontWebsiteBasePage{
 		String productQty = driver.getText(By.xpath(String.format(productQuantityLoc, productName)));
 		logger.info("Quantity of " + productName + " is " + productQty);
 		return productQty;
+	}
+	
+	public String getAutoshipStatus(String row){
+		String status = driver.getText(By.xpath(String.format(autoshipStatusLoc, row)));
+		logger.info("Autoship status is "+status);
+		return status.trim().toLowerCase();
+	}
+	
+	public void clickRunAutoshipOrder(String row){
+		driver.click(By.xpath(String.format(autoshipOrderRunNowLoc, row)));
+		logger.info("Autoship run now link clicked for row "+row);
 	}
 
 }

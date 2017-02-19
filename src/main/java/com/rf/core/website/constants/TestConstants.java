@@ -62,8 +62,8 @@ public class TestConstants {
 	public static final String CONSULTANT_ACCOUNT_ID = "";
 	public static final String CONSULTANT_ACCOUNT_NUMBER = "";
 	public static final String FIRST_NAME = "autocons";
-	public static final String ADDRESS_LINE_1_US = "60 spear st";
-	public static final String ADDRESS_LINE_2_US = "600";
+	public static final String ADDRESS_LINE_1_US = "60 spear st suite 600";
+	public static final String ADDRESS_LINE_2_US = "";
 	public static final String CITY_US = "San Francisco";
 	public static final String POSTAL_CODE_US = "94105";
 	public static final String PHONE_NUMBER = "9842342342";

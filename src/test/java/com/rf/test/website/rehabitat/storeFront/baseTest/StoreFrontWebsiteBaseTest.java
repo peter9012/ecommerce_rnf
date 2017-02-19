@@ -98,8 +98,8 @@ public class StoreFrontWebsiteBaseTest extends RFBaseTest {
 	 */
 	@BeforeSuite(alwaysRun=true)
 	public void setUp(ITestContext context) throws Exception {
+		userPropertyFile.loadProps(userProps);
 		if(getSuiteName(context).equalsIgnoreCase("storeFrontMiniRegressionSuite")){
-			userPropertyFile.loadProps(userProps);
 			userPropertyFile.clearProperty();
 		}
 		driver.loadApplication();
@@ -113,7 +113,7 @@ public class StoreFrontWebsiteBaseTest extends RFBaseTest {
 		setCountry();
 		setCountryId();
 		checkAndCloseMoreThanOneWindows();
-		driver.pauseExecutionFor(2000);
+		//driver.pauseExecutionFor(2000);
 		if(sfHomePage.isWelcomeUserElementDisplayed()==true){
 			sfHomePage.clickWelcomeDropdown();
 			sfHomePage.logout();

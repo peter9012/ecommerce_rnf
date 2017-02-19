@@ -421,9 +421,10 @@ public class StoreFrontWebsiteBasePage extends RFBasePage {
 	 * @return
 	 */
 	public StoreFrontShopSkinCarePage clickAllProducts() {
+		driver.quickWaitForElementPresent(SHOP_SKINCARE_LOC);
 		mouseHoverOn(TestConstants.SHOP_SKINCARE);
-		//  driver.click(ALL_PRODUCTS_LOC);
-		clickCategoryLink("UNBLEMISH");
+		driver.click(ALL_PRODUCTS_LOC);
+		//clickCategoryLink("UNBLEMISH");
 		//driver.get(driver.getCurrentUrl()+"/All-Skincare/c/shopskincare");
 		logger.info("clicked on 'All Products'");
 		driver.waitForPageLoad();
@@ -901,7 +902,7 @@ public class StoreFrontWebsiteBasePage extends RFBasePage {
 		// driver.isElementVisible(LOGIN_ICON_LOC);
 		// The above code is not working for visiblity so taking a work around
 		try {
-			driver.turnOffImplicitWaits();
+			driver.turnOffImplicitWaits(1);
 			driver.findElement(LOGIN_ICON_LOC).click();
 			return true;
 		} catch (Exception ex) {
@@ -933,7 +934,7 @@ public class StoreFrontWebsiteBasePage extends RFBasePage {
 		// driver.isElementVisible(USERNAME_TXTFLD_LOC);
 		// The above code is not working for visiblity so taking a work around
 		try {
-			driver.turnOffImplicitWaits();
+			driver.turnOffImplicitWaits(1);
 			driver.findElement(USERNAME_TXTFLD_LOC).sendKeys("");
 			return true;
 		} catch (Exception ex) {
@@ -976,7 +977,7 @@ public class StoreFrontWebsiteBasePage extends RFBasePage {
 		// driver.isElementVisible(PASSWORD_TXTFLD_LOC);
 		// The above code is not working for visiblity so taking a work around
 		try {
-			driver.turnOffImplicitWaits();
+			driver.turnOffImplicitWaits(1);
 			driver.findElement(PASSWORD_TXTFLD_LOC).sendKeys("");
 			return true;
 		} catch (Exception ex) {
@@ -1056,11 +1057,11 @@ public class StoreFrontWebsiteBasePage extends RFBasePage {
 	 * 
 	 */
 	public StoreFrontWebsiteBasePage clickWelcomeDropdown() {
-		driver.pauseExecutionFor(2000);
-		if (driver.isElementPresent(SET_UP_CRP_POPUP_CLOSE_LOC)) {
-			driver.click(SET_UP_CRP_POPUP_CLOSE_LOC);
-			logger.info("JOIN CRP banner closed");
-		}
+//		driver.pauseExecutionFor(2000);
+//		if (driver.isElementPresent(SET_UP_CRP_POPUP_CLOSE_LOC)) {
+//			driver.click(SET_UP_CRP_POPUP_CLOSE_LOC);
+//			logger.info("JOIN CRP banner closed");
+//		}
 		driver.pauseExecutionFor(1000);
 		driver.clickByJS(RFWebsiteDriver.driver, driver.findElement(WELCOME_DROPDOWN_LOC));
 		logger.info("Welcome dropdown clicked");
@@ -2595,6 +2596,7 @@ public class StoreFrontWebsiteBasePage extends RFBasePage {
 	 * @return
 	 */
 	public StoreFrontShopSkinCarePage clickAddMoreItemsBtn() {
+		driver.quickWaitForElementPresent(ADD_MORE_ITEMS_BTN_LOC);
 		if (driver.isElementPresent(ADD_MORE_ITEMS_BTN_LOC)) {
 			driver.click(ADD_MORE_ITEMS_BTN_LOC);
 		} else {
@@ -2845,6 +2847,7 @@ public class StoreFrontWebsiteBasePage extends RFBasePage {
 	public StoreFrontWebsiteBasePage clickPlaceOrderButton() {
 		clickBecomeAConsultant();
 		driver.pauseExecutionFor(2000);
+		driver.waitForPageLoad();
 		return this;
 	}
 

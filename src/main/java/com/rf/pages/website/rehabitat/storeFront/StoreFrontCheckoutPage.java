@@ -219,6 +219,7 @@ public class StoreFrontCheckoutPage extends StoreFrontWebsiteBasePage{
 			//driver.clickByJS(RFWebsiteDriver.driver, driver.findElement(NO_THANKS_BTN_LOC));
 			driver.click(NO_THANKS_BTN_LOC);
 		}
+		driver.waitForPageLoad();
 	}
 
 	/***
@@ -1475,8 +1476,9 @@ public class StoreFrontCheckoutPage extends StoreFrontWebsiteBasePage{
 	 * 
 	 */
 	public boolean isOrderPlacedSuccessfully(){
-		String confirmationText= driver.getText(CONFIRMATION_MSG_OF_PLACED_ORDER_LOC);
-		if(confirmationText.toLowerCase().contains(("Thank you for your Order!").toLowerCase())){
+		driver.quickWaitForElementPresent(CONFIRMATION_MSG_OF_PLACED_ORDER_LOC);
+//		String confirmationText= driver.getText(CONFIRMATION_MSG_OF_PLACED_ORDER_LOC);
+		if(driver.isElementPresent(CONFIRMATION_MSG_OF_PLACED_ORDER_LOC)){
 			return true;
 		}else
 			return false;

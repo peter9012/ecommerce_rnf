@@ -626,6 +626,44 @@ public class AddAndDeleteShippingTest extends StoreFrontWebsiteBaseTest{
 	}
 
 	/***
+	 * Add & Edit shipping address from my account For Consultant
+	 * Description : This test Add & Edit a new shipping address and validates it
+	 *     
+	 */
+	@Test (enabled=true)
+	public void testAddEditShippingAddressFromMyAccountForConsultant(){
+		String randomWord = CommonUtils.getRandomWord(5);
+		String firstName = TestConstants.FIRST_NAME;
+		String lastName = TestConstants.LAST_NAME+randomWord;
+		String addressLine1 = TestConstants.ADDRESS_LINE_1_US;
+		String addressLine2 = TestConstants.ADDRESS_LINE_2_US;
+		String city = TestConstants.CITY_US;
+		String state = TestConstants.STATE_US;
+		String postalCode = TestConstants.POSTAL_CODE_US;
+		String phoneNumber = TestConstants.PHONE_NUMBER;
+//		sfHomePage.loginToStoreFront(TestConstants.PC_EMAIL_HAVING_AUTOSHIP,password,true);
+		sfHomePage.loginToStoreFront(consultantWithPulseAndWithCRP(),password,true);
+		sfHomePage.clickWelcomeDropdown();
+		sfShippingInfoPage = sfHomePage.navigateToShippingInfoPage();
+		sfShippingInfoPage.clickAddANewShippingAddressLink();
+		sfShippingInfoPage.enterConsultantShippingDetails(firstName, lastName, addressLine1, addressLine2,city, state, postalCode, phoneNumber);
+		sfShippingInfoPage.clickSaveButtonOfShippingAddress();
+		sfShippingInfoPage.clickUseAsEnteredButtonOnPopUp();
+		s_assert.assertTrue(sfShippingInfoPage.isShippingProfilePresent(lastName), "Newly added shipping profile is not present at shipping info page");
+		// Edit default shipping Profile
+		randomWord = CommonUtils.getRandomWord(5);
+		lastName = TestConstants.LAST_NAME+randomWord;
+		sfShippingInfoPage.clickEditLinkOfDefaultShippingAddress();
+		sfShippingInfoPage.enterConsultantShippingDetails(firstName, lastName, addressLine1,addressLine2, city, state, postalCode, phoneNumber);
+		sfShippingInfoPage.clickSaveButtonOfShippingAddress();
+		sfShippingInfoPage.clickUseAsEnteredButtonOnPopUp();
+		s_assert.assertTrue(sfShippingInfoPage.getAddressUpdateSuccessMsg().contains(TestConstants.SHIPPING_ADDRESS_UPDATE_MESSAGE),"Shipping Address update msg is not found as expected");
+		s_assert.assertTrue(sfShippingInfoPage.isShippingProfilePresent(lastName), "Expected profile name is not present in Address list");
+		s_assert.assertAll();
+	}
+
+	
+	/***
 	 * Add & Edit shipping address from my account For PC
 	 * Description : This test Add & Edit a new shipping address and validates it
 	 *     

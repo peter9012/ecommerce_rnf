@@ -326,8 +326,7 @@ public class StoreFrontHomePage extends StoreFrontWebsiteBasePage{
 	 */
 	public StoreFrontHomePage clickNextButton(){
 		driver.quickWaitForElementPresent(NEXT_BUTTON_LOC);
-		//driver.click(NEXT_BUTTON_LOC);
-		driver.clickByAction(NEXT_BUTTON_LOC);//(RFWebsiteDriver.driver,driver.findElement(NEXT_BUTTON_LOC));
+		driver.click(NEXT_BUTTON_LOC);
 		logger.info("Next button clicked");
 		driver.waitForPageLoad();
 		return this;

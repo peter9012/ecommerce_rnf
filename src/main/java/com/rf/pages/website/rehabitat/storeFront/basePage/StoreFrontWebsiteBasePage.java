@@ -1683,21 +1683,27 @@ public class StoreFrontWebsiteBasePage extends RFBasePage {
 		logger.info("Entered card number as" + cardNumber);
 		driver.pauseExecutionFor(1000);
 		driver.click(CARD_NUMBER_LOC);
+		driver.pauseExecutionFor(1000);
 		Actions actions = new Actions(RFWebsiteDriver.driver);
 		WebElement nameOnCardElement = driver.findElement(NAME_ON_CARD_LOC);
 		actions.click(nameOnCardElement).sendKeys(nameOnCardElement, nameOnCard).build().perform();
 		logger.info("Entered card name as" + nameOnCard);
 		driver.click(EXP_MONTH_DD_LOC);
+		driver.pauseExecutionFor(1000);
 		logger.info("Exp month dropdown clicked");
 		driver.click(EXP_MONTH_LOC);
+		driver.pauseExecutionFor(1000);
 		logger.info("Exp month selected");
 		driver.click(EXP_YEAR_DD_LOC);
+		driver.pauseExecutionFor(1000);
 		logger.info("Exp year dropdown clicked");
 		driver.click(EXP_YEAR_LOC);
+		driver.pauseExecutionFor(1000);
 		logger.info("Exp year selected");
 		driver.type(CVV_LOC, CVV);
+		driver.pauseExecutionFor(1000);
 		logger.info("Entered CVV as" + CVV);
-		//driver.pauseExecutionFor(3000);
+		driver.pauseExecutionFor(1000);
 		driver.waitForTokenizing();
 		return this;
 	}

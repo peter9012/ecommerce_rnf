@@ -216,6 +216,14 @@ public class StoreFrontCheckoutPage extends StoreFrontWebsiteBasePage{
 		if(userType.equals(TestConstants.USER_TYPE_RC)){
 			//driver.clickByJS(RFWebsiteDriver.driver, driver.findElement(NO_THANKS_BTN_LOC));
 			driver.click(NO_THANKS_BTN_LOC);
+			driver.pauseExecutionFor(2000);
+			driver.waitForElementNotPresent(NO_THANKS_BTN_LOC,5);
+			try{
+				driver.turnOffImplicitWaits(1);
+				driver.click(NO_THANKS_BTN_LOC);// needs to click again on the No Thanks button,will remove this patch
+			}catch(Exception e){
+				driver.turnOnImplicitWaits();
+			}
 		}
 		driver.pauseExecutionFor(5000);
 		driver.waitForElementNotPresent(CREATE_ACCOUNT_BUTTON_LOC);

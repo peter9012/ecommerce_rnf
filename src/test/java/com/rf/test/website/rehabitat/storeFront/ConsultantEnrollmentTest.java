@@ -29,7 +29,7 @@ public class ConsultantEnrollmentTest extends StoreFrontWebsiteBaseTest{
 		addressLine2 = TestConstants.ADDRESS_LINE_2_US;
 		city = TestConstants.CITY_US;
 		state = TestConstants.STATE_US;
-		postalCode = TestConstants.POSTAL_CODE_US;
+		postalCode = TestConstants.POSTAL_CODE_US;	
 		phoneNumber = TestConstants.PHONE_NUMBER;
 		cardType = TestConstants.CARD_TYPE;
 		cardNumber = TestConstants.CARD_NUMBER;
@@ -77,6 +77,13 @@ public class ConsultantEnrollmentTest extends StoreFrontWebsiteBaseTest{
 	 */
 	@Test(enabled=true)
 	public void testConsultantEnrollment_231(){
+		if(country.equalsIgnoreCase("ca")){
+			addressLine1 = TestConstants.ADDRESS_LINE_1_CA;
+			addressLine2 = TestConstants.ADDRESS_LINE_2_CA;
+			city = TestConstants.CITY_CA;
+			state = TestConstants.STATE_CA;
+			postalCode = TestConstants.POSTAL_CODE_CA;	
+		}
 		timeStamp = CommonUtils.getCurrentTimeStamp();
 		randomWords = CommonUtils.getRandomWord(5);		
 		lastName = TestConstants.LAST_NAME+randomWords;
@@ -94,7 +101,6 @@ public class ConsultantEnrollmentTest extends StoreFrontWebsiteBaseTest{
 		sfHomePage.clickNextButton();
 		sfHomePage.clickSaveButton();
 		sfHomePage.enterConsultantShippingDetails(firstName, lastName, addressLine1, addressLine2 ,city, state, postalCode, phoneNumber);
-		//sfHomePage.clickUseAsEnteredButtonOnPopUp();
 		sfHomePage.clickShippingDetailsNextbutton();
 		sfHomePage.enterUserBillingDetails(cardType, cardNumber, cardName, CVV);
 		//sfHomePage.selectBillingAddressFromDD();
@@ -653,7 +659,6 @@ public class ConsultantEnrollmentTest extends StoreFrontWebsiteBaseTest{
 		sfHomePage.clickNextButton();
 		sfHomePage.clickSaveButton();
 		sfHomePage.enterConsultantShippingDetails(firstName, lastName, addressLine1, addressLine2 ,city, state, postalCode, phoneNumber);
-		sfHomePage.clickUseAsEnteredButtonOnPopUp();
 		sfHomePage.clickShippingDetailsNextbutton();
 		sfHomePage.enterUserBillingDetails(cardType, cardNumber, cardName, CVV);
 		sfHomePage.clickBillingDetailsNextbutton();
@@ -701,7 +706,6 @@ public class ConsultantEnrollmentTest extends StoreFrontWebsiteBaseTest{
 		sfHomePage.clickNextButton();
 		sfHomePage.clickSaveButton();
 		sfHomePage.enterConsultantShippingDetails(firstName, lastName, addressLine1, addressLine2 ,city, state, postalCode, phoneNumber);
-		sfHomePage.clickUseAsEnteredButtonOnPopUp();
 		sfHomePage.clickShippingDetailsNextbutton();
 		sfHomePage.enterUserBillingDetails(cardType, cardNumber, cardName, CVV);
 		//sfHomePage.selectBillingAddressFromDD();
@@ -742,7 +746,6 @@ public class ConsultantEnrollmentTest extends StoreFrontWebsiteBaseTest{
 		sfHomePage.clickNextButton();
 		sfHomePage.clickSaveButton();
 		sfHomePage.enterConsultantShippingDetails(firstName, lastName, addressLine1, addressLine2 ,city, state, postalCode, phoneNumber);
-		sfHomePage.clickUseAsEnteredButtonOnPopUp();
 		sfHomePage.clickShippingDetailsNextbutton();
 		sfHomePage.enterUserBillingDetails(cardType, cardNumber, cardName, CVV);
 		sfHomePage.clickBillingDetailsNextbutton();
@@ -764,7 +767,7 @@ public class ConsultantEnrollmentTest extends StoreFrontWebsiteBaseTest{
 		sfCheckoutPage.clickRodanAndFieldsLogo();
 		consultantWithPulseAndWithCRPForCancellation=email;
 		s_assert.assertAll();	
-		
+
 	}
 
 	//For CONSULTANT_EMAIL_SPONSOR_WITHOUT_PWS
@@ -788,7 +791,6 @@ public class ConsultantEnrollmentTest extends StoreFrontWebsiteBaseTest{
 		sfHomePage.clickNextButton();
 		sfHomePage.clickSaveButton();
 		sfHomePage.enterConsultantShippingDetails(firstName, lastName, addressLine1, addressLine2 ,city, state, postalCode, phoneNumber);
-		sfHomePage.clickUseAsEnteredButtonOnPopUp();
 		sfHomePage.clickShippingDetailsNextbutton();
 		sfHomePage.enterUserBillingDetails(cardType, cardNumber, cardName, CVV);
 		//sfHomePage.selectBillingAddressFromDD();

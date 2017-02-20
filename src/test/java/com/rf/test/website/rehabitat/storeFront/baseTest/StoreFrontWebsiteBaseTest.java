@@ -50,6 +50,7 @@ public class StoreFrontWebsiteBaseTest extends RFBaseTest {
 	 * @description StoreFrontWebsiteBaseTest constructor having StoreFront HomePage initialization
 	 */
 	public StoreFrontWebsiteBaseTest() {
+		setCountry();
 		sfHomePage = new StoreFrontHomePage(driver);		
 	}
 

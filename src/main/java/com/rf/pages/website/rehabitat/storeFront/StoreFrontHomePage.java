@@ -93,6 +93,9 @@ public class StoreFrontHomePage extends StoreFrontWebsiteBasePage{
 	private String categoryUnderShopSkinCareLoc = topNavigationLoc+"//a[@title='%s']";
 	private String socialMediaLoc = "//div[contains(@class,'social-icons')]//a[contains(@href,'%s')]";
 
+	//CA specific
+	private final By PERSONAL_RESULTS_KIT_PAGE_LOC_CA = By.xpath("//label[normalize-space(text())='Personal Results Kit']//preceding-sibling::input[1]");
+	
 	private int randomLink =0;
 
 	public boolean isFindAConsultantPagePresent(){
@@ -325,6 +328,7 @@ public class StoreFrontHomePage extends StoreFrontWebsiteBasePage{
 	 * 
 	 */
 	public StoreFrontHomePage clickNextButton(){
+		driver.pauseExecutionFor(2000);
 		driver.quickWaitForElementPresent(NEXT_BUTTON_LOC);
 		driver.click(NEXT_BUTTON_LOC);
 		logger.info("Next button clicked");
@@ -400,8 +404,13 @@ public class StoreFrontHomePage extends StoreFrontWebsiteBasePage{
 	 * 
 	 */
 	public StoreFrontHomePage chooseProductFromKitPage(){
+		if(driver.getCountry().equalsIgnoreCase("us")){
 		driver.quickWaitForElementPresent(PERSONAL_RESULTS_KIT_PAGE_LOC);
 		driver.clickByJS(RFWebsiteDriver.driver, driver.findElement(PERSONAL_RESULTS_KIT_PAGE_LOC));
+	}else if(driver.getCountry().equalsIgnoreCase("ca")){
+		driver.quickWaitForElementPresent(PERSONAL_RESULTS_KIT_PAGE_LOC_CA);
+		driver.clickByJS(RFWebsiteDriver.driver, driver.findElement(PERSONAL_RESULTS_KIT_PAGE_LOC_CA));
+	}
 		logger.info("selected the personal result kit");
 		return this;
 	}

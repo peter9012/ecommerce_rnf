@@ -47,6 +47,13 @@ public class RCEnrollmentTest extends StoreFrontWebsiteBaseTest{
 	 */
 	@Test(enabled=true)
 	public void testRCEnrollmentWithoutSponsor_550(){
+		if(country.equalsIgnoreCase("ca")){
+			addressLine1 = TestConstants.ADDRESS_LINE_1_CA;
+			addressLine2 = TestConstants.ADDRESS_LINE_2_CA;
+			city = TestConstants.CITY_CA;
+			state = TestConstants.STATE_CA;
+			postalCode = TestConstants.POSTAL_CODE_CA;	
+		}
 		timeStamp = CommonUtils.getCurrentTimeStamp();
 		email = firstName+timeStamp+TestConstants.EMAIL_SUFFIX;
 		navigateToStoreFrontBaseURL();
@@ -111,15 +118,14 @@ public class RCEnrollmentTest extends StoreFrontWebsiteBaseTest{
 		sfCheckoutPage.fillNewUserDetails(TestConstants.USER_TYPE_RC, firstName, lastName, email, password);
 		sfCheckoutPage.clickCreateAccountButton(TestConstants.USER_TYPE_RC);
 		s_assert.assertTrue(sfHomePage.isWelcomeUserElementDisplayed(), "RC has not been enrolled successfully");
-		s_assert.assertAll();
 		rcWithoutOrder=email;
+		s_assert.assertAll();
 	}
 
 	@Test(enabled=true, groups="users")
 	public void testRCEnrollmentWithOrderWithoutSponsor(){
 		timeStamp = CommonUtils.getCurrentTimeStamp();
 		email = firstName+timeStamp+TestConstants.EMAIL_SUFFIX;
-		navigateToStoreFrontBaseURL();
 		sfCartPage = new StoreFrontCartPage(driver);
 		sfShopSkinCarePage = new StoreFrontShopSkinCarePage(driver);
 		sfHomePage.clickLoginIcon();

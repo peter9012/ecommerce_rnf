@@ -47,6 +47,13 @@ public class PCEnrollmentTest extends StoreFrontWebsiteBaseTest{
 	 */
 	@Test(enabled=true)
 	public void testPCEnrollment_452(){
+		if(country.equalsIgnoreCase("ca")){
+			addressLine1 = TestConstants.ADDRESS_LINE_1_CA;
+			addressLine2 = TestConstants.ADDRESS_LINE_2_CA;
+			city = TestConstants.CITY_CA;
+			state = TestConstants.STATE_CA;
+			postalCode = TestConstants.POSTAL_CODE_CA;	
+		}
 		timeStamp = CommonUtils.getCurrentTimeStamp();
 		randomWords = CommonUtils.getRandomWord(5);		
 		lastName = TestConstants.LAST_NAME+randomWords;

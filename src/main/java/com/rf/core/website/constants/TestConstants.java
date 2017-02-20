@@ -72,6 +72,13 @@ public class TestConstants {
 	public static final String CITY_ND_US = "Bismarck";
 	public static final String POSTAL_CODE_ND_US = "58503";
 	public static final String STATE_ND_US = "North Dakota";
+	
+	//Canada
+	public static final String ADDRESS_LINE_1_CA = "5940 Macleod Trail SW Suite 500";
+	public static final String ADDRESS_LINE_2_CA = "";
+	public static final String CITY_CA = "Calgary";
+	public static final String POSTAL_CODE_CA = "T2H 2G4";
+	public static final String STATE_CA = "Alberta";
 
 	public static final String FIRST_NAME_BILLING_ADDRESS = "BAFirstname";
 	public static final String LAST_NAME_BILLING_ADDRESS = "BALastname";

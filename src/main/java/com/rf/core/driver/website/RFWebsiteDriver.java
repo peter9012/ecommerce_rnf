@@ -54,7 +54,7 @@ import com.rf.core.utils.PropertyFile;
 public class RFWebsiteDriver implements RFDriver,WebDriver {
 	public static WebDriver driver; // added static and changed visibility from public to private
 	private PropertyFile propertyFile;
-	private static int DEFAULT_TIMEOUT = 20;
+	private static int DEFAULT_TIMEOUT = 30;
 	private static int DEFAULT_TIMEOUT_CSCOCKPIT = 70;
 	String browser = null;
 	String dbIP = null;
@@ -70,7 +70,6 @@ public class RFWebsiteDriver implements RFDriver,WebDriver {
 
 	private static final Logger logger = LogManager
 			.getLogger(RFWebsiteDriver.class.getName());
-
 
 	/**
 	 * @throws MalformedURLException
@@ -257,6 +256,17 @@ public class RFWebsiteDriver implements RFDriver,WebDriver {
 		}		
 	}
 
+	public void waitForElementNotPresent(By locator, int timeout) {
+		try {
+			WebDriverWait wait = new WebDriverWait(driver, timeout);
+			logger.info("waiting for locator " + locator);
+			wait.until(ExpectedConditions.not(ExpectedConditions.presenceOfElementLocated(locator)));
+			logger.info("Element found");
+		} catch (Exception e) {
+			e.getStackTrace();
+		}		
+	}
+	
 	public void waitForLoadingImageToDisappear(){
 		int DEFAULT_TIMEOUT = 10;
 		turnOffImplicitWaits(1);

@@ -393,7 +393,7 @@ public class RFWebsiteDriver implements RFDriver,WebDriver {
 
 	public void waitForTokenizing() {
 		int timeout = 5;
-		turnOffImplicitWaits(0);
+		turnOffImplicitWaits(1);
 		boolean isElementFound = false;
 		for(int i=1;i<=timeout;i++){  
 			try{
@@ -914,18 +914,19 @@ public class RFWebsiteDriver implements RFDriver,WebDriver {
 //	}
 
 	public void turnOnImplicitWaits() {
-		driver.manage().timeouts().implicitlyWait(15, TimeUnit.SECONDS);
+		driver.manage().timeouts().implicitlyWait(20, TimeUnit.SECONDS);
 	}
 	
 	public void turnOffImplicitWaits(int time) {
 		driver.manage().timeouts().implicitlyWait(time, TimeUnit.SECONDS);
 	}
 
-	public void turnOnImplicitWaits(int time) {
-		driver.manage().timeouts().implicitlyWait(time, TimeUnit.SECONDS);
-	}
+//	public void turnOnImplicitWaits(int time) {
+//		driver.manage().timeouts().implicitlyWait(time, TimeUnit.SECONDS);
+//	}
 
 	public void clickByJS(WebDriver driver, WebElement element) {
+		pauseExecutionFor(2000);
 		JavascriptExecutor executor = (JavascriptExecutor) driver;
 		executor.executeScript("arguments[0].click();", element);
 	}

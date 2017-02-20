@@ -1677,7 +1677,7 @@ public class StoreFrontWebsiteBasePage extends RFBasePage {
 			String CVV) {
 		String javascript = "document.getElementById('card_accountNumber').value=" + cardNumber + ";"
 				+ "document.getElementById('card_accountNumber').innerHTML=" + cardNumber + ";";
-		driver.pauseExecutionFor(2000);
+		//driver.pauseExecutionFor(2000);
 		driver.quickWaitForElementPresent(NAME_ON_CARD_LOC);
 		((JavascriptExecutor) RFWebsiteDriver.driver).executeScript(javascript);
 		logger.info("Entered card number as" + cardNumber);
@@ -1697,6 +1697,7 @@ public class StoreFrontWebsiteBasePage extends RFBasePage {
 		logger.info("Exp year selected");
 		driver.type(CVV_LOC, CVV);
 		logger.info("Entered CVV as" + CVV);
+		//driver.pauseExecutionFor(3000);
 		driver.waitForTokenizing();
 		return this;
 	}

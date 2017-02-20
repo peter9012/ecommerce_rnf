@@ -217,6 +217,7 @@ public class StoreFrontCheckoutPage extends StoreFrontWebsiteBasePage{
 			//driver.clickByJS(RFWebsiteDriver.driver, driver.findElement(NO_THANKS_BTN_LOC));
 			driver.click(NO_THANKS_BTN_LOC);
 		}
+		driver.pauseExecutionFor(5000);
 		driver.waitForElementNotPresent(CREATE_ACCOUNT_BUTTON_LOC);
 		driver.waitForPageLoad();
 	}

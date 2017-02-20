@@ -1640,13 +1640,9 @@ public class StoreFrontWebsiteBasePage extends RFBasePage {
 	public StoreFrontWebsiteBasePage enterConsultantAddressDetails(String firstName, String lastName,
 			String addressLine1, String addressLine2, String city, String state, String postal, String phoneNumber) {
 		String completeName = firstName + " " + lastName;
-		driver.type(FIRST_NAME_FOR_ADDRESS_DETAILS_LOC, completeName); // this
-		// will
-		// put
-		// first
-		// and
-		// last
-		// name
+		driver.pauseExecutionFor(2000);
+		driver.quickWaitForElementPresent(FIRST_NAME_FOR_ADDRESS_DETAILS_LOC);
+		driver.type(FIRST_NAME_FOR_ADDRESS_DETAILS_LOC, completeName);
 		logger.info("Entered complete name as " + completeName);
 		driver.type(ADDRESS_LINE_1_FOR_ADDRESS_DETAILS_LOC, addressLine1);
 		logger.info("Entered address line 1 as " + addressLine1);

@@ -728,6 +728,7 @@ public class StoreFrontCheckoutPage extends StoreFrontWebsiteBasePage{
 	 */
 	public StoreFrontCheckoutPage enterBillingAddressDetailsAtCheckout(String firstName, String lastName, String addressLine1, String addressLine2, String city, String state, String postal, String phoneNumber){
 		String completeName = firstName+" "+lastName;
+		driver.pauseExecutionFor(3000);
 		driver.type(FIRST_LAST_NAME_FOR_BILLING_ADDRESS_AT_CHECKOUT_PAGE_LOC, completeName);
 		logger.info("Entered complete name as "+completeName);
 		driver.type(ADDRESS_LINE1_FOR_BILLING_ADDRESS_AT_CHECKOUT_PAGE_LOC, addressLine1);
@@ -1118,6 +1119,7 @@ public class StoreFrontCheckoutPage extends StoreFrontWebsiteBasePage{
 	 */
 	public StoreFrontCheckoutPage enterBillingAddressDetailsAtCheckoutForNewBillingProfile(String firstName, String lastName, String addressLine1, String addressLine2, String city, String state, String postal, String phoneNumber){
 		String completeName = firstName+" "+lastName;
+		driver.pauseExecutionFor(3000);
 		driver.type(FIRST_LAST_NAME_FOR_BILLING_ADDRESS_FOR_NEW_PROFILE_LOC, completeName);
 		logger.info("Entered complete name as "+completeName);
 		driver.type(ADDRESS_LINE1_FOR_BILLING_ADDRESS_FOR_NEW_PROFILE_LOC, addressLine1);

@@ -175,6 +175,8 @@ public class StoreFrontWebsiteBaseTest extends RFBaseTest {
 	public void navigateToStoreFrontBaseURL(){
 		driver.get(driver.getURL()+"/"+country.toUpperCase());
 		logger.info("Navigated to base URL");
+		driver.waitForPageLoad();
+		driver.pauseExecutionFor(2000);
 	}
 
 	public void navigateToStoreFrontBaseURLWithoutCountry(){

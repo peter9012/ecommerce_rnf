@@ -545,26 +545,15 @@ public class AutoshipTest extends StoreFrontWebsiteBaseTest{
 	@Test(enabled=true)
 	public void testConsultantAutoshipCartCRPEnrollmentCRPReminderBanner_405(){
 		String status = null;
-		String timeStamp = CommonUtils.getCurrentTimeStamp();
+		timeStamp = CommonUtils.getCurrentTimeStamp();
 		String socialInsuranceNumber = String.valueOf(CommonUtils.getRandomNum(100000000, 999999999));
-		String firstName = TestConstants.FIRST_NAME;
-		String lastName = TestConstants.LAST_NAME;
-		String emailID = TestConstants.FIRST_NAME+timeStamp+TestConstants.EMAIL_SUFFIX;
-		String addressLine1 = TestConstants.ADDRESS_LINE_1_US;
-		String addressLine2 = TestConstants.ADDRESS_LINE_2_US;
-		String city = TestConstants.CITY_US;
-		String state = TestConstants.STATE_US;
-		String postalCode = TestConstants.POSTAL_CODE_US;
-		String phoneNumber = TestConstants.PHONE_NUMBER;
-		String cardType = TestConstants.CARD_TYPE;
-		String cardNumber = TestConstants.CARD_NUMBER;
-		String cardName = TestConstants.CARD_NAME;
-		String CVV = TestConstants.CVV;
+		email = TestConstants.FIRST_NAME+timeStamp+TestConstants.EMAIL_SUFFIX;
+		lastName = TestConstants.LAST_NAME;
 		sfHomePage.clickEnrollNow();
 		sfHomePage.searchSponsor(TestConstants.SPONSOR);
 		s_assert.assertTrue(sfHomePage.isSponsorResultDisplayed(),"No result found after searching the sponsor with name "+TestConstants.SPONSOR);
 		sfHomePage.selectFirstSponsorFromList();
-		sfHomePage.enterConsultantEnrollmentDetails(firstName, lastName, emailID, password, socialInsuranceNumber);
+		sfHomePage.enterConsultantEnrollmentDetails(firstName, lastName, email, password, socialInsuranceNumber);
 		sfHomePage.clickNextButton();
 		s_assert.assertFalse(sfHomePage.isNextButtonEnabledBeforeSelectingKit(), "Next Button is NOT disabled before selecting kit");
 		sfHomePage.chooseProductFromKitPage();
@@ -589,7 +578,7 @@ public class AutoshipTest extends StoreFrontWebsiteBaseTest{
 		sfCheckoutPage.clickShippingDetailsNextbutton();
 		sfCheckoutPage.clickBillingDetailsNextbutton();
 		sfCheckoutPage.selectTermsAndConditionsCheckBoxForConsulatntCRP();
-		//		sfCheckoutPage.selectCheckboxForPoliciesAndProcedures();
+		//  sfCheckoutPage.selectCheckboxForPoliciesAndProcedures();
 		sfCheckoutPage.clickConfirmAutoshipOrderButton();
 		s_assert.assertTrue(sfCheckoutPage.isCRPOrderConfirmedSuccessMsgAppeared(),"CRP Order confirmed success messge is not appeared");
 		sfCheckoutPage.clickRodanAndFieldsLogo();
@@ -1696,7 +1685,7 @@ public class AutoshipTest extends StoreFrontWebsiteBaseTest{
 		s_assert.assertTrue(currentURL.contains("/orders"), "Expected URL should contain '/orders' but actual on UI is "+currentURL);
 		s_assert.assertAll();
 	}
-	
+
 	/***
 	 * Add to Autoship Cart - Consultant
 	 * Description : This test add a new product in to cart through PLP
@@ -1736,7 +1725,7 @@ public class AutoshipTest extends StoreFrontWebsiteBaseTest{
 		}
 		s_assert.assertAll();
 	}
-	
+
 	/***
 	 * Add to Autoship Cart - PC
 	 * Description : This test add a new product in to cart through PLP
@@ -1775,7 +1764,7 @@ public class AutoshipTest extends StoreFrontWebsiteBaseTest{
 		}
 		s_assert.assertAll();
 	}
-	
+
 	/***
 	 * This test checks the status of the consultant CRP and place CRP order
 	 */
@@ -1796,7 +1785,7 @@ public class AutoshipTest extends StoreFrontWebsiteBaseTest{
 		s_assert.assertTrue(sfOrdersPage.getOrderTypeFromOrderDetailsTemplate().contains("consultant autoship"),"expected status of autoship order is incorrect");
 		s_assert.assertAll();
 	}
-	
+
 	/***
 	 * This test checks the status of the pc autoship and place autoship order
 	 */
@@ -1817,7 +1806,7 @@ public class AutoshipTest extends StoreFrontWebsiteBaseTest{
 		s_assert.assertTrue(sfOrdersPage.getOrderTypeFromOrderDetailsTemplate().contains("pc autoship"),"expected status of autoship order is incorrect");
 		s_assert.assertAll();
 	}
-	
+
 	/***
 	 * This test checks the status of the consultant pulse and place pulse order
 	 */

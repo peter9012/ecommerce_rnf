@@ -27,7 +27,7 @@ public class AddAndDeleteShippingTest extends StoreFrontWebsiteBaseTest{
 		String state = TestConstants.STATE_US;
 		String postalCode = TestConstants.POSTAL_CODE_US;
 		String phoneNumber = TestConstants.PHONE_NUMBER;
-//		sfHomePage.loginToStoreFront(TestConstants.CONSULTANT_EMAIL_WITH_CRP_AND_PULSE,password,true);
+		//		sfHomePage.loginToStoreFront(TestConstants.CONSULTANT_EMAIL_WITH_CRP_AND_PULSE,password,true);
 		sfHomePage.loginToStoreFront(consultantWithPulseAndWithCRP(),password,true);
 		sfHomePage.clickWelcomeDropdown();
 		sfShippingInfoPage = sfHomePage.navigateToShippingInfoPage();
@@ -281,7 +281,7 @@ public class AddAndDeleteShippingTest extends StoreFrontWebsiteBaseTest{
 		String phoneNumber = TestConstants.PHONE_NUMBER;
 		String defaultShippingAddressName = null;
 		String defaultShippingAddressNameAfterUpdate = null;
-//		sfHomePage.loginToStoreFront(TestConstants.CONSULTANT_EMAIL_WITH_CRP_AND_PULSE,password,true);
+		//		sfHomePage.loginToStoreFront(TestConstants.CONSULTANT_EMAIL_WITH_CRP_AND_PULSE,password,true);
 		sfHomePage.loginToStoreFront(consultantWithPulseAndWithCRP(),password,true);
 		sfHomePage.clickWelcomeDropdown();
 		sfShippingInfoPage = sfHomePage.navigateToShippingInfoPage();
@@ -632,16 +632,10 @@ public class AddAndDeleteShippingTest extends StoreFrontWebsiteBaseTest{
 	 */
 	@Test (enabled=true)
 	public void testAddEditShippingAddressFromMyAccountForConsultant(){
-		String randomWord = CommonUtils.getRandomWord(5);
-		String firstName = TestConstants.FIRST_NAME;
-		String lastName = TestConstants.LAST_NAME+randomWord;
-		String addressLine1 = TestConstants.ADDRESS_LINE_1_US;
-		String addressLine2 = TestConstants.ADDRESS_LINE_2_US;
-		String city = TestConstants.CITY_US;
-		String state = TestConstants.STATE_US;
-		String postalCode = TestConstants.POSTAL_CODE_US;
-		String phoneNumber = TestConstants.PHONE_NUMBER;
-//		sfHomePage.loginToStoreFront(TestConstants.PC_EMAIL_HAVING_AUTOSHIP,password,true);
+		randomWords = CommonUtils.getRandomWord(5);
+		lastName = TestConstants.LAST_NAME+randomWords;
+
+		// Login as Cons
 		sfHomePage.loginToStoreFront(consultantWithPulseAndWithCRP(),password,true);
 		sfHomePage.clickWelcomeDropdown();
 		sfShippingInfoPage = sfHomePage.navigateToShippingInfoPage();
@@ -651,8 +645,8 @@ public class AddAndDeleteShippingTest extends StoreFrontWebsiteBaseTest{
 		sfShippingInfoPage.clickUseAsEnteredButtonOnPopUp();
 		s_assert.assertTrue(sfShippingInfoPage.isShippingProfilePresent(lastName), "Newly added shipping profile is not present at shipping info page");
 		// Edit default shipping Profile
-		randomWord = CommonUtils.getRandomWord(5);
-		lastName = TestConstants.LAST_NAME+randomWord;
+		randomWords = CommonUtils.getRandomWord(5);
+		lastName = TestConstants.LAST_NAME+randomWords;
 		sfShippingInfoPage.clickEditLinkOfDefaultShippingAddress();
 		sfShippingInfoPage.enterConsultantShippingDetails(firstName, lastName, addressLine1,addressLine2, city, state, postalCode, phoneNumber);
 		sfShippingInfoPage.clickSaveButtonOfShippingAddress();
@@ -662,7 +656,7 @@ public class AddAndDeleteShippingTest extends StoreFrontWebsiteBaseTest{
 		s_assert.assertAll();
 	}
 
-	
+
 	/***
 	 * Add & Edit shipping address from my account For PC
 	 * Description : This test Add & Edit a new shipping address and validates it
@@ -670,16 +664,10 @@ public class AddAndDeleteShippingTest extends StoreFrontWebsiteBaseTest{
 	 */
 	@Test (enabled=true)
 	public void testAddEditShippingAddressFromMyAccountForPC(){
-		String randomWord = CommonUtils.getRandomWord(5);
-		String firstName = TestConstants.FIRST_NAME;
-		String lastName = TestConstants.LAST_NAME+randomWord;
-		String addressLine1 = TestConstants.ADDRESS_LINE_1_US;
-		String addressLine2 = TestConstants.ADDRESS_LINE_2_US;
-		String city = TestConstants.CITY_US;
-		String state = TestConstants.STATE_US;
-		String postalCode = TestConstants.POSTAL_CODE_US;
-		String phoneNumber = TestConstants.PHONE_NUMBER;
-//		sfHomePage.loginToStoreFront(TestConstants.PC_EMAIL_HAVING_AUTOSHIP,password,true);
+		randomWords = CommonUtils.getRandomWord(5);
+		lastName = TestConstants.LAST_NAME+randomWords;
+
+		// Login as PC
 		sfHomePage.loginToStoreFront(pcUserWithPWSSponsor(),password,true);
 		sfHomePage.clickWelcomeDropdown();
 		sfShippingInfoPage = sfHomePage.navigateToShippingInfoPage();
@@ -689,8 +677,8 @@ public class AddAndDeleteShippingTest extends StoreFrontWebsiteBaseTest{
 		sfShippingInfoPage.clickUseAsEnteredButtonOnPopUp();
 		s_assert.assertTrue(sfShippingInfoPage.isShippingProfilePresent(lastName), "Newly added shipping profile is not present at shipping info page");
 		// Edit default shipping Profile
-		randomWord = CommonUtils.getRandomWord(5);
-		lastName = TestConstants.LAST_NAME+randomWord;
+		randomWords = CommonUtils.getRandomWord(5);
+		lastName = TestConstants.LAST_NAME+randomWords;
 		sfShippingInfoPage.clickEditLinkOfDefaultShippingAddress();
 		sfShippingInfoPage.enterConsultantShippingDetails(firstName, lastName, addressLine1,addressLine2, city, state, postalCode, phoneNumber);
 		sfShippingInfoPage.clickSaveButtonOfShippingAddress();
@@ -699,7 +687,6 @@ public class AddAndDeleteShippingTest extends StoreFrontWebsiteBaseTest{
 		s_assert.assertTrue(sfShippingInfoPage.isShippingProfilePresent(lastName), "Expected profile name is not present in Address list");
 		s_assert.assertAll();
 	}
-
 	/***
 	 * Add & Edit shipping address from my account For RC
 	 * Description : This test add a new shipping address and validates it
@@ -707,16 +694,10 @@ public class AddAndDeleteShippingTest extends StoreFrontWebsiteBaseTest{
 	 */
 	@Test (enabled=true)
 	public void testAddEditShippingAddressFromMyAccountForRC(){
-		String randomWord = CommonUtils.getRandomWord(5);
-		String firstName = TestConstants.FIRST_NAME;
-		String lastName = TestConstants.LAST_NAME+randomWord;
-		String addressLine1 = TestConstants.ADDRESS_LINE_1_US;
-		String addressLine2 = TestConstants.ADDRESS_LINE_2_US;
-		String city = TestConstants.CITY_US;
-		String state = TestConstants.STATE_US;
-		String postalCode = TestConstants.POSTAL_CODE_US;
-		String phoneNumber = TestConstants.PHONE_NUMBER;
-		//sfHomePage.loginToStoreFront(TestConstants.RC_EMAIL_HAVING_ORDER,password,true);
+		randomWords = CommonUtils.getRandomWord(5);
+		lastName = TestConstants.LAST_NAME+randomWords;
+
+		// Login as RC
 		sfHomePage.loginToStoreFront(rcWithOrderWithoutSponsor(),password,true);
 		sfHomePage.clickWelcomeDropdown();
 		sfShippingInfoPage = sfHomePage.navigateToShippingInfoPage();
@@ -726,8 +707,8 @@ public class AddAndDeleteShippingTest extends StoreFrontWebsiteBaseTest{
 		sfShippingInfoPage.clickUseAsEnteredButtonOnPopUp();
 		s_assert.assertTrue(sfShippingInfoPage.isShippingProfilePresent(lastName), "Newly added shipping profile is not present at shipping info page");
 		// Edit default shipping Profile
-		randomWord = CommonUtils.getRandomWord(5);
-		lastName = TestConstants.LAST_NAME+randomWord;
+		randomWords = CommonUtils.getRandomWord(5);
+		lastName = TestConstants.LAST_NAME+randomWords;
 		sfShippingInfoPage.clickEditLinkOfDefaultShippingAddress();
 		sfShippingInfoPage.enterConsultantShippingDetails(firstName, lastName, addressLine1,addressLine2, city, state, postalCode, phoneNumber);
 		sfShippingInfoPage.clickSaveButtonOfShippingAddress();
@@ -737,24 +718,18 @@ public class AddAndDeleteShippingTest extends StoreFrontWebsiteBaseTest{
 		s_assert.assertAll();
 	}
 
+
 	/***
 	 * Description : Add/Edit shipping profile at adhoc cart for consultant
 	 *     
 	 */
 	@Test
 	public void testAddEditShippingProfileAtAdhocCartForConsultant(){
-		String randomWord = CommonUtils.getRandomWord(5);
-		String firstName = TestConstants.FIRST_NAME;
-		String lastName = TestConstants.LAST_NAME+randomWord;
-		String addressLine1 = TestConstants.ADDRESS_LINE_1_US;
-		String addressLine2 = TestConstants.ADDRESS_LINE_2_US;
-		String city = TestConstants.CITY_US;
-		String state = TestConstants.STATE_US;
-		String postalCode = TestConstants.POSTAL_CODE_US;
-		String phoneNumber = TestConstants.PHONE_NUMBER;
+		randomWords = CommonUtils.getRandomWord(5);
+		lastName = TestConstants.LAST_NAME+randomWords;
 		String shippingProfile = null;
-		String updatedShippingProfileName = null;
-		//sfHomePage.loginToStoreFront(TestConstants.CONSULTANT_EMAIL_WITH_CRP_AND_PULSE, password,true);
+
+		// Login as Cons
 		sfHomePage.loginToStoreFront(consultantWithPulseAndWithCRP(), password,true);
 		sfShopSkinCarePage = sfHomePage.clickAllProducts();
 		sfShopSkinCarePage.addProductToCart(TestConstants.PRODUCT_NUMBER, TestConstants.ORDER_TYPE_ADHOC);;
@@ -769,35 +744,27 @@ public class AddAndDeleteShippingTest extends StoreFrontWebsiteBaseTest{
 		shippingProfile = sfCheckoutPage.getDefaultShippingAddressNameAtCheckoutPage();
 		s_assert.assertTrue(shippingProfile.contains(lastName), "Shipping Profile is not added successfully at adhoc cart. Expected is :"+lastName+" But found is :"+shippingProfile);
 		// Edit default ship address
-		randomWord = CommonUtils.getRandomWord(5);
-		lastName = TestConstants.LAST_NAME+randomWord;
+		randomWords = CommonUtils.getRandomWord(5);
+		lastName = TestConstants.LAST_NAME+randomWords;
 		sfCheckoutPage.clickEditLinkOfShippingProfile();
 		sfCheckoutPage.updateShippingAddressDetailsAtCheckoutPage(firstName, lastName, addressLine1, addressLine2, city, state, postalCode, phoneNumber);
 		sfCheckoutPage.clickSaveButtonOfShippingAddress();
 		sfCheckoutPage.clickUseAsEnteredButtonOnPopUp();
-		updatedShippingProfileName = sfCheckoutPage.getDefaultShippingAddressNameAtCheckoutPage();
-		s_assert.assertTrue(updatedShippingProfileName.contains(lastName),"Shipping Profile is not edited successfully at adhoc cart. Expected is :"+lastName+ "Actual on UI is "+updatedShippingProfileName);
+		shippingProfile = sfCheckoutPage.getDefaultShippingAddressNameAtCheckoutPage();
+		s_assert.assertTrue(shippingProfile.contains(lastName),"Shipping Profile is not edited successfully at adhoc cart. Expected is :"+lastName+ "Actual on UI is "+shippingProfile);
 		s_assert.assertAll();
 	}
-	
 	/***
 	 * Description : Add/Edit shipping profile at adhoc cart for PC
 	 *     
 	 */
 	@Test
 	public void testAddEditShippingProfileAtAdhocCartForPC(){
-		String randomWord = CommonUtils.getRandomWord(5);
-		String firstName = TestConstants.FIRST_NAME;
-		String lastName = TestConstants.LAST_NAME+randomWord;
-		String addressLine1 = TestConstants.ADDRESS_LINE_1_US;
-		String addressLine2 = TestConstants.ADDRESS_LINE_2_US;
-		String city = TestConstants.CITY_US;
-		String state = TestConstants.STATE_US;
-		String postalCode = TestConstants.POSTAL_CODE_US;
-		String phoneNumber = TestConstants.PHONE_NUMBER;
+		randomWords = CommonUtils.getRandomWord(5);
+		lastName = TestConstants.LAST_NAME+randomWords;
 		String shippingProfile = null;
-		String updatedShippingProfileName = null;
-		//sfHomePage.loginToStoreFront(TestConstants.PC_EMAIL_HAVING_AUTOSHIP, password,true);
+
+		// Login as PC
 		sfHomePage.loginToStoreFront(pcUserWithPWSSponsor(), password,true);
 		sfShopSkinCarePage = sfHomePage.clickAllProducts();
 		sfShopSkinCarePage.addProductToCart(TestConstants.PRODUCT_NUMBER, TestConstants.ORDER_TYPE_ADHOC);;
@@ -812,58 +779,51 @@ public class AddAndDeleteShippingTest extends StoreFrontWebsiteBaseTest{
 		shippingProfile = sfCheckoutPage.getDefaultShippingAddressNameAtCheckoutPage();
 		s_assert.assertTrue(shippingProfile.contains(lastName), "Shipping Profile is not added successfully at adhoc cart. Expected is :"+lastName+" But found is :"+shippingProfile);
 		// Edit default ship address
-		randomWord = CommonUtils.getRandomWord(5);
-		lastName = TestConstants.LAST_NAME+randomWord;
+		randomWords = CommonUtils.getRandomWord(5);
+		lastName = TestConstants.LAST_NAME+randomWords;
 		sfCheckoutPage.clickEditLinkOfShippingProfile();
 		sfCheckoutPage.updateShippingAddressDetailsAtCheckoutPage(firstName, lastName, addressLine1, addressLine2, city, state, postalCode, phoneNumber);
 		sfCheckoutPage.clickSaveButtonOfShippingAddress();
 		sfCheckoutPage.clickUseAsEnteredButtonOnPopUp();
-		updatedShippingProfileName = sfCheckoutPage.getDefaultShippingAddressNameAtCheckoutPage();
-		s_assert.assertTrue(updatedShippingProfileName.contains(lastName),"Shipping Profile is not edited successfully at adhoc cart. Expected is :"+lastName+ "Actual on UI is "+updatedShippingProfileName);
+		shippingProfile = sfCheckoutPage.getDefaultShippingAddressNameAtCheckoutPage();
+		s_assert.assertTrue(shippingProfile.contains(lastName),"Shipping Profile is not edited successfully at adhoc cart. Expected is :"+lastName+ "Actual on UI is "+shippingProfile);
 		s_assert.assertAll();
 	}
-	
+
 	/***
-	  * Description : Add/Edit shipping profile at adhoc cart for RC
-	  *     
-	  */
-	 @Test
-	 public void testAddEditShippingProfileAtAdhocCartForRC(){
-	  String randomWord = CommonUtils.getRandomWord(5);
-	  String firstName = TestConstants.FIRST_NAME;
-	  String lastName = TestConstants.LAST_NAME+randomWord;
-	  String addressLine1 = TestConstants.ADDRESS_LINE_1_US;
-	  String addressLine2 = TestConstants.ADDRESS_LINE_2_US;
-	  String city = TestConstants.CITY_US;
-	  String state = TestConstants.STATE_US;
-	  String postalCode = TestConstants.POSTAL_CODE_US;
-	  String phoneNumber = TestConstants.PHONE_NUMBER;
-	  String shippingProfile = null;
-	  String updatedShippingProfileName = null;
-	  //sfHomePage.loginToStoreFront(TestConstants.RC_EMAIL_HAVING_ORDER, password,true);
-	  sfHomePage.loginToStoreFront(rcWithOrderWithoutSponsor(), password,true);
-	  sfShopSkinCarePage = sfHomePage.clickAllProducts();
-	  sfShopSkinCarePage.addProductToCart(TestConstants.PRODUCT_NUMBER, TestConstants.ORDER_TYPE_ADHOC);;
-	  sfCartPage = sfShopSkinCarePage.checkoutTheCartFromPopUp();
-	  sfCheckoutPage=sfCartPage.checkoutTheCart();
-	  sfCheckoutPage.clickContinueWithoutConsultantLink();
-	  sfCheckoutPage.clickSaveButton();
-	  sfCheckoutPage.clickAddNewShippingAddressButton();
-	  sfCheckoutPage.enterConsultantShippingDetails(firstName, lastName, addressLine1, addressLine2 ,city, state, postalCode, phoneNumber);
-	  sfCheckoutPage.clickNextbuttonOfShippingDetails();
-	  sfHomePage.clickUseAsEnteredButtonOnPopUp();
-	  sfCheckoutPage.clickEditLinkOfShippingAddress();
-	  shippingProfile = sfCheckoutPage.getDefaultShippingAddressNameAtCheckoutPage();
-	  s_assert.assertTrue(shippingProfile.contains(lastName), "Shipping Profile is not added successfully at adhoc cart. Expected is :"+lastName+" But found is :"+shippingProfile);
-	  // Edit default ship address
-	  randomWord = CommonUtils.getRandomWord(5);
-	  lastName = TestConstants.LAST_NAME+randomWord;
-	  sfCheckoutPage.clickEditLinkOfShippingProfile();
-	  sfCheckoutPage.updateShippingAddressDetailsAtCheckoutPage(firstName, lastName, addressLine1, addressLine2, city, state, postalCode, phoneNumber);
-	  sfCheckoutPage.clickSaveButtonOfShippingAddress();
-	  sfCheckoutPage.clickUseAsEnteredButtonOnPopUp();
-	  updatedShippingProfileName = sfCheckoutPage.getDefaultShippingAddressNameAtCheckoutPage();
-	  s_assert.assertTrue(updatedShippingProfileName.contains(lastName),"Shipping Profile is not edited successfully at adhoc cart. Expected is :"+lastName+ "Actual on UI is "+updatedShippingProfileName);
-	  s_assert.assertAll();
-	 }
+	 * Description : Add/Edit shipping profile at adhoc cart for RC
+	 *     
+	 */
+	@Test
+	public void testAddEditShippingProfileAtAdhocCartForRC(){
+		randomWords = CommonUtils.getRandomWord(5);
+		lastName = TestConstants.LAST_NAME+randomWords;
+		String shippingProfile = null;
+
+		// Login as RC
+		sfHomePage.loginToStoreFront(rcWithOrderWithoutSponsor(), password,true);
+		sfShopSkinCarePage = sfHomePage.clickAllProducts();
+		sfShopSkinCarePage.addProductToCart(TestConstants.PRODUCT_NUMBER, TestConstants.ORDER_TYPE_ADHOC);;
+		sfCartPage = sfShopSkinCarePage.checkoutTheCartFromPopUp();
+		sfCheckoutPage=sfCartPage.checkoutTheCart();
+		sfCheckoutPage.clickContinueWithoutConsultantLink();
+		sfCheckoutPage.clickSaveButton();
+		sfCheckoutPage.clickAddNewShippingAddressButton();
+		sfCheckoutPage.enterConsultantShippingDetails(firstName, lastName, addressLine1, addressLine2 ,city, state, postalCode, phoneNumber);
+		sfCheckoutPage.clickNextbuttonOfShippingDetails();
+		sfHomePage.clickUseAsEnteredButtonOnPopUp();
+		sfCheckoutPage.clickEditLinkOfShippingAddress();
+		shippingProfile = sfCheckoutPage.getDefaultShippingAddressNameAtCheckoutPage();
+		s_assert.assertTrue(shippingProfile.contains(lastName), "Shipping Profile is not added successfully at adhoc cart. Expected is :"+lastName+" But found is :"+shippingProfile);
+		// Edit default ship address
+		randomWords = CommonUtils.getRandomWord(5);
+		lastName = TestConstants.LAST_NAME+randomWords;
+		sfCheckoutPage.clickEditLinkOfShippingProfile();
+		sfCheckoutPage.updateShippingAddressDetailsAtCheckoutPage(firstName, lastName, addressLine1, addressLine2, city, state, postalCode, phoneNumber);
+		sfCheckoutPage.clickSaveButtonOfShippingAddress();
+		sfCheckoutPage.clickUseAsEnteredButtonOnPopUp();
+		shippingProfile = sfCheckoutPage.getDefaultShippingAddressNameAtCheckoutPage();
+		s_assert.assertTrue(shippingProfile.contains(lastName),"Shipping Profile is not edited successfully at adhoc cart. Expected is : "+lastName+ " Actual on UI is "+shippingProfile);
+		s_assert.assertAll();
+	}
 }

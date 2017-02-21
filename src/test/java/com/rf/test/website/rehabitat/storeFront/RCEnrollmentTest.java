@@ -9,35 +9,6 @@ import com.rf.pages.website.rehabitat.storeFront.StoreFrontShopSkinCarePage;
 import com.rf.test.website.rehabitat.storeFront.baseTest.StoreFrontWebsiteBaseTest;
 
 public class RCEnrollmentTest extends StoreFrontWebsiteBaseTest{
-//	public String email=null;
-//	private String firstName = null;
-//	private String lastName = null;
-//	String addressLine1 = null;
-//	String addressLine2 = null;
-//	String city = null;
-//	String state = null;
-//	String postalCode = null;
-//	String phoneNumber = null;
-//	String cardType = null;
-//	String cardNumber = null;
-//	String cardName = null;
-//	String CVV = null;
-//	String timeStamp; 
-
-//	public RCEnrollmentTest() {
-//		firstName=TestConstants.RC_FIRST_NAME;
-//		lastName = TestConstants.LAST_NAME;
-//		addressLine1 = TestConstants.ADDRESS_LINE_1_US;
-//		addressLine2 = TestConstants.ADDRESS_LINE_2_US;
-//		city = TestConstants.CITY_US;
-//		state = TestConstants.STATE_US;
-//		postalCode = TestConstants.POSTAL_CODE_US;
-//		phoneNumber = TestConstants.PHONE_NUMBER;
-//		cardType = TestConstants.CARD_TYPE;
-//		cardNumber = TestConstants.CARD_NUMBER;
-//		cardName = TestConstants.CARD_NAME;
-//		CVV = TestConstants.CVV;
-//	}
 
 	/***
 	 * qTest : TC-550 RC Retail user enrollment - From Corp site
@@ -49,6 +20,8 @@ public class RCEnrollmentTest extends StoreFrontWebsiteBaseTest{
 	public void testRCEnrollmentWithoutSponsor_550(){
 		timeStamp = CommonUtils.getCurrentTimeStamp();
 		email = firstName+timeStamp+TestConstants.EMAIL_SUFFIX;
+		randomWords = CommonUtils.getRandomWord(5);		
+		lastName = TestConstants.LAST_NAME+randomWords;
 		navigateToStoreFrontBaseURL();
 		sfCartPage = new StoreFrontCartPage(driver);
 		sfShopSkinCarePage = new StoreFrontShopSkinCarePage(driver);
@@ -86,6 +59,8 @@ public class RCEnrollmentTest extends StoreFrontWebsiteBaseTest{
 		String pwsURL=sfHomePage.getBaseUrl()+"//" +sfHomePage.getCountry() +"/pws/" + prefix;
 		timeStamp = CommonUtils.getCurrentTimeStamp();
 		email = firstName+timeStamp+TestConstants.EMAIL_SUFFIX;
+		randomWords = CommonUtils.getRandomWord(5);		
+		lastName = TestConstants.LAST_NAME+randomWords;
 		sfHomePage.navigateToUrl(pwsURL);
 		sfCartPage = new StoreFrontCartPage(driver);
 		sfShopSkinCarePage = new StoreFrontShopSkinCarePage(driver);
@@ -103,6 +78,8 @@ public class RCEnrollmentTest extends StoreFrontWebsiteBaseTest{
 	public void testRCEnrollmentWithoutOrder(){
 		timeStamp = CommonUtils.getCurrentTimeStamp();
 		email = firstName+timeStamp+TestConstants.EMAIL_SUFFIX;
+		randomWords = CommonUtils.getRandomWord(5);		
+		lastName = TestConstants.LAST_NAME+randomWords;
 		navigateToStoreFrontBaseURL();
 		sfCartPage = new StoreFrontCartPage(driver);
 		sfShopSkinCarePage = new StoreFrontShopSkinCarePage(driver);
@@ -119,6 +96,8 @@ public class RCEnrollmentTest extends StoreFrontWebsiteBaseTest{
 	public void testRCEnrollmentWithOrderWithoutSponsor(){
 		timeStamp = CommonUtils.getCurrentTimeStamp();
 		email = firstName+timeStamp+TestConstants.EMAIL_SUFFIX;
+		randomWords = CommonUtils.getRandomWord(5);		
+		lastName = TestConstants.LAST_NAME+randomWords;
 		sfCartPage = new StoreFrontCartPage(driver);
 		sfShopSkinCarePage = new StoreFrontShopSkinCarePage(driver);
 		sfHomePage.clickLoginIcon();
@@ -150,6 +129,8 @@ public class RCEnrollmentTest extends StoreFrontWebsiteBaseTest{
 	public void testRCEnrollmentWithSponsor(){
 		timeStamp = CommonUtils.getCurrentTimeStamp();
 		email = firstName+timeStamp+TestConstants.EMAIL_SUFFIX;
+		randomWords = CommonUtils.getRandomWord(5);		
+		lastName = TestConstants.LAST_NAME+randomWords;
 		navigateToStoreFrontBaseURL();
 		sfCartPage = new StoreFrontCartPage(driver);
 		sfShopSkinCarePage = new StoreFrontShopSkinCarePage(driver);

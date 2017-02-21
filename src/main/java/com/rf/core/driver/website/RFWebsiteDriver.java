@@ -935,8 +935,9 @@ public class RFWebsiteDriver implements RFDriver,WebDriver {
 //		driver.manage().timeouts().implicitlyWait(time, TimeUnit.SECONDS);
 //	}
 
-	public void clickByJS(WebDriver driver, WebElement element) {
-		pauseExecutionFor(2000);
+	public void clickByJS(WebDriver driver, By by) {
+		quickWaitForElementPresent(by);
+		WebElement element = driver.findElement(by);
 		JavascriptExecutor executor = (JavascriptExecutor) driver;
 		executor.executeScript("arguments[0].click();", element);
 	}

@@ -385,6 +385,9 @@ public class StoreFrontWebsiteBasePage extends RFBasePage {
 	 * 
 	 */
 	public StoreFrontConsultantEnrollNowPage clickEnrollNow(){
+//		if ((driver.isElementVisible(SET_UP_CRP_POPUP_CLOSE_LOC))) {
+//			driver.click(SET_UP_CRP_POPUP_CLOSE_LOC);
+//		}
 		for(int attemptNumber=1;attemptNumber<=3;attemptNumber++){
 			try{
 				mouseHoverOn(TestConstants.BECOME_A_CONSULTANT);
@@ -490,12 +493,9 @@ public class StoreFrontWebsiteBasePage extends RFBasePage {
 	public StoreFrontHomePage clickRodanAndFieldsLogo() {
 		driver.waitForElementPresent(RODAN_AND_FIELDS_IMAGE_LOC);
 		if (driver.isElementVisible(RODAN_AND_FIELDS_IMAGE_LOC)) {
-			//driver.click(RODAN_AND_FIELDS_LOGO_LOC);
-			//driver.clickByJS(RFWebsiteDriver.driver, driver.findElement(RODAN_AND_FIELDS_LOGO_LOC));
-			driver.clickByJS(RFWebsiteDriver.driver, driver.findElement(RODAN_AND_FIELDS_IMAGE_LOC));
+			driver.clickByJS(RFWebsiteDriver.driver, RODAN_AND_FIELDS_IMAGE_LOC);
 		} else {
-			// driver.clickByJS(RFWebsiteDriver.driver, driver.findElement(RODAN_AND_FIELDS_IMAGE_LOC));
-			driver.clickByJS(RFWebsiteDriver.driver, driver.findElement(RODAN_AND_FIELDS_LOGO_LOC));
+			driver.clickByJS(RFWebsiteDriver.driver, RODAN_AND_FIELDS_LOGO_LOC);
 		}
 		logger.info("Rodan and Fields logo clicked");
 		driver.waitForPageLoad();
@@ -586,8 +586,7 @@ public class StoreFrontWebsiteBasePage extends RFBasePage {
 	 * @return boolean
 	 */
 	public StoreFrontWebsiteBasePage navigateToPaginationInSponsorSearchResult(String pageNo) {
-		driver.clickByJS(RFWebsiteDriver.driver,
-				driver.findElement(By.xpath(String.format(navigationPageNumberLoc, pageNo))));
+		driver.clickByJS(RFWebsiteDriver.driver,By.xpath(String.format(navigationPageNumberLoc, pageNo)));
 		driver.pauseExecutionFor(2000);
 		return this;
 	}
@@ -776,11 +775,10 @@ public class StoreFrontWebsiteBasePage extends RFBasePage {
 		logger.info("login button clicked");
 		driver.waitForPageLoad();
 		if (driver.isElementVisible(NEW_POLICIES_PROCEDURES_POPUP_LOC)) {
-			driver.clickByJS(RFWebsiteDriver.driver,
-					driver.findElement(ACCEPT_RDBTN_NEW_POLICIES_PROCEDURES_POPUP_LOC));
+			driver.clickByJS(RFWebsiteDriver.driver,ACCEPT_RDBTN_NEW_POLICIES_PROCEDURES_POPUP_LOC);
 			driver.pauseExecutionFor(1000);
-			driver.clickByJS(RFWebsiteDriver.driver,
-					driver.findElement(CONTINUE_BTN_NEW_POLICIES_PROCEDURES_POPUP_LOC));
+			driver.clickByJS(RFWebsiteDriver.driver,CONTINUE_BTN_NEW_POLICIES_PROCEDURES_POPUP_LOC);
+					
 		}
 		if (closeCRPReminder == true && (driver.isElementVisible(SET_UP_CRP_POPUP_CLOSE_LOC))) {
 			driver.click(SET_UP_CRP_POPUP_CLOSE_LOC);
@@ -804,7 +802,7 @@ public class StoreFrontWebsiteBasePage extends RFBasePage {
 		logger.info("username entered as " + username);
 		driver.type(PASSWORD_TXTFLD_LOC, password);
 		logger.info("password entered as  " + password);
-		driver.clickByJS(RFWebsiteDriver.driver, driver.findElement(REMEMBER_ME_LOC));
+		driver.clickByJS(RFWebsiteDriver.driver, REMEMBER_ME_LOC);
 		driver.pauseExecutionFor(1000);
 		logger.info("Remember me checkbox checked");
 		driver.click(LOGIN_BTN_LOC);
@@ -1065,7 +1063,7 @@ public class StoreFrontWebsiteBasePage extends RFBasePage {
 //			logger.info("JOIN CRP banner closed");
 //		}
 		driver.pauseExecutionFor(1000);
-		driver.clickByJS(RFWebsiteDriver.driver, driver.findElement(WELCOME_DROPDOWN_LOC));
+		driver.clickByJS(RFWebsiteDriver.driver, WELCOME_DROPDOWN_LOC);
 		logger.info("Welcome dropdown clicked");
 		driver.pauseExecutionFor(2000);
 		return this;
@@ -1170,7 +1168,7 @@ public class StoreFrontWebsiteBasePage extends RFBasePage {
 	 */
 	public StoreFrontCheckoutPage checkoutTheCart() {
 		driver.pauseExecutionFor(3000);
-		driver.clickByJS(RFWebsiteDriver.driver, driver.findElement(CHECKOUT_BUTTON_LOC));
+		driver.clickByJS(RFWebsiteDriver.driver, CHECKOUT_BUTTON_LOC);
 		logger.info("Clicked on checkout button");
 		driver.pauseExecutionFor(2000);
 		if (driver.isElementPresent(CHECKOUT_CONFIRMATION_OK_BUTTON_LOC) == true) {
@@ -1179,6 +1177,7 @@ public class StoreFrontWebsiteBasePage extends RFBasePage {
 		} else {
 			logger.info("No checkout confirmation popup");
 		}
+		driver.waitForPageLoad();
 		return new StoreFrontCheckoutPage(driver);
 	}
 
@@ -1716,7 +1715,7 @@ public class StoreFrontWebsiteBasePage extends RFBasePage {
 			String CVV, String month, String year) {
 		driver.switchTo().frame(driver.findElement(IFRAME_LOC));
 		logger.info("Switched into iframe");
-		driver.clickByJS(RFWebsiteDriver.driver, driver.findElement(CARD_TYPE_DD_LOC));
+		driver.clickByJS(RFWebsiteDriver.driver, CARD_TYPE_DD_LOC);
 		logger.info("Card type dropdown clicked");
 		driver.click(By.xpath(String.format(cardTypeLoc, cardType)));
 		logger.info("Card type selected as " + cardType);
@@ -1762,7 +1761,7 @@ public class StoreFrontWebsiteBasePage extends RFBasePage {
 	 * 
 	 */
 	public StoreFrontWebsiteBasePage clickBillingDetailsNextbutton() {
-		driver.clickByJS(RFWebsiteDriver.driver, driver.findElement(BILLING_NEXT_BUTTON_LOC));
+		driver.clickByJS(RFWebsiteDriver.driver, BILLING_NEXT_BUTTON_LOC);
 		driver.pauseExecutionFor(1000);
 		logger.info("Next button clicked of billing details");
 		driver.waitForPageLoad();
@@ -1779,9 +1778,9 @@ public class StoreFrontWebsiteBasePage extends RFBasePage {
 	public StoreFrontWebsiteBasePage selectPoliciesAndProceduresChkBox() {
 		driver.pauseExecutionFor(3000);
 		if (driver.isElementVisible(POLICIES_AND_PROCEDURES_CHK_BOX_LOC))
-			driver.clickByJS(RFWebsiteDriver.driver, driver.findElement(POLICIES_AND_PROCEDURES_CHK_BOX_LOC));
+			driver.clickByJS(RFWebsiteDriver.driver, POLICIES_AND_PROCEDURES_CHK_BOX_LOC);
 		else
-			driver.clickByJS(RFWebsiteDriver.driver, driver.findElement(POLICIES_AND_PROCEDURES_CHK_BOX_PC_LOC));
+			driver.clickByJS(RFWebsiteDriver.driver, POLICIES_AND_PROCEDURES_CHK_BOX_PC_LOC);
 		logger.info("Policies & procedures checkbox selected");
 		driver.pauseExecutionFor(1000);
 		return this;
@@ -1811,7 +1810,7 @@ public class StoreFrontWebsiteBasePage extends RFBasePage {
 	 */
 	public StoreFrontWebsiteBasePage selectIAcknowledgePCChkBox() {
 		driver.pauseExecutionFor(1000);
-		driver.clickByJS(RFWebsiteDriver.driver, driver.findElement(I_ACKNOWLEDGE_PC_CHK_BOX_LOC));
+		driver.clickByJS(RFWebsiteDriver.driver, I_ACKNOWLEDGE_PC_CHK_BOX_LOC);
 		logger.info("PC,I acknowledge checkbox selected");
 		return this;
 	}
@@ -1826,9 +1825,9 @@ public class StoreFrontWebsiteBasePage extends RFBasePage {
 	public StoreFrontWebsiteBasePage selectTermsAndConditionsChkBox() {
 		driver.pauseExecutionFor(1000);
 		if (driver.isElementVisible(TERMS_AND_CONDITIONS_CHK_BOX_LOC)) {
-			driver.clickByJS(RFWebsiteDriver.driver, driver.findElement(TERMS_AND_CONDITIONS_CHK_BOX_LOC));
+			driver.clickByJS(RFWebsiteDriver.driver, TERMS_AND_CONDITIONS_CHK_BOX_LOC);
 		} else {
-			driver.clickByJS(RFWebsiteDriver.driver, driver.findElement(TERMS_AND_CONDITIONS_CHK_BOX_PC_LOC));
+			driver.clickByJS(RFWebsiteDriver.driver, TERMS_AND_CONDITIONS_CHK_BOX_PC_LOC);
 		}
 		logger.info("Terms & condition checkbox selected");
 		driver.pauseExecutionFor(1000);
@@ -1844,7 +1843,7 @@ public class StoreFrontWebsiteBasePage extends RFBasePage {
 	 */
 	public StoreFrontWebsiteBasePage selectPCTermsAndConditionsChkBox() {
 		driver.pauseExecutionFor(1000);
-		driver.clickByJS(RFWebsiteDriver.driver, driver.findElement(PC_TERMS_AND_CONDITIONS_CHK_BOX_LOC));
+		driver.clickByJS(RFWebsiteDriver.driver, PC_TERMS_AND_CONDITIONS_CHK_BOX_LOC);
 		logger.info("PC Terms & condition checkbox selected");
 		driver.pauseExecutionFor(2000);
 		return this;
@@ -1858,7 +1857,7 @@ public class StoreFrontWebsiteBasePage extends RFBasePage {
 	 * 
 	 */
 	public StoreFrontWebsiteBasePage selectConsentFormChkBox() {
-		driver.clickByJS(RFWebsiteDriver.driver, driver.findElement(E_SIGN_CONSENT_FORM_CHK_BOX_LOC));
+		driver.clickByJS(RFWebsiteDriver.driver, E_SIGN_CONSENT_FORM_CHK_BOX_LOC);
 		logger.info("E Sign Consent Form checkbox selected");
 		driver.pauseExecutionFor(1000);
 		return this;
@@ -1913,7 +1912,7 @@ public class StoreFrontWebsiteBasePage extends RFBasePage {
 	 * @return
 	 */
 	public StoreFrontWebsiteBasePage clickRemoveLink() {
-		driver.clickByJS(RFWebsiteDriver.driver, driver.findElement(REMOVE_LINK_LOC));
+		driver.clickByJS(RFWebsiteDriver.driver, REMOVE_LINK_LOC);
 		// driver.click(REMOVE_LINK_LOC);
 		logger.info("Remove link clicked");
 		driver.pauseExecutionFor(2000);
@@ -2403,7 +2402,7 @@ public class StoreFrontWebsiteBasePage extends RFBasePage {
 			String nameOnCard, String CVV, String yearIndex) {
 		driver.switchTo().frame(driver.findElement(IFRAME_LOC));
 		logger.info("Switched into iframe");
-		driver.clickByJS(RFWebsiteDriver.driver, driver.findElement(CARD_TYPE_DD_LOC));
+		driver.clickByJS(RFWebsiteDriver.driver, CARD_TYPE_DD_LOC);
 		logger.info("Card type dropdown clicked");
 		driver.click(By.xpath(String.format(cardTypeLoc, cardType)));
 		logger.info("Card type selected as " + cardType);
@@ -2411,11 +2410,11 @@ public class StoreFrontWebsiteBasePage extends RFBasePage {
 		logger.info("Entered card number as" + cardNumber);
 		driver.type(NAME_ON_CARD_LOC, nameOnCard);
 		logger.info("Entered card name as" + nameOnCard);
-		driver.clickByJS(RFWebsiteDriver.driver, driver.findElement(EXP_MONTH_DD_LOC));
+		driver.clickByJS(RFWebsiteDriver.driver, EXP_MONTH_DD_LOC);
 		logger.info("Exp month dropdown clicked");
 		driver.click(EXP_MONTH_LOC);
 		logger.info("Exp month selected");
-		driver.clickByJS(RFWebsiteDriver.driver, driver.findElement(EXP_YEAR_DD_LOC));
+		driver.clickByJS(RFWebsiteDriver.driver, EXP_YEAR_DD_LOC);
 		logger.info("Exp year dropdown clicked");
 		driver.click(By.xpath(String.format(specificExpYearLoc, yearIndex)));
 		logger.info("Exp year selected");
@@ -2658,8 +2657,7 @@ public class StoreFrontWebsiteBasePage extends RFBasePage {
 	 * 
 	 */
 	public StoreFrontWebsiteBasePage clickNextbuttonOfShippingDetails() {
-		driver.quickWaitForElementPresent(SHIPPING_NEXT_BUTTON_LOC);
-		driver.clickByJS(RFWebsiteDriver.driver, driver.findElement(SHIPPING_NEXT_BUTTON_LOC));
+		driver.clickByJS(RFWebsiteDriver.driver, SHIPPING_NEXT_BUTTON_LOC);
 		logger.info("Next button clicked of shipping details");
 		driver.pauseExecutionFor(2000);
 		return this;
@@ -2674,7 +2672,7 @@ public class StoreFrontWebsiteBasePage extends RFBasePage {
 	 * 
 	 */
 	public StoreFrontWebsiteBasePage enterUserCreditCardNumber(String cardNumber) {
-		driver.clickByJS(RFWebsiteDriver.driver, driver.findElement(CARD_TYPE_DD_LOC));
+		driver.clickByJS(RFWebsiteDriver.driver, CARD_TYPE_DD_LOC);
 		driver.type(CARD_NUMBER_LOC, cardNumber + "\t");
 		logger.info("Entered card number as" + cardNumber);
 		driver.pauseExecutionFor(2000);
@@ -2703,7 +2701,7 @@ public class StoreFrontWebsiteBasePage extends RFBasePage {
 	 */
 	public String selectAndReturnFirstSponsorFromList() {
 		String sponserName = driver.findElement(SELECT_AND_CONTINUE_FIRST_SPONSER_LOC).getText();
-		driver.clickByJS(RFWebsiteDriver.driver, driver.findElement(SELECT_AND_CONTINUE_FIRST_SPONSER_LOC));
+		driver.clickByJS(RFWebsiteDriver.driver, SELECT_AND_CONTINUE_FIRST_SPONSER_LOC);
 		logger.info("Clicked on 'Select And Continue' button for first result");
 		logger.info("selected first sponser name is " + sponserName);
 		driver.pauseExecutionFor(2000);
@@ -2721,8 +2719,7 @@ public class StoreFrontWebsiteBasePage extends RFBasePage {
 		driver.pauseExecutionFor(2000);
 		String sponserName = driver.findElement(By.xpath(String.format(selectAndContinueSponserLoc, sponserNumber)))
 				.getText();
-		driver.clickByJS(RFWebsiteDriver.driver,
-				driver.findElement(By.xpath(String.format(selectAndContinueSponserLoc, sponserNumber))));
+		driver.clickByJS(RFWebsiteDriver.driver,By.xpath(String.format(selectAndContinueSponserLoc, sponserNumber)));
 		// driver.click(By.xpath(String.format(selectAndContinueSponserLoc,
 		// sponserNumber)));
 		logger.info("Clicked on 'Select And Continue' button for" + sponserNumber + " result");
@@ -2863,7 +2860,7 @@ public class StoreFrontWebsiteBasePage extends RFBasePage {
 	 * @return store front Base page object
 	 */
 	public StoreFrontWebsiteBasePage clickBecomeAConsultant() {
-		driver.clickByJS(RFWebsiteDriver.driver, driver.findElement(BECOME_A_CONSULTANT_BTN_LOC));
+		driver.clickByJS(RFWebsiteDriver.driver, BECOME_A_CONSULTANT_BTN_LOC);
 		// driver.click(BECOME_A_CONSULTANT_BTN_LOC);
 		logger.info("Become a consultant button clicked");
 		driver.waitForPageLoad();
@@ -2983,7 +2980,7 @@ public class StoreFrontWebsiteBasePage extends RFBasePage {
 	 * @return
 	 */
 	public StoreFrontCheckoutPage clickConfirmSubscription() {
-		driver.clickByJS(RFWebsiteDriver.driver, driver.findElement(CONFIRM_PULSE_SUBSCRIPTION_BTN_LOC));
+		driver.clickByJS(RFWebsiteDriver.driver, CONFIRM_PULSE_SUBSCRIPTION_BTN_LOC);
 		logger.info("confirm sibscription btn clicked");
 		driver.pauseExecutionFor(2000);
 		if (driver.isElementVisible(OK_BTN_LOC)) {
@@ -3000,9 +2997,9 @@ public class StoreFrontWebsiteBasePage extends RFBasePage {
 	 * @return
 	 */
 	public StoreFrontCheckoutPage checkTheConfirmSubscriptionChkBoxAndSubscribe() {
-		driver.clickByJS(RFWebsiteDriver.driver, driver.findElement(PULSE_SUBSCRIPTION_CHKBOX_LOC));
+		driver.clickByJS(RFWebsiteDriver.driver, PULSE_SUBSCRIPTION_CHKBOX_LOC);
 		logger.info("selected the checkbox at the time of pulse subscription");
-		driver.clickByJS(RFWebsiteDriver.driver, driver.findElement(PULSE_SUBSCRIBE_BTN_LOC));
+		driver.clickByJS(RFWebsiteDriver.driver, PULSE_SUBSCRIBE_BTN_LOC);
 		logger.info("clicked on the pulse subscribe btn");
 		return new StoreFrontCheckoutPage(driver);
 	}
@@ -3115,7 +3112,7 @@ public class StoreFrontWebsiteBasePage extends RFBasePage {
 	 * 
 	 */
 	public StoreFrontWebsiteBasePage clickSaveButtonOfShippingAddress() {
-		driver.clickByJS(RFWebsiteDriver.driver, driver.findElement(SAVE_BUTTON_OF_SHIPPING_ADDRESS_LOC));
+		driver.clickByJS(RFWebsiteDriver.driver, SAVE_BUTTON_OF_SHIPPING_ADDRESS_LOC);
 		logger.info("Save button clicked");
 		return this;
 	}
@@ -3650,7 +3647,7 @@ public class StoreFrontWebsiteBasePage extends RFBasePage {
 	 */
 	public StoreFrontWebsiteBasePage clickSaveButton() {
 		driver.quickWaitForElementPresent(SAVE_BUTTON_LOC);
-		driver.clickByJS(RFWebsiteDriver.driver,driver.findElement(SAVE_BUTTON_LOC));
+		driver.clickByJS(RFWebsiteDriver.driver,SAVE_BUTTON_LOC);
 		logger.info("Save button clicked");
 		driver.waitForPageLoad();
 		return this;
@@ -3664,7 +3661,7 @@ public class StoreFrontWebsiteBasePage extends RFBasePage {
 	 * @return
 	 */
 	public StoreFrontWebsiteBasePage clickConfirmSubscriptionButton() {
-		driver.clickByJS(RFWebsiteDriver.driver, driver.findElement(CONFIRM_PULSE_SUBSCRIPTION_BTN_LOC));
+		driver.clickByJS(RFWebsiteDriver.driver, CONFIRM_PULSE_SUBSCRIPTION_BTN_LOC);
 		logger.info("confirm sibscription btn clicked");
 		driver.pauseExecutionFor(2000);
 		return this;
@@ -3740,7 +3737,7 @@ public class StoreFrontWebsiteBasePage extends RFBasePage {
 	 * 
 	 */
 	public StoreFrontWebsiteBasePage clickCloseIconOfSearchTextBoxPopup() {
-		driver.clickByJS(RFWebsiteDriver.driver, driver.findElement(CLOSE_ICON_OF_SEARCH_TEXT_BOX_IN_HEADER_NAVIGATION_LOC));
+		driver.clickByJS(RFWebsiteDriver.driver, CLOSE_ICON_OF_SEARCH_TEXT_BOX_IN_HEADER_NAVIGATION_LOC);
 		driver.pauseExecutionFor(3000);
 		return this;
 	}
@@ -3753,7 +3750,7 @@ public class StoreFrontWebsiteBasePage extends RFBasePage {
 	 * 
 	 */
 	public StoreFrontWebsiteBasePage clickToggleButtonOfCountry() {
-		driver.clickByJS(RFWebsiteDriver.driver, driver.findElement(TOGGLE_BUTTON_OF_COUNTRY_LOC));
+		driver.clickByJS(RFWebsiteDriver.driver, TOGGLE_BUTTON_OF_COUNTRY_LOC);
 		driver.pauseExecutionFor(1000);
 		logger.info("clicked on toggle button of country");
 		return this;
@@ -3789,7 +3786,7 @@ public class StoreFrontWebsiteBasePage extends RFBasePage {
 	 * @return
 	 */
 	public StoreFrontWebsiteBasePage clickEventsOnPWSJoin(){
-		driver.clickByJS(RFWebsiteDriver.driver,driver.findElement(By.xpath("//a[@href='events']")));
+		driver.clickByJS(RFWebsiteDriver.driver,By.xpath("//a[@href='events']"));
 		driver.pauseExecutionFor(2000);
 		logger.info("clicked on 'Events' button on pws join site");
 		return this;
@@ -3800,7 +3797,7 @@ public class StoreFrontWebsiteBasePage extends RFBasePage {
 	 * @return
 	 */
 	public StoreFrontWebsiteBasePage clickEnrollOnPWSJoin(){
-		driver.clickByJS(RFWebsiteDriver.driver,driver.findElement(By.xpath("//a[text()='ENROLL NOW']")));
+		driver.clickByJS(RFWebsiteDriver.driver,By.xpath("//a[text()='ENROLL NOW']"));
 		driver.pauseExecutionFor(2000);
 		logger.info("clicked on 'Enroll Now' button on pws join site");
 		return this;
@@ -3811,7 +3808,7 @@ public class StoreFrontWebsiteBasePage extends RFBasePage {
 	 * @return
 	 */
 	public StoreFrontWebsiteBasePage clickProgramsIncentivesOnPWSJoin(){
-		driver.clickByJS(RFWebsiteDriver.driver,driver.findElement(By.xpath("//a[@href='programs-incentives']")));
+		driver.clickByJS(RFWebsiteDriver.driver,By.xpath("//a[@href='programs-incentives']"));
 		driver.pauseExecutionFor(2000);
 		logger.info("clicked on 'prgrams and incentives' button on pws join site");
 		return this;
@@ -3822,7 +3819,7 @@ public class StoreFrontWebsiteBasePage extends RFBasePage {
 	 * @return
 	 */
 	public StoreFrontWebsiteBasePage clickMeetOurCommunityOnPWSJoin(){
-		driver.clickByJS(RFWebsiteDriver.driver,driver.findElement(By.xpath("//a[@href='meet-our-community']")));
+		driver.clickByJS(RFWebsiteDriver.driver,By.xpath("//a[@href='meet-our-community']"));
 		driver.pauseExecutionFor(2000);
 		logger.info("clicked on 'Meet Our Community' button on pws join site");
 		return this;
@@ -3833,7 +3830,7 @@ public class StoreFrontWebsiteBasePage extends RFBasePage {
 	 * @return
 	 */
 	public StoreFrontWebsiteBasePage clickWhyRFOnPWSJoin(){
-		driver.clickByJS(RFWebsiteDriver.driver,driver.findElement(By.xpath("//a[@href='why-rf']")));
+		driver.clickByJS(RFWebsiteDriver.driver,By.xpath("//a[@href='why-rf']"));
 		driver.pauseExecutionFor(2000);
 		logger.info("clicked on 'Why R+F' button on pws join site");
 		return this;

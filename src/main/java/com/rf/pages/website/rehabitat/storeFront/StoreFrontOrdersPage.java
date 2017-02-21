@@ -391,7 +391,7 @@ public class StoreFrontOrdersPage extends StoreFrontWebsiteBasePage{
 	 * 
 	 */
 	public StoreFrontOrdersPage clickOnTheImageOfProductForSelectingChckBox(){
-		driver.clickByJS(RFWebsiteDriver.driver,driver.findElement(PRODUCT_IMG_LOC));
+		driver.clickByJS(RFWebsiteDriver.driver,PRODUCT_IMG_LOC);
 		logger.info("Product Image Clicked for Selecting checkbox");
 		return this;
 	}
@@ -553,7 +553,7 @@ public class StoreFrontOrdersPage extends StoreFrontWebsiteBasePage{
 	 * 
 	 */
 	public StoreFrontOrdersPage enterTheDetailsForReportProblem(String message){
-		driver.clickByJS(RFWebsiteDriver.driver, driver.findElement(CHKBOX_OF_PRODUCT_LOC));
+		driver.clickByJS(RFWebsiteDriver.driver, CHKBOX_OF_PRODUCT_LOC);
 		logger.info("Check box checked for product");
 		driver.click(PROBLEM_DD_LOC);
 		logger.info("Problem dropdown clicked");
@@ -654,7 +654,7 @@ public class StoreFrontOrdersPage extends StoreFrontWebsiteBasePage{
 	 * 
 	 */
 	public StoreFrontOrdersPage enterTheDetailsForReportProblem(String message, String problemReason){
-		driver.clickByJS(RFWebsiteDriver.driver, driver.findElement(CHKBOX_OF_PRODUCT_LOC));
+		driver.clickByJS(RFWebsiteDriver.driver, CHKBOX_OF_PRODUCT_LOC);
 		logger.info("Check box checked for product");
 		driver.click(PROBLEM_DD_LOC);
 		logger.info("Problem dropdown clicked");

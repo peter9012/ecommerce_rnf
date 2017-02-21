@@ -268,7 +268,7 @@ public class StoreFrontAutoshipCartPage extends StoreFrontWebsiteBasePage{
 	  * @return StoreFrontCheckoutPage object
 	  */
 	 public StoreFrontCheckoutPage clickOnCRPCheckoutButton(){
-	  driver.clickByJS(RFWebsiteDriver.driver,driver.findElement(CRP_CHECKOUT_LOC));
+	  driver.clickByJS(RFWebsiteDriver.driver,CRP_CHECKOUT_LOC);
 	  logger.info("Clicked on CRP checkout button");
 	  return new StoreFrontCheckoutPage(driver);
 	 }

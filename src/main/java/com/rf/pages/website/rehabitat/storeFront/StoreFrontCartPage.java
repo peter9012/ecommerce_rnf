@@ -122,7 +122,7 @@ public class StoreFrontCartPage extends StoreFrontWebsiteBasePage{
 	 * @return store front product detail page object
 	 */
 	public StoreFrontProductDetailPage clickProductUnderRecentlyView(String productName){
-		driver.clickByJS(RFWebsiteDriver.driver, driver.findElement(By.xpath(String.format(recentlyViewProductOnCartPageLoc, productName))));
+		driver.clickByJS(RFWebsiteDriver.driver, By.xpath(String.format(recentlyViewProductOnCartPageLoc, productName)));
 		logger.info("Product"+productName+"is clicked under recently view on cart page");
 		return new StoreFrontProductDetailPage(driver);
 	}
@@ -336,7 +336,7 @@ public class StoreFrontCartPage extends StoreFrontWebsiteBasePage{
 	public StoreFrontCartPage clickCheckoutTheCartFromCartPage(){
 		driver.pauseExecutionFor(2000);
 		driver.waitForElementToBeClickable(CHECKOUT_BUTTON_LOC, 20);
-		driver.clickByJS(RFWebsiteDriver.driver, driver.findElement(CHECKOUT_BUTTON_LOC));
+		driver.clickByJS(RFWebsiteDriver.driver, CHECKOUT_BUTTON_LOC);
 		logger.info("Clicked on checkout button");
 		return this;
 	}

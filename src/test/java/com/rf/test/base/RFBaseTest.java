@@ -34,10 +34,12 @@ public class RFBaseTest{
 	// Added for local testing and will be removed later
 	public String defaultProps = "defaultenv.properties";
 	public String testUsers_QA2_US_propertes = "testUsers_QA2_US.properties";
+	public String testUsers_QA2_CA_propertes = "testUsers_QA2_CA.properties";
+	public String testUsers_QA1_US_propertes = "testUsers_QA1_US.properties";
 	public String testUsers_DEV1_US_propertes = "testUsers_DEV1_US.properties";
 	public String testUsers_DEV1_CA_propertes = "testUsers_DEV1_CA.properties";
 	public String userProps = null;
-	
+
 	protected static PropertyFile propertyFile = new PropertyFile();
 	protected static PropertyFile userPropertyFile = new PropertyFile();
 
@@ -163,17 +165,23 @@ public class RFBaseTest{
 	public SoftAssert getSoftAssert() {
 		return s_assert;
 	}
-	
+
 	// load env properties
-	 public void setUserPropertyFile(String propertyFileName){
-		 if(propertyFileName.toLowerCase().contains("qa2") && propertyFileName.toLowerCase().contains("us")){
-		  userProps=testUsers_QA2_US_propertes;		  
-	  }else  if(propertyFileName.toLowerCase().contains("dev1") && propertyFileName.toLowerCase().contains("us")){
-		  userProps=testUsers_DEV1_US_propertes;
-	  }
-	  else  if(propertyFileName.toLowerCase().contains("dev1") && propertyFileName.toLowerCase().contains("ca")){
-		  userProps=testUsers_DEV1_CA_propertes;
-	  }
-	  logger.info("testUsers are loaded from "+userProps);
-	 }
+	public void setUserPropertyFile(String propertyFileName){
+		if(propertyFileName.toLowerCase().contains("qa2") && propertyFileName.toLowerCase().contains("us")){
+			userProps=testUsers_QA2_US_propertes;		  
+		}else  if(propertyFileName.toLowerCase().contains("dev1") && propertyFileName.toLowerCase().contains("us")){
+			userProps=testUsers_DEV1_US_propertes;
+		}
+		else  if(propertyFileName.toLowerCase().contains("dev1") && propertyFileName.toLowerCase().contains("ca")){
+			userProps=testUsers_DEV1_CA_propertes;
+		}
+		else  if(propertyFileName.toLowerCase().contains("qa1") && propertyFileName.toLowerCase().contains("us")){
+			userProps=testUsers_QA1_US_propertes;
+		}
+		else  if(propertyFileName.toLowerCase().contains("qa2") && propertyFileName.toLowerCase().contains("ca")){
+			userProps=testUsers_QA2_CA_propertes;
+		}
+		logger.info("testUsers are loaded from "+userProps);
+	}
 }

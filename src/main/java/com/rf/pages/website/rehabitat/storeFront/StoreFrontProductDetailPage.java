@@ -194,7 +194,7 @@ public class StoreFrontProductDetailPage extends StoreFrontWebsiteBasePage{
 	public StoreFrontProductDetailPage addProductToCartFromProductDetailPage(){
 		String productName = driver.findElement(PRODUCT_NAME_AT_PRODUCT_DETAIL_PAGE_LOC).getText().trim();
 		driver.quickWaitForElementPresent(ADD_TO_CART_BUTTON_AT_PRODUCT_DETAIL_PAGE_LOC);
-		driver.clickByJS(RFWebsiteDriver.driver, driver.findElement(ADD_TO_CART_BUTTON_AT_PRODUCT_DETAIL_PAGE_LOC));
+		driver.clickByJS(RFWebsiteDriver.driver, ADD_TO_CART_BUTTON_AT_PRODUCT_DETAIL_PAGE_LOC);
 		logger.info("product "+productName+" is added to cart");
 		return this;
 	}
@@ -238,7 +238,7 @@ public class StoreFrontProductDetailPage extends StoreFrontWebsiteBasePage{
 		String productName = driver.findElement(PRODUCT_NAME_AT_PRODUCT_DETAIL_PAGE_LOC).getText().trim();
 		driver.moveToElement(ADD_TO_CART_BUTTON_AT_PRODUCT_DETAIL_PAGE_LOGIN_LOC);
 		//driver.quickWaitForElementPresent(ADD_TO_CART_BUTTON_AT_PRODUCT_DETAIL_PAGE_LOC);
-		driver.clickByJS(RFWebsiteDriver.driver, driver.findElement(ADD_PRODUCT_TO_BAG_PRODUCT_DETAIL_LOGIN_LOC));
+		driver.clickByJS(RFWebsiteDriver.driver, ADD_PRODUCT_TO_BAG_PRODUCT_DETAIL_LOGIN_LOC);
 		logger.info("product "+productName+" is added to cart from product detail page");
 		return this;
 	}

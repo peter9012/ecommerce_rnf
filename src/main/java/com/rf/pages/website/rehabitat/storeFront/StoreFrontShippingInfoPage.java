@@ -164,7 +164,7 @@ public class StoreFrontShippingInfoPage extends StoreFrontWebsiteBasePage{
 	 * 
 	 */
 	public StoreFrontShippingInfoPage clickDeleteLinkForShippingProfile(String profile){
-		driver.clickByJS(RFWebsiteDriver.driver,driver.findElement(By.xpath(String.format(deleteLinkForProfileLoc, profile))));
+		driver.clickByJS(RFWebsiteDriver.driver,By.xpath(String.format(deleteLinkForProfileLoc, profile)));
 		logger.info("Delete Link clicked for profile : " + profile);
 		driver.pauseExecutionFor(3000);
 		return this;

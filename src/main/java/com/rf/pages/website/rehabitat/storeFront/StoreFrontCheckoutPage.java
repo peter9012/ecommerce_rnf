@@ -392,7 +392,7 @@ public class StoreFrontCheckoutPage extends StoreFrontWebsiteBasePage{
 	 * 
 	 */
 	public void clickEditLinkOfOrderSummarySection(){
-		driver.clickByJS(RFWebsiteDriver.driver, driver.findElement(EDIT_LINK_OF_ORDERS_SUMMARY_LOC));
+		driver.clickByJS(RFWebsiteDriver.driver, EDIT_LINK_OF_ORDERS_SUMMARY_LOC);
 		logger.info("Clicked on Edit link of order summary section");
 	}
 
@@ -466,7 +466,7 @@ public class StoreFrontCheckoutPage extends StoreFrontWebsiteBasePage{
 	 * @return same page object
 	 */
 	public StoreFrontCheckoutPage clickContinueWithoutConsultantLink(){
-		driver.clickByJS(RFWebsiteDriver.driver, driver.findElement(CONTINUE_WITHOUT_SPONSOR_LOC));
+		driver.clickByJS(RFWebsiteDriver.driver, CONTINUE_WITHOUT_SPONSOR_LOC);
 		logger.info("Continue without sponsor link clicked");
 		return this;
 	}
@@ -501,7 +501,7 @@ public class StoreFrontCheckoutPage extends StoreFrontWebsiteBasePage{
 	public StoreFrontCheckoutPage clickEditLinkOfShippingProfile(){
 		driver.pauseExecutionFor(5000);
 		//driver.click(EDIT_LINK_OF_SHIPPING_PROFILE_LOC);
-		driver.clickByJS(RFWebsiteDriver.driver, driver.findElement(EDIT_LINK_OF_SHIPPING_PROFILE_LOC));
+		driver.clickByJS(RFWebsiteDriver.driver, EDIT_LINK_OF_SHIPPING_PROFILE_LOC);
 		logger.info("Clicked on Edit link of Shipping profile");
 		return this;
 	}
@@ -525,7 +525,7 @@ public class StoreFrontCheckoutPage extends StoreFrontWebsiteBasePage{
 	 */
 	public StoreFrontCheckoutPage clickAddNewBillingProfileButton(){
 		driver.waitForElementToBeClickable(ADD_NEW_BILLING_PROFILE_BUTTON_LOC, 20);
-		driver.clickByJS(RFWebsiteDriver.driver, driver.findElement(ADD_NEW_BILLING_PROFILE_BUTTON_LOC));
+		driver.clickByJS(RFWebsiteDriver.driver, ADD_NEW_BILLING_PROFILE_BUTTON_LOC);
 		//driver.click(ADD_NEW_BILLING_PROFILE_BUTTON_LOC);
 		logger.info("Add New Billing Profile Button clicked");
 		driver.pauseExecutionFor(2000);
@@ -1034,7 +1034,7 @@ public class StoreFrontCheckoutPage extends StoreFrontWebsiteBasePage{
 		int randomNum = CommonUtils.getRandomNum(0,shippingMethods.size()-1);
 		WebElement methodToSelect = shippingMethods.get(randomNum);
 		String methodLabel = methodToSelect.getAttribute("for");
-		driver.clickByJS(RFWebsiteDriver.driver, driver.findElement(By.xpath(String.format(shippingMethodCheckboxUsingLabel, methodLabel))));
+		driver.clickByJS(RFWebsiteDriver.driver, By.xpath(String.format(shippingMethodCheckboxUsingLabel, methodLabel)));
 		logger.info("Clicked Shipping method : " + methodLabel);
 		return methodLabel;
 	}
@@ -1405,7 +1405,7 @@ public class StoreFrontCheckoutPage extends StoreFrontWebsiteBasePage{
 	 * 
 	 */
 	public StoreFrontWebsiteBasePage enterUserBillingDetailsAfterEditTheProfile(String cardType, String cardNumber, String nameOnCard,String CVV){
-		driver.clickByJS(RFWebsiteDriver.driver, driver.findElement(CARD_TYPE_DD_AFTER_EDIT_PROFILE_LOC));
+		driver.clickByJS(RFWebsiteDriver.driver, CARD_TYPE_DD_AFTER_EDIT_PROFILE_LOC);
 		logger.info("Card type dropdown clicked");
 		driver.click(By.xpath(String.format(cardTypeAfterEditProfileLoc, cardType)));
 		logger.info("Card type selected as "+cardType);
@@ -1413,12 +1413,12 @@ public class StoreFrontCheckoutPage extends StoreFrontWebsiteBasePage{
 		logger.info("Entered card number as"+cardNumber);
 		driver.type(NAME_ON_CARD_AFTER_EDIT_PROFILE_LOC, nameOnCard);
 		logger.info("Entered card name as"+nameOnCard);
-		driver.clickByJS(RFWebsiteDriver.driver, driver.findElement(EXP_MONTH_DD_AFTER_EDIT_PROFILE_LOC));
+		driver.clickByJS(RFWebsiteDriver.driver, EXP_MONTH_DD_AFTER_EDIT_PROFILE_LOC);
 		//driver.click(EXP_MONTH_DD_AFTER_EDIT_PROFILE_LOC);
 		logger.info("Exp month dropdown clicked");
 		driver.click(EXP_MONTH_AFTER_EDIT_PROFILE_LOC);
 		logger.info("Exp month selected");
-		driver.clickByJS(RFWebsiteDriver.driver, driver.findElement(EXP_YEAR_DD_AFTER_EDIT_PROFILE_LOC));
+		driver.clickByJS(RFWebsiteDriver.driver, EXP_YEAR_DD_AFTER_EDIT_PROFILE_LOC);
 		//driver.click(EXP_YEAR_DD_AFTER_EDIT_PROFILE_LOC);
 		logger.info("Exp year dropdown clicked");
 		driver.click(EXP_YEAR_AFTER_EDIT_PROFILE_LOC);
@@ -1638,7 +1638,7 @@ public class StoreFrontCheckoutPage extends StoreFrontWebsiteBasePage{
 	 * 
 	 */
 	public StoreFrontCheckoutPage selectCheckboxForPoliciesAndProcedures(){
-		driver.clickByJS(RFWebsiteDriver.driver,driver.findElement(POLICIES_AND_PROCEDURES_CHECBOX_LOC));
+		driver.clickByJS(RFWebsiteDriver.driver,POLICIES_AND_PROCEDURES_CHECBOX_LOC);
 		logger.info("Selected checkbox for policies and procedures on checkout page");
 		return this;
 	}
@@ -1651,7 +1651,7 @@ public class StoreFrontCheckoutPage extends StoreFrontWebsiteBasePage{
 	 * 
 	 */
 	public StoreFrontCheckoutPage selectTermsAndConditionsCheckBoxForConsulatntCRP(){
-		driver.clickByJS(RFWebsiteDriver.driver,driver.findElement(TERMS_AND_CONDITIONS_CHCKBOX_FOR_CONSULTANT_CRP_LOC));
+		driver.clickByJS(RFWebsiteDriver.driver,TERMS_AND_CONDITIONS_CHCKBOX_FOR_CONSULTANT_CRP_LOC);
 		logger.info("Clicked Terms and conditions checkbox for consultant CRP checkout");
 		return this;
 	}
@@ -1686,7 +1686,7 @@ public class StoreFrontCheckoutPage extends StoreFrontWebsiteBasePage{
 	 * @return
 	 */
 	public StoreFrontCheckoutPage selectUseMyDeliveyAddressCheckbox(){
-		driver.clickByJS(RFWebsiteDriver.driver,driver.findElement(USE_MY_DELIVERY_ADDRESS_CHECKBOX_LOC));
+		driver.clickByJS(RFWebsiteDriver.driver,USE_MY_DELIVERY_ADDRESS_CHECKBOX_LOC);
 		logger.info("Use My delivery address checkbox checked");
 		driver.pauseExecutionFor(2000);
 		return this;
@@ -1699,7 +1699,7 @@ public class StoreFrontCheckoutPage extends StoreFrontWebsiteBasePage{
 	 * @return Store Front Checkout page obj.
 	 */
 	public StoreFrontCheckoutPage clickAddressBookBtn(){
-		driver.clickByJS(RFWebsiteDriver.driver, driver.findElement(ADDRESS_BOOK_BTN_LOC));
+		driver.clickByJS(RFWebsiteDriver.driver, ADDRESS_BOOK_BTN_LOC);
 		logger.info("Address book nutton clicked");
 		driver.pauseExecutionFor(2000);
 		return this;
@@ -1713,7 +1713,7 @@ public class StoreFrontCheckoutPage extends StoreFrontWebsiteBasePage{
 	 */
 	public String clickUseThisAddressBtnAndReturnProfileName(String profileNumber){
 		String name = driver.getText(By.xpath(String.format(profileNameFromAddressBookLoc, profileNumber)));
-		driver.clickByJS(RFWebsiteDriver.driver,driver.findElement(By.xpath(String.format(useThisAddressBtnInAddressBookLoc, profileNumber))));
+		driver.clickByJS(RFWebsiteDriver.driver,By.xpath(String.format(useThisAddressBtnInAddressBookLoc, profileNumber)));
 		logger.info(profileNumber+"st is selected as shipping profile and profile name is "+name);
 		return name;
 	}
@@ -1724,7 +1724,7 @@ public class StoreFrontCheckoutPage extends StoreFrontWebsiteBasePage{
 	 * @return Store Front Checkout page obj.
 	 */
 	public StoreFrontCheckoutPage clickUseSavedCardBtnOnly(){
-		driver.clickByJS(RFWebsiteDriver.driver, driver.findElement(USE_SAVED_CARD_BTN_LOC));
+		driver.clickByJS(RFWebsiteDriver.driver, USE_SAVED_CARD_BTN_LOC);
 		//driver.click(USE_SAVED_CARD_BTN_LOC);
 		logger.info("clicked on the 'Use a saved card' btn on the cart");
 		return this;
@@ -1775,7 +1775,7 @@ public class StoreFrontCheckoutPage extends StoreFrontWebsiteBasePage{
 	 * 
 	 */
 	public StoreFrontCheckoutPage clickEditLinkOfDefaultBillingProfile(){
-		driver.clickByJS(RFWebsiteDriver.driver, driver.findElement(EDIT_LINK_OF_DEFAULT_BILLING_PROFILE_LOC));
+		driver.clickByJS(RFWebsiteDriver.driver, EDIT_LINK_OF_DEFAULT_BILLING_PROFILE_LOC);
 		logger.info("Clicked on Edit link of Default Billing profile");
 		return this;
 	}
@@ -1819,7 +1819,7 @@ public class StoreFrontCheckoutPage extends StoreFrontWebsiteBasePage{
 	 * 
 	 */
 	public StoreFrontCheckoutPage clickConfirmAutoshipOrderButton(){
-		driver.clickByJS(RFWebsiteDriver.driver,driver.findElement(CONFIRM_CRP_ORDER_BTN_LOC));
+		driver.clickByJS(RFWebsiteDriver.driver,CONFIRM_CRP_ORDER_BTN_LOC);
 		driver.waitForPageLoad();
 		logger.info("confirm CRP order btn clicked");
 		driver.pauseExecutionFor(2000);

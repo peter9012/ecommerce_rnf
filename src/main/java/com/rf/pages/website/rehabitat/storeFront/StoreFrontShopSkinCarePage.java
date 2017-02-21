@@ -168,9 +168,9 @@ public class StoreFrontShopSkinCarePage extends StoreFrontWebsiteBasePage{
 	 * 
 	 */
 	public StoreFrontShopSkinCarePage refineProductByCategory(String categoryName){
-		driver.clickByJS(RFWebsiteDriver.driver,driver.findElement(REFINE_PRODUCT_CATEGORY_FILTER_DD_LOC));
+		driver.clickByJS(RFWebsiteDriver.driver,REFINE_PRODUCT_CATEGORY_FILTER_DD_LOC);
 		logger.info("Refine category filter dropdown clicked");
-		driver.clickByJS(RFWebsiteDriver.driver,driver.findElement(By.xpath(String.format(categoryNameLoc, categoryName))));
+		driver.clickByJS(RFWebsiteDriver.driver,By.xpath(String.format(categoryNameLoc, categoryName)));
 		logger.info("Product category selected is "+categoryName);
 		driver.waitForPageLoad();
 		return this;
@@ -563,7 +563,7 @@ public class StoreFrontShopSkinCarePage extends StoreFrontWebsiteBasePage{
 	 * 
 	 */
 	public StoreFrontWebsiteBasePage clickShopByCategoryDD(){
-		driver.clickByJS(RFWebsiteDriver.driver, driver.findElement(REFINE_PRODUCT_CATEGORY_FILTER_DD_LOC));
+		driver.clickByJS(RFWebsiteDriver.driver, REFINE_PRODUCT_CATEGORY_FILTER_DD_LOC);
 		logger.info("Refine category filter dropdown clicked");
 		return this;
 	}
@@ -751,7 +751,7 @@ public class StoreFrontShopSkinCarePage extends StoreFrontWebsiteBasePage{
 	 * 
 	 */
 	public StoreFrontShopSkinCarePage productPriceFilterLowToHighSelect(){
-		driver.clickByJS(RFWebsiteDriver.driver,driver.findElement(SORT_FILTER_DD_LOC));
+		driver.clickByJS(RFWebsiteDriver.driver,SORT_FILTER_DD_LOC);
 		logger.info("Sort filter dropdown clicked");
 		driver.click(SHOP_BY_PRICE_FILTER_OPTION_LOW_TO_HIGH_LOC);
 		logger.info("Price filter 'LOW TO HIGH' selected");
@@ -768,7 +768,7 @@ public class StoreFrontShopSkinCarePage extends StoreFrontWebsiteBasePage{
 	 * 
 	 */
 	public StoreFrontShopSkinCarePage productPriceFilterHighToLowSelect(){
-		driver.clickByJS(RFWebsiteDriver.driver, driver.findElement(SORT_FILTER_DD_LOC));
+		driver.clickByJS(RFWebsiteDriver.driver, SORT_FILTER_DD_LOC);
 		logger.info("Sort filter dropdown clicked");
 		driver.click(SHOP_BY_PRICE_FILTER_OPTION_HIGH_TO_LOW_LOC);
 		logger.info("Price filter 'HIGH TO LOW' selected");

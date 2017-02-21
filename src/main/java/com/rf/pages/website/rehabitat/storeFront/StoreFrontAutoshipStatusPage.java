@@ -144,7 +144,7 @@ public class StoreFrontAutoshipStatusPage extends StoreFrontWebsiteBasePage{
 		driver.click(REASON_DD_LOC);
 		driver.click(REASON_DD_VALUE_OTHER_LOC);
 		driver.type(MESSAGE_BOX_LOC, "I want to terminate my account");
-		driver.clickByJS(RFWebsiteDriver.driver, driver.findElement(SEND_EMAIL_TO_CANCEL_ACCOUNT_BUTTON_LOC));
+		driver.clickByJS(RFWebsiteDriver.driver, SEND_EMAIL_TO_CANCEL_ACCOUNT_BUTTON_LOC);
 		driver.waitForLoadingImageToDisappear(); 
 		return this;
 	}
@@ -454,7 +454,7 @@ public class StoreFrontAutoshipStatusPage extends StoreFrontWebsiteBasePage{
 	 * @return
 	 */
 	public StoreFrontAutoshipStatusPage clickSubscribeToPulseBtn(){
-		driver.clickByJS(RFWebsiteDriver.driver,driver.findElement(SUBSCRIBE_TO_PULSE_BTN_LOC));
+		driver.clickByJS(RFWebsiteDriver.driver,SUBSCRIBE_TO_PULSE_BTN_LOC);
 		logger.info("Subscribe to pulse btn clicked");
 		return this;
 	}

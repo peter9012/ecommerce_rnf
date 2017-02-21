@@ -38,7 +38,8 @@ public class StoreFrontHomePage extends StoreFrontWebsiteBasePage{
 	private final By BILLING_ADDRESS_DD_LOC= By.id("default-address");
 	private final By BILLING_ADDRESS_OPTION_VALUE_LOC= By.xpath("//select[@id='default-address']//option[2]");
 	private final By BIG_BUSNINESS_KIT_PAGE_LOC = By.xpath("//input[@id='ENROLL_KIT_0002']");
-	private final By PERSONAL_RESULTS_KIT_PAGE_LOC = By.xpath("//input[@id='PRKT']");
+	//	private final By PERSONAL_RESULTS_KIT_PAGE_LOC = By.xpath("//input[@id='PRKT']");
+	private final By PERSONAL_RESULTS_KIT_PAGE_LOC = By.xpath("//label[normalize-space(text())='Personal Results Kit']//preceding-sibling::input[1]");
 	private final By FIRST_NAME_FOR_REGISTRATION_LOC = By.id("register.firstName");
 	private final By LAST_NAME_FOR_REGISTRATION_LOC = By.id("register.lastName");
 	private final By EMAIL_ID_FOR_REGISTRATION_LOC = By.id("register.email");
@@ -86,7 +87,7 @@ public class StoreFrontHomePage extends StoreFrontWebsiteBasePage{
 	private String viewDetailsLinkLoc = "//div[contains(@class,'enrollmentKit-wrapper')]/descendant::a[contains(text(),'View Details')][%s]";
 	private String expandedKitDescriptionLoc = "//div[contains(@class,'enrollmentKit-wrapper')]/div[%s]//div[@class='detailed-description']";
 	private String closeBtnForKitDetailsLoc = "//div[contains(@class,'enrollmentKit-wrapper')]/div[%s]//a[@class='enrollKit-close']";
-	private String kitNameLoc = "//label[text()='%s']/preceding::input[1]";
+	private String kitNameLoc = "//label[text()='%s' or text()='%s']/preceding::input[1]";
 	private String priceOfProductLoc = "//div[contains(@class,'product__listing')]/descendant::span[@id='cust_price'][contains(text(),'$')][%s]";
 	private String socialMediaIconLoc = "//div[@class='container']//a[contains(@href,'%s')]";
 	private String teamMemberNameLoc = "//div[@id='modal_front']/div[%s]//div[@class='title']/h4";
@@ -94,8 +95,8 @@ public class StoreFrontHomePage extends StoreFrontWebsiteBasePage{
 	private String socialMediaLoc = "//div[contains(@class,'social-icons')]//a[contains(@href,'%s')]";
 
 	//CA specific
-	private final By PERSONAL_RESULTS_KIT_PAGE_LOC_CA = By.xpath("//label[normalize-space(text())='Personal Results Kit']//preceding-sibling::input[1]");
-	
+	//private final By PERSONAL_RESULTS_KIT_PAGE_LOC_CA = By.xpath("//label[normalize-space(text())='Personal Results Kit']//preceding-sibling::input[1]");
+
 	private int randomLink =0;
 
 	public boolean isFindAConsultantPagePresent(){
@@ -156,7 +157,7 @@ public class StoreFrontHomePage extends StoreFrontWebsiteBasePage{
 	 * 
 	 */
 	public StoreFrontHomePage clickDirectLinkAssociationLink(){
-		driver.clickByJS(RFWebsiteDriver.driver,driver.findElement(DIRECT_LINK_ASSOCIATION));
+		driver.clickByJS(RFWebsiteDriver.driver,DIRECT_LINK_ASSOCIATION);
 		logger.info("clicked on 'direct link association' link");
 		driver.pauseExecutionFor(2000);
 		return this;
@@ -373,7 +374,7 @@ public class StoreFrontHomePage extends StoreFrontWebsiteBasePage{
 	 */
 	public StoreFrontHomePage closeTheExpandedKitDetails(String kitNumber){
 		driver.pauseExecutionFor(1000);
-		driver.clickByJS(RFWebsiteDriver.driver, driver.findElement((By.xpath(String.format(closeBtnForKitDetailsLoc, kitNumber)))));
+		driver.clickByJS(RFWebsiteDriver.driver, By.xpath(String.format(closeBtnForKitDetailsLoc, kitNumber)));
 		logger.info("clicked on the close btn of the expanded kit details for kitNumber "+kitNumber);
 		return this;
 	}
@@ -404,13 +405,7 @@ public class StoreFrontHomePage extends StoreFrontWebsiteBasePage{
 	 * 
 	 */
 	public StoreFrontHomePage chooseProductFromKitPage(){
-		if(driver.getCountry().equalsIgnoreCase("us")){
-		driver.quickWaitForElementPresent(PERSONAL_RESULTS_KIT_PAGE_LOC);
-		driver.clickByJS(RFWebsiteDriver.driver, driver.findElement(PERSONAL_RESULTS_KIT_PAGE_LOC));
-	}else if(driver.getCountry().equalsIgnoreCase("ca")){
-		driver.quickWaitForElementPresent(PERSONAL_RESULTS_KIT_PAGE_LOC_CA);
-		driver.clickByJS(RFWebsiteDriver.driver, driver.findElement(PERSONAL_RESULTS_KIT_PAGE_LOC_CA));
-	}
+		driver.clickByJS(RFWebsiteDriver.driver, PERSONAL_RESULTS_KIT_PAGE_LOC);
 		logger.info("selected the personal result kit");
 		return this;
 	}
@@ -434,568 +429,563 @@ public class StoreFrontHomePage extends StoreFrontWebsiteBasePage{
 	 * 
 	 */
 	public StoreFrontHomePage chooseProductFromKitPage(String kitName){
-		if(kitName.contains("Business Portfolio")){
-			driver.pauseExecutionFor(3000);
-			driver.clickByJS(RFWebsiteDriver.driver, driver.findElement(By.xpath(String.format(kitNameLoc,kitName))));
-			logger.info("Choose "+kitName+" product at kit page");
-		}else{
-			driver.clickByJS(RFWebsiteDriver.driver, driver.findElement(By.xpath(String.format(kitNameLoc,kitName.toUpperCase()))));
-			logger.info("Choose "+kitName.toUpperCase()+" product at kit page");
+		driver.pauseExecutionFor(3000);
+		driver.clickByJS(RFWebsiteDriver.driver, By.xpath(String.format(kitNameLoc,kitName,kitName.toUpperCase())));
+		logger.info("Choose "+kitName+" product at kit page");
+		return this;
+	}
+
+	/***
+	 * This method get the confirmation message of consultant enrollment
+	 * 
+	 * @param
+	 * @return store front Home page object
+	 * 
+	 */
+	public String getConfirmationMsgOfConsultantEnrollment(){
+		String msg = driver.findElement(CONFIRMATION_MSG_OF_CONSULTANT_ENROLLMENT_LOC).getText();
+		logger.info("Confirmation message is "+msg);
+		return msg;
+	}
+
+	/***
+	 * This method checks whether Welcome drop has displayed or not
+	 * @return boolean
+	 */
+	public boolean isWelcomeUserElementDisplayed(){
+		driver.quickWaitForElementPresent(WELCOME_DROPDOWN_LOC);
+		return driver.isElementPresent(WELCOME_DROPDOWN_LOC);
+	}
+
+
+	/***
+	 * This method select the first billing address from DD
+	 * 
+	 * @param
+	 * @return store front Home page object
+	 * 
+	 */
+	public StoreFrontHomePage selectBillingAddressFromDD(){
+		driver.click(BILLING_ADDRESS_DD_LOC);
+		logger.info("Billing address dropdown clicked");
+		driver.pauseExecutionFor(500);
+		driver.click(BILLING_ADDRESS_OPTION_VALUE_LOC);
+		logger.info("Billing address selected");
+		return this;
+	}
+
+	/***
+	 * This method verify add to bag button is present for first product
+	 * 
+	 * @param
+	 * @return boolean value.
+	 * 
+	 */
+
+	public boolean isAddToBagPresentOfFirstProduct(){
+		driver.moveToElementByJS(ADD_TO_CART_FIRST_PRODUCT_LOC);
+		return driver.findElement(ADD_TO_BAG_OF_FIRST_PRODUCT).isDisplayed();
+	}
+
+	/***
+	 * This method select the first filter option under shop by price filter
+	 * 
+	 * @param
+	 * @return store front Home page object
+	 * 
+	 */
+	public StoreFrontHomePage selectFirstOptionInShopByPriceFilter(){
+		driver.clickByJS(RFWebsiteDriver.driver, SHOP_BY_PRICE_FILTER_LOC);
+		logger.info("Shop by price dropdown clicked");
+		driver.clickByJS(RFWebsiteDriver.driver, SHOP_BY_PRICE_FILTER_OPTION_0_TO_49$_LOC);
+		logger.info("First option under shop by price filter selected");
+		return this;
+	}
+
+	/***
+	 * This method verify the first filter option under shop by price filter
+	 * is checked or not
+	 * 
+	 * @param
+	 * @return boolean value.
+	 * 
+	 */
+	public boolean isShopByPriceFirstFilterChecked(){
+		return driver.isElementPresent(SHOP_BY_PRICE_FILTER_OPTION_0_TO_49$_AFTER_CHECKED_LOC);
+	}
+
+	/***
+	 * This method verify the filter option under shop by price filter
+	 * is applied successfully or not
+	 * 
+	 * @param product number, price range
+	 * @return boolean value.
+	 * 
+	 */
+	public boolean isShopByPriceFilterAppliedSuccessfully(int productNumber, String priceRange){
+		String price = driver.findElement(By.xpath(String.format(priceOfProductLoc, productNumber))).getText().split("\\$")[1].trim();
+		double priceFromUI = Double.parseDouble(price);
+		if(priceRange.equalsIgnoreCase("0To49")){
+			if(priceFromUI>=0.00 & priceFromUI<=49.99){
+				return true;
+			}else{
+				return false;
+			}
+		}else if(priceRange.equalsIgnoreCase("50To199")){
+			if(priceFromUI>=50.00 & priceFromUI<=199.99){
+				return true;
+			}else{
+				return false;
+			}
+		}else if(priceRange.equalsIgnoreCase("200To499")){
+			if(priceFromUI>=200.00 & priceFromUI<=499.99){
+				return true;
+			}else{
+				return false;
+			}
+		}
+		return false;
+	}
+
+	/***
+	 * This method verify the first filter option under shop by price filter
+	 * is removed successfully or not
+	 * 
+	 * @param total no of product, price range
+	 * @return boolean value.
+	 * 
+	 */
+	public boolean isShopByPriceFilterRemovedSuccessfully(int totalNoOfProduct, String priceRange){
+		Double[] price = new Double[totalNoOfProduct]; 
+		for(int i=1; i<=totalNoOfProduct; i++){
+			price[i-1] = Double.parseDouble(driver.findElement(By.xpath(String.format(priceOfProductLoc, i))).getText().split("\\$")[1].trim());
+		}
+		List<Double> lList = Arrays.asList(price);
+		Iterator<Double> iterator =  lList.iterator();
+		while(iterator.hasNext()){
+			if(priceRange.equalsIgnoreCase("0To49")){
+				if(iterator.next()>50.0){
+					return true;
+				}
+			}else if(priceRange.equalsIgnoreCase("50To199")){
+				if(iterator.next()>200.0){
+					return true;
+				}
+			}else if(priceRange.equalsIgnoreCase("200To499")){
+				if(iterator.next()<200.0){
+					return true;
+				}
+			}
+		}
+		return false;
+	}
+
+	/***
+	 * This method select the second filter option under shop by price filter
+	 * 
+	 * @param
+	 * @return store front Home page object
+	 * 
+	 */
+	public StoreFrontHomePage selectSecondOptionInShopByPriceFilter(){
+		driver.clickByJS(RFWebsiteDriver.driver, SHOP_BY_PRICE_FILTER_LOC);
+		logger.info("Shop by price dropdown clicked");
+		driver.clickByJS(RFWebsiteDriver.driver, SHOP_BY_PRICE_FILTER_OPTION_50_TO_199$_LOC);
+		logger.info("Second option under shop by price filter selected");
+		return this;
+	}
+
+	/***
+	 * This method verify the second filter option under shop by price filter
+	 * is checked or not
+	 * 
+	 * @param
+	 * @return boolean value.
+	 * 
+	 */
+	public boolean isShopByPriceSecondFilterChecked(){
+		return driver.isElementPresent(SHOP_BY_PRICE_FILTER_OPTION_50_TO_199$_AFTER_CHECKED_LOC);
+	}
+
+	/***
+	 * This method select the third filter option under shop by price filter
+	 * 
+	 * @param
+	 * @return store front Home page object
+	 * 
+	 */
+	public StoreFrontHomePage selectThirdOptionInShopByPriceFilter(){
+		driver.clickByJS(RFWebsiteDriver.driver, SHOP_BY_PRICE_FILTER_LOC);
+		logger.info("Shop by price dropdown clicked");
+		driver.clickByJS(RFWebsiteDriver.driver, SHOP_BY_PRICE_FILTER_OPTION_200_TO_499$_LOC);
+		logger.info("Third option under shop by price filter selected");
+		return this;
+	}
+
+	/***
+	 * This method verify the third filter option under shop by price filter
+	 * is checked or not
+	 * 
+	 * @param
+	 * @return boolean value.
+	 * 
+	 */
+
+	public boolean isShopByPriceThirdFilterChecked(){
+		return driver.isElementPresent(SHOP_BY_PRICE_FILTER_OPTION_200_TO_499$_AFTER_CHECKED_LOC);
+	}
+
+	/***
+	 * This method click on place order button
+	 * 
+	 * @param
+	 * @return store front Home page object
+	 * 
+	 */
+	public StoreFrontHomePage clickPlaceOrderButton(){
+		clickBecomeAConsultant();
+		return this;
+	}
+
+	/***
+	 * This method clicks on the Policies and Procedures Link
+	 * @return store front Home page object
+	 */
+	public StoreFrontHomePage clickPoliciesAndProceduresLink(){
+		driver.click(POLICIES_AND_PROCEDURES_LINK_LOC);
+		logger.info("Policies and Procedures link clicked");
+		return this;
+	}
+
+	/***
+	 * This method clicks on the Pro Pulse Terms and Conditions Link
+	 * @return store front Home page object
+	 */
+	public StoreFrontHomePage clickPulseProTermsAndConditionsLink(){
+		driver.click(PULSE_PRO_T_C_LINK_LOC);
+		logger.info("Pulse Pro Terms and conditions link clicked");
+		return this;
+	}
+
+	/***
+	 * This method clicks on the CRP Terms and Conditions Link
+	 * @return store front Home page object
+	 */
+	public StoreFrontHomePage clickCRPTermsAndConditionsLink(){
+		driver.click(CRP_T_C_LINK_LOC);
+		logger.info("CRP Terms and conditions link clicked");
+		return this;
+	}
+
+	/***
+	 * This method clicks on the Connect btn on the home page
+	 * @return storeFront home page object
+	 */
+	public StoreFrontHomePage clickConnectBtn(){
+		driver.click(CONNECT_BTN_LOC);
+		logger.info("Connect btn clicked on home page");
+		return this;
+	}
+
+	//	/***
+	//	 * This method verifies whether the Connect btn present on the home page or not
+	//	 * @return boolean
+	//	 */
+	//	public boolean isConnectBtnPresentOnHomePage(){
+	//		return driver.isElementVisible(CONNECT_BTN_LOC);		
+	//	}
+
+	/***
+	 * This method verifies whether or NOT
+	 * Home page banner displayed or not
+	 * 
+	 * This method can  be used to verify that user is on Home Page
+	 * @return
+	 */
+	public boolean isHomePageBannerDisplayed(){
+		return driver.isElementVisible(By.xpath("//div[contains(@class,'rf-home')]"));
+	}
+
+	/***
+	 * This method clicks on the 'Applying as Business Entity' Link on sponsor page
+	 * @return storeFront home page object
+	 */
+	public StoreFrontHomePage clickApplyingAsBusinessEntityLink(){
+		driver.waitForElementPresent(APPLYING_AS_BUSINESS_ENTITY_LINK_LOC);
+		driver.click(APPLYING_AS_BUSINESS_ENTITY_LINK_LOC);
+		logger.info("clicked on 'Applying as Business Entity' Link");
+		driver.pauseExecutionFor(500);
+		return this;
+	}
+
+	/***
+	 * This method clicks on the Cross(X) button of 'Applying as Business Entity' popup on sponsor page
+	 * @return storeFront home page object
+	 */
+	public StoreFrontHomePage closeApplyingAsBusinessEntityPopUp(){
+		driver.click(CLOSE_BTN_ON_APPLYING_AS_BUSINESS_ENTITY_POPUP_LOC);
+		logger.info("closed the 'Applying as Business Entity' popup");
+		return this;
+	}
+
+	/***
+	 * This method checks whether 'Applying as Business Entity' popup on sponsor page
+	 * has displayed or NOT
+	 * @return boolean
+	 */
+	public boolean isApplyingAsBusinessEntityPopupDisplayed(){
+		return driver.isElementVisible(APPLYING_AS_BUSINESS_ENTITY_POPUP_LOC);		
+	}
+
+	/***
+	 * This method selects the UnSubscribe to Pulse checkbox
+	 * @return SF home page object
+	 */
+	public StoreFrontHomePage UnSelectSubscribeToPulseCheckBox(){
+		driver.clickByJS(RFWebsiteDriver.driver, SUBSCRIBE_TO_PULSE_CHKBOX_LOC);
+		logger.info("Subscribe to Pulse checkbox has been selected");
+		return this;
+	}
+
+	/***
+	 * This method enters the prefix in the orefix field during consultant enrollment
+	 * @param prefix
+	 * @return
+	 */
+	public StoreFrontHomePage enterPrefix(String prefix){
+		logger.info("Prefix is "+prefix);
+		driver.type(PREFIX_FIELD_LOC, prefix);
+		return this;
+	}
+
+	/***
+	 * This method checks if prefix is available or not
+	 * @return
+	 */
+	public boolean isPrefixAvailable(){
+		return driver.isElementVisible(PREFIX_AVAILABLE_LOC);
+	}
+
+	/***
+	 * This method checks whether a pc has been enrolled successfully or not by verifying 
+	 *i) Welcome Drop Down element
+	 *ii) autoship element on the page
+	 */
+	public boolean hasPCEnrolledSuccessfully(){
+		return driver.isElementVisible(WELCOME_DROPDOWN_LOC)
+				&& driver.isElementVisible(AUTOSHIP_TEXT_LOC);		
+	}
+
+	/***
+	 * This method checks whether a pc has been enrolled partially or not by verifying 
+	 * Welcome Drop Down element
+	 * 
+	 */
+	public boolean hasPCPartiallyEnrolledSuccessfully(){
+		return driver.isElementVisible(WELCOME_DROPDOWN_LOC);
+	}
+
+	/***
+	 * This method checks whether a rc has been enrolled successfully or not by verifying 
+	 * i) User is on Corp
+	 * ii)Welcome Drop Down element
+	 */
+	public boolean hasRCEnrolledSuccessfully(){
+		return driver.isElementVisible(WELCOME_DROPDOWN_LOC)
+				&& driver.getCurrentUrl().contains("/orderConfirmation");
+	}
+
+	/***
+	 * This method click on specific category under Shop skin care 
+	 * @param
+	 * @return StoreFrontShopSkinCarePage object
+	 */
+
+	public StoreFrontShopSkinCarePage clickOnCategoryFromShopSkinCare(String catTitle){
+		mouseHoverOn(TestConstants.SHOP_SKINCARE);
+		driver.click(By.xpath(String.format(categoryUnderShopSkinCareLoc, catTitle)));
+		logger.info("clicked on " + catTitle);
+		return new StoreFrontShopSkinCarePage(driver);
+	}
+
+	/***
+	 * This method verifies search text box is displayed or not
+	 * 
+	 * 
+	 * @return boolean
+	 */
+	public boolean isSearchTextBoxDisplayed(){
+		driver.pauseExecutionFor(2000);
+		return driver.isElementVisible(SEARCH_BOX);
+	}
+	/***
+	 * This method clicks on the Cross(X) button of 'Applying as Business Entity' popup on sponsor page
+	 * @return storeFront home page object
+	 */
+	public StoreFrontHomePage closeSearchTextBox(){
+		driver.click(CLOSE_ICON_SEARCH_TEXT_BOX);
+		logger.info("closed the 'search text box' overlay");
+		return this;
+	}
+
+	/***
+	 * This method enter search text in search textfield and click enter
+	 * 
+	 * @param String textToSearch
+	 * @return store front Home page object
+	 * 
+	 */
+	public StoreFrontShopSkinCarePage searchEntityAndHitEnter(String textToSearch){
+		driver.type(SEARCH_BOX, textToSearch);
+		Actions action = new Actions(RFWebsiteDriver.driver);
+		action.sendKeys(Keys.ENTER);
+		action.perform();
+		logger.info("Hit enter for searching entity");
+		driver.pauseExecutionFor(5000);
+		return new StoreFrontShopSkinCarePage(driver);
+	}
+
+	/***
+	 * This method validates the search result products with that of search entity
+	 * 
+	 * @param String productName
+	 * @return boolean
+	 * 
+	 */
+	public boolean isExpecetedProductPresentInSearchResults(String expectedProductName){
+		List<WebElement> searchResultsProducts = driver.findElements(SEARCH_RESULT_PRODUCTS_LOC);
+		for(WebElement product : searchResultsProducts){
+			String productName = null;
+			productName = product.getText().trim();
+			if(productName.contains(expectedProductName)){
+				logger.info("Expected product name found in search list");
+				return true;
+			}
+		}
+		logger.info("Expected product name not found in search list");
+		return false;
+	}
+
+	/***
+	 * This method click on enroll now button
+	 * 
+	 * @param 
+	 * @return store front website base page object
+	 * 
+	 */
+	public StoreFrontWebsiteBasePage clickEnrollNowButton(){
+		driver.clickByJS(RFWebsiteDriver.driver,ENROLL_NOW_BUTTON_LOC);
+		//driver.click(ENROLL_NOW_BUTTON_LOC);
+		driver.waitForPageLoad();
+		logger.info("clicked on 'Enroll now button'");
+		return this;
+	}
+
+	/***
+	 * This method will launch the url
+	 *  
+	 * @param URL
+	 * @return Store front base page obj
+	 */
+	public StoreFrontWebsiteBasePage navigateToUrl(String URL){
+		driver.get(URL);
+		return this;
+	}
+
+	/***
+	 * This method validates the 'Available' message for email when enter prefix
+	 * 
+	 * @param
+	 * @return boolean
+	 * 
+	 */
+	public boolean isEmailAvailableMsgAppearedForPWS(){
+		return driver.isElementVisible(EMAIL_AVAILABLE_MSG_LOC);
+
+	}
+
+	/***
+	 * This method clicked the sponsor link from the top
+	 * 
+	 * @param
+	 * @return store front About me page object
+	 * 
+	 */
+	public StoreFrontAboutMePage clickSponsorNameLink(){
+		driver.click(SPONSOR_NAME_LINK_LOC);
+		logger.info("Sponsor name link clicked");
+		return new StoreFrontAboutMePage(driver);
+	}
+
+	/***
+	 * This method clicked the Add to CRP btton for first product
+	 * 
+	 * @param
+	 * @return store front home page object
+	 * 
+	 */
+	public StoreFrontHomePage addFirstProductForCRPCheckout(){
+		driver.clickByJS(RFWebsiteDriver.driver, FIRST_PRODUCT_ADD_TO_CRP_BTN_LOC);
+		logger.info("Clicked Add to CRP button of First Product");
+		driver.pauseExecutionFor(2000);
+		while(driver.isElementPresent(CRP_CHECKOUT_BTN_LOC)==false){
+			driver.clickByJS(RFWebsiteDriver.driver, CONTINUE_SHOPPING_CRP_BTN_LOC);
+			driver.pauseExecutionFor(1000);
+			driver.clickByJS(RFWebsiteDriver.driver, FIRST_PRODUCT_ADD_TO_CRP_BTN_LOC);
+			logger.info("Clicked Add to CRP button of First Product");
 		}
 		return this;
 	}
 
-		/***
-		 * This method get the confirmation message of consultant enrollment
-		 * 
-		 * @param
-		 * @return store front Home page object
-		 * 
-		 */
-		public String getConfirmationMsgOfConsultantEnrollment(){
-			String msg = driver.findElement(CONFIRMATION_MSG_OF_CONSULTANT_ENROLLMENT_LOC).getText();
-			logger.info("Confirmation message is "+msg);
-			return msg;
-		}
-
-		/***
-		 * This method checks whether Welcome drop has displayed or not
-		 * @return boolean
-		 */
-		public boolean isWelcomeUserElementDisplayed(){
-			driver.quickWaitForElementPresent(WELCOME_DROPDOWN_LOC);
-			return driver.isElementPresent(WELCOME_DROPDOWN_LOC);
-		}
-
-
-		/***
-		 * This method select the first billing address from DD
-		 * 
-		 * @param
-		 * @return store front Home page object
-		 * 
-		 */
-		public StoreFrontHomePage selectBillingAddressFromDD(){
-			driver.click(BILLING_ADDRESS_DD_LOC);
-			logger.info("Billing address dropdown clicked");
-			driver.pauseExecutionFor(500);
-			driver.click(BILLING_ADDRESS_OPTION_VALUE_LOC);
-			logger.info("Billing address selected");
-			return this;
-		}
-
-		/***
-		 * This method verify add to bag button is present for first product
-		 * 
-		 * @param
-		 * @return boolean value.
-		 * 
-		 */
-
-		public boolean isAddToBagPresentOfFirstProduct(){
-			driver.moveToElementByJS(ADD_TO_CART_FIRST_PRODUCT_LOC);
-			return driver.findElement(ADD_TO_BAG_OF_FIRST_PRODUCT).isDisplayed();
-		}
-
-		/***
-		 * This method select the first filter option under shop by price filter
-		 * 
-		 * @param
-		 * @return store front Home page object
-		 * 
-		 */
-		public StoreFrontHomePage selectFirstOptionInShopByPriceFilter(){
-			driver.clickByJS(RFWebsiteDriver.driver, driver.findElement(SHOP_BY_PRICE_FILTER_LOC));
-			logger.info("Shop by price dropdown clicked");
-			driver.clickByJS(RFWebsiteDriver.driver, driver.findElement(SHOP_BY_PRICE_FILTER_OPTION_0_TO_49$_LOC));
-			logger.info("First option under shop by price filter selected");
-			return this;
-		}
-
-		/***
-		 * This method verify the first filter option under shop by price filter
-		 * is checked or not
-		 * 
-		 * @param
-		 * @return boolean value.
-		 * 
-		 */
-		public boolean isShopByPriceFirstFilterChecked(){
-			return driver.isElementPresent(SHOP_BY_PRICE_FILTER_OPTION_0_TO_49$_AFTER_CHECKED_LOC);
-		}
-
-		/***
-		 * This method verify the filter option under shop by price filter
-		 * is applied successfully or not
-		 * 
-		 * @param product number, price range
-		 * @return boolean value.
-		 * 
-		 */
-		public boolean isShopByPriceFilterAppliedSuccessfully(int productNumber, String priceRange){
-			String price = driver.findElement(By.xpath(String.format(priceOfProductLoc, productNumber))).getText().split("\\$")[1].trim();
-			double priceFromUI = Double.parseDouble(price);
-			if(priceRange.equalsIgnoreCase("0To49")){
-				if(priceFromUI>=0.00 & priceFromUI<=49.99){
-					return true;
-				}else{
-					return false;
-				}
-			}else if(priceRange.equalsIgnoreCase("50To199")){
-				if(priceFromUI>=50.00 & priceFromUI<=199.99){
-					return true;
-				}else{
-					return false;
-				}
-			}else if(priceRange.equalsIgnoreCase("200To499")){
-				if(priceFromUI>=200.00 & priceFromUI<=499.99){
-					return true;
-				}else{
-					return false;
-				}
-			}
-			return false;
-		}
-
-		/***
-		 * This method verify the first filter option under shop by price filter
-		 * is removed successfully or not
-		 * 
-		 * @param total no of product, price range
-		 * @return boolean value.
-		 * 
-		 */
-		public boolean isShopByPriceFilterRemovedSuccessfully(int totalNoOfProduct, String priceRange){
-			Double[] price = new Double[totalNoOfProduct]; 
-			for(int i=1; i<=totalNoOfProduct; i++){
-				price[i-1] = Double.parseDouble(driver.findElement(By.xpath(String.format(priceOfProductLoc, i))).getText().split("\\$")[1].trim());
-			}
-			List<Double> lList = Arrays.asList(price);
-			Iterator<Double> iterator =  lList.iterator();
-			while(iterator.hasNext()){
-				if(priceRange.equalsIgnoreCase("0To49")){
-					if(iterator.next()>50.0){
-						return true;
-					}
-				}else if(priceRange.equalsIgnoreCase("50To199")){
-					if(iterator.next()>200.0){
-						return true;
-					}
-				}else if(priceRange.equalsIgnoreCase("200To499")){
-					if(iterator.next()<200.0){
-						return true;
-					}
-				}
-			}
-			return false;
-		}
-
-		/***
-		 * This method select the second filter option under shop by price filter
-		 * 
-		 * @param
-		 * @return store front Home page object
-		 * 
-		 */
-		public StoreFrontHomePage selectSecondOptionInShopByPriceFilter(){
-			driver.clickByJS(RFWebsiteDriver.driver, driver.findElement(SHOP_BY_PRICE_FILTER_LOC));
-			logger.info("Shop by price dropdown clicked");
-			driver.clickByJS(RFWebsiteDriver.driver, driver.findElement(SHOP_BY_PRICE_FILTER_OPTION_50_TO_199$_LOC));
-			logger.info("Second option under shop by price filter selected");
-			return this;
-		}
-
-		/***
-		 * This method verify the second filter option under shop by price filter
-		 * is checked or not
-		 * 
-		 * @param
-		 * @return boolean value.
-		 * 
-		 */
-		public boolean isShopByPriceSecondFilterChecked(){
-			return driver.isElementPresent(SHOP_BY_PRICE_FILTER_OPTION_50_TO_199$_AFTER_CHECKED_LOC);
-		}
-
-		/***
-		 * This method select the third filter option under shop by price filter
-		 * 
-		 * @param
-		 * @return store front Home page object
-		 * 
-		 */
-		public StoreFrontHomePage selectThirdOptionInShopByPriceFilter(){
-			driver.clickByJS(RFWebsiteDriver.driver, driver.findElement(SHOP_BY_PRICE_FILTER_LOC));
-			logger.info("Shop by price dropdown clicked");
-			driver.clickByJS(RFWebsiteDriver.driver, driver.findElement(SHOP_BY_PRICE_FILTER_OPTION_200_TO_499$_LOC));
-			logger.info("Third option under shop by price filter selected");
-			return this;
-		}
-
-		/***
-		 * This method verify the third filter option under shop by price filter
-		 * is checked or not
-		 * 
-		 * @param
-		 * @return boolean value.
-		 * 
-		 */
-
-		public boolean isShopByPriceThirdFilterChecked(){
-			return driver.isElementPresent(SHOP_BY_PRICE_FILTER_OPTION_200_TO_499$_AFTER_CHECKED_LOC);
-		}
-
-		/***
-		 * This method click on place order button
-		 * 
-		 * @param
-		 * @return store front Home page object
-		 * 
-		 */
-		public StoreFrontHomePage clickPlaceOrderButton(){
-			clickBecomeAConsultant();
-			return this;
-		}
-
-		/***
-		 * This method clicks on the Policies and Procedures Link
-		 * @return store front Home page object
-		 */
-		public StoreFrontHomePage clickPoliciesAndProceduresLink(){
-			driver.click(POLICIES_AND_PROCEDURES_LINK_LOC);
-			logger.info("Policies and Procedures link clicked");
-			return this;
-		}
-
-		/***
-		 * This method clicks on the Pro Pulse Terms and Conditions Link
-		 * @return store front Home page object
-		 */
-		public StoreFrontHomePage clickPulseProTermsAndConditionsLink(){
-			driver.click(PULSE_PRO_T_C_LINK_LOC);
-			logger.info("Pulse Pro Terms and conditions link clicked");
-			return this;
-		}
-
-		/***
-		 * This method clicks on the CRP Terms and Conditions Link
-		 * @return store front Home page object
-		 */
-		public StoreFrontHomePage clickCRPTermsAndConditionsLink(){
-			driver.click(CRP_T_C_LINK_LOC);
-			logger.info("CRP Terms and conditions link clicked");
-			return this;
-		}
-
-		/***
-		 * This method clicks on the Connect btn on the home page
-		 * @return storeFront home page object
-		 */
-		public StoreFrontHomePage clickConnectBtn(){
-			driver.click(CONNECT_BTN_LOC);
-			logger.info("Connect btn clicked on home page");
-			return this;
-		}
-
-		//	/***
-		//	 * This method verifies whether the Connect btn present on the home page or not
-		//	 * @return boolean
-		//	 */
-		//	public boolean isConnectBtnPresentOnHomePage(){
-		//		return driver.isElementVisible(CONNECT_BTN_LOC);		
-		//	}
-
-		/***
-		 * This method verifies whether or NOT
-		 * Home page banner displayed or not
-		 * 
-		 * This method can  be used to verify that user is on Home Page
-		 * @return
-		 */
-		public boolean isHomePageBannerDisplayed(){
-			return driver.isElementVisible(By.xpath("//div[contains(@class,'rf-home')]"));
-		}
-
-		/***
-		 * This method clicks on the 'Applying as Business Entity' Link on sponsor page
-		 * @return storeFront home page object
-		 */
-		public StoreFrontHomePage clickApplyingAsBusinessEntityLink(){
-			driver.waitForElementPresent(APPLYING_AS_BUSINESS_ENTITY_LINK_LOC);
-			driver.click(APPLYING_AS_BUSINESS_ENTITY_LINK_LOC);
-			logger.info("clicked on 'Applying as Business Entity' Link");
-			driver.pauseExecutionFor(500);
-			return this;
-		}
-
-		/***
-		 * This method clicks on the Cross(X) button of 'Applying as Business Entity' popup on sponsor page
-		 * @return storeFront home page object
-		 */
-		public StoreFrontHomePage closeApplyingAsBusinessEntityPopUp(){
-			driver.click(CLOSE_BTN_ON_APPLYING_AS_BUSINESS_ENTITY_POPUP_LOC);
-			logger.info("closed the 'Applying as Business Entity' popup");
-			return this;
-		}
-
-		/***
-		 * This method checks whether 'Applying as Business Entity' popup on sponsor page
-		 * has displayed or NOT
-		 * @return boolean
-		 */
-		public boolean isApplyingAsBusinessEntityPopupDisplayed(){
-			return driver.isElementVisible(APPLYING_AS_BUSINESS_ENTITY_POPUP_LOC);		
-		}
-
-		/***
-		 * This method selects the Subscribe to Pulse checkbox
-		 * @return SF home page object
-		 */
-		public StoreFrontHomePage selectSubscribeToPulseCheckBox(){
-			driver.clickByJS(RFWebsiteDriver.driver, driver.findElement(SUBSCRIBE_TO_PULSE_CHKBOX_LOC));
-			logger.info("Subscribe to Pulse checkbox has been selected");
-			return this;
-		}
-
-		/***
-		 * This method enters the prefix in the orefix field during consultant enrollment
-		 * @param prefix
-		 * @return
-		 */
-		public StoreFrontHomePage enterPrefix(String prefix){
-			logger.info("Prefix is "+prefix);
-			driver.type(PREFIX_FIELD_LOC, prefix);
-			return this;
-		}
-
-		/***
-		 * This method checks if prefix is available or not
-		 * @return
-		 */
-		public boolean isPrefixAvailable(){
-			return driver.isElementVisible(PREFIX_AVAILABLE_LOC);
-		}
-
-		/***
-		 * This method checks whether a pc has been enrolled successfully or not by verifying 
-		 *i) Welcome Drop Down element
-		 *ii) autoship element on the page
-		 */
-		public boolean hasPCEnrolledSuccessfully(){
-			return driver.isElementVisible(WELCOME_DROPDOWN_LOC)
-					&& driver.isElementVisible(AUTOSHIP_TEXT_LOC);		
-		}
-
-		/***
-		 * This method checks whether a pc has been enrolled partially or not by verifying 
-		 * Welcome Drop Down element
-		 * 
-		 */
-		public boolean hasPCPartiallyEnrolledSuccessfully(){
-			return driver.isElementVisible(WELCOME_DROPDOWN_LOC);
-		}
-
-		/***
-		 * This method checks whether a rc has been enrolled successfully or not by verifying 
-		 * i) User is on Corp
-		 * ii)Welcome Drop Down element
-		 */
-		public boolean hasRCEnrolledSuccessfully(){
-			return driver.isElementVisible(WELCOME_DROPDOWN_LOC)
-					&& driver.getCurrentUrl().contains("/orderConfirmation");
-		}
-
-		/***
-		 * This method click on specific category under Shop skin care 
-		 * @param
-		 * @return StoreFrontShopSkinCarePage object
-		 */
-
-		public StoreFrontShopSkinCarePage clickOnCategoryFromShopSkinCare(String catTitle){
-			mouseHoverOn(TestConstants.SHOP_SKINCARE);
-			driver.click(By.xpath(String.format(categoryUnderShopSkinCareLoc, catTitle)));
-			logger.info("clicked on " + catTitle);
-			return new StoreFrontShopSkinCarePage(driver);
-		}
-
-		/***
-		 * This method verifies search text box is displayed or not
-		 * 
-		 * 
-		 * @return boolean
-		 */
-		public boolean isSearchTextBoxDisplayed(){
-			driver.pauseExecutionFor(2000);
-			return driver.isElementVisible(SEARCH_BOX);
-		}
-		/***
-		 * This method clicks on the Cross(X) button of 'Applying as Business Entity' popup on sponsor page
-		 * @return storeFront home page object
-		 */
-		public StoreFrontHomePage closeSearchTextBox(){
-			driver.click(CLOSE_ICON_SEARCH_TEXT_BOX);
-			logger.info("closed the 'search text box' overlay");
-			return this;
-		}
-
-		/***
-		 * This method enter search text in search textfield and click enter
-		 * 
-		 * @param String textToSearch
-		 * @return store front Home page object
-		 * 
-		 */
-		public StoreFrontShopSkinCarePage searchEntityAndHitEnter(String textToSearch){
-			driver.type(SEARCH_BOX, textToSearch);
-			Actions action = new Actions(RFWebsiteDriver.driver);
-			action.sendKeys(Keys.ENTER);
-			action.perform();
-			logger.info("Hit enter for searching entity");
-			driver.pauseExecutionFor(5000);
-			return new StoreFrontShopSkinCarePage(driver);
-		}
-
-		/***
-		 * This method validates the search result products with that of search entity
-		 * 
-		 * @param String productName
-		 * @return boolean
-		 * 
-		 */
-		public boolean isExpecetedProductPresentInSearchResults(String expectedProductName){
-			List<WebElement> searchResultsProducts = driver.findElements(SEARCH_RESULT_PRODUCTS_LOC);
-			for(WebElement product : searchResultsProducts){
-				String productName = null;
-				productName = product.getText().trim();
-				if(productName.contains(expectedProductName)){
-					logger.info("Expected product name found in search list");
-					return true;
-				}
-			}
-			logger.info("Expected product name not found in search list");
-			return false;
-		}
-
-		/***
-		 * This method click on enroll now button
-		 * 
-		 * @param 
-		 * @return store front website base page object
-		 * 
-		 */
-		public StoreFrontWebsiteBasePage clickEnrollNowButton(){
-			driver.clickByJS(RFWebsiteDriver.driver,driver.findElement(ENROLL_NOW_BUTTON_LOC));
-			//driver.click(ENROLL_NOW_BUTTON_LOC);
-			driver.waitForPageLoad();
-			logger.info("clicked on 'Enroll now button'");
-			return this;
-		}
-
-		/***
-		 * This method will launch the url
-		 *  
-		 * @param URL
-		 * @return Store front base page obj
-		 */
-		public StoreFrontWebsiteBasePage navigateToUrl(String URL){
-			driver.get(URL);
-			return this;
-		}
-
-		/***
-		 * This method validates the 'Available' message for email when enter prefix
-		 * 
-		 * @param
-		 * @return boolean
-		 * 
-		 */
-		public boolean isEmailAvailableMsgAppearedForPWS(){
-			return driver.isElementVisible(EMAIL_AVAILABLE_MSG_LOC);
-
-		}
-
-		/***
-		 * This method clicked the sponsor link from the top
-		 * 
-		 * @param
-		 * @return store front About me page object
-		 * 
-		 */
-		public StoreFrontAboutMePage clickSponsorNameLink(){
-			driver.click(SPONSOR_NAME_LINK_LOC);
-			logger.info("Sponsor name link clicked");
-			return new StoreFrontAboutMePage(driver);
-		}
-
-		/***
-		 * This method clicked the Add to CRP btton for first product
-		 * 
-		 * @param
-		 * @return store front home page object
-		 * 
-		 */
-		public StoreFrontHomePage addFirstProductForCRPCheckout(){
-			driver.clickByJS(RFWebsiteDriver.driver, driver.findElement(FIRST_PRODUCT_ADD_TO_CRP_BTN_LOC));
-			logger.info("Clicked Add to CRP button of First Product");
-			driver.pauseExecutionFor(2000);
-			while(driver.isElementPresent(CRP_CHECKOUT_BTN_LOC)==false){
-				driver.clickByJS(RFWebsiteDriver.driver, driver.findElement(CONTINUE_SHOPPING_CRP_BTN_LOC));
-				driver.pauseExecutionFor(1000);
-				driver.clickByJS(RFWebsiteDriver.driver, driver.findElement(FIRST_PRODUCT_ADD_TO_CRP_BTN_LOC));
-				logger.info("Clicked Add to CRP button of First Product");
-			}
-			return this;
-		}
-
-		/***
-		 * This method clicked the checkout button of CRP bag
-		 * 
-		 * @param
-		 * @return store front checkout page
-		 * 
-		 */
-		public StoreFrontCheckoutPage checkoutCRPBag(){
-			driver.click(CRP_CHECKOUT_BTN_LOC);
-			logger.info("Clicked next button");
-			return new StoreFrontCheckoutPage(driver);
-		}
-
-		/***
-		 * This method clicked the Set up CRP button from Reminder banner
-		 * 
-		 * @param
-		 * @return store front home page
-		 * 
-		 */
-		public StoreFrontHomePage clickSetUpCRP(){
-			driver.click(SET_UP_CRP_BTN_LOC);
-			logger.info("Clicked Set up CRP button from Reminder banner");
-			driver.waitForPageLoad();
-			return this;
-		}
-
-		/***
-		 * This method verifies whether product search autosuggestion present.
-		 * by checking the visibility 
-		 * 
-		 * @return boolean
-		 */
-		public boolean isProductSearchAutoSuggestionPresent(){
-			boolean isProductSearchAutosuggestionPresent = driver.isElementVisible(PRODUCT_SEARCH_AUTOSUGGESTION_LOC);
-			logger.info("is product search autosuggestion = "+isProductSearchAutosuggestionPresent);
-			return isProductSearchAutosuggestionPresent;
-		}
-
-		/***
-		 * This method clicked the Add to CRP button for Specific Index Product
-		 * 
-		 * @param
-		 * @return store front home page object
-		 * 
-		 */
-		public StoreFrontHomePage addProductForCRPCheckout(String productNum){
-			driver.click(By.xpath(String.format(specificProductAddToCRPBtnLoc, productNum)));
-			logger.info("Clicked Add to CRP button of Product Number : " + productNum);
-			return this;
-		}
+	/***
+	 * This method clicked the checkout button of CRP bag
+	 * 
+	 * @param
+	 * @return store front checkout page
+	 * 
+	 */
+	public StoreFrontCheckoutPage checkoutCRPBag(){
+		driver.click(CRP_CHECKOUT_BTN_LOC);
+		logger.info("Clicked next button");
+		return new StoreFrontCheckoutPage(driver);
 	}
+
+	/***
+	 * This method clicked the Set up CRP button from Reminder banner
+	 * 
+	 * @param
+	 * @return store front home page
+	 * 
+	 */
+	public StoreFrontHomePage clickSetUpCRP(){
+		driver.click(SET_UP_CRP_BTN_LOC);
+		logger.info("Clicked Set up CRP button from Reminder banner");
+		driver.waitForPageLoad();
+		return this;
+	}
+
+	/***
+	 * This method verifies whether product search autosuggestion present.
+	 * by checking the visibility 
+	 * 
+	 * @return boolean
+	 */
+	public boolean isProductSearchAutoSuggestionPresent(){
+		boolean isProductSearchAutosuggestionPresent = driver.isElementVisible(PRODUCT_SEARCH_AUTOSUGGESTION_LOC);
+		logger.info("is product search autosuggestion = "+isProductSearchAutosuggestionPresent);
+		return isProductSearchAutosuggestionPresent;
+	}
+
+	/***
+	 * This method clicked the Add to CRP button for Specific Index Product
+	 * 
+	 * @param
+	 * @return store front home page object
+	 * 
+	 */
+	public StoreFrontHomePage addProductForCRPCheckout(String productNum){
+		driver.click(By.xpath(String.format(specificProductAddToCRPBtnLoc, productNum)));
+		logger.info("Clicked Add to CRP button of Product Number : " + productNum);
+		return this;
+	}
+}

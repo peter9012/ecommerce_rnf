@@ -61,7 +61,7 @@ public class TestConstants {
 	//Consultant user details
 	public static final String CONSULTANT_ACCOUNT_ID = "";
 	public static final String CONSULTANT_ACCOUNT_NUMBER = "";
-	public static final String FIRST_NAME = "autocons";
+	public static final String FIRST_NAME = "auto";
 	public static final String ADDRESS_LINE_1_US = "60 spear st suite 600";
 	public static final String ADDRESS_LINE_2_US = "";
 	public static final String CITY_US = "San Francisco";
@@ -79,6 +79,12 @@ public class TestConstants {
 	public static final String CITY_CA = "Calgary";
 	public static final String POSTAL_CODE_CA = "T2H 2G4";
 	public static final String STATE_CA = "Alberta";
+	
+	public static final String SECOND_ADDRESS_LINE_1_CA = "60 Patterson Blvd SW";
+	public static final String SECOND_ADDRESS_LINE_2_CA = "";
+	public static final String SECOND_CITY_CA = "Calgary";
+	public static final String SECOND_POSTAL_CODE_CA = "T3H 2E1";
+	public static final String STATE_CA_ABBREVIATION = "CA-AB";
 
 	public static final String FIRST_NAME_BILLING_ADDRESS = "BAFirstname";
 	public static final String LAST_NAME_BILLING_ADDRESS = "BALastname";

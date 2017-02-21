@@ -63,6 +63,12 @@ public class StoreFrontWebsiteBaseTest extends RFBaseTest {
 	protected String timeStamp=null;
 	protected String randomWords = null;
 
+	protected String updatedAddressLine1 = null;
+	protected String updatedAddressLine2 = null;
+	protected String updatedCity = null;
+	protected String updatedPostalCode = null;
+	protected String stateAbbreviation = null;
+
 	/***
 	 * @author Shubham Mathur
 	 * @description StoreFrontWebsiteBaseTest constructor having StoreFront HomePage initialization
@@ -155,6 +161,11 @@ public class StoreFrontWebsiteBaseTest extends RFBaseTest {
 			city = TestConstants.CITY_US;
 			state = TestConstants.STATE_US;
 			postalCode = TestConstants.POSTAL_CODE_US;
+			updatedAddressLine1 = TestConstants.SECOND_ADDRESS_LINE_1_US;
+			updatedAddressLine2 = TestConstants.SECOND_ADDRESS_LINE_2_US;
+			updatedCity = TestConstants.SECOND_CITY_US;
+			updatedPostalCode = TestConstants.SECOND_POSTAL_CODE_US;
+			stateAbbreviation = TestConstants.STATE_US_ABBREVIATION;
 		}
 		else if(countryName.equalsIgnoreCase("ca")){
 			addressLine1 = TestConstants.ADDRESS_LINE_1_CA;
@@ -162,6 +173,11 @@ public class StoreFrontWebsiteBaseTest extends RFBaseTest {
 			city = TestConstants.CITY_CA;
 			state = TestConstants.STATE_CA;
 			postalCode = TestConstants.POSTAL_CODE_CA;
+			updatedAddressLine1 = TestConstants.SECOND_ADDRESS_LINE_1_CA;
+			updatedAddressLine2 = TestConstants.SECOND_ADDRESS_LINE_2_CA;
+			updatedCity = TestConstants.SECOND_CITY_CA;
+			updatedPostalCode = TestConstants.SECOND_POSTAL_CODE_CA;
+			stateAbbreviation = TestConstants.STATE_CA_ABBREVIATION;
 		}
 	}
 

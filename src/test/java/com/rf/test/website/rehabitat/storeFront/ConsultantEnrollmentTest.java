@@ -7,36 +7,7 @@ import com.rf.core.website.constants.TestConstants;
 import com.rf.test.website.rehabitat.storeFront.baseTest.StoreFrontWebsiteBaseTest;
 
 public class ConsultantEnrollmentTest extends StoreFrontWebsiteBaseTest{
-//	private String firstName = null;
-//	private String lastName = null;
-//	private String email = null;
-//	private String addressLine1 = null;
-//	private String addressLine2 = null;
-//	private String city = null;
-//	private String state = null;
-//	private String postalCode = null;
-//	private String phoneNumber = null;
-//	private String cardType = null;
-//	private String cardNumber = null;
-//	private String cardName = null;
-//	private String CVV = null;
-//	private String timeStamp=null;
-//	private String randomWords = null;
-
-//	public ConsultantEnrollmentTest() {
-//		firstName = TestConstants.FIRST_NAME;
-//		addressLine1 = TestConstants.ADDRESS_LINE_1_US;
-//		addressLine2 = TestConstants.ADDRESS_LINE_2_US;
-//		city = TestConstants.CITY_US;
-//		state = TestConstants.STATE_US;
-//		postalCode = TestConstants.POSTAL_CODE_US;	
-//		phoneNumber = TestConstants.PHONE_NUMBER;
-//		cardType = TestConstants.CARD_TYPE;
-//		cardNumber = TestConstants.CARD_NUMBER;
-//		cardName = TestConstants.CARD_NAME;
-//		CVV = TestConstants.CVV;
-//	}
-
+	
 	/***
 	 * qTest : TC-223 Find a Consultant/Search-CID
 	 * 
@@ -90,7 +61,6 @@ public class ConsultantEnrollmentTest extends StoreFrontWebsiteBaseTest{
 		sfHomePage.clickNextButton();
 		s_assert.assertFalse(sfHomePage.isNextButtonEnabledBeforeSelectingKit(), "Next Button is NOT disabled before selecting kit");
 		sfHomePage.chooseProductFromKitPage();
-		//sfHomePage.selectSubscribeToPulseCheckBox();
 		sfHomePage.clickNextButton();
 		sfHomePage.clickSaveButton();
 		sfHomePage.enterConsultantShippingDetails(firstName, lastName, addressLine1, addressLine2 ,city, state, postalCode, phoneNumber);
@@ -527,7 +497,7 @@ public class ConsultantEnrollmentTest extends StoreFrontWebsiteBaseTest{
 		sfHomePage.clickNextButton();
 		s_assert.assertFalse(sfHomePage.isNextButtonEnabledBeforeSelectingKit(), "Next Button is NOT disabled before selecting kit");
 		sfHomePage.chooseProductFromKitPage();
-		sfHomePage.selectSubscribeToPulseCheckBox();
+		sfHomePage.UnSelectSubscribeToPulseCheckBox();
 		sfHomePage.clickNextButton();
 		sfHomePage.clickSaveButton();
 		sfHomePage.enterConsultantShippingDetails(firstName, lastName, addressLine1, addressLine2 ,city, state, postalCode, phoneNumber);
@@ -647,7 +617,6 @@ public class ConsultantEnrollmentTest extends StoreFrontWebsiteBaseTest{
 		sfHomePage.enterConsultantEnrollmentDetails(firstName, lastName, email, password, socialInsuranceNumber);
 		sfHomePage.clickNextButton();
 		sfHomePage.chooseProductFromKitPage();
-		//		sfHomePage.selectSubscribeToPulseCheckBox();
 		sfHomePage.enterPrefix(prefix);
 		sfHomePage.clickNextButton();
 		sfHomePage.clickSaveButton();
@@ -676,12 +645,12 @@ public class ConsultantEnrollmentTest extends StoreFrontWebsiteBaseTest{
 		userPropertyFile.loadProps(userProps);
 		setUsers("consultantWithPulseAndWithCRP", consultantWithPulseAndWithCRP);
 		setUsers("pwsPrefix", pwsPrefix);
-		s_assert.assertAll();			
+		s_assert.assertAll();		
+
 	}
 
 	@Test(enabled=true, groups={"users"})
 	public void testConsultantEnrollmentWithoutCRPAndWithoutPulse(){
-		navigateToStoreFrontBaseURL();
 		timeStamp = CommonUtils.getCurrentTimeStamp();
 		randomWords = CommonUtils.getRandomWord(5);		
 		lastName = TestConstants.LAST_NAME+randomWords;
@@ -695,7 +664,7 @@ public class ConsultantEnrollmentTest extends StoreFrontWebsiteBaseTest{
 		sfHomePage.clickNextButton();
 		s_assert.assertFalse(sfHomePage.isNextButtonEnabledBeforeSelectingKit(), "Next Button is NOT disabled before selecting kit");
 		sfHomePage.chooseProductFromKitPage();
-		sfHomePage.selectSubscribeToPulseCheckBox();
+		sfHomePage.UnSelectSubscribeToPulseCheckBox();
 		sfHomePage.clickNextButton();
 		sfHomePage.clickSaveButton();
 		sfHomePage.enterConsultantShippingDetails(firstName, lastName, addressLine1, addressLine2 ,city, state, postalCode, phoneNumber);
@@ -715,7 +684,7 @@ public class ConsultantEnrollmentTest extends StoreFrontWebsiteBaseTest{
 		consultantWithoutPulseAndWithoutCRP=email;
 		userPropertyFile.loadProps(userProps);
 		setUsers("consultantWithoutPulseAndWithoutCRP", consultantWithoutPulseAndWithoutCRP);
-		s_assert.assertAll();		
+		s_assert.assertAll();
 	}
 
 	//CONSULTANT_EMAIL_WITH_CRP_AND_PULSE_FOR_CANCELLATION
@@ -734,7 +703,6 @@ public class ConsultantEnrollmentTest extends StoreFrontWebsiteBaseTest{
 		sfHomePage.enterConsultantEnrollmentDetails(firstName, lastName, email, password, socialInsuranceNumber);
 		sfHomePage.clickNextButton();
 		sfHomePage.chooseProductFromKitPage();
-		//sfHomePage.selectSubscribeToPulseCheckBox();
 		sfHomePage.enterPrefix(prefix);
 		sfHomePage.clickNextButton();
 		sfHomePage.clickSaveButton();
@@ -780,7 +748,7 @@ public class ConsultantEnrollmentTest extends StoreFrontWebsiteBaseTest{
 		sfHomePage.clickNextButton();
 		s_assert.assertFalse(sfHomePage.isNextButtonEnabledBeforeSelectingKit(), "Next Button is NOT disabled before selecting kit");
 		sfHomePage.chooseProductFromKitPage();
-		sfHomePage.selectSubscribeToPulseCheckBox();
+		sfHomePage.UnSelectSubscribeToPulseCheckBox();
 		sfHomePage.clickNextButton();
 		sfHomePage.clickSaveButton();
 		sfHomePage.enterConsultantShippingDetails(firstName, lastName, addressLine1, addressLine2 ,city, state, postalCode, phoneNumber);

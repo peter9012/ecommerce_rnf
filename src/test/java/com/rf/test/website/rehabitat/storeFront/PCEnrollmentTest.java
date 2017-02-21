@@ -9,35 +9,21 @@ import com.rf.pages.website.rehabitat.storeFront.StoreFrontShopSkinCarePage;
 import com.rf.test.website.rehabitat.storeFront.baseTest.StoreFrontWebsiteBaseTest;
 
 public class PCEnrollmentTest extends StoreFrontWebsiteBaseTest{
-	private String email=null;
-	private String firstName = null;
-	private String lastName = null;
-	private String addressLine1 = null;
-	private String addressLine2 = null;
-	private String city = null;
-	private String state = null;
-	private String postalCode = null;
-	private String phoneNumber = null;
-	private String cardType = null;
-	private String cardNumber = null;
-	private String cardName = null;
-	private String CVV = null;
-	private String timeStamp=null;
-	private String randomWords = null;
+	
 
-	public PCEnrollmentTest() {
-		firstName=TestConstants.PC_FIRST_NAME;
-		addressLine1 = TestConstants.ADDRESS_LINE_1_US;
-		addressLine2 = TestConstants.ADDRESS_LINE_2_US;
-		city = TestConstants.CITY_US;
-		state = TestConstants.STATE_US;
-		postalCode = TestConstants.POSTAL_CODE_US;
-		phoneNumber = TestConstants.PHONE_NUMBER;
-		cardType = TestConstants.CARD_TYPE;
-		cardNumber = TestConstants.CARD_NUMBER;
-		cardName = TestConstants.CARD_NAME;
-		CVV = TestConstants.CVV;
-	}
+//	public PCEnrollmentTest() {
+//		firstName=TestConstants.PC_FIRST_NAME;
+//		addressLine1 = TestConstants.ADDRESS_LINE_1_US;
+//		addressLine2 = TestConstants.ADDRESS_LINE_2_US;
+//		city = TestConstants.CITY_US;
+//		state = TestConstants.STATE_US;
+//		postalCode = TestConstants.POSTAL_CODE_US;
+//		phoneNumber = TestConstants.PHONE_NUMBER;
+//		cardType = TestConstants.CARD_TYPE;
+//		cardNumber = TestConstants.CARD_NUMBER;
+//		cardName = TestConstants.CARD_NAME;
+//		CVV = TestConstants.CVV;
+//	}
 
 	/***
 	 * qTest : TC-452 PC User Enrollment/Checkout - Complete Enrollment
@@ -47,13 +33,6 @@ public class PCEnrollmentTest extends StoreFrontWebsiteBaseTest{
 	 */
 	@Test(enabled=true)
 	public void testPCEnrollment_452(){
-		if(country.equalsIgnoreCase("ca")){
-			addressLine1 = TestConstants.ADDRESS_LINE_1_CA;
-			addressLine2 = TestConstants.ADDRESS_LINE_2_CA;
-			city = TestConstants.CITY_CA;
-			state = TestConstants.STATE_CA;
-			postalCode = TestConstants.POSTAL_CODE_CA;	
-		}
 		timeStamp = CommonUtils.getCurrentTimeStamp();
 		randomWords = CommonUtils.getRandomWord(5);		
 		lastName = TestConstants.LAST_NAME+randomWords;

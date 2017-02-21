@@ -13,10 +13,10 @@
 				<methods>
 					<include name="testConsultantEnrollmentWithPulseAndCRP"></include>
 					<include name="testConsultantEnrollmentWithoutCRPAndWithoutPulse"></include>
-					<!-- <include name="testConsultantEnrollmentPersonalBusinessPortfolio_290"></include> -->
+					<include name="testConsultantEnrollmentPersonalBusinessPortfolio_290"></include>
 				</methods>
 			</class>
-			 <class name="com.rf.test.website.rehabitat.storeFront.PCEnrollmentTest">
+			<class name="com.rf.test.website.rehabitat.storeFront.PCEnrollmentTest">
 				<methods>
 					<include name="testPCEnrollmentWithoutSponsor"></include>
 					<include name="testPCEnrollmentWithPWSSponsor"></include>
@@ -28,7 +28,7 @@
 					<include name="testRCEnrollmentWithSponsor"></include>
 				</methods>
 			</class>
-<!-- 			<class name="com.rf.test.website.rehabitat.storeFront.BillingProfileTest">
+			<class name="com.rf.test.website.rehabitat.storeFront.BillingProfileTest">
 				<methods>
 					<include name="testAddEditBillingProfileFromMyAccountForConsultant"></include>
 					<include name="testAddEditBillingProfileFromMyAccountForPC"></include>
@@ -77,7 +77,7 @@
 				<methods>
 					<include name="testPersonalizingPWSAboutMePageSaveChanges_579"></include>
 				</methods>
-			</class> -->
+			</class>
 		</classes>
 	</test>
 </suite>

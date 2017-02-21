@@ -9,35 +9,35 @@ import com.rf.pages.website.rehabitat.storeFront.StoreFrontShopSkinCarePage;
 import com.rf.test.website.rehabitat.storeFront.baseTest.StoreFrontWebsiteBaseTest;
 
 public class RCEnrollmentTest extends StoreFrontWebsiteBaseTest{
-	public String email=null;
-	private String firstName = null;
-	private String lastName = null;
-	String addressLine1 = null;
-	String addressLine2 = null;
-	String city = null;
-	String state = null;
-	String postalCode = null;
-	String phoneNumber = null;
-	String cardType = null;
-	String cardNumber = null;
-	String cardName = null;
-	String CVV = null;
-	String timeStamp; 
+//	public String email=null;
+//	private String firstName = null;
+//	private String lastName = null;
+//	String addressLine1 = null;
+//	String addressLine2 = null;
+//	String city = null;
+//	String state = null;
+//	String postalCode = null;
+//	String phoneNumber = null;
+//	String cardType = null;
+//	String cardNumber = null;
+//	String cardName = null;
+//	String CVV = null;
+//	String timeStamp; 
 
-	public RCEnrollmentTest() {
-		firstName=TestConstants.RC_FIRST_NAME;
-		lastName = TestConstants.LAST_NAME;
-		addressLine1 = TestConstants.ADDRESS_LINE_1_US;
-		addressLine2 = TestConstants.ADDRESS_LINE_2_US;
-		city = TestConstants.CITY_US;
-		state = TestConstants.STATE_US;
-		postalCode = TestConstants.POSTAL_CODE_US;
-		phoneNumber = TestConstants.PHONE_NUMBER;
-		cardType = TestConstants.CARD_TYPE;
-		cardNumber = TestConstants.CARD_NUMBER;
-		cardName = TestConstants.CARD_NAME;
-		CVV = TestConstants.CVV;
-	}
+//	public RCEnrollmentTest() {
+//		firstName=TestConstants.RC_FIRST_NAME;
+//		lastName = TestConstants.LAST_NAME;
+//		addressLine1 = TestConstants.ADDRESS_LINE_1_US;
+//		addressLine2 = TestConstants.ADDRESS_LINE_2_US;
+//		city = TestConstants.CITY_US;
+//		state = TestConstants.STATE_US;
+//		postalCode = TestConstants.POSTAL_CODE_US;
+//		phoneNumber = TestConstants.PHONE_NUMBER;
+//		cardType = TestConstants.CARD_TYPE;
+//		cardNumber = TestConstants.CARD_NUMBER;
+//		cardName = TestConstants.CARD_NAME;
+//		CVV = TestConstants.CVV;
+//	}
 
 	/***
 	 * qTest : TC-550 RC Retail user enrollment - From Corp site
@@ -47,13 +47,6 @@ public class RCEnrollmentTest extends StoreFrontWebsiteBaseTest{
 	 */
 	@Test(enabled=true)
 	public void testRCEnrollmentWithoutSponsor_550(){
-		if(country.equalsIgnoreCase("ca")){
-			addressLine1 = TestConstants.ADDRESS_LINE_1_CA;
-			addressLine2 = TestConstants.ADDRESS_LINE_2_CA;
-			city = TestConstants.CITY_CA;
-			state = TestConstants.STATE_CA;
-			postalCode = TestConstants.POSTAL_CODE_CA;	
-		}
 		timeStamp = CommonUtils.getCurrentTimeStamp();
 		email = firstName+timeStamp+TestConstants.EMAIL_SUFFIX;
 		navigateToStoreFrontBaseURL();

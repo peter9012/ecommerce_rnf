@@ -15,6 +15,7 @@ import org.openqa.selenium.By;
 import org.testng.ITestContext;
 import org.testng.annotations.AfterGroups;
 import org.testng.annotations.AfterSuite;
+import org.testng.annotations.BeforeClass;
 import org.testng.annotations.BeforeMethod;
 import org.testng.annotations.BeforeSuite;
 
@@ -45,6 +46,23 @@ import com.rf.test.base.RFBaseTest;
  */
 public class StoreFrontWebsiteBaseTest extends RFBaseTest {
 	protected static RFWebsiteDriver driver = new RFWebsiteDriver(propertyFile);
+
+	protected String email=null;
+	protected String firstName = null;
+	protected String lastName = null;
+	protected String addressLine1 = null;
+	protected String addressLine2 = null;
+	protected String city = null;
+	protected String state = null;
+	protected String postalCode = null;
+	protected String phoneNumber = null;
+	protected String cardType = null;
+	protected String cardNumber = null;
+	protected String cardName = null;
+	protected String CVV = null;
+	protected String timeStamp=null;
+	protected String randomWords = null;
+
 	/***
 	 * @author Shubham Mathur
 	 * @description StoreFrontWebsiteBaseTest constructor having StoreFront HomePage initialization
@@ -111,8 +129,6 @@ public class StoreFrontWebsiteBaseTest extends RFBaseTest {
 	public void beforeMethod(){
 		s_assert = new SoftAssert();
 		setStoreFrontPassword(driver.getStoreFrontUserPassword());
-		setCountry();
-		setCountryId();
 		checkAndCloseMoreThanOneWindows();
 		navigateToStoreFrontBaseURL();
 		if(sfHomePage.isWelcomeUserElementDisplayed()==true){
@@ -122,22 +138,49 @@ public class StoreFrontWebsiteBaseTest extends RFBaseTest {
 		navigateToStoreFrontBaseURL();	
 	}
 
-//	@AfterGroups(alwaysRun=true,groups="users")
-//	public void afterGroup() throws IOException{
-//		logger.info("After Group");
-//		userPropertyFile.loadProps(userProps);
-//		setUsers("consultantWithPulseAndWithCRP", consultantWithPulseAndWithCRP);
-//		setUsers("pwsPrefix", pwsPrefix);
-//		setUsers("consultantWithoutPulseAndWithoutCRP", consultantWithoutPulseAndWithoutCRP);
-//		//setUsers("consultantWithPulseAndWithCRPForCancellation", consultantWithPulseAndWithCRPForCancellation);
-//		//		setUsers("consultantHavingSponsorWithoutPWS", consultantHavingSponsorWithoutPWS);
-//		setUsers("pcUserWithPWSSponsor", pcUserWithPWSSponsor);
-//		//		setUsers("pcUserWithoutSponsor", pcUserWithoutSponsor);
-//		//		setUsers("pcUserWithoutPWSSponsor", pcUserWithoutPWSSponsor);
-//		//		setUsers("pcUserHavingSingleBillingProfile", pcUserHavingSingleBillingProfile);
-//		setUsers("rcWithOrder", rcWithOrder);
-//		//		setUsers("rcWithoutOrder", rcWithoutOrder);
-//	}
+	@BeforeClass(alwaysRun=true)
+	public void setAddressDetailsAsPerCountry(){
+		setCountry();
+		setCountryId();
+		String countryName = getCountry();
+		firstName = TestConstants.FIRST_NAME;
+		phoneNumber = TestConstants.PHONE_NUMBER;
+		cardType = TestConstants.CARD_TYPE;
+		cardNumber = TestConstants.CARD_NUMBER;
+		cardName = TestConstants.CARD_NAME;
+		CVV = TestConstants.CVV;
+		if(countryName.equalsIgnoreCase("us")){
+			addressLine1 = TestConstants.ADDRESS_LINE_1_US;
+			addressLine2 = TestConstants.ADDRESS_LINE_2_US;
+			city = TestConstants.CITY_US;
+			state = TestConstants.STATE_US;
+			postalCode = TestConstants.POSTAL_CODE_US;
+		}
+		else if(countryName.equalsIgnoreCase("ca")){
+			addressLine1 = TestConstants.ADDRESS_LINE_1_CA;
+			addressLine2 = TestConstants.ADDRESS_LINE_2_CA;
+			city = TestConstants.CITY_CA;
+			state = TestConstants.STATE_CA;
+			postalCode = TestConstants.POSTAL_CODE_CA;
+		}
+	}
+
+	//	@AfterGroups(alwaysRun=true,groups="users")
+	//	public void afterGroup() throws IOException{
+	//		logger.info("After Group");
+	//		userPropertyFile.loadProps(userProps);
+	//		setUsers("consultantWithPulseAndWithCRP", consultantWithPulseAndWithCRP);
+	//		setUsers("pwsPrefix", pwsPrefix);
+	//		setUsers("consultantWithoutPulseAndWithoutCRP", consultantWithoutPulseAndWithoutCRP);
+	//		//setUsers("consultantWithPulseAndWithCRPForCancellation", consultantWithPulseAndWithCRPForCancellation);
+	//		//		setUsers("consultantHavingSponsorWithoutPWS", consultantHavingSponsorWithoutPWS);
+	//		setUsers("pcUserWithPWSSponsor", pcUserWithPWSSponsor);
+	//		//		setUsers("pcUserWithoutSponsor", pcUserWithoutSponsor);
+	//		//		setUsers("pcUserWithoutPWSSponsor", pcUserWithoutPWSSponsor);
+	//		//		setUsers("pcUserHavingSingleBillingProfile", pcUserHavingSingleBillingProfile);
+	//		setUsers("rcWithOrder", rcWithOrder);
+	//		//		setUsers("rcWithoutOrder", rcWithoutOrder);
+	//	}
 
 	public void setUsers(String key,String value){
 		if(value!=null)
@@ -241,15 +284,15 @@ public class StoreFrontWebsiteBaseTest extends RFBaseTest {
 	public String consultantWithoutPulseAndWithoutCRP(){
 		return userPropertyFile.getProperty("consultantWithoutPulseAndWithoutCRP");
 	}
-	
+
 	public String pcUserWithPWSSponsor(){
 		return userPropertyFile.getProperty("pcUserWithPWSSponsor");
 	}
-	
+
 	public String pwsPrefix(){
 		return userPropertyFile.getProperty("pwsPrefix");
 	}
-	
+
 	public String rcWithOrderWithoutSponsor(){
 		return userPropertyFile.getProperty("rcWithOrderWithoutSponsor");
 	}

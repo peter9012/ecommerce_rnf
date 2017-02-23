@@ -18,16 +18,10 @@ public class AddAndDeleteShippingTest extends StoreFrontWebsiteBaseTest{
 	 */
 	@Test (enabled=true)
 	public void testAddShippingAddressFromMyAccount_77(){
-		String randomWord = CommonUtils.getRandomWord(5);
-		String firstName = TestConstants.FIRST_NAME;
-		String lastName = TestConstants.LAST_NAME+randomWord;
-		String addressLine1 = TestConstants.ADDRESS_LINE_1_US;
-		String addressLine2 = TestConstants.ADDRESS_LINE_2_US;
-		String city = TestConstants.CITY_US;
-		String state = TestConstants.STATE_US;
-		String postalCode = TestConstants.POSTAL_CODE_US;
-		String phoneNumber = TestConstants.PHONE_NUMBER;
-		//		sfHomePage.loginToStoreFront(consultantWithPulseAndWithCRP(),password,true);
+		randomWords = CommonUtils.getRandomWord(5);
+		lastName = TestConstants.LAST_NAME + randomWords;
+		
+		// Login as Cons
 		sfHomePage.loginToStoreFront(consultantWithPulseAndWithCRP(),password,true);
 		sfHomePage.clickWelcomeDropdown();
 		sfShippingInfoPage = sfHomePage.navigateToShippingInfoPage();
@@ -48,15 +42,10 @@ public class AddAndDeleteShippingTest extends StoreFrontWebsiteBaseTest{
 	 */
 	@Test (enabled=true)
 	public void testCancellingAddingOftheShippingProfile_78(){
-		String randomWord = CommonUtils.getRandomWord(5);
-		String firstName = TestConstants.FIRST_NAME;
-		String lastName = TestConstants.LAST_NAME+randomWord;
-		String addressLine1 = TestConstants.ADDRESS_LINE_1_US;
-		String addressLine2 = TestConstants.ADDRESS_LINE_2_US;
-		String city = TestConstants.CITY_US;
-		String state = TestConstants.STATE_US;
-		String postalCode = TestConstants.POSTAL_CODE_US;
-		String phoneNumber = TestConstants.PHONE_NUMBER;
+		randomWords = CommonUtils.getRandomWord(5);
+		String lastName = TestConstants.LAST_NAME + randomWords;
+		
+		// Login as Cons
 		sfHomePage.loginToStoreFront(consultantWithPulseAndWithCRP(),password,true);
 		sfHomePage.clickWelcomeDropdown();
 		sfShippingInfoPage = sfHomePage.navigateToShippingInfoPage();
@@ -77,6 +66,7 @@ public class AddAndDeleteShippingTest extends StoreFrontWebsiteBaseTest{
 	 */
 	@Test (enabled=true)
 	public void testCheckingErrorMessageForTheAddressField_79(){
+		// Login as Cons
 		sfHomePage.loginToStoreFront(consultantWithPulseAndWithCRP(),password,true);
 		sfHomePage.clickWelcomeDropdown();
 		sfShippingInfoPage = sfHomePage.navigateToShippingInfoPage();
@@ -103,7 +93,7 @@ public class AddAndDeleteShippingTest extends StoreFrontWebsiteBaseTest{
 		if(country.equalsIgnoreCase("au")){
 			String expectedCountryName = "australia";
 			String countryNameFromUI = null;
-			sfHomePage.loginToStoreFront(consultantWithPulseAndWithCRP(), password,true);
+			sfHomePage.loginToStoreFront(consultantWithPulseAndWithCRP(),password,true);
 			sfHomePage.clickWelcomeDropdown();
 			sfShippingInfoPage = sfHomePage.navigateToShippingInfoPage();
 			sfShippingInfoPage.clickAddANewShippingAddressLink();
@@ -131,7 +121,7 @@ public class AddAndDeleteShippingTest extends StoreFrontWebsiteBaseTest{
 	 * 
 	 *     
 	 */
-	@Test (enabled=true) 
+	@Test (enabled=false) //CA test
 	public void testAddingAShipAddressDefaultCountryCASite_175(){
 		if(country.equalsIgnoreCase("ca")){
 			String expectedCountryName = "canada";
@@ -200,17 +190,12 @@ public class AddAndDeleteShippingTest extends StoreFrontWebsiteBaseTest{
 	public void testDefaultShipAddressDisplayedInCheckoutMultipleAddress_173(){
 		String firstName = TestConstants.FIRST_NAME;
 		String timeStamp = CommonUtils.getCurrentTimeStamp();
-		String randomWords = CommonUtils.getRandomWord(5);
-		String randomWord2 = CommonUtils.getRandomWord(5); 
-		String addressLine1 = TestConstants.ADDRESS_LINE_1_US;
-		String addressLine2 = TestConstants.ADDRESS_LINE_2_US;
-		String city = TestConstants.CITY_US;
-		String state = TestConstants.STATE_US;
-		String postalCode = TestConstants.POSTAL_CODE_US;
-		String phoneNumber = TestConstants.PHONE_NUMBER;
-		String lastName = TestConstants.LAST_NAME+randomWords;
-		String lastNameForSecondProfile = TestConstants.LAST_NAME + randomWord2;
-		String email = firstName+timeStamp+TestConstants.EMAIL_SUFFIX;
+		randomWords = CommonUtils.getRandomWord(5);
+		lastName = TestConstants.LAST_NAME + randomWords;
+		randomWords = CommonUtils.getRandomWord(5);
+		String lastNameForSecondProfile = TestConstants.LAST_NAME + randomWords;
+		email = firstName+timeStamp+TestConstants.EMAIL_SUFFIX;
+		
 		String defaultShippingAddressName = null;
 		sfCartPage = new StoreFrontCartPage(driver);
 		sfShopSkinCarePage = new StoreFrontShopSkinCarePage(driver);
@@ -231,7 +216,7 @@ public class AddAndDeleteShippingTest extends StoreFrontWebsiteBaseTest{
 		sfCheckoutPage.clickSaveButton();
 		sfCheckoutPage.enterShippingDetails(firstName+" "+lastName, addressLine1, addressLine2, city, state, postalCode, phoneNumber);
 		sfCheckoutPage.clickShippingDetailsNextbutton();
-		sfCheckoutPage.enterUserBillingDetails(TestConstants.CARD_TYPE, TestConstants.CARD_NUMBER_2, TestConstants.CARD_NAME,TestConstants.CVV);
+		sfCheckoutPage.enterUserBillingDetails(cardType,cardNumber,cardName,CVV);
 		sfCheckoutPage.clickBillingDetailsNextbutton();
 		sfCheckoutPage.selectIAcknowledgePCChkBox();
 		sfCheckoutPage.selectPCTermsAndConditionsChkBox();
@@ -268,20 +253,14 @@ public class AddAndDeleteShippingTest extends StoreFrontWebsiteBaseTest{
 	 */
 	@Test (enabled=true)
 	public void testEditAShippingAddressAndCancel_371(){
-		String randomWord = CommonUtils.getRandomWord(5);
-		String randomWord1 = CommonUtils.getRandomWord(5);
-		String firstName = TestConstants.FIRST_NAME;
-		String lastName = TestConstants.LAST_NAME+randomWord;
-		String lastNameForFurtherUpdation = TestConstants.LAST_NAME+randomWord1;
-		String addressLine1 = TestConstants.ADDRESS_LINE_1_US;
-		String addressLine2 = TestConstants.ADDRESS_LINE_2_US;
-		String city = TestConstants.CITY_US;
-		String state = TestConstants.STATE_US;
-		String postalCode = TestConstants.POSTAL_CODE_US;
-		String phoneNumber = TestConstants.PHONE_NUMBER;
+		randomWords = CommonUtils.getRandomWord(5);
+		lastName = TestConstants.LAST_NAME + randomWords;
+		randomWords = CommonUtils.getRandomWord(5);
+		String lastNameForFurtherUpdation = TestConstants.LAST_NAME+randomWords;
 		String defaultShippingAddressName = null;
 		String defaultShippingAddressNameAfterUpdate = null;
-		//		sfHomePage.loginToStoreFront(consultantWithPulseAndWithCRP(),password,true);
+		
+		// Login as Cons
 		sfHomePage.loginToStoreFront(consultantWithPulseAndWithCRP(),password,true);
 		sfHomePage.clickWelcomeDropdown();
 		sfShippingInfoPage = sfHomePage.navigateToShippingInfoPage();
@@ -307,15 +286,10 @@ public class AddAndDeleteShippingTest extends StoreFrontWebsiteBaseTest{
 	 */
 	@Test (enabled=true)
 	public void testDeleteShippingProfile_377(){
-		String randomWord = CommonUtils.getRandomWord(5);
-		String firstName = TestConstants.FIRST_NAME;
-		String lastName = TestConstants.LAST_NAME+randomWord;
-		String addressLine1 = TestConstants.ADDRESS_LINE_1_US;
-		String addressLine2 = TestConstants.ADDRESS_LINE_2_US;
-		String city = TestConstants.CITY_US;
-		String state = TestConstants.STATE_US;
-		String postalCode = TestConstants.POSTAL_CODE_US;
-		String phoneNumber = TestConstants.PHONE_NUMBER;
+		randomWords = CommonUtils.getRandomWord(5);
+		lastName = TestConstants.LAST_NAME + randomWords;
+		
+		// Login as Cons
 		sfHomePage.loginToStoreFront(consultantWithPulseAndWithCRP(),password,true);
 		sfHomePage.clickWelcomeDropdown();
 		sfShippingInfoPage = sfHomePage.navigateToShippingInfoPage();
@@ -347,15 +321,10 @@ public class AddAndDeleteShippingTest extends StoreFrontWebsiteBaseTest{
 	 */
 	@Test (enabled=true)
 	public void testShippingProfileEditAShipAddressAndSave_320(){
-		String randomWord = CommonUtils.getRandomWord(5);
-		String firstName = TestConstants.FIRST_NAME;
-		String lastName = TestConstants.LAST_NAME+randomWord;
-		String addressLine1 = TestConstants.ADDRESS_LINE_1_US;
-		String addressLine2 = TestConstants.ADDRESS_LINE_2_US;
-		String city = TestConstants.CITY_US;
-		String state = TestConstants.STATE_US;
-		String postalCode = TestConstants.POSTAL_CODE_US;
-		String phoneNumber = TestConstants.PHONE_NUMBER;
+		randomWords = CommonUtils.getRandomWord(5);
+		lastName = TestConstants.LAST_NAME + randomWords;
+		
+		// Login as Cons
 		sfHomePage.loginToStoreFront(consultantWithPulseAndWithCRP(),password,true);
 		sfHomePage.clickWelcomeDropdown();
 		sfShippingInfoPage=sfHomePage.navigateToShippingInfoPage();
@@ -377,19 +346,12 @@ public class AddAndDeleteShippingTest extends StoreFrontWebsiteBaseTest{
 	@Test (enabled=true)
 	public void testAddAShippingAddressOnUpdateAutoshipCart_506(){
 		String currentURL = null;
-		String randomWord = CommonUtils.getRandomWord(5);
-		String firstName = TestConstants.FIRST_NAME;
-		String lastName = TestConstants.LAST_NAME+randomWord;
-		String addressLine1 = TestConstants.ADDRESS_LINE_1_US;
-		String addressLine2 = TestConstants.ADDRESS_LINE_2_US;
-		String city = TestConstants.CITY_US;
-		String state = TestConstants.STATE_US;
-		String postalCode = TestConstants.POSTAL_CODE_US;
-		String phoneNumber = TestConstants.PHONE_NUMBER;
+		randomWords = CommonUtils.getRandomWord(5);
+		lastName = TestConstants.LAST_NAME + randomWords;
 		String textToAssertInURL = "autoship/cart";
 		String shippingAddressNameInAccountInfo = null;
-		//Login to application.
-		//sfHomePage.loginToStoreFront(consultantWithPulseAndWithCRP(),password,true);
+		
+		//Login as Cons
 		sfHomePage.loginToStoreFront(consultantWithPulseAndWithCRP(),password,true);
 		sfAutoshipCartPage = sfHomePage.clickOnAutoshipCartLink();
 		currentURL = sfAutoshipCartPage.getCurrentURL().toLowerCase();
@@ -418,19 +380,14 @@ public class AddAndDeleteShippingTest extends StoreFrontWebsiteBaseTest{
 	 */
 	@Test (enabled=true)
 	public void testAutoshipInformationShouldAppearOnTheShippingProfilePage_384(){
-		String randomWord = CommonUtils.getRandomWord(5);
-		String firstName = TestConstants.FIRST_NAME;
-		String lastName = TestConstants.LAST_NAME+randomWord;
-		String addressLine1 = TestConstants.ADDRESS_LINE_1_US;
-		String addressLine2 = TestConstants.ADDRESS_LINE_2_US;
-		String city = TestConstants.CITY_US;
-		String state = TestConstants.STATE_US;
-		String postalCode = TestConstants.POSTAL_CODE_US;
-		String phoneNumber = TestConstants.PHONE_NUMBER;
+		randomWords = CommonUtils.getRandomWord(5);
+		lastName = TestConstants.LAST_NAME + randomWords;
 		String autoShipShippingProfileLastName = null;
 		String checkoutPageText = "Account Info";
 		String currentURL = null;
 		String CRPText = "Next CRP";
+		
+		//Login as Cons
 		sfHomePage.loginToStoreFront(consultantWithPulseAndWithCRP(),password,true);
 		sfHomePage.clickWelcomeDropdown();
 		sfShippingInfoPage = sfHomePage.navigateToShippingInfoPage();
@@ -461,19 +418,14 @@ public class AddAndDeleteShippingTest extends StoreFrontWebsiteBaseTest{
 	 */
 	@Test (enabled=true)
 	public void testDeleteAutoshipShippingProfile_378(){
-		String randomWord = CommonUtils.getRandomWord(5);
-		String firstName = TestConstants.FIRST_NAME;
-		String lastName = TestConstants.LAST_NAME+randomWord;
-		String addressLine1 = TestConstants.ADDRESS_LINE_1_US;
-		String addressLine2 = TestConstants.ADDRESS_LINE_2_US;
-		String city = TestConstants.CITY_US;
-		String state = TestConstants.STATE_US;
-		String postalCode = TestConstants.POSTAL_CODE_US;
-		String phoneNumber = TestConstants.PHONE_NUMBER;
+		randomWords = CommonUtils.getRandomWord(5);
+		lastName = TestConstants.LAST_NAME + randomWords;
 		String autoShipShippingProfileLastName = null;
 		String checkoutPageText = "Account Info";
 		String currentURL = null;
-		sfHomePage.loginToStoreFront(consultantWithPulseAndWithCRP(), password,true);
+		
+		//Login as Cons
+		sfHomePage.loginToStoreFront(consultantWithPulseAndWithCRP(),password,true);
 		sfHomePage.clickWelcomeDropdown();
 		sfShippingInfoPage = sfHomePage.navigateToShippingInfoPage();
 		sfShippingInfoPage.clickAddANewShippingAddressLink();
@@ -502,28 +454,20 @@ public class AddAndDeleteShippingTest extends StoreFrontWebsiteBaseTest{
 	 */
 	@Test (enabled=true)
 	public void testDefaultShipAddressDisplayedInCheckoutSingleAddress_172(){
-		String firstName = TestConstants.FIRST_NAME;
 		String timeStamp = CommonUtils.getCurrentTimeStamp();
-		String randomWords = CommonUtils.getRandomWord(5);
-		String addressLine1 = TestConstants.ADDRESS_LINE_1_US;
-		String addressLine2 = TestConstants.ADDRESS_LINE_2_US;
-		String city = TestConstants.CITY_US;
-		String state = TestConstants.STATE_US;
-		String postalCode = TestConstants.POSTAL_CODE_US;
-		String phoneNumber = TestConstants.PHONE_NUMBER;
-		String lastName = TestConstants.LAST_NAME+randomWords;
-		String email = firstName+timeStamp+TestConstants.EMAIL_SUFFIX;
+		randomWords = CommonUtils.getRandomWord(5);
+		lastName = TestConstants.LAST_NAME + randomWords;  
+		email = firstName+timeStamp+TestConstants.EMAIL_SUFFIX;
 		String defaultShippingAddressName = null;
 		sfCartPage = new StoreFrontCartPage(driver);
-		sfShopSkinCarePage = new StoreFrontShopSkinCarePage(driver);
 		sfHomePage.clickLoginIcon();
 
 		// Enrolling PC User
-		sfCheckoutPage=sfHomePage.clickSignUpNowLink();
+		sfCheckoutPage = sfHomePage.clickSignUpNowLink();
 		sfCheckoutPage.fillNewUserDetails(TestConstants.USER_TYPE_PC, firstName, lastName, email, password);
 		sfCheckoutPage.clickCreateAccountButton(TestConstants.USER_TYPE_PC);
 		s_assert.assertTrue(sfCartPage.isPcOneTimeFeeMsgDisplayed(),"PC one time joining fee msg has not displayed");
-		sfCartPage.clickAddMoreItemsBtn();
+		sfShopSkinCarePage = sfCartPage.clickAddMoreItemsBtn();
 		sfShopSkinCarePage.addProductToCart(TestConstants.PRODUCT_NUMBER, TestConstants.ORDER_TYPE_ADHOC);;
 		sfCartPage = sfShopSkinCarePage.checkoutTheCartFromPopUp();
 		sfCartPage.enterQuantityOfProductAtCart("1", "2");
@@ -533,7 +477,7 @@ public class AddAndDeleteShippingTest extends StoreFrontWebsiteBaseTest{
 		sfCheckoutPage.clickSaveButton();
 		sfCheckoutPage.enterShippingDetails(firstName+" "+lastName, addressLine1, addressLine2, city, state, postalCode, phoneNumber);
 		sfCheckoutPage.clickShippingDetailsNextbutton();
-		sfCheckoutPage.enterUserBillingDetails(TestConstants.CARD_TYPE, TestConstants.CARD_NUMBER_2, TestConstants.CARD_NAME,TestConstants.CVV);
+		sfCheckoutPage.enterUserBillingDetails(cardType,cardNumber,cardName,CVV);
 		sfCheckoutPage.clickBillingDetailsNextbutton();
 		sfCheckoutPage.selectIAcknowledgePCChkBox();
 		sfCheckoutPage.selectPCTermsAndConditionsChkBox();
@@ -541,9 +485,9 @@ public class AddAndDeleteShippingTest extends StoreFrontWebsiteBaseTest{
 		//s_assert.assertTrue(sfHomePage.hasPCEnrolledSuccessfully(), "PC has not been enrolled successfully");
 		sfCheckoutPage.clickRodanAndFieldsLogo();
 		// Adding product to cart and proceed to checkout
-		sfShopSkinCarePage.clickAllProducts();
+		sfCheckoutPage.clickAllProducts();
 		sfShopSkinCarePage.addProductToCart(TestConstants.PRODUCT_NUMBER, TestConstants.ORDER_TYPE_ADHOC);
-		sfCartPage = sfShopSkinCarePage.checkoutTheCartFromPopUp();
+		sfShopSkinCarePage.checkoutTheCartFromPopUp();
 		sfCartPage.checkoutTheCart();
 		sfCheckoutPage.clickSaveButton();
 		defaultShippingAddressName = sfCheckoutPage.getDefaultShippingAddressNameAtCheckoutPage();
@@ -559,17 +503,10 @@ public class AddAndDeleteShippingTest extends StoreFrontWebsiteBaseTest{
 	 */
 	@Test (enabled=true)
 	public void testAddShippingProfileBySelectingTheCheckboxForTheAutoship_525(){
-		String randomWord = CommonUtils.getRandomWord(5);
-		String randomWord2 = CommonUtils.getRandomWord(5);
-		String firstName = TestConstants.FIRST_NAME;
-		String lastName = TestConstants.LAST_NAME + randomWord;
-		String lastNameForSecondProfile = TestConstants.LAST_NAME + randomWord2;
-		String addressLine1 = TestConstants.ADDRESS_LINE_1_US;
-		String addressLine2 = TestConstants.ADDRESS_LINE_2_US;
-		String city = TestConstants.CITY_US;
-		String state = TestConstants.STATE_US;
-		String postalCode = TestConstants.POSTAL_CODE_US;
-		String phoneNumber = TestConstants.PHONE_NUMBER;
+		randomWords = CommonUtils.getRandomWord(5);
+		lastName = TestConstants.LAST_NAME + randomWords;
+		randomWords = CommonUtils.getRandomWord(5);
+		String lastNameForSecondProfile = TestConstants.LAST_NAME + randomWords;
 		String shippingProfileNameOnCheckcoutPage = null;
 		String defaultAddressUpdationMsg = null;
 		String defaultShippingAddressName = null;
@@ -577,7 +514,7 @@ public class AddAndDeleteShippingTest extends StoreFrontWebsiteBaseTest{
 		String nextCRPDeliveryAddressProfileNameAfterUpdation = null;
 
 		// Login as CRP Enrolled consulatant
-		sfHomePage.loginToStoreFront(consultantWithPulseAndWithCRP(), password,true);
+		sfHomePage.loginToStoreFront(consultantWithPulseAndWithCRP(),password,true);
 		sfHomePage.clickWelcomeDropdown();
 		sfShippingInfoPage = sfHomePage.navigateToShippingInfoPage();
 

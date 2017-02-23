@@ -7,7 +7,7 @@ import com.rf.core.website.constants.TestConstants;
 import com.rf.test.website.rehabitat.storeFront.baseTest.StoreFrontWebsiteBaseTest;
 
 public class ConsultantEnrollmentTest extends StoreFrontWebsiteBaseTest{
-	
+
 	/***
 	 * qTest : TC-223 Find a Consultant/Search-CID
 	 * 
@@ -363,39 +363,41 @@ public class ConsultantEnrollmentTest extends StoreFrontWebsiteBaseTest{
 	 */
 	@Test(enabled=true)
 	public void testConsultantEnrollmentNorthDakotaChecked_492(){
-		timeStamp = CommonUtils.getCurrentTimeStamp();
-		randomWords = CommonUtils.getRandomWord(5);		
-		lastName = TestConstants.LAST_NAME+randomWords;
-		email = firstName+timeStamp+TestConstants.EMAIL_SUFFIX;
-		String socialInsuranceNumber = String.valueOf(CommonUtils.getRandomNum(100000000, 999999999));
-		String addressLine1 = TestConstants.ADDRESS_LINE_1_ND_US;
-		String city = TestConstants.CITY_ND_US;
-		String state = TestConstants.STATE_ND_US;
-		String postalCode = TestConstants.POSTAL_CODE_ND_US;
-		sfHomePage.clickEnrollNow();
-		sfHomePage.searchSponsor(TestConstants.SPONSOR);
-		s_assert.assertTrue(sfHomePage.isSponsorResultDisplayed(),"No result found after searching the sponsor with name "+TestConstants.SPONSOR);
-		sfHomePage.selectFirstSponsorFromList();
-		sfHomePage.enterConsultantEnrollmentDetails(firstName, lastName, email, password, socialInsuranceNumber);
-		sfHomePage.clickNextButton();
-		sfHomePage.selectNorthDakotaCheckBoxOnKitPage();
-		s_assert.assertTrue(sfHomePage.areAllKitsDisabled(), "Kit section is not disbaled ab=fter selecting North Dakota Checkbox");
-		sfHomePage.clickNextButton();
-		sfHomePage.clickSaveButton();
-		sfHomePage.enterConsultantShippingDetails(firstName, lastName, addressLine1, "" ,city, state, postalCode, phoneNumber);
-		sfHomePage.clickUseAsEnteredButtonOnPopUp();
-		sfHomePage.clickShippingDetailsNextbutton();
-		sfHomePage.enterUserBillingDetails(cardType, cardNumber, cardName, CVV);
-		sfHomePage.clickBillingDetailsNextbutton();
-		sfHomePage.selectPoliciesAndProceduresChkBox();
-		sfHomePage.selectIAcknowledgeChkBox();
-		sfHomePage.selectTermsAndConditionsChkBox();
-		sfHomePage.selectConsentFormChkBox();
-		sfHomePage.clickBecomeAConsultant();
-		s_assert.assertTrue(sfHomePage.isEnrollemntSuccessfulMsgDisplayed(), "Expected 'ENROLLMENT SUCCESSFUL' msg has NOT displayed"); 
-		sfHomePage.clickRodanAndFieldsLogo();
-		s_assert.assertTrue(sfHomePage.isWelcomeUserElementDisplayed(), "Welcome user locator has not displayed after consultant enrollment");
-		s_assert.assertAll();
+		if(country.equalsIgnoreCase("us")){
+			timeStamp = CommonUtils.getCurrentTimeStamp();
+			randomWords = CommonUtils.getRandomWord(5);		
+			lastName = TestConstants.LAST_NAME+randomWords;
+			email = firstName+timeStamp+TestConstants.EMAIL_SUFFIX;
+			String socialInsuranceNumber = String.valueOf(CommonUtils.getRandomNum(100000000, 999999999));
+			String addressLine1 = TestConstants.ADDRESS_LINE_1_ND_US;
+			String city = TestConstants.CITY_ND_US;
+			String state = TestConstants.STATE_ND_US;
+			String postalCode = TestConstants.POSTAL_CODE_ND_US;
+			sfHomePage.clickEnrollNow();
+			sfHomePage.searchSponsor(TestConstants.SPONSOR);
+			s_assert.assertTrue(sfHomePage.isSponsorResultDisplayed(),"No result found after searching the sponsor with name "+TestConstants.SPONSOR);
+			sfHomePage.selectFirstSponsorFromList();
+			sfHomePage.enterConsultantEnrollmentDetails(firstName, lastName, email, password, socialInsuranceNumber);
+			sfHomePage.clickNextButton();
+			sfHomePage.selectNorthDakotaCheckBoxOnKitPage();
+			s_assert.assertTrue(sfHomePage.areAllKitsDisabled(), "Kit section is not disbaled ab=fter selecting North Dakota Checkbox");
+			sfHomePage.clickNextButton();
+			sfHomePage.clickSaveButton();
+			sfHomePage.enterConsultantShippingDetails(firstName, lastName, addressLine1, "" ,city, state, postalCode, phoneNumber);
+			sfHomePage.clickUseAsEnteredButtonOnPopUp();
+			sfHomePage.clickShippingDetailsNextbutton();
+			sfHomePage.enterUserBillingDetails(cardType, cardNumber, cardName, CVV);
+			sfHomePage.clickBillingDetailsNextbutton();
+			sfHomePage.selectPoliciesAndProceduresChkBox();
+			sfHomePage.selectIAcknowledgeChkBox();
+			sfHomePage.selectTermsAndConditionsChkBox();
+			sfHomePage.selectConsentFormChkBox();
+			sfHomePage.clickBecomeAConsultant();
+			s_assert.assertTrue(sfHomePage.isEnrollemntSuccessfulMsgDisplayed(), "Expected 'ENROLLMENT SUCCESSFUL' msg has NOT displayed"); 
+			sfHomePage.clickRodanAndFieldsLogo();
+			s_assert.assertTrue(sfHomePage.isWelcomeUserElementDisplayed(), "Welcome user locator has not displayed after consultant enrollment");
+			s_assert.assertAll();
+		}
 	}
 
 	/***
@@ -466,16 +468,17 @@ public class ConsultantEnrollmentTest extends StoreFrontWebsiteBaseTest{
 		sfHomePage.clickBecomeAConsultant();
 		s_assert.assertTrue(sfHomePage.isEnrollemntSuccessfulMsgDisplayed(), "Expected 'ENROLLMENT SUCCESSFUL' msg has NOT displayed"); 
 		sfHomePage.clickRodanAndFieldsLogo();
-		s_assert.assertTrue(sfHomePage.isWelcomeUserElementDisplayed(), "Welcome user locator has not displayed after consultant enrollment");
+		String consultantEnrollmentOrderNumber = sfHomePage.getConsultantOrderNumberFromURL();
 		sfHomePage.clickWelcomeDropdown();
 		sfOrdersPage = sfHomePage.navigateToOrdersPage();
-		//Verify autoship order details.
-		s_assert.assertTrue(sfOrdersPage.isAutoshipOrderHistoryTableAppeared(),"Autoship Order history Table is not present on orders page");
-		sfOrdersPage.clickAndGetFirstOrderNumberFromOrderHistory();
-		s_assert.assertTrue(sfOrdersPage.isPulseProOrderPresentOnOrderDetailPage(),"Pulse pro order not present on pulse order detail page.");
+		sfOrdersPage.clickOrderNumber(consultantEnrollmentOrderNumber,1);
+		s_assert.assertTrue(sfOrdersPage.isPulseProOrderPresentOnOrderDetailPage(),"Pulse order NOT present on pulse template");
+		sfOrdersPage.navigateBackToOrdersPage();
+		sfOrdersPage.clickOrderNumber(consultantEnrollmentOrderNumber,2);
+		s_assert.assertTrue(sfOrdersPage.isPulseProOrderPresentOnOrderDetailPage(),"Pulse pro order not present on consultant order");
 		s_assert.assertAll();
-
 	}
+
 	/***
 	 * qTest : TC-468 Consultant Enrollment-Page 2- Pulse Pro Subscription - Unselect and continue
 	 * 
@@ -491,11 +494,9 @@ public class ConsultantEnrollmentTest extends StoreFrontWebsiteBaseTest{
 		String socialInsuranceNumber = String.valueOf(CommonUtils.getRandomNum(100000000, 999999999));
 		sfHomePage.clickEnrollNow();
 		sfHomePage.searchSponsor(TestConstants.SPONSOR);
-		s_assert.assertTrue(sfHomePage.isSponsorResultDisplayed(),"No result found after searching the sponsor with name "+TestConstants.SPONSOR);
 		sfHomePage.selectFirstSponsorFromList();
 		sfHomePage.enterConsultantEnrollmentDetails(firstName, lastName, email, password, socialInsuranceNumber);
 		sfHomePage.clickNextButton();
-		s_assert.assertFalse(sfHomePage.isNextButtonEnabledBeforeSelectingKit(), "Next Button is NOT disabled before selecting kit");
 		sfHomePage.chooseProductFromKitPage();
 		sfHomePage.UnSelectSubscribeToPulseCheckBox();
 		sfHomePage.clickNextButton();
@@ -511,14 +512,16 @@ public class ConsultantEnrollmentTest extends StoreFrontWebsiteBaseTest{
 		sfHomePage.selectConsentFormChkBox();
 		sfHomePage.clickBecomeAConsultant();
 		s_assert.assertTrue(sfHomePage.isEnrollemntSuccessfulMsgDisplayed(), "Expected 'ENROLLMENT SUCCESSFUL' msg has NOT displayed"); 
+		String consultantEnrollmentOrderNumber = sfHomePage.getConsultantOrderNumberFromURL();
 		sfHomePage.clickRodanAndFieldsLogo();
 		s_assert.assertTrue(sfHomePage.isWelcomeUserElementDisplayed(), "Welcome user locator has not displayed after consultant enrollment");
 		sfHomePage.clickWelcomeDropdown();
 		sfOrdersPage = sfHomePage.navigateToOrdersPage();
-		//Verify autoship order details.
-		s_assert.assertFalse(sfOrdersPage.isAutoshipOrderHistoryTableAppeared(),"Autoship Order history Table is present on orders page");
-		sfOrdersPage.clickAndGetFirstOrderNumberFromOrderHistory();
-		s_assert.assertFalse(sfOrdersPage.isPulseProOrderPresentOnOrderDetailPage(),"Pulse pro order present on order detail page.");
+		sfOrdersPage.clickOrderNumber(consultantEnrollmentOrderNumber,1);
+		s_assert.assertFalse(sfOrdersPage.isPulseProOrderPresentOnOrderDetailPage(),"Pulse order present on pulse template");
+		sfOrdersPage.navigateBackToOrdersPage();
+		sfOrdersPage.clickOrderNumber(consultantEnrollmentOrderNumber,2);
+		s_assert.assertFalse(sfOrdersPage.isPulseProOrderPresentOnOrderDetailPage(),"Pulse pro order present on consultant order");
 		s_assert.assertAll();
 	}
 

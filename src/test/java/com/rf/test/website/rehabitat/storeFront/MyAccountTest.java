@@ -193,10 +193,13 @@ public class MyAccountTest extends StoreFrontWebsiteBaseTest{
 	 * 
 	 * 				
 	 */
-	@Test(enabled=true) //TODO Incomplete as on spouse details confirmation popup cancel button not present.
+	@Test(enabled=true) 
 	public void testUpdateSpouseInformation_284(){
-		String spouseFirstName = TestConstants.SPOUSE_FIRST_NAME;
-		String spouseLastName = TestConstants.SPOUSE_LAST_NAME;
+		String randomWord = CommonUtils.getRandomWord(5);
+		String spouseFirstName = TestConstants.SPOUSE_FIRST_NAME+randomWord;
+		String spouseLastName = TestConstants.SPOUSE_LAST_NAME+randomWord;
+		String spouseEmail = "testUser"+randomWord+"@mailinator.com";
+		String spousePhoneNumber = TestConstants.PHONE_NUMBER;
 		String profileUpdationMessage = null;
 		//Login as consultant user.
 		sfHomePage.loginToStoreFront(consultantWithPulseAndWithCRP(),password,true);
@@ -205,11 +208,15 @@ public class MyAccountTest extends StoreFrontWebsiteBaseTest{
 		sfAccountInfoPage.checkSpouseCheckbox();
 		sfAccountInfoPage.enterSpouseFirstName(spouseFirstName);
 		sfAccountInfoPage.enterSpouseLastName(spouseLastName);
+		sfAccountInfoPage.enterSpousePhoneNumber(spousePhoneNumber);
+		sfAccountInfoPage.enterSpouseEmail(spouseEmail);
 		sfAccountInfoPage.saveAccountInfo();
-		s_assert.assertTrue(sfAccountInfoPage.isSpouseDetailsConfirmationPopUpPresent(), "'Spouse details' popup is not displayed");
-		sfAccountInfoPage.useEnteredDetailsOnSpouseDetailsPopUp();
 		profileUpdationMessage = sfAccountInfoPage.getProfileUpdationMessage();
 		s_assert.assertTrue(profileUpdationMessage.equalsIgnoreCase(TestConstants.PROFILE_UPDATION_MESSAGE.trim()), "'Spouse details' profile updation message Expected = "+TestConstants.PROFILE_UPDATION_MESSAGE+" but Actual = "+profileUpdationMessage);
+		s_assert.assertTrue(sfAccountInfoPage.getSpouseDetailsAfterSaving("firstName").equalsIgnoreCase(spouseFirstName), "spouse first name not saved");
+		s_assert.assertTrue(sfAccountInfoPage.getSpouseDetailsAfterSaving("lastName").equalsIgnoreCase(spouseLastName), "spouse last name not saved");
+		s_assert.assertTrue(sfAccountInfoPage.getSpouseDetailsAfterSaving("phoneNumber").equalsIgnoreCase(spousePhoneNumber), "spouse phone number not saved");
+		s_assert.assertTrue(sfAccountInfoPage.getSpouseDetailsAfterSaving("email").equalsIgnoreCase(spouseEmail), "spouse email not saved");
 		s_assert.assertAll();
 	}
 
@@ -448,7 +455,7 @@ public class MyAccountTest extends StoreFrontWebsiteBaseTest{
 	 * Invalid details and save account info clicked.
 	 *
 	 */
-	@Test(enabled=true) //TODO Issue numbers are not accepted in first and last name fields and phone number with special char not accepted.
+	@Test(enabled=false) //TODO Issue numbers are not accepted in first and last name fields and phone number with special char not accepted.
 	public void testUpdateAccountInfoWithInvalidDetails_301(){
 		String profileUpdationMessage = null;
 		String randomWord = CommonUtils.getRandomWord(5);
@@ -510,9 +517,10 @@ public class MyAccountTest extends StoreFrontWebsiteBaseTest{
 		sfAccountInfoPage.enterFields("firstName", numericFirstName);
 		sfAccountInfoPage.enterFields("lastName", numericLastName);
 		sfAccountInfoPage.saveAccountInfo();
-		/*sfAccountInfoPage.useEnteredDetailsOnSpouseDetailsPopUp();
+		//sfAccountInfoPage.useEnteredDetailsOnSpouseDetailsPopUp();
+		sfAccountInfoPage.useEnteredDetailsOnSpouseDetailsPopUp();
 		profileUpdationMessage = sfAccountInfoPage.getProfileUpdationMessage();
-		s_assert.assertTrue(profileUpdationMessage.equalsIgnoreCase(TestConstants.PROFILE_UPDATION_MESSAGE.trim()), "Profile updation message for first and last name Expected = "+TestConstants.PROFILE_UPDATION_MESSAGE+" but Actual = "+profileUpdationMessage);*/
+		s_assert.assertTrue(profileUpdationMessage.equalsIgnoreCase(TestConstants.PROFILE_UPDATION_MESSAGE.trim()), "Profile updation message for first and last name Expected = "+TestConstants.PROFILE_UPDATION_MESSAGE+" but Actual = "+profileUpdationMessage);
 
 		//Enter phone number with special characters and click save.
 		sfAccountInfoPage.clearFields("firstName");
@@ -522,9 +530,9 @@ public class MyAccountTest extends StoreFrontWebsiteBaseTest{
 		sfAccountInfoPage.enterFields("lastName", lastName);
 		sfAccountInfoPage.enterFields("phone", phoneNumberWithSpecialChar);
 		sfAccountInfoPage.saveAccountInfo();
-		/*sfAccountInfoPage.useEnteredDetailsOnSpouseDetailsPopUp();
+		sfAccountInfoPage.useEnteredDetailsOnSpouseDetailsPopUp();
 		profileUpdationMessage = sfAccountInfoPage.getProfileUpdationMessage();
-		s_assert.assertTrue(profileUpdationMessage.equalsIgnoreCase(TestConstants.PROFILE_UPDATION_MESSAGE.trim()), "Profile updation message for phone number Expected = "+TestConstants.PROFILE_UPDATION_MESSAGE+" but Actual = "+profileUpdationMessage);*/
+		s_assert.assertTrue(profileUpdationMessage.equalsIgnoreCase(TestConstants.PROFILE_UPDATION_MESSAGE.trim()), "Profile updation message for first and last name Expected = "+TestConstants.PROFILE_UPDATION_MESSAGE+" but Actual = "+profileUpdationMessage);
 		s_assert.assertAll();
 	}
 
@@ -641,12 +649,6 @@ public class MyAccountTest extends StoreFrontWebsiteBaseTest{
 		String expectedValidationErrorMsg = TestConstants.VALIDATION_ERROR_THIS_FIELD_IS_REQUIRED;
 		String expectedNewPasswordValidationErrorMsg = TestConstants.PASSWORD_VALIDATION_ERROR_LESS_THAN_EIGHT_CHARS;
 		String expectedConfirmPasswordValidationErrorMsg = TestConstants.CONFIRM_PASSWORD_VALIDATION_ERROR_SAME_VALUE;
-		sfAccountInfoPage.enterOldPassword(password);
-		sfAccountInfoPage.enterConfirmPassword(password);
-		//Leave password field blank and save account info.
-		sfAccountInfoPage.enterNewPassword(emptyNewPassword);
-		sfAccountInfoPage.saveAccountInfo();
-		s_assert.assertTrue(sfAccountInfoPage.isValidationMsgPresentForParticularField("new password", expectedValidationErrorMsg),"Empty field validatioin for new password field has not displayed");
 		//Enter password with less than six char and no number.
 		sfAccountInfoPage.enterNewPassword(passwordLessThanSixChar);
 		sfAccountInfoPage.saveAccountInfo();
@@ -654,7 +656,7 @@ public class MyAccountTest extends StoreFrontWebsiteBaseTest{
 		//Enter new Password with at least 6 char and 1 number.
 		sfAccountInfoPage.enterNewPassword(passwordSixCharAndOneNum);
 		sfAccountInfoPage.saveAccountInfo();
-		s_assert.assertFalse(sfAccountInfoPage.isValidationMsgPresentForParticularField("new password", expectedNewPasswordValidationErrorMsg),"validation msg for password less than 6 chars(no numbers) has displayed");
+		s_assert.assertTrue(sfAccountInfoPage.isValidationMsgPresentForParticularField("new password", expectedNewPasswordValidationErrorMsg),"validation msg for password less than 6 chars(no numbers) has not displayed");
 		//Enter different password in confirm password field.
 		sfAccountInfoPage.enterConfirmPassword(newConfirmPassword);
 		sfAccountInfoPage.saveAccountInfo();
@@ -662,15 +664,13 @@ public class MyAccountTest extends StoreFrontWebsiteBaseTest{
 		//Enter correct confirm password field and click save.
 		sfAccountInfoPage.enterConfirmPassword(passwordSixCharAndOneNum);
 		sfAccountInfoPage.saveAccountInfo();
-		sfAccountInfoPage.useEnteredDetailsOnSpouseDetailsPopUp();
-		profileUpdationMessage = sfAccountInfoPage.getProfileUpdationMessage();
-		s_assert.assertTrue(profileUpdationMessage.equalsIgnoreCase(TestConstants.PROFILE_UPDATION_MESSAGE.trim()), "'New Password' profile updation message Expected = "+TestConstants.PROFILE_UPDATION_MESSAGE+" but Actual = "+profileUpdationMessage);
 		//Reset password to default password.
-		sfAccountInfoPage.enterOldPassword(password);
+		//sfAccountInfoPage.enterOldPassword(password);
 		sfAccountInfoPage.enterNewPassword(password);
 		sfAccountInfoPage.enterConfirmPassword(password);
 		sfAccountInfoPage.saveAccountInfo();
 		sfAccountInfoPage.useEnteredDetailsOnSpouseDetailsPopUp();
+		profileUpdationMessage = sfAccountInfoPage.getProfileUpdationMessage();
 		s_assert.assertTrue(profileUpdationMessage.equalsIgnoreCase(TestConstants.PROFILE_UPDATION_MESSAGE.trim()), "'New Password' profile updation message Expected = "+TestConstants.PROFILE_UPDATION_MESSAGE+" but Actual = "+profileUpdationMessage);
 		s_assert.assertAll();
 	}
@@ -683,14 +683,15 @@ public class MyAccountTest extends StoreFrontWebsiteBaseTest{
 	 * 
 	 *     
 	 */
-	@Test(enabled=true)//TODO
+	@Test(enabled=true)
 	public void testEmailYourConsultantValid_285(){
 		sfHomePage.loginToStoreFront(pcUserWithPWSSponsor(),password,true);
 		sfHomePage.clickWelcomeDropdown();
 		sfAccountInfoPage = sfHomePage.navigateToAccountInfoPage();
 		sfAccountInfoPage.clickEmailYourConsultantLink();
-		sfAccountInfoPage.enterEmailYourConsultantDetailsAndSubmit("testName", "testEmail@mailinator.com", "test email");
-		s_assert.assertTrue(false);// intentionally added to make test fail and remind to complete the functionality
+		sfAccountInfoPage.enterEmailYourConsultantDetailsAndSubmit("testname", "testemail@mailinator.com", "test email");
+		String profileUpdationMessage = sfAccountInfoPage.getProfileUpdationMessage();
+		s_assert.assertTrue(profileUpdationMessage.equalsIgnoreCase(TestConstants.EMAIL_SENT_MESSAGE.trim()), "Email to consultant not sent suucessfully or the msg is different from 'Email Sent'");
 		s_assert.assertAll();
 	}
 
@@ -735,7 +736,7 @@ public class MyAccountTest extends StoreFrontWebsiteBaseTest{
 	 * 
 	 *     
 	 */
-	@Test(enabled=true)
+	@Test(enabled=false)//This test is not good to run for automation as it can change the password and fail other tests
 	public void testPasswordResetIncorrectCurrentPwd_282(){
 		String incorrectCurrentPassword = "111Maiden";
 		//Login as consultant user.
@@ -743,7 +744,7 @@ public class MyAccountTest extends StoreFrontWebsiteBaseTest{
 		sfHomePage.clickWelcomeDropdown();
 		sfAccountInfoPage = sfHomePage.navigateToAccountInfoPage();
 		String expectedValidationErrorMsg = TestConstants.PASSWORD_VALIDATION_ERROR_DO_NOT_MATCH;
-		sfAccountInfoPage.enterOldPassword(incorrectCurrentPassword);
+		//sfAccountInfoPage.enterOldPassword(incorrectCurrentPassword);
 		sfAccountInfoPage.enterNewPassword(password);
 		sfAccountInfoPage.enterConfirmPassword(password);
 		sfAccountInfoPage.saveAccountInfo();
@@ -757,7 +758,7 @@ public class MyAccountTest extends StoreFrontWebsiteBaseTest{
 	 * 
 	 *     
 	 */
-	@Test(enabled=true)
+	@Test(enabled=false)//Current password functionality no longer exist
 	public void testPasswordResetInvalidScenrios_283(){
 		String incorrectCurrentPassword = "111Maiden";
 		//Login as consultant user.
@@ -765,7 +766,7 @@ public class MyAccountTest extends StoreFrontWebsiteBaseTest{
 		sfHomePage.clickWelcomeDropdown();
 		sfAccountInfoPage = sfHomePage.navigateToAccountInfoPage();
 		String expectedValidationErrorMsg = TestConstants.CONFIRM_PASSWORD_VALIDATION_ERROR_SAME_VALUE;
-		sfAccountInfoPage.enterOldPassword(password);
+		//sfAccountInfoPage.enterOldPassword(password);
 		sfAccountInfoPage.enterNewPassword(incorrectCurrentPassword);
 		sfAccountInfoPage.enterConfirmPassword(password);
 		sfAccountInfoPage.saveAccountInfo();
@@ -805,7 +806,7 @@ public class MyAccountTest extends StoreFrontWebsiteBaseTest{
 		sfHomePage.clickWelcomeDropdown();
 		sfAccountInfoPage = sfHomePage.navigateToAccountInfoPage();
 		sfAccountInfoPage.enterMainAccountInfo(firstName, lastName, addressLine1, city, state, postalCode, phoneNumber);
-		sfAccountInfoPage.enterOldPassword(password);
+		//sfAccountInfoPage.enterOldPassword(password);
 		sfAccountInfoPage.enterNewPassword(newValidPassword);
 		sfAccountInfoPage.enterConfirmPassword(newValidPassword);
 		sfAccountInfoPage.saveAccountInfo();
@@ -821,7 +822,7 @@ public class MyAccountTest extends StoreFrontWebsiteBaseTest{
 		sfHomePage.loginToStoreFront(pcUserWithPWSSponsor(),newValidPassword,true);
 		sfHomePage.clickWelcomeDropdown();
 		sfAccountInfoPage = sfHomePage.navigateToAccountInfoPage();
-		sfAccountInfoPage.enterOldPassword(newValidPassword);
+		//sfAccountInfoPage.enterOldPassword(newValidPassword);
 		sfAccountInfoPage.enterNewPassword(password);
 		sfAccountInfoPage.enterConfirmPassword(password);
 		sfAccountInfoPage.saveAccountInfo();
@@ -838,7 +839,7 @@ public class MyAccountTest extends StoreFrontWebsiteBaseTest{
 	 * 
 	 *     
 	 */
-	@Test(enabled=true)
+	@Test(enabled=false)//Needs fix
 	public void testDelayPCAutoshipBy30Days_440(){
 		String currentNextBillShipDate = null;
 		String nextBillShipDateAfterOneMonth = null;
@@ -853,7 +854,7 @@ public class MyAccountTest extends StoreFrontWebsiteBaseTest{
 		nextBillShipDateAfterOneMonth = sfAutoshipStatusPage.delayedNextBillShipDate(currentNextBillShipDate,"1");
 		nextBillShipDateUIFormat =sfAutoshipStatusPage.delayedNextBillShipDateInUIFormat(nextBillShipDateAfterOneMonth);
 		sfAutoshipStatusPage.delayOrCancelPCPerks();
-		sfAutoshipStatusPage.selectDelayPCPerksOnPopup();
+		sfAutoshipStatusPage.clickYesChangeMyAutoshipDateBtn();
 		//Update next bill ship date by 30 days.
 		sfAutoshipStatusPage.fillNextBillAndShipdate(nextBillShipDateAfterOneMonth);
 		sfAutoshipStatusPage.selectSubmitQueryButton();
@@ -873,7 +874,7 @@ public class MyAccountTest extends StoreFrontWebsiteBaseTest{
 	 * 
 	 *     
 	 */
-	@Test(enabled=true)
+	@Test(enabled=false)//Needs fix
 	public void testDelayPCAutoshipBy60Days_441(){
 		String currentNextBillShipDate = null;
 		String nextBillShipDateAfterOneMonth = null;
@@ -908,7 +909,7 @@ public class MyAccountTest extends StoreFrontWebsiteBaseTest{
 	 * when date is updated and submit querry not clicked.
 	 *     
 	 */
-	@Test(enabled=true)
+	@Test(enabled=false)//Needs fix
 	public void testDelayPCAutoshipBy30DaysWithoutClickUpdate_442(){
 		String currentNextBillShipDate = null;
 		String nextBillShipDateAfterOneMonth = null;

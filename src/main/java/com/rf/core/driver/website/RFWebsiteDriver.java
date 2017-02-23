@@ -599,6 +599,11 @@ public class RFWebsiteDriver implements RFDriver,WebDriver {
 		}
 		findElement(locator).sendKeys(input);
 	}
+	
+	public void typeByJSLocId(String id, String input) {
+		String javascript = "document.getElementById('"+id+"').value="+input;
+		((JavascriptExecutor) RFWebsiteDriver.driver).executeScript(javascript);
+	}
 
 	public void quit() {
 		driver.quit();

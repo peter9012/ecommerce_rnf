@@ -1,10 +1,14 @@
 package com.rf.pages.website.rehabitat.storeFront;
 
 import org.openqa.selenium.By;
+import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.ui.Select;
 
 import com.rf.core.driver.website.RFWebsiteDriver;
 import com.rf.pages.website.rehabitat.storeFront.basePage.StoreFrontWebsiteBasePage;
+
+import java.util.List;
+
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
@@ -18,7 +22,7 @@ public class StoreFrontOrdersPage extends StoreFrontWebsiteBasePage{
 			.getLogger(StoreFrontOrdersPage.class.getName());
 
 
-	private final By PULSE_ORDER_ITEM_ON_ORDER_DETAIL_PAGE_LOC = By.xpath("//li[@class='orderItemsHeading']/following::p[text()='Pulse Pro-1 Month']");
+	private final By PULSE_ORDER_ITEM_ON_ORDER_DETAIL_PAGE_LOC = By.xpath("//p[contains(text(),'PULSE Pro One Month FREE Trial')]");
 	private final By FIRST_ORDER_STATUS_IN_AUTOSHIP_ORDER_HISTORY_LOC = By.xpath("//div[contains(text(),'PENDING AUTOSHIP ORDERS')]/following-sibling::div//tbody//a[contains(text(),'Edit')]/../preceding-sibling::td[@class='status']");
 	private final By FIRST_ORDER_NUMBER_UNDER_ORDER_HISTORY_LOC = By.xpath("//div[@id='orderHistoryContentArea']//tr[2]//td[2]/a");
 	private final By FIRST_ACTIONS_DD_UNDER_ORDER_HISTORY_LOC = By.xpath("//div[@id='orderHistoryContentArea']//tr[2]//div[contains(text(),'Actions')]");
@@ -266,6 +270,7 @@ public class StoreFrontOrdersPage extends StoreFrontWebsiteBasePage{
 		logger.info("Navigated back to Orders Page");
 		return this;
 	}
+	
 	public String getHeaderOfPage(){
 		return driver.getText(REPORT_PROBLEM_PAGE_HEADER_LOC);
 	}
@@ -642,6 +647,20 @@ public class StoreFrontOrdersPage extends StoreFrontWebsiteBasePage{
 	public StoreFrontOrdersPage clickOrderNumber(String orderNumber){
 		driver.click(By.xpath(String.format(orderNumberLoc, orderNumber)));
 		logger.info(orderNumber+" Order number clicked");
+		return this;
+	}
+	
+	/***
+	 * This method clicked on an order number  
+	 * 
+	 * @param
+	 * @return Store front order page obj
+	 * 
+	 */
+	public StoreFrontOrdersPage clickOrderNumber(String orderNumber, int sequenceNum){
+		List<WebElement> allElements = driver.findElements(By.xpath(String.format(orderNumberLoc, orderNumber)));
+		allElements.get(sequenceNum-1).click();
+		logger.info(orderNumber+" Order number clicked on sequence "+sequenceNum);
 		return this;
 	}
 

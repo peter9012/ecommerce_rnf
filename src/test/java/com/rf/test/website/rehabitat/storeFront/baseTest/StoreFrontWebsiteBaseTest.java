@@ -313,6 +313,18 @@ public class StoreFrontWebsiteBaseTest extends RFBaseTest {
 		return userPropertyFile.getProperty("rcWithOrderWithoutSponsor");
 	}
 
+	public String rcWithoutOrder(){
+		return userPropertyFile.getProperty("rcWithoutOrder");
+	}
+
+	public String pcWithSigleBillingProfile(){
+		return userPropertyFile.getProperty("pcWithSigleBillingProfile");
+	}
+
+	public String consultantWithPulseAndWithCRPForCancellation(){
+		return userPropertyFile.getProperty("consultantWithPulseAndWithCRPForCancellation");
+	}
+
 	public static String getSuiteName(ITestContext context){
 		String suiteName = context.getCurrentXmlTest().getSuite().getName();
 		return suiteName;

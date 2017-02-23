@@ -39,6 +39,8 @@ public class StoreFrontAccountInfoPage extends StoreFrontWebsiteBasePage{
 	private final By ACCEPT_BTN_SPOUSE_POPUP_LOC = By.id("accept-spouse");
 	private final By SPOUSE_FIRST_NAME_LOC = By.id("profile.spouseFirstname");
 	private final By SPOUSE_LAST_NAME_LOC = By.id("profile.spouseLastname");
+	private final By SPOUSE_EMAIL_LOC = By.id("profile.spouseEmail");
+	private final By SPOUSE_PHONE_NUMBER_LOC = By.id("profile.spousePhoneNumber");
 	private final By SPOUSE_DETAIL_POPUP_YES_BTN_LOC = By.xpath("//div[@id='cboxLoadedContent']/descendant::button[@id='suggestedAddress']");
 	private final By SPOUSE_DETAIL_POPUP_USE_AS_ENTERED_BTN_LOC = By.xpath("//div[@id='cboxLoadedContent']/descendant::button[@id='oldAddress']");
 	private final By PROFILE_UPDATION_MESSAGE_LOC = By.xpath("//div[@class='global-alerts']/div");
@@ -172,18 +174,18 @@ public class StoreFrontAccountInfoPage extends StoreFrontWebsiteBasePage{
 		return this;
 	}
 
-	/***
-	 * This method enter password in the old password field on account info page 
-	 * 
-	 * @param
-	 * @return account Info Page object
-	 * 
-	 */
-	public StoreFrontAccountInfoPage enterOldPassword(String password){
-		driver.type(OLD_PASSWORD_LOC,password);
-		logger.info("entered old password as "+password);
-		return this;
-	}
+	//	/***
+	//	 * This method enter password in the old password field on account info page 
+	//	 * 
+	//	 * @param
+	//	 * @return account Info Page object
+	//	 * 
+	//	 */
+	//	public StoreFrontAccountInfoPage enterOldPassword(String password){
+	//		driver.type(OLD_PASSWORD_LOC,password);
+	//		logger.info("entered old password as "+password);
+	//		return this;
+	//	}
 
 	/***
 	 * This method enter password in the new password field on account info page 
@@ -316,6 +318,33 @@ public class StoreFrontAccountInfoPage extends StoreFrontWebsiteBasePage{
 		logger.info("entered Spouse last Name as "+"'"+lastName+"'");
 		return this;
 	}
+
+	/***
+	 * This method enter Spouse email field on account info page 
+	 * 
+	 * @param
+	 * @return account Info Page object
+	 * 
+	 */
+	public StoreFrontAccountInfoPage enterSpouseEmail(String email){
+		driver.type(SPOUSE_EMAIL_LOC,email);
+		logger.info("entered Spouse email as "+"'"+email+"'");
+		return this;
+	}
+
+	/***
+	 * This method enter Spouse phone field on account info page 
+	 * 
+	 * @param
+	 * @return account Info Page object
+	 * 
+	 */
+	public StoreFrontAccountInfoPage enterSpousePhoneNumber(String phoneNum){
+		driver.type(SPOUSE_PHONE_NUMBER_LOC,phoneNum);
+		logger.info("entered Spouse phoneNum as "+"'"+phoneNum+"'");
+		return this;
+	}
+
 	/***
 	 * This method validates Spouse details popup when entered spouse details and click save button on account info page.
 	 * 
@@ -338,10 +367,15 @@ public class StoreFrontAccountInfoPage extends StoreFrontWebsiteBasePage{
 	 * 
 	 */
 	public StoreFrontAccountInfoPage useEnteredDetailsOnSpouseDetailsPopUp(){
-		driver.click(SPOUSE_DETAIL_POPUP_USE_AS_ENTERED_BTN_LOC);
-		logger.info("'USE AS ENTERED' Btn clicked on Spouse Detail popup at account info page.");
-		driver.waitForPageLoad();
-		driver.waitForLoadingImageToDisappear();
+		try{
+			driver.turnOffImplicitWaits(1);
+			driver.click(SPOUSE_DETAIL_POPUP_USE_AS_ENTERED_BTN_LOC);
+			logger.info("'USE AS ENTERED' Btn clicked on Spouse Detail popup at account info page.");
+			driver.waitForPageLoad();
+			driver.waitForLoadingImageToDisappear();
+		}catch(Exception e){
+			driver.turnOnImplicitWaits();
+		}
 		return this;
 	}
 	/***
@@ -355,6 +389,22 @@ public class StoreFrontAccountInfoPage extends StoreFrontWebsiteBasePage{
 		String []profileUpdationMessage = driver.findElement(PROFILE_UPDATION_MESSAGE_LOC).getText().split("×"); 
 		logger.info("profile updation message is: "+profileUpdationMessage[1]);
 		return profileUpdationMessage[1].trim();
+	}
+
+	public String getSpouseDetailsAfterSaving(String field){
+		if(field.equalsIgnoreCase("firstName")){
+			return driver.getAttribute(SPOUSE_FIRST_NAME_LOC, "value").trim().toLowerCase();
+		}
+		else if(field.equalsIgnoreCase("lastName")){
+			return driver.getAttribute(SPOUSE_LAST_NAME_LOC, "value").trim().toLowerCase();
+		}
+		else if(field.equalsIgnoreCase("phoneNumber")){
+			return driver.getAttribute(SPOUSE_PHONE_NUMBER_LOC, "value").trim().toLowerCase();
+		}
+		else if(field.equalsIgnoreCase("email")){
+			return driver.getAttribute(SPOUSE_EMAIL_LOC, "value").trim().toLowerCase();
+		}
+		return null;
 	}
 
 	/***
@@ -532,6 +582,8 @@ public class StoreFrontAccountInfoPage extends StoreFrontWebsiteBasePage{
 		enterEmailContentAtEmailYourConsultantFields(emailContent);
 		driver.click(EMAIL_TO_CONSULTANT_EMAIL_SUBMIT_BTN_LOC);
 		logger.info("Email to consultant, submit button clicked");
+		driver.pauseExecutionFor(1000);
+		driver.waitForPageLoad();
 		return this;
 	}
 

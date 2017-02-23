@@ -1672,8 +1672,8 @@ public class StoreFrontWebsiteBasePage extends RFBasePage {
 			String CVV) {
 		String javascript = "document.getElementById('card_accountNumber').value=" + cardNumber + ";"
 				+ "document.getElementById('card_accountNumber').innerHTML=" + cardNumber + ";";
-		//driver.pauseExecutionFor(2000);
-		driver.quickWaitForElementPresent(NAME_ON_CARD_LOC);
+		driver.pauseExecutionFor(2000);
+		driver.quickWaitForElementPresent(CARD_NUMBER_LOC);
 		((JavascriptExecutor) RFWebsiteDriver.driver).executeScript(javascript);
 		logger.info("Entered card number as" + cardNumber);
 		driver.pauseExecutionFor(1000);
@@ -1873,6 +1873,13 @@ public class StoreFrontWebsiteBasePage extends RFBasePage {
 		driver.pauseExecutionFor(2000);
 		driver.quickWaitForElementPresent(ENROLLMENT_SUCCESSFUL_MSG_LOC);
 		return driver.isElementVisible(ENROLLMENT_SUCCESSFUL_MSG_LOC);
+	}
+	
+	public String getConsultantOrderNumberFromURL(){
+		String[] currentURLArray = driver.getCurrentUrl().split("\\");
+		String consultantOrderNum = currentURLArray[currentURLArray.length-1];
+		logger.info("consultantOrderNum "+consultantOrderNum);
+		return consultantOrderNum;
 	}
 
 	/***

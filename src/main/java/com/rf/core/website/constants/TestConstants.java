@@ -102,6 +102,7 @@ public class TestConstants {
 	public static final String SPOUSE_FIRST_NAME = "FNSpouse";
 	public static final String SPOUSE_LAST_NAME = "LNSpouse";
 	public static final String PROFILE_UPDATION_MESSAGE = "Your profile has been updated";
+	public static final String EMAIL_SENT_MESSAGE = "Email Sent";
 	public static final String STATE_US_ABBREVIATION = "CA";
 	public static final String BILLING_PROFILE_UPDATION_MESSAGE = "Successfully updated Payment Details.";
 	public static final String BILLING_PROFILE_ADDED_MESSAGE = "Card details are added successfully.";

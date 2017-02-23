@@ -20,7 +20,7 @@ public class BillingProfileTest extends StoreFrontWebsiteBaseTest{
 		String currentURL = null;
 		String urlToAssert = "payment-details";
 		//Login as PC user.
-		sfHomePage.loginToStoreFront(pcUserWithPWSSponsor(),  password,true);
+		sfHomePage.loginToStoreFront(pcUserWithPWSSponsor(), password,true);
 		sfHomePage.clickWelcomeDropdown();
 		sfBillingInfoPage = sfHomePage.navigateToBillingInfoPage();
 		currentURL = sfBillingInfoPage.getCurrentURL().toLowerCase();
@@ -31,7 +31,7 @@ public class BillingProfileTest extends StoreFrontWebsiteBaseTest{
 		sfHomePage.clickWelcomeDropdown();
 		sfBillingInfoPage.logout();
 		//Login as Consultant.
-		sfHomePage.loginToStoreFront(consultantWithPulseAndWithCRP(),  password,true);
+		sfHomePage.loginToStoreFront(consultantWithPulseAndWithCRP(), password,true);
 		sfHomePage.clickWelcomeDropdown();
 		sfBillingInfoPage = sfHomePage.navigateToBillingInfoPage();
 		currentURL = sfBillingInfoPage.getCurrentURL().toLowerCase();
@@ -42,7 +42,7 @@ public class BillingProfileTest extends StoreFrontWebsiteBaseTest{
 		sfHomePage.clickWelcomeDropdown();
 		sfBillingInfoPage.logout();
 		//Login as RC.
-		sfHomePage.loginToStoreFront(rcWithOrderWithoutSponsor(),  password,true);
+		sfHomePage.loginToStoreFront(rcWithOrderWithoutSponsor(), password,true);
 		sfHomePage.clickWelcomeDropdown();
 		sfBillingInfoPage = sfHomePage.navigateToBillingInfoPage();
 		currentURL = sfBillingInfoPage.getCurrentURL().toLowerCase();
@@ -61,31 +61,23 @@ public class BillingProfileTest extends StoreFrontWebsiteBaseTest{
 	@Test(enabled=true)
 	public void testAddNewBillingAddressToNewlyCreatedBillingProfile_386(){
 		String currentURL = null;
-		String randomWord = CommonUtils.getRandomWord(5);
 		String suggestedBillingAddress = null;
 		String urlToAssert = "payment-details";
-		String cardName = TestConstants.CARD_NAME + randomWord;
-		String firstName = TestConstants.FIRST_NAME;
-		String lastName = TestConstants.LAST_NAME;
-		String addressLine1 = TestConstants.ADDRESS_LINE_1_US;
-		String addressLine2 = TestConstants.ADDRESS_LINE_2_US;
-		String city = TestConstants.CITY_US;
-		String state = TestConstants.STATE_US;
-		String postalCode = TestConstants.POSTAL_CODE_US;
-		String phoneNumber = TestConstants.PHONE_NUMBER;
+		randomWords = CommonUtils.getRandomWord(5);
+		cardName = cardName + randomWords;
+		lastName = TestConstants.LAST_NAME;
 		String addressInWrongFormat = TestConstants.WRONG_ADDRESS_LINE_1_US;
 		String wrongCombinationCity = TestConstants.CITY_DALLAS_US;
 		String cardLastName = null;
 
 		//Login as consultant user.
-		//sfHomePage.loginToStoreFront(TestConstants.CONSULTANT_EMAIL_WITH_CRP_AND_PULSE,  password,true);
 		sfHomePage.loginToStoreFront(consultantWithPulseAndWithCRP(), password,true);
 		sfHomePage.clickWelcomeDropdown();
 		sfBillingInfoPage = sfHomePage.navigateToBillingInfoPage();
 		currentURL = sfBillingInfoPage.getCurrentURL().toLowerCase();
 		s_assert.assertTrue(currentURL.contains(urlToAssert), "Expected URL should contain "+urlToAssert+" but actual on UI is"+currentURL);
 		sfBillingInfoPage.clickAddNewBillingProfileLink();
-		sfBillingInfoPage.enterUserBillingDetails(TestConstants.CARD_TYPE, TestConstants.CARD_NUMBER_2,cardName, TestConstants.CVV);
+		sfBillingInfoPage.enterUserBillingDetails(cardType,cardNumber,cardName,CVV);
 		sfBillingInfoPage.clickAddNewBillingAddressLink();
 		s_assert.assertTrue(sfBillingInfoPage.isAddNewBillingAddressFormDisplayed(),"ADD NEW BILLING ADDRESS form Block is not Displayed");
 
@@ -102,8 +94,10 @@ public class BillingProfileTest extends StoreFrontWebsiteBaseTest{
 		sfBillingInfoPage.clickYesButtonOnAddressSuggestionPopUp();
 
 		// Filling Right Address 
+		randomWords = CommonUtils.getRandomWord(5);
+		cardName = cardName + randomWords;
 		sfBillingInfoPage.clickAddNewBillingProfileLink();
-		sfBillingInfoPage.enterUserBillingDetails(TestConstants.CARD_TYPE, TestConstants.CARD_NUMBER,cardName, TestConstants.CVV);
+		sfBillingInfoPage.enterUserBillingDetails(cardType,cardNumber,cardName,CVV);
 		sfBillingInfoPage.clickAddNewBillingAddressLink();
 		s_assert.assertTrue(sfBillingInfoPage.isAddNewBillingAddressFormDisplayed(),"ADD NEW BILLING ADDRESS form Block is not Displayed");
 		sfBillingInfoPage.enterConsultantAddressDetails(firstName, lastName, addressLine1, addressLine2, city, state, postalCode, phoneNumber);
@@ -124,19 +118,12 @@ public class BillingProfileTest extends StoreFrontWebsiteBaseTest{
 	@Test(enabled=true)
 	public void testBillingInformationDefaultPaymentProfilesMultipleProfiles_475(){
 		String currentURL = null;
-		String randomWord = CommonUtils.getRandomWord(5);
-		String randomWord2 = CommonUtils.getRandomWord(5);
 		String urlToAssert = "payment-details";
-		String cardNameForFirstProfile = TestConstants.CARD_NAME + randomWord;
-		String cardNameForSecondProfile = TestConstants.CARD_NAME + randomWord2;
-		String firstName = TestConstants.FIRST_NAME;
+		randomWords = CommonUtils.getRandomWord(5);
+		String cardNameForFirstProfile = cardName + randomWords;
+		randomWords = CommonUtils.getRandomWord(5);
+		String cardNameForSecondProfile = cardName + randomWords;
 		String lastName = TestConstants.LAST_NAME;
-		String addressLine1 = TestConstants.ADDRESS_LINE_1_US;
-		String addressLine2 = TestConstants.ADDRESS_LINE_2_US;
-		String city = TestConstants.CITY_US;
-		String state = TestConstants.STATE_US;
-		String postalCode = TestConstants.POSTAL_CODE_US;
-		String phoneNumber = TestConstants.PHONE_NUMBER;
 		String updatedDefaultBillingProfileName = null;
 		int countOfDefaultProfiles;
 		String cardLastNameForFirstProfile = null;
@@ -144,7 +131,7 @@ public class BillingProfileTest extends StoreFrontWebsiteBaseTest{
 
 
 		//Login as consultant user.
-		sfHomePage.loginToStoreFront(consultantWithPulseAndWithCRP(),  password,true);
+		sfHomePage.loginToStoreFront(consultantWithPulseAndWithCRP(), password,true);
 		sfHomePage.clickWelcomeDropdown();
 		sfBillingInfoPage = sfHomePage.navigateToBillingInfoPage();
 		currentURL = sfBillingInfoPage.getCurrentURL().toLowerCase();
@@ -152,7 +139,7 @@ public class BillingProfileTest extends StoreFrontWebsiteBaseTest{
 
 		// Creating a new profile and setting it as default profile initially.
 		sfBillingInfoPage.clickAddNewBillingProfileLink();
-		sfBillingInfoPage.enterUserBillingDetails(TestConstants.CARD_TYPE, TestConstants.CARD_NUMBER_2,cardNameForFirstProfile, TestConstants.CVV);
+		sfBillingInfoPage.enterUserBillingDetails(cardType,cardNumber,cardNameForFirstProfile,CVV);
 		sfBillingInfoPage.clickAddNewBillingAddressLink();
 		sfBillingInfoPage.enterConsultantAddressDetails(firstName, lastName, addressLine1, addressLine2, city, state, postalCode, phoneNumber);
 		sfBillingInfoPage.clickBillingDetailsNextbutton();
@@ -163,7 +150,7 @@ public class BillingProfileTest extends StoreFrontWebsiteBaseTest{
 
 		// Creating one more new Billing profile
 		sfBillingInfoPage.clickAddNewBillingProfileLink();
-		sfBillingInfoPage.enterUserBillingDetails(TestConstants.CARD_TYPE, TestConstants.CARD_NUMBER_2,cardNameForSecondProfile, TestConstants.CVV);
+		sfBillingInfoPage.enterUserBillingDetails(cardType,cardNumber,cardNameForSecondProfile,CVV);
 		sfBillingInfoPage.clickAddNewBillingAddressLink();
 		sfBillingInfoPage.enterConsultantAddressDetails(firstName, lastName, addressLine1, addressLine2, city, state, postalCode, phoneNumber);
 		sfBillingInfoPage.clickBillingDetailsNextbutton();
@@ -202,21 +189,22 @@ public class BillingProfileTest extends StoreFrontWebsiteBaseTest{
 		int initialCountOfProfiles;
 		int countAfterAddingNewProfile;
 		int totalAddressInDD;
-		String randomWord = CommonUtils.getRandomWord(4);
+		randomWords = CommonUtils.getRandomWord(4);
 		String urlToAssert = "payment-details";
-		String nameOnCard = TestConstants.CARD_NAME + randomWord;
+		cardName = cardName + randomWords;
+		
 		//Login as consultant user.
-		sfHomePage.loginToStoreFront(consultantWithPulseAndWithCRP(),  password,true);
+		sfHomePage.loginToStoreFront(consultantWithPulseAndWithCRP(), password,true);
 		sfHomePage.clickWelcomeDropdown();
 		sfBillingInfoPage = sfHomePage.navigateToBillingInfoPage();
 		currentURL = sfBillingInfoPage.getCurrentURL().toLowerCase();
 		s_assert.assertTrue(currentURL.contains(urlToAssert), "Expected URL should contain "+urlToAssert+" but actual on UI is"+currentURL);
 		initialCountOfProfiles = sfBillingInfoPage.getCountOfBillingProfilesPresentInProfilesListSection();
 		sfBillingInfoPage.clickAddNewBillingProfileLink();
-		sfBillingInfoPage.enterUserBillingDetails(TestConstants.CARD_TYPE, TestConstants.CARD_NUMBER, nameOnCard, TestConstants.CVV);
+		sfBillingInfoPage.enterUserBillingDetails(cardType,cardNumber,cardName,CVV);
 		s_assert.assertTrue(sfBillingInfoPage.isBillingAddressDropdownIsPresent(),"Billing Address Dropdown is not present");
 		totalAddressInDD = sfBillingInfoPage.getCountOfBillingAddressesPresentInDropdown();  
-		sfBillingInfoPage.selectRandomAddressFromBillingAddressDropdown(CommonUtils.getRandomNum(1,totalAddressInDD-1));
+		sfBillingInfoPage.selectRandomAddressFromBillingAddressDropdown(CommonUtils.getRandomNum(0,totalAddressInDD-1)+1);
 		sfBillingInfoPage.clickBillingDetailsNextbutton();
 		countAfterAddingNewProfile = sfBillingInfoPage.getCountOfBillingProfilesPresentInProfilesListSection();
 		s_assert.assertEquals(countAfterAddingNewProfile,initialCountOfProfiles + 1,"Billing Profile is not present in profiles List. Count of Profiles is still same after adding New Billing profile. Expected Count : "+ (initialCountOfProfiles + 1) + ". Actual Count : " + countAfterAddingNewProfile);
@@ -233,21 +221,18 @@ public class BillingProfileTest extends StoreFrontWebsiteBaseTest{
 	@Test(enabled=true)
 	public void testBillingProfileSelectAnBillingAddressBlankDropdown_428(){
 		String currentURL = null;
-		String randomWord = CommonUtils.getRandomWord(5);
-		String cardType = TestConstants.CARD_TYPE;
-		String cardNum = TestConstants.CARD_NUMBER_2;
-		String cardName = TestConstants.CARD_NAME + randomWord;
-		String cvv =  TestConstants.CVV;
+		randomWords = CommonUtils.getRandomWord(5);
+		cardName = cardName + randomWords;
 		String urlToAssert = "payment-details";
 
 		//Login as RC user.
-		sfHomePage.loginToStoreFront(rcWithOrderWithoutSponsor(),  password,true);
+		sfHomePage.loginToStoreFront(rcWithoutOrder(), password,true);
 		sfHomePage.clickWelcomeDropdown();
 		sfBillingInfoPage = sfHomePage.navigateToBillingInfoPage();
 		currentURL = sfBillingInfoPage.getCurrentURL().toLowerCase();
 		s_assert.assertTrue(currentURL.contains(urlToAssert), "Expected URL should contain " + urlToAssert + " but actual on UI is " + currentURL);
 		sfBillingInfoPage.clickAddNewBillingProfileLink();
-		sfBillingInfoPage.enterUserBillingDetails(cardType, cardNum, cardName, cvv);
+		sfBillingInfoPage.enterUserBillingDetails(cardType,cardNumber, cardName,CVV);
 		sfBillingInfoPage.clickBillingDetailsNextbutton();
 		s_assert.assertTrue(sfBillingInfoPage.isErrrorMsgsForAllMandatoryFieldsForBillingAddressArePresent(),"Error msg for all mandatory fields of billing address are not present as expected");
 		s_assert.assertAll();
@@ -263,22 +248,10 @@ public class BillingProfileTest extends StoreFrontWebsiteBaseTest{
 	@Test(enabled=true)// Need to Verify
 	public void testBillingProfileSelectAnBillingAddressExistingProfile_427(){
 		String currentURL = null;
-		String randomWord = CommonUtils.getRandomWord(5);
 		String urlToAssert = "payment-details";
-		String cardName = TestConstants.CARD_NAME + randomWord;
-		String firstName = TestConstants.FIRST_NAME;
-		String lastName = TestConstants.LAST_NAME;
-		String addressLine1 = TestConstants.ADDRESS_LINE_1_US;
-		String addressLine2 = TestConstants.ADDRESS_LINE_2_US;
-		String city = TestConstants.CITY_US;
-		String state = TestConstants.STATE_US;
-		String postalCode = TestConstants.POSTAL_CODE_US;
-		String phoneNumber = TestConstants.PHONE_NUMBER;
-		String updatedAddressLine1 = TestConstants.SECOND_ADDRESS_LINE_1_US;
-		String updatedAddressLine2 = TestConstants.SECOND_ADDRESS_LINE_2_US;
-		String updatedCity = TestConstants.SECOND_CITY_US;
-		String updatedPostalCode = TestConstants.SECOND_POSTAL_CODE_US;
-		String stateAbbreviation = TestConstants.STATE_US_ABBREVIATION;
+		randomWords = CommonUtils.getRandomWord(5);
+		cardName = cardName + randomWords;
+		lastName =  TestConstants.LAST_NAME;
 		String billingAddressOnUI = null;
 		String cardLastName = null;
 		int initialAddressCount = 0;
@@ -286,7 +259,7 @@ public class BillingProfileTest extends StoreFrontWebsiteBaseTest{
 		int addressIndex = 0;
 
 		//Login as Consultant user.
-		sfHomePage.loginToStoreFront(consultantWithPulseAndWithCRP(),  password,true);
+		sfHomePage.loginToStoreFront(consultantWithPulseAndWithCRP(), password,true);
 		sfHomePage.clickWelcomeDropdown();
 		sfBillingInfoPage = sfHomePage.navigateToBillingInfoPage();
 		currentURL = sfBillingInfoPage.getCurrentURL().toLowerCase();
@@ -294,7 +267,7 @@ public class BillingProfileTest extends StoreFrontWebsiteBaseTest{
 
 		// Creating New Billing Profile with specific Address 1
 		sfBillingInfoPage.clickAddNewBillingProfileLink();
-		sfBillingInfoPage.enterUserBillingDetails(TestConstants.CARD_TYPE, TestConstants.CARD_NUMBER,cardName, TestConstants.CVV);
+		sfBillingInfoPage.enterUserBillingDetails(cardType,cardNumber,cardName,CVV);
 		sfBillingInfoPage.clickAddNewBillingAddressLink();
 		s_assert.assertTrue(sfBillingInfoPage.isAddNewBillingAddressFormDisplayed(),"ADD NEW BILLING ADDRESS form Block is not Displayed");
 		sfBillingInfoPage.enterConsultantAddressDetails(firstName, lastName, addressLine1, addressLine2, city, state, postalCode, phoneNumber);
@@ -306,12 +279,15 @@ public class BillingProfileTest extends StoreFrontWebsiteBaseTest{
 		// Updating Address and verifying it in Address dropdown
 		sfBillingInfoPage.clickBillingProfileEditLink(cardLastName);
 		initialAddressCount = sfBillingInfoPage.getCountOfBillingAddressesPresentInDropdownForExistingProfile();
-		sfBillingInfoPage.clickAddNewBillingAddressLink();
+//		sfBillingInfoPage.clickAddNewBillingAddressLink();
 		sfBillingInfoPage.enterBillingAddressDetailsForExistingBillingProfile(firstName, lastName, updatedAddressLine1, updatedAddressLine2, updatedCity, state, updatedPostalCode, phoneNumber);
 		sfBillingInfoPage.clickSavePaymentButton();
 		sfBillingInfoPage.clickUseAsEnteredButtonOnPopUp();
 		billingAddressOnUI = sfBillingInfoPage.getBillingAddressForSpecificBillingProfile(cardLastName);
-		s_assert.assertTrue(sfBillingInfoPage.isBillingAddressOnUIIsFoundAsExpected(updatedAddressLine1, updatedAddressLine2, updatedCity, updatedPostalCode, stateAbbreviation, billingAddressOnUI),"Billing Address on UI is not found as expected.");
+		s_assert.assertTrue(sfBillingInfoPage.isAddressFieldPresentAsExpectedOnUI(billingAddressOnUI,updatedAddressLine1),"Address Line 1 : " + updatedAddressLine1 + " is not present in Actual Billing Address");
+		s_assert.assertTrue(sfBillingInfoPage.isAddressFieldPresentAsExpectedOnUI(billingAddressOnUI,updatedCity),"City : " + updatedCity + " is not present in Actual Billing Address");
+		s_assert.assertTrue(sfBillingInfoPage.isAddressFieldPresentAsExpectedOnUI(billingAddressOnUI,updatedPostalCode),"PostalCode : " + updatedPostalCode + " is not present in Actual Billing Address");
+		s_assert.assertTrue(sfBillingInfoPage.isAddressFieldPresentAsExpectedOnUI(billingAddressOnUI,stateAbbreviation),"State : " + stateAbbreviation + " is not present in Actual Billing Address");
 
 		// Editing Billing Profile and selecting initial address from dropdown
 		sfBillingInfoPage.clickBillingProfileEditLink(cardLastName);
@@ -334,14 +310,14 @@ public class BillingProfileTest extends StoreFrontWebsiteBaseTest{
 	 * 
 	 *     
 	 */
-	@Test(enabled=false)//Needs user update
+	@Test(enabled=true)
 	public void testBillingInformationDefaultPaymentProfilesSingleProfile_474(){
 		String currentURL = null;
 		String urlToAssert = "payment-details";
 		int countOfDefaultProfiles = 0;
 
 		//Login as PC user.
-		sfHomePage.loginToStoreFront(TestConstants.PC_EMAIL_HAVING_SINGLE_BILLING_PROFILE, password,true);
+		sfHomePage.loginToStoreFront(pcWithSigleBillingProfile(), password,true);
 		sfHomePage.clickWelcomeDropdown();
 		sfBillingInfoPage = sfHomePage.navigateToBillingInfoPage();
 		currentURL = sfBillingInfoPage.getCurrentURL().toLowerCase();
@@ -362,22 +338,9 @@ public class BillingProfileTest extends StoreFrontWebsiteBaseTest{
 	@Test(enabled=true)
 	public void testEditABillingProfile_527(){
 		String currentURL = null;
-		String randomWord = CommonUtils.getRandomWord(5);
+		randomWords = CommonUtils.getRandomWord(5);
 		String urlToAssert = "payment-details";
-		String cardName = TestConstants.CARD_NAME + randomWord;
-		String firstName = TestConstants.FIRST_NAME;
-		String lastName = TestConstants.LAST_NAME;
-		String addressLine1 = TestConstants.ADDRESS_LINE_1_US;
-		String addressLine2 = TestConstants.ADDRESS_LINE_2_US;
-		String city = TestConstants.CITY_US;
-		String state = TestConstants.STATE_US;
-		String postalCode = TestConstants.POSTAL_CODE_US;
-		String phoneNumber = TestConstants.PHONE_NUMBER;
-		String updatedAddressLine1 = TestConstants.SECOND_ADDRESS_LINE_1_US;
-		String updatedAddressLine2 = TestConstants.SECOND_ADDRESS_LINE_2_US;
-		String updatedCity = TestConstants.SECOND_CITY_US;
-		String updatedPostalCode = TestConstants.SECOND_POSTAL_CODE_US;
-		String stateAbbreviation = TestConstants.STATE_US_ABBREVIATION;
+		cardName = cardName + randomWords;
 		String billingAddressOnUI = null;
 		String cardLastName = null;
 		int initialAddressCount = 0;
@@ -385,7 +348,7 @@ public class BillingProfileTest extends StoreFrontWebsiteBaseTest{
 		int addressIndex = 0;
 
 		//Login as Consultant user.
-		sfHomePage.loginToStoreFront(consultantWithPulseAndWithCRP(),  password,true);
+		sfHomePage.loginToStoreFront(consultantWithPulseAndWithCRP(), password,true);
 		sfHomePage.clickWelcomeDropdown();
 		sfBillingInfoPage = sfHomePage.navigateToBillingInfoPage();
 		currentURL = sfBillingInfoPage.getCurrentURL().toLowerCase();
@@ -393,7 +356,7 @@ public class BillingProfileTest extends StoreFrontWebsiteBaseTest{
 
 		// Creating New Billing Profile with specific Address 1
 		sfBillingInfoPage.clickAddNewBillingProfileLink();
-		sfBillingInfoPage.enterUserBillingDetails(TestConstants.CARD_TYPE, TestConstants.CARD_NUMBER,cardName, TestConstants.CVV);
+		sfBillingInfoPage.enterUserBillingDetails(cardType,cardNumber,cardName,CVV);
 		sfBillingInfoPage.clickAddNewBillingAddressLink();
 		s_assert.assertTrue(sfBillingInfoPage.isAddNewBillingAddressFormDisplayed(),"ADD NEW BILLING ADDRESS form Block is not Displayed");
 		sfBillingInfoPage.enterConsultantAddressDetails(firstName, lastName, addressLine1, addressLine2, city, state, postalCode, phoneNumber);
@@ -446,30 +409,17 @@ public class BillingProfileTest extends StoreFrontWebsiteBaseTest{
 	@Test(enabled=true)
 	public void testAddNewBillingAddressToExistingBillingProfile_385(){
 		String currentURL = null;
-		String randomWord = CommonUtils.getRandomWord(5);
+		randomWords = CommonUtils.getRandomWord(5);
 		String suggestedBillingAddress = null;
 		String urlToAssert = "payment-details";
-		String cardName = TestConstants.CARD_NAME + randomWord;
-		String firstName = TestConstants.FIRST_NAME;
-		String lastName = TestConstants.LAST_NAME;
-		String addressLine1 = TestConstants.ADDRESS_LINE_1_US;
-		String addressLine2 = TestConstants.ADDRESS_LINE_2_US;
-		String city = TestConstants.CITY_US;
-		String state = TestConstants.STATE_US;
-		String postalCode = TestConstants.POSTAL_CODE_US;
-		String phoneNumber = TestConstants.PHONE_NUMBER;
+		cardName = cardName + randomWords;
+		lastName = TestConstants.LAST_NAME;
 		String addressInWrongFormat = TestConstants.WRONG_ADDRESS_LINE_1_US;
 		String wrongCombinationCity = TestConstants.CITY_DALLAS_US;
-		String updatedAddressLine1 = TestConstants.SECOND_ADDRESS_LINE_1_US;
-		String updatedAddressLine2 = TestConstants.SECOND_ADDRESS_LINE_2_US;
-		String updatedCity = TestConstants.SECOND_CITY_US;
-		String updatedPostalCode = TestConstants.SECOND_POSTAL_CODE_US;
-		String stateAbbreviation = TestConstants.STATE_US_ABBREVIATION;
 		String cardLastName = null;
 		String billingAddressOnUI = null;
 
 		// Login as Consultant User
-		//		sfHomePage.loginToStoreFront(TestConstants.CONSULTANT_EMAIL_WITH_CRP_AND_PULSE, password,true);
 		sfHomePage.loginToStoreFront(consultantWithPulseAndWithCRP(), password,true);
 		sfHomePage.clickWelcomeDropdown();
 		sfBillingInfoPage = sfHomePage.navigateToBillingInfoPage();
@@ -478,7 +428,7 @@ public class BillingProfileTest extends StoreFrontWebsiteBaseTest{
 
 		// Adding a New Profile with Specific Address 1
 		sfBillingInfoPage.clickAddNewBillingProfileLink();
-		sfBillingInfoPage.enterUserBillingDetails(TestConstants.CARD_TYPE, TestConstants.CARD_NUMBER_2,cardName, TestConstants.CVV);
+		sfBillingInfoPage.enterUserBillingDetails(cardType,cardNumber,cardName,CVV);
 		sfBillingInfoPage.clickAddNewBillingAddressLink();
 		s_assert.assertTrue(sfBillingInfoPage.isAddNewBillingAddressFormDisplayed(),"ADD NEW BILLING ADDRESS form Block is not Displayed");
 		sfBillingInfoPage.enterConsultantAddressDetails(firstName, lastName, addressLine1, addressLine2, city, state, postalCode, phoneNumber);
@@ -491,8 +441,6 @@ public class BillingProfileTest extends StoreFrontWebsiteBaseTest{
 		sfBillingInfoPage.clickBillingProfileEditLink(cardLastName);
 		s_assert.assertTrue(sfBillingInfoPage.isCardDetailsFieldsDisabled(),"Card Details Fields are not Disabled after Editing Default Billing Profile");
 		s_assert.assertTrue(sfBillingInfoPage.isCardTypeIconsDisabled(),"Card Type Icons are not Disabled after Editing Default Billing Profile");
-		//   sfBillingInfoPage.clickAddNewBillingAddressLink();
-		//   s_assert.assertTrue(sfBillingInfoPage.isAddNewBillingAddressFormDisplayedForExistingProfile(),"ADD NEW BILLING ADDRESS form Block is not Displayed for existing billing profile");
 
 		// Filling Address in Wrong format.
 		sfBillingInfoPage.enterBillingAddressDetailsForExistingBillingProfile(firstName, lastName, addressInWrongFormat, addressLine2, city, state, postalCode, phoneNumber);
@@ -508,8 +456,6 @@ public class BillingProfileTest extends StoreFrontWebsiteBaseTest{
 
 		// Filling Specific Address 2 in right format
 		sfBillingInfoPage.clickBillingProfileEditLink(cardLastName);
-		//   sfBillingInfoPage.clickAddNewBillingAddressLink();
-		//   s_assert.assertTrue(sfBillingInfoPage.isAddNewBillingAddressFormDisplayedForExistingProfile(),"ADD NEW BILLING ADDRESS form Block is not Displayed for existing billing profile");
 		sfBillingInfoPage.enterBillingAddressDetailsForExistingBillingProfile(firstName, lastName, updatedAddressLine1, updatedAddressLine2, updatedCity, state, updatedPostalCode, phoneNumber);
 		sfBillingInfoPage.clickSavePaymentButton();
 		sfBillingInfoPage.clickUseAsEnteredButtonOnPopUp();
@@ -534,28 +480,20 @@ public class BillingProfileTest extends StoreFrontWebsiteBaseTest{
 		String currentURL = null;
 		String lastFourDigitOfCard = null;
 		String billingAddressOnUI = null;
-		String cardNum = TestConstants.CARD_NUMBER_2;
-		String randomWord = CommonUtils.getRandomWord(5);
-		String cardName = TestConstants.CARD_NAME +  randomWord;
+		randomWords = CommonUtils.getRandomWord(5);
 		String urlToAssert = "payment-details";
-		String firstName = TestConstants.FIRST_NAME;
-		String lastName = TestConstants.LAST_NAME;
-		String addressLine1 = TestConstants.ADDRESS_LINE_1_US;
-		String addressLine2 = TestConstants.ADDRESS_LINE_2_US;
-		String city = TestConstants.CITY_US;
-		String state = TestConstants.STATE_US;
-		String postalCode = TestConstants.POSTAL_CODE_US;
-		String phoneNumber = TestConstants.PHONE_NUMBER;
-		String stateAbbreviation = TestConstants.STATE_US_ABBREVIATION;
+		cardName = cardName + randomWords;
+		lastName = TestConstants.LAST_NAME;
 		String cardLastName = null;
+		
 		//Login as Consultant.
-		sfHomePage.loginToStoreFront(consultantWithPulseAndWithCRP(),  password,true);
+		sfHomePage.loginToStoreFront(consultantWithPulseAndWithCRP(), password,true);
 		sfHomePage.clickWelcomeDropdown();
 		sfBillingInfoPage = sfHomePage.navigateToBillingInfoPage();
 		currentURL = sfBillingInfoPage.getCurrentURL().toLowerCase();
 		s_assert.assertTrue(currentURL.contains(urlToAssert), "Expected URL should contain " + urlToAssert + " but actual on UI is " + currentURL);
 		sfBillingInfoPage.clickAddNewBillingProfileLink();
-		sfBillingInfoPage.enterUserBillingDetails(TestConstants.CARD_TYPE, cardNum,cardName, TestConstants.CVV);
+		sfBillingInfoPage.enterUserBillingDetails(cardType,cardNumber,cardName,CVV);
 		sfBillingInfoPage.clickAddNewBillingAddressLink();
 		s_assert.assertTrue(sfBillingInfoPage.isAddNewBillingAddressFormDisplayed(),"ADD NEW BILLING ADDRESS form Block is not Displayed");
 		sfBillingInfoPage.enterConsultantAddressDetails(firstName, lastName, addressLine1, addressLine2, city, state, postalCode, phoneNumber);
@@ -564,7 +502,7 @@ public class BillingProfileTest extends StoreFrontWebsiteBaseTest{
 		cardLastName = sfBillingInfoPage.getLastName(cardName);
 		s_assert.assertTrue(sfBillingInfoPage.isNewBillingProfilePresentInRowList(cardLastName),"New Billing Profile is not present in Profiles List");
 		lastFourDigitOfCard = sfBillingInfoPage.getLastFourDigitOfCreditCardNumberForSpecificBillingProfile(cardLastName);
-		s_assert.assertTrue(sfBillingInfoPage.isLastFourDigitMatchesWithSixteenDigitCardNumber(cardNum,lastFourDigitOfCard),"Last 4 Digits of Card Number on UI are not found as Expected. Card Number : " + cardNum + ". Acutal 4 Digits on UI : " +lastFourDigitOfCard);
+		s_assert.assertTrue(sfBillingInfoPage.isLastFourDigitMatchesWithSixteenDigitCardNumber(cardNumber,lastFourDigitOfCard),"Last 4 Digits of Card Number on UI are not found as Expected. Card Number : " + cardNumber + ". Acutal 4 Digits on UI : " +lastFourDigitOfCard);
 		s_assert.assertTrue(sfBillingInfoPage.isExpiryDateOfCardIsPresentForSpecificProfile(cardLastName),"Expiry Date is not found as Expected on UI");
 		billingAddressOnUI = sfBillingInfoPage.getBillingAddressForSpecificBillingProfile(cardLastName);
 		// Asserting Billing Address Details
@@ -588,23 +526,14 @@ public class BillingProfileTest extends StoreFrontWebsiteBaseTest{
 		String lastFourDigitOfCard = null;
 		String billingDetailsOnUI = null;
 		String expiryDate = null;
-		String cardNum = TestConstants.CARD_NUMBER_2;
-		String randomWord = CommonUtils.getRandomWord(5);
-		String cardName =  TestConstants.CARD_NAME + randomWord;
 		String urlToAssert = "/checkout/multi/";
-		String firstName = TestConstants.FIRST_NAME;
-		String lastName = TestConstants.LAST_NAME;
-		String addressLine1 = TestConstants.ADDRESS_LINE_1_US;
-		String addressLine2 = TestConstants.ADDRESS_LINE_2_US;
-		String city = TestConstants.CITY_US;
-		String state = TestConstants.STATE_US;
-		String postalCode = TestConstants.POSTAL_CODE_US;
-		String phoneNumber = TestConstants.PHONE_NUMBER;
-		String stateAbbreviation = TestConstants.STATE_US_ABBREVIATION;
+		lastName = TestConstants.LAST_NAME;
+		randomWords = CommonUtils.getRandomWord(5);
+		cardName = cardName + randomWords;
 		String cardLastName = null;
 
 		//Login as Consultant.
-		sfHomePage.loginToStoreFront(consultantWithPulseAndWithCRP(),  password,true);
+		sfHomePage.loginToStoreFront(consultantWithPulseAndWithCRP(), password,true);
 		sfShopSkinCarePage = sfHomePage.clickAllProducts();
 		sfShopSkinCarePage.addProductToCart(TestConstants.PRODUCT_NUMBER, TestConstants.ORDER_TYPE_ADHOC);
 		sfCartPage = sfShopSkinCarePage.checkoutTheCartFromPopUp();
@@ -614,7 +543,7 @@ public class BillingProfileTest extends StoreFrontWebsiteBaseTest{
 		sfCheckoutPage.clickSaveButton();
 		sfCheckoutPage.clickShippingDetailsNextbutton();
 		sfCheckoutPage.clickAddNewBillingProfileButton();
-		sfCheckoutPage.enterUserBillingDetails(TestConstants.CARD_TYPE, cardNum, cardName, TestConstants.CVV);
+		sfCheckoutPage.enterUserBillingDetails(cardType,cardNumber,cardName,CVV);
 		sfCheckoutPage.checkUseMyDeliveryAddressChkBox();
 		sfCheckoutPage.enterConsultantAddressDetails(firstName, lastName, addressLine1, addressLine2, city, state, postalCode, phoneNumber);
 		sfCheckoutPage.clickBillingDetailsNextbutton();
@@ -625,7 +554,7 @@ public class BillingProfileTest extends StoreFrontWebsiteBaseTest{
 		sfCheckoutPage.getCardDetailsFromBillingInfo(cardLastName);
 		lastFourDigitOfCard = sfCheckoutPage.getLastFourDigitsOfCardNumberInBillingDetails();
 		expiryDate = sfCheckoutPage.getExpiryDateOfCardNumberInBillingDetails();
-		s_assert.assertTrue(cardNum.endsWith(lastFourDigitOfCard),"Last 4 Digits of Card Number on UI are not found as Expected. Card Number : " + cardNum + ". Acutal 4 Digits on UI : " +lastFourDigitOfCard);
+		s_assert.assertTrue(cardNumber.endsWith(lastFourDigitOfCard),"Last 4 Digits of Card Number on UI are not found as Expected. Card Number : " + cardNumber + ". Acutal 4 Digits on UI : " +lastFourDigitOfCard);
 		s_assert.assertTrue(sfCheckoutPage.isExpiryDateIsPresentAsExpectedInBillingDetails(expiryDate),"Expiry Date on UI is not found as Expected. Expiry Date on UI: "+expiryDate);
 		s_assert.assertTrue(sfCheckoutPage.isAddressFieldPresentAsExpectedOnUI(billingDetailsOnUI,addressLine1),"Address Line 1 : " + addressLine1 + " is not present in Billing Address");
 		s_assert.assertTrue(sfCheckoutPage.isAddressFieldPresentAsExpectedOnUI(billingDetailsOnUI,city),"City : " + city + " is not present in updated Billing Address");

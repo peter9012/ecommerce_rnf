@@ -319,6 +319,10 @@ public class StoreFrontHomePage extends StoreFrontWebsiteBasePage{
 		driver.type(SSN_FOR_REGISTRATION_LOC, SSN);
 		logger.info("Entered SSN  as "+SSN);
 		driver.findElement(SSN_FOR_REGISTRATION_LOC).sendKeys(Keys.TAB);
+		driver.pauseExecutionFor(1000);
+		//The following is a patch to make next buuton enabled
+		driver.type(FIRST_NAME_FOR_REGISTRATION_LOC, firstName);
+		logger.info("Entered first name as "+firstName);
 		return this;
 	}
 
@@ -335,6 +339,32 @@ public class StoreFrontHomePage extends StoreFrontWebsiteBasePage{
 		driver.click(NEXT_BUTTON_LOC);
 		logger.info("Next button clicked");
 		driver.waitForPageLoad();
+		return this;
+	}
+	
+	/***
+	 * This method click the next button after selecting sponsor
+	 * 
+	 * @param
+	 * @return store front Home page object
+	 * 
+	 */
+	public StoreFrontHomePage clickNextButtonConsAccountDetails(){
+		driver.pauseExecutionFor(2000);
+		driver.quickWaitForElementPresent(NEXT_BUTTON_LOC);
+		driver.click(NEXT_BUTTON_LOC);
+		logger.info("Next button clicked");
+		driver.waitForPageLoad();
+		if(driver.getCurrentUrl().contains("choose-kit")==false){
+			driver.clickByJS(RFWebsiteDriver.driver,NEXT_BUTTON_LOC);
+			logger.info("Next button clicked again by JS");
+			driver.waitForPageLoad();
+		}
+		if(driver.getCurrentUrl().contains("choose-kit")==false){
+			driver.clickByAction(NEXT_BUTTON_LOC);
+			logger.info("Next button clicked again by Action");
+			driver.waitForPageLoad();
+		}
 		return this;
 	}
 

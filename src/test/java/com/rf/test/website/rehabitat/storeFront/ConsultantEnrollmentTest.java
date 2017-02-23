@@ -57,7 +57,7 @@ public class ConsultantEnrollmentTest extends StoreFrontWebsiteBaseTest{
 		sfHomePage.searchSponsor(TestConstants.SPONSOR);
 		sfHomePage.selectFirstSponsorFromList();
 		sfHomePage.enterConsultantEnrollmentDetails(firstName, lastName, email, password, socialInsuranceNumber);
-		sfHomePage.clickNextButton();
+		sfHomePage.clickNextButtonConsAccountDetails();
 		sfHomePage.chooseProductFromKitPage();
 		sfHomePage.clickNextButton();
 		sfHomePage.clickSaveButton();

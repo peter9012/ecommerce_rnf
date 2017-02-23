@@ -2994,6 +2994,7 @@ public class StoreFrontWebsiteBasePage extends RFBasePage {
 			driver.click(OK_BTN_LOC);
 			logger.info("OK btn on the confirm pulse subscription popup clicked");
 		}
+		driver.waitForPageLoad();
 		return new StoreFrontCheckoutPage(driver);
 	}
 

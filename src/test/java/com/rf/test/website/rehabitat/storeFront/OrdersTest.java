@@ -1532,7 +1532,6 @@ public class OrdersTest extends StoreFrontWebsiteBaseTest{
 		lastName = (TestConstants.LAST_NAME+randomWord).toLowerCase().trim();
 		sfCheckoutPage.clickEditLinkOfBillingProfile();
 		sfCheckoutPage.clickEditLinkOfDefaultBillingProfile();
-		sfCheckoutPage.checkUseMyDeliveryAddressChkBoxForExistingBillingProfile();
 		sfCheckoutPage.enterBillingAddressDetailsAtCheckout(firstName, lastName, addressLine1ForUpdation, addressLine2ForUpdation, cityForUpdation, state, postalCodeForUpdation, phoneNumber);
 		sfCheckoutPage.clickSavePaymentButton();
 		s_assert.assertTrue(sfCheckoutPage.isAddressVerificationPopupAppeared(),"Address Verification popup is not appeared for billing address");

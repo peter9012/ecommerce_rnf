@@ -51,7 +51,7 @@ public class UnsuccessfulUserLoginTest extends StoreFrontWebsiteBaseTest{
 	 */
 	@Test(enabled=true)
 	public void testUnsuccessfulUserLogin_31(){
-		String validUsername = TestConstants.CONSULTANT_EMAIL_WITH_CRP_AND_PULSE;
+		String validUsername = consultantWithPulseAndWithCRP();
 		String incorrectpassword = "111maiden";
 		sfHomePage.loginToStoreFront(validUsername, incorrectpassword,true);
 		s_assert.assertTrue(sfHomePage.isLoginOrRegisterPageDisplayed()&& sfHomePage.getCurrentURL().contains("/login"), "'Login Or Register' page has not displayed");

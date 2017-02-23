@@ -20,7 +20,7 @@ public class AboutMeTest extends StoreFrontWebsiteBaseTest{
 	public void testPWSSitesAccessJoinURL_578(){
 		String homePageURL = null;
 		String currentURL = null;
-		String prefix = TestConstants.CONSULTANT_PWS_PREFIX;
+		String prefix = pwsPrefix();
 		String urlToAssertForEventsLink = "/events";
 		String urlToAssertForEnrollNowLink = "/enrollment/consultant-registration";
 		String urlToAssertForProgramsAndIncentivesLink = "/programs-incentives";
@@ -128,7 +128,7 @@ public class AboutMeTest extends StoreFrontWebsiteBaseTest{
 		String homePageURL = null;
 		String currentURL = null;
 		String urlToAssert = "about-me";
-		String prefix = TestConstants.CONSULTANT_PWS_PREFIX;
+		String prefix = pwsPrefix();
 		homePageURL = sfHomePage.getCurrentURL();
 		sfHomePage.navigateToUrl(homePageURL + "/pws/" + prefix);
 		// For Anonymous User
@@ -138,7 +138,7 @@ public class AboutMeTest extends StoreFrontWebsiteBaseTest{
 		s_assert.assertTrue(currentURL.contains(urlToAssert),"Expected URL should contain "+urlToAssert+" but actual on UI is "+currentURL);
 		// For Consultant
 		sfHomePage.clickRodanAndFieldsLogo();
-		sfHomePage.loginToStoreFront(TestConstants.CONSULTANT_EMAIL_WITH_CRP_AND_PULSE,password,true);
+		sfHomePage.loginToStoreFront(consultantWithPulseAndWithCRP(),password,true);
 		sfHomePage.clickSponsorNameLink();
 		currentURL = sfAboutMePage.getCurrentURL();
 		s_assert.assertTrue(sfAboutMePage.isContactMeHeaderPresentOnAboutMePage(),"Contact me header is not present on the about me page of sponsor");
@@ -147,7 +147,7 @@ public class AboutMeTest extends StoreFrontWebsiteBaseTest{
 		sfHomePage.logout();
 		// For PC
 		sfHomePage.clickRodanAndFieldsLogo();
-		sfHomePage.loginToStoreFront(TestConstants.PC_EMAIL_WHO_ENROLLED_UNDER_SPONSOR_WITH_PWS,password,true);
+		sfHomePage.loginToStoreFront(pcUserWithPWSSponsor(),password,true);
 		sfHomePage.clickSponsorNameLink();
 		currentURL = sfAboutMePage.getCurrentURL();
 		s_assert.assertTrue(sfAboutMePage.isContactMeHeaderPresentOnAboutMePage(),"Contact me header is not present on the about me page of sponsor");
@@ -156,7 +156,7 @@ public class AboutMeTest extends StoreFrontWebsiteBaseTest{
 		sfHomePage.logout();
 		// For RC
 		sfHomePage.clickRodanAndFieldsLogo();
-		sfHomePage.loginToStoreFront(TestConstants.RC_EMAIL_HAVING_ORDER,password,true);
+		sfHomePage.loginToStoreFront(rcWithOrderWithoutSponsor(),password,true);
 		sfHomePage.clickSponsorNameLink();
 		currentURL = sfAboutMePage.getCurrentURL();
 		s_assert.assertTrue(sfAboutMePage.isContactMeHeaderPresentOnAboutMePage(),"Contact me header is not present on the about me page of sponsor");
@@ -177,7 +177,7 @@ public class AboutMeTest extends StoreFrontWebsiteBaseTest{
 		String homePageURL = null;
 		String currentURL = null;
 		String urlToAssert = "about-me";
-		String prefix = TestConstants.CONSULTANT_PWS_PREFIX;
+		String prefix = pwsPrefix();
 		// As an anonymous user
 		homePageURL = sfHomePage.getCurrentURL();
 		sfHomePage.navigateToUrl(homePageURL + "/pws/" + prefix);
@@ -206,11 +206,11 @@ public class AboutMeTest extends StoreFrontWebsiteBaseTest{
 		String urlToAssert = "about-me";
 		String aboutMeEdit="about-me/edit";
 		String submissionGuidelineUrl="PWS-Profile-Guidelines.pdf";
-		String prefix = TestConstants.CONSULTANT_PWS_PREFIX;
+		String prefix = pwsPrefix();
 
 		homePageURL = sfHomePage.getCurrentURL();
 		sfHomePage.navigateToUrl(homePageURL + "/pws/" + prefix);
-		sfHomePage.loginToStoreFront(TestConstants.CONSULTANT_EMAIL_WITH_CRP_AND_PULSE, password,true);
+		sfHomePage.loginToStoreFront(consultantWithPulseAndWithCRP(), password,true);
 		sfHomePage.clickWelcomeDropdown();
 		sfAboutMePage=sfHomePage.navigateToEditPWSPage();
 		currentURL = sfAboutMePage.getCurrentURL();
@@ -240,11 +240,11 @@ public class AboutMeTest extends StoreFrontWebsiteBaseTest{
 		String pageHeader=null;
 		String urlToAssert = "about-me";
 		String aboutMeEdit="about-me/edit";
-		String prefix = TestConstants.CONSULTANT_PWS_PREFIX;
+		String prefix = pwsPrefix();
 		homePageURL = sfHomePage.getCurrentURL();
 
 		sfHomePage.navigateToUrl(homePageURL + "/pws/" + prefix);
-		sfHomePage.loginToStoreFront(TestConstants.CONSULTANT_EMAIL_WITH_CRP_AND_PULSE, password,true);
+		sfHomePage.loginToStoreFront(consultantWithPulseAndWithCRP(), password,true);
 		sfHomePage.clickWelcomeDropdown();
 		sfAboutMePage=sfHomePage.navigateToEditPWSPage();
 		currentURL = sfAboutMePage.getCurrentURL();
@@ -274,11 +274,11 @@ public class AboutMeTest extends StoreFrontWebsiteBaseTest{
 		String showSinceText=null;
 		String urlToAssert = "about-me";
 		String aboutMeEdit="about-me/edit";
-		String prefix = TestConstants.CONSULTANT_PWS_PREFIX;
+		String prefix = pwsPrefix();
 
 		homePageURL = sfHomePage.getCurrentURL();
 		sfHomePage.navigateToUrl(homePageURL + "/pws/" + prefix);
-		sfHomePage.loginToStoreFront(TestConstants.CONSULTANT_EMAIL_WITH_CRP_AND_PULSE, password,true);
+		sfHomePage.loginToStoreFront(consultantWithPulseAndWithCRP(), password,true);
 		sfHomePage.clickWelcomeDropdown();
 		sfAboutMePage=sfHomePage.navigateToEditPWSPage();
 		currentURL = sfAboutMePage.getCurrentURL();
@@ -310,16 +310,16 @@ public class AboutMeTest extends StoreFrontWebsiteBaseTest{
 		String homePageURL = null;
 		String currentURL = null;
 		String phoneNo=TestConstants.PHONE_NUMBER;
-		String email=TestConstants.CONSULTANT_EMAIL_WITH_CRP_AND_PULSE;
+		String email=consultantWithPulseAndWithCRP();
 		String phoneNumberOnAboutMePage=null;
 		String emailOnAboutMePage=null;
 		String urlToAssert = "about-me";
 		String aboutMeEdit="about-me/edit";
-		String prefix = TestConstants.CONSULTANT_PWS_PREFIX;
+		String prefix = pwsPrefix();
 
 		homePageURL = sfHomePage.getCurrentURL();
 		sfHomePage.navigateToUrl(homePageURL + "/pws/" + prefix);
-		sfHomePage.loginToStoreFront(TestConstants.CONSULTANT_EMAIL_WITH_CRP_AND_PULSE, password,true);
+		sfHomePage.loginToStoreFront(consultantWithPulseAndWithCRP(), password,true);
 		sfHomePage.clickWelcomeDropdown();
 		sfAboutMePage=sfHomePage.navigateToEditPWSPage();
 		currentURL = sfAboutMePage.getCurrentURL();
@@ -347,11 +347,11 @@ public class AboutMeTest extends StoreFrontWebsiteBaseTest{
 		String currentURL = null;
 		String urlToAssert = "about-me";
 		String aboutMeEdit="about-me/edit";
-		String prefix = TestConstants.CONSULTANT_PWS_PREFIX;
+		String prefix = pwsPrefix();
 
 		homePageURL = sfHomePage.getCurrentURL();
 		sfHomePage.navigateToUrl(homePageURL + "/pws/" + prefix);
-		sfHomePage.loginToStoreFront(TestConstants.CONSULTANT_EMAIL_WITH_CRP_AND_PULSE, password,true);
+		sfHomePage.loginToStoreFront(consultantWithPulseAndWithCRP(), password,true);
 		sfHomePage.clickWelcomeDropdown();
 		sfAboutMePage=sfHomePage.navigateToEditPWSPage();
 		currentURL = sfAboutMePage.getCurrentURL();
@@ -379,11 +379,11 @@ public class AboutMeTest extends StoreFrontWebsiteBaseTest{
 		String pinterestId="pinterest@xyz.com";
 		String urlToAssert = "about-me";
 		String aboutMeEdit="about-me/edit";
-		String prefix = TestConstants.CONSULTANT_PWS_PREFIX;
+		String prefix = pwsPrefix();
 
 		homePageURL = sfHomePage.getCurrentURL();
 		sfHomePage.navigateToUrl(homePageURL + "/pws/" + prefix);
-		sfHomePage.loginToStoreFront(TestConstants.CONSULTANT_EMAIL_WITH_CRP_AND_PULSE, password,true);
+		sfHomePage.loginToStoreFront(consultantWithPulseAndWithCRP(), password,true);
 		sfHomePage.clickWelcomeDropdown();
 		sfAboutMePage=sfHomePage.navigateToEditPWSPage();
 		currentURL = sfAboutMePage.getCurrentURL();
@@ -455,7 +455,7 @@ public class AboutMeTest extends StoreFrontWebsiteBaseTest{
 
 		sfAboutMePage.clickWelcomeDropdown();
 		sfAboutMePage.logout();
-		sfAboutMePage.loginToStoreFront(TestConstants.RC_EMAIL_HAVING_ORDER, password,true);
+		sfAboutMePage.loginToStoreFront(rcWithOrderWithoutSponsor(), password,true);
 		sfAboutMePage.clickAboutMe();
 		phoneOnAboutMePage=sfAboutMePage.getPhoneNumberFromAboutMePageHeader();
 		s_assert.assertTrue(phoneOnAboutMePage.contains(phoneNo),"Expected phone number is:"+phoneNo+"But actual on UI is"+phoneOnAboutMePage);
@@ -496,11 +496,11 @@ public class AboutMeTest extends StoreFrontWebsiteBaseTest{
 		String fbId="facebook@xyz.com";
 		String twitterID="twitter@xyz.com";
 		String pinterestId="pinterest@xyz.com";
-		String prefix = TestConstants.CONSULTANT_PWS_PREFIX;
+		String prefix = pwsPrefix();
 
 		homePageURL = sfHomePage.getCurrentURL();
 		sfHomePage.navigateToUrl(homePageURL + "/pws/" + prefix);
-		sfHomePage.loginToStoreFront(TestConstants.CONSULTANT_EMAIL_WITH_CRP_AND_PULSE, password,true);
+		sfHomePage.loginToStoreFront(consultantWithPulseAndWithCRP(), password,true);
 		sfHomePage.clickWelcomeDropdown();
 		sfAboutMePage=sfHomePage.navigateToEditPWSPage();
 		currentURL = sfAboutMePage.getCurrentURL();
@@ -543,7 +543,7 @@ public class AboutMeTest extends StoreFrontWebsiteBaseTest{
 		sfAboutMePage.clickCancelButtonAboutMePage();
 		sfAboutMePage.clickWelcomeDropdown();
 		sfAboutMePage.logout();
-		sfAboutMePage.loginToStoreFront(TestConstants.RC_EMAIL_WITHOUT_ORDER, password,true);
+		sfAboutMePage.loginToStoreFront(rcWithOrderWithoutSponsor(), password,true);
 		sfAboutMePage.clickAboutMe();
 
 		phoneOnAboutMePage=sfAboutMePage.getPhoneNumberFromAboutMePageHeader();

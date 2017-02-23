@@ -48,7 +48,7 @@ public class ProductQuickViewTest extends StoreFrontWebsiteBaseTest{
 		String textToAssertInURL = "autoship/cart";
 		String currentURL = null;
 		//Login to application.
-		sfHomePage.loginToStoreFront(TestConstants.PC_EMAIL_HAVING_AUTOSHIP,  password,true);
+		sfHomePage.loginToStoreFront(pcUserWithPWSSponsor(),  password,true);
 		sfShopSkinCarePage = sfHomePage.clickAllProducts();
 		sfShopSkinCarePage.refineProductByCategory(TestConstants.PC_PERKS_AUTOSHIP_PRODUCT_CATEGORY);
 		selectedProductName = sfShopSkinCarePage.getProductNameFromAllProductPage(TestConstants.PRODUCT_NUMBER);
@@ -88,7 +88,7 @@ public class ProductQuickViewTest extends StoreFrontWebsiteBaseTest{
 	@Test(enabled=true)
 	public void testProductQuickViewRCUser_195(){
 		String selectedProductName = null;
-		sfHomePage.loginToStoreFront(TestConstants.RC_EMAIL_HAVING_ORDER,  password,true);
+		sfHomePage.loginToStoreFront(rcWithOrderWithoutSponsor(),  password,true);
 		sfShopSkinCarePage = sfHomePage.clickAllProducts();
 		selectedProductName = sfShopSkinCarePage.getProductNameFromAllProductPage(TestConstants.PRODUCT_NUMBER);
 		sfShopSkinCarePage.clickOnQuickViewLinkForProduct(TestConstants.PRODUCT_NUMBER);
@@ -120,7 +120,7 @@ public class ProductQuickViewTest extends StoreFrontWebsiteBaseTest{
 		String textToAssertInURL = "autoship/cart";
 		String currentURL = null;
 		//Login to application.
-		sfHomePage.loginToStoreFront(TestConstants.CONSULTANT_EMAIL_WITH_CRP_AND_PULSE,  password,true);
+		sfHomePage.loginToStoreFront(consultantWithPulseAndWithCRP(),  password,true);
 		sfShopSkinCarePage = sfHomePage.clickAllProducts();
 		sfShopSkinCarePage.refineProductByCategory(TestConstants.CONSULTANT_CRP_AUTOSHIP_PRODUCT_CATEGORY);
 		selectedProductName = sfShopSkinCarePage.getProductNameFromAllProductPage(TestConstants.PRODUCT_NUMBER);
@@ -164,7 +164,7 @@ public class ProductQuickViewTest extends StoreFrontWebsiteBaseTest{
 		String textToAssertInURL = "autoship/cart";
 		String currentURL = null;
 		//Login to application.
-		sfHomePage.loginToStoreFront(TestConstants.CONSULTANT_EMAIL_WITH_CRP_AND_PULSE,  password,true);
+		sfHomePage.loginToStoreFront(consultantWithPulseAndWithCRP(),  password,true);
 		sfShopSkinCarePage = sfHomePage.clickAllProducts();
 		sfShopSkinCarePage.refineProductByCategory(TestConstants.CONSULTANT_CRP_AUTOSHIP_PRODUCT_CATEGORY);
 		selectedProductName = sfShopSkinCarePage.getProductNameFromAllProductPage(TestConstants.PRODUCT_NUMBER);
@@ -202,7 +202,7 @@ public class ProductQuickViewTest extends StoreFrontWebsiteBaseTest{
 		String expectedURL="/cart";
 
 		//Login to application.
-		sfHomePage.loginToStoreFront(TestConstants.PC_EMAIL_HAVING_AUTOSHIP,  password,true);
+		sfHomePage.loginToStoreFront(pcUserWithPWSSponsor(),  password,true);
 		//Get product count on adhoc cart page.
 		sfHomePage.clickWelcomeDropdown();
 		previousProductCount = sfHomePage.getNumberOfItemFromMiniCart();

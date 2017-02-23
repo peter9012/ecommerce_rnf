@@ -311,6 +311,7 @@ public class StoreFrontHomePage extends StoreFrontWebsiteBasePage{
 		logger.info("Entered last name as "+lastName);
 		driver.type(EMAIL_ID_FOR_REGISTRATION_LOC, emailID);
 		logger.info("Entered email id as "+emailID);
+		System.out.println(emailID);
 		driver.type(PASSWORD_FOR_REGISTRATION_LOC, password);
 		logger.info("Entered password as "+password);
 		driver.type(CONFIRM_PASSWORD_FOR_REGISTRATION_LOC, password);

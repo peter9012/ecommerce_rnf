@@ -361,7 +361,7 @@ public class PCEnrollmentTest extends StoreFrontWebsiteBaseTest{
 		lastName = TestConstants.LAST_NAME+randomWords;
 		email = firstName+timeStamp+TestConstants.EMAIL_SUFFIX;
 		String homePageURL = sfHomePage.getCurrentURL();
-		String prefix = TestConstants.CONSULTANT_PWS_PREFIX;
+		String prefix = pwsPrefix();
 		sfHomePage.navigateToUrl(homePageURL + "/pws/" + prefix);
 		sfShopSkinCarePage = sfHomePage.clickAllProducts();
 		sfShopSkinCarePage.addProductToCart(TestConstants.PRODUCT_NUMBER, TestConstants.ORDER_TYPE_ADHOC);;
@@ -421,7 +421,6 @@ public class PCEnrollmentTest extends StoreFrontWebsiteBaseTest{
 
 	@Test(enabled=true,groups="users")
 	public void testPCEnrollmentWithoutSponsor(){
-		navigateToStoreFrontBaseURL();
 		timeStamp = CommonUtils.getCurrentTimeStamp();
 		randomWords = CommonUtils.getRandomWord(5);		
 		lastName = TestConstants.LAST_NAME+randomWords;
@@ -456,40 +455,40 @@ public class PCEnrollmentTest extends StoreFrontWebsiteBaseTest{
 		pcUserWithoutSponsor = email;
 	}
 
-	@Test(enabled=true,groups="users")
-	public void testPCEnrollmentWithoutPWSSponsor(){
-		timeStamp = CommonUtils.getCurrentTimeStamp();
-		randomWords = CommonUtils.getRandomWord(5);		
-		lastName = TestConstants.LAST_NAME+randomWords;
-		email = firstName+"WOPWSSponsor"+timeStamp+TestConstants.EMAIL_SUFFIX;
-		sfCartPage = new StoreFrontCartPage(driver);
-		sfShopSkinCarePage = new StoreFrontShopSkinCarePage(driver);
-		sfHomePage.clickLoginIcon();
-		sfCheckoutPage=sfHomePage.clickSignUpNowLink();
-		sfCheckoutPage.fillNewUserDetails(TestConstants.USER_TYPE_PC, firstName, lastName, email, password);
-		sfCheckoutPage.clickCreateAccountButton(TestConstants.USER_TYPE_PC);
-		s_assert.assertTrue(sfCartPage.isPcOneTimeFeeMsgDisplayed(),"PC one time joining fee msg has not displayed");
-		sfCartPage.clickAddMoreItemsBtn();
-		sfShopSkinCarePage.addProductToCart(TestConstants.PRODUCT_NUMBER, TestConstants.ORDER_TYPE_ADHOC);;
-		sfCartPage = sfShopSkinCarePage.checkoutTheCartFromPopUp();
-		sfCartPage.enterQuantityOfProductAtCart("1", "2");
-		sfCartPage.clickOnUpdateLinkThroughItemNumber("1");
-		sfCartPage.clickCheckoutBtn();
-		sfCartPage.searchSponsor(TestConstants.SPONSOR);
-		sfHomePage.selectFirstSponsorFromList();
-		sfCheckoutPage.clickSaveButton();
-		sfCheckoutPage.enterShippingDetails(firstName+" "+lastName, addressLine1, addressLine2, city, state, postalCode, phoneNumber);
-		sfCheckoutPage.clickShippingDetailsNextbutton();
-		sfCheckoutPage.enterUserBillingDetails(cardType, cardNumber, cardName, CVV);
-		sfCheckoutPage.clickBillingDetailsNextbutton();
-		sfCheckoutPage.selectIAcknowledgePCChkBox();
-		sfCheckoutPage.selectPCTermsAndConditionsChkBox();
-		sfCheckoutPage.clickPlaceOrderButton();
-		sfCheckoutPage.clickRodanAndFieldsLogo();
-		s_assert.assertTrue(sfHomePage.hasPCEnrolledSuccessfully(), "PC has not been enrolled successfully");
-		s_assert.assertAll();
-		pcUserWithoutPWSSponsor = email;
-	}
+//	@Test(enabled=true,groups="users")
+//	public void testPCEnrollmentWithoutPWSSponsor(){
+//		timeStamp = CommonUtils.getCurrentTimeStamp();
+//		randomWords = CommonUtils.getRandomWord(5);		
+//		lastName = TestConstants.LAST_NAME+randomWords;
+//		email = firstName+"WOPWSSponsor"+timeStamp+TestConstants.EMAIL_SUFFIX;
+//		sfCartPage = new StoreFrontCartPage(driver);
+//		sfShopSkinCarePage = new StoreFrontShopSkinCarePage(driver);
+//		sfHomePage.clickLoginIcon();
+//		sfCheckoutPage=sfHomePage.clickSignUpNowLink();
+//		sfCheckoutPage.fillNewUserDetails(TestConstants.USER_TYPE_PC, firstName, lastName, email, password);
+//		sfCheckoutPage.clickCreateAccountButton(TestConstants.USER_TYPE_PC);
+//		s_assert.assertTrue(sfCartPage.isPcOneTimeFeeMsgDisplayed(),"PC one time joining fee msg has not displayed");
+//		sfCartPage.clickAddMoreItemsBtn();
+//		sfShopSkinCarePage.addProductToCart(TestConstants.PRODUCT_NUMBER, TestConstants.ORDER_TYPE_ADHOC);;
+//		sfCartPage = sfShopSkinCarePage.checkoutTheCartFromPopUp();
+//		sfCartPage.enterQuantityOfProductAtCart("1", "2");
+//		sfCartPage.clickOnUpdateLinkThroughItemNumber("1");
+//		sfCartPage.clickCheckoutBtn();
+//		sfCartPage.searchSponsor(TestConstants.SPONSOR);
+//		sfHomePage.selectFirstSponsorFromList();
+//		sfCheckoutPage.clickSaveButton();
+//		sfCheckoutPage.enterShippingDetails(firstName+" "+lastName, addressLine1, addressLine2, city, state, postalCode, phoneNumber);
+//		sfCheckoutPage.clickShippingDetailsNextbutton();
+//		sfCheckoutPage.enterUserBillingDetails(cardType, cardNumber, cardName, CVV);
+//		sfCheckoutPage.clickBillingDetailsNextbutton();
+//		sfCheckoutPage.selectIAcknowledgePCChkBox();
+//		sfCheckoutPage.selectPCTermsAndConditionsChkBox();
+//		sfCheckoutPage.clickPlaceOrderButton();
+//		sfCheckoutPage.clickRodanAndFieldsLogo();
+//		s_assert.assertTrue(sfHomePage.hasPCEnrolledSuccessfully(), "PC has not been enrolled successfully");
+//		s_assert.assertAll();
+//		pcUserWithoutPWSSponsor = email;
+//	}
 
 	//For PC_EMAIL_HAVING_SINGLE_BILLING_PROFILE
 	@Test(enabled=true,groups="users")

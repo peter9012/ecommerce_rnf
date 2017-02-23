@@ -18,7 +18,7 @@ public class SwitchCountryTogglesTest extends StoreFrontWebsiteBaseTest{
 		String country_AU ="AUS";
 		String country_US ="USA";
 		String countryNameFromUI =null;
-		String prefix = TestConstants.CONSULTANT_PWS_PREFIX;
+		String prefix = pwsPrefix();
 		navigateToStoreFrontBaseURL();
 		countryNameFromUI = sfHomePage.getDefaultSelectedCountryNameFromToggle().toUpperCase();
 		s_assert.assertTrue(countryNameFromUI.contains(country_US), "For Corp Expected default country name is "+country_US+" Actual on UI is:"+countryNameFromUI);
@@ -69,7 +69,7 @@ public class SwitchCountryTogglesTest extends StoreFrontWebsiteBaseTest{
 	public void testDefaultCorpAndBizURLRedirectsToUS_1(){
 		String currentURL = null;
 		String usCorpURL = "US";
-		String prefix = TestConstants.CONSULTANT_PWS_PREFIX;
+		String prefix = pwsPrefix();
 		navigateToStoreFrontBaseURLWithoutCountry();
 		currentURL = sfHomePage.getCurrentURL().toLowerCase();
 		s_assert.assertTrue(currentURL.contains(usCorpURL.toLowerCase()), "Expected corp URL should contain" +usCorpURL+" but actual on UI is"+currentURL);
@@ -91,7 +91,7 @@ public class SwitchCountryTogglesTest extends StoreFrontWebsiteBaseTest{
 	public void testToggleShouldBeDeactivatedIfUserIsLoggedIn_3(){
 		String country_CA = "CAN";
 		String countryNameFromUI =null;
-		sfHomePage.loginToStoreFront(TestConstants.CONSULTANT_EMAIL_WITH_CRP_AND_PULSE,  password,true);
+		sfHomePage.loginToStoreFront(consultantWithPulseAndWithCRP(),  password,true);
 		sfHomePage.clickToggleButtonOfCountry();
 		sfHomePage.selectCountryFromToggleButton(country_CA);
 		countryNameFromUI = sfHomePage.getDefaultSelectedCountryNameFromToggle().toUpperCase();

@@ -54,7 +54,7 @@ public class RCEnrollmentTest extends StoreFrontWebsiteBaseTest{
 	 */
 	@Test(enabled=true)//Redirect to corp site after enrollment from pws site
 	public void testRCEnrollmentFromPWSSite_551(){
-		String prefix = TestConstants.CONSULTANT_PWS_PREFIX;
+		String prefix = pwsPrefix();
 		String currentURL = null;
 		String pwsURL=sfHomePage.getBaseUrl()+"//" +sfHomePage.getCountry() +"/pws/" + prefix;
 		timeStamp = CommonUtils.getCurrentTimeStamp();
@@ -91,7 +91,7 @@ public class RCEnrollmentTest extends StoreFrontWebsiteBaseTest{
 		rcWithoutOrder=email;
 		s_assert.assertAll();
 	}
-
+//-------------------Tesrt Users Creation Scripts----------------------------------------------------------------------
 	@Test(enabled=true, groups="users")
 	public void testRCEnrollmentWithOrderWithoutSponsor(){
 		timeStamp = CommonUtils.getCurrentTimeStamp();

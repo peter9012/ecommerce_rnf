@@ -535,7 +535,7 @@ public class ConsultantEnrollmentTest extends StoreFrontWebsiteBaseTest{
 		lastName = TestConstants.LAST_NAME+randomWords;
 		email = firstName+timeStamp+TestConstants.EMAIL_SUFFIX;
 		String socialInsuranceNumber = String.valueOf(CommonUtils.getRandomNum(100000000, 999999999));
-		String existingPrefix = TestConstants.CONSULTANT_PWS_PREFIX;
+		String existingPrefix = pwsPrefix();
 		sfHomePage.clickEnrollNow();
 		sfHomePage.searchSponsor(TestConstants.SPONSOR);
 		s_assert.assertTrue(sfHomePage.isSponsorResultDisplayed(),"No result found after searching the sponsor with name "+TestConstants.SPONSOR);

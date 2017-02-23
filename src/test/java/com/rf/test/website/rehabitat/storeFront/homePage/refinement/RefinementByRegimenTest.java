@@ -23,7 +23,7 @@ public class RefinementByRegimenTest extends StoreFrontWebsiteBaseTest{
 		String categorySoothe = "SOOTHE";
 		String categoryRedefine = "REDEFINE";
 		String categoryConsultantOnly = "Consultant Only";
-		sfHomePage.loginToStoreFront(TestConstants.PC_EMAIL_HAVING_AUTOSHIP,  password,true);
+		sfHomePage.loginToStoreFront(pcUserWithPWSSponsor(),  password,true);
 		sfHomePage.clickSearchIcon();
 		sfShopSkinCarePage = sfHomePage.searchEntityAndHitEnter(TestConstants.SHOP_SKINCARE);
 		s_assert.assertTrue(sfShopSkinCarePage.isSearchResultsTextAppearedAsExpected(TestConstants.SHOP_SKINCARE), "search result page is not present");

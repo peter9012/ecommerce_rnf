@@ -15,7 +15,7 @@ public class CategoryFAQPageTest extends StoreFrontWebsiteBaseTest{
 	 */
 	@Test(enabled=true)
 	public void testVerifyFAQLinkForCategoryUnderShopSkincareOnCorpComAndBizSite_56(){
-		String prefix = TestConstants.CONSULTANT_PWS_PREFIX;
+		String prefix = pwsPrefix();
 		String currentURL = null;
 		String sootheLinkUnderShopSkincare = "SOOTHE";
 		String reverseLinkUnderShopSkincare = "REVERSE";

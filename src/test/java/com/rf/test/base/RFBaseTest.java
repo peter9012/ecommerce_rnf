@@ -31,14 +31,14 @@ import com.rf.core.website.constants.TestConstants;
 @Listeners({ com.rf.core.listeners.TestListner.class})
 public class RFBaseTest{
 	//public static WebDriver driver;
-	// Added for local testing and will be removed later
 	public String defaultProps = "defaultenv.properties";
 	public String testUsers_QA2_US_propertes = "testUsers_QA2_US.properties";
 	public String testUsers_QA2_CA_propertes = "testUsers_QA2_CA.properties";
 	public String testUsers_QA1_US_propertes = "testUsers_QA1_US.properties";
+	public String testUsers_PROD_US_propertes = "testUsers_PROD_US.properties";
 	public String testUsers_DEV1_US_propertes = "testUsers_DEV1_US.properties";
 	public String testUsers_DEV1_CA_propertes = "testUsers_DEV1_CA.properties";
-	public String userProps = null;
+	public static String userProps = null;
 
 	protected static PropertyFile propertyFile = new PropertyFile();
 	protected static PropertyFile userPropertyFile = new PropertyFile();
@@ -181,6 +181,9 @@ public class RFBaseTest{
 		}
 		else  if(propertyFileName.toLowerCase().contains("qa2") && propertyFileName.toLowerCase().contains("ca")){
 			userProps=testUsers_QA2_CA_propertes;
+		}
+		else  if(propertyFileName.toLowerCase().contains("prod") && propertyFileName.toLowerCase().contains("us")){
+			userProps=testUsers_PROD_US_propertes;
 		}
 		logger.info("testUsers are loaded from "+userProps);
 	}

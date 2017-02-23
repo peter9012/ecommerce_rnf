@@ -23,7 +23,7 @@ public class MyAccountTest extends StoreFrontWebsiteBaseTest{
 		String currentURL = null;
 		String urlToAssert = "my-account";
 		//Login as consultant user.
-		sfHomePage.loginToStoreFront(TestConstants.CONSULTANT_EMAIL_WITH_CRP_AND_PULSE, password,true);
+		sfHomePage.loginToStoreFront(consultantWithPulseAndWithCRP(), password,true);
 		sfHomePage.clickWelcomeDropdown();
 		sfAccountInfoPage = sfHomePage.navigateToAccountInfoPage();
 		currentURL = sfAccountInfoPage.getCurrentURL().toLowerCase();
@@ -37,7 +37,7 @@ public class MyAccountTest extends StoreFrontWebsiteBaseTest{
 		s_assert.assertTrue(sfAccountInfoPage.isMainPhoneNumberFieldPresent(),"Main phone number field not present on account Info page for consultant");
 		sfHomePage.clickWelcomeDropdown();
 		sfAccountInfoPage.logout();
-		sfHomePage.loginToStoreFront(TestConstants.PC_EMAIL_HAVING_AUTOSHIP, password,true);
+		sfHomePage.loginToStoreFront(pcUserWithPWSSponsor(), password,true);
 		sfHomePage.clickWelcomeDropdown();
 		sfAccountInfoPage = sfHomePage.navigateToAccountInfoPage();
 		currentURL = sfAccountInfoPage.getCurrentURL().toLowerCase();
@@ -51,7 +51,7 @@ public class MyAccountTest extends StoreFrontWebsiteBaseTest{
 		s_assert.assertTrue(sfAccountInfoPage.isMainPhoneNumberFieldPresent(),"Main phone number field not present on account Info page for pc");
 		sfHomePage.clickWelcomeDropdown();
 		sfAccountInfoPage.logout();
-		sfHomePage.loginToStoreFront(TestConstants.RC_EMAIL_HAVING_ORDER,password,true);
+		sfHomePage.loginToStoreFront(rcWithOrderWithoutSponsor(),password,true);
 		sfHomePage.clickWelcomeDropdown();
 		sfAccountInfoPage = sfHomePage.navigateToAccountInfoPage();
 		currentURL = sfAccountInfoPage.getCurrentURL().toLowerCase();
@@ -76,21 +76,21 @@ public class MyAccountTest extends StoreFrontWebsiteBaseTest{
 	@Test(enabled=true)
 	public void testDisabledUsernameOnAccountInfoPageForUsers_179(){
 		//Login as consultant user.
-		sfHomePage.loginToStoreFront(TestConstants.CONSULTANT_EMAIL_WITH_CRP_AND_PULSE,password,true);
+		sfHomePage.loginToStoreFront(consultantWithPulseAndWithCRP(),password,true);
 		sfHomePage.clickWelcomeDropdown();
 		sfAccountInfoPage = sfHomePage.navigateToAccountInfoPage();
 		s_assert.assertTrue(sfAccountInfoPage.isUsernameFieldDisabled(),"Username is NOT disabled for consultant");
 		sfAccountInfoPage.clickWelcomeDropdown();
 		sfAccountInfoPage.logout();
 		//Login as pc user.
-		sfHomePage.loginToStoreFront(TestConstants.PC_EMAIL_HAVING_AUTOSHIP,password,true);
+		sfHomePage.loginToStoreFront(pcUserWithPWSSponsor(),password,true);
 		sfHomePage.clickWelcomeDropdown();
 		sfAccountInfoPage = sfHomePage.navigateToAccountInfoPage();
 		s_assert.assertTrue(sfAccountInfoPage.isUsernameFieldDisabled(),"Username is NOT disabled for PC");
 		sfAccountInfoPage.clickWelcomeDropdown();
 		sfAccountInfoPage.logout();
 		//Login as rc user.
-		sfHomePage.loginToStoreFront(TestConstants.RC_EMAIL_HAVING_ORDER,password,true);
+		sfHomePage.loginToStoreFront(rcWithOrderWithoutSponsor(),password,true);
 		sfHomePage.clickWelcomeDropdown();
 		sfAccountInfoPage = sfHomePage.navigateToAccountInfoPage();
 		s_assert.assertTrue(sfAccountInfoPage.isUsernameFieldDisabled(),"Username is NOT disabled for RC");
@@ -110,7 +110,7 @@ public class MyAccountTest extends StoreFrontWebsiteBaseTest{
 		String emailAddressWithoutAt = "autocon12mailinator.com";
 		String emailAddressWithoutDot = "autocon12@mailinator";
 		//Login as consultant user.
-		sfHomePage.loginToStoreFront(TestConstants.CONSULTANT_EMAIL_WITH_CRP_AND_PULSE,password,true);
+		sfHomePage.loginToStoreFront(consultantWithPulseAndWithCRP(),password,true);
 		sfHomePage.clickWelcomeDropdown();
 		sfAccountInfoPage = sfHomePage.navigateToAccountInfoPage();
 		String expectedValidationErrorMsg = TestConstants.VALIDATION_ERROR_THIS_FIELD_IS_REQUIRED;
@@ -129,7 +129,7 @@ public class MyAccountTest extends StoreFrontWebsiteBaseTest{
 		sfAccountInfoPage.saveAccountInfo();
 		expectedValidationErrorMsg = TestConstants.EMAIL_VALIDATION_ERROR_VALID_EMAIL_ADDRESS;
 		s_assert.assertTrue(sfAccountInfoPage.isValidationMsgPresentForParticularField("email", expectedValidationErrorMsg),TestConstants.EMAIL_VALIDATION_ERROR_VALID_EMAIL_ADDRESS+" msg NOT displayed for email "+emailAddressWithoutDot);
-		sfAccountInfoPage.enterEmail(TestConstants.CONSULTANT_EMAIL_WITH_CRP_AND_PULSE);
+		sfAccountInfoPage.enterEmail(consultantWithPulseAndWithCRP());
 		sfAccountInfoPage.saveAccountInfo();
 		expectedValidationErrorMsg = TestConstants.EMAIL_VALIDATION_ERROR_VALID_EMAIL_ADDRESS;
 		s_assert.assertFalse(sfAccountInfoPage.isValidationMsgPresentForParticularField("email", expectedValidationErrorMsg),TestConstants.EMAIL_VALIDATION_ERROR_VALID_EMAIL_ADDRESS+" msg displayed");
@@ -148,7 +148,7 @@ public class MyAccountTest extends StoreFrontWebsiteBaseTest{
 	@Test(enabled=true)
 	public void testAccountInfoPageMandatoryFieldValidation_248(){
 		//Login as consultant user.
-		sfHomePage.loginToStoreFront(TestConstants.CONSULTANT_EMAIL_WITH_CRP_AND_PULSE,password,true);
+		sfHomePage.loginToStoreFront(consultantWithPulseAndWithCRP(),password,true);
 		sfHomePage.clickWelcomeDropdown();
 		sfAccountInfoPage = sfHomePage.navigateToAccountInfoPage();
 		String expectedValidationErrorMsg = TestConstants.VALIDATION_ERROR_THIS_FIELD_IS_REQUIRED;
@@ -175,7 +175,7 @@ public class MyAccountTest extends StoreFrontWebsiteBaseTest{
 	@Test(enabled=true)
 	public void testViewPulseDetails_276(){
 		//Login as consultant user.
-		sfHomePage.loginToStoreFront(TestConstants.CONSULTANT_EMAIL_WITH_CRP_AND_PULSE,password,true);
+		sfHomePage.loginToStoreFront(consultantWithPulseAndWithCRP(),password,true);
 		sfHomePage.clickWelcomeDropdown();
 		sfAutoshipStatusPage = sfHomePage.navigateToAutoshipStatusPage();
 		sfAutoshipStatusPage.clickLearnMoreAboutPulse();
@@ -199,7 +199,7 @@ public class MyAccountTest extends StoreFrontWebsiteBaseTest{
 		String spouseLastName = TestConstants.SPOUSE_LAST_NAME;
 		String profileUpdationMessage = null;
 		//Login as consultant user.
-		sfHomePage.loginToStoreFront(TestConstants.CONSULTANT_EMAIL_WITH_CRP_AND_PULSE,password,true);
+		sfHomePage.loginToStoreFront(consultantWithPulseAndWithCRP(),password,true);
 		sfHomePage.clickWelcomeDropdown();
 		sfAccountInfoPage = sfHomePage.navigateToAccountInfoPage();
 		sfAccountInfoPage.checkSpouseCheckbox();
@@ -226,7 +226,7 @@ public class MyAccountTest extends StoreFrontWebsiteBaseTest{
 		String spouseFirstName = "";
 		String spouseLastName = "";
 		//Login as consultant user.
-		sfHomePage.loginToStoreFront(TestConstants.CONSULTANT_EMAIL_WITH_CRP_AND_PULSE,password,true);
+		sfHomePage.loginToStoreFront(consultantWithPulseAndWithCRP(),password,true);
 		sfHomePage.clickWelcomeDropdown();
 		sfAccountInfoPage = sfHomePage.navigateToAccountInfoPage();
 		String expectedValidationErrorMsg = TestConstants.VALIDATION_ERROR_THIS_FIELD_IS_REQUIRED;
@@ -265,11 +265,11 @@ public class MyAccountTest extends StoreFrontWebsiteBaseTest{
 		String dayOfBirth = TestConstants.DAY_OF_BIRTH;
 		String monthOfBirth = TestConstants.MONTH_OF_BIRTH;
 		String yearOfBirth = TestConstants.YEAR_OF_BIRTH;
-		String email = TestConstants.CONSULTANT_EMAIL_WITH_CRP_AND_PULSE;
+		String email = consultantWithPulseAndWithCRP();
 		String gender = TestConstants.GENDER;
 
 		//		//Login as consultant user.
-		//		sfHomePage.loginToStoreFront(TestConstants.CONSULTANT_EMAIL_WITH_CRP_AND_PULSE,password);
+		//		sfHomePage.loginToStoreFront(consultantWithPulseAndWithCRP(),password);
 		//		sfHomePage.clickWelcomeDropdown();
 		//		sfAccountInfoPage = sfHomePage.navigateToAccountInfoPage();
 		//		s_assert.assertFalse(sfAccountInfoPage.isCountryNameEditable(country), "Country filled is editable at account info page for consultant");
@@ -282,7 +282,7 @@ public class MyAccountTest extends StoreFrontWebsiteBaseTest{
 		//		sfAccountInfoPage.logout();
 
 		//Login as pc
-		email = TestConstants.PC_EMAIL_HAVING_AUTOSHIP;
+		email = pcUserWithPWSSponsor();
 		sfHomePage.loginToStoreFront(email,password,true);
 		sfHomePage.clickWelcomeDropdown();
 		sfAccountInfoPage = sfHomePage.navigateToAccountInfoPage();
@@ -296,7 +296,7 @@ public class MyAccountTest extends StoreFrontWebsiteBaseTest{
 		sfAccountInfoPage.logout();
 
 		//Login as rc
-		email = TestConstants.RC_EMAIL_HAVING_ORDER;
+		email = rcWithOrderWithoutSponsor();
 		sfHomePage.loginToStoreFront(email,password,true);
 		sfHomePage.clickWelcomeDropdown();
 		sfAccountInfoPage = sfHomePage.navigateToAccountInfoPage();
@@ -327,7 +327,7 @@ public class MyAccountTest extends StoreFrontWebsiteBaseTest{
 		String phoneNumber = TestConstants.PHONE_NUMBER;
 		String emailAddress = "abc@wyz";
 		//Login as consultant user.
-		sfHomePage.loginToStoreFront(TestConstants.CONSULTANT_EMAIL_WITH_CRP_AND_PULSE,password,true);
+		sfHomePage.loginToStoreFront(consultantWithPulseAndWithCRP(),password,true);
 		sfHomePage.clickWelcomeDropdown();
 		sfAccountInfoPage = sfHomePage.navigateToAccountInfoPage();
 		String expectedValidationErrorMsg = TestConstants.VALIDATION_ERROR_THIS_FIELD_IS_REQUIRED;
@@ -365,7 +365,7 @@ public class MyAccountTest extends StoreFrontWebsiteBaseTest{
 		sfAccountInfoPage.logout();
 
 		//Login as PC user.
-		sfHomePage.loginToStoreFront(TestConstants.PC_EMAIL_HAVING_AUTOSHIP,password,true);
+		sfHomePage.loginToStoreFront(pcUserWithPWSSponsor(),password,true);
 		sfHomePage.clickWelcomeDropdown();
 		sfAccountInfoPage = sfHomePage.navigateToAccountInfoPage();
 		expectedValidationErrorMsg = TestConstants.VALIDATION_ERROR_THIS_FIELD_IS_REQUIRED;
@@ -403,7 +403,7 @@ public class MyAccountTest extends StoreFrontWebsiteBaseTest{
 		sfAccountInfoPage.logout();
 
 		//Login as RC user.
-		sfHomePage.loginToStoreFront(TestConstants.RC_EMAIL_HAVING_ORDER,password,true);
+		sfHomePage.loginToStoreFront(rcWithOrderWithoutSponsor(),password,true);
 		sfHomePage.clickWelcomeDropdown();
 		sfAccountInfoPage = sfHomePage.navigateToAccountInfoPage();
 		expectedValidationErrorMsg = TestConstants.VALIDATION_ERROR_THIS_FIELD_IS_REQUIRED;
@@ -465,10 +465,10 @@ public class MyAccountTest extends StoreFrontWebsiteBaseTest{
 		String numericFirstName = "1234";
 		String numericLastName = "5678";
 		String phoneNumberWithSpecialChar = "(234)-234-2342";
-		String emailAddress= TestConstants.CONSULTANT_EMAIL_WITH_CRP_AND_PULSE;
+		String emailAddress= consultantWithPulseAndWithCRP();
 
 		//Login as consultant user.
-		sfHomePage.loginToStoreFront(TestConstants.CONSULTANT_EMAIL_WITH_CRP_AND_PULSE,password,true);
+		sfHomePage.loginToStoreFront(consultantWithPulseAndWithCRP(),password,true);
 		sfHomePage.clickWelcomeDropdown();
 		sfAccountInfoPage = sfHomePage.navigateToAccountInfoPage();
 		String expectedValidationErrorMsg = TestConstants.VALIDATION_ERROR_THIS_FIELD_IS_REQUIRED;
@@ -538,7 +538,7 @@ public class MyAccountTest extends StoreFrontWebsiteBaseTest{
 	@Test(enabled=true)
 	public void testVerifyLogoutFunctionality_329(){
 		//Login as consultant user.
-		sfHomePage.loginToStoreFront(TestConstants.CONSULTANT_EMAIL_WITH_CRP_AND_PULSE,password,true);
+		sfHomePage.loginToStoreFront(consultantWithPulseAndWithCRP(),password,true);
 		sfHomePage.clickWelcomeDropdown();
 		sfHomePage.logout();
 		s_assert.assertTrue(sfHomePage.isLogoutSuccessful(),"User unable to logout from application");
@@ -560,7 +560,7 @@ public class MyAccountTest extends StoreFrontWebsiteBaseTest{
 		String redefineLinkUnderShopSkincare = "REDEFINE";
 		String redefineRegimenURL = "/redefine";
 		//Login as consultant user.
-		sfHomePage.loginToStoreFront(TestConstants.CONSULTANT_EMAIL_WITH_CRP_AND_PULSE,password,true);
+		sfHomePage.loginToStoreFront(consultantWithPulseAndWithCRP(),password,true);
 		currentWindowID = CommonUtils.getCurrentWindowHandle();
 		sfHomePage.navigateToShopSkincareLinkInNewTab(redefineLinkUnderShopSkincare);
 		sfHomePage.switchToChildWindow(currentWindowID);
@@ -588,7 +588,7 @@ public class MyAccountTest extends StoreFrontWebsiteBaseTest{
 		String currentURL = null;
 		String urlToAssert = "autoship/cart";
 		//Login as consultant user.
-		sfHomePage.loginToStoreFront(TestConstants.CONSULTANT_EMAIL_WITH_CRP_AND_PULSE,password,true);
+		sfHomePage.loginToStoreFront(consultantWithPulseAndWithCRP(),password,true);
 		sfHomePage.clickWelcomeDropdown();
 		sfHomePage.navigateToEditCRPPage();
 		currentURL = sfHomePage.getCurrentURL().toLowerCase();
@@ -609,7 +609,7 @@ public class MyAccountTest extends StoreFrontWebsiteBaseTest{
 		String currentWindowID = null;
 		String urlToAssert = "myrfpulse";
 		//Login as consultant user.
-		sfHomePage.loginToStoreFront(TestConstants.CONSULTANT_EMAIL_WITH_CRP_AND_PULSE,password,true);
+		sfHomePage.loginToStoreFront(consultantWithPulseAndWithCRP(),password,true);
 		sfHomePage.clickWelcomeDropdown();
 		currentWindowID = CommonUtils.getCurrentWindowHandle();
 		sfHomePage.navigateToCheckMyPulsePage();
@@ -635,7 +635,7 @@ public class MyAccountTest extends StoreFrontWebsiteBaseTest{
 		String newConfirmPassword = "111Maiden$";
 		String profileUpdationMessage = null;
 		//Login as consultant user.
-		sfHomePage.loginToStoreFront(TestConstants.CONSULTANT_EMAIL_WITH_CRP_AND_PULSE,password,true);
+		sfHomePage.loginToStoreFront(consultantWithPulseAndWithCRP(),password,true);
 		sfHomePage.clickWelcomeDropdown();
 		sfAccountInfoPage = sfHomePage.navigateToAccountInfoPage();
 		String expectedValidationErrorMsg = TestConstants.VALIDATION_ERROR_THIS_FIELD_IS_REQUIRED;
@@ -685,7 +685,7 @@ public class MyAccountTest extends StoreFrontWebsiteBaseTest{
 	 */
 	@Test(enabled=true)//TODO
 	public void testEmailYourConsultantValid_285(){
-		sfHomePage.loginToStoreFront(TestConstants.PC_EMAIL_HAVING_AUTOSHIP,password,true);
+		sfHomePage.loginToStoreFront(pcUserWithPWSSponsor(),password,true);
 		sfHomePage.clickWelcomeDropdown();
 		sfAccountInfoPage = sfHomePage.navigateToAccountInfoPage();
 		sfAccountInfoPage.clickEmailYourConsultantLink();
@@ -708,20 +708,20 @@ public class MyAccountTest extends StoreFrontWebsiteBaseTest{
 		String name = "name";
 		String emailId = "emailId";
 		String emailContent = "emailContent";
-		sfHomePage.loginToStoreFront(TestConstants.PC_EMAIL_HAVING_AUTOSHIP,password,true);
+		sfHomePage.loginToStoreFront(pcUserWithPWSSponsor(),password,true);
 		sfHomePage.clickWelcomeDropdown();
 		sfAccountInfoPage = sfHomePage.navigateToAccountInfoPage();
 		sfAccountInfoPage.clickEmailYourConsultantLink();
-		sfAccountInfoPage.enterEmailYourConsultantDetailsAndSubmit(TestConstants.FIRST_NAME, TestConstants.CONSULTANT_EMAIL_WITH_CRP_AND_PULSE, moreThan200Chars);
+		sfAccountInfoPage.enterEmailYourConsultantDetailsAndSubmit(TestConstants.FIRST_NAME, consultantWithPulseAndWithCRP(), moreThan200Chars);
 		s_assert.assertTrue(sfAccountInfoPage.isEmailYourValidationDisplayed(emailContent, TestConstants.VALIDATION_ERROR_LESS_THAN_200_CHARS),"validation of more than 200 chars not displayed");
 
 		sfAccountInfoPage.enterEmailYourConsultantDetailsAndSubmit(TestConstants.FIRST_NAME, "", "test msg");
 		s_assert.assertTrue(sfAccountInfoPage.isEmailYourValidationDisplayed(emailId, TestConstants.VALIDATION_ERROR_THIS_FIELD_IS_REQUIRED),"validation of field required not displayed for "+emailId);
 
-		sfAccountInfoPage.enterEmailYourConsultantDetailsAndSubmit("", TestConstants.CONSULTANT_EMAIL_WITH_CRP_AND_PULSE, "test msg");
+		sfAccountInfoPage.enterEmailYourConsultantDetailsAndSubmit("", consultantWithPulseAndWithCRP(), "test msg");
 		s_assert.assertTrue(sfAccountInfoPage.isEmailYourValidationDisplayed(name, TestConstants.VALIDATION_ERROR_THIS_FIELD_IS_REQUIRED),"validation of field required not displayed for "+name);
 
-		sfAccountInfoPage.enterEmailYourConsultantDetailsAndSubmit(TestConstants.FIRST_NAME, TestConstants.CONSULTANT_EMAIL_WITH_CRP_AND_PULSE, "");
+		sfAccountInfoPage.enterEmailYourConsultantDetailsAndSubmit(TestConstants.FIRST_NAME, consultantWithPulseAndWithCRP(), "");
 		s_assert.assertTrue(sfAccountInfoPage.isEmailYourValidationDisplayed(emailContent, TestConstants.VALIDATION_ERROR_THIS_FIELD_IS_REQUIRED),"validation of field required not displayed for "+emailContent);
 
 		s_assert.assertAll();
@@ -739,7 +739,7 @@ public class MyAccountTest extends StoreFrontWebsiteBaseTest{
 	public void testPasswordResetIncorrectCurrentPwd_282(){
 		String incorrectCurrentPassword = "111Maiden";
 		//Login as consultant user.
-		sfHomePage.loginToStoreFront(TestConstants.PC_EMAIL_HAVING_AUTOSHIP,password,true);
+		sfHomePage.loginToStoreFront(pcUserWithPWSSponsor(),password,true);
 		sfHomePage.clickWelcomeDropdown();
 		sfAccountInfoPage = sfHomePage.navigateToAccountInfoPage();
 		String expectedValidationErrorMsg = TestConstants.PASSWORD_VALIDATION_ERROR_DO_NOT_MATCH;
@@ -761,7 +761,7 @@ public class MyAccountTest extends StoreFrontWebsiteBaseTest{
 	public void testPasswordResetInvalidScenrios_283(){
 		String incorrectCurrentPassword = "111Maiden";
 		//Login as consultant user.
-		sfHomePage.loginToStoreFront(TestConstants.PC_EMAIL_HAVING_AUTOSHIP,password,true);
+		sfHomePage.loginToStoreFront(pcUserWithPWSSponsor(),password,true);
 		sfHomePage.clickWelcomeDropdown();
 		sfAccountInfoPage = sfHomePage.navigateToAccountInfoPage();
 		String expectedValidationErrorMsg = TestConstants.CONFIRM_PASSWORD_VALIDATION_ERROR_SAME_VALUE;
@@ -801,7 +801,7 @@ public class MyAccountTest extends StoreFrontWebsiteBaseTest{
 		String postalCode = TestConstants.POSTAL_CODE_US;
 		String phoneNumber = TestConstants.PHONE_NUMBER;
 		//Login as pc user
-		sfHomePage.loginToStoreFront(TestConstants.PC_EMAIL_HAVING_AUTOSHIP,password,true);
+		sfHomePage.loginToStoreFront(pcUserWithPWSSponsor(),password,true);
 		sfHomePage.clickWelcomeDropdown();
 		sfAccountInfoPage = sfHomePage.navigateToAccountInfoPage();
 		sfAccountInfoPage.enterMainAccountInfo(firstName, lastName, addressLine1, city, state, postalCode, phoneNumber);
@@ -814,11 +814,11 @@ public class MyAccountTest extends StoreFrontWebsiteBaseTest{
 		s_assert.assertTrue(profileUpdationMessage.equalsIgnoreCase(TestConstants.PROFILE_UPDATION_MESSAGE.trim()), "'New Password' profile updation message Expected = "+TestConstants.PROFILE_UPDATION_MESSAGE+" but Actual = "+profileUpdationMessage);
 		sfAccountInfoPage.clickWelcomeDropdown();
 		sfAccountInfoPage.logout();
-		sfHomePage.loginToStoreFront(TestConstants.PC_EMAIL_HAVING_AUTOSHIP,password,true);
+		sfHomePage.loginToStoreFront(pcUserWithPWSSponsor(),password,true);
 		s_assert.assertTrue(sfHomePage.isLoginOrRegisterPageDisplayed()&& sfHomePage.getCurrentURL().contains("/login"), "'Login Or Register' page has not displayed");
 		s_assert.assertTrue(sfHomePage.isErrorMessageForIncorrectUsernamePasswordDisplayed(), "Error ");
 		navigateToStoreFrontBaseURL();
-		sfHomePage.loginToStoreFront(TestConstants.PC_EMAIL_HAVING_AUTOSHIP,newValidPassword,true);
+		sfHomePage.loginToStoreFront(pcUserWithPWSSponsor(),newValidPassword,true);
 		sfHomePage.clickWelcomeDropdown();
 		sfAccountInfoPage = sfHomePage.navigateToAccountInfoPage();
 		sfAccountInfoPage.enterOldPassword(newValidPassword);
@@ -846,7 +846,7 @@ public class MyAccountTest extends StoreFrontWebsiteBaseTest{
 		String nextBillShipDateFromUI = null;
 		String nextBillShipDateUnderAutoshipOrder = null;
 		//Login as pc user
-		sfHomePage.loginToStoreFront(TestConstants.PC_EMAIL_HAVING_AUTOSHIP,password,true);
+		sfHomePage.loginToStoreFront(pcUserWithPWSSponsor(),password,true);
 		sfHomePage.clickWelcomeDropdown();
 		sfAutoshipStatusPage = sfHomePage.navigateToPCPerksStatusPage();
 		currentNextBillShipDate = sfAutoshipStatusPage.getNextBillAndShipDateFromAutoship();
@@ -881,7 +881,7 @@ public class MyAccountTest extends StoreFrontWebsiteBaseTest{
 		String nextBillShipDateFromUI = null;
 		String nextBillShipDateUnderAutoshipOrder = null;
 		//Login as pc user
-		sfHomePage.loginToStoreFront(TestConstants.PC_EMAIL_HAVING_AUTOSHIP,password,true);
+		sfHomePage.loginToStoreFront(pcUserWithPWSSponsor(),password,true);
 		sfHomePage.clickWelcomeDropdown();
 		sfAutoshipStatusPage = sfHomePage.navigateToPCPerksStatusPage();
 		currentNextBillShipDate = sfAutoshipStatusPage.getNextBillAndShipDateFromAutoship();
@@ -914,7 +914,7 @@ public class MyAccountTest extends StoreFrontWebsiteBaseTest{
 		String nextBillShipDateAfterOneMonth = null;
 		String nextBillShipDateFromUI = null;
 		//Login as pc user
-		sfHomePage.loginToStoreFront(TestConstants.PC_EMAIL_HAVING_AUTOSHIP,password,true);
+		sfHomePage.loginToStoreFront(pcUserWithPWSSponsor(),password,true);
 		sfHomePage.clickWelcomeDropdown();
 		sfAutoshipStatusPage = sfHomePage.navigateToPCPerksStatusPage();
 		currentNextBillShipDate = sfAutoshipStatusPage.getNextBillAndShipDateFromAutoship();
@@ -944,7 +944,7 @@ public class MyAccountTest extends StoreFrontWebsiteBaseTest{
 		String currentNextBillShipDate = null;
 		String billShipDateFromAutoshipCart = null;
 		//Login as pc user
-		sfHomePage.loginToStoreFront(TestConstants.PC_EMAIL_HAVING_AUTOSHIP,password,true);
+		sfHomePage.loginToStoreFront(pcUserWithPWSSponsor(),password,true);
 		sfHomePage.clickWelcomeDropdown();
 		sfAutoshipStatusPage = sfHomePage.navigateToPCPerksStatusPage();
 		s_assert.assertTrue(sfAutoshipStatusPage.isPCPerksAutoshipStatusPagePresent(),"PC Perks status page is not present.");
@@ -972,7 +972,7 @@ public class MyAccountTest extends StoreFrontWebsiteBaseTest{
 		String pcPerksStatus = null;
 		String expectedPCPerksStatus = "Enrolled";
 		//Login as pc user
-		//sfHomePage.loginToStoreFront(TestConstants.PC_EMAIL_HAVING_AUTOSHIP,password,true);
+		//sfHomePage.loginToStoreFront(pcUserWithPWSSponsor(),password,true);
 		sfHomePage.loginToStoreFront(pcUserWithPWSSponsor(),password,true);
 		sfHomePage.clickWelcomeDropdown();
 		sfAutoshipStatusPage = sfHomePage.navigateToPCPerksStatusPage();
@@ -994,7 +994,7 @@ public class MyAccountTest extends StoreFrontWebsiteBaseTest{
 	@Test(enabled=true)
 	public void testEditPWSOfUserSubscribedToPulse_518(){
 		//Login as consultant user and verify about me page.
-		sfHomePage.loginToStoreFront(TestConstants.CONSULTANT_EMAIL_WITH_CRP_AND_PULSE,password,true);
+		sfHomePage.loginToStoreFront(consultantWithPulseAndWithCRP(),password,true);
 		sfHomePage.clickWelcomeDropdown();
 		sfAboutMePage = sfHomePage.navigateToEditPWSPage();
 		s_assert.assertTrue(sfAboutMePage.isAboutMePagePresent(),"About me Page content not visible after clicking edit pws from welcome DD");
@@ -1027,7 +1027,7 @@ public class MyAccountTest extends StoreFrontWebsiteBaseTest{
 		String currentWindowID = null;
 		String urlToAssert = "myrfpulse";
 		//Login as consultant user.
-		sfHomePage.loginToStoreFront(TestConstants.CONSULTANT_EMAIL_WITH_CRP_AND_PULSE,password,true);
+		sfHomePage.loginToStoreFront(consultantWithPulseAndWithCRP(),password,true);
 		sfHomePage.clickWelcomeDropdown();
 		sfOrdersPage = sfHomePage.navigateToOrdersPage();
 		currentWindowID = CommonUtils.getCurrentWindowHandle();
@@ -1051,7 +1051,7 @@ public class MyAccountTest extends StoreFrontWebsiteBaseTest{
 	@Test(enabled=true)
 	public void testVerifySponserNameOnAccountInfoPage_287(){
 		//Login as consultant user.
-		sfHomePage.loginToStoreFront(TestConstants.PC_EMAIL_HAVING_AUTOSHIP,password,true);
+		sfHomePage.loginToStoreFront(pcUserWithPWSSponsor(),password,true);
 		sfHomePage.clickWelcomeDropdown();
 		sfAccountInfoPage = sfHomePage.navigateToAccountInfoPage();
 		s_assert.assertTrue(sfAccountInfoPage.isSponserNameWithTitleRFIndependentConsultantPresent(),"Sponser name along title 'R+F' independent consultant not present.");
@@ -1066,12 +1066,12 @@ public class MyAccountTest extends StoreFrontWebsiteBaseTest{
 	@Test(enabled=true)//Accepting inactive prefix less than 180 days.
 	public void testReEnnrollmentInPulseWithin180DaysWithOtherUserPrefix_369(){
 		String autoSuggestedPrefixName = null;
-		String otherUserPrefix = TestConstants.CONSULTANT_PWS_PREFIX;
+		String otherUserPrefix = pwsPrefix();
 		String errorMessage = null;
 		String expectedErrorMsgForPrefix = TestConstants.ERROR_MSG_EXISTING_PREFIX;
 		//Subscribe to pulse with a new prefix.
 		sfCheckoutPage = new StoreFrontCheckoutPage(driver);
-		sfHomePage.loginToStoreFront(TestConstants.CONSULTANT_EMAIL_WITHOUT_CRP_AND_PULSE,password,true);
+		sfHomePage.loginToStoreFront(consultantWithoutPulseAndWithoutCRP(),password,true);
 		sfHomePage.clickWelcomeDropdown();
 		sfAutoshipStatusPage = sfHomePage.navigateToAutoshipStatusPage();
 		sfAutoshipStatusPage.clickSubscribeToPulseBtn();
@@ -1106,7 +1106,7 @@ public class MyAccountTest extends StoreFrontWebsiteBaseTest{
 	 */ 
 	@Test
 	public void testReCaptchaSubmitAsUnselected_473(){
-		sfHomePage.loginToStoreFront(TestConstants.CONSULTANT_EMAIL_WITH_CRP_AND_PULSE,password,true);
+		sfHomePage.loginToStoreFront(consultantWithPulseAndWithCRP(),password,true);
 		sfAboutMePage = sfHomePage.clickAboutMe();
 		s_assert.assertTrue(sfAboutMePage.isSendButtonDisabled(), "Send button is enabled before enter captcha");
 		s_assert.assertAll();
@@ -1124,7 +1124,7 @@ public class MyAccountTest extends StoreFrontWebsiteBaseTest{
 	public void testPasswordFormatErrorValidation_250(){
 		String passwordLessThan5Chars = "111M";
 		//Login as consultant user.
-		sfHomePage.loginToStoreFront(TestConstants.CONSULTANT_EMAIL_WITH_CRP_AND_PULSE,password,true);
+		sfHomePage.loginToStoreFront(consultantWithPulseAndWithCRP(),password,true);
 		sfHomePage.clickWelcomeDropdown();
 		sfAccountInfoPage = sfHomePage.navigateToAccountInfoPage();
 		String expectedValidationErrorMsg = TestConstants.PASSWORD_VALIDATION_ERROR_LESS_THAN_EIGHT_CHARS;
@@ -1159,7 +1159,7 @@ public class MyAccountTest extends StoreFrontWebsiteBaseTest{
 	@Test(enabled=true)
 	public void testReportAProblemOrderHistory_358(){
 		String reportProblemsLink = "Report Problems";
-		sfHomePage.loginToStoreFront(TestConstants.CONSULTANT_EMAIL_WITH_CRP_AND_PULSE, password,true);
+		sfHomePage.loginToStoreFront(consultantWithPulseAndWithCRP(), password,true);
 		sfHomePage.clickWelcomeDropdown();
 		sfOrdersPage = sfHomePage.navigateToOrdersPage();
 		sfOrdersPage.chooselinkFromActionsDDUnderOrderHistoryForFirstOrder(reportProblemsLink);
@@ -1182,7 +1182,7 @@ public class MyAccountTest extends StoreFrontWebsiteBaseTest{
 		String autoSuggestedPrefixName = null;
 		//Subscribe to pulse with a new prefix.
 		sfCheckoutPage = new StoreFrontCheckoutPage(driver);
-		sfHomePage.loginToStoreFront(TestConstants.CONSULTANT_EMAIL_WITHOUT_CRP_AND_PULSE,password,true);
+		sfHomePage.loginToStoreFront(consultantWithoutPulseAndWithoutCRP(),password,true);
 		sfHomePage.clickWelcomeDropdown();
 		sfAutoshipStatusPage = sfHomePage.navigateToAutoshipStatusPage();
 		sfAutoshipStatusPage.clickSubscribeToPulseBtn();
@@ -1230,7 +1230,7 @@ public class MyAccountTest extends StoreFrontWebsiteBaseTest{
 	public void testConsultantFirstTimePulseEnrollment_380(){
 		String prefix = TestConstants.FIRST_NAME+CommonUtils.getCurrentTimeStamp();
 		sfCheckoutPage = new StoreFrontCheckoutPage(driver);
-		//sfHomePage.loginToStoreFront(TestConstants.CONSULTANT_EMAIL_WITHOUT_CRP_AND_PULSE,password,true);
+		//sfHomePage.loginToStoreFront(consultantWithoutPulseAndWithoutCRP(),password,true);
 		sfHomePage.loginToStoreFront(consultantWithoutPulseAndWithoutCRP(),password,true);
 		sfHomePage.clickWelcomeDropdown();
 		sfAutoshipStatusPage = sfHomePage.navigateToAutoshipStatusPage();
@@ -1326,7 +1326,7 @@ public class MyAccountTest extends StoreFrontWebsiteBaseTest{
 		String currentPulseStatus = null;
 		String urlToAssert = "myrfpulse";
 		//Login as consultant user.
-		sfHomePage.loginToStoreFront(TestConstants.CONSULTANT_EMAIL_WITH_CRP_AND_PULSE,password,true);
+		sfHomePage.loginToStoreFront(consultantWithPulseAndWithCRP(),password,true);
 		sfHomePage.clickWelcomeDropdown();
 		sfAutoshipStatusPage = sfHomePage.navigateToAutoshipStatusPage();
 		s_assert.assertFalse(sfAutoshipStatusPage.isSubscribeToPulseBtnDisplayed(),"User is not subscribed to pulse");
@@ -1353,7 +1353,7 @@ public class MyAccountTest extends StoreFrontWebsiteBaseTest{
 		String errorMsg = TestConstants.VALIDATION_ERROR_THIS_FIELD_IS_REQUIRED;
 		String error = null;
 		//Login with consultant not enrolled in pulse.
-		sfHomePage.loginToStoreFront(TestConstants.CONSULTANT_EMAIL_WITHOUT_CRP_AND_PULSE,password,true);
+		sfHomePage.loginToStoreFront(consultantWithoutPulseAndWithoutCRP(),password,true);
 		//Enroll user in pulse.
 		sfHomePage.clickWelcomeDropdown();
 		sfAutoshipStatusPage = sfHomePage.navigateToAutoshipStatusPage();
@@ -1394,7 +1394,7 @@ public class MyAccountTest extends StoreFrontWebsiteBaseTest{
 		String firstNameAccountInfo = "";
 		String lastNameAccountInfo = "";
 		//Login as consultant user.
-		sfHomePage.loginToStoreFront(TestConstants.CONSULTANT_EMAIL_WITH_CRP_AND_PULSE,password,true);
+		sfHomePage.loginToStoreFront(consultantWithPulseAndWithCRP(),password,true);
 		sfShopSkinCarePage = sfHomePage.clickAllProducts();
 		sfShopSkinCarePage.addProductToCart(TestConstants.PRODUCT_NUMBER, TestConstants.ORDER_TYPE_ADHOC);
 		sfShopSkinCarePage.checkoutTheCartFromPopUp();
@@ -1422,7 +1422,7 @@ public class MyAccountTest extends StoreFrontWebsiteBaseTest{
 		sfCheckoutPage.logout();
 		//Login as PC user
 		navigateToStoreFrontBaseURL();
-		sfHomePage.loginToStoreFront(TestConstants.PC_EMAIL_HAVING_AUTOSHIP,password,true);
+		sfHomePage.loginToStoreFront(pcUserWithPWSSponsor(),password,true);
 		sfShopSkinCarePage = sfHomePage.clickAllProducts();
 		sfShopSkinCarePage.addProductToCart(TestConstants.PRODUCT_NUMBER, TestConstants.ORDER_TYPE_ADHOC);
 		sfShopSkinCarePage.checkoutTheCartFromPopUp();
@@ -1451,7 +1451,7 @@ public class MyAccountTest extends StoreFrontWebsiteBaseTest{
 		/*String orderDetailsText = "Order Details";
 	  String orderNumber = null;
 	  String currentURL = null;*/
-		sfHomePage.loginToStoreFront(TestConstants.CONSULTANT_EMAIL_WITH_CRP_AND_PULSE, password,true);
+		sfHomePage.loginToStoreFront(consultantWithPulseAndWithCRP(), password,true);
 		sfHomePage.clickWelcomeDropdown();
 		sfOrdersPage = sfHomePage.navigateToOrdersPage();
 		s_assert.assertTrue(sfOrdersPage.isOrderHistorySectionPresent(), "Order history section is not present on UI");

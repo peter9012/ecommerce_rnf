@@ -203,7 +203,8 @@ public class StoreFrontCheckoutPage extends StoreFrontWebsiteBasePage{
 		driver.type(CONFIRM_PASSWORD_LOC,password);
 		logger.info("confirm entered as "+password);
 		if(userType.equals(TestConstants.USER_TYPE_PC)){
-			driver.click(PC_PERKS_CHECKBOX_LOC);
+			driver.pauseExecutionFor(1000);
+			driver.clickByJS(RFWebsiteDriver.driver,PC_PERKS_CHECKBOX_LOC);
 			logger.info("PC perks checkbox is checked");
 		}
 		return this;
@@ -214,16 +215,15 @@ public class StoreFrontCheckoutPage extends StoreFrontWebsiteBasePage{
 		logger.info("clicked on 'Create Account' button");
 		driver.pauseExecutionFor(1000);
 		if(userType.equals(TestConstants.USER_TYPE_RC)){
-			//driver.clickByJS(RFWebsiteDriver.driver, driver.findElement(NO_THANKS_BTN_LOC));
-			driver.click(NO_THANKS_BTN_LOC);
+			driver.clickByJS(RFWebsiteDriver.driver,NO_THANKS_BTN_LOC);
 			driver.pauseExecutionFor(2000);
 			driver.waitForElementNotPresent(NO_THANKS_BTN_LOC,5);
-			try{
-				driver.turnOffImplicitWaits(1);
-				driver.click(NO_THANKS_BTN_LOC);// needs to click again on the No Thanks button,will remove this patch
-			}catch(Exception e){
-				driver.turnOnImplicitWaits();
-			}
+//			try{
+//				driver.turnOffImplicitWaits(1);
+//				driver.click(NO_THANKS_BTN_LOC);// needs to click again on the No Thanks button,will remove this patch
+//			}catch(Exception e){
+//				driver.turnOnImplicitWaits();
+//			}
 		}
 		driver.pauseExecutionFor(5000);
 		driver.waitForElementNotPresent(CREATE_ACCOUNT_BUTTON_LOC);

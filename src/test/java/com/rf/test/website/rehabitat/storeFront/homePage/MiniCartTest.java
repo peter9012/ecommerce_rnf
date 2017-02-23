@@ -18,7 +18,7 @@ public class MiniCartTest extends StoreFrontWebsiteBaseTest{
 		String noOfItem = "0";
 		String itemInAdhocCart= "1";
 		String noOfItemFromUI = null;   
-		sfHomePage.loginToStoreFront(TestConstants.CONSULTANT_EMAIL_WITH_CRP_AND_PULSE, password,true);
+		sfHomePage.loginToStoreFront(consultantWithPulseAndWithCRP(), password,true);
 		sfCartPage = sfHomePage.clickMiniCartBagLink();
 		sfCartPage.removeAllProductsFromCart();
 		s_assert.assertFalse(sfCartPage.isProductPresentInCart(),"No product expected in cart but product are present in cart");
@@ -49,7 +49,7 @@ public class MiniCartTest extends StoreFrontWebsiteBaseTest{
 	 */
 	@Test(enabled=true)
 	public void testPCUserAbleToSeeLogoUsernameDropdownAndMiniCartAtCartPage_148(){
-		sfHomePage.loginToStoreFront(TestConstants.PC_EMAIL_HAVING_AUTOSHIP, password,true);
+		sfHomePage.loginToStoreFront(pcUserWithPWSSponsor(), password,true);
 		sfShopSkinCarePage = sfHomePage.clickAllProducts();
 		sfShopSkinCarePage.addProductToCart(TestConstants.PRODUCT_NUMBER, TestConstants.ORDER_TYPE_ADHOC);
 		sfCartPage = sfShopSkinCarePage.checkoutTheCartFromPopUp();
@@ -68,7 +68,7 @@ public class MiniCartTest extends StoreFrontWebsiteBaseTest{
 	 */
 	@Test(enabled=true)
 	public void testConsultantUserAbleToSeeLogoUsernameDropdownAndMiniCartAtCartPage_149(){
-		sfHomePage.loginToStoreFront(TestConstants.CONSULTANT_EMAIL_WITH_CRP_AND_PULSE,  password,true);
+		sfHomePage.loginToStoreFront(consultantWithPulseAndWithCRP(),  password,true);
 		sfShopSkinCarePage = sfHomePage.clickAllProducts();
 		sfShopSkinCarePage.addProductToCart(TestConstants.PRODUCT_NUMBER, TestConstants.ORDER_TYPE_ADHOC);
 		sfCartPage = sfShopSkinCarePage.checkoutTheCartFromPopUp();
@@ -86,7 +86,7 @@ public class MiniCartTest extends StoreFrontWebsiteBaseTest{
 	 */
 	@Test(enabled=true)
 	public void testMiniCartAutoship_325(){
-		sfHomePage.loginToStoreFront(TestConstants.PC_EMAIL_HAVING_AUTOSHIP, password,true);
+		sfHomePage.loginToStoreFront(pcUserWithPWSSponsor(), password,true);
 		sfHomePage.hoverOnAutoshipLink();
 		s_assert.assertTrue(sfHomePage.isYourNextPCPerksCartTextPresentAtAutoshipLinkPopup(), "Autoship menu is not populated after hover on autoship link");
 		s_assert.assertTrue(sfHomePage.isItemPresentInAutoshipCart(), "Items are not present in autoship cart popup");
@@ -116,7 +116,7 @@ public class MiniCartTest extends StoreFrontWebsiteBaseTest{
 	public void testAnonymousUserAddsProductsToTheCartForAdhocOrder_563(){
 		String productName = null;
 		String productNameOnCheckoutPopup = null;
-		sfHomePage.loginToStoreFront(TestConstants.CONSULTANT_EMAIL_WITH_CRP_AND_PULSE, password,true);
+		sfHomePage.loginToStoreFront(consultantWithPulseAndWithCRP(), password,true);
 		sfCartPage = sfHomePage.clickMiniCartBagLink();
 		sfCartPage.removeAllProductsFromCart();
 		sfCartPage.clickWelcomeDropdown();
@@ -131,7 +131,7 @@ public class MiniCartTest extends StoreFrontWebsiteBaseTest{
 		s_assert.assertTrue(sfCartPage.isYourShoppingCartHeaderPresentOnCartPage(),"Your Shopping cart header is not present when redirected after clicking the checkout button from checkout pop up");
 		s_assert.assertTrue(sfCartPage.isProductAddedToCartPresentOnCartPage(productNameOnCheckoutPopup),"Product added to cart : "+productName+" is not present on the cart page");
 		sfCartPage.clickOnCartLoginLink();
-		sfCartPage.loginToStoreFrontExcludingClickOnLoginIcon(TestConstants.CONSULTANT_EMAIL_WITH_CRP_AND_PULSE, password);
+		sfCartPage.loginToStoreFrontExcludingClickOnLoginIcon(consultantWithPulseAndWithCRP(), password);
 		sfCartPage.clickMiniCartBagLink();
 		s_assert.assertTrue(sfCartPage.isProductAddedToCartPresentOnCartPage(productNameOnCheckoutPopup),"Product added to cart : "+productName+" is not present on the cart page");
 		s_assert.assertAll();
@@ -150,7 +150,7 @@ public class MiniCartTest extends StoreFrontWebsiteBaseTest{
 		String productNameToAddByUser = null;
 		String productNameOnCheckoutPopup = null;
 		String productNameAddedByUser = null;
-		sfHomePage.loginToStoreFront(TestConstants.CONSULTANT_EMAIL_WITH_CRP_AND_PULSE, password,true);
+		sfHomePage.loginToStoreFront(consultantWithPulseAndWithCRP(), password,true);
 		sfCartPage = sfHomePage.clickMiniCartBagLink();
 		sfCartPage.removeAllProductsFromCart();
 		sfCartPage.clickWelcomeDropdown();
@@ -165,7 +165,7 @@ public class MiniCartTest extends StoreFrontWebsiteBaseTest{
 		s_assert.assertTrue(sfCartPage.isYourShoppingCartHeaderPresentOnCartPage(),"Your Shopping cart header is not present when redirected after clicking the checkout button from checkout pop up");
 		s_assert.assertTrue(sfCartPage.isProductAddedToCartPresentOnCartPage(productNameOnCheckoutPopup),"Product added to cart : "+productName+" is not present on the cart page");
 		sfCartPage.clickOnCartLoginLink();
-		sfCartPage.loginToStoreFrontExcludingClickOnLoginIcon(TestConstants.CONSULTANT_EMAIL_WITH_CRP_AND_PULSE, password);
+		sfCartPage.loginToStoreFrontExcludingClickOnLoginIcon(consultantWithPulseAndWithCRP(), password);
 		sfCartPage.clickMiniCartBagLink();
 		s_assert.assertTrue(sfCartPage.isProductAddedToCartPresentOnCartPage(productNameOnCheckoutPopup),"Product added to cart : "+productName+" is not present on the cart page");
 		sfCartPage.clickRodanAndFieldsLogo();
@@ -190,7 +190,7 @@ public class MiniCartTest extends StoreFrontWebsiteBaseTest{
 	 */
 	@Test(enabled=true)
 	public void testAutoshipNotVisibleToConsultantNotEnrolledInCRP_372(){
-		sfHomePage.loginToStoreFront(TestConstants.CONSULTANT_EMAIL_WITHOUT_CRP_AND_PULSE,  password,true);
+		sfHomePage.loginToStoreFront(consultantWithoutPulseAndWithoutCRP(),  password,true);
 		s_assert.assertFalse(sfHomePage.isAutoshipLinkPresent(), "Autoship link is not present for consultant who is not enrolled in pulse");
 		s_assert.assertAll();
 	}
@@ -201,7 +201,7 @@ public class MiniCartTest extends StoreFrontWebsiteBaseTest{
 	 */
 	@Test(enabled=true)
 	public void testAsPCAndRCAbleToViewMiniAutoshipCart_344(){
-		sfHomePage.loginToStoreFront(TestConstants.PC_EMAIL_HAVING_AUTOSHIP,  password,true);
+		sfHomePage.loginToStoreFront(pcUserWithPWSSponsor(),  password,true);
 		sfCartPage = sfHomePage.clickMiniCartBagLink();
 		sfCartPage.removeAllProductsFromCart();
 		sfCartPage.clickRodanAndFieldsLogo();
@@ -230,7 +230,7 @@ public class MiniCartTest extends StoreFrontWebsiteBaseTest{
 		String priceForAnonymousUser = null;
 		String specificPriceForValidUser = null;
 		String priceOnCartPageForValidUser = null;
-		sfHomePage.loginToStoreFront(TestConstants.CONSULTANT_EMAIL_WITH_CRP_AND_PULSE,  password,true);
+		sfHomePage.loginToStoreFront(consultantWithPulseAndWithCRP(),  password,true);
 		sfCartPage = sfHomePage.clickMiniCartBagLink();
 		sfCartPage.removeAllProductsFromCart();
 		sfCartPage.clickWelcomeDropdown();
@@ -246,7 +246,7 @@ public class MiniCartTest extends StoreFrontWebsiteBaseTest{
 		s_assert.assertTrue(sfCartPage.isYourShoppingCartHeaderPresentOnCartPage(),"Your Shopping cart header is not present when redirected after clicking the checkout button from checkout pop up");
 		s_assert.assertTrue(sfCartPage.isProductAddedToCartPresentOnCartPage(productNameOnCheckoutPopup),"Product added to cart : "+productName+" is not present on the cart page");
 		sfCartPage.clickOnCartLoginLink();
-		sfCartPage.loginToStoreFrontExcludingClickOnLoginIcon(TestConstants.CONSULTANT_EMAIL_WITH_CRP_AND_PULSE, password);
+		sfCartPage.loginToStoreFrontExcludingClickOnLoginIcon(consultantWithPulseAndWithCRP(), password);
 		sfCartPage.clickAllProducts();
 		sfProductDetailPage = sfShopSkinCarePage.clickOnProductNameLink(productName);
 		specificPriceForValidUser = sfProductDetailPage.getSpecificPricePresentOnPDPPage();
@@ -259,7 +259,7 @@ public class MiniCartTest extends StoreFrontWebsiteBaseTest{
 		// For PC User
 		sfCartPage.clickWelcomeDropdown();
 		sfCartPage.logout();
-		sfHomePage.loginToStoreFront(TestConstants.PC_EMAIL_HAVING_AUTOSHIP, password,true);
+		sfHomePage.loginToStoreFront(pcUserWithPWSSponsor(), password,true);
 		sfCartPage = sfHomePage.clickMiniCartBagLink();
 		sfCartPage.removeAllProductsFromCart();
 		sfCartPage.clickWelcomeDropdown();
@@ -278,7 +278,7 @@ public class MiniCartTest extends StoreFrontWebsiteBaseTest{
 		s_assert.assertTrue(sfCartPage.isYourShoppingCartHeaderPresentOnCartPage(),"Your Shopping cart header is not present when redirected after clicking the checkout button from checkout pop up");
 		s_assert.assertTrue(sfCartPage.isProductAddedToCartPresentOnCartPage(productNameOnCheckoutPopup),"Product added to cart : "+productName+" is not present on the cart page");
 		sfCartPage.clickOnCartLoginLink();
-		sfCartPage.loginToStoreFrontExcludingClickOnLoginIcon(TestConstants.PC_EMAIL_HAVING_AUTOSHIP, password);
+		sfCartPage.loginToStoreFrontExcludingClickOnLoginIcon(pcUserWithPWSSponsor(), password);
 		sfCartPage.clickAllProducts();
 		sfProductDetailPage = sfShopSkinCarePage.clickOnProductNameLink(productName);
 		specificPriceForValidUser = null;

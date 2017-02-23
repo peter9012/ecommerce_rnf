@@ -181,18 +181,18 @@ public class TestConstants {
 	
 	//DEV Users
 	//public static final String CONSULTANT_EMAIL_SPONSOR_WITHOUT_PWS = "AutoConsSPONSORWOPWS20170210122626@mailinator.com";
-	public static final String CONSULTANT_EMAIL_WITH_CRP_AND_PULSE = " autoconsWPWCRP20170216141800@mailinator.com";//qa2
+	//public static final String CONSULTANT_EMAIL_WITH_CRP_AND_PULSE = " autoconsWPWCRP20170216141800@mailinator.com";//qa2
 	public static final String CONSULTANT_EMAIL_WITH_CRP_AND_PULSE_FOR_CANCELLATION = "autoconsWPWCRPFORCANCELLATION20170216115235@mailinator.com";//dev1
-	public static final String CONSULTANT_PWS_PREFIX = "autocons20170216114117"; //dev1
-	public static final String CONSULTANT_EMAIL_WITHOUT_CRP_AND_PULSE = "autoconswocrpwop20170216142422@mailinator.com";//qa2
+	//public static final String CONSULTANT_PWS_PREFIX = "autocons20170216114117"; //dev1
+	//public static final String CONSULTANT_EMAIL_WITHOUT_CRP_AND_PULSE = "autoconswocrpwop20170216142422@mailinator.com";//qa2
 	//public static final String CONSULTANT_EMAIL_WITHOUT_PWS = "AutoConsWOCRPWOP20170210123702@mailinator.com";
 
-	public static final String PC_EMAIL_HAVING_AUTOSHIP = "autopc20170216134503@mailinator.com"; //qa2
+	//public static final String PC_EMAIL_HAVING_AUTOSHIP = "autopc20170216134503@mailinator.com"; //qa2
 	public static final String PC_EMAIL_HAVING_SINGLE_BILLING_PROFILE = "autopcWSINGLEBILLING20170216115900@mailinator.com";//dev1
-	public static final String PC_EMAIL_WHO_ENROLLED_UNDER_SPONSOR_WITH_PWS = "autopcWPWSSPONSOR20170216120449@mailinator.com";//dev1
+	//public static final String PC_EMAIL_WHO_ENROLLED_UNDER_SPONSOR_WITH_PWS = "autopcWPWSSPONSOR20170216120449@mailinator.com";//dev1
 	//public static final String PC_EMAIL_WHO_ENROLLED_UNDER_SPONSOR_WITHOUT_PWS = "AutoPCWOPWSSponsor20170210124547@mailinator.com";
 
-	public static final String RC_EMAIL_WITHOUT_ORDER = "autorc20170216122345@mailinator.com";//dev1
-	public static final String RC_EMAIL_HAVING_ORDER = "autorc20170216135358@mailinator.com";//qa2
+	//public static final String RC_EMAIL_WITHOUT_ORDER = "autorc20170216122345@mailinator.com";//dev1
+	//public static final String RC_EMAIL_HAVING_ORDER = "autorc20170216135358@mailinator.com";//qa2
 	
 }

@@ -31,7 +31,7 @@ public class TerminationTest extends StoreFrontWebsiteBaseTest{
 		s_assert.assertTrue(sfAutoshipStatusPage.verifyAccountTerminationIsConfirmedPopup(),"PC user account termination popup is not present.");
 		sfAutoshipStatusPage.clickOnConfirmTerminationPopup();
 		s_assert.assertTrue(sfHomePage.isLogoutSuccessful(),"PC user is still logged in after termination");
-		sfHomePage.loginToStoreFront(TestConstants.PC_EMAIL_HAVING_AUTOSHIP,  password,true);
+		sfHomePage.loginToStoreFront(pcUserWithPWSSponsor(),  password,true);
 		currentURL = sfHomePage.getCurrentURL();
 		s_assert.assertTrue(currentURL.contains("error"),"PC user is still able to login after account termination");
 		s_assert.assertAll();

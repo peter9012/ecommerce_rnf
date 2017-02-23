@@ -20,7 +20,7 @@ public class BillingProfileTest extends StoreFrontWebsiteBaseTest{
 		String currentURL = null;
 		String urlToAssert = "payment-details";
 		//Login as PC user.
-		sfHomePage.loginToStoreFront(TestConstants.PC_EMAIL_HAVING_AUTOSHIP,  password,true);
+		sfHomePage.loginToStoreFront(pcUserWithPWSSponsor(),  password,true);
 		sfHomePage.clickWelcomeDropdown();
 		sfBillingInfoPage = sfHomePage.navigateToBillingInfoPage();
 		currentURL = sfBillingInfoPage.getCurrentURL().toLowerCase();
@@ -31,7 +31,7 @@ public class BillingProfileTest extends StoreFrontWebsiteBaseTest{
 		sfHomePage.clickWelcomeDropdown();
 		sfBillingInfoPage.logout();
 		//Login as Consultant.
-		sfHomePage.loginToStoreFront(TestConstants.CONSULTANT_EMAIL_WITH_CRP_AND_PULSE,  password,true);
+		sfHomePage.loginToStoreFront(consultantWithPulseAndWithCRP(),  password,true);
 		sfHomePage.clickWelcomeDropdown();
 		sfBillingInfoPage = sfHomePage.navigateToBillingInfoPage();
 		currentURL = sfBillingInfoPage.getCurrentURL().toLowerCase();
@@ -42,7 +42,7 @@ public class BillingProfileTest extends StoreFrontWebsiteBaseTest{
 		sfHomePage.clickWelcomeDropdown();
 		sfBillingInfoPage.logout();
 		//Login as RC.
-		sfHomePage.loginToStoreFront(TestConstants.RC_EMAIL_HAVING_ORDER,  password,true);
+		sfHomePage.loginToStoreFront(rcWithOrderWithoutSponsor(),  password,true);
 		sfHomePage.clickWelcomeDropdown();
 		sfBillingInfoPage = sfHomePage.navigateToBillingInfoPage();
 		currentURL = sfBillingInfoPage.getCurrentURL().toLowerCase();
@@ -144,7 +144,7 @@ public class BillingProfileTest extends StoreFrontWebsiteBaseTest{
 
 
 		//Login as consultant user.
-		sfHomePage.loginToStoreFront(TestConstants.CONSULTANT_EMAIL_WITH_CRP_AND_PULSE,  password,true);
+		sfHomePage.loginToStoreFront(consultantWithPulseAndWithCRP(),  password,true);
 		sfHomePage.clickWelcomeDropdown();
 		sfBillingInfoPage = sfHomePage.navigateToBillingInfoPage();
 		currentURL = sfBillingInfoPage.getCurrentURL().toLowerCase();
@@ -206,7 +206,7 @@ public class BillingProfileTest extends StoreFrontWebsiteBaseTest{
 		String urlToAssert = "payment-details";
 		String nameOnCard = TestConstants.CARD_NAME + randomWord;
 		//Login as consultant user.
-		sfHomePage.loginToStoreFront(TestConstants.CONSULTANT_EMAIL_WITH_CRP_AND_PULSE,  password,true);
+		sfHomePage.loginToStoreFront(consultantWithPulseAndWithCRP(),  password,true);
 		sfHomePage.clickWelcomeDropdown();
 		sfBillingInfoPage = sfHomePage.navigateToBillingInfoPage();
 		currentURL = sfBillingInfoPage.getCurrentURL().toLowerCase();
@@ -241,7 +241,7 @@ public class BillingProfileTest extends StoreFrontWebsiteBaseTest{
 		String urlToAssert = "payment-details";
 
 		//Login as RC user.
-		sfHomePage.loginToStoreFront(TestConstants.RC_EMAIL_WITHOUT_ORDER,  password,true);
+		sfHomePage.loginToStoreFront(rcWithOrderWithoutSponsor(),  password,true);
 		sfHomePage.clickWelcomeDropdown();
 		sfBillingInfoPage = sfHomePage.navigateToBillingInfoPage();
 		currentURL = sfBillingInfoPage.getCurrentURL().toLowerCase();
@@ -286,7 +286,7 @@ public class BillingProfileTest extends StoreFrontWebsiteBaseTest{
 		int addressIndex = 0;
 
 		//Login as Consultant user.
-		sfHomePage.loginToStoreFront(TestConstants.CONSULTANT_EMAIL_WITH_CRP_AND_PULSE,  password,true);
+		sfHomePage.loginToStoreFront(consultantWithPulseAndWithCRP(),  password,true);
 		sfHomePage.clickWelcomeDropdown();
 		sfBillingInfoPage = sfHomePage.navigateToBillingInfoPage();
 		currentURL = sfBillingInfoPage.getCurrentURL().toLowerCase();
@@ -334,7 +334,7 @@ public class BillingProfileTest extends StoreFrontWebsiteBaseTest{
 	 * 
 	 *     
 	 */
-	@Test(enabled=true)
+	@Test(enabled=false)//Needs user update
 	public void testBillingInformationDefaultPaymentProfilesSingleProfile_474(){
 		String currentURL = null;
 		String urlToAssert = "payment-details";
@@ -385,7 +385,7 @@ public class BillingProfileTest extends StoreFrontWebsiteBaseTest{
 		int addressIndex = 0;
 
 		//Login as Consultant user.
-		sfHomePage.loginToStoreFront(TestConstants.CONSULTANT_EMAIL_WITH_CRP_AND_PULSE,  password,true);
+		sfHomePage.loginToStoreFront(consultantWithPulseAndWithCRP(),  password,true);
 		sfHomePage.clickWelcomeDropdown();
 		sfBillingInfoPage = sfHomePage.navigateToBillingInfoPage();
 		currentURL = sfBillingInfoPage.getCurrentURL().toLowerCase();
@@ -549,7 +549,7 @@ public class BillingProfileTest extends StoreFrontWebsiteBaseTest{
 		String stateAbbreviation = TestConstants.STATE_US_ABBREVIATION;
 		String cardLastName = null;
 		//Login as Consultant.
-		sfHomePage.loginToStoreFront(TestConstants.CONSULTANT_EMAIL_WITH_CRP_AND_PULSE,  password,true);
+		sfHomePage.loginToStoreFront(consultantWithPulseAndWithCRP(),  password,true);
 		sfHomePage.clickWelcomeDropdown();
 		sfBillingInfoPage = sfHomePage.navigateToBillingInfoPage();
 		currentURL = sfBillingInfoPage.getCurrentURL().toLowerCase();
@@ -604,7 +604,7 @@ public class BillingProfileTest extends StoreFrontWebsiteBaseTest{
 		String cardLastName = null;
 
 		//Login as Consultant.
-		sfHomePage.loginToStoreFront(TestConstants.CONSULTANT_EMAIL_WITH_CRP_AND_PULSE,  password,true);
+		sfHomePage.loginToStoreFront(consultantWithPulseAndWithCRP(),  password,true);
 		sfShopSkinCarePage = sfHomePage.clickAllProducts();
 		sfShopSkinCarePage.addProductToCart(TestConstants.PRODUCT_NUMBER, TestConstants.ORDER_TYPE_ADHOC);
 		sfCartPage = sfShopSkinCarePage.checkoutTheCartFromPopUp();

@@ -151,17 +151,17 @@ public class CategoryLandingPageTest extends StoreFrontWebsiteBaseTest{
 	 */
 	@Test(enabled=true)
 	public void testConsultantOnlyCategoryAppearsForTheConsultantUser_90(){
-		sfHomePage.loginToStoreFront(TestConstants.PC_EMAIL_HAVING_AUTOSHIP,  password,true);
+		sfHomePage.loginToStoreFront(pcUserWithPWSSponsor(),  password,true);
 		sfHomePage.mouseHoverOn(TestConstants.SHOP_SKINCARE);
 		s_assert.assertFalse(sfHomePage.isConsultantOnlyProductsLinkDisplayed(), "Consultant Only Link should NOT be present for PC user");
 		sfHomePage.clickWelcomeDropdown();
 		sfHomePage.logout();
-		sfHomePage.loginToStoreFront(TestConstants.RC_EMAIL_HAVING_ORDER,  password,true);
+		sfHomePage.loginToStoreFront(rcWithOrderWithoutSponsor(),  password,true);
 		sfHomePage.mouseHoverOn(TestConstants.SHOP_SKINCARE);
 		s_assert.assertFalse(sfHomePage.isConsultantOnlyProductsLinkDisplayed(), "Consultant Only Link should NOT be present for RC user");
 		sfHomePage.clickWelcomeDropdown();
 		sfHomePage.logout();
-		sfHomePage.loginToStoreFront(TestConstants.CONSULTANT_EMAIL_WITH_CRP_AND_PULSE,  password,true);
+		sfHomePage.loginToStoreFront(consultantWithPulseAndWithCRP(),  password,true);
 		sfHomePage.mouseHoverOn(TestConstants.SHOP_SKINCARE);
 		s_assert.assertTrue(sfHomePage.isConsultantOnlyProductsLinkDisplayed(), "Consultant Only Link should NOT be present for PC user");
 		sfShopSkinCarePage = sfHomePage.clickConsultantOnlyProductsLink();

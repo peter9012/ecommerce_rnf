@@ -216,8 +216,7 @@ public class StoreFrontCheckoutPage extends StoreFrontWebsiteBasePage{
 		driver.pauseExecutionFor(1000);
 		if(userType.equals(TestConstants.USER_TYPE_RC)){
 			driver.clickByJS(RFWebsiteDriver.driver,NO_THANKS_BTN_LOC);
-			driver.pauseExecutionFor(2000);
-			driver.waitForElementNotPresent(NO_THANKS_BTN_LOC,5);
+			//driver.waitForElementNotPresent(NO_THANKS_BTN_LOC,5);
 //			try{
 //				driver.turnOffImplicitWaits(1);
 //				driver.click(NO_THANKS_BTN_LOC);// needs to click again on the No Thanks button,will remove this patch
@@ -225,7 +224,7 @@ public class StoreFrontCheckoutPage extends StoreFrontWebsiteBasePage{
 //				driver.turnOnImplicitWaits();
 //			}
 		}
-		driver.pauseExecutionFor(5000);
+		driver.pauseExecutionFor(5000);//taking too long on UI,will be  removed later
 		driver.waitForElementNotPresent(CREATE_ACCOUNT_BUTTON_LOC);
 		driver.waitForPageLoad();
 	}

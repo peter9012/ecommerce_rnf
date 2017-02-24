@@ -316,12 +316,17 @@ public class StoreFrontCartPage extends StoreFrontWebsiteBasePage{
 	 * @return store front checkout page object
 	 */
 	public StoreFrontCheckoutPage clickCheckoutBtn(){
-		if(driver.isElementVisible(CHECKOUT_BTN_LOC)){
-			driver.click(CHECKOUT_BTN_LOC);	
+		try{
+			driver.turnOffImplicitWaits(3);
+			driver.click(CHECKOUT_BTN_LOC);
+			logger.info("Checkout btn clicked");
 		}
-		else
+		catch(Exception e){
 			driver.click(CHECKOUT_BTN_CONSULTANT_LOC);
-		logger.info("Checkout button clicked after registration");
+			logger.info("Checkout btn for consultant clicked");
+		}finally{
+			driver.turnOnImplicitWaits();
+		}
 		driver.waitForPageLoad();
 		return new StoreFrontCheckoutPage(driver);
 	}

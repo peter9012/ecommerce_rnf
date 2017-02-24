@@ -289,7 +289,7 @@ public class StoreFrontWebsiteBasePage extends RFBasePage {
 	private final By ABOUT_ME_LOC = By.xpath(topNavigationLoc + "//a[contains(@title,'About Me')]");
 	private final By CONFIRMATION_MSG_OF_PLACED_ORDER_LOC = By.xpath("//div[@class='orderHeading']/h1");
 	private final By ORDER_NUMBER_AT_CONFIRMATION_PAGE_OF_PLACED_ORDER_LOC = By.xpath("//div[@class='orderHeading']");
-	
+
 	private String productNameAllItemsInCartLoc = "//span[@class='item-name' and contains(text(),%s)]";
 	protected String addToCartButtonLoc = "//div[contains(@class,'product__listing')]/descendant::span[@id='cust_price'][contains(text(),'$')][1]/following::button[text()='Add to bag'][%s]";
 	private String errorMessageLoc = "//div[@class='global-alerts']/div[normalize-space(contains(text() , '%s'))]";
@@ -775,7 +775,7 @@ public class StoreFrontWebsiteBasePage extends RFBasePage {
 			driver.clickByJS(RFWebsiteDriver.driver,ACCEPT_RDBTN_NEW_POLICIES_PROCEDURES_POPUP_LOC);
 			driver.pauseExecutionFor(1000);
 			driver.clickByJS(RFWebsiteDriver.driver,CONTINUE_BTN_NEW_POLICIES_PROCEDURES_POPUP_LOC);
-					
+
 		}
 		if (closeCRPReminder == true && (driver.isElementVisible(SET_UP_CRP_POPUP_CLOSE_LOC))) {
 			driver.click(SET_UP_CRP_POPUP_CLOSE_LOC);
@@ -1054,11 +1054,11 @@ public class StoreFrontWebsiteBasePage extends RFBasePage {
 	 * 
 	 */
 	public StoreFrontWebsiteBasePage clickWelcomeDropdown() {
-//		driver.pauseExecutionFor(2000);
-//		if (driver.isElementPresent(SET_UP_CRP_POPUP_CLOSE_LOC)) {
-//			driver.click(SET_UP_CRP_POPUP_CLOSE_LOC);
-//			logger.info("JOIN CRP banner closed");
-//		}
+		//		driver.pauseExecutionFor(2000);
+		//		if (driver.isElementPresent(SET_UP_CRP_POPUP_CLOSE_LOC)) {
+		//			driver.click(SET_UP_CRP_POPUP_CLOSE_LOC);
+		//			logger.info("JOIN CRP banner closed");
+		//		}
 		driver.pauseExecutionFor(1000);
 		driver.clickByJS(RFWebsiteDriver.driver, WELCOME_DROPDOWN_LOC);
 		logger.info("Welcome dropdown clicked");
@@ -1871,7 +1871,7 @@ public class StoreFrontWebsiteBasePage extends RFBasePage {
 		driver.quickWaitForElementPresent(ENROLLMENT_SUCCESSFUL_MSG_LOC);
 		return driver.isElementVisible(ENROLLMENT_SUCCESSFUL_MSG_LOC);
 	}
-	
+
 	public String getConsultantOrderNumberFromURL(){
 		String[] currentURLArray = driver.getCurrentUrl().split("/");
 		String consultantOrderNum = currentURLArray[currentURLArray.length-1];
@@ -2604,13 +2604,19 @@ public class StoreFrontWebsiteBasePage extends RFBasePage {
 	 * @return
 	 */
 	public StoreFrontShopSkinCarePage clickAddMoreItemsBtn() {
-		driver.waitForElementPresent(ADD_MORE_ITEMS_BTN_LOC,200);
-		if (driver.isElementPresent(ADD_MORE_ITEMS_BTN_LOC)) {
+		driver.waitForElementPresent(ADD_MORE_ITEMS_BTN_LOC,250);
+		try{
+			driver.turnOffImplicitWaits(3);
 			driver.click(ADD_MORE_ITEMS_BTN_LOC);
-		} else {
-			driver.click(ADD_MORE_ITEMS_BTN_PC_AUTOSHIP_CART_LOC);
+			logger.info("Add More Items Clicked");
 		}
-		logger.info("clicked on add more items button");
+		catch(Exception e){
+			driver.click(ADD_MORE_ITEMS_BTN_PC_AUTOSHIP_CART_LOC);
+			logger.info("Add More Items PC Autoship Cart clicked");
+		} 
+		finally{
+			driver.turnOnImplicitWaits();
+		}
 		driver.waitForPageLoad();
 		return new StoreFrontShopSkinCarePage(driver);
 	}
@@ -3868,7 +3874,7 @@ public class StoreFrontWebsiteBasePage extends RFBasePage {
 		logger.info("Clicked Yes Button from Address Suggestion Popup");
 		return this;
 	}
-	
+
 	/***
 	 * This method get the confirmation message of consultant enrollment
 	 * 
@@ -3884,7 +3890,7 @@ public class StoreFrontWebsiteBasePage extends RFBasePage {
 		}else
 			return false;
 	}
-	
+
 	/***
 	 * This method get the Order Number after Successful Checkout 
 	 * 

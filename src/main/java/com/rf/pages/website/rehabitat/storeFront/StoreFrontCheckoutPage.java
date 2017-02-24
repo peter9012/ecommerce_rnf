@@ -23,6 +23,8 @@ public class StoreFrontCheckoutPage extends StoreFrontWebsiteBasePage{
 	private static final Logger logger = LogManager
 			.getLogger(StoreFrontCheckoutPage.class.getName());
 
+	// private final By TERMS_AND_CONDITIONS_CHCKBOX_FOR_CONSULTANT_CRP_LOC = By.xpath("//a[contains(text(),'Consultant Replenishment Program Terms & Conditions')]/ancestor::label[1]/preceding-sibling::input[1]");
+	private final By TERMS_AND_CONDITIONS_CHCKBOX_FOR_AUTOSHIP_LOC = By.xpath("//a[contains(text(),'Terms & Conditions')]/ancestor::label[1]/preceding-sibling::input[1]");
 	private final By EDIT_LINK_OF_SHIPPING_ADDRESS_LOC=By.xpath("//div[contains(text(),'Shipping')]/following::a[@class='editIcon'][1]");
 	private final By DELIVERY_AT_ORDER_REVIEW_PAGE_LOC = By.xpath("//div[contains(text(),'Order Summary')]/following::p[contains(text(),'Delivery')]/following::span[1]");
 	private final By FIRST_NAME_LOC = By.id("first-name");
@@ -159,7 +161,7 @@ public class StoreFrontCheckoutPage extends StoreFrontWebsiteBasePage{
 	private final By EMAIL_CONFIRMATION_MSG_LOC = By.xpath("//p[contains(text(),'A confirmation e-mail with your account information will be sent to your inbox shortly')]");
 	private final By PROFILE_FOR_FUTURE_AUTOSHIP_CHECKBOX_LOC = By.xpath("//div[@class='billingAddressForm']//label[@for='futureAutoship']");
 	private final By FUTURE_AUTOSHIP_CHECKBOX_FOR_EXISTING_PROFILE_LOC = By.xpath("//div[contains(@class,'editBillingAddressForm')]//label[@for='futureAutoship']");
-	private final By TERMS_AND_CONDITIONS_CHCKBOX_FOR_CONSULTANT_CRP_LOC = By.xpath("//a[contains(text(),'Consultant Replenishment Program Terms & Conditions')]/ancestor::label[1]/preceding-sibling::input[1]");
+	//private final By TERMS_AND_CONDITIONS_CHCKBOX_FOR_CONSULTANT_CRP_LOC = By.xpath("//a[contains(text(),'Consultant Replenishment Program Terms & Conditions')]/ancestor::label[1]/preceding-sibling::input[1]");
 	private final By EDIT_LINK_OF_BILLING_PROFILE_LOC=By.xpath("//div[contains(text(),'Billing')]/following::a[1]");
 	private final By EDIT_LINK_OF_SHIPPING_SECTION_LOC=By.xpath("//div[@class='checkout-shipping']//a[1]");
 
@@ -216,23 +218,23 @@ public class StoreFrontCheckoutPage extends StoreFrontWebsiteBasePage{
 		driver.clickByJS(RFWebsiteDriver.driver,CREATE_ACCOUNT_BUTTON_LOC);
 		logger.info("clicked on 'Create Account' button");
 		driver.pauseExecutionFor(1000);
-		
+
 		if(userType.equals(TestConstants.USER_TYPE_RC)){
 			Actions action = new Actions(RFWebsiteDriver.driver);
 			driver.quickWaitForElementPresent(NO_THANKS_BTN_LOC);
 			action.moveToElement(driver.findElement(NO_THANKS_BTN_LOC)).click(driver.findElement(NO_THANKS_BTN_LOC)).build().perform();
 			//driver.click(NO_THANKS_BTN_LOC);
-			
-//			try{
-//				driver.turnOffImplicitWaits(1);
-//				driver.click(NO_THANKS_BTN_LOC);// needs to click again on the No Thanks button,will remove this patch
-//			}catch(Exception e){
-//				driver.turnOnImplicitWaits();
-//			}
+
+			//			try{
+			//				driver.turnOffImplicitWaits(1);
+			//				driver.click(NO_THANKS_BTN_LOC);// needs to click again on the No Thanks button,will remove this patch
+			//			}catch(Exception e){
+			//				driver.turnOnImplicitWaits();
+			//			}
 		}
-//		else{
-//			driver.waitForElementNotPresent(CREATE_ACCOUNT_BUTTON_LOC,250);
-//		}
+		//		else{
+		//			driver.waitForElementNotPresent(CREATE_ACCOUNT_BUTTON_LOC,250);
+		//		}
 		driver.waitForURLNotHaving("/login",250);
 		driver.pauseExecutionFor(1000);//taking too long on UI and tests failing so intentionally adding for smtime,will be  removed later
 		driver.waitForPageLoad();
@@ -1651,16 +1653,30 @@ public class StoreFrontCheckoutPage extends StoreFrontWebsiteBasePage{
 		return this;
 	}
 
+
 	/***
 	 * This method select terms and conditions checkbox for consultant
 	 * 
 	 * @param
 	 * @return Store front checkout page object
 	 * 
+	  //
+	 public StoreFrontCheckoutPage selectTermsAndConditionsCheckBoxForConsulatntCRP(){
+	  driver.clickByJS(RFWebsiteDriver.driver,TERMS_AND_CONDITIONS_CHCKBOX_FOR_CONSULTANT_CRP_LOC);
+	  logger.info("Clicked Terms and conditions checkbox for consultant CRP checkout");
+	  return this;
+	 }*/
+
+	/***
+	 * This method select terms and conditions checkbox for Autoship
+	 * 
+	 * @param
+	 * @return Store front checkout page object
+	 * 
 	 */
-	public StoreFrontCheckoutPage selectTermsAndConditionsCheckBoxForConsulatntCRP(){
-		driver.clickByJS(RFWebsiteDriver.driver,TERMS_AND_CONDITIONS_CHCKBOX_FOR_CONSULTANT_CRP_LOC);
-		logger.info("Clicked Terms and conditions checkbox for consultant CRP checkout");
+	public StoreFrontCheckoutPage selectTermsAndConditionsCheckBoxForAutoshipOrder(){
+		driver.clickByJS(RFWebsiteDriver.driver,TERMS_AND_CONDITIONS_CHCKBOX_FOR_AUTOSHIP_LOC);
+		logger.info("Clicked Terms and conditions checkbox for Autoship checkout");
 		return this;
 	}
 

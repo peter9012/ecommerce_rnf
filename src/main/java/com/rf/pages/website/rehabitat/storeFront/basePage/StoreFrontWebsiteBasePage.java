@@ -48,7 +48,6 @@ public class StoreFrontWebsiteBasePage extends RFBasePage {
 	private final By VIEW_SHOPPING_CART_LINK_LOC = By.xpath("//a[contains(text(),'View shopping cart')]");
 	private final By TOGGLE_BUTTON_OF_COUNTRY_LOC = By.xpath("//form[@id='country-form']//div[@class='form-group']/div");
 	private final By ERROR_MESSAGE_EMPTY_PREFIX_LOC = By.xpath("//*[@id='prefixForm']//label[@class='field-error']");
-	private final By ENROLL_NOW_POPUP_LOC = By.xpath("//div[@id='enrollCRPModal' and contains(@style,'block')]//h3[contains(text(),'Do you want enroll for CRP')]");
 	private final By SHOPPING_CART_HEADLINE_ON_CHCKOUT_POPUP_LOC = By.xpath("//div[@id='cboxContent']//span[@class='headline-text' and contains(text(),'Added to Your Shopping Cart')]");
 	private final By SUBTOTAL_LOC = By.xpath("//td[contains(text(),'Subtotal')]/following::td[1]");
 	private final By TOTAL_PRICE_OF_ITEMS_IN_MINI_CART_LOC = By
@@ -289,7 +288,10 @@ public class StoreFrontWebsiteBasePage extends RFBasePage {
 	private final By ABOUT_ME_LOC = By.xpath(topNavigationLoc + "//a[contains(@title,'About Me')]");
 	private final By CONFIRMATION_MSG_OF_PLACED_ORDER_LOC = By.xpath("//div[@class='orderHeading']/h1");
 	private final By ORDER_NUMBER_AT_CONFIRMATION_PAGE_OF_PLACED_ORDER_LOC = By.xpath("//div[@class='orderHeading']");
-
+	private final By ENROLL_NOW_POPUP_LOC = By.xpath("//div[@id='enrollCRPModal' and contains(@style,'block')]//h3[contains(text(),'Do you want to enroll in CRP')]");
+	protected final By SORT_FILTER_DD_LOC = By.id("sortOptions1");
+	protected final By SHOP_BY_PRICE_FILTER_OPTION_HIGH_TO_LOW_LOC = By.xpath("//select[@id='sortOptions1']/descendant::option[2]");
+	
 	private String productNameAllItemsInCartLoc = "//span[@class='item-name' and contains(text(),%s)]";
 	protected String addToCartButtonLoc = "//div[contains(@class,'product__listing')]/descendant::span[@id='cust_price'][contains(text(),'$')][1]/following::button[text()='Add to bag'][%s]";
 	private String errorMessageLoc = "//div[@class='global-alerts']/div[normalize-space(contains(text() , '%s'))]";
@@ -416,22 +418,6 @@ public class StoreFrontWebsiteBasePage extends RFBasePage {
 	//		driver.waitForPageLoad();
 	//		return new StoreFrontShopSkinCarePage(driver);
 	//	}
-
-	/***
-	 * This method clicks on the All products link from Top Navigation
-	 * 
-	 * @return
-	 */
-	public StoreFrontShopSkinCarePage clickAllProducts() {
-		driver.quickWaitForElementPresent(SHOP_SKINCARE_LOC);
-		mouseHoverOn(TestConstants.SHOP_SKINCARE);
-		driver.click(ALL_PRODUCTS_LOC);
-		//clickCategoryLink("UNBLEMISH");
-		//driver.get(driver.getCurrentUrl()+"/All-Skincare/c/shopskincare");
-		logger.info("clicked on 'All Products'");
-		driver.waitForPageLoad();
-		return new StoreFrontShopSkinCarePage(driver);
-	}
 
 	//temp method, till we have All Products not having required products
 	public StoreFrontShopSkinCarePage clickAllProductsCRP() {
@@ -3902,5 +3888,38 @@ public class StoreFrontWebsiteBasePage extends RFBasePage {
 		String orderNumber = driver.getText(ORDER_NUMBER_AT_CONFIRMATION_PAGE_OF_PLACED_ORDER_LOC).replaceAll("[^-?0-9]+","");
 		logger.info("Order Number is "+orderNumber);
 		return orderNumber;
+	}
+	
+	/***
+	  * This method select sort by price filter High to low
+	  * 
+	  * @param
+	  * @return store front Home page object
+	  * 
+	  */
+	 public StoreFrontWebsiteBasePage productPriceFilterHighToLow(){
+	  driver.click(SORT_FILTER_DD_LOC);
+	  logger.info("Sort filter dropdown clicked");
+	  driver.click(SHOP_BY_PRICE_FILTER_OPTION_HIGH_TO_LOW_LOC);
+	  logger.info("Price filter 'HIGH TO LOW' selected");
+	  driver.waitForPageLoad();
+	  return this;
+	}
+
+	/***
+	  * This method clicks on the All products link from Top Navigation
+	  * 
+	  * @return
+	  */
+	 public StoreFrontShopSkinCarePage clickAllProducts() {
+	  driver.quickWaitForElementPresent(SHOP_SKINCARE_LOC);
+	  mouseHoverOn(TestConstants.SHOP_SKINCARE);
+	  driver.click(ALL_PRODUCTS_LOC);
+	  //clickCategoryLink("UNBLEMISH");
+	  //driver.get(driver.getCurrentUrl()+"/All-Skincare/c/shopskincare");
+	  logger.info("clicked on 'All Products'");
+	  driver.waitForPageLoad();
+	  productPriceFilterHighToLow();
+	  return new StoreFrontShopSkinCarePage(driver);
 	}
 }

@@ -339,6 +339,21 @@ public class StoreFrontHomePage extends StoreFrontWebsiteBasePage{
 		driver.click(NEXT_BUTTON_LOC);
 		logger.info("Next button clicked");
 		driver.waitForPageLoad();
+		if(driver.getCurrentUrl().contains("delivery-account")==false){
+			driver.clickByJS(RFWebsiteDriver.driver,NEXT_BUTTON_LOC);
+			logger.info("Next button clicked");
+			driver.waitForPageLoad();
+		}
+		if(driver.getCurrentUrl().contains("delivery-account")==false){
+			driver.clickByJS(RFWebsiteDriver.driver,NEXT_BUTTON_LOC);
+			logger.info("Next button clicked by JS");
+			driver.waitForPageLoad();
+		}
+		if(driver.getCurrentUrl().contains("delivery-account")==false){
+			driver.clickByAction(NEXT_BUTTON_LOC);
+			logger.info("Next button clicked by Action");
+			driver.waitForPageLoad();
+		}
 		return this;
 	}
 	

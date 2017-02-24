@@ -140,8 +140,8 @@ public class StoreFrontWebsiteBaseTest extends RFBaseTest {
 		if(sfHomePage.isWelcomeUserElementDisplayed()==true){
 			sfHomePage.clickWelcomeDropdown();
 			sfHomePage.logout();
-		}
-		navigateToStoreFrontBaseURL();	
+			navigateToStoreFrontBaseURL();
+		}			
 	}
 
 	@BeforeClass(alwaysRun=true)

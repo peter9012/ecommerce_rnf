@@ -3,6 +3,7 @@ package com.rf.pages.website.rehabitat.storeFront;
 import org.openqa.selenium.Alert;
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebElement;
+import org.openqa.selenium.interactions.Actions;
 
 import com.rf.core.driver.website.RFWebsiteDriver;
 import com.rf.core.utils.CommonUtils;
@@ -215,9 +216,13 @@ public class StoreFrontCheckoutPage extends StoreFrontWebsiteBasePage{
 		driver.clickByJS(RFWebsiteDriver.driver,CREATE_ACCOUNT_BUTTON_LOC);
 		logger.info("clicked on 'Create Account' button");
 		driver.pauseExecutionFor(1000);
+		
 		if(userType.equals(TestConstants.USER_TYPE_RC)){
-			driver.clickByJS(RFWebsiteDriver.driver,NO_THANKS_BTN_LOC);
-			//driver.waitForElementNotPresent(NO_THANKS_BTN_LOC,5);
+			Actions action = new Actions(RFWebsiteDriver.driver);
+			driver.quickWaitForElementPresent(NO_THANKS_BTN_LOC);
+			action.moveToElement(driver.findElement(NO_THANKS_BTN_LOC)).click(driver.findElement(NO_THANKS_BTN_LOC)).build().perform();
+			//driver.click(NO_THANKS_BTN_LOC);
+			driver.waitForElementNotPresent(NO_THANKS_BTN_LOC,60);
 //			try{
 //				driver.turnOffImplicitWaits(1);
 //				driver.click(NO_THANKS_BTN_LOC);// needs to click again on the No Thanks button,will remove this patch
@@ -225,8 +230,10 @@ public class StoreFrontCheckoutPage extends StoreFrontWebsiteBasePage{
 //				driver.turnOnImplicitWaits();
 //			}
 		}
-		driver.pauseExecutionFor(30000);//taking too long on UI and tests failing so intentionally adding for smtime,will be  removed later
-		driver.waitForElementNotPresent(CREATE_ACCOUNT_BUTTON_LOC);
+		else{
+			driver.waitForElementNotPresent(CREATE_ACCOUNT_BUTTON_LOC,60);
+		}
+		driver.pauseExecutionFor(10000);//taking too long on UI and tests failing so intentionally adding for smtime,will be  removed later
 		driver.waitForPageLoad();
 	}
 

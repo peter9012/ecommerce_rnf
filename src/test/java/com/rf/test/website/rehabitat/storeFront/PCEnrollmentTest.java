@@ -11,20 +11,6 @@ import com.rf.test.website.rehabitat.storeFront.baseTest.StoreFrontWebsiteBaseTe
 public class PCEnrollmentTest extends StoreFrontWebsiteBaseTest{
 	
 
-//	public PCEnrollmentTest() {
-//		firstName=TestConstants.PC_FIRST_NAME;
-//		addressLine1 = TestConstants.ADDRESS_LINE_1_US;
-//		addressLine2 = TestConstants.ADDRESS_LINE_2_US;
-//		city = TestConstants.CITY_US;
-//		state = TestConstants.STATE_US;
-//		postalCode = TestConstants.POSTAL_CODE_US;
-//		phoneNumber = TestConstants.PHONE_NUMBER;
-//		cardType = TestConstants.CARD_TYPE;
-//		cardNumber = TestConstants.CARD_NUMBER;
-//		cardName = TestConstants.CARD_NAME;
-//		CVV = TestConstants.CVV;
-//	}
-
 	/***
 	 * qTest : TC-452 PC User Enrollment/Checkout - Complete Enrollment
 	 * Description : This test is for successfully enrolling a PC user

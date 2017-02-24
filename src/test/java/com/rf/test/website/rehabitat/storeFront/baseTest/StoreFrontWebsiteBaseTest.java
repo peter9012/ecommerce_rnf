@@ -82,7 +82,6 @@ public class StoreFrontWebsiteBaseTest extends RFBaseTest {
 	 * All page class reference declarations
 	 */
 	protected StoreFrontHomePage sfHomePage;
-	//protected StoreFrontConsultantEnrollNowPage sfConsEnrollNowPage;
 	protected StoreFrontShopSkinCarePage sfShopSkinCarePage;
 	protected StoreFrontCartPage sfCartPage;
 	protected StoreFrontCheckoutPage sfCheckoutPage;
@@ -124,9 +123,9 @@ public class StoreFrontWebsiteBaseTest extends RFBaseTest {
 	@BeforeSuite(alwaysRun=true)
 	public void setUp(ITestContext context) throws Exception {
 		userPropertyFile.loadProps(userProps);
-		if(getSuiteName(context).equalsIgnoreCase("storeFrontMiniRegressionSuite")){
-			//userPropertyFile.clearProperty();
-		}
+//		if(getSuiteName(context).equalsIgnoreCase("storeFrontMiniRegressionSuite")){
+//			//userPropertyFile.clearProperty();
+//		}
 		driver.loadApplication();
 		driver.setDBConnectionString();
 	}

@@ -1873,9 +1873,9 @@ public class StoreFrontWebsiteBasePage extends RFBasePage {
 	}
 	
 	public String getConsultantOrderNumberFromURL(){
-		String[] currentURLArray = driver.getCurrentUrl().split("\\");
+		String[] currentURLArray = driver.getCurrentUrl().split("/");
 		String consultantOrderNum = currentURLArray[currentURLArray.length-1];
-		logger.info("consultantOrderNum "+consultantOrderNum);
+		logger.info("consultantOrderNum ="+consultantOrderNum);
 		return consultantOrderNum;
 	}
 
@@ -2604,7 +2604,7 @@ public class StoreFrontWebsiteBasePage extends RFBasePage {
 	 * @return
 	 */
 	public StoreFrontShopSkinCarePage clickAddMoreItemsBtn() {
-		driver.waitForElementPresent(ADD_MORE_ITEMS_BTN_LOC);
+		driver.waitForElementPresent(ADD_MORE_ITEMS_BTN_LOC,200);
 		if (driver.isElementPresent(ADD_MORE_ITEMS_BTN_LOC)) {
 			driver.click(ADD_MORE_ITEMS_BTN_LOC);
 		} else {

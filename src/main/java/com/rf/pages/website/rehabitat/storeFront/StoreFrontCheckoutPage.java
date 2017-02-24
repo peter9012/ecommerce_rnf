@@ -151,7 +151,7 @@ public class StoreFrontCheckoutPage extends StoreFrontWebsiteBasePage{
 	private final By CONFIRM_CRP_ORDER_MSG_LOC = By.xpath("//h2[contains(text(),'YOUR ENROLLMENT IS SUCCESFUL')]");
 	private final By BILLING_PROFILE_AFTER_ORDER_PLACED = By.xpath("//div[@class='orderBillingAddress']");
 	private final By BILLING_PROFILE_NAME_LOC = By.xpath("//div[@id='default-payment-method']//strong");
-	private final By CREDIT_CARD_NUMBER_AT_ORDER_CONFIRMATION_PAGE = By.xpath("//div[@class='orderBillingDetails']/div[2]");
+	private final By CREDIT_CARD_NUMBER_AT_ORDER_CONFIRMATION_PAGE = By.xpath("//div[@class='orderBillingDetails']/div[contains(text(),'****')]");
 	private final By EDIT_LINK_OF_SHIPPING_DETAILS = By.xpath("//div[contains(text(),'Shipping')]/following-sibling::a[contains(text(),'Edit')]");
 	private final By USE_MY_DELIVERY_ADDRESS_CHECKBOX_LOC = By.xpath("//input[@id='useDeliveryAddress']");
 	private final By SELECTED_SPONSOR_LOC = By.xpath("//span[@id='selectd-consultant']");
@@ -222,7 +222,7 @@ public class StoreFrontCheckoutPage extends StoreFrontWebsiteBasePage{
 			driver.quickWaitForElementPresent(NO_THANKS_BTN_LOC);
 			action.moveToElement(driver.findElement(NO_THANKS_BTN_LOC)).click(driver.findElement(NO_THANKS_BTN_LOC)).build().perform();
 			//driver.click(NO_THANKS_BTN_LOC);
-			driver.waitForElementNotPresent(NO_THANKS_BTN_LOC,180);
+			driver.waitForURLNotHaving("/login",180);
 //			try{
 //				driver.turnOffImplicitWaits(1);
 //				driver.click(NO_THANKS_BTN_LOC);// needs to click again on the No Thanks button,will remove this patch
@@ -230,10 +230,10 @@ public class StoreFrontCheckoutPage extends StoreFrontWebsiteBasePage{
 //				driver.turnOnImplicitWaits();
 //			}
 		}
-		else{
-			driver.waitForElementNotPresent(CREATE_ACCOUNT_BUTTON_LOC,250);
-		}
-		driver.pauseExecutionFor(10000);//taking too long on UI and tests failing so intentionally adding for smtime,will be  removed later
+//		else{
+//			driver.waitForElementNotPresent(CREATE_ACCOUNT_BUTTON_LOC,250);
+//		}
+		driver.pauseExecutionFor(1000);//taking too long on UI and tests failing so intentionally adding for smtime,will be  removed later
 		driver.waitForPageLoad();
 	}
 

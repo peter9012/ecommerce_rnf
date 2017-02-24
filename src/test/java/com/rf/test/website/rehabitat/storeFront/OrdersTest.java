@@ -63,7 +63,7 @@ public class OrdersTest extends StoreFrontWebsiteBaseTest{
 	@Test(enabled=true)
 	public void testCheckoutPageEditsEditShippingInformation_298(){
 		//already covered in Add And Delete Shipping 
-		
+
 	}
 
 	/***
@@ -191,7 +191,7 @@ public class OrdersTest extends StoreFrontWebsiteBaseTest{
 	 */
 	@Test(enabled=true)
 	public void testBillingProfileAddAnAddressToNewProfile_303(){
-	// Covered in Billing Profile	
+		// Covered in Billing Profile	
 	}
 
 	/***
@@ -911,7 +911,7 @@ public class OrdersTest extends StoreFrontWebsiteBaseTest{
 		sfCheckoutPage.clickRemoveLink();
 		sfCheckoutPage.searchSponsor(TestConstants.SPONSOR);
 		s_assert.assertTrue(sfHomePage.isSponsorResultDisplayed(),"No result found after searching the sponsor with name "+TestConstants.SPONSOR);
-		
+
 		s_assert.assertAll();
 	}
 
@@ -980,30 +980,7 @@ public class OrdersTest extends StoreFrontWebsiteBaseTest{
 	 */
 	@Test(enabled=true)
 	public void testEditAShipAddressCheckoutValidDetails_321(){
-		String randomWord = CommonUtils.getRandomWord(5);
-		String firstName = TestConstants.FIRST_NAME;
-		String lastName = TestConstants.LAST_NAME+randomWord;
-		String addressLine1 = TestConstants.ADDRESS_LINE_1_US;
-		String addressLine2 = TestConstants.ADDRESS_LINE_2_US;
-		String city = TestConstants.CITY_US;
-		String state = TestConstants.STATE_US;
-		String postalCode = TestConstants.POSTAL_CODE_US;
-		String phoneNumber = TestConstants.PHONE_NUMBER;
-		String shippingProfileNameFromUI = null;
-		sfHomePage.loginToStoreFront(consultantWithPulseAndWithCRP(),password,true);
-		sfShopSkinCarePage = sfHomePage.clickAllProducts();
-		sfShopSkinCarePage.addProductToCart(TestConstants.PRODUCT_NUMBER, TestConstants.ORDER_TYPE_ADHOC);;
-		sfCartPage = sfShopSkinCarePage.checkoutTheCartFromPopUp();
-		sfCheckoutPage=sfHomePage.checkoutTheCart();
-		sfCheckoutPage.clickSaveButton();
-		sfCheckoutPage.clickEditLinkOfShippingProfile();
-		sfCheckoutPage.updateShippingAddressDetailsAtCheckoutPage(firstName, lastName, addressLine1, addressLine2, city, state, postalCode, phoneNumber);
-		sfCheckoutPage.clickSaveButtonOfShippingAddress();
-		s_assert.assertTrue(sfCheckoutPage.isUseAsEnteredPopupDisplayed(), "Use As Entered Confirmation Popup is Not Displayed after added new shipping profile");
-		sfCheckoutPage.clickUseAsEnteredButtonOnPopUp();
-		shippingProfileNameFromUI = sfCheckoutPage.getDefaultShippingAddressNameAtCheckoutPage();
-		s_assert.assertTrue(shippingProfileNameFromUI.contains(lastName), "Shipping profile name should contain "+lastName+ "Actual on UI is "+shippingProfileNameFromUI);
-		s_assert.assertAll();
+		//Already covered in AddAndDeletShippingTest
 	}
 
 	/***
@@ -1300,51 +1277,7 @@ public class OrdersTest extends StoreFrontWebsiteBaseTest{
 	 */
 	@Test(enabled=true)
 	public void testAddressVerificationBillingProfile_318(){
-		String randomWord = CommonUtils.getRandomWord(5);
-		String cardName = TestConstants.CARD_NAME + randomWord;
-		String firstName = TestConstants.FIRST_NAME;
-		String lastName = TestConstants.LAST_NAME;
-		String addressLine1 = TestConstants.ADDRESS_LINE_1_US;
-		String addressLine2 = TestConstants.ADDRESS_LINE_2_US;
-		String city = TestConstants.CITY_US;
-		String state = TestConstants.STATE_US;
-		String postalCode = TestConstants.POSTAL_CODE_US;
-		String phoneNumber = TestConstants.PHONE_NUMBER;
-		String addressLine1ForUpdation = TestConstants.SECOND_ADDRESS_LINE_1_US; 
-		String addressLine2ForUpdation = TestConstants.SECOND_ADDRESS_LINE_2_US;
-		String cityForUpdation = TestConstants.SECOND_CITY_US;
-		String postalCodeForUpdation = TestConstants.SECOND_POSTAL_CODE_US;
-		String defaultBillingProfile = null;
-		String lastNameOfDefaultBillingProfile = null;
-		String billingDetailsOnUI = null;
-
-		sfHomePage.loginToStoreFront(consultantWithPulseAndWithCRP(),password,true);
-		sfShopSkinCarePage = sfHomePage.clickAllProducts();
-		sfShopSkinCarePage.addProductToCart(TestConstants.PRODUCT_NUMBER, TestConstants.ORDER_TYPE_ADHOC);;
-		sfShopSkinCarePage.checkoutTheCartFromPopUp();
-		sfCheckoutPage=sfShopSkinCarePage.checkoutTheCart();
-		sfCheckoutPage.clickSaveButton();
-		sfCheckoutPage.clickShippingDetailsNextbutton();
-		sfCheckoutPage.clickAddNewBillingProfileButton();
-		sfCheckoutPage.enterUserBillingDetails(TestConstants.CARD_TYPE,TestConstants.CARD_NUMBER, cardName, TestConstants.CVV);
-		sfCheckoutPage.checkUseMyDeliveryAddressChkBox();
-		sfCheckoutPage.enterBillingAddressDetails(firstName, lastName, addressLine1, addressLine2, city, state, postalCode, phoneNumber);
-		sfCheckoutPage.clickBillingDetailsNextbutton();
-		sfCheckoutPage.clickUseAsEnteredButtonOnPopUp();
-		defaultBillingProfile = sfCheckoutPage.getDefaultBillingProfileName();
-		lastNameOfDefaultBillingProfile = sfCheckoutPage.getLastName(defaultBillingProfile);
-		s_assert.assertTrue(defaultBillingProfile.contains(lastNameOfDefaultBillingProfile),"Default profile has not been updated. Expected : " + cardName + ". Actual : " + defaultBillingProfile);
-		randomWord = CommonUtils.getRandomWord(5);
-		lastName = (TestConstants.LAST_NAME+randomWord).toLowerCase().trim();
-		sfCheckoutPage.clickEditLinkOfBillingProfile();
-		sfCheckoutPage.clickEditLinkOfDefaultBillingProfile();
-		sfCheckoutPage.enterBillingAddressDetailsAtCheckout(firstName, lastName, addressLine1ForUpdation, addressLine2ForUpdation, cityForUpdation, state, postalCodeForUpdation, phoneNumber);
-		sfCheckoutPage.clickSavePaymentButton();
-		s_assert.assertTrue(sfCheckoutPage.isAddressVerificationPopupAppeared(),"Address Verification popup is not appeared for billing address");
-		sfCheckoutPage.clickUseAsEnteredButtonOnPopUp();
-		billingDetailsOnUI = sfCheckoutPage.getBillingProfileDetailsFromBillingProfile().toLowerCase();
-		s_assert.assertTrue(billingDetailsOnUI.contains(cardName),"Billing profile has not been updated. Expected : " + cardName + ". Actual : " + billingDetailsOnUI);
-		s_assert.assertAll();
+		//Already covered in BillingProfile	
 	}
 
 	/***
@@ -1390,6 +1323,7 @@ public class OrdersTest extends StoreFrontWebsiteBaseTest{
 		String text_OrderTotal = "Order Total";
 		String productSVValue = null;
 		String yourPrice = null;
+		String orderStatus= null;
 		String shippingProfileFromOrderConfirmationPage = null;
 		String shippingMethodFromOrderConfirmationPage = null;
 		String billingProfileNameFromOrderConfirmationPage = null;
@@ -1410,7 +1344,7 @@ public class OrdersTest extends StoreFrontWebsiteBaseTest{
 		sfCartPage.clickRodanAndFieldsLogo();
 		sfShopSkinCarePage = sfHomePage.clickAllProducts();
 		productSVValue = sfShopSkinCarePage.getProductRetailAndSVPrice(TestConstants.PRODUCT_NUMBER);
-		yourPrice = sfShopSkinCarePage.getYourPriceOfAProduct(TestConstants.PRODUCT_NUMBER);
+		//yourPrice = sfShopSkinCarePage.getYourPriceOfAProduct(TestConstants.PRODUCT_NUMBER);
 		sfShopSkinCarePage.addProductToCart(TestConstants.PRODUCT_NUMBER, TestConstants.ORDER_TYPE_ADHOC);;
 		sfShopSkinCarePage.checkoutTheCartFromPopUp();
 		productName = sfCartPage.getProductName("1");
@@ -1438,6 +1372,8 @@ public class OrdersTest extends StoreFrontWebsiteBaseTest{
 		orderNumber = sfCheckoutPage.getOrderNumberAfterCheckout();
 		sfCheckoutPage.clickWelcomeDropdown();
 		sfOrdersPage = sfCheckoutPage.navigateToOrdersPage();
+		orderStatus = sfOrdersPage.getStatusOfOrderFromOrderHistory(orderNumber).trim();
+		s_assert.assertTrue(orderStatus.contains("Submitted")|| orderStatus.contains("In Process"),"Status of Order is not fund as expected. Expected : Submitted/In Process. Actual : "+orderStatus);
 		sfOrdersPage.clickOrderNumber(orderNumber);
 		productQtyAtOrderDetailsPage = sfOrdersPage.getQuantityOfSpecificProductFromOrdersPage(productName);
 		//productSVAtOrderDetailsPage = sfOrdersPage.getProductSVOfAnItem("2").trim();
@@ -1677,7 +1613,7 @@ public class OrdersTest extends StoreFrontWebsiteBaseTest{
 		sfCartPage.removeAllProductsFromCart();
 		sfCartPage.clickRodanAndFieldsLogo();
 		sfShopSkinCarePage = sfHomePage.clickAllProducts();
-		sfShopSkinCarePage.addProductToCart("1", TestConstants.ORDER_TYPE_ADHOC);
+		sfShopSkinCarePage.addProductToCart(TestConstants.PRODUCT_NUMBER, TestConstants.ORDER_TYPE_ADHOC);
 		sfShopSkinCarePage.checkoutTheCartFromPopUp();
 		sfCartPage.clickMiniCartBagLink();
 		s_assert.assertFalse(sfCartPage.isErrorMessagePresentForThreshold(errorMessage), "Threshold message is present for a product more than 90$");
@@ -1689,7 +1625,6 @@ public class OrdersTest extends StoreFrontWebsiteBaseTest{
 		s_assert.assertTrue(deliveryCharges.contains("free"), "Delivery charges applied for the order total > 100$ actual on UI is "+deliveryCharges);
 		s_assert.assertAll();
 	}
-
 
 	//PC Adhoc Order
 	@Test
@@ -1882,5 +1817,5 @@ public class OrdersTest extends StoreFrontWebsiteBaseTest{
 		s_assert.assertTrue(sfOrdersPage.isProductNamePresentOnOrderDetailPage(productName),"Product name is not matching. Expected is:"+productName+"But not found");
 		s_assert.assertAll();
 	}
-		
+
 }

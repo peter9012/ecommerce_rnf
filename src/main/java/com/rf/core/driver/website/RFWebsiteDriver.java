@@ -224,6 +224,31 @@ public class RFWebsiteDriver implements RFDriver,WebDriver {
 			logger.info("ELEMENT NOT FOUND");		
 	}
 
+	public void waitForElementPresent(By locator, int timeout) {
+		logger.info("wait started for "+locator);
+		turnOffImplicitWaits(1);
+		boolean isElementFound = false;
+		for(int i=1;i<=timeout;i++){		
+			try{
+				if(driver.findElements(locator).size()==0){
+					pauseExecutionFor(1000);
+					logger.info("waiting...");
+					continue;
+				}else{
+					logger.info("wait over,element found");
+					isElementFound =true;
+					turnOnImplicitWaits();
+					pauseExecutionFor(1000);
+					break;
+				}			
+			}catch(Exception e){
+				continue;
+			}
+		}
+		if(isElementFound ==false)
+			logger.info("ELEMENT NOT FOUND");		
+	}
+
 	public void quickWaitForElementPresent(By locator){
 		logger.info("quick wait started for "+locator);
 		int timeout = 5;
@@ -266,7 +291,30 @@ public class RFWebsiteDriver implements RFDriver,WebDriver {
 			e.getStackTrace();
 		}		
 	}
-	
+
+	public void waitForURLNotHaving(String keyWord, int timeout) {
+		logger.info("wait started for not having " + keyWord + " in Current url");
+		boolean iskeyWordPresent = true;
+		for(int i=1;i<=timeout;i++){  
+			try{
+				if(driver.getCurrentUrl().contains(keyWord)){
+					pauseExecutionFor(1000);
+					logger.info("waiting...");
+					continue;
+				}else{
+					logger.info("wait over," + keyWord + " is not present in Current Url");
+					iskeyWordPresent = false;
+					pauseExecutionFor(1000);
+					break;
+				}   
+			}catch(Exception e){
+				continue;
+			}
+		}
+		if(iskeyWordPresent == false)
+			logger.info(keyWord + " is not present in current URL");  
+	}
+
 	public void waitForLoadingImageToDisappear(){
 		int DEFAULT_TIMEOUT = 10;
 		turnOffImplicitWaits(1);
@@ -599,7 +647,7 @@ public class RFWebsiteDriver implements RFDriver,WebDriver {
 		}
 		findElement(locator).sendKeys(input);
 	}
-	
+
 	public void typeByJSLocId(String id, String input) {
 		String javascript = "document.getElementById('"+id+"').value="+input;
 		((JavascriptExecutor) RFWebsiteDriver.driver).executeScript(javascript);
@@ -924,21 +972,21 @@ public class RFWebsiteDriver implements RFDriver,WebDriver {
 				"arguments[0].scrollIntoView(true);", element);
 	}
 
-//	public void turnOffImplicitWaits() {
-//		driver.manage().timeouts().implicitlyWait(10, TimeUnit.SECONDS);
-//	}
+	//	public void turnOffImplicitWaits() {
+	//		driver.manage().timeouts().implicitlyWait(10, TimeUnit.SECONDS);
+	//	}
 
 	public void turnOnImplicitWaits() {
 		driver.manage().timeouts().implicitlyWait(20, TimeUnit.SECONDS);
 	}
-	
+
 	public void turnOffImplicitWaits(int time) {
 		driver.manage().timeouts().implicitlyWait(time, TimeUnit.SECONDS);
 	}
 
-//	public void turnOnImplicitWaits(int time) {
-//		driver.manage().timeouts().implicitlyWait(time, TimeUnit.SECONDS);
-//	}
+	//	public void turnOnImplicitWaits(int time) {
+	//		driver.manage().timeouts().implicitlyWait(time, TimeUnit.SECONDS);
+	//	}
 
 	public void clickByJS(WebDriver driver, By by) {
 		quickWaitForElementPresent(by);

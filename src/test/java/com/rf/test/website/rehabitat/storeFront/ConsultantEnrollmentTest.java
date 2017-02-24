@@ -465,8 +465,8 @@ public class ConsultantEnrollmentTest extends StoreFrontWebsiteBaseTest{
 		sfHomePage.selectConsentFormChkBox();
 		sfHomePage.clickBecomeAConsultant();
 		s_assert.assertTrue(sfHomePage.isEnrollemntSuccessfulMsgDisplayed(), "Expected 'ENROLLMENT SUCCESSFUL' msg has NOT displayed"); 
-		sfHomePage.clickRodanAndFieldsLogo();
 		String consultantEnrollmentOrderNumber = sfHomePage.getConsultantOrderNumberFromURL();
+		sfHomePage.clickRodanAndFieldsLogo();
 		sfHomePage.clickWelcomeDropdown();
 		sfOrdersPage = sfHomePage.navigateToOrdersPage();
 		sfOrdersPage.clickOrderNumber(consultantEnrollmentOrderNumber,1);
@@ -516,9 +516,6 @@ public class ConsultantEnrollmentTest extends StoreFrontWebsiteBaseTest{
 		sfHomePage.clickWelcomeDropdown();
 		sfOrdersPage = sfHomePage.navigateToOrdersPage();
 		sfOrdersPage.clickOrderNumber(consultantEnrollmentOrderNumber,1);
-		s_assert.assertFalse(sfOrdersPage.isPulseProOrderPresentOnOrderDetailPage(),"Pulse order present on pulse template");
-		sfOrdersPage.navigateBackToOrdersPage();
-		sfOrdersPage.clickOrderNumber(consultantEnrollmentOrderNumber,2);
 		s_assert.assertFalse(sfOrdersPage.isPulseProOrderPresentOnOrderDetailPage(),"Pulse pro order present on consultant order");
 		s_assert.assertAll();
 	}

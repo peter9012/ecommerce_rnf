@@ -978,6 +978,7 @@ public class StoreFrontShopSkinCarePage extends StoreFrontWebsiteBasePage{
 	public String addProductToCart(String productNumber,String orderType){
 		String priceToAssert = null;
 		driver.pauseExecutionFor(3000);
+		productPriceFilterHighToLow();
 		driver.moveToElementByJS(By.xpath(String.format(addToCartButtonLoc, productNumber)));
 		driver.clickByAction(By.xpath(String.format(addToCartButtonLoc, productNumber)));
 		if(orderType.equals(TestConstants.ORDER_TYPE_ADHOC)&& driver.isElementVisible(By.xpath(String.format(productPriceThroughProductNumberLoc,TestConstants.ORDER_TYPE_ADHOC,productNumber)))){

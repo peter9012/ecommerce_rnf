@@ -385,9 +385,6 @@ public class StoreFrontWebsiteBasePage extends RFBasePage {
 	 * 
 	 */
 	public StoreFrontConsultantEnrollNowPage clickEnrollNow(){
-//		if ((driver.isElementVisible(SET_UP_CRP_POPUP_CLOSE_LOC))) {
-//			driver.click(SET_UP_CRP_POPUP_CLOSE_LOC);
-//		}
 		for(int attemptNumber=1;attemptNumber<=3;attemptNumber++){
 			try{
 				mouseHoverOn(TestConstants.BECOME_A_CONSULTANT);

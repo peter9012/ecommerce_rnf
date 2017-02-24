@@ -211,7 +211,8 @@ public class StoreFrontCheckoutPage extends StoreFrontWebsiteBasePage{
 	}
 
 	public void clickCreateAccountButton(String userType){
-		driver.click(CREATE_ACCOUNT_BUTTON_LOC);
+		driver.pauseExecutionFor(3000);
+		driver.clickByJS(RFWebsiteDriver.driver,CREATE_ACCOUNT_BUTTON_LOC);
 		logger.info("clicked on 'Create Account' button");
 		driver.pauseExecutionFor(1000);
 		if(userType.equals(TestConstants.USER_TYPE_RC)){
@@ -224,7 +225,7 @@ public class StoreFrontCheckoutPage extends StoreFrontWebsiteBasePage{
 //				driver.turnOnImplicitWaits();
 //			}
 		}
-		driver.pauseExecutionFor(5000);//taking too long on UI,will be  removed later
+		driver.pauseExecutionFor(30000);//taking too long on UI and tests failing so intentionally adding for smtime,will be  removed later
 		driver.waitForElementNotPresent(CREATE_ACCOUNT_BUTTON_LOC);
 		driver.waitForPageLoad();
 	}

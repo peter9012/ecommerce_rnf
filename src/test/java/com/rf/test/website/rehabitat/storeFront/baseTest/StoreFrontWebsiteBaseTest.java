@@ -125,7 +125,7 @@ public class StoreFrontWebsiteBaseTest extends RFBaseTest {
 	public void setUp(ITestContext context) throws Exception {
 		userPropertyFile.loadProps(userProps);
 		if(getSuiteName(context).equalsIgnoreCase("storeFrontMiniRegressionSuite")){
-			userPropertyFile.clearProperty();
+			//userPropertyFile.clearProperty();
 		}
 		driver.loadApplication();
 		driver.setDBConnectionString();

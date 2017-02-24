@@ -222,7 +222,7 @@ public class StoreFrontCheckoutPage extends StoreFrontWebsiteBasePage{
 			driver.quickWaitForElementPresent(NO_THANKS_BTN_LOC);
 			action.moveToElement(driver.findElement(NO_THANKS_BTN_LOC)).click(driver.findElement(NO_THANKS_BTN_LOC)).build().perform();
 			//driver.click(NO_THANKS_BTN_LOC);
-			driver.waitForURLNotHaving("/login",250);
+			
 //			try{
 //				driver.turnOffImplicitWaits(1);
 //				driver.click(NO_THANKS_BTN_LOC);// needs to click again on the No Thanks button,will remove this patch
@@ -233,6 +233,7 @@ public class StoreFrontCheckoutPage extends StoreFrontWebsiteBasePage{
 //		else{
 //			driver.waitForElementNotPresent(CREATE_ACCOUNT_BUTTON_LOC,250);
 //		}
+		driver.waitForURLNotHaving("/login",250);
 		driver.pauseExecutionFor(1000);//taking too long on UI and tests failing so intentionally adding for smtime,will be  removed later
 		driver.waitForPageLoad();
 	}

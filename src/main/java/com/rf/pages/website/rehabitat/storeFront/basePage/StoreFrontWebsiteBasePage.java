@@ -2604,7 +2604,7 @@ public class StoreFrontWebsiteBasePage extends RFBasePage {
 	 * @return
 	 */
 	public StoreFrontShopSkinCarePage clickAddMoreItemsBtn() {
-		driver.waitForElementPresent(ADD_MORE_ITEMS_BTN_LOC,250);
+		driver.waitForElementPresent(ADD_MORE_ITEMS_BTN_LOC,10);
 		try{
 			driver.turnOffImplicitWaits(3);
 			driver.click(ADD_MORE_ITEMS_BTN_LOC);

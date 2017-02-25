@@ -291,7 +291,7 @@ public class StoreFrontWebsiteBasePage extends RFBasePage {
 	private final By ENROLL_NOW_POPUP_LOC = By.xpath("//div[@id='enrollCRPModal' and contains(@style,'block')]//h3[contains(text(),'Do you want to enroll in CRP')]");
 	protected final By SORT_FILTER_DD_LOC = By.id("sortOptions1");
 	protected final By SHOP_BY_PRICE_FILTER_OPTION_HIGH_TO_LOW_LOC = By.xpath("//select[@id='sortOptions1']/descendant::option[2]");
-	
+
 	private String productNameAllItemsInCartLoc = "//span[@class='item-name' and contains(text(),%s)]";
 	protected String addToCartButtonLoc = "//div[contains(@class,'product__listing')]/descendant::span[@id='cust_price'][contains(text(),'$')][1]/following::button[text()='Add to bag'][%s]";
 	private String errorMessageLoc = "//div[@class='global-alerts']/div[normalize-space(contains(text() , '%s'))]";
@@ -1683,6 +1683,7 @@ public class StoreFrontWebsiteBasePage extends RFBasePage {
 		logger.info("Entered CVV as" + CVV);
 		driver.pauseExecutionFor(1000);
 		driver.waitForTokenizing();
+		driver.waitForPageLoad();		
 		return this;
 	}
 
@@ -1854,8 +1855,8 @@ public class StoreFrontWebsiteBasePage extends RFBasePage {
 	 */
 	public boolean isEnrollemntSuccessfulMsgDisplayed() {
 		driver.pauseExecutionFor(2000);
-		driver.quickWaitForElementPresent(ENROLLMENT_SUCCESSFUL_MSG_LOC);
-		return driver.isElementVisible(ENROLLMENT_SUCCESSFUL_MSG_LOC);
+		driver.waitForElementPresent(ENROLLMENT_SUCCESSFUL_MSG_LOC,20);
+		return driver.isElementPresent(ENROLLMENT_SUCCESSFUL_MSG_LOC);
 	}
 
 	public String getConsultantOrderNumberFromURL(){
@@ -3889,37 +3890,58 @@ public class StoreFrontWebsiteBasePage extends RFBasePage {
 		logger.info("Order Number is "+orderNumber);
 		return orderNumber;
 	}
-	
+
 	/***
-	  * This method select sort by price filter High to low
-	  * 
-	  * @param
-	  * @return store front Home page object
-	  * 
-	  */
-	 public StoreFrontWebsiteBasePage productPriceFilterHighToLow(){
-	  driver.click(SORT_FILTER_DD_LOC);
-	  logger.info("Sort filter dropdown clicked");
-	  driver.click(SHOP_BY_PRICE_FILTER_OPTION_HIGH_TO_LOW_LOC);
-	  logger.info("Price filter 'HIGH TO LOW' selected");
-	  driver.waitForPageLoad();
-	  return this;
+	 * This method select sort by price filter High to low
+	 * 
+	 * @param
+	 * @return store front Home page object
+	 * 
+	 */
+	public StoreFrontWebsiteBasePage productPriceFilterHighToLow(){
+		driver.click(SORT_FILTER_DD_LOC);
+		logger.info("Sort filter dropdown clicked");
+		driver.click(SHOP_BY_PRICE_FILTER_OPTION_HIGH_TO_LOW_LOC);
+		logger.info("Price filter 'HIGH TO LOW' selected");
+		driver.waitForPageLoad();
+		return this;
 	}
 
 	/***
-	  * This method clicks on the All products link from Top Navigation
-	  * 
-	  * @return
-	  */
-	 public StoreFrontShopSkinCarePage clickAllProducts() {
-	  driver.quickWaitForElementPresent(SHOP_SKINCARE_LOC);
-	  mouseHoverOn(TestConstants.SHOP_SKINCARE);
-	  driver.click(ALL_PRODUCTS_LOC);
-	  //clickCategoryLink("UNBLEMISH");
-	  //driver.get(driver.getCurrentUrl()+"/All-Skincare/c/shopskincare");
-	  logger.info("clicked on 'All Products'");
-	  driver.waitForPageLoad();
-	  productPriceFilterHighToLow();
-	  return new StoreFrontShopSkinCarePage(driver);
+	 * This method clicks on the All products link from Top Navigation
+	 * 
+	 * @return
+	 */
+	public StoreFrontShopSkinCarePage clickAllProducts() {
+		driver.quickWaitForElementPresent(SHOP_SKINCARE_LOC);
+		mouseHoverOn(TestConstants.SHOP_SKINCARE);
+		driver.click(ALL_PRODUCTS_LOC);
+		//clickCategoryLink("UNBLEMISH");
+		//driver.get(driver.getCurrentUrl()+"/All-Skincare/c/shopskincare");
+		logger.info("clicked on 'All Products'");
+		driver.waitForPageLoad();
+		productPriceFilterHighToLow();
+		return new StoreFrontShopSkinCarePage(driver);
+	}
+
+	public boolean hasTokenizationFailed(){
+		System.out.println("***");
+		try{
+			driver.turnOffImplicitWaits(0);
+			System.out.println("^^^^");
+			driver.quickWaitForElementPresent(By.xpath(String.format(errorMessageLoc,"Failed to create subscription")));
+			driver.findElement(By.xpath(String.format(errorMessageLoc,"Failed to create subscription")));
+			System.out.println("Tokenization Failed");
+			driver.clickByJS(RFWebsiteDriver.driver,By.xpath("//div[@class='global-alerts']/following::a[contains(text(),'Continue')][1]"));
+			System.out.println("Continue clicked");
+			driver.waitForPageLoad();
+			return true;
+		}catch(Exception e){
+			System.out.println("Exception "+e);
+			System.out.println("Tokenization NOT Failed");
+			return false;
+		}finally{
+			driver.turnOnImplicitWaits();
+		}
 	}
 }

@@ -1666,18 +1666,20 @@ public class StoreFrontWebsiteBasePage extends RFBasePage {
 		WebElement nameOnCardElement = driver.findElement(NAME_ON_CARD_LOC);
 		actions.click(nameOnCardElement).sendKeys(nameOnCardElement, nameOnCard).build().perform();
 		logger.info("Entered card name as" + nameOnCard);
-		driver.click(EXP_MONTH_DD_LOC);
-		driver.pauseExecutionFor(1000);
-		logger.info("Exp month dropdown clicked");
-		driver.click(EXP_MONTH_LOC);
-		driver.pauseExecutionFor(1000);
-		logger.info("Exp month selected");
-		driver.click(EXP_YEAR_DD_LOC);
-		driver.pauseExecutionFor(1000);
-		logger.info("Exp year dropdown clicked");
-		driver.click(EXP_YEAR_LOC);
-		driver.pauseExecutionFor(1000);
-		logger.info("Exp year selected");
+//		driver.click(EXP_MONTH_DD_LOC);
+//		driver.pauseExecutionFor(1000);
+//		logger.info("Exp month dropdown clicked");
+//		driver.click(EXP_MONTH_LOC);
+//		driver.pauseExecutionFor(1000);
+//		logger.info("Exp month selected");
+//		driver.click(EXP_YEAR_DD_LOC);
+//		driver.pauseExecutionFor(1000);
+//		logger.info("Exp year dropdown clicked");
+//		driver.click(EXP_YEAR_LOC);
+//		driver.pauseExecutionFor(1000);
+//		logger.info("Exp year selected");
+		driver.type(EXP_MONTH_DD_LOC, "12");
+		driver.type(EXP_YEAR_DD_LOC, "2025");
 		driver.type(CVV_LOC, CVV);
 		driver.pauseExecutionFor(1000);
 		logger.info("Entered CVV as" + CVV);
@@ -2362,6 +2364,7 @@ public class StoreFrontWebsiteBasePage extends RFBasePage {
 	 * @return
 	 */
 	public StoreFrontCartPage checkoutTheCartFromPopUp() {
+		driver.pauseExecutionFor(5000);
 		driver.quickWaitForElementPresent(CHECKOUT_BUTTON_POPUP_LOC);
 		driver.click(CHECKOUT_BUTTON_POPUP_LOC);
 		logger.info("Clicked on checkout button on the popup");

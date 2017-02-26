@@ -455,20 +455,20 @@ public class AboutMeTest extends StoreFrontWebsiteBaseTest{
 
 		sfAboutMePage.clickWelcomeDropdown();
 		sfAboutMePage.logout();
-		sfAboutMePage.loginToStoreFront(rcWithOrderWithoutSponsor(), password,true);
-		sfAboutMePage.clickAboutMe();
-		phoneOnAboutMePage=sfAboutMePage.getPhoneNumberFromAboutMePageHeader();
-		s_assert.assertTrue(phoneOnAboutMePage.contains(phoneNo),"Expected phone number is:"+phoneNo+"But actual on UI is"+phoneOnAboutMePage);
-		emailOnAboutMePage=sfAboutMePage.getEmailFromAboutMePageHeader();
-		s_assert.assertTrue(emailOnAboutMePage.contains(email),"Expected email id is:"+email+"But actual on UI is"+emailOnAboutMePage);
-		cityOnAboutMePage=sfAboutMePage.getCityStateTextOnAboutMePageHeader();
-		s_assert.assertTrue(cityOnAboutMePage.contains(city),"Expected city on about me page is:"+city+"But actual on UI is"+cityOnAboutMePage);
-		facebookOnAboutMePage=sfAboutMePage.getFacebookIDFromAboutMePageHeader();
-		s_assert.assertTrue(facebookOnAboutMePage.contains(fbId),"Expected facebook id on about me page is:"+fbId+"But actual on UI is"+facebookOnAboutMePage);
-		twitterOnAboutMePage=sfAboutMePage.getTwitterIDFromAboutMePageHeader();
-		s_assert.assertTrue(twitterOnAboutMePage.contains(twitterID),"Expected twitter id on about me page is:"+twitterID+"But actual on UI is"+twitterOnAboutMePage);
-		pinterestOnAboutMePage=sfAboutMePage.getPinterestIDFromAboutMePageHeader();
-		s_assert.assertTrue(pinterestOnAboutMePage.contains(pinterestId),"Expected pinterest id on about me page is:"+pinterestId+"But actual on UI is"+pinterestOnAboutMePage);
+//		sfAboutMePage.loginToStoreFront(rcWithOrderWithoutSponsor(), password,true);
+//		sfAboutMePage.clickAboutMe();
+//		phoneOnAboutMePage=sfAboutMePage.getPhoneNumberFromAboutMePageHeader();
+//		s_assert.assertTrue(phoneOnAboutMePage.contains(phoneNo),"Expected phone number is:"+phoneNo+"But actual on UI is"+phoneOnAboutMePage);
+//		emailOnAboutMePage=sfAboutMePage.getEmailFromAboutMePageHeader();
+//		s_assert.assertTrue(emailOnAboutMePage.contains(email),"Expected email id is:"+email+"But actual on UI is"+emailOnAboutMePage);
+//		cityOnAboutMePage=sfAboutMePage.getCityStateTextOnAboutMePageHeader();
+//		s_assert.assertTrue(cityOnAboutMePage.contains(city),"Expected city on about me page is:"+city+"But actual on UI is"+cityOnAboutMePage);
+//		facebookOnAboutMePage=sfAboutMePage.getFacebookIDFromAboutMePageHeader();
+//		s_assert.assertTrue(facebookOnAboutMePage.contains(fbId),"Expected facebook id on about me page is:"+fbId+"But actual on UI is"+facebookOnAboutMePage);
+//		twitterOnAboutMePage=sfAboutMePage.getTwitterIDFromAboutMePageHeader();
+//		s_assert.assertTrue(twitterOnAboutMePage.contains(twitterID),"Expected twitter id on about me page is:"+twitterID+"But actual on UI is"+twitterOnAboutMePage);
+//		pinterestOnAboutMePage=sfAboutMePage.getPinterestIDFromAboutMePageHeader();
+//		s_assert.assertTrue(pinterestOnAboutMePage.contains(pinterestId),"Expected pinterest id on about me page is:"+pinterestId+"But actual on UI is"+pinterestOnAboutMePage);
 		s_assert.assertAll();
 	}
 	

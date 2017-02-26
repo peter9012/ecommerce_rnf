@@ -1787,7 +1787,7 @@ public class StoreFrontWebsiteBasePage extends RFBasePage {
 	 */
 	public StoreFrontWebsiteBasePage selectIAcknowledgeChkBox() {
 		driver.pauseExecutionFor(3000);
-		driver.click(I_ACKNOWLEDGE_CHK_BOX_LOC);
+		driver.clickByJS(RFWebsiteDriver.driver,I_ACKNOWLEDGE_CHK_BOX_LOC);
 		logger.info("I acknowledge checkbox selected");
 		driver.pauseExecutionFor(1000);
 		return this;

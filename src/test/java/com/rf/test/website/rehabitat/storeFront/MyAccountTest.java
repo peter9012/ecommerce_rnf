@@ -1227,7 +1227,7 @@ public class MyAccountTest extends StoreFrontWebsiteBaseTest{
 	 * qtest: TC-380 Cancel Pulse Subscription From My Account Autoship page
 	 * Description: This method cancel pulse from autoship status page.
 	 */	
-	@Test(enabled=true)
+	@Test(enabled=false)//needs fix
 	public void testConsultantFirstTimePulseEnrollment_380(){
 		String prefix = TestConstants.FIRST_NAME+CommonUtils.getCurrentTimeStamp();
 		sfCheckoutPage = new StoreFrontCheckoutPage(driver);

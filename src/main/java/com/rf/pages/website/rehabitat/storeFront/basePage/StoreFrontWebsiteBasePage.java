@@ -2362,6 +2362,7 @@ public class StoreFrontWebsiteBasePage extends RFBasePage {
 	 * @return
 	 */
 	public StoreFrontCartPage checkoutTheCartFromPopUp() {
+		driver.quickWaitForElementPresent(CHECKOUT_BUTTON_POPUP_LOC);
 		driver.click(CHECKOUT_BUTTON_POPUP_LOC);
 		logger.info("Clicked on checkout button on the popup");
 		driver.waitForPageLoad();

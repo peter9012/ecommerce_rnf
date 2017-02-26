@@ -25,6 +25,7 @@ public class TestConstants {
 	public static final String ORDER_TYPE_ADHOC = "One Time Order";
 	public static final String ORDER_TYPE_PC_PERKS = "Add to PC Perks";
 	public static final String ORDER_TYPE_CRP= "Add to CRP";
+	public static final String ORDER_TYPE_ENROLLMENT = "Enrollment";
 	public static final String PRODUCT_NUMBER = "2";
 	public static final String PRODUCT_NUMBER_PC_AUTOSHIP = "3";
 	//	public static final String OTHER_PRODUCT_NUMBER = "3";

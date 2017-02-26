@@ -32,7 +32,7 @@ public class PCEnrollmentTest extends StoreFrontWebsiteBaseTest{
 		//s_assert.assertTrue(sfCartPage.isPcOneTimeFeeMsgDisplayed(),"PC one time joining fee msg has not displayed");
 		sfCartPage.clickAddMoreItemsBtn();
 		//sfShopSkinCarePage=sfCartPage.clickAllProducts();// this is a temporary patch
-		sfShopSkinCarePage.addProductToCart(TestConstants.PRODUCT_NUMBER, TestConstants.ORDER_TYPE_ADHOC);;
+		sfShopSkinCarePage.addProductToCart(TestConstants.PRODUCT_NUMBER, TestConstants.ORDER_TYPE_ENROLLMENT);;
 		sfCartPage = sfShopSkinCarePage.checkoutTheCartFromPopUp();
 		sfCartPage.enterQuantityOfProductAtCart("1", "2");
 		sfCartPage.clickOnUpdateLinkThroughItemNumber("1");

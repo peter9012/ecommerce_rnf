@@ -963,7 +963,10 @@ public class StoreFrontShopSkinCarePage extends StoreFrontWebsiteBasePage{
 		driver.waitForElementPresent(By.xpath(String.format(addToCartButtonLoc, productNumber)), 15);
 		driver.moveToElementByJS(By.xpath(String.format(addToCartButtonLoc, productNumber)));
 		driver.clickByAction(By.xpath(String.format(addToCartButtonLoc, productNumber)));
-		if(orderType.equals(TestConstants.ORDER_TYPE_ADHOC)&& driver.isElementPresent(By.xpath(String.format(productPriceThroughProductNumberLoc,TestConstants.ORDER_TYPE_ADHOC,productNumber)))){
+		if(orderType.equals(TestConstants.ORDER_TYPE_ENROLLMENT)){
+			logger.info("Adding product for Enrollment");
+		}
+		else if(orderType.equals(TestConstants.ORDER_TYPE_ADHOC)&& driver.isElementPresent(By.xpath(String.format(productPriceThroughProductNumberLoc,TestConstants.ORDER_TYPE_ADHOC,productNumber)))){
 			priceToAssert = driver.getText(By.xpath(String.format(productPriceThroughProductNumberLoc,TestConstants.ORDER_TYPE_ADHOC,productNumber))).replace("$","");
 			driver.clickByAction(By.xpath(String.format(addToCartDDLoc,TestConstants.ORDER_TYPE_ADHOC,productNumber)));
 		}

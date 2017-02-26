@@ -1763,12 +1763,18 @@ public class StoreFrontWebsiteBasePage extends RFBasePage {
 	 */
 	public StoreFrontWebsiteBasePage selectPoliciesAndProceduresChkBox() {
 		driver.pauseExecutionFor(3000);
-		if (driver.isElementVisible(POLICIES_AND_PROCEDURES_CHK_BOX_LOC))
+		try{
+			driver.turnOffImplicitWaits(2);
 			driver.clickByJS(RFWebsiteDriver.driver, POLICIES_AND_PROCEDURES_CHK_BOX_LOC);
-		else
+			logger.info("policies and procedures for consultant selected");
+		}
+		catch(Exception e){
 			driver.clickByJS(RFWebsiteDriver.driver, POLICIES_AND_PROCEDURES_CHK_BOX_PC_LOC);
-		logger.info("Policies & procedures checkbox selected");
-		driver.pauseExecutionFor(1000);
+			logger.info("policies and procedures for PC selected");
+		}
+		finally{
+			driver.turnOnImplicitWaits();
+		}
 		return this;
 	}
 
@@ -1809,14 +1815,17 @@ public class StoreFrontWebsiteBasePage extends RFBasePage {
 	 * 
 	 */
 	public StoreFrontWebsiteBasePage selectTermsAndConditionsChkBox() {
-		driver.pauseExecutionFor(1000);
-		if (driver.isElementVisible(TERMS_AND_CONDITIONS_CHK_BOX_LOC)) {
+		driver.pauseExecutionFor(2000);
+		try{
+			driver.turnOffImplicitWaits(3);
 			driver.clickByJS(RFWebsiteDriver.driver, TERMS_AND_CONDITIONS_CHK_BOX_LOC);
-		} else {
+			logger.info("terms and conditions for consultant selected");
+		} catch(Exception e){
 			driver.clickByJS(RFWebsiteDriver.driver, TERMS_AND_CONDITIONS_CHK_BOX_PC_LOC);
+			logger.info("terms and conditions for PC selected");
+		}finally{
+			driver.turnOnImplicitWaits();
 		}
-		logger.info("Terms & condition checkbox selected");
-		driver.pauseExecutionFor(1000);
 		return this;
 	}
 
@@ -1845,7 +1854,7 @@ public class StoreFrontWebsiteBasePage extends RFBasePage {
 	public StoreFrontWebsiteBasePage selectConsentFormChkBox() {
 		driver.clickByJS(RFWebsiteDriver.driver, E_SIGN_CONSENT_FORM_CHK_BOX_LOC);
 		logger.info("E Sign Consent Form checkbox selected");
-		driver.pauseExecutionFor(1000);
+		driver.pauseExecutionFor(2000);
 		return this;
 	}
 

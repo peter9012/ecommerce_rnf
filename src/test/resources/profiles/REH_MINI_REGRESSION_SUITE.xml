@@ -64,7 +64,11 @@
 					<include
 						name="testConsultantAutoshipCartCRPEnrollmentCRPReminderBanner_405"></include>
 					<include name="testPlaceConsultantAutoshipOrderAndVerifyDateAndStatus"></include>
-					<include name="testPlacePCAutoshipOrderAndVerifyDateAndStatus"></include>					
+					<include name="testPlacePCAutoshipOrderAndVerifyDateAndStatus"></include>
+					<include
+						name="testUpdateAutoshipAddAbillingAddressToExistingProfileConsultant_423"></include>
+					<include
+						name="testUpdateAutoshipAddABillingAddressToExistingProfilePC_424"></include>
 				</methods>
 			</class>
 			<class name="com.rf.test.website.rehabitat.storeFront.MyAccountTest">

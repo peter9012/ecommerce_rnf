@@ -582,9 +582,9 @@ public class AddAndDeleteShippingTest extends StoreFrontWebsiteBaseTest{
 		sfShippingInfoPage.clickUseAsEnteredButtonOnPopUp();
 		s_assert.assertTrue(sfShippingInfoPage.isShippingProfilePresent(lastName), "Newly added shipping profile is not present at shipping info page");
 		// Edit default shipping Profile
+		sfShippingInfoPage.clickEditLinkOfShippingAddress(lastName);
 		randomWords = CommonUtils.getRandomWord(5);
 		lastName = TestConstants.LAST_NAME+randomWords;
-		sfShippingInfoPage.clickEditLinkOfDefaultShippingAddress();
 		sfShippingInfoPage.enterConsultantShippingDetails(firstName, lastName, addressLine1,addressLine2, city, state, postalCode, phoneNumber);
 		sfShippingInfoPage.clickSaveButtonOfShippingAddress();
 		sfShippingInfoPage.clickUseAsEnteredButtonOnPopUp();
@@ -614,9 +614,9 @@ public class AddAndDeleteShippingTest extends StoreFrontWebsiteBaseTest{
 		sfShippingInfoPage.clickUseAsEnteredButtonOnPopUp();
 		s_assert.assertTrue(sfShippingInfoPage.isShippingProfilePresent(lastName), "Newly added shipping profile is not present at shipping info page");
 		// Edit default shipping Profile
+		sfShippingInfoPage.clickEditLinkOfShippingAddress(lastName);
 		randomWords = CommonUtils.getRandomWord(5);
 		lastName = TestConstants.LAST_NAME+randomWords;
-		sfShippingInfoPage.clickEditLinkOfDefaultShippingAddress();
 		sfShippingInfoPage.enterConsultantShippingDetails(firstName, lastName, addressLine1,addressLine2, city, state, postalCode, phoneNumber);
 		sfShippingInfoPage.clickSaveButtonOfShippingAddress();
 		sfShippingInfoPage.clickUseAsEnteredButtonOnPopUp();
@@ -633,7 +633,6 @@ public class AddAndDeleteShippingTest extends StoreFrontWebsiteBaseTest{
 	public void testAddEditShippingAddressFromMyAccountForRC(){
 		randomWords = CommonUtils.getRandomWord(5);
 		lastName = TestConstants.LAST_NAME+randomWords;
-
 		// Login as RC
 		sfHomePage.loginToStoreFront(rcWithOrderWithoutSponsor(),password,true);
 		sfHomePage.clickWelcomeDropdown();
@@ -644,9 +643,9 @@ public class AddAndDeleteShippingTest extends StoreFrontWebsiteBaseTest{
 		sfShippingInfoPage.clickUseAsEnteredButtonOnPopUp();
 		s_assert.assertTrue(sfShippingInfoPage.isShippingProfilePresent(lastName), "Newly added shipping profile is not present at shipping info page");
 		// Edit default shipping Profile
+		sfShippingInfoPage.clickEditLinkOfShippingAddress(lastName);
 		randomWords = CommonUtils.getRandomWord(5);
 		lastName = TestConstants.LAST_NAME+randomWords;
-		sfShippingInfoPage.clickEditLinkOfDefaultShippingAddress();
 		sfShippingInfoPage.enterConsultantShippingDetails(firstName, lastName, addressLine1,addressLine2, city, state, postalCode, phoneNumber);
 		sfShippingInfoPage.clickSaveButtonOfShippingAddress();
 		sfShippingInfoPage.clickUseAsEnteredButtonOnPopUp();
@@ -740,7 +739,7 @@ public class AddAndDeleteShippingTest extends StoreFrontWebsiteBaseTest{
 		// Login as RC
 		sfHomePage.loginToStoreFront(rcWithOrderWithoutSponsor(), password,true);
 		sfShopSkinCarePage = sfHomePage.clickAllProducts();
-		sfShopSkinCarePage.addProductToCart(TestConstants.PRODUCT_NUMBER, TestConstants.ORDER_TYPE_ADHOC);;
+		sfShopSkinCarePage.addProductToCart(TestConstants.PRODUCT_NUMBER, TestConstants.ORDER_TYPE_ENROLLMENT);
 		sfCartPage = sfShopSkinCarePage.checkoutTheCartFromPopUp();
 		sfCheckoutPage=sfCartPage.checkoutTheCart();
 		sfCheckoutPage.clickContinueWithoutConsultantLink();

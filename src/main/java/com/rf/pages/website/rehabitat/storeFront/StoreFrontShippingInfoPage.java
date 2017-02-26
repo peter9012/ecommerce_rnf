@@ -34,7 +34,9 @@ public class StoreFrontShippingInfoPage extends StoreFrontWebsiteBasePage{
 	private String defaultLinkForProfileLoc = "//strong[contains(text(),'%s')]/ancestor::ul[1]/following-sibling::div//a[contains(text(),'Default')]";
 	private String deleteLinkForProfileLoc = "//strong[contains(text(),'%s')]/ancestor::ul[1]/following-sibling::div[@class='account-cards-actions']//a[contains(text(),'Delete')]";
 	private String shippingProfileNameLoc  = "//div[contains(@class,'account-addressbook')]/descendant::strong[contains(text(),'%s')][1]";
+	private String shippingEditLoc  = "//*[contains(text(),'%s')]/following::a[contains(text(),'Edit')][1]";
 	
+		
 	/***
 	 * This method clicked on add a new shipping address link 
 	 * 
@@ -116,6 +118,21 @@ public class StoreFrontShippingInfoPage extends StoreFrontWebsiteBasePage{
 		logger.info("Edit link clicked of default shipping address");
 		return this;
 	}
+	
+	/***
+	 * This method clicked on edit link of shipping address based on lastName 
+	 * 
+	 * @param
+	 * @return store front shipping info page object
+	 * 
+	 */
+	public StoreFrontShippingInfoPage clickEditLinkOfShippingAddress(String lastName){
+		driver.click(By.xpath(String.format(shippingEditLoc, lastName)));
+		logger.info("Edit link clicked for shipping address with lastName "+lastName);
+		return this;
+	}
+	
+	
 
 	/***
 	 * This method fetch the address update success message  

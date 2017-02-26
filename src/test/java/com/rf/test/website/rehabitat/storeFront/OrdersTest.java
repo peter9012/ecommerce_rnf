@@ -270,7 +270,8 @@ public class OrdersTest extends StoreFrontWebsiteBaseTest{
 	public void testShippingMethodPCDirectPCEnrollment_311(){
 		String timeStamp = CommonUtils.getCurrentTimeStamp();
 		String firstName = TestConstants.FIRST_NAME;
-		String lastName = TestConstants.LAST_NAME;
+		String randomWord = CommonUtils.getRandomWord(5);
+		lastName = TestConstants.LAST_NAME+randomWord;
 		String emailID = TestConstants.FIRST_NAME+timeStamp+TestConstants.EMAIL_SUFFIX;
 		String shippingMethodWithCost = null;
 		String shippingMethodName = TestConstants.SHIPPING_METHOD_UPS_GROUND;
@@ -390,7 +391,7 @@ public class OrdersTest extends StoreFrontWebsiteBaseTest{
 	@Test(enabled=true)
 	public void testBillingProfileAddAnAddressWithInvalidDetailsToExistingProfile_366(){
 		String randomWord = CommonUtils.getRandomWord(5);
-		lastName = lastName+randomWord;
+		lastName = TestConstants.LAST_NAME+randomWord;
 		String invalidAddressLine1 ="address line 1";
 		String invalidPostalCode = "12345";
 		String errorMessageFromUI = null;
@@ -437,6 +438,7 @@ public class OrdersTest extends StoreFrontWebsiteBaseTest{
 	@Test(enabled=true)
 	public void testBillingProfileAddAnAddressWithInvalidDetailsToNewProfile_367(){
 		String randomWord = CommonUtils.getRandomWord(5);
+		lastName = TestConstants.LAST_NAME;
 		String invalidAddressLine1 ="address line 1";
 		String invalidPostalCode = "12345";
 		String errorMessageFromUI = null;
@@ -622,6 +624,8 @@ public class OrdersTest extends StoreFrontWebsiteBaseTest{
 	@Test(enabled=true)
 	public void testChooseAConsultantRFCorporateSponsorPCFirstCheckoutFromPWS_458(){
 		String timeStamp = CommonUtils.getCurrentTimeStamp();
+		String randomWord = CommonUtils.getRandomWord(5);
+		lastName = TestConstants.LAST_NAME+randomWord;
 		String emailID = TestConstants.FIRST_NAME+timeStamp+TestConstants.EMAIL_SUFFIX;
 		String sponsorName = "RF Corporate";
 		String sponsorNameFromUI = null;
@@ -862,7 +866,7 @@ public class OrdersTest extends StoreFrontWebsiteBaseTest{
 		String sponsorNameFromUI = null;
 		sfHomePage.loginToStoreFront(rcWithOrderWithoutSponsor(),password,true);
 		sfShopSkinCarePage = sfHomePage.clickAllProducts();
-		sfShopSkinCarePage.addProductToCart(TestConstants.PRODUCT_NUMBER, TestConstants.ORDER_TYPE_ADHOC);;
+		sfShopSkinCarePage.addProductToCart(TestConstants.PRODUCT_NUMBER, TestConstants.ORDER_TYPE_ENROLLMENT);
 		sfCartPage = sfShopSkinCarePage.checkoutTheCartFromPopUp();
 		sfCheckoutPage = sfCartPage.checkoutTheCart();
 		sfCheckoutPage.clickContinueWithoutConsultantLink();
@@ -958,6 +962,8 @@ public class OrdersTest extends StoreFrontWebsiteBaseTest{
 	public void testAddAShipAddressCheckoutFirstTime_323(){
 		int randomNum = CommonUtils.getRandomNum(10000, 1000000);
 		String emailID = TestConstants.FIRST_NAME+randomNum+TestConstants.EMAIL_SUFFIX;
+		String randomWord = CommonUtils.getRandomWord(5);
+		lastName = lastName+randomWord;
 		sfShopSkinCarePage = sfHomePage.clickAllProducts();
 		sfShopSkinCarePage.addProductToCart(TestConstants.PRODUCT_NUMBER, TestConstants.ORDER_TYPE_ADHOC);;
 		sfCartPage = sfShopSkinCarePage.checkoutTheCartFromPopUp();
@@ -991,6 +997,8 @@ public class OrdersTest extends StoreFrontWebsiteBaseTest{
 	@Test(enabled=true)
 	public void testChooseAConsultantRFCorporateSponsorPCFirstCheckoutFromCorp_457(){
 		String timeStamp = CommonUtils.getCurrentTimeStamp();
+		String randomWord = CommonUtils.getRandomWord(5);
+		lastName = lastName+randomWord;
 		String emailID = TestConstants.FIRST_NAME+timeStamp+TestConstants.EMAIL_SUFFIX;
 		String sponsorName = "RF Corporate";
 		String sponsorNameFromUI = null;
@@ -1319,7 +1327,7 @@ public class OrdersTest extends StoreFrontWebsiteBaseTest{
 		String sponsorFromUI = null;
 		sfHomePage.loginToStoreFront(rcWithOrderWithoutSponsor(), password,true);
 		sfShopSkinCarePage = sfHomePage.clickAllProducts();
-		sfShopSkinCarePage.addProductToCart(TestConstants.PRODUCT_NUMBER, TestConstants.ORDER_TYPE_ADHOC);;
+		sfShopSkinCarePage.addProductToCart(TestConstants.PRODUCT_NUMBER, TestConstants.ORDER_TYPE_ENROLLMENT);
 		sfCartPage = sfShopSkinCarePage.checkoutTheCartFromPopUp();
 		sfCheckoutPage = sfCartPage.checkoutTheCart();
 		sfCheckoutPage.searchSponsor(TestConstants.SPONSOR);
@@ -1382,6 +1390,8 @@ public class OrdersTest extends StoreFrontWebsiteBaseTest{
 	@Test(enabled=true)
 	public void testChooseAConsultantRFCorporateSponsorRCCheckoutFromCorporate_459(){
 		String timeStamp = CommonUtils.getCurrentTimeStamp();
+		String randomWord = CommonUtils.getRandomWord(5);
+		lastName = TestConstants.LAST_NAME+randomWord;
 		String emailID = TestConstants.FIRST_NAME+timeStamp+TestConstants.EMAIL_SUFFIX;
 		String sponsorName = "RF Corporate";
 		String sponsorNameFromUI = null;
@@ -1417,7 +1427,7 @@ public class OrdersTest extends StoreFrontWebsiteBaseTest{
 		sfHomePage.logout();
 		sfHomePage.loginToStoreFront(emailID,password,true);
 		sfShopSkinCarePage = sfHomePage.clickAllProducts();
-		sfShopSkinCarePage.addProductToCart(TestConstants.PRODUCT_NUMBER, TestConstants.ORDER_TYPE_ADHOC);;
+		sfShopSkinCarePage.addProductToCart(TestConstants.PRODUCT_NUMBER, TestConstants.ORDER_TYPE_ENROLLMENT);
 		sfShopSkinCarePage.checkoutTheCartFromPopUp();
 		sfCartPage.checkoutTheCart();
 		sfCheckoutPage.clickContinueWithoutConsultantLink();
@@ -1553,9 +1563,10 @@ public class OrdersTest extends StoreFrontWebsiteBaseTest{
 		sfCartPage.removeAllProductsFromCart();
 		sfCartPage.clickRodanAndFieldsLogo();
 		sfShopSkinCarePage = sfHomePage.clickAllProducts();
-		sfShopSkinCarePage.addProductToCart(TestConstants.PRODUCT_NUMBER, TestConstants.ORDER_TYPE_ADHOC);;
+		sfShopSkinCarePage.addProductToCart(TestConstants.PRODUCT_NUMBER, TestConstants.ORDER_TYPE_ENROLLMENT);
 		sfShopSkinCarePage.checkoutTheCartFromPopUp();
 		sfCheckoutPage=sfCartPage.checkoutTheCart();
+		sfCheckoutPage.clickContinueWithoutConsultantLink();
 		sfCheckoutPage.clickSaveButton();
 		sfCheckoutPage.clickShippingDetailsNextbutton();
 		sfCheckoutPage.clickAddNewBillingProfileButton();
@@ -1574,7 +1585,7 @@ public class OrdersTest extends StoreFrontWebsiteBaseTest{
 		sfCartPage.removeAllProductsFromCart();
 		sfCartPage.clickRodanAndFieldsLogo();
 		sfShopSkinCarePage = sfHomePage.clickAllProducts();
-		sfShopSkinCarePage.addProductToCart(TestConstants.PRODUCT_NUMBER, TestConstants.ORDER_TYPE_ADHOC);;
+		sfShopSkinCarePage.addProductToCart(TestConstants.PRODUCT_NUMBER, TestConstants.ORDER_TYPE_ADHOC);
 		sfShopSkinCarePage.checkoutTheCartFromPopUp();
 		sfCheckoutPage=sfCartPage.checkoutTheCart();
 		sfCheckoutPage.clickSaveButton();

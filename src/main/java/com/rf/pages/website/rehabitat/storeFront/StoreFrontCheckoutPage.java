@@ -4,6 +4,7 @@ import org.openqa.selenium.Alert;
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.interactions.Actions;
+import org.openqa.selenium.support.ui.Select;
 
 import com.rf.core.driver.website.RFWebsiteDriver;
 import com.rf.core.utils.CommonUtils;
@@ -323,6 +324,9 @@ public class StoreFrontCheckoutPage extends StoreFrontWebsiteBasePage{
 		logger.info("address line 1 field is cleared");
 		driver.clear(CITY_FOR_SHIPPING_AT_CHECKOUT_PAGE_LOC);
 		logger.info("City field is cleared");
+		Select select = new Select(driver.findElement(STATE_DD_FOR_SHIPPING_AT_CHECKOUT_PAGE_LOC));
+		select.selectByIndex(1);
+		logger.info("Cleared Field State");
 		driver.clear(POSTAL_CODE_FOR_SHIPPING_AT_CHECKOUT_PAGE_LOC);
 		logger.info("Postal code field is cleared");
 		driver.clear(PHONE_NUMBER_FOR_SHIPPING_AT_CHECKOUT_PAGE_LOC);

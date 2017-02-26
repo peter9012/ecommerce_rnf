@@ -545,7 +545,7 @@ public class StoreFrontOrdersPage extends StoreFrontWebsiteBasePage{
 	 * 
 	 */
 	public String getEmailFromOrderReportProblemPage(){
-		String email = driver.findElement(EMAIL_FIELD_AT_REPORT_PROBLEM_PAGE_LOC).getText();
+		String email = driver.getAttribute(EMAIL_FIELD_AT_REPORT_PROBLEM_PAGE_LOC, "value");
 		logger.info("Email is "+email);
 		return email;
 	}

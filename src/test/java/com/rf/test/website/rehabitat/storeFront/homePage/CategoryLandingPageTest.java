@@ -100,7 +100,7 @@ public class CategoryLandingPageTest extends StoreFrontWebsiteBaseTest{
 	 */
 	@Test(enabled=true)
 	public void testEnhancementsCategoryLandingPage_96(){
-		String category_Enhancements = "ENHANCEMENT";
+		String category_Enhancements = "ENHANCEMENTS";
 		String currentURL = null;
 		sfHomePage.clickCategoryLink(category_Enhancements);
 		currentURL = sfHomePage.getCurrentURL().toUpperCase();

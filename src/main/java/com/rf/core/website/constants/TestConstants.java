@@ -56,6 +56,8 @@ public class TestConstants {
 	public static final String CONFIRMATION_MSG_FOR_REPORT_PROBLEMS = "we have sent your problem to our customer service department, and they will review the issue and respond within 48 hours";
 	public static final String PASSWORD_RECOVERY_SUBMIT_SUCCESS_MESSAGE = "Password reset instructions have been sent to your email address. Please contact customer support if you require additional assistance";
 	public static final String PASSWORD_RECOVERY_SUBMIT_EMAIL_NOT_REGISTERED_MESSAGE = "You do not have an account with us. Please create your account";
+	public static final String NON_DELIVERABLE_ADDRESS_MSG = "Address entered may not be a deliverable address";
+	
 	// Order page Details
 	public static final String TITLE_OF_ORDER_DETAILS_PAGE = "Order Details | Rodan and Fields";
 

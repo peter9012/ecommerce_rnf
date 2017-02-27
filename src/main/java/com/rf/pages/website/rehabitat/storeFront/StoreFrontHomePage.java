@@ -59,7 +59,7 @@ public class StoreFrontHomePage extends StoreFrontWebsiteBasePage{
 	private final By POLICIES_AND_PROCEDURES_LINK_LOC = By.xpath("//a[contains(text(),'Rodan+Fields Policies and Procedure')]");
 	private final By PULSE_PRO_T_C_LINK_LOC = By.xpath("//a[contains(text(),'Pulse Pro')]");
 	private final By CRP_T_C_LINK_LOC = By.xpath("//a[contains(text(),'Consultant Replenishment Program (CRP) Terms and Conditions')]");
-	private final By NORTH_DAKOTA_CHKBOX_LOC = By.xpath("//label[@for='noEnrollmentKit']/..");
+	private final By NORTH_DAKOTA_CHKBOX_LOC = By.xpath("//input[@id='noEnrollmentKit']");
 	private final By ALL_KIT_SECTION_LOC = By.xpath("//div[@class='enrollmentKit-wrapper row']/div");
 	private final By CONNECT_BTN_LOC = By.xpath("//a[text()='CONNECT']");
 	private final By APPLYING_AS_BUSINESS_ENTITY_LINK_LOC = By.xpath("//a[text()='Applying as a business entity?']");
@@ -397,7 +397,8 @@ public class StoreFrontHomePage extends StoreFrontWebsiteBasePage{
 	 * @return
 	 */
 	public StoreFrontHomePage clickAnyViewDetailsLink(String kitNumber){
-		driver.click(By.xpath(String.format(viewDetailsLinkLoc, kitNumber)));
+		driver.waitForElementPresent(By.xpath(String.format(viewDetailsLinkLoc, kitNumber)));
+		driver.clickByJS(RFWebsiteDriver.driver,By.xpath(String.format(viewDetailsLinkLoc, kitNumber)));
 		logger.info("clicked on link "+kitNumber);
 		return this;
 	}
@@ -438,8 +439,10 @@ public class StoreFrontHomePage extends StoreFrontWebsiteBasePage{
 	 * @return
 	 */
 	public StoreFrontHomePage selectNorthDakotaCheckBoxOnKitPage(){
-		driver.click(NORTH_DAKOTA_CHKBOX_LOC);
+		driver.waitForElementPresent(NORTH_DAKOTA_CHKBOX_LOC);
+		driver.clickByJS(RFWebsiteDriver.driver,NORTH_DAKOTA_CHKBOX_LOC);
 		logger.info("North Dakota Checkbox selected");
+		driver.pauseExecutionFor(2000);
 		return this;
 	}
 

@@ -123,9 +123,9 @@ public class StoreFrontWebsiteBaseTest extends RFBaseTest {
 	@BeforeSuite(alwaysRun=true)
 	public void setUp(ITestContext context) throws Exception {
 		userPropertyFile.loadProps(userProps);
-//		if(getSuiteName(context).equalsIgnoreCase("storeFrontMiniRegressionSuite")){
-//			//userPropertyFile.clearProperty();
-//		}
+		//		if(getSuiteName(context).equalsIgnoreCase("storeFrontMiniRegressionSuite")){
+		//			//userPropertyFile.clearProperty();
+		//		}
 		driver.loadApplication();
 		driver.setDBConnectionString();
 	}
@@ -322,6 +322,10 @@ public class StoreFrontWebsiteBaseTest extends RFBaseTest {
 
 	public String consultantWithPulseAndWithCRPForCancellation(){
 		return userPropertyFile.getProperty("consultantWithPulseAndWithCRPForCancellation");
+	}
+
+	public String pcUserWithoutSponsor(){
+		return userPropertyFile.getProperty("pcUserWithoutSponsor");
 	}
 
 	public static String getSuiteName(ITestContext context){

@@ -532,11 +532,12 @@ public class StoreFrontShopSkinCarePage extends StoreFrontWebsiteBasePage{
 
 	public StoreFrontProductDetailPage clickOnProductNameLink(String productName){
 		driver.waitForElementToBeClickable(By.xpath(String.format(productLinkThroughProductNameLoc,productName)),20);
-		driver.click(By.xpath(String.format(productLinkThroughProductNameLoc,productName)));
+		//driver.click(By.xpath(String.format(productLinkThroughProductNameLoc,productName)));
+		driver.clickByJS(RFWebsiteDriver.driver, By.xpath(String.format(productLinkThroughProductNameLoc,productName)));
 		logger.info("Product Link clicked : " + productName);
 		return new StoreFrontProductDetailPage(driver);
 	}
-
+	
 	/***
 	 * This method clickthe shop by category DD
 	 * 
@@ -834,7 +835,8 @@ public class StoreFrontShopSkinCarePage extends StoreFrontWebsiteBasePage{
 	public StoreFrontProductDetailPage clickNameOfFirstProduct(String productNumber){
 		String productName = driver.findElement(By.xpath(String.format(productNameLinkLoc, productNumber))).getText();
 		if(driver.isElementVisible(driver.findElement(By.xpath(String.format(productNameLinkLoc, productNumber))))){
-			driver.click(By.xpath(String.format(productNameLinkLoc, productNumber)));
+			driver.clickByJS(RFWebsiteDriver.driver,By.xpath(String.format(productNameLinkLoc, productNumber)));
+			//driver.click(By.xpath(String.format(productNameLinkLoc, productNumber)));
 		}
 		logger.info("product name "+productName+ " Clicked");
 		driver.waitForPageLoad();

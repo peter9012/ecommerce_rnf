@@ -58,7 +58,6 @@ public class StoreFrontWebsiteBasePage extends RFBasePage {
 	private final By ACTION_SUCCESS_MSG_LOC = By.xpath("//div[contains(@class,'alert-info') and contains(@class,'alert-dismissable')]");
 	private final By BECOME_A_CONSULTANT_LOC = By.xpath(topNavigationLoc + "//*[@title='BECOME A CONSULTANT']");
 	private final By ENROLL_NOW_LOC = By.xpath(topNavigationLoc + "//a[@title='ENROLL NOW']");
-	private final By WHY_RF_LOC = By.xpath(topNavigationLoc + "//a[@title='WHY R+F']");
 	private final By SHOP_SKINCARE_LOC = By.xpath(topNavigationLoc + "//a[@title='SHOP SKINCARE']");
 	private final By ALL_PRODUCTS_LOC = By.xpath(topNavigationLoc + "//a[@title='ALL PRODUCTS']");
 	private final By RODAN_AND_FIELDS_LOGO_LOC = By.id("header-logo");
@@ -75,7 +74,6 @@ public class StoreFrontWebsiteBasePage extends RFBasePage {
 	private final By NO_RESULT_FOUND_MSG_LOC = By.xpath("//p[contains(text(),'No results found')]");
 	private final By EVENTS_LOC = By.xpath(topNavigationLoc + "//a[@title='EVENTS']");
 	private final By PROGRAMS_AND_INCENTIVES_LOC = By.xpath(topNavigationLoc + "//a[@title='PROGRAMS & INCENTIVES']");
-	private final By MEET_OUR_COMMUNITY_LOC = By.xpath(topNavigationLoc + "//a[@title='MEET OUR COMMUNITY']");
 	private final By WHO_WE_ARE_LINK_LOC = By.xpath(topNavigationLoc + "//a[@title='WHO WE ARE']");
 	private final By GIVING_BACK_LINK_LOC = By.xpath(topNavigationLoc + "//a[@title='GIVING BACK']");
 	private final By MEET_THE_DOCTORS_LINK_LOC = By.xpath(topNavigationLoc + "//a[@title='MEET THE DOCTORS']");
@@ -291,6 +289,9 @@ public class StoreFrontWebsiteBasePage extends RFBasePage {
 	private final By ENROLL_NOW_POPUP_LOC = By.xpath("//div[@id='enrollCRPModal' and contains(@style,'block')]//h3[contains(text(),'Do you want to enroll in CRP')]");
 	protected final By SORT_FILTER_DD_LOC = By.id("sortOptions1");
 	protected final By SHOP_BY_PRICE_FILTER_OPTION_HIGH_TO_LOW_LOC = By.xpath("//select[@id='sortOptions1']/descendant::option[2]");
+	private final By WHY_RF_LOC = By.xpath(topNavigationLoc + "//a[@title='WHY R&F']");
+	private final By MEET_OUR_COMMUNITY_LOC = By.xpath(topNavigationLoc + "//a[@title='MEET OUR COMMUNITIES']");
+
 
 	private String productNameAllItemsInCartLoc = "//span[@class='item-name' and contains(text(),%s)]";
 	protected String addToCartButtonLoc = "//div[contains(@class,'product__listing')]/descendant::span[@id='cust_price'][contains(text(),'$')][1]/following::button[text()='Add to bag'][%s]";
@@ -314,8 +315,6 @@ public class StoreFrontWebsiteBasePage extends RFBasePage {
 	private String expMonthLoc = "//select[@id='c-exmth']//option[contains(text(),'%s')]";
 	private String textLoc = "//*[contains(text(),'%s')]";
 	private String stateForShippingDetails = "//select[@id='address.region']//option[text()='%s']";
-	private String topNavigationSublinksWithTextLoc = topNavigationLoc + "//a[text()='%s']";
-	private String topNavigationSublinksWithTitleLoc = topNavigationLoc + "//*[@title='%s']";
 	private String activePageLoc = "//span[contains(text(),'%s')]/parent::li";
 	private String navigationPageNumberLoc = "//ul[@class='pagination']//a[contains(text(),'%s')]";
 	private String subLinkUnderAboutRFLoc = topNavigationLoc + "//a[@title='%s']/following::a[text()='%s'][1]";
@@ -330,7 +329,8 @@ public class StoreFrontWebsiteBasePage extends RFBasePage {
 	private String unitPriceOfProductOfAnItemLoc = "//div[@class='orderConfirmationInfo']/descendant::div[@class='orderUnitPrice'][%s]";
 	private String orderTotalOfProductOfAnItemLoc = "//div[@class='orderConfirmationInfo']/descendant::div[@class='orderTotal'][%s]";
 	private String productNameOfAnItemLoc = "//div[@class='orderConfirmationInfo']/descendant::p[%s]";
-
+	private String topNavigationSublinksWithTextLoc = topNavigationLoc + "//a[contains(text(),'%s')]";
+	private String topNavigationSublinksWithTitleLoc = topNavigationLoc + "//*[contains(@title,'%s')]";
 
 	private String RFO_DB = null;
 
@@ -1666,18 +1666,18 @@ public class StoreFrontWebsiteBasePage extends RFBasePage {
 		WebElement nameOnCardElement = driver.findElement(NAME_ON_CARD_LOC);
 		actions.click(nameOnCardElement).sendKeys(nameOnCardElement, nameOnCard).build().perform();
 		logger.info("Entered card name as" + nameOnCard);
-//		driver.click(EXP_MONTH_DD_LOC);
-//		driver.pauseExecutionFor(1000);
-//		logger.info("Exp month dropdown clicked");
-//		driver.click(EXP_MONTH_LOC);
-//		driver.pauseExecutionFor(1000);
-//		logger.info("Exp month selected");
-//		driver.click(EXP_YEAR_DD_LOC);
-//		driver.pauseExecutionFor(1000);
-//		logger.info("Exp year dropdown clicked");
-//		driver.click(EXP_YEAR_LOC);
-//		driver.pauseExecutionFor(1000);
-//		logger.info("Exp year selected");
+		//		driver.click(EXP_MONTH_DD_LOC);
+		//		driver.pauseExecutionFor(1000);
+		//		logger.info("Exp month dropdown clicked");
+		//		driver.click(EXP_MONTH_LOC);
+		//		driver.pauseExecutionFor(1000);
+		//		logger.info("Exp month selected");
+		//		driver.click(EXP_YEAR_DD_LOC);
+		//		driver.pauseExecutionFor(1000);
+		//		logger.info("Exp year dropdown clicked");
+		//		driver.click(EXP_YEAR_LOC);
+		//		driver.pauseExecutionFor(1000);
+		//		logger.info("Exp year selected");
 		driver.type(EXP_MONTH_DD_LOC, "12");
 		driver.type(EXP_YEAR_DD_LOC, "2025");
 		driver.type(CVV_LOC, CVV);

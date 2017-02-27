@@ -17,7 +17,7 @@ public class FindAConsultantLinkTest extends StoreFrontWebsiteBaseTest{
 	public void testCorporateSitesShouldHaveFindAConsultantLinkOnTheHomePage_7(){
 		sfHomePage.clickFindAConsultantLinkOnHomePage();
 		s_assert.assertTrue(sfHomePage.isFindAConsultantPagePresent(),"'Find A Consultant' page either doesn't have the URL as 'find-consultant' or sponsor search field is not present for Consultant");
-		sfHomePage.loginToStoreFront(pcUserWithPWSSponsor(),  password,true);
+		sfHomePage.loginToStoreFront(pcUserWithoutSponsor(),  password,true);
 		sfHomePage.clickFindAConsultantLinkOnHomePage();
 		s_assert.assertTrue(sfHomePage.isFindAConsultantPagePresent(),"'Find A Consultant' page either doesn't have the URL as 'find-consultant' or sponsor search field is not present for PC");
 		sfHomePage.clickWelcomeDropdown();
@@ -27,6 +27,7 @@ public class FindAConsultantLinkTest extends StoreFrontWebsiteBaseTest{
 		s_assert.assertTrue(sfHomePage.isFindAConsultantPagePresent(),"'Find A Consultant' page either doesn't have the URL as 'find-consultant' or sponsor search field is not present for RC");
 		s_assert.assertAll();
 	}
+	
 
 	/***
 	 * qTest : TC-8 BIZ and Com sites shouldn’t have "Find a consultant" link on the header of the home page

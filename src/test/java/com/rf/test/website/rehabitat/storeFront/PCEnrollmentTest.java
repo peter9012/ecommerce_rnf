@@ -179,7 +179,7 @@ public class PCEnrollmentTest extends StoreFrontWebsiteBaseTest{
 	 * 
 	 *     
 	 */
-	@Test(enabled=true)
+	@Test(enabled=false)
 	public void testAutoAssignConsultantPcEnrollment_573(){
 		timeStamp = CommonUtils.getCurrentTimeStamp();
 		randomWords = CommonUtils.getRandomWord(5);		
@@ -219,7 +219,7 @@ public class PCEnrollmentTest extends StoreFrontWebsiteBaseTest{
 		sfCartPage = sfShopSkinCarePage.checkoutTheCartFromPopUp();
 		sfCheckoutPage = sfCartPage.checkoutTheCart();
 		sponserNameAfterEnrollment = sfCheckoutPage.getSponsorNameFromAccountInfo();
-		s_assert.assertTrue(sponserNameAfterEnrollment.toLowerCase().contains(sponserName.toLowerCase()),"Sponser name is not same as provided during enrollment");
+		s_assert.assertTrue(sponserNameAfterEnrollment.trim().toLowerCase().contains(sponserName.trim().toLowerCase()),"Sponser name is not same as provided during enrollment");
 		s_assert.assertAll();
 	}
 
@@ -438,8 +438,10 @@ public class PCEnrollmentTest extends StoreFrontWebsiteBaseTest{
 		sfCheckoutPage.clickPlaceOrderButton();
 		sfCheckoutPage.clickRodanAndFieldsLogo();
 		s_assert.assertTrue(sfHomePage.hasPCEnrolledSuccessfully(), "PC has not been enrolled successfully");
-		s_assert.assertAll();
 		pcUserWithoutSponsor = email;
+		userPropertyFile.loadProps(userProps);
+		setUsers("pcUserWithoutSponsor", pcUserWithoutSponsor);
+		s_assert.assertAll();
 	}
 
 	//	@Test(enabled=true,groups="users")

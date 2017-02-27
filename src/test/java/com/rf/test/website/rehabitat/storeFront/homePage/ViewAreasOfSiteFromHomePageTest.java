@@ -7,6 +7,7 @@ import com.rf.test.website.rehabitat.storeFront.baseTest.StoreFrontWebsiteBaseTe
 
 public class ViewAreasOfSiteFromHomePageTest extends StoreFrontWebsiteBaseTest{
 
+
 	/***
 	 * qTest : TC-4 Home Page Navigate And View Area Of The Site
 	 * Description : This test validates category, Category landing pages, toggle button,
@@ -19,7 +20,7 @@ public class ViewAreasOfSiteFromHomePageTest extends StoreFrontWebsiteBaseTest{
 		String category_Featured = "FEATURED";
 		String category_Essentials = "ESSENTIALS";
 		String category_Reverse = "REVERSE";
-		String category_Enhancement = "ENHANCEMENT";
+		String category_Enhancement = "ENHANCEMENTS";
 		String category_Soothe = "SOOTHE";
 		String category_Redefine = "REDEFINE";
 		String socialIconFacebook = "facebook";
@@ -216,6 +217,7 @@ public class ViewAreasOfSiteFromHomePageTest extends StoreFrontWebsiteBaseTest{
 		s_assert.assertTrue(sfHomePage.isSocialMediaIconPresentAtFooter(socialIconGooglePlus), socialIconGooglePlus+" icon is not present at homepage as rc user");
 		s_assert.assertAll();
 	}
+
 	/***
 	 * qTest : TC-5 Consultant only products shouldn't be searched by anonymous user, Retail or PC user
 	 * Description : This test validates consultant only products shouldn't be searched by 

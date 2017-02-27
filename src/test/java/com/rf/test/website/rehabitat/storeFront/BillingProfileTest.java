@@ -56,58 +56,63 @@ public class BillingProfileTest extends StoreFrontWebsiteBaseTest{
 	}
 
 	/***
-	 * 
-	 */
-	@Test(enabled=true)
-	public void testAddNewBillingAddressToNewlyCreatedBillingProfile_386(){
-		String currentURL = null;
-		String suggestedBillingAddress = null;
-		String urlToAssert = "payment-details";
-		randomWords = CommonUtils.getRandomWord(5);
-		cardName = cardName + randomWords;
-		lastName = TestConstants.LAST_NAME;
-		String addressInWrongFormat = TestConstants.WRONG_ADDRESS_LINE_1_US;
-		String wrongCombinationCity = TestConstants.CITY_DALLAS_US;
-		String cardLastName = null;
+	  * qTest : TC-386 Add New Billing Address on New Billing Profile
+	  * 
+	  * Description : This test will add and verify the new billing address into New billing profile
+	  * 
+	  *     
+	  */
+	 @Test(enabled=true)
+	 public void testAddNewBillingAddressToNewlyCreatedBillingProfile_386(){
+	  String currentURL = null;
+	  String suggestedBillingAddress = null;
+	  String urlToAssert = "payment-details";
+	  randomWords = CommonUtils.getRandomWord(5);
+	  cardName = cardName + randomWords;
+	  lastName = TestConstants.LAST_NAME;
+	  String addressInWrongFormat = TestConstants.WRONG_ADDRESS_LINE_1_US;
+	  String wrongCombinationCity = TestConstants.CITY_DALLAS_US;
+	  String cardLastName = null;
 
-		//Login as consultant user.
-		sfHomePage.loginToStoreFront(consultantWithPulseAndWithCRP(), password,true);
-		sfHomePage.clickWelcomeDropdown();
-		sfBillingInfoPage = sfHomePage.navigateToBillingInfoPage();
-		currentURL = sfBillingInfoPage.getCurrentURL().toLowerCase();
-		s_assert.assertTrue(currentURL.contains(urlToAssert), "Expected URL should contain "+urlToAssert+" but actual on UI is"+currentURL);
-		sfBillingInfoPage.clickAddNewBillingProfileLink();
-		sfBillingInfoPage.enterUserBillingDetails(cardType,cardNumber,cardName,CVV);
-		sfBillingInfoPage.clickAddNewBillingAddressLink();
-		s_assert.assertTrue(sfBillingInfoPage.isAddNewBillingAddressFormDisplayed(),"ADD NEW BILLING ADDRESS form Block is not Displayed");
+	  //Login as consultant user.
+	  sfHomePage.loginToStoreFront(consultantWithPulseAndWithCRP(), password,true);
+	  sfHomePage.clickWelcomeDropdown();
+	  sfBillingInfoPage = sfHomePage.navigateToBillingInfoPage();
+	  currentURL = sfBillingInfoPage.getCurrentURL().toLowerCase();
+	  s_assert.assertTrue(currentURL.contains(urlToAssert), "Expected URL should contain "+urlToAssert+" but actual on UI is"+currentURL);
+	  sfBillingInfoPage.clickAddNewBillingProfileLink();
+	  sfBillingInfoPage.enterUserBillingDetails(cardType,cardNumber,cardName,CVV);
+	  sfBillingInfoPage.clickAddNewBillingAddressLink();
+	  s_assert.assertTrue(sfBillingInfoPage.isAddNewBillingAddressFormDisplayed(),"ADD NEW BILLING ADDRESS form Block is not Displayed");
 
-		// Filling Address in Wrong format.
-		sfBillingInfoPage.enterConsultantAddressDetails(firstName, lastName, addressInWrongFormat, addressLine2, city, state, postalCode, phoneNumber);
-		sfBillingInfoPage.clickBillingDetailsNextbutton();
-		s_assert.assertTrue(sfBillingInfoPage.isUnknownAddressErrorMessageIsPresentAsExpected(),"Unknown Address Error message is not present");
+	  // Filling Address in Wrong format.
+	  sfBillingInfoPage.enterConsultantAddressDetails(firstName, lastName, addressInWrongFormat, addressLine2, city, state, postalCode, phoneNumber);
+	  sfBillingInfoPage.clickBillingDetailsNextbutton();
+	  s_assert.assertTrue(sfBillingInfoPage.getAddressNonDeliverableWarningMsg().equalsIgnoreCase(TestConstants.NON_DELIVERABLE_ADDRESS_MSG),"Non Deliverable Address msg is not present as expected");
+	  sfBillingInfoPage.clickEditAddressBtnOnAddressSuggestionPopup();
 
-		// Filling Wrong combination of City and State in Billing address
-		sfBillingInfoPage.enterConsultantAddressDetails(firstName, lastName, addressLine1, addressLine2, wrongCombinationCity, state, postalCode, phoneNumber);
-		sfBillingInfoPage.clickBillingDetailsNextbutton();
-		suggestedBillingAddress = sfBillingInfoPage.getSuggestedBillingAddressFromBlock();
-		s_assert.assertTrue(suggestedBillingAddress.contains(city),"Suggested Address City is not found as expected. Expected City : "+city+". Actual City : "+wrongCombinationCity);
-		sfBillingInfoPage.clickYesButtonOnAddressSuggestionPopUp();
+	  // Filling Wrong combination of City and State in Billing address
+	  sfBillingInfoPage.enterConsultantAddressDetails(firstName, lastName, addressLine1, addressLine2, wrongCombinationCity, state, postalCode, phoneNumber);
+	  sfBillingInfoPage.clickBillingDetailsNextbutton();
+	  suggestedBillingAddress = sfBillingInfoPage.getSuggestedBillingAddressFromBlock();
+	  s_assert.assertTrue(suggestedBillingAddress.contains(city),"Suggested Address City is not found as expected. Expected City : "+city+". Actual City : "+wrongCombinationCity);
+	  sfBillingInfoPage.clickYesButtonOnAddressSuggestionPopUp();
 
-		// Filling Right Address 
-		randomWords = CommonUtils.getRandomWord(5);
-		cardName = cardName + randomWords;
-		sfBillingInfoPage.clickAddNewBillingProfileLink();
-		sfBillingInfoPage.enterUserBillingDetails(cardType,cardNumber,cardName,CVV);
-		sfBillingInfoPage.clickAddNewBillingAddressLink();
-		s_assert.assertTrue(sfBillingInfoPage.isAddNewBillingAddressFormDisplayed(),"ADD NEW BILLING ADDRESS form Block is not Displayed");
-		sfBillingInfoPage.enterConsultantAddressDetails(firstName, lastName, addressLine1, addressLine2, city, state, postalCode, phoneNumber);
-		sfBillingInfoPage.clickBillingDetailsNextbutton();
-		sfBillingInfoPage.clickUseAsEnteredButtonOnPopUp();
-		cardLastName = sfBillingInfoPage.getLastName(cardName);
-		s_assert.assertTrue(sfBillingInfoPage.isNewBillingProfilePresentInRowList(cardLastName),"New Billing Profile is not present in Profiles List");
-		s_assert.assertAll();
-	}
-
+	  // Filling Right Address 
+	  randomWords = CommonUtils.getRandomWord(5);
+	  cardName = cardName + randomWords;
+	  sfBillingInfoPage.clickAddNewBillingProfileLink();
+	  sfBillingInfoPage.enterUserBillingDetails(cardType,cardNumber,cardName,CVV);
+	  sfBillingInfoPage.clickAddNewBillingAddressLink();
+	  s_assert.assertTrue(sfBillingInfoPage.isAddNewBillingAddressFormDisplayed(),"ADD NEW BILLING ADDRESS form Block is not Displayed");
+	  sfBillingInfoPage.enterConsultantAddressDetails(firstName, lastName, addressLine1, addressLine2, city, state, postalCode, phoneNumber);
+	  sfBillingInfoPage.clickBillingDetailsNextbutton();
+	  sfBillingInfoPage.clickUseAsEnteredButtonOnPopUp();
+	  cardLastName = sfBillingInfoPage.getLastName(cardName);
+	  s_assert.assertTrue(sfBillingInfoPage.isNewBillingProfilePresentInRowList(cardLastName),"New Billing Profile is not present in Profiles List");
+	  s_assert.assertAll();
+	 }
+	 
 	/***
 	 * qTest : TC-475 Billing information- Default Payment Profiles - Multiple Profiles
 	 * 
@@ -400,74 +405,76 @@ public class BillingProfileTest extends StoreFrontWebsiteBaseTest{
 	}
 
 	/***
-	 * qTest : TC-385 Add New Billing Address on Existing Billing Profile
-	 * 
-	 * Description : This test will add and verify the new billing address into existing billing profile
-	 * 
-	 *     
-	 */
-	@Test(enabled=true)
-	public void testAddNewBillingAddressToExistingBillingProfile_385(){
-		String currentURL = null;
-		randomWords = CommonUtils.getRandomWord(5);
-		String suggestedBillingAddress = null;
-		String urlToAssert = "payment-details";
-		cardName = cardName + randomWords;
-		lastName = TestConstants.LAST_NAME;
-		String addressInWrongFormat = TestConstants.WRONG_ADDRESS_LINE_1_US;
-		String wrongCombinationCity = TestConstants.CITY_DALLAS_US;
-		String cardLastName = null;
-		String billingAddressOnUI = null;
+	  * qTest : TC-385 Add New Billing Address on Existing Billing Profile
+	  * 
+	  * Description : This test will add and verify the new billing address into existing billing profile
+	  * 
+	  *     
+	  */
+	 @Test(enabled=true)
+	 public void testAddNewBillingAddressToExistingBillingProfile_385(){
+	  String currentURL = null;
+	  randomWords = CommonUtils.getRandomWord(5);
+	  String suggestedBillingAddress = null;
+	  String urlToAssert = "payment-details";
+	  cardName = cardName + randomWords;
+	  lastName = TestConstants.LAST_NAME;
+	  String addressInWrongFormat = TestConstants.WRONG_ADDRESS_LINE_1_US;
+	  String wrongCombinationCity = TestConstants.CITY_DALLAS_US;
+	  String cardLastName = null;
+	  String billingAddressOnUI = null;
 
-		// Login as Consultant User
-		sfHomePage.loginToStoreFront(consultantWithPulseAndWithCRP(), password,true);
-		sfHomePage.clickWelcomeDropdown();
-		sfBillingInfoPage = sfHomePage.navigateToBillingInfoPage();
-		currentURL = sfBillingInfoPage.getCurrentURL().toLowerCase();
-		s_assert.assertTrue(currentURL.contains(urlToAssert), "Expected URL should contain "+urlToAssert+" but actual on UI is"+currentURL);
+	  // Login as Consultant User
+	  sfHomePage.loginToStoreFront(consultantWithPulseAndWithCRP(), password,true);
+	  sfHomePage.clickWelcomeDropdown();
+	  sfBillingInfoPage = sfHomePage.navigateToBillingInfoPage();
+	  currentURL = sfBillingInfoPage.getCurrentURL().toLowerCase();
+	  s_assert.assertTrue(currentURL.contains(urlToAssert), "Expected URL should contain "+urlToAssert+" but actual on UI is"+currentURL);
 
-		// Adding a New Profile with Specific Address 1
-		sfBillingInfoPage.clickAddNewBillingProfileLink();
-		sfBillingInfoPage.enterUserBillingDetails(cardType,cardNumber,cardName,CVV);
-		sfBillingInfoPage.clickAddNewBillingAddressLink();
-		s_assert.assertTrue(sfBillingInfoPage.isAddNewBillingAddressFormDisplayed(),"ADD NEW BILLING ADDRESS form Block is not Displayed");
-		sfBillingInfoPage.enterConsultantAddressDetails(firstName, lastName, addressLine1, addressLine2, city, state, postalCode, phoneNumber);
-		sfBillingInfoPage.clickBillingDetailsNextbutton();
-		sfBillingInfoPage.clickUseAsEnteredButtonOnPopUp();
-		cardLastName = sfBillingInfoPage.getLastName(cardName);
-		s_assert.assertTrue(sfBillingInfoPage.isNewBillingProfilePresentInRowList(cardLastName),"New Billing Profile is not present in Profiles List");
+	  // Adding a New Profile with Specific Address 1
+	  sfBillingInfoPage.clickAddNewBillingProfileLink();
+	  sfBillingInfoPage.enterUserBillingDetails(cardType,cardNumber,cardName,CVV);
+	  sfBillingInfoPage.clickAddNewBillingAddressLink();
+	  s_assert.assertTrue(sfBillingInfoPage.isAddNewBillingAddressFormDisplayed(),"ADD NEW BILLING ADDRESS form Block is not Displayed");
+	  sfBillingInfoPage.enterConsultantAddressDetails(firstName, lastName, addressLine1, addressLine2, city, state, postalCode, phoneNumber);
+	  sfBillingInfoPage.clickBillingDetailsNextbutton();
+	  sfBillingInfoPage.clickUseAsEnteredButtonOnPopUp();
+	  cardLastName = sfBillingInfoPage.getLastName(cardName);
+	  s_assert.assertTrue(sfBillingInfoPage.isNewBillingProfilePresentInRowList(cardLastName),"New Billing Profile is not present in Profiles List");
 
-		// Edit Specific Billing Profile
-		sfBillingInfoPage.clickBillingProfileEditLink(cardLastName);
-		s_assert.assertTrue(sfBillingInfoPage.isCardDetailsFieldsDisabled(),"Card Details Fields are not Disabled after Editing Default Billing Profile");
-		s_assert.assertTrue(sfBillingInfoPage.isCardTypeIconsDisabled(),"Card Type Icons are not Disabled after Editing Default Billing Profile");
+	  // Edit Specific Billing Profile
+	  sfBillingInfoPage.clickBillingProfileEditLink(cardLastName);
+	  s_assert.assertTrue(sfBillingInfoPage.isCardDetailsFieldsDisabled(),"Card Details Fields are not Disabled after Editing Default Billing Profile");
+	  s_assert.assertTrue(sfBillingInfoPage.isCardTypeIconsDisabled(),"Card Type Icons are not Disabled after Editing Default Billing Profile");
 
-		// Filling Address in Wrong format.
-		sfBillingInfoPage.enterBillingAddressDetailsForExistingBillingProfile(firstName, lastName, addressInWrongFormat, addressLine2, city, state, postalCode, phoneNumber);
-		sfBillingInfoPage.clickSavePaymentButton();
-		s_assert.assertTrue(sfBillingInfoPage.isUnknownAddressErrorMessageIsPresentAsExpectedForExistingProfile(),"Unknown Address Error message is not present");
+	  // Filling Address in Wrong format.
+	  sfBillingInfoPage.enterBillingAddressDetailsForExistingBillingProfile(firstName, lastName, addressInWrongFormat, addressLine2, city, state, postalCode, phoneNumber);
+	  sfBillingInfoPage.clickSavePaymentButton();
+	  s_assert.assertTrue(sfBillingInfoPage.getAddressNonDeliverableWarningMsg().equalsIgnoreCase(TestConstants.NON_DELIVERABLE_ADDRESS_MSG),"Non Deliverable Address msg is not present as expected");
+	  sfBillingInfoPage.clickEditAddressBtnOnAddressSuggestionPopup();
+	  
 
-		// Filling Wrong combination of City and State in Billing address
-		sfBillingInfoPage.enterBillingAddressDetailsForExistingBillingProfile(firstName, lastName, addressLine1, addressLine2, wrongCombinationCity, state, postalCode, phoneNumber);
-		sfBillingInfoPage.clickSavePaymentButton();
-		suggestedBillingAddress = sfBillingInfoPage.getSuggestedBillingAddressFromBlock();
-		s_assert.assertTrue(suggestedBillingAddress.contains(city),"Suggested Address City is not found as expected. Expected City : "+city+". Actual City : "+wrongCombinationCity);
-		sfBillingInfoPage.clickUseAsEnteredButtonOnPopUp();
+	  // Filling Wrong combination of City and State in Billing address
+	  sfBillingInfoPage.enterBillingAddressDetailsForExistingBillingProfile(firstName, lastName, addressLine1, addressLine2, wrongCombinationCity, state, postalCode, phoneNumber);
+	  sfBillingInfoPage.clickSavePaymentButton();
+	  suggestedBillingAddress = sfBillingInfoPage.getSuggestedBillingAddressFromBlock();
+	  s_assert.assertTrue(suggestedBillingAddress.contains(city),"Suggested Address City is not found as expected. Expected City : "+city+". Actual City : "+wrongCombinationCity);
+	  sfBillingInfoPage.clickUseAsEnteredButtonOnPopUp();
 
-		// Filling Specific Address 2 in right format
-		sfBillingInfoPage.clickBillingProfileEditLink(cardLastName);
-		sfBillingInfoPage.enterBillingAddressDetailsForExistingBillingProfile(firstName, lastName, updatedAddressLine1, updatedAddressLine2, updatedCity, state, updatedPostalCode, phoneNumber);
-		sfBillingInfoPage.clickSavePaymentButton();
-		sfBillingInfoPage.clickUseAsEnteredButtonOnPopUp();
-		billingAddressOnUI = sfBillingInfoPage.getBillingAddressForSpecificBillingProfile(cardLastName);
-		s_assert.assertTrue(sfBillingInfoPage.isAddressFieldPresentAsExpectedOnUI(billingAddressOnUI,updatedAddressLine1),"Address Line 1 : " + updatedAddressLine1 + " is not present in updated Billing Address");
-		s_assert.assertTrue(sfBillingInfoPage.isAddressFieldPresentAsExpectedOnUI(billingAddressOnUI,updatedAddressLine2),"Address Line 2 : " + updatedAddressLine2 + " is not present in updated Billing Address");
-		s_assert.assertTrue(sfBillingInfoPage.isAddressFieldPresentAsExpectedOnUI(billingAddressOnUI,updatedCity),"City : " + updatedCity + " is not present in updated Billing Address");
-		s_assert.assertTrue(sfBillingInfoPage.isAddressFieldPresentAsExpectedOnUI(billingAddressOnUI,updatedPostalCode),"PostalCode : " + updatedPostalCode + " is not present in updated Billing Address");
-		//s_assert.assertTrue(sfBillingInfoPage.isAddressFieldPresentAsExpectedOnUI(billingAddressOnUI,stateAbbreviation),"State : " + stateAbbreviation + " is not present in updated Billing Address");
-		s_assert.assertAll();
-	}
-
+	  // Filling Specific Address 2 in right format
+	  sfBillingInfoPage.clickBillingProfileEditLink(cardLastName);
+	  sfBillingInfoPage.enterBillingAddressDetailsForExistingBillingProfile(firstName, lastName, updatedAddressLine1, updatedAddressLine2, updatedCity, state, updatedPostalCode, phoneNumber);
+	  sfBillingInfoPage.clickSavePaymentButton();
+	  sfBillingInfoPage.clickUseAsEnteredButtonOnPopUp();
+	  billingAddressOnUI = sfBillingInfoPage.getBillingAddressForSpecificBillingProfile(cardLastName);
+	  s_assert.assertTrue(sfBillingInfoPage.isAddressFieldPresentAsExpectedOnUI(billingAddressOnUI,updatedAddressLine1),"Address Line 1 : " + updatedAddressLine1 + " is not present in updated Billing Address");
+	  s_assert.assertTrue(sfBillingInfoPage.isAddressFieldPresentAsExpectedOnUI(billingAddressOnUI,updatedAddressLine2),"Address Line 2 : " + updatedAddressLine2 + " is not present in updated Billing Address");
+	  s_assert.assertTrue(sfBillingInfoPage.isAddressFieldPresentAsExpectedOnUI(billingAddressOnUI,updatedCity),"City : " + updatedCity + " is not present in updated Billing Address");
+	  s_assert.assertTrue(sfBillingInfoPage.isAddressFieldPresentAsExpectedOnUI(billingAddressOnUI,updatedPostalCode),"PostalCode : " + updatedPostalCode + " is not present in updated Billing Address");
+	  s_assert.assertTrue(sfBillingInfoPage.isAddressFieldPresentAsExpectedOnUI(billingAddressOnUI,stateAbbreviation),"State : " + stateAbbreviation + " is not present in updated Billing Address");
+	  s_assert.assertAll();
+	 }
+	 
 	/***
 	 * qTest : TC-453 Tokenization - My Account
 	 * 

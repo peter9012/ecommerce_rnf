@@ -378,6 +378,7 @@ public class StoreFrontAccountInfoPage extends StoreFrontWebsiteBasePage{
 		}
 		return this;
 	}
+
 	/***
 	 * This method get profile Updation message on account info page.
 	 * 
@@ -387,7 +388,7 @@ public class StoreFrontAccountInfoPage extends StoreFrontWebsiteBasePage{
 	 */
 	public String getProfileUpdationMessage(){
 		String []profileUpdationMessage = driver.findElement(PROFILE_UPDATION_MESSAGE_LOC).getText().split("×"); 
-		logger.info("profile updation message is: "+profileUpdationMessage[1]);
+		logger.info("profile updation message is: "+profileUpdationMessage);
 		return profileUpdationMessage[1].trim();
 	}
 

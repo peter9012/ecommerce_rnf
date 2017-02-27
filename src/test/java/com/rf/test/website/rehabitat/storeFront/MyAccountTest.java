@@ -259,15 +259,8 @@ public class MyAccountTest extends StoreFrontWebsiteBaseTest{
 	public void testUpdateAccountInfoWithValidDetails_288(){
 		String country="USA";
 		String profileUpdationMessage = null;
-		String randomWord = CommonUtils.getRandomWord(5);
-		String firstName = TestConstants.FIRST_NAME;
-		String lastName = TestConstants.LAST_NAME+randomWord;
-		String addressLine1 = TestConstants.ADDRESS_LINE_1_US;
-		String addressLine2 = TestConstants.ADDRESS_LINE_2_US;
-		String city = TestConstants.CITY_US;
-		String state = TestConstants.STATE_US;
-		String postalCode = TestConstants.POSTAL_CODE_US;
-		String phoneNumber = TestConstants.PHONE_NUMBER;
+		randomWords = CommonUtils.getRandomWord(5);
+		lastName = TestConstants.LAST_NAME + randomWords;
 		String phoneNumber2 = TestConstants.PHONE_NUMBER;
 		String dayOfBirth = TestConstants.DAY_OF_BIRTH;
 		String monthOfBirth = TestConstants.MONTH_OF_BIRTH;
@@ -325,13 +318,8 @@ public class MyAccountTest extends StoreFrontWebsiteBaseTest{
 	 */
 	@Test(enabled=true)
 	public void testUpdateAccountInfoWithInvalidDetails_289(){
-		String randomWord = CommonUtils.getRandomWord(5);
-		String firstName = TestConstants.FIRST_NAME;
-		String lastName = TestConstants.LAST_NAME+randomWord;
-		String addressLine1 = TestConstants.ADDRESS_LINE_1_US;
-		String city = TestConstants.CITY_US;
-		String postalCode = TestConstants.POSTAL_CODE_US;
-		String phoneNumber = TestConstants.PHONE_NUMBER;
+		randomWords = CommonUtils.getRandomWord(5);
+		lastName = TestConstants.LAST_NAME + randomWords;
 		String emailAddress = "abc@wyz";
 		//Login as consultant user.
 		sfHomePage.loginToStoreFront(consultantWithPulseAndWithCRP(),password,true);
@@ -455,17 +443,11 @@ public class MyAccountTest extends StoreFrontWebsiteBaseTest{
 	 * Invalid details and save account info clicked.
 	 *
 	 */
-	@Test(enabled=false) //TODO Issue numbers are not accepted in first and last name fields and phone number with special char not accepted.
+	@Test(enabled=true) //TODO Issue numbers are not accepted in first and last name fields and phone number with special char not accepted.
 	public void testUpdateAccountInfoWithInvalidDetails_301(){
 		String profileUpdationMessage = null;
-		String randomWord = CommonUtils.getRandomWord(5);
-		String firstName = TestConstants.FIRST_NAME;
-		String lastName = TestConstants.LAST_NAME+randomWord;
-		String addressLine1 = TestConstants.ADDRESS_LINE_1_US;
-		String city = TestConstants.CITY_US;
-		String state = TestConstants.STATE_US;
-		String postalCode = TestConstants.POSTAL_CODE_US;
-		String phoneNumber = TestConstants.PHONE_NUMBER;
+		randomWords = CommonUtils.getRandomWord(5);
+		lastName = TestConstants.LAST_NAME + randomWords;
 		String invalidPostalCode = "T5N";
 		String firstNameWithSpecialChar = "auto-'First";
 		String lastNameWithSpecialChar = "last'-Name";
@@ -479,7 +461,6 @@ public class MyAccountTest extends StoreFrontWebsiteBaseTest{
 		sfHomePage.clickWelcomeDropdown();
 		sfAccountInfoPage = sfHomePage.navigateToAccountInfoPage();
 		String expectedValidationErrorMsg = TestConstants.VALIDATION_ERROR_THIS_FIELD_IS_REQUIRED;
-		String expectedEmailValidationErrorMsg = TestConstants.EMAIL_VALIDATION_ERROR_VALID_EMAIL_ADDRESS;
 		String expectedPostalValidationErrorMsg = TestConstants.POSTAL_VALIDATION_ERROR_VALID_POSTAL_CODE;
 		sfAccountInfoPage.clearAllFields();
 		sfAccountInfoPage.saveAccountInfo();
@@ -793,14 +774,9 @@ public class MyAccountTest extends StoreFrontWebsiteBaseTest{
 	public void testResetPasswordValidDetails_281(){
 		String newValidPassword = "111Maiden";
 		String profileUpdationMessage = null;
-		String randomWord = CommonUtils.getRandomWord(5);
-		String firstName = TestConstants.PC_FIRST_NAME;
-		String lastName = TestConstants.LAST_NAME+randomWord;
-		String addressLine1 = TestConstants.ADDRESS_LINE_1_US;
-		String city = TestConstants.CITY_US;
-		String state = TestConstants.STATE_US;
-		String postalCode = TestConstants.POSTAL_CODE_US;
-		String phoneNumber = TestConstants.PHONE_NUMBER;
+		randomWords = CommonUtils.getRandomWord(5);
+		firstName = TestConstants.PC_FIRST_NAME;
+		lastName = TestConstants.LAST_NAME + randomWords;
 		//Login as pc user
 		sfHomePage.loginToStoreFront(pcUserWithPWSSponsor(),password,true);
 		sfHomePage.clickWelcomeDropdown();
@@ -838,8 +814,8 @@ public class MyAccountTest extends StoreFrontWebsiteBaseTest{
 	 * Description : This tests delay autoship for PC user by 30 days.
 	 * 
 	 *     
-	 */
-	@Test(enabled=false)//Needs fix
+	 *//*
+	@Test(enabled=true)//Needs fix
 	public void testDelayPCAutoshipBy30Days_440(){
 		String currentNextBillShipDate = null;
 		String nextBillShipDateAfterOneMonth = null;
@@ -867,13 +843,13 @@ public class MyAccountTest extends StoreFrontWebsiteBaseTest{
 		s_assert.assertAll();
 	}
 
-	/***
+	*//***
 	 * qTest : TC-441 PC Perks Status- Delay Autoship - 60 Days
 	 * 
 	 * Description : This tests delay autoship for PC user by 60 days.
 	 * 
 	 *     
-	 */
+	 *//*
 	@Test(enabled=false)//Needs fix
 	public void testDelayPCAutoshipBy60Days_441(){
 		String currentNextBillShipDate = null;
@@ -902,13 +878,13 @@ public class MyAccountTest extends StoreFrontWebsiteBaseTest{
 		s_assert.assertAll();
 	}
 
-	/***
+	*//***
 	 * qTest : TC-442 PC Perks Status- Delay Autoship - Cancel delay
 	 * 
 	 * Description : This tests validates PC autoship date not get updated 
 	 * when date is updated and submit querry not clicked.
 	 *     
-	 */
+	 *//*
 	@Test(enabled=false)//Needs fix
 	public void testDelayPCAutoshipBy30DaysWithoutClickUpdate_442(){
 		String currentNextBillShipDate = null;
@@ -930,7 +906,7 @@ public class MyAccountTest extends StoreFrontWebsiteBaseTest{
 		s_assert.assertAll();
 
 	}
-
+*/
 	/***
 	 * qTest : TC-279 PC Perks Status- View autoship details
 	 * 
@@ -973,7 +949,6 @@ public class MyAccountTest extends StoreFrontWebsiteBaseTest{
 		String pcPerksStatus = null;
 		String expectedPCPerksStatus = "Enrolled";
 		//Login as pc user
-		//sfHomePage.loginToStoreFront(pcUserWithPWSSponsor(),password,true);
 		sfHomePage.loginToStoreFront(pcUserWithPWSSponsor(),password,true);
 		sfHomePage.clickWelcomeDropdown();
 		sfAutoshipStatusPage = sfHomePage.navigateToPCPerksStatusPage();
@@ -1066,8 +1041,9 @@ public class MyAccountTest extends StoreFrontWebsiteBaseTest{
 	 */ 
 	@Test(enabled=true)//Accepting inactive prefix less than 180 days.
 	public void testReEnnrollmentInPulseWithin180DaysWithOtherUserPrefix_369(){
-		String autoSuggestedPrefixName = null;
 		String otherUserPrefix = pwsPrefix();
+		timeStamp = CommonUtils.getCurrentTimeStamp();
+		String newPrefix = firstName+timeStamp;
 		String errorMessage = null;
 		String expectedErrorMsgForPrefix = TestConstants.ERROR_MSG_EXISTING_PREFIX;
 		//Subscribe to pulse with a new prefix.
@@ -1076,21 +1052,17 @@ public class MyAccountTest extends StoreFrontWebsiteBaseTest{
 		sfHomePage.clickWelcomeDropdown();
 		sfAutoshipStatusPage = sfHomePage.navigateToAutoshipStatusPage();
 		sfAutoshipStatusPage.clickSubscribeToPulseBtn();
-		autoSuggestedPrefixName = sfAutoshipStatusPage.getAvailablePrefixName();
 		sfAutoshipStatusPage.enterAvailablePrefix(otherUserPrefix);
-		//sfCheckoutPage = sfAutoshipStatusPage.clickConfirmSubscription();
-		//sfAutoshipStatusPage.clickNextBtn();
 		errorMessage = sfAutoshipStatusPage.getErrorMessageForExistingPrefixName();
 		s_assert.assertTrue(errorMessage.contains(expectedErrorMsgForPrefix),"Error message for existing prefix name not available Expected"+expectedErrorMsgForPrefix+"while Actual"+errorMessage);
-		sfAutoshipStatusPage.enterAvailablePrefix(autoSuggestedPrefixName);
+		sfAutoshipStatusPage.enterAvailablePrefix(newPrefix);
 		sfCheckoutPage = sfAutoshipStatusPage.clickConfirmSubscription();
 		sfCheckoutPage.clickSaveButton();
-		sfCheckoutPage.clickUseSavedCardBtnOnly();
-		sfCheckoutPage.clickUseThesePaymentDetailsAndReturnBillingProfileName("1");
-		sfCheckoutPage.clickBillingDetailsNextbutton().clickPlaceOrderButton();
+		sfCheckoutPage.clickBillingDetailsNextbutton();
+		sfCheckoutPage.clickPlaceOrderButton();
 		s_assert.assertTrue(sfCheckoutPage.isPopUpForTermsAndConditionsCheckboxDisplayed(), "validation popup for terms and conditions not displayed");
 		sfCheckoutPage.closePopUp();
-		sfCheckoutPage.selectTermsAndConditionsChkBox().clickPlaceOrderButton();
+		sfCheckoutPage.selectTermsAndConditionsCheckBoxForAutoshipOrder().clickPlaceOrderButton();
 		s_assert.assertTrue(sfCheckoutPage.isOrderPlacedSuccessfully(),"Order is Not placed successfully");
 		//Cancel the pulse of user.
 		sfHomePage.clickWelcomeDropdown();
@@ -1179,7 +1151,7 @@ public class MyAccountTest extends StoreFrontWebsiteBaseTest{
 	 */	
 	@Test(enabled=true)
 	public void testReEnnrollmentInPulseWithin180DaysOfExistingAutoSuggestedPrefix_278(){
-		String prefix = TestConstants.FIRST_NAME+CommonUtils.getCurrentTimeStamp();
+		String prefix = firstName + CommonUtils.getCurrentTimeStamp();
 		String autoSuggestedPrefixName = null;
 		//Subscribe to pulse with a new prefix.
 		sfCheckoutPage = new StoreFrontCheckoutPage(driver);
@@ -1191,12 +1163,12 @@ public class MyAccountTest extends StoreFrontWebsiteBaseTest{
 		sfAutoshipStatusPage.enterAvailablePrefix(prefix);
 		sfCheckoutPage = sfAutoshipStatusPage.clickConfirmSubscription();
 		sfCheckoutPage.clickSaveButton();
-		sfCheckoutPage.clickUseSavedCardBtnOnly();
-		sfCheckoutPage.clickUseThesePaymentDetailsAndReturnBillingProfileName("1");
+	//	sfCheckoutPage.clickUseSavedCardBtnOnly();
+	//	sfCheckoutPage.clickUseThesePaymentDetailsAndReturnBillingProfileName("1");
 		sfCheckoutPage.clickBillingDetailsNextbutton().clickPlaceOrderButton();
 		s_assert.assertTrue(sfCheckoutPage.isPopUpForTermsAndConditionsCheckboxDisplayed(), "validation popup for terms and conditions not displayed");
 		sfCheckoutPage.closePopUp();
-		sfCheckoutPage.selectTermsAndConditionsChkBox().clickPlaceOrderButton();
+		sfCheckoutPage.selectTermsAndConditionsCheckBoxForAutoshipOrder().clickPlaceOrderButton();
 		s_assert.assertTrue(sfCheckoutPage.isOrderPlacedSuccessfully(),"Order is Not placed successfully");
 		//Cancel the pulse of user.
 		sfHomePage.clickWelcomeDropdown();
@@ -1208,12 +1180,10 @@ public class MyAccountTest extends StoreFrontWebsiteBaseTest{
 		sfAutoshipStatusPage.enterAvailablePrefix(autoSuggestedPrefixName);
 		sfCheckoutPage = sfAutoshipStatusPage.clickConfirmSubscription();
 		sfCheckoutPage.clickSaveButton();
-		sfCheckoutPage.clickUseSavedCardBtnOnly();
-		sfCheckoutPage.clickUseThesePaymentDetailsAndReturnBillingProfileName("1");
 		sfCheckoutPage.clickBillingDetailsNextbutton().clickPlaceOrderButton();
 		s_assert.assertTrue(sfCheckoutPage.isPopUpForTermsAndConditionsCheckboxDisplayed(), "validation popup for terms and conditions not displayed");
 		sfCheckoutPage.closePopUp();
-		sfCheckoutPage.selectTermsAndConditionsChkBox().clickPlaceOrderButton();
+		sfCheckoutPage.selectTermsAndConditionsCheckBoxForAutoshipOrder().clickPlaceOrderButton();
 		s_assert.assertTrue(sfCheckoutPage.isOrderPlacedSuccessfully(),"Order is Not placed successfully");
 		//Cancel the pulse of user.
 		sfHomePage.clickWelcomeDropdown();
@@ -1227,9 +1197,9 @@ public class MyAccountTest extends StoreFrontWebsiteBaseTest{
 	 * qtest: TC-380 Cancel Pulse Subscription From My Account Autoship page
 	 * Description: This method cancel pulse from autoship status page.
 	 */	
-	@Test(enabled=false)//needs fix
+	@Test(enabled=true)
 	public void testConsultantFirstTimePulseEnrollment_380(){
-		String prefix = TestConstants.FIRST_NAME+CommonUtils.getCurrentTimeStamp();
+		String prefix = firstName + CommonUtils.getCurrentTimeStamp();
 		sfCheckoutPage = new StoreFrontCheckoutPage(driver);
 		//sfHomePage.loginToStoreFront(consultantWithoutPulseAndWithoutCRP(),password,true);
 		sfHomePage.loginToStoreFront(consultantWithoutPulseAndWithoutCRP(),password,true);
@@ -1239,12 +1209,10 @@ public class MyAccountTest extends StoreFrontWebsiteBaseTest{
 		sfAutoshipStatusPage.enterAvailablePrefix(prefix);
 		sfCheckoutPage = sfAutoshipStatusPage.clickConfirmSubscription();
 		sfCheckoutPage.clickSaveButton();
-		sfCheckoutPage.clickUseSavedCardBtnOnly();
-		sfCheckoutPage.clickUseThesePaymentDetailsAndReturnBillingProfileName("1");
 		sfCheckoutPage.clickBillingDetailsNextbutton().clickPlaceOrderButton();
 		s_assert.assertTrue(sfCheckoutPage.isPopUpForTermsAndConditionsCheckboxDisplayed(), "validation popup for terms and conditions not displayed");
 		sfCheckoutPage.closePopUp();
-		sfCheckoutPage.selectTermsAndConditionsChkBox().clickPlaceOrderButton();
+		sfCheckoutPage.selectTermsAndConditionsCheckBoxForAutoshipOrder().clickPlaceOrderButton();
 		s_assert.assertTrue(sfCheckoutPage.isOrderPlacedSuccessfully(),"Order is Not placed successfully");
 		//Cancel pulse of user.
 		sfHomePage.clickWelcomeDropdown();
@@ -1269,28 +1237,17 @@ public class MyAccountTest extends StoreFrontWebsiteBaseTest{
 	 */
 	@Test(enabled=true)
 	public void testEditPWSOfUserNotSubscribedToPulse_519(){
-		String timeStamp = CommonUtils.getCurrentTimeStamp();
+		timeStamp = CommonUtils.getCurrentTimeStamp();
 		String socialInsuranceNumber = String.valueOf(CommonUtils.getRandomNum(100000000, 999999999));
-		String firstName = TestConstants.FIRST_NAME;
-		String lastName = TestConstants.LAST_NAME;
-		String emailID = TestConstants.FIRST_NAME+timeStamp+TestConstants.EMAIL_SUFFIX;
-		String addressLine1 = TestConstants.ADDRESS_LINE_1_US;
-		String addressLine2 = TestConstants.ADDRESS_LINE_2_US;
-		String city = TestConstants.CITY_US;
-		String state = TestConstants.STATE_US;
-		String postalCode = TestConstants.POSTAL_CODE_US;
-		String phoneNumber = TestConstants.PHONE_NUMBER;
-		String cardType = TestConstants.CARD_TYPE;
-		String cardNumber = TestConstants.CARD_NUMBER;
-		String cardName = TestConstants.CARD_NAME;
-		String CVV = TestConstants.CVV;
+		lastName = TestConstants.LAST_NAME;
+		email = firstName + timeStamp+TestConstants.EMAIL_SUFFIX;
 
 		//Enroll consultant user.
 		sfHomePage.clickEnrollNow();
 		sfHomePage.searchSponsor(TestConstants.SPONSOR);
 		s_assert.assertTrue(sfHomePage.isSponsorResultDisplayed(),"No result found after searching the sponsor with name "+TestConstants.SPONSOR);
 		sfHomePage.selectFirstSponsorFromList();
-		sfHomePage.enterConsultantEnrollmentDetails(firstName, lastName, emailID, password, socialInsuranceNumber);
+		sfHomePage.enterConsultantEnrollmentDetails(firstName, lastName, email, password, socialInsuranceNumber);
 		sfHomePage.clickNextButton();
 		s_assert.assertFalse(sfHomePage.isNextButtonEnabledBeforeSelectingKit(), "Next Button is NOT disabled before selecting kit");
 		sfHomePage.chooseProductFromKitPage();
@@ -1349,7 +1306,7 @@ public class MyAccountTest extends StoreFrontWebsiteBaseTest{
 	 */	
 	@Test(enabled=true)//TODO
 	public void testConsultantFirstTimePulseEnrollment_277(){
-		String prefix = TestConstants.FIRST_NAME+CommonUtils.getCurrentTimeStamp();
+		String prefix = firstName + CommonUtils.getCurrentTimeStamp();
 		String emptyPrefix = "";
 		String errorMsg = TestConstants.VALIDATION_ERROR_THIS_FIELD_IS_REQUIRED;
 		String error = null;

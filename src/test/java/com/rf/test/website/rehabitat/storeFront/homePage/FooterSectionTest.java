@@ -76,6 +76,8 @@ public class FooterSectionTest extends StoreFrontWebsiteBaseTest{
 		s_assert.assertAll();
 
 	}
+
+
 	/***
 	 * qTest : TC-98 Satisfaction Guarantee link in the footer of the page
 	 * 
@@ -89,8 +91,8 @@ public class FooterSectionTest extends StoreFrontWebsiteBaseTest{
 		String allProductLinkUnderShopSkincare = "ALL PRODUCTS";
 		String satisfactionGuarantee = "Satisfaction Guarantee";
 		String satisfactionGuaranteeURL = "satisfaction-guarantee";
-		String returnAuthorizationFormPage = "Return_Authorization_Form";
-		String policyAndProcedurePage = "Policies_Procedures";
+		String returnAuthorizationFormPage = "ReturnAuthorizationForm";
+		String policyAndProcedurePage = "Policies_and_Procedures";
 
 		//Verify satisfaction guarantee link on product category page
 		sfShopSkinCarePage = sfHomePage.navigateToShopSkincareLink(reverseLinkUnderShopSkincare);
@@ -222,7 +224,7 @@ public class FooterSectionTest extends StoreFrontWebsiteBaseTest{
 
 	}
 
-/***
+	/***
 	 * qTest : TC-26 Verify the links in the Disclaimer page
 	 * 
 	 * Description : This test validates the links in the Disclaimer page
@@ -230,11 +232,18 @@ public class FooterSectionTest extends StoreFrontWebsiteBaseTest{
 	 */ 
 	@Test(enabled=true) 
 	public void testVerifyTheLinksInTheDisclaimerPage_26(){
+		String policyUrl = null;
+		String incomeDisclosureUrl = null;
 		String disclaimer = "Disclaimer";
 		String rodanAndFieldPolicies="Rodan + Fields Policies & Procedures";
 		String incomeDisclosureStatement="Income Disclosure Statement";
-		String policyUrl="Policies_Procedures_USA.pdf";
-		String incomeDisclosureUrl="IncomeDisclosure.pdf";
+		if(country.equalsIgnoreCase("us")){
+			policyUrl="PP_11th_Edition.pdf";
+			incomeDisclosureUrl="Income-Disclosure-Statement.pdf";
+		}else{
+			policyUrl="Policies_Procedures_CANADA.pdf";
+			incomeDisclosureUrl="IncomeDisclosure.pdf";
+		}
 		String currentWindowID =null;
 		s_assert.assertTrue(sfHomePage.isTheFooterLinkDisplayed(disclaimer),"Disclaimer link is not present in footer section");
 		sfHomePage.clickFooterLink(disclaimer);

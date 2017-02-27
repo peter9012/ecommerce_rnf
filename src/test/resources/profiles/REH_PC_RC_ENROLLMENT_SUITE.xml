@@ -3,28 +3,30 @@
 	<listeners>
 		<listener class-name="org.uncommons.reportng.HTMLReporter" />
 		<listener class-name="org.uncommons.reportng.JUnitXMLReporter" />
-		<listener class-name="com.rf.core.listeners.RetryListener" />
+		<!-- <listener class-name="com.rf.core.listeners.RetryListener" /> -->
 		<listener class-name="com.rf.core.listeners.TestListner" />
 	</listeners>
 	<test name="storeFrontPCAndRCEnrollmentTest">
 		<classes>
 			<class name="com.rf.test.website.rehabitat.storeFront.PCEnrollmentTest">
-				<groups>
-					<run>
-						<exclude name="users" />
-					</run>
-				</groups>
+				<methods>
+				<include name="testPCEnrollment_452"></include>
+				<include name="testPCEnrollmentTCCheckboxNotSelected_481"></include>
+				<include name="testPCEnrollmentSelectSponsor_495"></include>
+				<include name="testAutoAssignConsultantPcEnrollment_573"></include>
+				<include name="testUpdateSponserDuringPCEnrollment_574"></include>
+				<include name="testUpdateSponserAfterPCEnrollment_575"></include>
+				<include name="testPCRegisteringFromPWSWillHaveDefaultsponsor_496"></include>
+				<include name="testPCEnrollmentWithPWSSponsor"></include>
+				</methods>
 			</class>
 			<class name="com.rf.test.website.rehabitat.storeFront.RCEnrollmentTest">
-				<groups>
-					<run>
-						<exclude name="users" />
-					</run>
-				</groups>
-			</class>
-			<class
-				name="com.rf.test.website.rehabitat.storeFront.UserRegistrationTest">
-			</class>
+				<methods>
+				<include name="testRCEnrollmentWithoutSponsor_550"></include>
+				<include name="testRCEnrollmentFromPWSSite_551"></include>
+				<include name="testRCEnrollmentWithSponsor"></include>
+				</methods>
+			</class>			
 		</classes>
 	</test>
 </suite>

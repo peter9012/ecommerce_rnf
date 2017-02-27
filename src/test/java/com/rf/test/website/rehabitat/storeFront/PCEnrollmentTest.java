@@ -175,30 +175,26 @@ public class PCEnrollmentTest extends StoreFrontWebsiteBaseTest{
 	 * 
 	 *     
 	 */
-	@Test(enabled=false)
+	@Test(enabled=true)
 	public void testAutoAssignConsultantPcEnrollment_573(){
 		timeStamp = CommonUtils.getCurrentTimeStamp();
 		randomWords = CommonUtils.getRandomWord(5);		
 		lastName = TestConstants.LAST_NAME+randomWords;
 		email = firstName+timeStamp+TestConstants.EMAIL_SUFFIX;
-		String sponserName = null;
+		String sponserName = TestConstants.SPONSOR;
 		String sponserNameAfterEnrollment = null;
-		String existingConsultant = TestConstants.SPONSOR;
 		sfCartPage = new StoreFrontCartPage(driver);
 		sfShopSkinCarePage = new StoreFrontShopSkinCarePage(driver);
 		sfHomePage.clickLoginIcon();
 		sfCheckoutPage=sfHomePage.clickSignUpNowLink();
 		sfCheckoutPage.fillNewUserDetails(TestConstants.USER_TYPE_PC, firstName, lastName, email, password);
 		sfCheckoutPage.clickCreateAccountButton(TestConstants.USER_TYPE_PC);
-		s_assert.assertTrue(sfCartPage.isPcOneTimeFeeMsgDisplayed(),"PC one time joining fee msg has not displayed");
 		sfCartPage.clickAddMoreItemsBtn();
 		sfShopSkinCarePage.addProductToCart(TestConstants.PRODUCT_NUMBER, TestConstants.ORDER_TYPE_ENROLLMENT);;
 		sfCartPage = sfShopSkinCarePage.checkoutTheCartFromPopUp();
-		//sfCartPage.enterQuantityOfProductAtCart("1", "10");
-		//sfCartPage.clickOnUpdateLinkThroughItemNumber("1");
 		sfCartPage.clickCheckoutBtn();
-		//Choose sponser and main account fields are autofilled.
-		sfCheckoutPage.searchForConsultant(existingConsultant);
+		//Choose sponsor and main account fields are autofilled.
+		sfCheckoutPage.searchForConsultant(sponserName);
 		s_assert.assertTrue(sfCheckoutPage.isSponsorResultDisplayed(),"No result found after searching the sponsor with name "+TestConstants.SPONSOR);
 		sponserName = sfCheckoutPage.selectAndReturnFirstSponsorFromList();
 		sfCheckoutPage.clickSaveButton();
@@ -213,11 +209,11 @@ public class PCEnrollmentTest extends StoreFrontWebsiteBaseTest{
 		sfCheckoutPage.clickPlaceOrderButton();
 		sfCheckoutPage.clickRodanAndFieldsLogo();
 		s_assert.assertTrue(sfHomePage.hasPCEnrolledSuccessfully(), "PC has not been enrolled successfully");
-		//Verify the sponser details while placing order.
+		//Verify the sponsor details while placing order.
 		sfShopSkinCarePage = sfHomePage.clickAllProducts();
-		sfShopSkinCarePage.addProductToCart(TestConstants.PRODUCT_NUMBER, TestConstants.ORDER_TYPE_ENROLLMENT);;
+		sfShopSkinCarePage.addProductToCart(TestConstants.PRODUCT_NUMBER, TestConstants.ORDER_TYPE_ADHOC);
 		sfCartPage = sfShopSkinCarePage.checkoutTheCartFromPopUp();
-		sfCheckoutPage = sfCartPage.clickCheckoutBtn();
+		sfCheckoutPage = sfCartPage.checkoutTheCart();
 		sponserNameAfterEnrollment = sfCheckoutPage.getSponsorNameFromAccountInfo();
 		s_assert.assertTrue(sponserNameAfterEnrollment.toLowerCase().contains(sponserName.toLowerCase()),"Sponser name is not same as provided during enrollment");
 		s_assert.assertAll();
@@ -235,10 +231,10 @@ public class PCEnrollmentTest extends StoreFrontWebsiteBaseTest{
 		randomWords = CommonUtils.getRandomWord(5);		
 		lastName = TestConstants.LAST_NAME+randomWords;
 		email = firstName+timeStamp+TestConstants.EMAIL_SUFFIX;
-		String sponserName = null;
+		String sponserName = TestConstants.SPONSOR;
 		String secondSponser = null;
 		String sponserNameAfterEnrollment = null;
-		String existingConsultant = TestConstants.SPONSOR;
+		String existingConsultant = consultantWithPulseAndWithCRP();
 		sfCartPage = new StoreFrontCartPage(driver);
 		sfShopSkinCarePage = new StoreFrontShopSkinCarePage(driver);
 		sfHomePage.clickLoginIcon();
@@ -255,8 +251,8 @@ public class PCEnrollmentTest extends StoreFrontWebsiteBaseTest{
 		s_assert.assertTrue(sfCheckoutPage.isSponsorResultDisplayed(),"No result found after searching the sponsor with name "+TestConstants.SPONSOR);
 		sponserName = sfCheckoutPage.selectAndReturnFirstSponsorFromList();
 		sfCheckoutPage.clickRemoveLink();
-		sfCheckoutPage.searchForConsultant(existingConsultant);
-		secondSponser = sfCheckoutPage.selectAndReturnSponsorFromList("2");
+		sfCheckoutPage.searchForConsultant(sponserName);
+		secondSponser = sfCheckoutPage.selectAndReturnFirstSponsorFromList();
 		sfCheckoutPage.clickSaveButton();
 		//Fill shipping details.
 		sfCheckoutPage.enterShippingDetails(firstName+" "+lastName, addressLine1, addressLine2, city, state, postalCode, phoneNumber);
@@ -272,7 +268,7 @@ public class PCEnrollmentTest extends StoreFrontWebsiteBaseTest{
 		sfShopSkinCarePage = sfHomePage.clickAllProducts();
 		sfShopSkinCarePage.addProductToCart(TestConstants.PRODUCT_NUMBER, TestConstants.ORDER_TYPE_ADHOC);;
 		sfCartPage = sfShopSkinCarePage.checkoutTheCartFromPopUp();
-		sfCheckoutPage = sfCartPage.clickCheckoutBtn();
+		sfCheckoutPage = sfCartPage.checkoutTheCart();
 		sponserNameAfterEnrollment = sfCheckoutPage.getSponsorNameFromAccountInfo();
 		s_assert.assertTrue(sponserNameAfterEnrollment.toLowerCase().contains(secondSponser.toLowerCase()),"Second sponser name is not same as provided during enrollment");
 		s_assert.assertAll();

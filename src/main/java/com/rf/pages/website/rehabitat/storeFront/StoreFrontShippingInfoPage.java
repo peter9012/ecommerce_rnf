@@ -273,6 +273,7 @@ public class StoreFrontShippingInfoPage extends StoreFrontWebsiteBasePage{
 	public StoreFrontShippingInfoPage clickLeaveAsIsBtnOnUpdateAutoshipModal(){
 		driver.click(LEAVE_AS_IS_BUTTON_ON_UPDATE_AUTOSHIP_MODAL_LOC);
 		logger.info("Clicked 'Leave As Is' Button on update Autoship modal");
+		driver.waitForPageLoad();
 		return this;
 	}
 

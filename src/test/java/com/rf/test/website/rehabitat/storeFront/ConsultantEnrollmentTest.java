@@ -188,6 +188,10 @@ public class ConsultantEnrollmentTest extends StoreFrontWebsiteBaseTest{
 		//sfHomePage.selectBillingAddressFromDD();
 		//sfHomePage.checkUseMyDeliveryAddressChkBox();
 		sfHomePage.clickBillingDetailsNextbutton();
+		if(sfHomePage.hasTokenizationFailed()==true){
+			sfHomePage.enterUserBillingDetails(cardType, cardNumber, cardName, CVV);
+			sfHomePage.clickBillingDetailsNextbutton();
+		}
 		sfHomePage.selectPoliciesAndProceduresChkBox();
 		sfHomePage.selectIAcknowledgeChkBox();
 		sfHomePage.selectTermsAndConditionsChkBox();
@@ -278,6 +282,10 @@ public class ConsultantEnrollmentTest extends StoreFrontWebsiteBaseTest{
 		sfHomePage.clickUseAsEnteredButtonOnPopUp();
 		sfHomePage.clickShippingDetailsNextbutton();
 		sfHomePage.enterUserBillingDetails(cardType, cardNumber, cardName, CVV);
+		if(sfHomePage.hasTokenizationFailed()==true){
+			sfHomePage.enterUserBillingDetails(cardType, cardNumber, cardName, CVV);
+			sfHomePage.clickBillingDetailsNextbutton();
+		}
 		sfHomePage.checkUseMyDeliveryAddressChkBox();
 		sfHomePage.enterConsultantAddressDetails(firstNameBA, lastNameBA, addressLine1BA, cityBA, stateBA, postalCodeBA, phoneNumber);
 		sfHomePage.clickBillingDetailsNextbutton();
@@ -401,6 +409,10 @@ public class ConsultantEnrollmentTest extends StoreFrontWebsiteBaseTest{
 			sfHomePage.clickShippingDetailsNextbutton();
 			sfHomePage.enterUserBillingDetails(cardType, cardNumber, cardName, CVV);
 			sfHomePage.clickBillingDetailsNextbutton();
+			if(sfHomePage.hasTokenizationFailed()==true){
+				sfHomePage.enterUserBillingDetails(cardType, cardNumber, cardName, CVV);
+				sfHomePage.clickBillingDetailsNextbutton();
+			}
 			sfHomePage.selectPoliciesAndProceduresChkBox();
 			sfHomePage.selectIAcknowledgeChkBox();
 			sfHomePage.selectTermsAndConditionsChkBox();
@@ -474,6 +486,10 @@ public class ConsultantEnrollmentTest extends StoreFrontWebsiteBaseTest{
 		sfHomePage.clickShippingDetailsNextbutton();
 		sfHomePage.enterUserBillingDetails(cardType, cardNumber, cardName, CVV);
 		sfHomePage.clickBillingDetailsNextbutton();
+		if(sfHomePage.hasTokenizationFailed()==true){
+			sfHomePage.enterUserBillingDetails(cardType, cardNumber, cardName, CVV);
+			sfHomePage.clickBillingDetailsNextbutton();
+		}
 		sfHomePage.selectPoliciesAndProceduresChkBox();
 		sfHomePage.selectIAcknowledgeChkBox();
 		sfHomePage.selectTermsAndConditionsChkBox();
@@ -519,6 +535,10 @@ public class ConsultantEnrollmentTest extends StoreFrontWebsiteBaseTest{
 		sfHomePage.clickShippingDetailsNextbutton();
 		sfHomePage.enterUserBillingDetails(cardType, cardNumber, cardName, CVV);
 		sfHomePage.clickBillingDetailsNextbutton();
+		if(sfHomePage.hasTokenizationFailed()==true){
+			sfHomePage.enterUserBillingDetails(cardType, cardNumber, cardName, CVV);
+			sfHomePage.clickBillingDetailsNextbutton();
+		}
 		sfHomePage.selectPoliciesAndProceduresChkBox();
 		sfHomePage.selectIAcknowledgeChkBox();
 		sfHomePage.selectTermsAndConditionsChkBox();
@@ -637,6 +657,10 @@ public class ConsultantEnrollmentTest extends StoreFrontWebsiteBaseTest{
 		sfHomePage.clickShippingDetailsNextbutton();
 		sfHomePage.enterUserBillingDetails(cardType, cardNumber, cardName, CVV);
 		sfHomePage.clickBillingDetailsNextbutton();
+		if(sfHomePage.hasTokenizationFailed()==true){
+			sfHomePage.enterUserBillingDetails(cardType, cardNumber, cardName, CVV);
+			sfHomePage.clickBillingDetailsNextbutton();
+		}
 		sfHomePage.selectPoliciesAndProceduresChkBox();
 		sfHomePage.selectIAcknowledgeChkBox();
 		sfHomePage.selectTermsAndConditionsChkBox();
@@ -686,6 +710,10 @@ public class ConsultantEnrollmentTest extends StoreFrontWebsiteBaseTest{
 		//sfHomePage.selectBillingAddressFromDD();
 		//sfHomePage.checkUseMyDeliveryAddressChkBox();
 		sfHomePage.clickBillingDetailsNextbutton();
+		if(sfHomePage.hasTokenizationFailed()==true){
+			sfHomePage.enterUserBillingDetails(cardType, cardNumber, cardName, CVV);
+			sfHomePage.clickBillingDetailsNextbutton();
+		}
 		sfHomePage.selectPoliciesAndProceduresChkBox();
 		sfHomePage.selectIAcknowledgeChkBox();
 		sfHomePage.selectTermsAndConditionsChkBox();
@@ -723,6 +751,10 @@ public class ConsultantEnrollmentTest extends StoreFrontWebsiteBaseTest{
 		sfHomePage.clickShippingDetailsNextbutton();
 		sfHomePage.enterUserBillingDetails(cardType, cardNumber, cardName, CVV);
 		sfHomePage.clickBillingDetailsNextbutton();
+		if(sfHomePage.hasTokenizationFailed()==true){
+			sfHomePage.enterUserBillingDetails(cardType, cardNumber, cardName, CVV);
+			sfHomePage.clickBillingDetailsNextbutton();
+		}
 		sfHomePage.selectPoliciesAndProceduresChkBox();
 		sfHomePage.selectIAcknowledgeChkBox();
 		sfHomePage.selectTermsAndConditionsChkBox();
@@ -770,6 +802,10 @@ public class ConsultantEnrollmentTest extends StoreFrontWebsiteBaseTest{
 		//sfHomePage.selectBillingAddressFromDD();
 		//sfHomePage.checkUseMyDeliveryAddressChkBox();
 		sfHomePage.clickBillingDetailsNextbutton();
+		if(sfHomePage.hasTokenizationFailed()==true){
+			sfHomePage.enterUserBillingDetails(cardType, cardNumber, cardName, CVV);
+			sfHomePage.clickBillingDetailsNextbutton();
+		}
 		sfHomePage.selectPoliciesAndProceduresChkBox();
 		sfHomePage.selectIAcknowledgeChkBox();
 		sfHomePage.selectTermsAndConditionsChkBox();

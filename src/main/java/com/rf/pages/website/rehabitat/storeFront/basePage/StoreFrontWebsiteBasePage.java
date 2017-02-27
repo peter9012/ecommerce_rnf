@@ -1525,6 +1525,7 @@ public class StoreFrontWebsiteBasePage extends RFBasePage {
 		logger.info("entered sponsor email as " + email);
 		driver.type(SPONSOR_ZIPCODE_LOC, zipCode);
 		logger.info("entered sponsor zipcode as " + zipCode);
+		driver.pauseExecutionFor(3000);
 		return this;
 	}
 
@@ -1567,6 +1568,7 @@ public class StoreFrontWebsiteBasePage extends RFBasePage {
 	public StoreFrontWebsiteBasePage clickSubmitBtnOnRequiredConsultantSponsorPopUp() {
 		driver.findElement(SUBMIT_BTN_ON_REQUIRED_SPONSOR_POPUP_LOC).click();
 		logger.info("Submit button on required consultant sponsor popup clicked");
+		driver.pauseExecutionFor(2000);
 		return this;
 	}
 

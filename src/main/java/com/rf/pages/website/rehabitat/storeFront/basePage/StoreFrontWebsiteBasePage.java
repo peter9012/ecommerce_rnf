@@ -3938,20 +3938,14 @@ public class StoreFrontWebsiteBasePage extends RFBasePage {
 	}
 
 	public boolean hasTokenizationFailed(){
-		System.out.println("***");
 		try{
 			driver.turnOffImplicitWaits(0);
-			System.out.println("^^^^");
 			driver.quickWaitForElementPresent(By.xpath(String.format(errorMessageLoc,"Failed to create subscription")));
 			driver.findElement(By.xpath(String.format(errorMessageLoc,"Failed to create subscription")));
-			System.out.println("Tokenization Failed");
 			driver.clickByJS(RFWebsiteDriver.driver,By.xpath("//div[@class='global-alerts']/following::a[contains(text(),'Continue')][1]"));
-			System.out.println("Continue clicked");
 			driver.waitForPageLoad();
 			return true;
 		}catch(Exception e){
-			System.out.println("Exception "+e);
-			System.out.println("Tokenization NOT Failed");
 			return false;
 		}finally{
 			driver.turnOnImplicitWaits();

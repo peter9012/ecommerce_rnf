@@ -20,7 +20,6 @@ public class AddAndDeleteShippingTest extends StoreFrontWebsiteBaseTest{
 	public void testAddShippingAddressFromMyAccount_77(){
 		randomWords = CommonUtils.getRandomWord(5);
 		lastName = TestConstants.LAST_NAME + randomWords;
-		
 		// Login as Cons
 		sfHomePage.loginToStoreFront(consultantWithPulseAndWithCRP(),password,true);
 		sfHomePage.clickWelcomeDropdown();
@@ -624,6 +623,7 @@ public class AddAndDeleteShippingTest extends StoreFrontWebsiteBaseTest{
 		s_assert.assertTrue(sfShippingInfoPage.isShippingProfilePresent(lastName), "Expected profile name is not present in Address list");
 		s_assert.assertAll();
 	}
+	
 	/***
 	 * Add & Edit shipping address from my account For RC
 	 * Description : This test add a new shipping address and validates it

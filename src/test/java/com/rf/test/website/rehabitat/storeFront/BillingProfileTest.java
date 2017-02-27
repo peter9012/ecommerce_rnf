@@ -68,7 +68,7 @@ public class BillingProfileTest extends StoreFrontWebsiteBaseTest{
 	  String suggestedBillingAddress = null;
 	  String urlToAssert = "payment-details";
 	  randomWords = CommonUtils.getRandomWord(5);
-	  cardName = cardName + randomWords;
+	  cardName = TestConstants.CARD_NAME + randomWords;
 	  lastName = TestConstants.LAST_NAME;
 	  String addressInWrongFormat = TestConstants.WRONG_ADDRESS_LINE_1_US;
 	  String wrongCombinationCity = TestConstants.CITY_DALLAS_US;
@@ -100,7 +100,7 @@ public class BillingProfileTest extends StoreFrontWebsiteBaseTest{
 
 	  // Filling Right Address 
 	  randomWords = CommonUtils.getRandomWord(5);
-	  cardName = cardName + randomWords;
+	  cardName = TestConstants.CARD_NAME + randomWords;
 	  sfBillingInfoPage.clickAddNewBillingProfileLink();
 	  sfBillingInfoPage.enterUserBillingDetails(cardType,cardNumber,cardName,CVV);
 	  sfBillingInfoPage.clickAddNewBillingAddressLink();
@@ -125,9 +125,9 @@ public class BillingProfileTest extends StoreFrontWebsiteBaseTest{
 		String currentURL = null;
 		String urlToAssert = "payment-details";
 		randomWords = CommonUtils.getRandomWord(5);
-		String cardNameForFirstProfile = cardName + randomWords;
+		String cardNameForFirstProfile = TestConstants.CARD_NAME + randomWords;
 		randomWords = CommonUtils.getRandomWord(5);
-		String cardNameForSecondProfile = cardName + randomWords;
+		String cardNameForSecondProfile = TestConstants.CARD_NAME + randomWords;
 		String lastName = TestConstants.LAST_NAME;
 		String updatedDefaultBillingProfileName = null;
 		int countOfDefaultProfiles;
@@ -196,7 +196,7 @@ public class BillingProfileTest extends StoreFrontWebsiteBaseTest{
 		int totalAddressInDD;
 		randomWords = CommonUtils.getRandomWord(4);
 		String urlToAssert = "payment-details";
-		cardName = cardName + randomWords;
+		cardName = TestConstants.CARD_NAME + randomWords;
 		
 		//Login as consultant user.
 		sfHomePage.loginToStoreFront(consultantWithPulseAndWithCRP(), password,true);
@@ -227,7 +227,7 @@ public class BillingProfileTest extends StoreFrontWebsiteBaseTest{
 	public void testBillingProfileSelectAnBillingAddressBlankDropdown_428(){
 		String currentURL = null;
 		randomWords = CommonUtils.getRandomWord(5);
-		cardName = cardName + randomWords;
+		cardName = TestConstants.CARD_NAME + randomWords;
 		String urlToAssert = "payment-details";
 
 		//Login as RC user.
@@ -255,7 +255,7 @@ public class BillingProfileTest extends StoreFrontWebsiteBaseTest{
 		String currentURL = null;
 		String urlToAssert = "payment-details";
 		randomWords = CommonUtils.getRandomWord(5);
-		cardName = cardName + randomWords;
+		cardName = TestConstants.CARD_NAME + randomWords;
 		lastName =  TestConstants.LAST_NAME;
 		String billingAddressOnUI = null;
 		String cardLastName = null;
@@ -345,7 +345,7 @@ public class BillingProfileTest extends StoreFrontWebsiteBaseTest{
 		String currentURL = null;
 		randomWords = CommonUtils.getRandomWord(5);
 		String urlToAssert = "payment-details";
-		cardName = cardName + randomWords;
+		cardName = TestConstants.CARD_NAME + randomWords;
 		String billingAddressOnUI = null;
 		String cardLastName = null;
 		int initialAddressCount = 0;
@@ -417,7 +417,7 @@ public class BillingProfileTest extends StoreFrontWebsiteBaseTest{
 	  randomWords = CommonUtils.getRandomWord(5);
 	  String suggestedBillingAddress = null;
 	  String urlToAssert = "payment-details";
-	  cardName = cardName + randomWords;
+	  cardName = TestConstants.CARD_NAME + randomWords;
 	  lastName = TestConstants.LAST_NAME;
 	  String addressInWrongFormat = TestConstants.WRONG_ADDRESS_LINE_1_US;
 	  String wrongCombinationCity = TestConstants.CITY_DALLAS_US;
@@ -489,7 +489,7 @@ public class BillingProfileTest extends StoreFrontWebsiteBaseTest{
 		String billingAddressOnUI = null;
 		randomWords = CommonUtils.getRandomWord(5);
 		String urlToAssert = "payment-details";
-		cardName = cardName + randomWords;
+		cardName = TestConstants.CARD_NAME + randomWords;
 		lastName = TestConstants.LAST_NAME;
 		String cardLastName = null;
 		
@@ -536,7 +536,7 @@ public class BillingProfileTest extends StoreFrontWebsiteBaseTest{
 		String urlToAssert = "/checkout/multi/";
 		lastName = TestConstants.LAST_NAME;
 		randomWords = CommonUtils.getRandomWord(5);
-		cardName = cardName + randomWords;
+		cardName = TestConstants.CARD_NAME + randomWords;
 		String cardLastName = null;
 
 		//Login as Consultant.
@@ -578,7 +578,7 @@ public class BillingProfileTest extends StoreFrontWebsiteBaseTest{
 	@Test (enabled=true)
 	public void testAddEditBillingProfileFromMyAccountForConsultant(){
 		randomWords = CommonUtils.getRandomWord(5);
-		cardName = cardName + randomWords;
+		cardName = TestConstants.CARD_NAME + randomWords;
 		lastName = TestConstants.LAST_NAME;
 		String cardLastName = null;
 		String billingAddressOnUI = null;
@@ -618,7 +618,7 @@ public class BillingProfileTest extends StoreFrontWebsiteBaseTest{
 	@Test (enabled=true)
 	public void testAddEditBillingProfileFromMyAccountForPC(){
 		randomWords = CommonUtils.getRandomWord(5);
-		cardName = cardName + randomWords;
+		cardName = TestConstants.CARD_NAME + randomWords;
 		lastName = TestConstants.LAST_NAME;
 		String cardLastName = null;
 		String billingAddressOnUI = null;
@@ -658,7 +658,7 @@ public class BillingProfileTest extends StoreFrontWebsiteBaseTest{
 	@Test (enabled=true)
 	public void testAddEditBillingProfileFromMyAccountForRC(){
 		randomWords = CommonUtils.getRandomWord(5);
-		cardName = cardName + randomWords;
+		cardName = TestConstants.CARD_NAME + randomWords;
 		lastName = TestConstants.LAST_NAME;
 		String cardLastName = null;
 		String billingAddressOnUI = null;
@@ -700,7 +700,7 @@ public class BillingProfileTest extends StoreFrontWebsiteBaseTest{
 	@Test
 	public void testAddEditBillingProfileAtAdhocCartForConsultant(){
 		randomWords = CommonUtils.getRandomWord(5);
-		cardName = cardName + randomWords;
+		cardName = TestConstants.CARD_NAME + randomWords;
 		lastName = TestConstants.LAST_NAME;
 		String cardLastName = null;
 		String billingDetailsOnUI = null;
@@ -746,7 +746,7 @@ public class BillingProfileTest extends StoreFrontWebsiteBaseTest{
 	@Test
 	public void testAddEditBillingProfileAtAdhocCartForPC(){
 		randomWords = CommonUtils.getRandomWord(5);
-		cardName = cardName + randomWords;
+		cardName = TestConstants.CARD_NAME + randomWords;
 		lastName = TestConstants.LAST_NAME;
 		String cardLastName = null;
 		String billingDetailsOnUI = null;
@@ -793,7 +793,7 @@ public class BillingProfileTest extends StoreFrontWebsiteBaseTest{
 	@Test
 	public void testAddEditBillingProfileAtAdhocCartForRC(){
 		randomWords = CommonUtils.getRandomWord(5);
-		cardName = cardName + randomWords;
+		cardName = TestConstants.CARD_NAME + randomWords;
 		lastName = TestConstants.LAST_NAME;
 		String cardLastName = null;
 		String billingDetailsOnUI = null;
@@ -802,7 +802,7 @@ public class BillingProfileTest extends StoreFrontWebsiteBaseTest{
 		// Login As RC
 		sfHomePage.loginToStoreFront(rcWithOrderWithoutSponsor(), password,true);
 		sfShopSkinCarePage = sfHomePage.clickAllProducts();
-		sfShopSkinCarePage.addProductToCart(TestConstants.PRODUCT_NUMBER, TestConstants.ORDER_TYPE_ADHOC);;
+		sfShopSkinCarePage.addProductToCart(TestConstants.PRODUCT_NUMBER, TestConstants.ORDER_TYPE_ENROLLMENT);;
 		sfCartPage = sfShopSkinCarePage.checkoutTheCartFromPopUp();
 		sfCheckoutPage=sfCartPage.checkoutTheCart();
 		sfCheckoutPage.clickContinueWithoutConsultantLink();

@@ -418,9 +418,10 @@ public class OrdersTest extends StoreFrontWebsiteBaseTest{
 		// enter invalid address
 		sfCheckoutPage.enterEditBillingAddressDetailsAtCheckout(firstName, lastName, invalidAddressLine1, addressLine2, city, state, invalidPostalCode, phoneNumber);
 		sfCheckoutPage.clickSavePaymentButton();
-		errorMessage = "Unknown street";
-		errorMessageFromUI = sfCheckoutPage.getErrorMessageForBillingAddressDetails();
+		errorMessage = "Address entered may not be a deliverable address";
+		errorMessageFromUI = sfCheckoutPage.getAddressNonDeliverableWarningMsg();
 		s_assert.assertTrue(errorMessageFromUI.contains(errorMessage), "Expected error message for invalid address details is "+errorMessage+" But actual on UI is "+errorMessage);
+		sfCheckoutPage.clickEditAddressBtnOnAddressSuggestionPopup();
 		sfCheckoutPage.enterEditBillingAddressDetailsAtCheckout(firstName, lastName, addressLine1, addressLine2, city, state, postalCode, phoneNumber);
 		sfCheckoutPage.clickSavePaymentButton();
 		sfCheckoutPage.clickUseAsEnteredButtonOnPopUp();
@@ -467,11 +468,13 @@ public class OrdersTest extends StoreFrontWebsiteBaseTest{
 		s_assert.assertTrue(sfCheckoutPage.isErrorMessagePresentForCity(), "Error message is not present for city field");
 		s_assert.assertTrue(sfCheckoutPage.isErrorMessagePresentForPostalCode(), "Error message is not present for postal code field");
 		s_assert.assertTrue(sfCheckoutPage.isErrorMessagePresentForPhoneNumber(), "Error message is not present for phone number field");
+		s_assert.assertTrue(sfCheckoutPage.isErrorMessagePresentForState(), "Error message is not present for state field");
 		sfCheckoutPage.enterShippingDetails(firstName+" "+lastName, invalidAddressLine1, addressLine2, city, state, invalidPostalCode, phoneNumber);
 		sfCheckoutPage.clickBillingDetailsNextbutton();
-		errorMessage = "Unknown street";
-		errorMessageFromUI = sfCheckoutPage.getErrorMessageForBillingAddressDetailsWhileAddANewAddress();
+		errorMessage = "Address entered may not be a deliverable address";
+		errorMessageFromUI = sfCheckoutPage.getAddressNonDeliverableWarningMsg();
 		s_assert.assertTrue(errorMessageFromUI.contains(errorMessage), "Expected error message for invalid address details is "+errorMessage+" But actual on UI is "+errorMessage);
+		sfCheckoutPage.clickEditAddressBtnOnAddressSuggestionPopup();
 		sfCheckoutPage.enterShippingDetails(firstName+" "+lastName, addressLine1, addressLine2, city, state, postalCode, phoneNumber);
 		sfCheckoutPage.clickBillingDetailsNextbutton();
 		sfCheckoutPage.clickUseAsEnteredButtonOnPopUp();
@@ -487,6 +490,7 @@ public class OrdersTest extends StoreFrontWebsiteBaseTest{
 	 * at order confirmation page
 	 *  
 	 */
+
 	@Test(enabled=true)//TODO assertion for SV & GST
 	public void testOrderConfirmationForAdhocOrders_409(){
 		String productName=null;
@@ -525,8 +529,8 @@ public class OrdersTest extends StoreFrontWebsiteBaseTest{
 		sfCartPage.removeAllProductsFromCart();
 		sfCartPage.clickRodanAndFieldsLogo();
 		sfShopSkinCarePage = sfHomePage.clickAllProducts();
-		productSVValue = sfShopSkinCarePage.getProductRetailAndSVPrice(TestConstants.PRODUCT_NUMBER);
-		yourPrice = sfShopSkinCarePage.getYourPriceOfAProduct(TestConstants.PRODUCT_NUMBER);
+		//productSVValue = sfShopSkinCarePage.getProductRetailAndSVPrice(TestConstants.PRODUCT_NUMBER);
+		//yourPrice = sfShopSkinCarePage.getYourPriceOfAProduct(TestConstants.PRODUCT_NUMBER);
 		sfShopSkinCarePage.addProductToCart(TestConstants.PRODUCT_NUMBER, TestConstants.ORDER_TYPE_ADHOC);;
 		sfShopSkinCarePage.checkoutTheCartFromPopUp();
 		productName = sfCartPage.getProductName("1");
@@ -552,8 +556,8 @@ public class OrdersTest extends StoreFrontWebsiteBaseTest{
 		s_assert.assertTrue(sfCheckoutPage.isOrderPlacedSuccessfully(),"Order not placed. Thank you message is not displayed");
 		s_assert.assertTrue(sfCheckoutPage.isTextPresent("Order #"),"Order Number is not present on the confirmation page");
 		productQtyAtOrderDetailsPage = sfCheckoutPage.getProductQuantityOfAnItem("2");
-		productSVAtOrderDetailsPage = sfCheckoutPage.getProductSVOfAnItem("2").trim();
-		productUnitPriceAtOrderDetailsPage = sfCheckoutPage.getProductUnitPriceOfAnItem("2");
+		//productSVAtOrderDetailsPage = sfCheckoutPage.getProductSVOfAnItem("2").trim();
+		//productUnitPriceAtOrderDetailsPage = sfCheckoutPage.getProductUnitPriceOfAnItem("2");
 		productNameAtOrderDetailsPage = sfCheckoutPage.getProductNameOfAnItem("2");
 		shippingProfileFromOrderConfirmationPage = sfCheckoutPage.getShippingProfileFromConfirmationPage();
 		shippingMethodFromOrderConfirmationPage = sfCheckoutPage.getShippingMethodAfterPlacedOrder().split("\\:")[1].trim();
@@ -901,7 +905,7 @@ public class OrdersTest extends StoreFrontWebsiteBaseTest{
 		s_assert.assertTrue(sfCheckoutPage.isErrorMessagePresentForFirstAndLastName(), "Error message is not present for first and last name field");
 		s_assert.assertTrue(sfCheckoutPage.isErrorMessagePresentForAddressLine1(), "Error message is not present for address line 1 field");
 		s_assert.assertTrue(sfCheckoutPage.isErrorMessagePresentForCity(), "Error message is not present for city field");
-		s_assert.assertTrue(sfCheckoutPage.isErrorMessagePresentForState(), "Error message is not present for city field");
+		s_assert.assertTrue(sfCheckoutPage.isErrorMessagePresentForState(), "Error message is not present for state field");
 		s_assert.assertTrue(sfCheckoutPage.isErrorMessagePresentForPostalCode(), "Error message is not present for postal code field");
 		s_assert.assertTrue(sfCheckoutPage.isErrorMessagePresentForPhoneNumber(), "Error message is not present for phone number field");
 		s_assert.assertAll();

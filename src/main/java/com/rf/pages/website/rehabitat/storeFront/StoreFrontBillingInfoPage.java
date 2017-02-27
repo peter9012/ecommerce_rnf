@@ -21,8 +21,6 @@ public class StoreFrontBillingInfoPage extends StoreFrontWebsiteBasePage{
 	private static final Logger logger = LogManager
 			.getLogger(StoreFrontBillingInfoPage.class.getName());
 
-	private final By ADDRESS_NON_DELIVERABLE_WARNING_MSG_LOC = By.xpath("//div[@id='cboxLoadedContent']/h3");
-	private final By EDIT_ADDRESS_BTN_ON_ADDRESS_SUGGESTION_POPUP_LOC = By.xpath("//div[@id='cboxLoadedContent']//button[@id='closePopupForEditAddress']");
 	private final By ADD_NEW_BILLING_PROFILE_LOC = By.xpath("//a[@class='add-new-billing-profile']");
 	private final By SAVE_BUTTON_FOR_BILLING_DETAILS_LOC = By.xpath("//button[@id='save-account-payment-Details']");
 	private final By ADD_NEW_BILLING_INFO_HEADER_LOC = By.xpath("//form[@id='accountPaymentDetailsForm']//h3[contains(text(),'ADD NEW BILLING INFO')]");
@@ -593,30 +591,6 @@ public class StoreFrontBillingInfoPage extends StoreFrontWebsiteBasePage{
 		return driver.isElementVisible(BILLING_ADDRESS_FORM_FOR_EXISTING_PROFILE_LOC);
 	}
 
-	/***
-	 * This method get the Address Undeliverable  Warning message
-	 * 
-	 * @param
-	 * @return String
-	 * 
-	 */
-	public String getAddressNonDeliverableWarningMsg(){
-		return driver.getText(ADDRESS_NON_DELIVERABLE_WARNING_MSG_LOC).trim();
-	}
-
-	/***
-	 * This method click on Edit Address button on Address Suggestion Popup   
-	 * 
-	 * @param
-	 * @return Storefront Billing Info Page object
-	 * 
-	 */
-	public StoreFrontBillingInfoPage clickEditAddressBtnOnAddressSuggestionPopup(){
-		driver.click(EDIT_ADDRESS_BTN_ON_ADDRESS_SUGGESTION_POPUP_LOC);
-		logger.info("clicked on Edit Address button from Address Suggestion Popup");
-		driver.pauseExecutionFor(3000);
-		return this;
-	}
 
 }
 

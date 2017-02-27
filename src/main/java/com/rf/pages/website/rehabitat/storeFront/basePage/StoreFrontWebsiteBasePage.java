@@ -44,6 +44,8 @@ public class StoreFrontWebsiteBasePage extends RFBasePage {
 		this.driver = driver;
 	}
 
+	private final By ADDRESS_NON_DELIVERABLE_WARNING_MSG_LOC = By.xpath("//div[@id='cboxLoadedContent']/h3");
+	private final By EDIT_ADDRESS_BTN_ON_ADDRESS_SUGGESTION_POPUP_LOC = By.xpath("//div[@id='cboxLoadedContent']//button[@id='closePopupForEditAddress']");
 	private final By YES_BUTTON_ON_ADDRESS_SUGGESTION_MODAL_LOC  =  By.xpath("//div[@id='cboxContent']//button[@id='suggestedAddress']");
 	private final By VIEW_SHOPPING_CART_LINK_LOC = By.xpath("//a[contains(text(),'View shopping cart')]");
 	private final By TOGGLE_BUTTON_OF_COUNTRY_LOC = By.xpath("//form[@id='country-form']//div[@class='form-group']/div");
@@ -3952,5 +3954,30 @@ public class StoreFrontWebsiteBasePage extends RFBasePage {
 		}finally{
 			driver.turnOnImplicitWaits();
 		}
+	}
+	
+	/***
+	 * This method get the Address Undeliverable  Warning message
+	 * 
+	 * @param
+	 * @return String
+	 * 
+	 */
+	public String getAddressNonDeliverableWarningMsg(){
+		return driver.getText(ADDRESS_NON_DELIVERABLE_WARNING_MSG_LOC).trim();
+	}
+
+	/***
+	 * This method click on Edit Address button on Address Suggestion Popup   
+	 * 
+	 * @param
+	 * @return Storefront Billing Info Page object
+	 * 
+	 */
+	public StoreFrontWebsiteBasePage clickEditAddressBtnOnAddressSuggestionPopup(){
+		driver.click(EDIT_ADDRESS_BTN_ON_ADDRESS_SUGGESTION_POPUP_LOC);
+		logger.info("clicked on Edit Address button from Address Suggestion Popup");
+		driver.pauseExecutionFor(3000);
+		return this;
 	}
 }

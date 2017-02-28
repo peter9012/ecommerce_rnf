@@ -250,7 +250,7 @@ public class AddAndDeleteShippingTest extends StoreFrontWebsiteBaseTest{
 	 * and validates it
 	 *    
 	 */
-	@Test (enabled=false) //Needs fix
+	@Test (enabled=true)
 	public void testEditAShippingAddressAndCancel_371(){
 		randomWords = CommonUtils.getRandomWord(5);
 		lastName = TestConstants.LAST_NAME + randomWords;
@@ -318,7 +318,7 @@ public class AddAndDeleteShippingTest extends StoreFrontWebsiteBaseTest{
 	 * at shipping info page 
 	 * 
 	 */
-	@Test (enabled=false)//Needs fix
+	@Test (enabled=true)
 	public void testShippingProfileEditAShipAddressAndSave_320(){
 		randomWords = CommonUtils.getRandomWord(5);
 		lastName = TestConstants.LAST_NAME + randomWords;
@@ -500,7 +500,7 @@ public class AddAndDeleteShippingTest extends StoreFrontWebsiteBaseTest{
 	 * 
 	 *     
 	 */
-	@Test (enabled=false)//Needs fix
+	@Test (enabled=true)
 	public void testAddShippingProfileBySelectingTheCheckboxForTheAutoship_525(){
 		randomWords = CommonUtils.getRandomWord(5);
 		lastName = TestConstants.LAST_NAME + randomWords;

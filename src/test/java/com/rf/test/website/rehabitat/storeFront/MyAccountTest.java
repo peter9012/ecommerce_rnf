@@ -677,37 +677,33 @@ public class MyAccountTest extends StoreFrontWebsiteBaseTest{
 	}
 
 	/***
-	 * qTest : TC-286 Account Information- Email Your Consultant - Invalid
-	 * 
-	 * Description : This test logins with a PC and validates the 
-	 * Email your consultant function -  Invalid case
-	 * 
-	 *     
-	 */
-	@Test(enabled=true)
-	public void testEmailYourConsultantInvalid_286(){
-		String moreThan200Chars  = TestConstants.MORE_THAN_200_CHARS;
-		String name = "name";
-		String emailId = "emailId";
-		String emailContent = "emailContent";
-		sfHomePage.loginToStoreFront(pcUserWithPWSSponsor(),password,true);
-		sfHomePage.clickWelcomeDropdown();
-		sfAccountInfoPage = sfHomePage.navigateToAccountInfoPage();
-		sfAccountInfoPage.clickEmailYourConsultantLink();
-		sfAccountInfoPage.enterEmailYourConsultantDetailsAndSubmit(TestConstants.FIRST_NAME, consultantWithPulseAndWithCRP(), moreThan200Chars);
-		s_assert.assertTrue(sfAccountInfoPage.isEmailYourValidationDisplayed(emailContent, TestConstants.VALIDATION_ERROR_LESS_THAN_200_CHARS),"validation of more than 200 chars not displayed");
+	  * qTest : TC-286 Account Information- Email Your Consultant - Invalid
+	  * Description : This test logins with a PC and validates the 
+	  * Email your consultant function -  Invalid case
+	  *     
+	  */
+	 @Test(enabled=true)
+	 public void testEmailYourConsultantInvalid_286(){
+	  String moreThan200Chars  = TestConstants.MORE_THAN_200_CHARS;
+	  String emailContent = "emailContent";
+	  sfHomePage.loginToStoreFront(pcUserWithPWSSponsor(),password,true);
+	  sfHomePage.clickWelcomeDropdown();
+	  sfAccountInfoPage = sfHomePage.navigateToAccountInfoPage();
+	  sfAccountInfoPage.clickEmailYourConsultantLink();
+	  sfAccountInfoPage.enterEmailYourConsultantDetailsAndSubmit(TestConstants.FIRST_NAME, consultantWithPulseAndWithCRP(), moreThan200Chars);
+	  s_assert.assertTrue(sfAccountInfoPage.isEmailYourValidationDisplayed(emailContent, TestConstants.VALIDATION_ERROR_LESS_THAN_200_CHARS),"validation of more than 200 chars not displayed");
 
-		sfAccountInfoPage.enterEmailYourConsultantDetailsAndSubmit(TestConstants.FIRST_NAME, "", "test msg");
-		s_assert.assertTrue(sfAccountInfoPage.isEmailYourValidationDisplayed(emailId, TestConstants.VALIDATION_ERROR_THIS_FIELD_IS_REQUIRED),"validation of field required not displayed for "+emailId);
+	  sfAccountInfoPage.enterEmailYourConsultantDetails(TestConstants.FIRST_NAME, "", "test msg");
+	  s_assert.assertTrue(sfAccountInfoPage.isSendButtonForEmailToConsultantDisabled(),"Send button is enabled while email field is blank");
 
-		sfAccountInfoPage.enterEmailYourConsultantDetailsAndSubmit("", consultantWithPulseAndWithCRP(), "test msg");
-		s_assert.assertTrue(sfAccountInfoPage.isEmailYourValidationDisplayed(name, TestConstants.VALIDATION_ERROR_THIS_FIELD_IS_REQUIRED),"validation of field required not displayed for "+name);
+	  sfAccountInfoPage.enterEmailYourConsultantDetails("", consultantWithPulseAndWithCRP(), "test msg");
+	  s_assert.assertTrue(sfAccountInfoPage.isSendButtonForEmailToConsultantDisabled(),"Send button is enabled while name field is blank");
 
-		sfAccountInfoPage.enterEmailYourConsultantDetailsAndSubmit(TestConstants.FIRST_NAME, consultantWithPulseAndWithCRP(), "");
-		s_assert.assertTrue(sfAccountInfoPage.isEmailYourValidationDisplayed(emailContent, TestConstants.VALIDATION_ERROR_THIS_FIELD_IS_REQUIRED),"validation of field required not displayed for "+emailContent);
+	  sfAccountInfoPage.enterEmailYourConsultantDetails(TestConstants.FIRST_NAME, consultantWithPulseAndWithCRP(), "");
+	  s_assert.assertTrue(sfAccountInfoPage.isSendButtonForEmailToConsultantDisabled(),"Send button is enabled while message field is blank");
 
-		s_assert.assertAll();
-	}
+	  s_assert.assertAll();
+	 }
 
 	/***
 	 * qTest : TC-282 Account Information- Reset password - Invalid Current Password
@@ -1048,7 +1044,7 @@ public class MyAccountTest extends StoreFrontWebsiteBaseTest{
 		String expectedErrorMsgForPrefix = TestConstants.ERROR_MSG_EXISTING_PREFIX;
 		//Subscribe to pulse with a new prefix.
 		sfCheckoutPage = new StoreFrontCheckoutPage(driver);
-		sfHomePage.loginToStoreFront(consultantWithoutPulseAndWithoutCRP(),password,true);
+		sfHomePage.loginToStoreFront(consultantWithPulseAndWithCRPForCancellation(),password,true);
 		sfHomePage.clickWelcomeDropdown();
 		sfAutoshipStatusPage = sfHomePage.navigateToAutoshipStatusPage();
 		sfAutoshipStatusPage.clickSubscribeToPulseBtn();
@@ -1155,7 +1151,7 @@ public class MyAccountTest extends StoreFrontWebsiteBaseTest{
 		String autoSuggestedPrefixName = null;
 		//Subscribe to pulse with a new prefix.
 		sfCheckoutPage = new StoreFrontCheckoutPage(driver);
-		sfHomePage.loginToStoreFront(consultantWithoutPulseAndWithoutCRP(),password,true);
+		sfHomePage.loginToStoreFront(consultantWithPulseAndWithCRPForCancellation(),password,true);
 		sfHomePage.clickWelcomeDropdown();
 		sfAutoshipStatusPage = sfHomePage.navigateToAutoshipStatusPage();
 		sfAutoshipStatusPage.clickSubscribeToPulseBtn();
@@ -1202,7 +1198,7 @@ public class MyAccountTest extends StoreFrontWebsiteBaseTest{
 		String prefix = firstName + CommonUtils.getCurrentTimeStamp();
 		sfCheckoutPage = new StoreFrontCheckoutPage(driver);
 		//sfHomePage.loginToStoreFront(consultantWithoutPulseAndWithoutCRP(),password,true);
-		sfHomePage.loginToStoreFront(consultantWithoutPulseAndWithoutCRP(),password,true);
+		sfHomePage.loginToStoreFront(consultantWithPulseAndWithCRPForCancellation(),password,true);
 		sfHomePage.clickWelcomeDropdown();
 		sfAutoshipStatusPage = sfHomePage.navigateToAutoshipStatusPage();
 		sfAutoshipStatusPage.clickSubscribeToPulseBtn();
@@ -1300,18 +1296,55 @@ public class MyAccountTest extends StoreFrontWebsiteBaseTest{
 		sfHomePage.switchToParentWindow(currentWindowID);
 		s_assert.assertAll();
 	}
+	
 	/***
 	 * qtest: TC-277 Consultant Autoship Status- Subscribe to Pulse (First Time Pulse Enrollment)
 	 * Description: This method subscribe the consultant with pulse and also cancels the same
 	 */	
-	@Test(enabled=true)//TODO
+	@Test(enabled=true)
 	public void testConsultantFirstTimePulseEnrollment_277(){
+		timeStamp = CommonUtils.getCurrentTimeStamp();
+		randomWords = CommonUtils.getRandomWord(5);		
+		lastName = TestConstants.LAST_NAME+randomWords;
+		email = firstName+"wocrpwop"+timeStamp+TestConstants.EMAIL_SUFFIX;
+		String socialInsuranceNumber = String.valueOf(CommonUtils.getRandomNum(100000000, 999999999));
 		String prefix = firstName + CommonUtils.getCurrentTimeStamp();
 		String emptyPrefix = "";
 		String errorMsg = TestConstants.VALIDATION_ERROR_THIS_FIELD_IS_REQUIRED;
 		String error = null;
+		sfHomePage.clickEnrollNow();
+		sfHomePage.searchSponsor(TestConstants.SPONSOR);
+		s_assert.assertTrue(sfHomePage.isSponsorResultDisplayed(),"No result found after searching the sponsor with name "+TestConstants.SPONSOR);
+		sfHomePage.selectFirstSponsorFromList();
+		sfHomePage.enterConsultantEnrollmentDetails(firstName, lastName, email, password, socialInsuranceNumber);
+		sfHomePage.clickNextButton();
+		s_assert.assertFalse(sfHomePage.isNextButtonEnabledBeforeSelectingKit(), "Next Button is NOT disabled before selecting kit");
+		sfHomePage.chooseProductFromKitPage();
+		sfHomePage.UnSelectSubscribeToPulseCheckBox();
+		sfHomePage.clickNextButton();
+		sfHomePage.clickSaveButton();
+		sfHomePage.enterConsultantShippingDetails(firstName, lastName, addressLine1, addressLine2 ,city, state, postalCode, phoneNumber);
+		sfHomePage.clickShippingDetailsNextbutton();
+		sfHomePage.enterUserBillingDetails(cardType, cardNumber, cardName, CVV);
+		//sfHomePage.selectBillingAddressFromDD();
+		//sfHomePage.checkUseMyDeliveryAddressChkBox();
+		sfHomePage.clickBillingDetailsNextbutton();
+		if(sfHomePage.hasTokenizationFailed()==true){
+			sfHomePage.enterUserBillingDetails(cardType, cardNumber, cardName, CVV);
+			sfHomePage.clickBillingDetailsNextbutton();
+		}
+		sfHomePage.selectPoliciesAndProceduresChkBox();
+		sfHomePage.selectIAcknowledgeChkBox();
+		sfHomePage.selectTermsAndConditionsChkBox();
+		sfHomePage.selectConsentFormChkBox();
+		sfHomePage.clickBecomeAConsultant();
+		s_assert.assertTrue(sfHomePage.isEnrollemntSuccessfulMsgDisplayed(), "Expected 'ENROLLMENT SUCCESSFUL' msg has NOT displayed"); 
+		sfHomePage.clickRodanAndFieldsLogo();
+		sfHomePage.clickWelcomeDropdown();
+		sfHomePage.logout();
+		navigateToStoreFrontBaseURL();
 		//Login with consultant not enrolled in pulse.
-		sfHomePage.loginToStoreFront(consultantWithoutPulseAndWithoutCRP(),password,true);
+		sfHomePage.loginToStoreFront(email,password,true);
 		//Enroll user in pulse.
 		sfHomePage.clickWelcomeDropdown();
 		sfAutoshipStatusPage = sfHomePage.navigateToAutoshipStatusPage();
@@ -1322,18 +1355,11 @@ public class MyAccountTest extends StoreFrontWebsiteBaseTest{
 		sfAutoshipStatusPage.enterAvailablePrefix(prefix);
 		sfCheckoutPage = sfAutoshipStatusPage.clickConfirmSubscription();
 		sfCheckoutPage.clickSaveButton();
-		sfCheckoutPage.clickUseSavedCardBtnOnly();
-		sfCheckoutPage.clickUseThesePaymentDetailsAndReturnBillingProfileName("1");
 		sfCheckoutPage.clickBillingDetailsNextbutton().clickPlaceOrderButton();
 		s_assert.assertTrue(sfCheckoutPage.isPopUpForTermsAndConditionsCheckboxDisplayed(), "validation popup for terms and conditions not displayed");
 		sfCheckoutPage.closePopUp();
 		sfCheckoutPage.selectTermsAndConditionsChkBox().clickPlaceOrderButton();
 		s_assert.assertTrue(sfCheckoutPage.isOrderPlacedSuccessfully(),"User enrolled in pulse successfully");
-		//Cancel the pulse of user.
-		sfHomePage.clickWelcomeDropdown();
-		sfAutoshipStatusPage = sfHomePage.navigateToAutoshipStatusPage();
-		sfAutoshipStatusPage.clickCancelPulseSubscription().clickConfirmSubscription();
-		s_assert.assertTrue(sfAutoshipStatusPage.isSubscribeToPulseBtnDisplayed(), "Pulse subscription is NOT cancelled");
 		s_assert.assertAll();
 	}
 

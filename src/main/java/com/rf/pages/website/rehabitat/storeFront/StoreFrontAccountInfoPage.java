@@ -17,6 +17,7 @@ public class StoreFrontAccountInfoPage extends StoreFrontWebsiteBasePage{
 	private static final Logger logger = LogManager
 			.getLogger(StoreFrontAccountInfoPage.class.getName());
 
+	private final By DISABLED_SEND_BUTTON_EMAIL_TO_CONSULTANT_LOC= By.xpath("//button[@id='emailToConsultantSubmitButton'][@disabled='']");
 	private final By FIRST_NAME_LOC = By.id("profile.firstName");
 	private final By LAST_NAME_LOC = By.id("profile.lastName");
 	private final By ADDRESS_LINE_LOC = By.id("profile.line1");
@@ -650,6 +651,30 @@ public class StoreFrontAccountInfoPage extends StoreFrontWebsiteBasePage{
 		return driver.isElementVisible(SPONSER_NAME_ON_ACCOUNT_INFO_LOC);
 	}
 
+	/***
+	 * This method validates the send button is disabled or not
+	 * @param 
+	 * @return boolean value
+	 */
+	public boolean isSendButtonForEmailToConsultantDisabled(){
+		return driver.isElementPresent(DISABLED_SEND_BUTTON_EMAIL_TO_CONSULTANT_LOC);
+	}
 
+	/***
+	 * This method enters the details to the "Email Your Consultant" fields.
+	 * @param name
+	 * @param email
+	 * @param emailContent
+	 * @return
+	 */
+	public StoreFrontAccountInfoPage enterEmailYourConsultantDetails(String name,String email,String emailContent){
+		driver.type(EMAIL_TO_CONSULTANT_NAME_LOC, name);
+		logger.info("Email to consultant, name entered as "+name);
+		driver.type(EMAIL_TO_CONSULTANT_EMAIL_LOC, email);
+		logger.info("Email to consultant, email entered as "+email);
+		enterEmailContentAtEmailYourConsultantFields(emailContent);
+		driver.waitForPageLoad();
+		return this;
+	}
 
 }

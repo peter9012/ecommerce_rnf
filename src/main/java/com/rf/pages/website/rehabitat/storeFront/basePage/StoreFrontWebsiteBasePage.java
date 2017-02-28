@@ -1568,7 +1568,7 @@ public class StoreFrontWebsiteBasePage extends RFBasePage {
 	 * 
 	 */
 	public StoreFrontWebsiteBasePage clickSubmitBtnOnRequiredConsultantSponsorPopUp() {
-		driver.findElement(SUBMIT_BTN_ON_REQUIRED_SPONSOR_POPUP_LOC).click();
+		driver.clickByJS(RFWebsiteDriver.driver,SUBMIT_BTN_ON_REQUIRED_SPONSOR_POPUP_LOC);
 		logger.info("Submit button on required consultant sponsor popup clicked");
 		driver.pauseExecutionFor(2000);
 		return this;

@@ -51,7 +51,7 @@ public class ConsultantEnrollmentTest extends StoreFrontWebsiteBaseTest{
 		timeStamp = CommonUtils.getCurrentTimeStamp();
 		randomWords = CommonUtils.getRandomWord(5);		
 		lastName = TestConstants.LAST_NAME+randomWords;
-		email = firstName+timeStamp+TestConstants.EMAIL_SUFFIX;
+		email = firstName+"cons"+timeStamp+TestConstants.EMAIL_SUFFIX;
 		String socialInsuranceNumber = String.valueOf(CommonUtils.getRandomNum(100000000, 999999999));
 		sfHomePage.clickEnrollNow();
 		sfHomePage.searchSponsor(TestConstants.SPONSOR);
@@ -94,7 +94,7 @@ public class ConsultantEnrollmentTest extends StoreFrontWebsiteBaseTest{
 		timeStamp = CommonUtils.getCurrentTimeStamp();
 		randomWords = CommonUtils.getRandomWord(5);		
 		lastName = TestConstants.LAST_NAME+randomWords;
-		email = firstName+timeStamp+TestConstants.EMAIL_SUFFIX;
+		email = firstName+"cons"+timeStamp+TestConstants.EMAIL_SUFFIX;
 		String fieldName;
 		sfHomePage.clickEnrollNow();
 		sfHomePage.clickIDontHaveSponsorCheckBox();
@@ -170,7 +170,7 @@ public class ConsultantEnrollmentTest extends StoreFrontWebsiteBaseTest{
 		timeStamp = CommonUtils.getCurrentTimeStamp();
 		randomWords = CommonUtils.getRandomWord(5);  
 		lastName = TestConstants.LAST_NAME+randomWords;
-		email = firstName+timeStamp+TestConstants.EMAIL_SUFFIX;
+		email = firstName+"cons"+timeStamp+TestConstants.EMAIL_SUFFIX;
 		String socialInsuranceNumber = String.valueOf(CommonUtils.getRandomNum(100000000, 999999999));
 		String kitName = "Business Portfolio";
 		sfHomePage.clickEnrollNow();
@@ -215,7 +215,7 @@ public class ConsultantEnrollmentTest extends StoreFrontWebsiteBaseTest{
 		timeStamp = CommonUtils.getCurrentTimeStamp();
 		randomWords = CommonUtils.getRandomWord(5);		
 		lastName = TestConstants.LAST_NAME+randomWords;
-		email = firstName+timeStamp+TestConstants.EMAIL_SUFFIX;
+		email = firstName+"cons"+timeStamp+TestConstants.EMAIL_SUFFIX;
 		int totalKits = 0;
 		int randomKit = 0;
 		String timeStamp = CommonUtils.getCurrentTimeStamp();
@@ -247,7 +247,7 @@ public class ConsultantEnrollmentTest extends StoreFrontWebsiteBaseTest{
 		timeStamp = CommonUtils.getCurrentTimeStamp();
 		randomWords = CommonUtils.getRandomWord(5);		
 		lastName = TestConstants.LAST_NAME+randomWords;
-		email = firstName+timeStamp+TestConstants.EMAIL_SUFFIX;
+		email = firstName+"cons"+timeStamp+TestConstants.EMAIL_SUFFIX;
 		String socialInsuranceNumber = String.valueOf(CommonUtils.getRandomNum(100000000, 999999999));
 		String firstName = TestConstants.FIRST_NAME;
 		String lastName = TestConstants.LAST_NAME;
@@ -314,7 +314,7 @@ public class ConsultantEnrollmentTest extends StoreFrontWebsiteBaseTest{
 		timeStamp = CommonUtils.getCurrentTimeStamp();
 		randomWords = CommonUtils.getRandomWord(5);		
 		lastName = TestConstants.LAST_NAME+randomWords;
-		email = firstName+timeStamp+TestConstants.EMAIL_SUFFIX;
+		email = firstName+"cons"+timeStamp+TestConstants.EMAIL_SUFFIX;
 		String policiesAndProceduresPdfUrl = null;
 		String pulseProTCUrl = null;
 		String crpTCPdfUrl = null;
@@ -388,7 +388,7 @@ public class ConsultantEnrollmentTest extends StoreFrontWebsiteBaseTest{
 			timeStamp = CommonUtils.getCurrentTimeStamp();
 			randomWords = CommonUtils.getRandomWord(5);		
 			lastName = TestConstants.LAST_NAME+randomWords;
-			email = firstName+timeStamp+TestConstants.EMAIL_SUFFIX;
+			email = firstName+"cons"+timeStamp+TestConstants.EMAIL_SUFFIX;
 			String socialInsuranceNumber = String.valueOf(CommonUtils.getRandomNum(100000000, 999999999));
 			String addressLine1 = TestConstants.ADDRESS_LINE_1_ND_US;
 			String city = TestConstants.CITY_ND_US;
@@ -465,7 +465,7 @@ public class ConsultantEnrollmentTest extends StoreFrontWebsiteBaseTest{
 		timeStamp = CommonUtils.getCurrentTimeStamp();
 		randomWords = CommonUtils.getRandomWord(5);		
 		lastName = TestConstants.LAST_NAME+randomWords;
-		email = firstName+timeStamp+TestConstants.EMAIL_SUFFIX;
+		email = firstName+"cons"+timeStamp+TestConstants.EMAIL_SUFFIX;
 		String timeStamp = CommonUtils.getCurrentTimeStamp();
 		String socialInsuranceNumber = String.valueOf(CommonUtils.getRandomNum(100000000, 999999999));
 		String prefix = firstName+timeStamp;
@@ -519,7 +519,7 @@ public class ConsultantEnrollmentTest extends StoreFrontWebsiteBaseTest{
 		timeStamp = CommonUtils.getCurrentTimeStamp();
 		randomWords = CommonUtils.getRandomWord(5);		
 		lastName = TestConstants.LAST_NAME+randomWords;
-		email = firstName+timeStamp+TestConstants.EMAIL_SUFFIX;
+		email = firstName+"cons"+timeStamp+TestConstants.EMAIL_SUFFIX;
 		String socialInsuranceNumber = String.valueOf(CommonUtils.getRandomNum(100000000, 999999999));
 		sfHomePage.clickEnrollNow();
 		sfHomePage.searchSponsor(TestConstants.SPONSOR);
@@ -566,7 +566,7 @@ public class ConsultantEnrollmentTest extends StoreFrontWebsiteBaseTest{
 		timeStamp = CommonUtils.getCurrentTimeStamp();
 		randomWords = CommonUtils.getRandomWord(5);		
 		lastName = TestConstants.LAST_NAME+randomWords;
-		email = firstName+timeStamp+TestConstants.EMAIL_SUFFIX;
+		email = firstName+"cons"+timeStamp+TestConstants.EMAIL_SUFFIX;
 		String socialInsuranceNumber = String.valueOf(CommonUtils.getRandomNum(100000000, 999999999));
 		String existingPrefix = pwsPrefix();
 		sfHomePage.clickEnrollNow();
@@ -597,7 +597,7 @@ public class ConsultantEnrollmentTest extends StoreFrontWebsiteBaseTest{
 		timeStamp = CommonUtils.getCurrentTimeStamp();
 		randomWords = CommonUtils.getRandomWord(5);		
 		lastName = TestConstants.LAST_NAME+randomWords;
-		email = firstName+timeStamp+TestConstants.EMAIL_SUFFIX;
+		email = firstName+"cons"+timeStamp+TestConstants.EMAIL_SUFFIX;
 		String socialInsuranceNumber = String.valueOf(CommonUtils.getRandomNum(100000000, 999999999));
 		String firstName = TestConstants.FIRST_NAME;
 		String lastName = TestConstants.LAST_NAME;
@@ -641,7 +641,7 @@ public class ConsultantEnrollmentTest extends StoreFrontWebsiteBaseTest{
 		timeStamp = CommonUtils.getCurrentTimeStamp();
 		randomWords = CommonUtils.getRandomWord(5);		
 		lastName = TestConstants.LAST_NAME+randomWords;
-		email = firstName+"WPWCRP"+timeStamp+TestConstants.EMAIL_SUFFIX;
+		email = firstName+"conswpwcrp"+timeStamp+TestConstants.EMAIL_SUFFIX;
 		String socialInsuranceNumber = String.valueOf(CommonUtils.getRandomNum(100000000, 999999999));
 		String prefix = firstName+timeStamp;
 		sfHomePage.clickEnrollNow();
@@ -691,7 +691,7 @@ public class ConsultantEnrollmentTest extends StoreFrontWebsiteBaseTest{
 		timeStamp = CommonUtils.getCurrentTimeStamp();
 		randomWords = CommonUtils.getRandomWord(5);		
 		lastName = TestConstants.LAST_NAME+randomWords;
-		email = firstName+"wocrpwop"+timeStamp+TestConstants.EMAIL_SUFFIX;
+		email = firstName+"conswopwocrp"+timeStamp+TestConstants.EMAIL_SUFFIX;
 		String socialInsuranceNumber = String.valueOf(CommonUtils.getRandomNum(100000000, 999999999));
 		sfHomePage.clickEnrollNow();
 		sfHomePage.searchSponsor(TestConstants.SPONSOR);
@@ -735,7 +735,7 @@ public class ConsultantEnrollmentTest extends StoreFrontWebsiteBaseTest{
 		timeStamp = CommonUtils.getCurrentTimeStamp();
 		randomWords = CommonUtils.getRandomWord(5);		
 		lastName = TestConstants.LAST_NAME+randomWords;
-		email = firstName+"WPWCRPFORCANCELLATION"+timeStamp+TestConstants.EMAIL_SUFFIX;
+		email = firstName+"conswpwcrp"+timeStamp+TestConstants.EMAIL_SUFFIX;
 		String socialInsuranceNumber = String.valueOf(CommonUtils.getRandomNum(100000000, 999999999));
 		String prefix = firstName+"WPWCRP"+timeStamp;
 		sfHomePage.clickEnrollNow();
@@ -783,7 +783,7 @@ public class ConsultantEnrollmentTest extends StoreFrontWebsiteBaseTest{
 		timeStamp = CommonUtils.getCurrentTimeStamp();
 		randomWords = CommonUtils.getRandomWord(5);		
 		lastName = TestConstants.LAST_NAME+randomWords;
-		email = firstName+"SPONSORWOPWS"+timeStamp+TestConstants.EMAIL_SUFFIX;
+		email = firstName+"conssponwopws"+timeStamp+TestConstants.EMAIL_SUFFIX;
 		String socialInsuranceNumber = String.valueOf(CommonUtils.getRandomNum(100000000, 999999999));
 		sfHomePage.clickEnrollNow();
 		sfHomePage.searchSponsor(consultantWithoutPulseAndWithoutCRP);

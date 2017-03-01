@@ -297,7 +297,7 @@ public class StoreFrontWebsiteBasePage extends RFBasePage {
 
 
 	private String productNameAllItemsInCartLoc = "//span[@class='item-name' and contains(text(),%s)]";
-	protected String addToCartButtonLoc = "//div[contains(@class,'product__listing')]/descendant::span[@id='cust_price'][contains(text(),'$')][1]/following::button[text()='Add to bag'][%s]";
+	protected String addToCartButtonLoc = "//div[contains(@class,'product__listing')]/descendant::*[contains(text(),'Add to bag')][%s]";
 	private String errorMessageLoc = "//div[@class='global-alerts']/div[normalize-space(contains(text() , '%s'))]";
 	private String optionOnEnrollNowPopUpLoc = "//div[@id='enrollCRPModal' and contains(@style,'block')]//input[@value='%s']";
 	protected String productNameLinkLoc = "//div[@id='product_listing']/descendant::div[@class='details'][%s]//a";

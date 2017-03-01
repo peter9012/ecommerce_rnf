@@ -19,7 +19,7 @@ public class RCEnrollmentTest extends StoreFrontWebsiteBaseTest{
 	@Test(enabled=true)
 	public void testRCEnrollmentWithoutSponsor_550(){
 		timeStamp = CommonUtils.getCurrentTimeStamp();
-		email = firstName+timeStamp+TestConstants.EMAIL_SUFFIX;
+		email = firstName+"rc"+timeStamp+TestConstants.EMAIL_SUFFIX;
 		randomWords = CommonUtils.getRandomWord(5);		
 		lastName = TestConstants.LAST_NAME+randomWords;
 		navigateToStoreFrontBaseURL();
@@ -62,7 +62,7 @@ public class RCEnrollmentTest extends StoreFrontWebsiteBaseTest{
 		String currentURL = null;
 		String pwsURL=sfHomePage.getBaseUrl()+"//" +sfHomePage.getCountry() +"/pws/" + prefix;
 		timeStamp = CommonUtils.getCurrentTimeStamp();
-		email = firstName+timeStamp+TestConstants.EMAIL_SUFFIX;
+		email = firstName+"rc"+timeStamp+TestConstants.EMAIL_SUFFIX;
 		randomWords = CommonUtils.getRandomWord(5);		
 		lastName = TestConstants.LAST_NAME+randomWords;
 		sfHomePage.navigateToUrl(pwsURL);
@@ -81,7 +81,7 @@ public class RCEnrollmentTest extends StoreFrontWebsiteBaseTest{
 	@Test(enabled=true, groups="users")
 	public void testRCEnrollmentWithoutOrder(){
 		timeStamp = CommonUtils.getCurrentTimeStamp();
-		email = firstName+timeStamp+TestConstants.EMAIL_SUFFIX;
+		email = firstName+"rc"+timeStamp+TestConstants.EMAIL_SUFFIX;
 		randomWords = CommonUtils.getRandomWord(5);		
 		lastName = TestConstants.LAST_NAME+randomWords;
 		navigateToStoreFrontBaseURL();
@@ -99,7 +99,7 @@ public class RCEnrollmentTest extends StoreFrontWebsiteBaseTest{
 	@Test(enabled=true, groups="users")
 	public void testRCEnrollmentWithOrderWithoutSponsor(){
 		timeStamp = CommonUtils.getCurrentTimeStamp();
-		email = firstName+timeStamp+TestConstants.EMAIL_SUFFIX;
+		email = firstName+"rc"+timeStamp+TestConstants.EMAIL_SUFFIX;
 		randomWords = CommonUtils.getRandomWord(5);		
 		lastName = TestConstants.LAST_NAME+randomWords;
 		sfCartPage = new StoreFrontCartPage(driver);
@@ -126,13 +126,12 @@ public class RCEnrollmentTest extends StoreFrontWebsiteBaseTest{
 		userPropertyFile.loadProps(userProps);
 		setUsers("rcWithOrderWithoutSponsor", rcWithOrderWithoutSponsor);
 		s_assert.assertAll();
-				
 	}
 	
 	@Test
 	public void testRCEnrollmentWithSponsor(){
 		timeStamp = CommonUtils.getCurrentTimeStamp();
-		email = firstName+timeStamp+TestConstants.EMAIL_SUFFIX;
+		email = firstName+"rc"+timeStamp+TestConstants.EMAIL_SUFFIX;
 		randomWords = CommonUtils.getRandomWord(5);		
 		lastName = TestConstants.LAST_NAME+randomWords;
 		navigateToStoreFrontBaseURL();

@@ -22,7 +22,7 @@ public class PCEnrollmentTest extends StoreFrontWebsiteBaseTest{
 		timeStamp = CommonUtils.getCurrentTimeStamp();
 		randomWords = CommonUtils.getRandomWord(5);		
 		lastName = TestConstants.LAST_NAME+randomWords;
-		email = firstName+timeStamp+TestConstants.EMAIL_SUFFIX;
+		email = firstName+"pc"+timeStamp+TestConstants.EMAIL_SUFFIX;
 		sfCartPage = new StoreFrontCartPage(driver);
 		sfShopSkinCarePage = new StoreFrontShopSkinCarePage(driver);
 		sfHomePage.clickLoginIcon();
@@ -67,7 +67,7 @@ public class PCEnrollmentTest extends StoreFrontWebsiteBaseTest{
 		timeStamp = CommonUtils.getCurrentTimeStamp();
 		randomWords = CommonUtils.getRandomWord(5);		
 		lastName = TestConstants.LAST_NAME+randomWords;
-		email = firstName+timeStamp+TestConstants.EMAIL_SUFFIX;
+		email = firstName+"pc"+timeStamp+TestConstants.EMAIL_SUFFIX;
 		sfCartPage = new StoreFrontCartPage(driver);
 		sfShopSkinCarePage = new StoreFrontShopSkinCarePage(driver);
 		sfHomePage.clickLoginIcon();
@@ -107,7 +107,7 @@ public class PCEnrollmentTest extends StoreFrontWebsiteBaseTest{
 		timeStamp = CommonUtils.getCurrentTimeStamp();
 		randomWords = CommonUtils.getRandomWord(5);		
 		lastName = TestConstants.LAST_NAME+randomWords;
-		email = firstName+timeStamp+TestConstants.EMAIL_SUFFIX;
+		email = firstName+"pc"+timeStamp+TestConstants.EMAIL_SUFFIX;
 		sfCartPage = new StoreFrontCartPage(driver);
 		sfShopSkinCarePage = new StoreFrontShopSkinCarePage(driver);
 		sfHomePage.clickLoginIcon();
@@ -145,7 +145,7 @@ public class PCEnrollmentTest extends StoreFrontWebsiteBaseTest{
 		timeStamp = CommonUtils.getCurrentTimeStamp();
 		randomWords = CommonUtils.getRandomWord(5);		
 		lastName = TestConstants.LAST_NAME+randomWords;
-		email = firstName+timeStamp+TestConstants.EMAIL_SUFFIX;
+		email = firstName+"pc"+timeStamp+TestConstants.EMAIL_SUFFIX;
 		String allProduct = "ALL PRODUCTS";
 		String dummyConsultant = "dummy";
 		String consultantWith2Chars = "Pu";
@@ -184,7 +184,7 @@ public class PCEnrollmentTest extends StoreFrontWebsiteBaseTest{
 		timeStamp = CommonUtils.getCurrentTimeStamp();
 		randomWords = CommonUtils.getRandomWord(5);		
 		lastName = TestConstants.LAST_NAME+randomWords;
-		email = firstName+timeStamp+TestConstants.EMAIL_SUFFIX;
+		email = firstName+"pc"+timeStamp+TestConstants.EMAIL_SUFFIX;
 		String sponserName = TestConstants.SPONSOR;
 		String sponserNameAfterEnrollment = null;
 		sfCartPage = new StoreFrontCartPage(driver);
@@ -234,7 +234,7 @@ public class PCEnrollmentTest extends StoreFrontWebsiteBaseTest{
 		timeStamp = CommonUtils.getCurrentTimeStamp();
 		randomWords = CommonUtils.getRandomWord(5);		
 		lastName = TestConstants.LAST_NAME+randomWords;
-		email = firstName+timeStamp+TestConstants.EMAIL_SUFFIX;
+		email = firstName+"pc"+timeStamp+TestConstants.EMAIL_SUFFIX;
 		String sponserName = TestConstants.SPONSOR;
 		String secondSponser = null;
 		String sponserNameAfterEnrollment = null;
@@ -289,7 +289,7 @@ public class PCEnrollmentTest extends StoreFrontWebsiteBaseTest{
 		timeStamp = CommonUtils.getCurrentTimeStamp();
 		randomWords = CommonUtils.getRandomWord(5);		
 		lastName = TestConstants.LAST_NAME+randomWords;
-		email = firstName+timeStamp+TestConstants.EMAIL_SUFFIX;
+		email = firstName+"pc"+timeStamp+TestConstants.EMAIL_SUFFIX;
 		String sponserName = null;
 		String secondSponser = null;
 		String existingConsultant = TestConstants.SPONSOR;
@@ -345,7 +345,7 @@ public class PCEnrollmentTest extends StoreFrontWebsiteBaseTest{
 		timeStamp = CommonUtils.getCurrentTimeStamp();
 		randomWords = CommonUtils.getRandomWord(5);  
 		lastName = TestConstants.LAST_NAME+randomWords;
-		email = firstName+timeStamp+TestConstants.EMAIL_SUFFIX;
+		email = firstName+"pc"+timeStamp+TestConstants.EMAIL_SUFFIX;
 		String homePageURL = sfHomePage.getCurrentURL();
 		String prefix = pwsPrefix();
 		sfHomePage.navigateToUrl(homePageURL + "/pws/" + prefix);
@@ -372,7 +372,7 @@ public class PCEnrollmentTest extends StoreFrontWebsiteBaseTest{
 		timeStamp = CommonUtils.getCurrentTimeStamp();
 		randomWords = CommonUtils.getRandomWord(5);		
 		lastName = TestConstants.LAST_NAME+randomWords;
-		email = firstName+"WPWSSPONSOR"+timeStamp+TestConstants.EMAIL_SUFFIX;
+		email = firstName+"pcwpwsspon"+timeStamp+TestConstants.EMAIL_SUFFIX;
 		sfCartPage = new StoreFrontCartPage(driver);
 		sfShopSkinCarePage = new StoreFrontShopSkinCarePage(driver);
 		sfHomePage.clickLoginIcon();
@@ -411,7 +411,7 @@ public class PCEnrollmentTest extends StoreFrontWebsiteBaseTest{
 		timeStamp = CommonUtils.getCurrentTimeStamp();
 		randomWords = CommonUtils.getRandomWord(5);		
 		lastName = TestConstants.LAST_NAME+randomWords;
-		email = firstName+"WOSPONSOR"+timeStamp+TestConstants.EMAIL_SUFFIX;
+		email = firstName+"pcwospon"+timeStamp+TestConstants.EMAIL_SUFFIX;
 		sfCartPage = new StoreFrontCartPage(driver);
 		sfShopSkinCarePage = new StoreFrontShopSkinCarePage(driver);
 		sfHomePage.clickLoginIcon();

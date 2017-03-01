@@ -61,20 +61,12 @@ public class SuccessfulUserLoginTest extends StoreFrontWebsiteBaseTest{
 		s_assert.assertAll();
 	}
 
-	/***
-	 * qTest : TC-537 Reset password from "Create Account Page"
-	 * 
-	 * Description : This test validates the reset password functionality
-	 * from from "Create Account Page"
-	 * 
-	 * THIS TEST DOESN'T VERIFY THE PASSWORD RESET FROM EMAIL FUNCTIONALITY			
-	 */
 	@Test(enabled=true)
 	public void testResetPasswordFromCreateAccountPage_537(){
 		String allProduct = "ALL PRODUCTS";
 		sfCartPage = new StoreFrontCartPage(driver);
 		sfShopSkinCarePage = sfHomePage.navigateToShopSkincareLink(allProduct);
-		sfShopSkinCarePage.addProductToCart(TestConstants.PRODUCT_NUMBER, TestConstants.ORDER_TYPE_ADHOC);
+		sfShopSkinCarePage.addProductToCart(TestConstants.PRODUCT_NUMBER, TestConstants.ORDER_TYPE_ENROLLMENT);
 		sfShopSkinCarePage.checkoutTheCartFromPopUp();
 		sfCheckoutPage=sfShopSkinCarePage.checkoutTheCart();
 		sfCheckoutPage.clickForgetPasswordLinkAtCheckout();
@@ -82,6 +74,7 @@ public class SuccessfulUserLoginTest extends StoreFrontWebsiteBaseTest{
 		s_assert.assertTrue(sfCheckoutPage.isPasswordRecoveryEmailMsgDisplayed(TestConstants.PASSWORD_RECOVERY_SUBMIT_SUCCESS_MESSAGE), "Success msg has NOT displayed after clicking submit btn for password recovery");
 		s_assert.assertAll();
 	}
+
 
 	/***
 	 * qTest : TC-538 Reset password warning message when email address entered with is not registered in RF

@@ -53,7 +53,7 @@ public class AddProductsViaPLPPDPAndQuickViewOptionTest extends StoreFrontWebsit
 		sfShopSkinCarePage = sfHomePage.clickOnCategoryFromShopSkinCare(category_redefine);
 		currentURL = sfShopSkinCarePage.getCurrentURL().toUpperCase();
 		s_assert.assertTrue(currentURL.contains(category_redefine), "Expected URL should contain "+category_redefine+" but actual on UI is"+currentURL);
-		sfProductDetailPage = sfShopSkinCarePage.clickNameOfFirstProduct(TestConstants.PRODUCT_NUMBER);
+		sfProductDetailPage = sfShopSkinCarePage.clickNameOfProduct(TestConstants.PRODUCT_NUMBER);
 		productName = sfProductDetailPage.getProductNameFromProductDetailsPage();
 		sfProductDetailPage.clickOnAddToCartButton();
 		productNameOnCheckoutPopup = sfProductDetailPage.getProductNameFromCheckoutPopup();

@@ -250,7 +250,7 @@ public class BillingProfileTest extends StoreFrontWebsiteBaseTest{
 	 * 
 	 *     
 	 */
-	@Test(enabled=false)// Need to Verify
+	@Test(enabled=true)
 	public void testBillingProfileSelectAnBillingAddressExistingProfile_427(){
 		String currentURL = null;
 		String urlToAssert = "payment-details";
@@ -340,7 +340,7 @@ public class BillingProfileTest extends StoreFrontWebsiteBaseTest{
 	 * 
 	 *     
 	 */
-	@Test(enabled=false)//Needs to verify
+	@Test(enabled=true)
 	public void testEditABillingProfile_527(){
 		String currentURL = null;
 		randomWords = CommonUtils.getRandomWord(5);

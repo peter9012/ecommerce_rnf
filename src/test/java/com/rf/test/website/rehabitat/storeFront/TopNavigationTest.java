@@ -343,7 +343,7 @@ public class TopNavigationTest extends StoreFrontWebsiteBaseTest{
 		s_assert.assertTrue(sfHomePage.isHeaderIsConsistentOnAllPages(),"Header is not present on reverse product category page.");
 		sfShopSkinCarePage = sfHomePage.navigateToShopSkincareLink(allProductLinkUnderShopSkincare);
 		s_assert.assertTrue(sfShopSkinCarePage.isHeaderIsConsistentOnAllPages(),"Header is not present on All product page.");
-		sfProductDetailPage = sfShopSkinCarePage.clickNameOfFirstProduct(TestConstants.PRODUCT_NUMBER);
+		sfProductDetailPage = sfShopSkinCarePage.clickNameOfProduct(TestConstants.PRODUCT_NUMBER);
 		s_assert.assertTrue(sfProductDetailPage.isHeaderIsConsistentOnAllPages(),"Header is not present on product detail page.");
 		sfProductDetailPage.addProductToCartFromProductDetailPageAfterLogin();
 		sfCartPage = sfShopSkinCarePage.checkoutTheCartFromPopUp();

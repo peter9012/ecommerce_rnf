@@ -31,6 +31,7 @@ import com.rf.pages.website.rehabitat.storeFront.StoreFrontCheckoutPage;
 import com.rf.pages.website.rehabitat.storeFront.StoreFrontConsultantEnrollNowPage;
 import com.rf.pages.website.rehabitat.storeFront.StoreFrontHomePage;
 import com.rf.pages.website.rehabitat.storeFront.StoreFrontOrdersPage;
+import com.rf.pages.website.rehabitat.storeFront.StoreFrontProductDetailPage;
 import com.rf.pages.website.rehabitat.storeFront.StoreFrontShippingInfoPage;
 import com.rf.pages.website.rehabitat.storeFront.StoreFrontShopSkinCarePage;
 
@@ -3955,7 +3956,7 @@ public class StoreFrontWebsiteBasePage extends RFBasePage {
 			driver.turnOnImplicitWaits();
 		}
 	}
-	
+
 	/***
 	 * This method get the Address Undeliverable  Warning message
 	 * 
@@ -3979,5 +3980,34 @@ public class StoreFrontWebsiteBasePage extends RFBasePage {
 		logger.info("clicked on Edit Address button from Address Suggestion Popup");
 		driver.pauseExecutionFor(3000);
 		return this;
+	}
+
+	/***
+	 * This method click on first product name on all product page
+	 * 
+	 * @param
+	 * @return object of product detail page
+	 * 
+	 */
+	public StoreFrontProductDetailPage clickNameOfProductOnAllProductPage(String productNumber){
+		String productName = driver.findElement(By.xpath(String.format(productNameLinkLoc, productNumber))).getText();
+		//		driver.moveToElement(By.xpath(String.format(productNameLinkOnAllProductPageLoc, productNumber)));
+		if(driver.isElementVisible(By.xpath(String.format(productNameLinkLoc, productNumber)))){
+			driver.click(By.xpath(String.format(productNameLinkLoc, productNumber)));
+		}
+		logger.info("product name "+productName+ "Clicked");
+		driver.waitForPageLoad();
+		return new StoreFrontProductDetailPage(driver);
+	}
+
+	/***
+	 * This method provide the product number incremented by 1 
+	 * 
+	 * @param
+	 * @return String
+	 * 
+	 */
+	public String getProductNumberIncrementedByOne(String productNumber){
+		return Integer.toString(Integer.parseInt(productNumber)+1);
 	}
 }

@@ -20,6 +20,7 @@ import org.apache.poi.ss.usermodel.DateUtil;
 import org.apache.poi.ss.usermodel.FormulaEvaluator;
 import org.apache.poi.ss.usermodel.Row;
 import org.apache.poi.ss.usermodel.Workbook;
+import org.apache.poi.xssf.usermodel.XSSFCell;
 import org.apache.poi.xssf.usermodel.XSSFSheet;
 import org.apache.poi.xssf.usermodel.XSSFWorkbook;
 import org.testng.Assert;
@@ -32,6 +33,7 @@ public class ExcelUtil {
 
 	static FileInputStream fileIn;
 	static XSSFWorkbook workbook;
+	static XSSFSheet sheet;
 
 	public static void openFile(String path) {
 		try {
@@ -66,7 +68,7 @@ public class ExcelUtil {
 	public static void updateCell(int sheetId, int colId, int rowId,
 			String newVal) {
 		XSSFSheet sheet = workbook.getSheetAt(sheetId);
-		sheet.getRow(rowId).getCell(colId).setCellValue(newVal);
+		sheet.getRow(rowId).getCell(colId).setCellValue(newVal);		
 	}
 
 	public static void updatExcelCell(String path, int sheetId, int colId,
@@ -290,5 +292,24 @@ public class ExcelUtil {
 			rowIndex++;
 		}
 		return map;
+	}
+	
+	public static void createNewSheet(String path){
+		int index=0;
+		openFile(path);
+//		XSSFSheet sheet = workbook.getSheetAt(sheetId);
+		if(workbook.getSheet("ConsultantOrders")!=null){
+			index = workbook.getSheetIndex("ConsultantOrders");
+		    workbook.removeSheetAt(index);			
+		}
+		sheet = workbook.createSheet("ConsultantOrders");
+		
+	}
+	
+	public static void setExcelValues(String path,int sheetId, int colId, int rowId,String newVal){
+		sheet.createRow(rowId);
+		XSSFCell cell = sheet.getRow(rowId).createCell(colId);
+		cell.setCellValue(newVal);
+		closeFile(path);
 	}
 }

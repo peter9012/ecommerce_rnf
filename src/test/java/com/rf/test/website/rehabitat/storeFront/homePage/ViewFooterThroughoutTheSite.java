@@ -53,7 +53,7 @@ public class ViewFooterThroughoutTheSite extends StoreFrontWebsiteBaseTest{
 		s_assert.assertTrue(sfShopSkinCarePage.isTheFooterLinkDisplayed(dermRF),"derm rf link is not present in footer section on reverse category page");
 		s_assert.assertTrue(sfShopSkinCarePage.isTheFooterLinkDisplayed(rfConnection),"RF Connection link is not present in footer section on reverse category page");
 		//verify footer links on product detail page.
-		sfProductDetailPage = sfShopSkinCarePage.clickNameOfFirstProduct(TestConstants.PRODUCT_NUMBER);
+		sfProductDetailPage = sfShopSkinCarePage.clickNameOfProduct(TestConstants.PRODUCT_NUMBER);
 		s_assert.assertTrue(sfProductDetailPage.isTheFooterLinkDisplayed(contactUS),"Contact Us link is not present in footer section on product detail page");
 		s_assert.assertTrue(sfProductDetailPage.isTheFooterLinkDisplayed(careers),"Careers link is not present in footer section on reverse category page");
 		s_assert.assertTrue(sfProductDetailPage.isTheFooterLinkDisplayed(dermRF),"derm rf link is not present in footer section on reverse category page");

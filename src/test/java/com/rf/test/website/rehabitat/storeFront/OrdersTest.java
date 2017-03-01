@@ -637,13 +637,13 @@ public class OrdersTest extends StoreFrontWebsiteBaseTest{
 		String prefix = pwsPrefix();
 		sfHomePage.navigateToUrl(homePageURL + "/pws/" + prefix);
 		sfShopSkinCarePage = sfHomePage.clickAllProducts();
-		sfShopSkinCarePage.addProductToCart(TestConstants.PRODUCT_NUMBER, TestConstants.ORDER_TYPE_ADHOC);;
+		sfShopSkinCarePage.addProductToCart(TestConstants.PRODUCT_NUMBER, TestConstants.ORDER_TYPE_ENROLLMENT);
 		sfCartPage = sfShopSkinCarePage.checkoutTheCartFromPopUp();
 		sfCheckoutPage = sfCartPage.checkoutTheCart();
 		sfCheckoutPage.fillNewUserDetails(TestConstants.USER_TYPE_PC,firstName, lastName, emailID, password);
 		sfCheckoutPage.clickCreateAccountButton(TestConstants.USER_TYPE_PC);
 		sfCartPage.clickAddMoreItemsBtn();
-		sfShopSkinCarePage.addProductToCart(TestConstants.PRODUCT_NUMBER, TestConstants.ORDER_TYPE_ADHOC);;
+		sfShopSkinCarePage.addProductToCart(TestConstants.PRODUCT_NUMBER, TestConstants.ORDER_TYPE_ENROLLMENT);
 		sfCartPage = sfShopSkinCarePage.checkoutTheCartFromPopUp();
 		sfCartPage.clickCheckoutBtn();
 		sfCheckoutPage.clickRemoveLink();
@@ -671,7 +671,7 @@ public class OrdersTest extends StoreFrontWebsiteBaseTest{
 		sfCheckoutPage.clickPlaceOrderButton();
 		sfHomePage= sfCheckoutPage.clickRodanAndFieldsLogo();
 		sfShopSkinCarePage = sfHomePage.clickAllProducts();
-		sfShopSkinCarePage.addProductToCart(TestConstants.PRODUCT_NUMBER, TestConstants.ORDER_TYPE_ADHOC);;
+		sfShopSkinCarePage.addProductToCart(TestConstants.PRODUCT_NUMBER, TestConstants.ORDER_TYPE_ADHOC);
 		sfShopSkinCarePage.checkoutTheCartFromPopUp();
 		sfCartPage.checkoutTheCart();
 		s_assert.assertFalse(sfCheckoutPage.isNotYourConsultantLinkPresent(), "Not your sponsor link is present for consultant's sponsor");

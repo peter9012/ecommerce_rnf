@@ -57,6 +57,7 @@ public class TestConstants {
 	public static final String PASSWORD_RECOVERY_SUBMIT_SUCCESS_MESSAGE = "Password reset instructions have been sent to your email address. Please contact customer support if you require additional assistance";
 	public static final String PASSWORD_RECOVERY_SUBMIT_EMAIL_NOT_REGISTERED_MESSAGE = "You do not have an account with us. Please create your account";
 	public static final String NON_DELIVERABLE_ADDRESS_MSG = "Address entered may not be a deliverable address";
+	public static final String PROMOTION_OVERLAY_MSG = "Your favourite Rodan + Fields® products automatically delivered to your doorstep";
 	
 	// Order page Details
 	public static final String TITLE_OF_ORDER_DETAILS_PAGE = "Order Details | Rodan and Fields";
@@ -178,7 +179,6 @@ public class TestConstants {
 	public static final String SECOND_POSTAL_CODE_US = "94519";
 	public static final String CONSULTANT_CRP_AUTOSHIP_PRODUCT_CATEGORY = "CRP Autoship";
 	public static final String PC_PERKS_AUTOSHIP_PRODUCT_CATEGORY = "PC Perk Autoship";
-	public static final String PROMOTION_OVERLAY_MSG = "Your favourite Rodan + Fields® products automatically delivered to your doorstep";
 	public static final String DEFAULT_SHIPPING_ADDRESS_UPDATION_MSG = "Your default address was updated.";
 	public static final String AUTOSHIP_DELIVERY_ADDRESS_UPDATION_MSG = "Delivery Address has been Updated for your Cart.";
 	public static final String ERROR_MSG_EXISTING_PREFIX = "Subscription Prefix not available";

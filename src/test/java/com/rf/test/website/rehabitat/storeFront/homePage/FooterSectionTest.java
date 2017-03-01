@@ -28,7 +28,7 @@ public class FooterSectionTest extends StoreFrontWebsiteBaseTest{
 		sfShopSkinCarePage = sfHomePage.navigateToShopSkincareLink(allProductLinkUnderShopSkincare);
 		s_assert.assertTrue(sfShopSkinCarePage.isTheFooterLinkDisplayed(careers),"Careers link is not present in footer section on all products page");
 		//verify careers link on product detail page.
-		sfProductDetailPage = sfShopSkinCarePage.clickNameOfFirstProduct(TestConstants.PRODUCT_NUMBER);
+		sfProductDetailPage = sfShopSkinCarePage.clickNameOfProduct(TestConstants.PRODUCT_NUMBER);
 		s_assert.assertTrue(sfProductDetailPage.isTheFooterLinkDisplayed(careers),"Careers link is not present in footer section on product detail page");
 		sfProductDetailPage.addProductToCartFromProductDetailPage();
 		sfCartPage = sfProductDetailPage.checkoutTheCartFromPopUp();
@@ -62,7 +62,7 @@ public class FooterSectionTest extends StoreFrontWebsiteBaseTest{
 		sfShopSkinCarePage = sfHomePage.navigateToShopSkincareLink(allProductLinkUnderShopSkincare);
 		s_assert.assertTrue(sfShopSkinCarePage.isTheFooterLinkDisplayed(directSellingAssociation),"DSA link is not present in footer section on all products page");
 		//verify DSA  link on product detail page.
-		sfProductDetailPage = sfShopSkinCarePage.clickNameOfFirstProduct(TestConstants.PRODUCT_NUMBER);
+		sfProductDetailPage = sfShopSkinCarePage.clickNameOfProduct(TestConstants.PRODUCT_NUMBER);
 		s_assert.assertTrue(sfProductDetailPage.isTheFooterLinkDisplayed(directSellingAssociation),"DSA link is not present in footer section on product detail page");
 		sfProductDetailPage.addProductToCartFromProductDetailPage();
 		sfCartPage = sfProductDetailPage.checkoutTheCartFromPopUp();
@@ -101,7 +101,7 @@ public class FooterSectionTest extends StoreFrontWebsiteBaseTest{
 		sfShopSkinCarePage = sfHomePage.navigateToShopSkincareLink(allProductLinkUnderShopSkincare);
 		s_assert.assertTrue(sfShopSkinCarePage.isTheFooterLinkDisplayed(satisfactionGuarantee),"Satisfaction guarantee link is not present in footer section on all products page");
 		//verify satisfaction guarantee link on product detail page.
-		sfProductDetailPage = sfShopSkinCarePage.clickNameOfFirstProduct(TestConstants.PRODUCT_NUMBER);
+		sfProductDetailPage = sfShopSkinCarePage.clickNameOfProduct(TestConstants.PRODUCT_NUMBER);
 		s_assert.assertTrue(sfProductDetailPage.isTheFooterLinkDisplayed(satisfactionGuarantee),"Satisfaction guarantee link is not present in footer section on product detail page");
 		sfProductDetailPage.addProductToCartFromProductDetailPage();
 		sfCartPage = sfProductDetailPage.checkoutTheCartFromPopUp();
@@ -209,7 +209,7 @@ public class FooterSectionTest extends StoreFrontWebsiteBaseTest{
 		sfShopSkinCarePage = sfHomePage.clickAllProducts();
 		s_assert.assertTrue(sfShopSkinCarePage.isTheFooterLinkDisplayed(contactUS),"Contact Us link is not present in footer section on all products page");
 		//verify contact us link on product detail page.
-		sfProductDetailPage = sfShopSkinCarePage.clickNameOfFirstProduct(TestConstants.PRODUCT_NUMBER);
+		sfProductDetailPage = sfShopSkinCarePage.clickNameOfProduct(TestConstants.PRODUCT_NUMBER);
 		s_assert.assertTrue(sfProductDetailPage.isTheFooterLinkDisplayed(contactUS),"Contact Us link is not present in footer section on product detail page");
 		sfProductDetailPage.addProductToCartFromProductDetailPage();
 		sfCartPage = sfProductDetailPage.checkoutTheCartFromPopUp();

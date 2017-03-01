@@ -25,6 +25,8 @@ import org.apache.poi.xssf.usermodel.XSSFSheet;
 import org.apache.poi.xssf.usermodel.XSSFWorkbook;
 import org.testng.Assert;
 
+import com.rf.core.website.constants.TestConstants;
+
 /**
  * @author GSPANN
  * 
@@ -33,7 +35,10 @@ public class ExcelUtil {
 
 	static FileInputStream fileIn;
 	static XSSFWorkbook workbook;
-	static XSSFSheet sheet;
+	static XSSFSheet consSheet;
+	static XSSFSheet pcSheet;
+	static XSSFSheet rcSheet;
+	static FileOutputStream fileOut;
 
 	public static void openFile(String path) {
 		try {
@@ -55,7 +60,7 @@ public class ExcelUtil {
 	}
 
 	public static void closeFile(String path) {
-		FileOutputStream fileOut;
+
 		try {
 			fileOut = CommonUtils.getFileOutputStream(path);
 			workbook.write(fileOut);
@@ -243,7 +248,7 @@ public class ExcelUtil {
 			case Cell.CELL_TYPE_BOOLEAN:
 				cellValue = formulaFlag ? evaluator.evaluate(cell)
 						.getBooleanValue() : cell.getBooleanCellValue();
-				break;
+						break;
 			}
 		}
 
@@ -293,23 +298,63 @@ public class ExcelUtil {
 		}
 		return map;
 	}
-	
-	public static void createNewSheet(String path){
+
+	public static void createNewSheetInECCOrdersExcelFile(String path){
 		int index=0;
 		openFile(path);
-//		XSSFSheet sheet = workbook.getSheetAt(sheetId);
-		if(workbook.getSheet("ConsultantOrders")!=null){
-			index = workbook.getSheetIndex("ConsultantOrders");
-		    workbook.removeSheetAt(index);			
+		if(workbook.getSheet(TestConstants.ECC_ORDER_TYPE_CONSULTANT_ADHOC)!=null){
+			index = workbook.getSheetIndex(TestConstants.ECC_ORDER_TYPE_CONSULTANT_ADHOC);
+			workbook.removeSheetAt(index);	
 		}
-		sheet = workbook.createSheet("ConsultantOrders");
-		
+		if(workbook.getSheet(TestConstants.ECC_ORDER_TYPE_PC_ADHOC)!=null){
+			index = workbook.getSheetIndex(TestConstants.ECC_ORDER_TYPE_PC_ADHOC);
+			workbook.removeSheetAt(index);	
+		}
+		if(workbook.getSheet(TestConstants.ECC_ORDER_TYPE_RC_ADHOC)!=null){
+			index = workbook.getSheetIndex(TestConstants.ECC_ORDER_TYPE_RC_ADHOC);
+			workbook.removeSheetAt(index);	
+		}
+		consSheet = workbook.createSheet(TestConstants.ECC_ORDER_TYPE_CONSULTANT_ADHOC);
+		pcSheet = workbook.createSheet(TestConstants.ECC_ORDER_TYPE_PC_ADHOC);
+		rcSheet = workbook.createSheet(TestConstants.ECC_ORDER_TYPE_RC_ADHOC);
+		try {
+			fileOut = CommonUtils.getFileOutputStream(path);
+		} catch (IOException e1) {
+			// TODO Auto-generated catch block
+			e1.printStackTrace();
+		}
+	}
+
+	public static void setOrderValuesInECCExcelFile(String path,String sheetName, int colId, int rowId,String newVal){
+		if(sheetName.equalsIgnoreCase(TestConstants.ECC_ORDER_TYPE_CONSULTANT_ADHOC)){
+			consSheet.createRow(rowId);
+			XSSFCell cell = consSheet.getRow(rowId).createCell(colId);
+			cell.setCellValue(newVal);	
+		}
+		if(sheetName.equalsIgnoreCase(TestConstants.ECC_ORDER_TYPE_PC_ADHOC)){
+			pcSheet.createRow(rowId);
+			XSSFCell cell = pcSheet.getRow(rowId).createCell(colId);
+			cell.setCellValue(newVal);	
+		}
+		if(sheetName.equalsIgnoreCase(TestConstants.ECC_ORDER_TYPE_RC_ADHOC)){
+			rcSheet.createRow(rowId);
+			XSSFCell cell = rcSheet.getRow(rowId).createCell(colId);
+			cell.setCellValue(newVal);	
+		}
+			
 	}
 	
-	public static void setExcelValues(String path,int sheetId, int colId, int rowId,String newVal){
-		sheet.createRow(rowId);
-		XSSFCell cell = sheet.getRow(rowId).createCell(colId);
-		cell.setCellValue(newVal);
-		closeFile(path);
+	public static void closeECCOrdersExcelFile(){
+		try {
+			workbook.write(fileOut);
+		} catch (IOException e1) {
+			// TODO Auto-generated catch block
+			e1.printStackTrace();
+		}
+		try {
+			fileOut.close();
+		} catch (Exception e) {
+			Assert.fail(e.toString());
+		}
 	}
 }

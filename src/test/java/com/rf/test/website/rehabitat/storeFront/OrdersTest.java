@@ -969,7 +969,7 @@ public class OrdersTest extends StoreFrontWebsiteBaseTest{
 		String randomWord = CommonUtils.getRandomWord(5);
 		lastName = lastName+randomWord;
 		sfShopSkinCarePage = sfHomePage.clickAllProducts();
-		sfShopSkinCarePage.addProductToCart(TestConstants.PRODUCT_NUMBER, TestConstants.ORDER_TYPE_ADHOC);;
+		sfShopSkinCarePage.addProductToCart(TestConstants.PRODUCT_NUMBER, TestConstants.ORDER_TYPE_ENROLLMENT);;
 		sfCartPage = sfShopSkinCarePage.checkoutTheCartFromPopUp();
 		sfCheckoutPage = sfCartPage.checkoutTheCart();
 		sfCheckoutPage.fillNewUserDetails(TestConstants.USER_TYPE_RC,firstName, lastName, emailID, password);
@@ -1007,7 +1007,7 @@ public class OrdersTest extends StoreFrontWebsiteBaseTest{
 		String sponsorName = "RF Corporate";
 		String sponsorNameFromUI = null;
 		sfShopSkinCarePage = sfHomePage.clickAllProducts();
-		sfShopSkinCarePage.addProductToCart(TestConstants.PRODUCT_NUMBER, TestConstants.ORDER_TYPE_ADHOC);;
+		sfShopSkinCarePage.addProductToCart(TestConstants.PRODUCT_NUMBER, TestConstants.ORDER_TYPE_ENROLLMENT);;
 		sfCartPage = sfShopSkinCarePage.checkoutTheCartFromPopUp();
 		sfCheckoutPage = sfCartPage.checkoutTheCart();
 		sfCheckoutPage.fillNewUserDetails(TestConstants.USER_TYPE_PC,firstName, lastName, emailID, password);
@@ -1400,7 +1400,7 @@ public class OrdersTest extends StoreFrontWebsiteBaseTest{
 		String sponsorName = "RF Corporate";
 		String sponsorNameFromUI = null;
 		sfShopSkinCarePage = sfHomePage.clickAllProducts();
-		sfShopSkinCarePage.addProductToCart(TestConstants.PRODUCT_NUMBER, TestConstants.ORDER_TYPE_ADHOC);;
+		sfShopSkinCarePage.addProductToCart(TestConstants.PRODUCT_NUMBER, TestConstants.ORDER_TYPE_ENROLLMENT);;
 		sfCartPage = sfShopSkinCarePage.checkoutTheCartFromPopUp();
 		sfCheckoutPage = sfCartPage.checkoutTheCart();
 		sfCheckoutPage.fillNewUserDetails(TestConstants.USER_TYPE_RC,firstName, lastName, emailID, password);

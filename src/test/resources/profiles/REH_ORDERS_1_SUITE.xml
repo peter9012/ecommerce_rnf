@@ -21,6 +21,7 @@
 					<include name="testAddAPaymentMethodCheckout_310"></include>
 					<include name="testShippingMethodPCDirectPCEnrollment_311"></include>
 					<include name="testShipMethodPCExistingPCPlaceAdhocOrder_314"></include>
+					<include name="testConsultantCanNotShipToQuebec_316"></include>
 					<include name="testShippingToPORRboxes_319"></include>
 					<include
 						name="testBillingProfileAddAnAddressWithInvalidDetailsToExistingProfile_366"></include>

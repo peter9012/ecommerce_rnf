@@ -98,7 +98,7 @@ public class RedirectionAfterLoginTest extends StoreFrontWebsiteBaseTest{
 	@Test(enabled=true)
 	public void testPCUserWhoHasRFCorporateAsSponsorShouldRedirectUserTOCorporateSite_533(){
 		String currentURL = null;
-		sfHomePage.loginToStoreFront(pcUserWithPWSSponsor(),  password,true);
+		sfHomePage.loginToStoreFront(pcUserWithoutSponsor(),  password,true);
 		currentURL = sfHomePage.getCurrentURL();
 		s_assert.assertTrue(!currentURL.contains("pws"),"Current url for PC with RF corporate as sponsor is containing 'PWS' and actual on UI is "+currentURL);
 		s_assert.assertAll();

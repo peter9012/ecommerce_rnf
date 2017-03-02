@@ -105,6 +105,7 @@ public class StoreFrontWebsiteBasePage extends RFBasePage {
 	private final By COUNTRY_LOC = By.xpath("//span[@class='selected-country']/preceding::input[1]");
 	private final By COUNTRY_NAME_LOC = By.xpath("//span[@class='selected-country']");
 	protected final By SAVE_BUTTON_LOC = By.id("deliveryAccountSubmit");
+	protected final By SAVE_PWS_PAGE_LOC = By.xpath("//input[@value='Save']");
 	private final By WELCOME_DD_AUTOSHIP_STATUS_LOC = By.xpath("//a[text()='Auto-ship Status']");
 	private final By WELCOME_DD_ORDERS_LOC = By.xpath("//a[text()='Orders']");
 	private final By SAVE_BUTTON_OF_SHIPPING_ADDRESS_LOC = By.xpath("//button[contains(text(),'Save')]");
@@ -3664,6 +3665,21 @@ public class StoreFrontWebsiteBasePage extends RFBasePage {
 	public StoreFrontWebsiteBasePage clickSaveButton() {
 		driver.quickWaitForElementPresent(SAVE_BUTTON_LOC);
 		driver.clickByJS(RFWebsiteDriver.driver,SAVE_BUTTON_LOC);
+		logger.info("Save button clicked");
+		driver.waitForPageLoad();
+		return this;
+	}
+	
+	/***
+	 * This method click the save button
+	 * 
+	 * @param
+	 * @return store front Home page object
+	 * 
+	 */
+	public StoreFrontWebsiteBasePage clickSavePWSButton() {
+		driver.quickWaitForElementPresent(SAVE_PWS_PAGE_LOC);
+		driver.clickByJS(RFWebsiteDriver.driver,SAVE_PWS_PAGE_LOC);
 		logger.info("Save button clicked");
 		driver.waitForPageLoad();
 		return this;

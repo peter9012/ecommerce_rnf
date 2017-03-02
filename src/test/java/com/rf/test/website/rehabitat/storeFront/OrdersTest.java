@@ -72,7 +72,7 @@ public class OrdersTest extends StoreFrontWebsiteBaseTest{
 	 * for consultant
 	 *     
 	 */
-	@Test(enabled=false) //CA specific test
+	@Test(enabled=true) //CA specific test
 	public void testConsultantCanNotShipToQuebec_316(){
 		if(country.equalsIgnoreCase("ca")){
 			sfHomePage.loginToStoreFront(consultantWithPulseAndWithCRP(),password,true);
@@ -905,7 +905,7 @@ public class OrdersTest extends StoreFrontWebsiteBaseTest{
 		s_assert.assertTrue(sfCheckoutPage.isErrorMessagePresentForFirstAndLastName(), "Error message is not present for first and last name field");
 		s_assert.assertTrue(sfCheckoutPage.isErrorMessagePresentForAddressLine1(), "Error message is not present for address line 1 field");
 		s_assert.assertTrue(sfCheckoutPage.isErrorMessagePresentForCity(), "Error message is not present for city field");
-		s_assert.assertTrue(sfCheckoutPage.isErrorMessagePresentForState(), "Error message is not present for state field");
+		//s_assert.assertTrue(sfCheckoutPage.isErrorMessagePresentForState(), "Error message is not present for state field");
 		s_assert.assertTrue(sfCheckoutPage.isErrorMessagePresentForPostalCode(), "Error message is not present for postal code field");
 		s_assert.assertTrue(sfCheckoutPage.isErrorMessagePresentForPhoneNumber(), "Error message is not present for phone number field");
 		s_assert.assertAll();

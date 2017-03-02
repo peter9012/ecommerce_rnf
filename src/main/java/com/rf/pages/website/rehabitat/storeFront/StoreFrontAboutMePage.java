@@ -206,7 +206,7 @@ public class StoreFrontAboutMePage extends StoreFrontWebsiteBasePage{
 	 * 
 	 */ 
 	public String getShowSinceTextOnAboutMePageHeader(){
-		driver.pauseExecutionFor(3000);
+		driver.quickWaitForElementPresent(SHOW_SINCE_HEADER_LOC);
 		return driver.getText(SHOW_SINCE_HEADER_LOC);
 	}
 
@@ -334,6 +334,7 @@ public class StoreFrontAboutMePage extends StoreFrontWebsiteBasePage{
 	 * 
 	 */ 
 	public boolean isShowSincePresentOnAboutMePageHeader(){
+		driver.quickWaitForElementPresent(SHOW_SINCE_HEADER_LOC);
 		return driver.isElementPresent(SHOW_SINCE_HEADER_LOC);
 	}
 

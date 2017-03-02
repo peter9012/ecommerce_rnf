@@ -368,7 +368,6 @@ public class PCEnrollmentTest extends StoreFrontWebsiteBaseTest{
 
 	@Test(enabled=true,groups="users")
 	public void testPCEnrollmentWithPWSSponsor(){
-		navigateToStoreFrontBaseURL();
 		timeStamp = CommonUtils.getCurrentTimeStamp();
 		randomWords = CommonUtils.getRandomWord(5);		
 		lastName = TestConstants.LAST_NAME+randomWords;
@@ -404,6 +403,7 @@ public class PCEnrollmentTest extends StoreFrontWebsiteBaseTest{
 		userPropertyFile.loadProps(userProps);
 		setUsers("pcUserWithPWSSponsor", pcUserWithPWSSponsor);
 		s_assert.assertAll();
+		System.out.println(email);
 	}
 
 	@Test(enabled=true,groups="users")

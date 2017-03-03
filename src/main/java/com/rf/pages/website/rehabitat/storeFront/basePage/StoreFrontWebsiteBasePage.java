@@ -59,7 +59,7 @@ public class StoreFrontWebsiteBasePage extends RFBasePage {
 	protected final By TOTAL_PRODUCTS_LOC = By.xpath("//div[@id='product_listing']//following::div[@class='product-item']");
 	private final By CANCEL_BUTTON_LOC=By.xpath("//button[contains(text(),'Cancel')]");
 	private final By ACTION_SUCCESS_MSG_LOC = By.xpath("//div[contains(@class,'alert-info') and contains(@class,'alert-dismissable')]");
-	private final By BECOME_A_CONSULTANT_LOC = By.xpath(topNavigationLoc + "//*[@title='BECOME A CONSULTANT']");
+	private final By BECOME_A_CONSULTANT_LOC = By.xpath(topNavigationLoc + "//*[contains(@title,'Consultant') or contains(@title,'CONSULTANT')]");
 	private final By ENROLL_NOW_LOC = By.xpath(topNavigationLoc + "//a[@title='ENROLL NOW']");
 	private final By SHOP_SKINCARE_LOC = By.xpath(topNavigationLoc + "//a[@title='SHOP SKINCARE']");
 	private final By ALL_PRODUCTS_LOC = By.xpath(topNavigationLoc + "//a[@title='ALL PRODUCTS']");

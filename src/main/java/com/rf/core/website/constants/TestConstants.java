@@ -137,10 +137,10 @@ public class TestConstants {
 	public static final String SHIPPING_METHOD_UPS_GROUND = "UPS Ground";
 	public static final String SHIPPING_METHOD_UPS_OVERNIGHT = "UPS Overnight";
 	public static final String CARD_TYPE = "Visa";
-	public static final String CARD_NUMBER = "4111111111111111";
+	public static final String CARD_NUMBER = "4012000077777777";
 	public static final String CARD_NAME = "auto lauto";
 	public static final String CVV = "123";
-	public static final String CARD_NUMBER_2 = "4111111111111111";
+	public static final String CARD_NUMBER_2 = "5424180279791773";
 	public static final String CARD_NUMBER_MORE_THAN_16_DIGIT = "47474747474747474";
 	public static final String CARD_NUMBER_LESS_THAN_16_DIGIT = "474747474747474";
 	public static final String CVV_WITH_TWO_DIGIT = "12";

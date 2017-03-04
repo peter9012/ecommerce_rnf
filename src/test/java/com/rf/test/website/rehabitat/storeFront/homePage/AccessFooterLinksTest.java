@@ -14,6 +14,7 @@ public class AccessFooterLinksTest extends StoreFrontWebsiteBaseTest{
 	 */
 	@Test(enabled=true)
 	public void testVerifyFooterLinksOfSite_13(){
+		String homePageURL = null;
 		String disclaimer = "Disclaimer";
 		String satisfactionGuarantee = "Satisfaction Guarantee";
 		String contactUS = "Contact Us";
@@ -21,7 +22,10 @@ public class AccessFooterLinksTest extends StoreFrontWebsiteBaseTest{
 		String pressRoom = "Press Room";
 		String directSellingAssociation= "Direct Selling Association";
 		String termsAndConditions = "Terms & Condition";
-		String PrivacyPolicy = "Privacy Policy";	  
+		String PrivacyPolicy = "Privacy Policy";
+		String prefix = pwsPrefix();
+		homePageURL = sfHomePage.getCurrentURL();
+		sfHomePage.navigateToUrl(homePageURL + "/pws/" + prefix);
 		//Verify disclaimer link in footer section.
 		s_assert.assertTrue(sfHomePage.isTheFooterLinkDisplayed(disclaimer),"Disclaimer link is not present in footer section");
 		//Verify satisfaction guarantee link in footer section.
@@ -49,6 +53,7 @@ public class AccessFooterLinksTest extends StoreFrontWebsiteBaseTest{
 	 */
 	@Test(enabled=true) 
 	public void testVerifyFooterLinksOfSiteOpensInSameWindow_14(){
+		String homePageURL = null;
 		String currentURL = null;
 		String disclaimer = "Disclaimer";
 		String satisfactionGuarantee = "Satisfaction Guarantee";
@@ -66,7 +71,9 @@ public class AccessFooterLinksTest extends StoreFrontWebsiteBaseTest{
 		String directSellingAssociationURL = "who-we-are";
 		String termsAndConditionURL = "terms-conditions";
 		String privacyPolicyURL = "privacy-policy";
-
+		String prefix = pwsPrefix();
+		homePageURL = sfHomePage.getCurrentURL();
+		sfHomePage.navigateToUrl(homePageURL + "/pws/" + prefix);
 		//Verify and validate disclaimer link in footer section.
 		s_assert.assertTrue(sfHomePage.isTheFooterLinkDisplayed(disclaimer),"Disclaimer link is not present in footer section");
 		sfHomePage.clickFooterLink(disclaimer);

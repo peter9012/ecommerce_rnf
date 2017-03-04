@@ -293,8 +293,8 @@ public class StoreFrontWebsiteBasePage extends RFBasePage {
 	private final By ENROLL_NOW_POPUP_LOC = By.xpath("//div[@id='enrollCRPModal' and contains(@style,'block')]//h3[contains(text(),'Do you want to enroll in CRP')]");
 	protected final By SORT_FILTER_DD_LOC = By.id("sortOptions1");
 	protected final By SHOP_BY_PRICE_FILTER_OPTION_HIGH_TO_LOW_LOC = By.xpath("//select[@id='sortOptions1']/descendant::option[2]");
-	private final By WHY_RF_LOC = By.xpath(topNavigationLoc + "//a[@title='WHY R&F']");
-	private final By MEET_OUR_COMMUNITY_LOC = By.xpath(topNavigationLoc + "//a[@title='MEET OUR COMMUNITIES']");
+	private final By WHY_RF_LOC = By.xpath(topNavigationLoc + "//a[contains(@title,'WHY')]");
+	private final By MEET_OUR_COMMUNITY_LOC = By.xpath(topNavigationLoc + "//a[contains(@title,'MEET OUR')]");
 
 
 	private String productNameAllItemsInCartLoc = "//span[@class='item-name' and contains(text(),%s)]";

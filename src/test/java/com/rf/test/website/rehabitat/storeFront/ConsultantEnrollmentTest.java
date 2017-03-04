@@ -683,7 +683,6 @@ public class ConsultantEnrollmentTest extends StoreFrontWebsiteBaseTest{
 		setUsers("consultantWithPulseAndWithCRP", consultantWithPulseAndWithCRP);
 		setUsers("pwsPrefix", pwsPrefix);
 		s_assert.assertAll();		
-		System.out.println(email);
 
 	}
 

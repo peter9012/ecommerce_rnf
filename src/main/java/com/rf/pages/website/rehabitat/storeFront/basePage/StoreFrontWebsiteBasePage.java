@@ -210,7 +210,7 @@ public class StoreFrontWebsiteBasePage extends RFBasePage {
 	private final By AUTOSHIP_CART_LINK_LOC = By
 			.xpath("//span[text()='Auto-ship']/ancestor::a[contains(@class,'auto-ship-cart')]");
 	private final By RETURN_AUTHORIZATION_FORM_LINK = By
-			.xpath("//div[@class='container']/following::ul//a[text()='Return Authorization Form']");
+			.xpath("//a[text()='Return Authorization Form']");
 	private final By POLICY_AND_PROCEDURE_LINK_ON_SATISFACTION_GUARANTEE_LOC = By
 			.xpath("//div[@class='container']//a[text()='Policies and Procedures']");
 	private final By PRESS_MENTION_TAB_ITEMS_LOC = By.xpath("//div[@id='press-mentions']");

@@ -47,7 +47,7 @@ public class FooterSectionTest extends StoreFrontWebsiteBaseTest{
 	 * 
 	 * Description : This test validates DSA link on all pages except checkout page. 
 	 */
-	@Test(enabled=true)
+	@Test(enabled=false)//NO DSA is coming
 	public void testVerifyDSALinkOnAllPagesExceptCheckout_84(){
 		String currentURL = null;
 		String reverseLinkUnderShopSkincare = "REVERSE";
@@ -76,7 +76,6 @@ public class FooterSectionTest extends StoreFrontWebsiteBaseTest{
 		s_assert.assertAll();
 
 	}
-
 
 	/***
 	 * qTest : TC-98 Satisfaction Guarantee link in the footer of the page

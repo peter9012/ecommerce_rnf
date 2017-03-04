@@ -55,6 +55,7 @@ public class StoreFrontShopSkinCarePage extends StoreFrontWebsiteBasePage{
 	//private final By ADD_TO_CART_BTN_LOC = By.xpath("//div[@id='product_listing']/descendant::button[text()='Add to cart'][1]");
 	private final By ADD_TO_CART_ONE_TIME_ORDER_LOC = By.xpath("//div[@id='product_listing']/descendant::span[contains(text(),'One Time Order')][1]");
 
+	private String randomCategoryIDLoc = "//div[@id='product-facet']//descendant::ul[2]/li[%s]//descendant::input[contains(@id,'ID')]";
 	private String retailAndSVPriceLoc = "//div[@class='product-item'][%s]//span[@class='totalSV']";
 	private String consultantPriceLoc="//div[@class='product-item'][%s]//span[@id='retail']";
 	private String productPriceOnQuickViewPopupThroughOrderTypeLoc = "//*[@id='command']/descendant::span[contains(text(),'%s')]/following-sibling::span[contains(@class,'productPrice')]";
@@ -67,7 +68,6 @@ public class StoreFrontShopSkinCarePage extends StoreFrontWebsiteBasePage{
 	private String addToPCPerksButtonThroughProductNumber = "//div[@class='product-item'][%s]//span[contains(text(),'subscribe + save')]";
 	private String quickViewForSpecificProductLoc = "//div[@class='product__listing product__grid']//div[@class='product-item'][%s]/a[@class='thumb']";
 	private String productNameLoc = "//div[@class='product__listing product__grid']//a[contains(text(),'%s')]";
-	private String priceOfProductLoc = "//div[contains(@class,'product__listing')]/descendant::span[contains(text(),'$')][%s]";
 	private String categoryNameLoc = "//div[@id='product-facet']//descendant::ul[2]/li/descendant::span[contains(text(),'%s')]/preceding::label[1]";
 	private String randomProductCategoryCheckbox = "//div[@id='product-facet']//descendant::ul[2]/li[%s]//descendant::label[2]";
 	private String yourpriceOfProductLoc = "//div[contains(@class,'product__listing')]//div[@class='product-item'][%s]//em[contains(text(),'Your Price')]/..";
@@ -702,7 +702,7 @@ public class StoreFrontShopSkinCarePage extends StoreFrontWebsiteBasePage{
 		while(true){
 			driver.click(REFINE_PRODUCT_CATEGORY_FILTER_DD_LOC);
 			logger.info("Refine category filter dropdown clicked");
-			int randomNum = CommonUtils.getRandomNum(2,7);
+			int randomNum = CommonUtils.getRandomNum(4,12);
 			logger.info("Random selected category is "+(randomNum-1));
 			categoryName=driver.findElement(By.xpath(String.format(randomCategoryName,randomNum))).getText().trim();
 			driver.click(By.xpath(String.format(randomProductCategoryCheckbox,randomNum)));
@@ -886,9 +886,9 @@ public class StoreFrontShopSkinCarePage extends StoreFrontWebsiteBasePage{
 		String categoryName = null;
 		clickShopByCategoryDD();
 		logger.info("Refine category filter dropdown clicked");
-		int randomNum = CommonUtils.getRandomNum(2,7);
+		int randomNum = CommonUtils.getRandomNum(4,12);
 		logger.info("Random selected category is "+(randomNum-1));
-		categoryName=driver.findElement(By.xpath(String.format(randomCategoryName,randomNum))).getText().trim();
+		categoryName=driver.findElement(By.xpath(String.format(randomCategoryIDLoc,randomNum))).getAttribute("id").split("ID")[0];
 		driver.click(By.xpath(String.format(randomProductCategoryCheckbox,randomNum)));
 		logger.info("Product category selected is "+categoryName);
 		driver.waitForPageLoad();

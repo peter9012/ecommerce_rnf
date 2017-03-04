@@ -542,7 +542,7 @@ public class MyAccountTest extends StoreFrontWebsiteBaseTest{
 	 * 
 	 * 				
 	 */
-	@Test(enabled=true)
+	@Test(enabled=true,priority=1)//added a priority to make this test as last execution
 	public void testVerifyLoginFunctionalityInMultipleTabs_330() throws AWTException{
 		String currentURL = null;
 		String currentWindowID = null; 
@@ -1195,10 +1195,41 @@ public class MyAccountTest extends StoreFrontWebsiteBaseTest{
 	 */	
 	@Test(enabled=true)
 	public void testConsultantFirstTimePulseEnrollment_380(){
-		String prefix = firstName + CommonUtils.getCurrentTimeStamp();
-		sfCheckoutPage = new StoreFrontCheckoutPage(driver);
-		//sfHomePage.loginToStoreFront(consultantWithoutPulseAndWithoutCRP(),password,true);
-		sfHomePage.loginToStoreFront(consultantWithPulseAndWithCRPForCancellation(),password,true);
+		timeStamp = CommonUtils.getCurrentTimeStamp();
+		randomWords = CommonUtils.getRandomWord(5);		
+		lastName = TestConstants.LAST_NAME+randomWords;
+		email = firstName+"conswopwocrp"+timeStamp+TestConstants.EMAIL_SUFFIX;
+		String prefix = firstName+timeStamp;
+		String socialInsuranceNumber = String.valueOf(CommonUtils.getRandomNum(100000000, 999999999));
+		sfHomePage.clickEnrollNow();
+		sfHomePage.searchSponsor(TestConstants.SPONSOR);
+		s_assert.assertTrue(sfHomePage.isSponsorResultDisplayed(),"No result found after searching the sponsor with name "+TestConstants.SPONSOR);
+		sfHomePage.selectFirstSponsorFromList();
+		sfHomePage.enterConsultantEnrollmentDetails(firstName, lastName, email, password, socialInsuranceNumber);
+		sfHomePage.clickNextButton();
+		s_assert.assertFalse(sfHomePage.isNextButtonEnabledBeforeSelectingKit(), "Next Button is NOT disabled before selecting kit");
+		sfHomePage.chooseProductFromKitPage();
+		sfHomePage.UnSelectSubscribeToPulseCheckBox();
+		sfHomePage.clickNextButton();
+		sfHomePage.clickSaveButton();
+		sfHomePage.enterConsultantShippingDetails(firstName, lastName, addressLine1, addressLine2 ,city, state, postalCode, phoneNumber);
+		sfHomePage.clickShippingDetailsNextbutton();
+		sfHomePage.enterUserBillingDetails(cardType, cardNumber, cardName, CVV);
+		//sfHomePage.selectBillingAddressFromDD();
+		//sfHomePage.checkUseMyDeliveryAddressChkBox();
+		sfHomePage.clickBillingDetailsNextbutton();
+		if(sfHomePage.hasTokenizationFailed()==true){
+			sfHomePage.enterUserBillingDetails(cardType, cardNumber, cardName, CVV);
+			sfHomePage.clickBillingDetailsNextbutton();
+		}
+		sfHomePage.selectPoliciesAndProceduresChkBox();
+		sfHomePage.selectIAcknowledgeChkBox();
+		sfHomePage.selectTermsAndConditionsChkBox();
+		sfHomePage.selectConsentFormChkBox();
+		sfHomePage.clickBecomeAConsultant();
+		s_assert.assertTrue(sfHomePage.isEnrollemntSuccessfulMsgDisplayed(), "Expected 'ENROLLMENT SUCCESSFUL' msg has NOT displayed"); 
+		sfHomePage.clickRodanAndFieldsLogo();
+		s_assert.assertTrue(sfHomePage.isWelcomeUserElementDisplayed(), "Welcome user locator has not displayed after consultant enrollment");
 		sfHomePage.clickWelcomeDropdown();
 		sfAutoshipStatusPage = sfHomePage.navigateToAutoshipStatusPage();
 		sfAutoshipStatusPage.clickSubscribeToPulseBtn();
@@ -1210,16 +1241,16 @@ public class MyAccountTest extends StoreFrontWebsiteBaseTest{
 		sfCheckoutPage.closePopUp();
 		sfCheckoutPage.selectTermsAndConditionsCheckBoxForAutoshipOrder().clickPlaceOrderButton();
 		s_assert.assertTrue(sfCheckoutPage.isOrderPlacedSuccessfully(),"Order is Not placed successfully");
-		//Cancel pulse of user.
-		sfHomePage.clickWelcomeDropdown();
-		sfHomePage.navigateToAutoshipStatusPage();
-		sfAutoshipStatusPage.clickCancelPulseSubscription();
-		sfAutoshipStatusPage.clickConfirmSubscriptionButton();
-		s_assert.assertTrue(sfAutoshipStatusPage.isPulseCancellationPopupPresent(),"Pulse cancellation popup is not present.");
-		sfAutoshipStatusPage.clickCancelOnPulseCancellationPopup();
-		s_assert.assertFalse(sfAutoshipStatusPage.isPulseCancellationPopupPresent(),"Pulse cancellation popup is present after clicking cancel button.");
-		sfAutoshipStatusPage.clickConfirmSubscription();
-		s_assert.assertTrue(sfAutoshipStatusPage.isSubscribeToPulseBtnDisplayed(), "Pulse subscription is NOT cancelled");
+//		//Cancel pulse of user.
+//		sfHomePage.clickWelcomeDropdown();
+//		sfHomePage.navigateToAutoshipStatusPage();
+//		sfAutoshipStatusPage.clickCancelPulseSubscription();
+//		sfAutoshipStatusPage.clickConfirmSubscriptionButton();
+//		s_assert.assertTrue(sfAutoshipStatusPage.isPulseCancellationPopupPresent(),"Pulse cancellation popup is not present.");
+//		sfAutoshipStatusPage.clickCancelOnPulseCancellationPopup();
+//		s_assert.assertFalse(sfAutoshipStatusPage.isPulseCancellationPopupPresent(),"Pulse cancellation popup is present after clicking cancel button.");
+//		sfAutoshipStatusPage.clickConfirmSubscription();
+//		s_assert.assertTrue(sfAutoshipStatusPage.isSubscribeToPulseBtnDisplayed(), "Pulse subscription is NOT cancelled");
 		s_assert.assertAll();
 	}
 

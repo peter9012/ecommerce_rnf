@@ -83,12 +83,12 @@ public class StoreFrontHomePage extends StoreFrontWebsiteBasePage{
 	private final By MEET_THE_DOCTORS_TXT_LOC = By.xpath("//h1[contains(text(),'Meet the Doctors')]");
 	private final By CONTINUE_SHOPPING_CRP_BTN_LOC = By.xpath("//button[contains(text(),'Continue')]");
 
+	private String appliedFilterNameLoc = "//div[@id='applied_filters']/descendant::li[contains(text(),'%s')]";
 	private String specificProductAddToCRPBtnLoc = "//div[@id='product_category']/following-sibling::div/descendant::span[text()='Add to CRP'][%s]";
 	private String viewDetailsLinkLoc = "//div[contains(@class,'enrollmentKit-wrapper')]/descendant::a[contains(text(),'View Details')][%s]";
 	private String expandedKitDescriptionLoc = "//div[contains(@class,'enrollmentKit-wrapper')]/div[%s]//div[@class='detailed-description']";
 	private String closeBtnForKitDetailsLoc = "//div[contains(@class,'enrollmentKit-wrapper')]/div[%s]//a[@class='enrollKit-close']";
 	private String kitNameLoc = "//label[text()='%s' or text()='%s']/preceding::input[1]";
-	private String priceOfProductLoc = "//div[contains(@class,'product__listing')]/descendant::span[@id='cust_price'][contains(text(),'$')][%s]";
 	private String socialMediaIconLoc = "//div[@class='container']//a[contains(@href,'%s')]";
 	private String teamMemberNameLoc = "//div[@id='modal_front']/div[%s]//div[@class='title']/h4";
 	private String categoryUnderShopSkinCareLoc = topNavigationLoc+"//a[@title='%s']";
@@ -1036,4 +1036,16 @@ public class StoreFrontHomePage extends StoreFrontWebsiteBasePage{
 		logger.info("Clicked Add to CRP button of Product Number : " + productNum);
 		return this;
 	}
+	
+	/***
+	  * This method verify the first filter option under shop by price filter
+	  * is applied or removed successfully or not
+	  * 
+	  * @param filter name
+	  * @return boolean value.
+	  * 
+	  */
+	 public boolean isFilterAppliedAndRemovedSuccessfully(String filterName){
+	  return driver.isElementPresent(By.xpath(String.format(appliedFilterNameLoc,filterName)));
+	 }
 }

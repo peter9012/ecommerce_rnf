@@ -1345,7 +1345,7 @@ public class AutoshipTest extends StoreFrontWebsiteBaseTest{
 		String textToAssertInURL = "autoship/cart";
 		lastName = TestConstants.LAST_NAME;
 		String billingDetailsOnUI = null;
-		String cardLastName = null;
+		String cardLastName = TestConstants.CARD_LASTNAME;
 		String defaultBillingProfileName = null;
 
 		//Login to application.
@@ -1364,7 +1364,7 @@ public class AutoshipTest extends StoreFrontWebsiteBaseTest{
 		sfCheckoutPage.enterBillingAddressDetails(firstName, lastName, addressLine1, addressLine2, city, state, postalCode, phoneNumber);
 		sfCheckoutPage.clickBillingDetailsNextbutton();
 		sfCheckoutPage.clickUseAsEnteredButtonOnPopUp();
-		cardLastName = sfCheckoutPage.getLastName(cardName);
+		//cardLastName = sfCheckoutPage.getLastName(cardName);
 		s_assert.assertTrue(sfCheckoutPage.isNewBillingDetailsVisibleOnUI(cardLastName),"New Billing Details do not get updated as Default Billing details on Checkout Page");
 
 		//Editing Billing Profile and entering Specific Address Type 2 and Save payment
@@ -1416,7 +1416,7 @@ public class AutoshipTest extends StoreFrontWebsiteBaseTest{
 		String textToAssertInURL = "autoship/cart";
 		lastName = TestConstants.LAST_NAME;
 		String billingDetailsOnUI = null;
-		String cardLastName = null;
+		String cardLastName = TestConstants.CARD_LASTNAME;
 		String defaultBillingProfileName = null;
 
 		//Login to application.
@@ -1435,7 +1435,7 @@ public class AutoshipTest extends StoreFrontWebsiteBaseTest{
 		sfCheckoutPage.enterBillingAddressDetails(firstName, lastName, addressLine1, addressLine2, city, state, postalCode, phoneNumber);
 		sfCheckoutPage.clickBillingDetailsNextbutton();
 		sfCheckoutPage.clickUseAsEnteredButtonOnPopUp();
-		cardLastName = sfCheckoutPage.getLastName(cardName);
+		//cardLastName = sfCheckoutPage.getLastName(cardName);
 		s_assert.assertTrue(sfCheckoutPage.isNewBillingDetailsVisibleOnUI(cardLastName),"New Billing Details do not get updated as Default Billing details on Checkout Page");
 
 		//Editing Billing Profile and entering Specific Address Type 2 and Save payment

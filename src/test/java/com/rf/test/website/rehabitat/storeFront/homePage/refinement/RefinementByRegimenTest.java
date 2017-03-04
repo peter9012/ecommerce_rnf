@@ -36,10 +36,10 @@ public class RefinementByRegimenTest extends StoreFrontWebsiteBaseTest{
 		s_assert.assertTrue(sfShopSkinCarePage.isCategoryNameVisibleInShopByCategoryDD(categoryRedefine), categoryRedefine+" is not visible in shop by category DD");
 		s_assert.assertFalse(sfShopSkinCarePage.isCategoryNameVisibleInShopByCategoryDD(categoryConsultantOnly), categoryConsultantOnly+" is visible in shop by category DD for PC");
 		sfShopSkinCarePage.clickShopByCategoryDD();
-		String categoryName = sfShopSkinCarePage.refineProductByCategoryAndReturnCategoryName().toLowerCase();
+		String categoryName = sfShopSkinCarePage.refineProductByCategoryAndReturnCategoryName();
 		String currentURL = sfShopSkinCarePage.getCurrentURL().toLowerCase();
-		s_assert.assertTrue(currentURL.contains(categoryName) && sfHomePage.isTextPresent(categoryName),"Current url should contain category name is "+categoryName+"but actual on UI is "+currentURL+" and category details page is not present");
+		s_assert.assertTrue(currentURL.contains(categoryName.toLowerCase()) && sfHomePage.isFilterAppliedAndRemovedSuccessfully(categoryName),"Current url should contain category name is "+categoryName.toLowerCase()+"but actual on UI is "+currentURL+" and category details page is not present");
 		s_assert.assertAll();
 	}
-	
+
 }

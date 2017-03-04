@@ -59,6 +59,9 @@ public class TestConstants {
 	public static final String PASSWORD_RECOVERY_SUBMIT_EMAIL_NOT_REGISTERED_MESSAGE = "You do not have an account with us. Please create your account";
 	public static final String NON_DELIVERABLE_ADDRESS_MSG = "Address entered may not be a deliverable address";
 	public static final String PROMOTION_OVERLAY_MSG = "Your favourite Rodan + Fields® products automatically delivered to your doorstep";
+	public static final String LOW_PRICE_FILTER_US="$0-$49.99";
+	public static final String MID_PRICE_FILTER_US="$50-$199.99";
+	public static final String HIGH_PRICE_FILTER_US="$200-$499.99";
 	
 	// Order page Details
 	public static final String TITLE_OF_ORDER_DETAILS_PAGE = "Order Details | Rodan and Fields";
@@ -138,7 +141,8 @@ public class TestConstants {
 	public static final String SHIPPING_METHOD_UPS_OVERNIGHT = "UPS Overnight";
 	public static final String CARD_TYPE = "Visa";
 	public static final String CARD_NUMBER = "4012000077777777";
-	public static final String CARD_NAME = "auto lauto";
+	public static final String CARD_LASTNAME = "lauto";
+	public static final String CARD_NAME = "auto"+CARD_LASTNAME;
 	public static final String CVV = "123";
 	public static final String CARD_NUMBER_2 = "5424180279791773";
 	public static final String CARD_NUMBER_MORE_THAN_16_DIGIT = "47474747474747474";

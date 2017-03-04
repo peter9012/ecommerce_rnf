@@ -197,8 +197,6 @@ public class TopNavigationTest extends StoreFrontWebsiteBaseTest{
 		String executiveTeamURL = "executive-team";
 		String whoWeAreURL = "who-we-are";
 		String givingBackURL ="giving-back";
-
-		sfHomePage.loginToStoreFront(pcUserWithPWSSponsor(),  password,true);
 		//Verify meet the doctors link.
 		sfHomePage.clickMeetTheDoctorsLink();
 		s_assert.assertTrue(sfHomePage.isMeetTheDoctorsPagePresent(),"'Meet the Doctors' page either doesn't have the URL as 'meet-the-doctors' or meet the doctor Text is not present on page");

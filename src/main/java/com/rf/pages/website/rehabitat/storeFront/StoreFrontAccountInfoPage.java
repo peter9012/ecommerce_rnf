@@ -389,7 +389,7 @@ public class StoreFrontAccountInfoPage extends StoreFrontWebsiteBasePage{
 	 */
 	public String getProfileUpdationMessage(){
 		String []profileUpdationMessage = driver.findElement(PROFILE_UPDATION_MESSAGE_LOC).getText().split("×"); 
-		logger.info("profile updation message is: "+profileUpdationMessage);
+		logger.info("profile updation message is: "+profileUpdationMessage[0]);
 		return profileUpdationMessage[1].trim();
 	}
 

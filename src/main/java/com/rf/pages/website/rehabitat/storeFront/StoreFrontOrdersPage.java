@@ -753,8 +753,9 @@ public class StoreFrontOrdersPage extends StoreFrontWebsiteBasePage{
 	public void clickRunAutoshipOrder(String row){
 		driver.click(By.xpath(String.format(autoshipOrderRunNowLoc, row)));
 		logger.info("Autoship run now link clicked for row "+row);
+		driver.pauseExecutionFor(2000);
 		driver.quickWaitForElementPresent(CONFIRM_AUTOSHIP_ORDER_BTN_LOC);
-		driver.click(CONFIRM_AUTOSHIP_ORDER_BTN_LOC);
+		driver.clickByJS(RFWebsiteDriver.driver,CONFIRM_AUTOSHIP_ORDER_BTN_LOC);
 		logger.info("CONFIRM button from the popup clicked");
 		driver.pauseExecutionFor(5000);// the functionality taking time, so deliberately added
 		driver.waitForPageLoad();

@@ -172,7 +172,7 @@ public class StoreFrontWebsiteBasePage extends RFBasePage {
 	private final By CONSULTANT_ONLY_PRODUCTS_LINK_LOC = By
 			.xpath("//div[@class='navbar-inverse']//a[@title='CONSULTANT ONLY']");
 	//private final By ERROR_MESSAGE_FOR_THRESHOLD = By.xpath("//div[@class='global-alerts']/div");
-	private final By TOTAL_NO_OF_PRODUCTS_LOC = By.xpath("//div[contains(@class,'product__listing')]/descendant::span[@id='cust_price'][contains(text(),'$')]");
+	private final By TOTAL_NO_OF_PRODUCTS_LOC = By.xpath("//div[contains(@class,'product__listing')]/descendant::span[@id='retail'][contains(text(),'$')]");
 	private final By WELCOME_DD_EDIT_PC_PERKS_LOC = By.xpath("//a[text()='Edit PC Perks']");
 	private final By WELCOME_DD_PC_PERKS_FAQ_LOC = By.xpath("//a[text()='PC Perks FAQ']");
 	private final By WELCOME_DD_PC_PERKS_STATUS_LOC = By.xpath("//a[text()='PC Perks Status']");
@@ -296,7 +296,7 @@ public class StoreFrontWebsiteBasePage extends RFBasePage {
 	private final By WHY_RF_LOC = By.xpath(topNavigationLoc + "//a[contains(@title,'WHY')]");
 	private final By MEET_OUR_COMMUNITY_LOC = By.xpath(topNavigationLoc + "//a[contains(@title,'MEET OUR')]");
 
-
+	protected String priceOfProductLoc = "//div[contains(@class,'product__listing')]/descendant::span[@id='retail'][contains(text(),'$')][%s]";
 	private String productNameAllItemsInCartLoc = "//span[@class='item-name' and contains(text(),%s)]";
 	protected String addToCartButtonLoc = "//div[contains(@class,'product__listing')]/descendant::*[contains(text(),'Add to bag')][%s]";
 	private String errorMessageLoc = "//div[@class='global-alerts']/div[normalize-space(contains(text() , '%s'))]";
@@ -3965,6 +3965,7 @@ public class StoreFrontWebsiteBasePage extends RFBasePage {
 			driver.findElement(By.xpath(String.format(errorMessageLoc,"Failed to create subscription")));
 			driver.clickByJS(RFWebsiteDriver.driver,By.xpath("//div[@class='global-alerts']/following::a[contains(text(),'Continue')][1]"));
 			driver.waitForPageLoad();
+			logger.info("tokenization has failed,clicked on continue button to retry");
 			return true;
 		}catch(Exception e){
 			return false;

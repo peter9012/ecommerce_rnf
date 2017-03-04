@@ -2,6 +2,7 @@ package com.rf.test.website.rehabitat.storeFront.homePage.refinement;
 
 import org.testng.annotations.Test;
 
+import com.rf.core.website.constants.TestConstants;
 import com.rf.test.website.rehabitat.storeFront.baseTest.StoreFrontWebsiteBaseTest;
 
 public class RFRefineRemovalTest extends StoreFrontWebsiteBaseTest{
@@ -17,7 +18,8 @@ public class RFRefineRemovalTest extends StoreFrontWebsiteBaseTest{
 		String priceRange0to49 = "0To49";
 		String priceRange50to199 = "50To199";
 		String priceRange200to499 = "200To499";
-		sfHomePage.clickAllProducts();
+		sfShopSkinCarePage = sfHomePage.clickAllProducts();
+		sfShopSkinCarePage.productPriceFilterLowToHigh();
 		//0 to 49 price range
 		sfHomePage.selectFirstOptionInShopByPriceFilter();
 		totalNoOfProduct = sfHomePage.getTotalNoOfProduct();
@@ -27,7 +29,7 @@ public class RFRefineRemovalTest extends StoreFrontWebsiteBaseTest{
 		}
 		sfHomePage.selectFirstOptionInShopByPriceFilter();
 		totalNoOfProduct = sfHomePage.getTotalNoOfProduct();
-		s_assert.assertTrue(sfHomePage.isShopByPriceFilterRemovedSuccessfully(totalNoOfProduct, priceRange0to49), "0 to 49 Filter not removed successfully");
+		s_assert.assertFalse(sfHomePage.isFilterAppliedAndRemovedSuccessfully(TestConstants.LOW_PRICE_FILTER_US), "0 to 49 Filter not removed successfully");
 		//50 to 199 price range
 		sfHomePage.selectSecondOptionInShopByPriceFilter();
 		totalNoOfProduct = sfHomePage.getTotalNoOfProduct();
@@ -37,7 +39,7 @@ public class RFRefineRemovalTest extends StoreFrontWebsiteBaseTest{
 		}
 		sfHomePage.selectSecondOptionInShopByPriceFilter();
 		totalNoOfProduct = sfHomePage.getTotalNoOfProduct();
-		s_assert.assertTrue(sfHomePage.isShopByPriceFilterRemovedSuccessfully(totalNoOfProduct, priceRange50to199), "50 to 199 Filter not removed successfully");
+		s_assert.assertFalse(sfHomePage.isFilterAppliedAndRemovedSuccessfully(TestConstants.MID_PRICE_FILTER_US), "50 to 199 Filter not removed successfully");
 		//200 to 499 price range
 		sfHomePage.selectThirdOptionInShopByPriceFilter();
 		totalNoOfProduct = sfHomePage.getTotalNoOfProduct();
@@ -47,7 +49,7 @@ public class RFRefineRemovalTest extends StoreFrontWebsiteBaseTest{
 		}
 		sfHomePage.selectThirdOptionInShopByPriceFilter();
 		totalNoOfProduct = sfHomePage.getTotalNoOfProduct();
-		s_assert.assertTrue(sfHomePage.isShopByPriceFilterRemovedSuccessfully(totalNoOfProduct, priceRange200to499), "200 to 499 Filter not removed successfully");
+		s_assert.assertFalse(sfHomePage.isFilterAppliedAndRemovedSuccessfully(TestConstants.HIGH_PRICE_FILTER_US), "200 to 499 Filter not removed successfully");
 		s_assert.assertAll();
 	}
 

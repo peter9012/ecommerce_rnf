@@ -20,7 +20,7 @@ public class ViewAreasOfSiteFromHomePageTest extends StoreFrontWebsiteBaseTest{
 		String category_Featured = "FEATURED";
 		String category_Essentials = "ESSENTIALS";
 		String category_Reverse = "REVERSE";
-		String category_Enhancement = "ENHANCEMENTS";
+		String category_Enhancement = "ENHANCEMENT";
 		String category_Soothe = "SOOTHE";
 		String category_Redefine = "REDEFINE";
 		String socialIconFacebook = "facebook";
@@ -230,7 +230,7 @@ public class ViewAreasOfSiteFromHomePageTest extends StoreFrontWebsiteBaseTest{
 	public void testSearchConsultantOnlyProductByAnonymousRCPCUser_5(){
 		sfHomePage.mouseHoverOn(TestConstants.SHOP_SKINCARE);
 		s_assert.assertFalse(sfHomePage.isConsultantOnlyProductsLinkDisplayed(), "Consultant Only Link should NOT be present for anonymous user");
-		sfHomePage.loginToStoreFront(pcUserWithPWSSponsor(),  password,true);
+		sfHomePage.loginToStoreFront(pcUserWithPWSSponsor(), password,true);
 		sfHomePage.mouseHoverOn(TestConstants.SHOP_SKINCARE);
 		s_assert.assertFalse(sfHomePage.isConsultantOnlyProductsLinkDisplayed(), "Consultant Only Link should NOT be present for PC user");
 		sfHomePage.clickWelcomeDropdown();

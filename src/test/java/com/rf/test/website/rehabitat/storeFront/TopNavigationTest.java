@@ -15,7 +15,7 @@ public class TopNavigationTest extends StoreFrontWebsiteBaseTest{
 	 * new tab which contain calendar
 	 *     
 	 */
-	@Test(enabled=true)
+	@Test(enabled=false)//no such functionality coming on UI
 	public void testBecomeAConsultantEvents_73(){
 		String currentWindowID = null; 
 		String currentURL = null;

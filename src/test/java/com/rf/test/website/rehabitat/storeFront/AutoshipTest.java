@@ -117,7 +117,6 @@ public class AutoshipTest extends StoreFrontWebsiteBaseTest{
 		s_assert.assertAll();
 	}
 
-
 	/***
 	 * qTest : TC-407 Update Autoship Cart- User can't Edit Shipment section on this page
 	 * Description : This test validates that No shipping section is present on Autoship cart page

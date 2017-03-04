@@ -495,6 +495,7 @@ public class ProductsAndCartDetailsTest extends StoreFrontWebsiteBaseTest{
 		s_assert.assertAll();
 	}
 
+
 	/***
 	 * qTest : TC-157 Product Details page- Qty
 	 * Description : This test validates quantity with different values
@@ -504,42 +505,42 @@ public class ProductsAndCartDetailsTest extends StoreFrontWebsiteBaseTest{
 	public void testProductDetailsPageQty_157(){
 		String productQty=null;
 		String qtyToEnter=null;
-        String qtyOnCheckoutPopup = null;
+		String qtyOnCheckoutPopup = null;
 		sfShopSkinCarePage=sfHomePage.clickAllProducts();
 		sfShopSkinCarePage.clickOnFirstProductQuickViewButtonAndReturnProductName();
 		productQty=sfShopSkinCarePage.getProductQuantityFromQuickViewOption();
-		
+
 		// Enter product quantity increased by 1
 		qtyToEnter = sfShopSkinCarePage.updateQuantityByOne(productQty);
 		sfShopSkinCarePage.enterQuantityonQuickViewPopup(qtyToEnter);
-		sfShopSkinCarePage.addProductToCartFromQuickViewPopup(TestConstants.ORDER_TYPE_ADHOC);
+		sfShopSkinCarePage.addProductToCartFromQuickViewPopup(TestConstants.ORDER_TYPE_ENROLLMENT);
 		qtyOnCheckoutPopup = sfShopSkinCarePage.getQuantityAddedFromCheckoutPopup();
 		s_assert.assertTrue(qtyToEnter.equals(qtyOnCheckoutPopup),"Product Quantity is not found same on Checkout popup. Expected : "+qtyToEnter+". Actual : "+qtyOnCheckoutPopup);
 		sfShopSkinCarePage.clickOnCloseButtonForCheckoutPopUp();
-		
+
 		// Enter Product Quantity as zero
 		qtyToEnter = "0";
 		sfShopSkinCarePage.clickOnFirstProductQuickViewButtonAndReturnProductName();
 		sfShopSkinCarePage.enterQuantityonQuickViewPopup(qtyToEnter);
-		sfShopSkinCarePage.addProductToCartFromQuickViewPopup(TestConstants.ORDER_TYPE_ADHOC);
+		sfShopSkinCarePage.addProductToCartFromQuickViewPopup(TestConstants.ORDER_TYPE_ENROLLMENT);
 		qtyOnCheckoutPopup = sfShopSkinCarePage.getQuantityAddedFromCheckoutPopup();
 		s_assert.assertTrue(qtyOnCheckoutPopup.equals("1"),"Product Quantity is not found same on Checkout popup. Expected : 1. Actual : "+qtyOnCheckoutPopup);
 		sfShopSkinCarePage.clickOnCloseButtonForCheckoutPopUp();
-		
+
 		// Enter Product Quantity as Special character
 		qtyToEnter = "$";
 		sfShopSkinCarePage.clickOnFirstProductQuickViewButtonAndReturnProductName();
 		sfShopSkinCarePage.enterQuantityonQuickViewPopup(qtyToEnter);
-		sfShopSkinCarePage.addProductToCartFromQuickViewPopup(TestConstants.ORDER_TYPE_ADHOC);
+		sfShopSkinCarePage.addProductToCartFromQuickViewPopup(TestConstants.ORDER_TYPE_ENROLLMENT);
 		qtyOnCheckoutPopup = sfShopSkinCarePage.getQuantityAddedFromCheckoutPopup();
 		s_assert.assertTrue(qtyOnCheckoutPopup.equals("1"),"Product Quantity is not found same on Checkout popup. Expected : 1. Actual : "+qtyOnCheckoutPopup);
 		sfShopSkinCarePage.clickOnCloseButtonForCheckoutPopUp();
-		
+
 		// Enter Product Quantity as blank
 		qtyToEnter = "";
 		sfShopSkinCarePage.clickOnFirstProductQuickViewButtonAndReturnProductName();
 		sfShopSkinCarePage.enterQuantityonQuickViewPopup(qtyToEnter);
-		sfShopSkinCarePage.addProductToCartFromQuickViewPopup(TestConstants.ORDER_TYPE_ADHOC);
+		sfShopSkinCarePage.addProductToCartFromQuickViewPopup(TestConstants.ORDER_TYPE_ENROLLMENT);
 		qtyOnCheckoutPopup = sfShopSkinCarePage.getQuantityAddedFromCheckoutPopup();
 		s_assert.assertTrue(qtyOnCheckoutPopup.equals("1"),"Product Quantity is not found same on Checkout popup. Expected : 1. Actual : "+qtyOnCheckoutPopup);
 		s_assert.assertAll();
@@ -722,7 +723,7 @@ public class ProductsAndCartDetailsTest extends StoreFrontWebsiteBaseTest{
 		String productName = null;
 		String productNameOnPDP = null;
 		String recentlyViewedProduct = null;
-		
+
 		sfShopSkinCarePage=sfHomePage.clickAllProducts();
 		productName = sfShopSkinCarePage.getProductNameFromAllProductPage(TestConstants.PRODUCT_NUMBER);
 		sfProductDetailPage = sfShopSkinCarePage.clickNameOfProduct(TestConstants.PRODUCT_NUMBER);
@@ -968,7 +969,7 @@ public class ProductsAndCartDetailsTest extends StoreFrontWebsiteBaseTest{
 		lastName = TestConstants.LAST_NAME;
 		timeStamp = CommonUtils.getCurrentTimeStamp();
 		email = firstName+timeStamp+TestConstants.EMAIL_SUFFIX;
-		
+
 		sfShopSkinCarePage=sfHomePage.clickAllProducts();
 		sfShopSkinCarePage.addProductToCart(TestConstants.PRODUCT_NUMBER, TestConstants.ORDER_TYPE_ENROLLMENT);
 		sfShopSkinCarePage.checkoutTheCartFromPopUp();
@@ -1172,24 +1173,24 @@ public class ProductsAndCartDetailsTest extends StoreFrontWebsiteBaseTest{
 	}
 
 	/***
-	  * qTest : TC-63 Sort/Order Removal by clicking Clear All link
-	  * 
-	  * Description : This test validates the sorting of product base on price filter applied
-	  * and also Unsorting of product when filter removed by clicking clear all link.
-	  *     
-	  */ 
-	 @Test(enabled=true)//No price present for first 3 products.
-	 public void testSortAndUnsortProductBaseOnPriceFilterApplied_63(){
-	  
-	  sfShopSkinCarePage=sfHomePage.clickAllProducts();
-	  sfShopSkinCarePage.refineProductByCategoryAndReturnCategoryName();
-	  sfShopSkinCarePage.productPriceFilterLowToHighSelect();
-	  s_assert.assertTrue(sfShopSkinCarePage.isPriceFilterLowToHighAppliedSuccessfully(),"Selected Price filter 'Low To High' is not applied to product successfully");
-	  //Click clear all link and verify all filters are removed.
-	  sfShopSkinCarePage.selectClearAllLink(); 
-	  s_assert.assertTrue(sfShopSkinCarePage.isDefaultFilterAppliedSuccessfully(),"Default Filter has not been applied successfully on Price filter");
-	  s_assert.assertAll();
-	 }
+	 * qTest : TC-63 Sort/Order Removal by clicking Clear All link
+	 * 
+	 * Description : This test validates the sorting of product base on price filter applied
+	 * and also Unsorting of product when filter removed by clicking clear all link.
+	 *     
+	 */ 
+	@Test(enabled=true)//No price present for first 3 products.
+	public void testSortAndUnsortProductBaseOnPriceFilterApplied_63(){
+
+		sfShopSkinCarePage=sfHomePage.clickAllProducts();
+		sfShopSkinCarePage.refineProductByCategoryAndReturnCategoryName();
+		sfShopSkinCarePage.productPriceFilterLowToHighSelect();
+		s_assert.assertTrue(sfShopSkinCarePage.isPriceFilterLowToHighAppliedSuccessfully(),"Selected Price filter 'Low To High' is not applied to product successfully");
+		//Click clear all link and verify all filters are removed.
+		sfShopSkinCarePage.selectClearAllLink(); 
+		s_assert.assertTrue(sfShopSkinCarePage.isDefaultFilterAppliedSuccessfully(),"Default Filter has not been applied successfully on Price filter");
+		s_assert.assertAll();
+	}
 
 	/***
 	 * qTest : TC-603 Proceed to Checkout Confirmation alert for Ad-hoc orders - PC
@@ -1319,24 +1320,24 @@ public class ProductsAndCartDetailsTest extends StoreFrontWebsiteBaseTest{
 	}
 
 	/***
-	  * qTest : TC-340 Product Listing Page- PC
-	  * Description : This test validates login with pc and observe the products w.r.t the options
-	  *     
-	  */
-	 @Test(enabled=true)
-	 public void testProductListingPagePC_340(){
-	  //Already covered in other tests
-	 }
+	 * qTest : TC-340 Product Listing Page- PC
+	 * Description : This test validates login with pc and observe the products w.r.t the options
+	 *     
+	 */
+	@Test(enabled=true)
+	public void testProductListingPagePC_340(){
+		//Already covered in other tests
+	}
 
-	 /***
-	  * qTest : TC-341 Product Listing Page- Consultant
-	  * Description : This test validates login with consultant and observe the products w.r.t the options
-	  *     
-	  */
-	 @Test(enabled=true)
-	 public void testProductListingPageConsultant_341(){
-	  //Already covered in other tests
-	 }
+	/***
+	 * qTest : TC-341 Product Listing Page- Consultant
+	 * Description : This test validates login with consultant and observe the products w.r.t the options
+	 *     
+	 */
+	@Test(enabled=true)
+	public void testProductListingPageConsultant_341(){
+		//Already covered in other tests
+	}
 
 	/***
 	 * qTest : TC-257 Added to your CRP Autoship Cart Popup For CRP flow
@@ -1373,5 +1374,5 @@ public class ProductsAndCartDetailsTest extends StoreFrontWebsiteBaseTest{
 		s_assert.assertTrue(currentURL.contains("autoship/cart"), "Expected URL should contains 'autoship/cart' but actual on UI is"+currentURL);
 		s_assert.assertAll();
 	}
-	
+
 }

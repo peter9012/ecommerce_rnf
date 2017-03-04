@@ -291,7 +291,8 @@ public class MiniCartTest extends StoreFrontWebsiteBaseTest{
 		s_assert.assertTrue(sfCartPage.isProductPriceUpdatedInCartAsPerUser(specificPriceForValidUser,priceOnCartPageForValidUser),"Specific price do not get updated as per PC user on Cart page . Expected : " + specificPriceForValidUser + ". Actual : " + priceOnCartPageForValidUser);
 		s_assert.assertAll();
 	}
-/***
+
+	/***
 	 * qTest : TC-147 View Mini Shipping bag
 	 * Description : This test validates product name, quantity ,subtotal, no of item
 	 * In mini cart    
@@ -312,15 +313,17 @@ public class MiniCartTest extends StoreFrontWebsiteBaseTest{
 		String totalOfProdutsInMiniCart = null;
 		String urlToAssert = "/cart";
 		String currentURL = null;
-
-		sfShopSkinCarePage = sfHomePage.clickAllProducts();
-		sfShopSkinCarePage.addProductToCart(TestConstants.PRODUCT_NUMBER, TestConstants.ORDER_TYPE_ADHOC);
+		sfCartPage = sfHomePage.clickMiniCartBagLink();
+		sfCartPage.removeAllProductsFromCart();
+		sfCartPage.clickRodanAndFieldsLogo();
+		sfShopSkinCarePage = sfCartPage.clickAllProducts();
+		sfShopSkinCarePage.addProductToCart(TestConstants.PRODUCT_NUMBER, TestConstants.ORDER_TYPE_ENROLLMENT);
 		sfCartPage = sfShopSkinCarePage.checkoutTheCartFromPopUp();
 		totalNoOfItemsOnCartPage = sfCartPage.getTotalNoOfItemsInCart();
 		totalNoOfItemFromMiniCart = sfCartPage.getNumberOfItemFromMiniCart();
 		s_assert.assertTrue(totalNoOfItemsOnCartPage == Integer.parseInt(totalNoOfItemFromMiniCart), "Expected total no of items in mini shopping bag icon is "+totalNoOfItemsOnCartPage+" Actual on UI is "+totalNoOfItemsOnCartPage);
 		sfCartPage.clickAddMoreItemsBtn();
-		sfShopSkinCarePage.addProductToCart(String.valueOf(Integer.parseInt(TestConstants.PRODUCT_NUMBER)+1), TestConstants.ORDER_TYPE_ADHOC);
+		sfShopSkinCarePage.addProductToCart(String.valueOf(Integer.parseInt(TestConstants.PRODUCT_NUMBER)+1), TestConstants.ORDER_TYPE_ENROLLMENT);
 		sfShopSkinCarePage.checkoutTheCartFromPopUp();
 		totalNoOfItemsOnCartPage = sfCartPage.getTotalNoOfItemsInCart();
 		totalNoOfItemFromMiniCart = sfCartPage.getNumberOfItemFromMiniCart();

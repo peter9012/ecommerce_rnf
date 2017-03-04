@@ -67,7 +67,7 @@ public class StoreFrontShopSkinCarePage extends StoreFrontWebsiteBasePage{
 	private String addToPCPerksButtonThroughProductNumber = "//div[@class='product-item'][%s]//span[contains(text(),'subscribe + save')]";
 	private String quickViewForSpecificProductLoc = "//div[@class='product__listing product__grid']//div[@class='product-item'][%s]/a[@class='thumb']";
 	private String productNameLoc = "//div[@class='product__listing product__grid']//a[contains(text(),'%s')]";
-	private String priceOfProductLoc = "//div[contains(@class,'product__listing')]/descendant::span[@id='cust_price'][contains(text(),'$')][%s]";
+	private String priceOfProductLoc = "//div[contains(@class,'product__listing')]/descendant::span[contains(text(),'$')][%s]";
 	private String categoryNameLoc = "//div[@id='product-facet']//descendant::ul[2]/li/descendant::span[contains(text(),'%s')]/preceding::label[1]";
 	private String randomProductCategoryCheckbox = "//div[@id='product-facet']//descendant::ul[2]/li[%s]//descendant::label[2]";
 	private String yourpriceOfProductLoc = "//div[contains(@class,'product__listing')]//div[@class='product-item'][%s]//em[contains(text(),'Your Price')]/..";
@@ -441,9 +441,8 @@ public class StoreFrontShopSkinCarePage extends StoreFrontWebsiteBasePage{
 	 * 
 	 */
 	public String getProductPrice(String productNumber){
-		return driver.findElement(By.xpath(String.format(consultantPriceLoc, productNumber))).getText();
+		return driver.findElement(By.xpath(String.format(yourpriceOfProductLoc, productNumber))).getText();
 	}
-
 	/***
 	 * This method return retail and SV price
 	 * 

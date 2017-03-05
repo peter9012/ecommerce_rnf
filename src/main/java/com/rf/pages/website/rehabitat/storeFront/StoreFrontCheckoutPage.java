@@ -26,7 +26,7 @@ public class StoreFrontCheckoutPage extends StoreFrontWebsiteBasePage{
 
 	// private final By TERMS_AND_CONDITIONS_CHCKBOX_FOR_CONSULTANT_CRP_LOC = By.xpath("//a[contains(text(),'Consultant Replenishment Program Terms & Conditions')]/ancestor::label[1]/preceding-sibling::input[1]");
 	private final By TERMS_AND_CONDITIONS_CHCKBOX_FOR_AUTOSHIP_LOC = By.xpath("//a[contains(text(),'Terms & Conditions')]/ancestor::label[1]/preceding-sibling::input[@id][1]");
-//	private final By TERMS_AND_CONDITIONS_CHCKBOX_FOR_AUTOSHIP_LOC = By.xpath("//a[contains(text(),'Terms & Conditions')]/ancestor::label[1]/preceding-sibling::input[1]");
+	//	private final By TERMS_AND_CONDITIONS_CHCKBOX_FOR_AUTOSHIP_LOC = By.xpath("//a[contains(text(),'Terms & Conditions')]/ancestor::label[1]/preceding-sibling::input[1]");
 	private final By EDIT_LINK_OF_SHIPPING_ADDRESS_LOC=By.xpath("//div[contains(text(),'Shipping')]/following::a[@class='editIcon'][1]");
 	private final By DELIVERY_AT_ORDER_REVIEW_PAGE_LOC = By.xpath("//div[contains(text(),'Order Summary')]/following::p[contains(text(),'Delivery')]/following::span[1]");
 	private final By FIRST_NAME_LOC = By.id("first-name");
@@ -1360,6 +1360,7 @@ public class StoreFrontCheckoutPage extends StoreFrontWebsiteBasePage{
 	 * 
 	 */
 	public boolean isErrrorMsgsForAllMandatoryFieldsOfShippingAddressArePresent(){
+		driver.pauseExecutionFor(3000);
 		return isMandatoryMsgPresentForField("firstName") &&
 				isMandatoryMsgPresentForField("line1") &&
 				isMandatoryMsgPresentForField("townCity") &&

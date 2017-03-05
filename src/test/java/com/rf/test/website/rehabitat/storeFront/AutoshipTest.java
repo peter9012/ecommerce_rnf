@@ -469,12 +469,30 @@ public class AutoshipTest extends StoreFrontWebsiteBaseTest{
 		sfHomePage.loginToStoreFront(consultantWithPulseAndWithCRPForCancellation(), password,true);
 		sfHomePage.clickWelcomeDropdown();
 		sfAutoshipStatusPage = sfHomePage.navigateToAutoshipStatusPage();
+		if(sfAutoshipStatusPage.isEnrollIntoCRPButtonPresent()){
+			sfAutoshipStatusPage.clickEnrollInCRPButton();
+			sfHomePage.addFirstProductForCRPCheckout();
+			sfCheckoutPage = sfHomePage.checkoutCRPBag();
+			sfCheckoutPage.clickSaveButton();
+			sfCheckoutPage.clickShippingDetailsNextbutton();
+			sfCheckoutPage.clickBillingDetailsNextbutton();
+			sfCheckoutPage.selectTermsAndConditionsCheckBoxForAutoshipOrder();
+			//		sfCheckoutPage.selectCheckboxForPoliciesAndProcedures();
+			sfCheckoutPage.clickConfirmAutoshipOrderButton();
+			s_assert.assertTrue(sfCheckoutPage.isCRPOrderConfirmedSuccessMsgAppeared(),"CRP Order confirmed success messge is not appeared");
+			sfCheckoutPage.clickRodanAndFieldsLogo();
+			sfCheckoutPage.clickWelcomeDropdown();
+			sfCheckoutPage.navigateToAutoshipStatusPage();
+			s_assert.assertTrue(sfAutoshipStatusPage.getCurrentCRPStatus().contains("Enrolled"),"Consultant does not get enrolled in CRP");
+			sfCheckoutPage.clickRodanAndFieldsLogo();
+		}
+		sfCheckoutPage.clickWelcomeDropdown();
+		sfCheckoutPage.navigateToAutoshipStatusPage();
 		s_assert.assertTrue(sfAutoshipStatusPage.getCurrentCRPStatus().contains("Enrolled"),"Consultant is not enrolled into CRP yet");
 		sfAutoshipStatusPage.clickCancelCRPLink();
 		sfAutoshipStatusPage.clickCancelCRPButton();
 		s_assert.assertTrue(sfAutoshipStatusPage.getActionSucccessMsgOnAutoshipStatusPage().contains(TestConstants.CANCELLED_CRP_ORDER_SUCCESS_MESSAGE),"Cancelled CRP Order Success Message is not present as expected");
 		s_assert.assertTrue(sfAutoshipStatusPage.isEnrollIntoCRPButtonPresent(),"Enroll in CRP Button is not present After cancelling CRP for consulatnt");
-
 		// Enrolling Consultant in CRP
 		sfAutoshipStatusPage.clickEnrollInCRPButton();
 		sfHomePage.addFirstProductForCRPCheckout();

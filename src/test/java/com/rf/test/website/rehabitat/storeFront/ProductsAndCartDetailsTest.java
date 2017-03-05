@@ -835,6 +835,7 @@ public class ProductsAndCartDetailsTest extends StoreFrontWebsiteBaseTest{
 	}
 
 
+
 	/***
 	 * qTest:TC-154 Product Detail pages- PC Perks Promo as Anonymous user
 	 * 
@@ -844,7 +845,7 @@ public class ProductsAndCartDetailsTest extends StoreFrontWebsiteBaseTest{
 	@Test(enabled=true)
 	public void testPCPerksPromoMsgAnonymousUser_154(){
 		sfShopSkinCarePage = sfHomePage.clickAllProducts();
-		sfProductDetailPage=sfShopSkinCarePage.clickNameOfProductOnAllProductPage("1");
+		sfProductDetailPage=sfShopSkinCarePage.clickNameOfProductOnAllProductPage(TestConstants.PRODUCT_NUMBER);
 		s_assert.assertTrue(sfProductDetailPage.isDescriptionTabPresentAtProductDetailsPage(), "Not on Product details page");
 		//		s_assert.assertTrue(sfShopSkinCarePage.isProductImagePresentAtQuickViewPopup(),
 		//				"Product image is not present at Quick view popup");
@@ -869,7 +870,7 @@ public class ProductsAndCartDetailsTest extends StoreFrontWebsiteBaseTest{
 	public void testPCPerksPromoMsgRCUser_155(){
 		sfHomePage.loginToStoreFront(rcWithOrderWithoutSponsor(),password,true);
 		sfShopSkinCarePage = sfHomePage.clickAllProducts();
-		sfProductDetailPage=sfShopSkinCarePage.clickNameOfProductOnAllProductPage("1");
+		sfProductDetailPage=sfShopSkinCarePage.clickNameOfProductOnAllProductPage(TestConstants.PRODUCT_NUMBER);
 		s_assert.assertTrue(sfProductDetailPage.isDescriptionTabPresentAtProductDetailsPage(), "Not on Product details page");
 		//		s_assert.assertTrue(sfShopSkinCarePage.isProductImagePresentAtQuickViewPopup(),
 		//				"Product image is not present at Quick view popup");
@@ -883,7 +884,6 @@ public class ProductsAndCartDetailsTest extends StoreFrontWebsiteBaseTest{
 		s_assert.assertFalse(sfShopSkinCarePage.isLearnMoreAboutPCPromoPopupDisplayed(), "pc perks promo popup has NOT closed");
 		s_assert.assertAll();
 	}
-
 	/***
 	 * qTest:TC-156 Product details page- Image gallery
 	 * 

@@ -705,7 +705,8 @@ public class StoreFrontShopSkinCarePage extends StoreFrontWebsiteBasePage{
 			int randomNum = CommonUtils.getRandomNum(4,12);
 			logger.info("Random selected category is "+(randomNum-1));
 			categoryName=driver.findElement(By.xpath(String.format(randomCategoryName,randomNum))).getText().trim();
-			driver.click(By.xpath(String.format(randomProductCategoryCheckbox,randomNum)));
+			driver.clickByJS(RFWebsiteDriver.driver,By.xpath(String.format(randomProductCategoryCheckbox,randomNum)));
+			//driver.click(By.xpath(String.format(randomProductCategoryCheckbox,randomNum)));
 			logger.info("Product category selected is "+categoryName);
 			driver.waitForPageLoad();
 			driver.waitForLoadingImageToDisappear();

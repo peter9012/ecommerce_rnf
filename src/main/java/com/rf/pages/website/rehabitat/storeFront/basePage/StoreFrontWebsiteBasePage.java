@@ -3669,7 +3669,7 @@ public class StoreFrontWebsiteBasePage extends RFBasePage {
 		driver.waitForPageLoad();
 		return this;
 	}
-	
+
 	/***
 	 * This method click the save button
 	 * 
@@ -3698,6 +3698,7 @@ public class StoreFrontWebsiteBasePage extends RFBasePage {
 		driver.pauseExecutionFor(2000);
 		return this;
 	}
+
 	/***
 	 * This method enters the pws prefix
 	 * 
@@ -3705,7 +3706,7 @@ public class StoreFrontWebsiteBasePage extends RFBasePage {
 	 * @return
 	 */
 	public StoreFrontWebsiteBasePage enterAvailablePrefix(String prefix) {
-		driver.type(PWS_PREFIX_INPUT_FIELD_LOC, prefix);
+		driver.type(PWS_PREFIX_INPUT_FIELD_LOC, prefix+"\t");
 		logger.info("The pws prefix entered is " + prefix);
 		driver.pauseExecutionFor(2000);
 		return this;

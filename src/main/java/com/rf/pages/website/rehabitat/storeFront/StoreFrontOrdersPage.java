@@ -70,6 +70,7 @@ public class StoreFrontOrdersPage extends StoreFrontWebsiteBasePage{
 	private String informationAtOrderReportConfirmationPage = "//div[text()='%s:']/following::div[1]";
 	private String autoshipStatusLoc = "//div[@class='account-section']/descendant::div[@class='account-orderhistory'][1]//tr[@class='responsive-table-item'][%s]//td[@class='status'][1]";
 	private String autoshipOrderRunNowLoc = "//div[@class='account-section']/descendant::div[@class='account-orderhistory'][1]//tr[@class='responsive-table-item'][%s]//a[text()='Run Now']";
+	private String orderDetailsForOrderNumberLoc = "//a[contains(text(),'%s')]/ancestor::td[1]/following-sibling::td[contains(text(),'%s')]/following-sibling::td[1]";
 
 	/***
 	 * This method get first order number from order history 
@@ -270,7 +271,7 @@ public class StoreFrontOrdersPage extends StoreFrontWebsiteBasePage{
 		logger.info("Navigated back to Orders Page");
 		return this;
 	}
-	
+
 	public String getHeaderOfPage(){
 		return driver.getText(REPORT_PROBLEM_PAGE_HEADER_LOC);
 	}
@@ -649,7 +650,7 @@ public class StoreFrontOrdersPage extends StoreFrontWebsiteBasePage{
 		logger.info(orderNumber+" Order number clicked");
 		return this;
 	}
-	
+
 	/***
 	 * This method clicked on an order number  
 	 * 
@@ -768,5 +769,15 @@ public class StoreFrontOrdersPage extends StoreFrontWebsiteBasePage{
 		return orderType.trim().toLowerCase();
 	}
 
+	/***
+	 * This method return the order detail corresponding to order number 
+	 * @param String orderNumber, String detailToFetch
+	 * @return String
+	 */
+	public String getValueForOrderFromOrderHistory(String orderNum, String detailToFetch){
+		String value = driver.getText(By.xpath(String.format(orderDetailsForOrderNumberLoc,orderNum,detailToFetch))).replace("$","").trim();
+		logger.info(detailToFetch + " for Order number : " + orderNum + " is : " + value);
+		return value;
+	}
 }
 

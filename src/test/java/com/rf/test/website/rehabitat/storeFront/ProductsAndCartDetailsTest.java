@@ -1179,9 +1179,8 @@ public class ProductsAndCartDetailsTest extends StoreFrontWebsiteBaseTest{
 	 * and also Unsorting of product when filter removed by clicking clear all link.
 	 *     
 	 */ 
-	@Test(enabled=true)//No price present for first 3 products.
+	@Test(enabled=true)
 	public void testSortAndUnsortProductBaseOnPriceFilterApplied_63(){
-
 		sfShopSkinCarePage=sfHomePage.clickAllProducts();
 		sfShopSkinCarePage.refineProductByCategoryAndReturnCategoryName();
 		sfShopSkinCarePage.productPriceFilterLowToHighSelect();

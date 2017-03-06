@@ -72,22 +72,23 @@ public class RedirectionAfterLoginTest extends StoreFrontWebsiteBaseTest{
 	}
 
 	/***
-	 * qTest : TC-532 Consultnat with PWS and logs in from different sponsor PWS
-	 * Description : This test validate prefix of consultant after login from different sponsor PWS
-	 *     
-	 */
-	@Test(enabled=false)
-	public void testConsultantWithPWSAndLogsInFromDifferentSponsorPWS_532(){
-		String currentURL = null;
-		String prefix = pwsPrefix();
-		sfHomePage.navigateToUrl(sfHomePage.getBaseUrl()+"/" +sfHomePage.getCountry() +"/pws/" + prefix);
-		currentURL = sfHomePage.getCurrentURL();
-		s_assert.assertFalse(currentURL.contains(prefix),"Current url should contain for "+prefix+" but actual on UI is "+currentURL);
-		sfHomePage.loginToStoreFront(consultantWithPulseAndWithCRP(),  password,true);
-		currentURL = sfHomePage.getCurrentURL();
-		s_assert.assertTrue(currentURL.contains(prefix),"Current url should contain for "+prefix+" but after login actual on UI is "+currentURL);
-		s_assert.assertAll();
-	}
+	  * qTest : TC-532 Consultnat with PWS and logs in from different sponsor PWS
+	  * Description : This test validate prefix of consultant after login from different sponsor PWS
+	  *     
+	  */
+	 @Test(enabled=true)
+	 public void testConsultantWithPWSAndLogsInFromDifferentSponsorPWS_532(){
+	  String currentURL = null;
+	  String randomPrefix = TestConstants.SPONSOR_PREFIX;
+	  String prefix = pwsPrefix();
+	  sfHomePage.navigateToUrl(sfHomePage.getBaseUrl()+"/pws/" + randomPrefix);
+	  currentURL = sfHomePage.getCurrentURL();
+	  s_assert.assertTrue(currentURL.contains(randomPrefix),"Current url should contain for before login "+randomPrefix+" but actual on UI is "+currentURL);
+	  sfHomePage.loginToStoreFront(consultantWithPulseAndWithCRP(),  password,true);
+	  currentURL = sfHomePage.getCurrentURL();
+	  s_assert.assertTrue(currentURL.contains(prefix),"Current url should contain for "+prefix+" but after login actual on UI is "+currentURL);
+	  s_assert.assertAll();
+	 }
 
 	/***
 	 * qTest : TC-533 PC user who has RF corporate as Sponsor should redirect user to Corporate site

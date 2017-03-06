@@ -694,11 +694,12 @@ public class BillingProfileTest extends StoreFrontWebsiteBaseTest{
 
 
 	/***
+	 * TC-429 Billing profiles used for ad-hoc and autoship orders - Consultant
 	 * Description : Add/Edit billing profile at adhoc cart for consultant
-	 *     
+	 *    Autoship part is covered in AutoshipTest class
 	 */
 	@Test
-	public void testAddEditBillingProfileAtAdhocCartForConsultant(){
+	public void testAddEditBillingProfileAtAdhocCartForConsultant_429(){
 		randomWords = CommonUtils.getRandomWord(5);
 		cardName = TestConstants.CARD_NAME + randomWords;
 		lastName = TestConstants.LAST_NAME;
@@ -739,12 +740,14 @@ public class BillingProfileTest extends StoreFrontWebsiteBaseTest{
 		//s_assert.assertTrue(sfCheckoutPage.isAddressFieldPresentAsExpectedOnUI(billingDetailsOnUI,stateAbbreviation),"State : " + stateAbbreviation + " is not present in Actual Billing Address");
 		s_assert.assertAll();
 	}
+	
 	/***
+	 * TC-431 Billing profiles used for ad-hoc and autoship orders - PC
 	 * Description : Add/Edit billing profile at adhoc cart for PC
-	 *     
+	 *      Autoship part is covered in AutoshipTest class
 	 */
 	@Test
-	public void testAddEditBillingProfileAtAdhocCartForPC(){
+	public void testAddEditBillingProfileAtAdhocCartForPC_431(){
 		randomWords = CommonUtils.getRandomWord(5);
 		cardName = TestConstants.CARD_NAME + randomWords;
 		lastName = TestConstants.LAST_NAME;
@@ -787,11 +790,12 @@ public class BillingProfileTest extends StoreFrontWebsiteBaseTest{
 	}
 
 	/***
+	 * TC-430 Billing profiles used for ad-hoc and autoship orders - RC
 	 * Description : Add/Edit billing profile at adhoc cart for RC
-	 *     
+	 *  Autoship part is covered in AutoshipTest class   
 	 */
 	@Test
-	public void testAddEditBillingProfileAtAdhocCartForRC(){
+	public void testAddEditBillingProfileAtAdhocCartForRC_430(){
 		randomWords = CommonUtils.getRandomWord(5);
 		cardName = TestConstants.CARD_NAME + randomWords;
 		lastName = TestConstants.LAST_NAME;

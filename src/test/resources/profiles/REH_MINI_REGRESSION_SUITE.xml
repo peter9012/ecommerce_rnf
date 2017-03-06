@@ -33,9 +33,9 @@
 					<include name="testAddEditBillingProfileFromMyAccountForConsultant"></include>
 					<include name="testAddEditBillingProfileFromMyAccountForPC"></include>
 					<include name="testAddEditBillingProfileFromMyAccountForRC"></include>
-					<include name="testAddEditBillingProfileAtAdhocCartForConsultant"></include>
-					<include name="testAddEditBillingProfileAtAdhocCartForPC"></include>
-					<include name="testAddEditBillingProfileAtAdhocCartForRC"></include>
+					<include name="testAddEditBillingProfileAtAdhocCartForConsultant_429"></include>
+					<include name="testAddEditBillingProfileAtAdhocCartForPC_431"></include>
+					<include name="testAddEditBillingProfileAtAdhocCartForRC_430"></include>
 				</methods>
 			</class>
 

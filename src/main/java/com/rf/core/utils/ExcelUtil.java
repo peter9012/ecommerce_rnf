@@ -14,6 +14,7 @@ import java.io.InputStream;
 import java.text.DecimalFormat;
 import java.util.HashMap;
 import java.util.Iterator;
+import java.util.List;
 
 import org.apache.poi.ss.usermodel.Cell;
 import org.apache.poi.ss.usermodel.DateUtil;
@@ -341,9 +342,9 @@ public class ExcelUtil {
 			XSSFCell cell = rcSheet.getRow(rowId).createCell(colId);
 			cell.setCellValue(newVal);	
 		}
-			
+
 	}
-	
+
 	public static void closeECCOrdersExcelFile(){
 		try {
 			workbook.write(fileOut);
@@ -352,9 +353,70 @@ public class ExcelUtil {
 			e1.printStackTrace();
 		}
 		try {
-			fileOut.close();
+			fileIn.close();
+			fileOut.close();			
 		} catch (Exception e) {
 			Assert.fail(e.toString());
 		}
 	}
+
+	public static void setOrderDetailsInECCExcelFile(String path,String sheetName, int rowId, List<String> orderDetails){
+		XSSFCell cell = null;
+		int col = 0;
+		if(sheetName.equalsIgnoreCase(TestConstants.ECC_ORDER_TYPE_CONSULTANT_ADHOC)){
+			consSheet.createRow(rowId);
+			for(String value : orderDetails){
+				cell = consSheet.getRow(rowId).createCell(col);
+				cell.setCellValue(value);
+				col++;
+			}  
+		}
+		if(sheetName.equalsIgnoreCase(TestConstants.ECC_ORDER_TYPE_PC_ADHOC)){
+			pcSheet.createRow(rowId);
+			for(String value : orderDetails){
+				cell = pcSheet.getRow(rowId).createCell(col);
+				cell.setCellValue(value);
+				col++;
+			}
+		}
+		if(sheetName.equalsIgnoreCase(TestConstants.ECC_ORDER_TYPE_RC_ADHOC)){
+			rcSheet.createRow(rowId);
+			for(String value : orderDetails){
+				cell = rcSheet.getRow(rowId).createCell(col);
+				cell.setCellValue(value);
+				col++;
+			}
+		}
+	}
+
+	public static void createNewSheetInECCOrdersExcelFile(String path, String country){
+		int index=0;
+		String countryName = country.toUpperCase();
+		openFile(path);
+		String consSheetName = TestConstants.ECC_ORDER_TYPE_CONSULTANT_ADHOC+"_"+countryName;
+		String pcSheetName = TestConstants.ECC_ORDER_TYPE_PC_ADHOC+"_"+countryName;
+		String rcSheetName = TestConstants.ECC_ORDER_TYPE_RC_ADHOC+"_"+countryName;
+		if(workbook.getSheet(consSheetName)!=null){
+			index = workbook.getSheetIndex(consSheetName);
+			workbook.removeSheetAt(index); 
+		}
+		if(workbook.getSheet(pcSheetName)!=null){
+			index = workbook.getSheetIndex(pcSheetName);
+			workbook.removeSheetAt(index); 
+		}
+		if(workbook.getSheet(rcSheetName)!=null){
+			index = workbook.getSheetIndex(rcSheetName);
+			workbook.removeSheetAt(index); 
+		}
+		consSheet = workbook.createSheet(consSheetName);
+		pcSheet = workbook.createSheet(pcSheetName);
+		rcSheet = workbook.createSheet(rcSheetName);
+		try {
+			fileOut = CommonUtils.getFileOutputStream(path);
+		} catch (IOException e1) {
+			// TODO Auto-generated catch block
+			e1.printStackTrace();
+		}
+	}
 }
+

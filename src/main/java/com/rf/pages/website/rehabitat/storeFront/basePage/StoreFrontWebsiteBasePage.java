@@ -3678,6 +3678,7 @@ public class StoreFrontWebsiteBasePage extends RFBasePage {
 	 * 
 	 */
 	public StoreFrontWebsiteBasePage clickSavePWSButton() {
+		driver.pauseExecutionFor(3000);
 		driver.quickWaitForElementPresent(SAVE_PWS_PAGE_LOC);
 		driver.clickByJS(RFWebsiteDriver.driver,SAVE_PWS_PAGE_LOC);
 		logger.info("Save button clicked");

@@ -677,33 +677,33 @@ public class MyAccountTest extends StoreFrontWebsiteBaseTest{
 	}
 
 	/***
-	  * qTest : TC-286 Account Information- Email Your Consultant - Invalid
-	  * Description : This test logins with a PC and validates the 
-	  * Email your consultant function -  Invalid case
-	  *     
-	  */
-	 @Test(enabled=true)
-	 public void testEmailYourConsultantInvalid_286(){
-	  String moreThan200Chars  = TestConstants.MORE_THAN_200_CHARS;
-	  String emailContent = "emailContent";
-	  sfHomePage.loginToStoreFront(pcUserWithPWSSponsor(),password,true);
-	  sfHomePage.clickWelcomeDropdown();
-	  sfAccountInfoPage = sfHomePage.navigateToAccountInfoPage();
-	  sfAccountInfoPage.clickEmailYourConsultantLink();
-	  sfAccountInfoPage.enterEmailYourConsultantDetailsAndSubmit(TestConstants.FIRST_NAME, consultantWithPulseAndWithCRP(), moreThan200Chars);
-	  s_assert.assertTrue(sfAccountInfoPage.isEmailYourValidationDisplayed(emailContent, TestConstants.VALIDATION_ERROR_LESS_THAN_200_CHARS),"validation of more than 200 chars not displayed");
+	 * qTest : TC-286 Account Information- Email Your Consultant - Invalid
+	 * Description : This test logins with a PC and validates the 
+	 * Email your consultant function -  Invalid case
+	 *     
+	 */
+	@Test(enabled=true)
+	public void testEmailYourConsultantInvalid_286(){
+		String moreThan200Chars  = TestConstants.MORE_THAN_200_CHARS;
+		String emailContent = "emailContent";
+		sfHomePage.loginToStoreFront(pcUserWithPWSSponsor(),password,true);
+		sfHomePage.clickWelcomeDropdown();
+		sfAccountInfoPage = sfHomePage.navigateToAccountInfoPage();
+		sfAccountInfoPage.clickEmailYourConsultantLink();
+		sfAccountInfoPage.enterEmailYourConsultantDetailsAndSubmit(TestConstants.FIRST_NAME, consultantWithPulseAndWithCRP(), moreThan200Chars);
+		s_assert.assertTrue(sfAccountInfoPage.isEmailYourValidationDisplayed(emailContent, TestConstants.VALIDATION_ERROR_LESS_THAN_200_CHARS),"validation of more than 200 chars not displayed");
 
-	  sfAccountInfoPage.enterEmailYourConsultantDetails(TestConstants.FIRST_NAME, "", "test msg");
-	  s_assert.assertTrue(sfAccountInfoPage.isSendButtonForEmailToConsultantDisabled(),"Send button is enabled while email field is blank");
+		sfAccountInfoPage.enterEmailYourConsultantDetails(TestConstants.FIRST_NAME, "", "test msg");
+		s_assert.assertTrue(sfAccountInfoPage.isSendButtonForEmailToConsultantDisabled(),"Send button is enabled while email field is blank");
 
-	  sfAccountInfoPage.enterEmailYourConsultantDetails("", consultantWithPulseAndWithCRP(), "test msg");
-	  s_assert.assertTrue(sfAccountInfoPage.isSendButtonForEmailToConsultantDisabled(),"Send button is enabled while name field is blank");
+		sfAccountInfoPage.enterEmailYourConsultantDetails("", consultantWithPulseAndWithCRP(), "test msg");
+		s_assert.assertTrue(sfAccountInfoPage.isSendButtonForEmailToConsultantDisabled(),"Send button is enabled while name field is blank");
 
-	  sfAccountInfoPage.enterEmailYourConsultantDetails(TestConstants.FIRST_NAME, consultantWithPulseAndWithCRP(), "");
-	  s_assert.assertTrue(sfAccountInfoPage.isSendButtonForEmailToConsultantDisabled(),"Send button is enabled while message field is blank");
+		sfAccountInfoPage.enterEmailYourConsultantDetails(TestConstants.FIRST_NAME, consultantWithPulseAndWithCRP(), "");
+		s_assert.assertTrue(sfAccountInfoPage.isSendButtonForEmailToConsultantDisabled(),"Send button is enabled while message field is blank");
 
-	  s_assert.assertAll();
-	 }
+		s_assert.assertAll();
+	}
 
 	/***
 	 * qTest : TC-282 Account Information- Reset password - Invalid Current Password
@@ -733,9 +733,8 @@ public class MyAccountTest extends StoreFrontWebsiteBaseTest{
 	 * 
 	 * Description : This test verifies the reset password functionality for invalid scenarios
 	 * 
-	 *     
 	 */
-	@Test(enabled=false)//Current password functionality no longer exist
+	@Test(enabled=true)
 	public void testPasswordResetInvalidScenrios_283(){
 		String incorrectCurrentPassword = "111Maiden";
 		//Login as consultant user.
@@ -743,20 +742,18 @@ public class MyAccountTest extends StoreFrontWebsiteBaseTest{
 		sfHomePage.clickWelcomeDropdown();
 		sfAccountInfoPage = sfHomePage.navigateToAccountInfoPage();
 		String expectedValidationErrorMsg = TestConstants.CONFIRM_PASSWORD_VALIDATION_ERROR_SAME_VALUE;
-		//sfAccountInfoPage.enterOldPassword(password);
 		sfAccountInfoPage.enterNewPassword(incorrectCurrentPassword);
 		sfAccountInfoPage.enterConfirmPassword(password);
 		sfAccountInfoPage.saveAccountInfo();
 		s_assert.assertTrue(sfAccountInfoPage.isValidationMsgPresentForParticularField("confirm password", expectedValidationErrorMsg)," validation msg for non-matching new password has not displayed");
-		expectedValidationErrorMsg = TestConstants.VALIDATION_ERROR_THIS_FIELD_IS_REQUIRED;
 		sfAccountInfoPage.enterNewPassword("");
 		sfAccountInfoPage.saveAccountInfo();
-		s_assert.assertTrue(sfAccountInfoPage.isValidationMsgPresentForParticularField("new password", expectedValidationErrorMsg)," validation msg for incorrect current password has not displayed");
+		s_assert.assertTrue(sfAccountInfoPage.isValidationMsgPresentForParticularField("confirm password", expectedValidationErrorMsg)," validation msg for incorrect new password has not displayed");
 		sfAccountInfoPage.enterNewPassword(password);
 		sfAccountInfoPage.enterConfirmPassword("");
 		sfAccountInfoPage.saveAccountInfo();
-		s_assert.assertTrue(sfAccountInfoPage.isValidationMsgPresentForParticularField("confirm password", expectedValidationErrorMsg)," validation msg for non-matching new password has not displayed");
-		s_assert.assertAll();		
+		s_assert.assertTrue(sfAccountInfoPage.isValidationMsgPresentForParticularField("confirm password", expectedValidationErrorMsg)," validation msg for confirm password has not displayed");
+		s_assert.assertAll();  
 	}
 
 	/***
@@ -766,7 +763,7 @@ public class MyAccountTest extends StoreFrontWebsiteBaseTest{
 	 * 
 	 *     
 	 */
-	@Test(enabled=true)
+	@Test(enabled=false)//Will impact the other users if failed in between and password is not changed back to 111Maiden$, so making it enable false
 	public void testResetPasswordValidDetails_281(){
 		String newValidPassword = "111Maiden";
 		String profileUpdationMessage = null;
@@ -839,13 +836,13 @@ public class MyAccountTest extends StoreFrontWebsiteBaseTest{
 		s_assert.assertAll();
 	}
 
-	*//***
-	 * qTest : TC-441 PC Perks Status- Delay Autoship - 60 Days
-	 * 
-	 * Description : This tests delay autoship for PC user by 60 days.
-	 * 
-	 *     
-	 *//*
+	  *//***
+	  * qTest : TC-441 PC Perks Status- Delay Autoship - 60 Days
+	  * 
+	  * Description : This tests delay autoship for PC user by 60 days.
+	  * 
+	  *     
+	  *//*
 	@Test(enabled=false)//Needs fix
 	public void testDelayPCAutoshipBy60Days_441(){
 		String currentNextBillShipDate = null;
@@ -874,13 +871,13 @@ public class MyAccountTest extends StoreFrontWebsiteBaseTest{
 		s_assert.assertAll();
 	}
 
-	*//***
-	 * qTest : TC-442 PC Perks Status- Delay Autoship - Cancel delay
-	 * 
-	 * Description : This tests validates PC autoship date not get updated 
-	 * when date is updated and submit querry not clicked.
-	 *     
-	 *//*
+	   *//***
+	   * qTest : TC-442 PC Perks Status- Delay Autoship - Cancel delay
+	   * 
+	   * Description : This tests validates PC autoship date not get updated 
+	   * when date is updated and submit querry not clicked.
+	   *     
+	   *//*
 	@Test(enabled=false)//Needs fix
 	public void testDelayPCAutoshipBy30DaysWithoutClickUpdate_442(){
 		String currentNextBillShipDate = null;
@@ -902,7 +899,7 @@ public class MyAccountTest extends StoreFrontWebsiteBaseTest{
 		s_assert.assertAll();
 
 	}
-*/
+	    */
 	/***
 	 * qTest : TC-279 PC Perks Status- View autoship details
 	 * 
@@ -1159,8 +1156,8 @@ public class MyAccountTest extends StoreFrontWebsiteBaseTest{
 		sfAutoshipStatusPage.enterAvailablePrefix(prefix);
 		sfCheckoutPage = sfAutoshipStatusPage.clickConfirmSubscription();
 		sfCheckoutPage.clickSaveButton();
-	//	sfCheckoutPage.clickUseSavedCardBtnOnly();
-	//	sfCheckoutPage.clickUseThesePaymentDetailsAndReturnBillingProfileName("1");
+		//	sfCheckoutPage.clickUseSavedCardBtnOnly();
+		//	sfCheckoutPage.clickUseThesePaymentDetailsAndReturnBillingProfileName("1");
 		sfCheckoutPage.clickBillingDetailsNextbutton().clickPlaceOrderButton();
 		s_assert.assertTrue(sfCheckoutPage.isPopUpForTermsAndConditionsCheckboxDisplayed(), "validation popup for terms and conditions not displayed");
 		sfCheckoutPage.closePopUp();
@@ -1241,16 +1238,16 @@ public class MyAccountTest extends StoreFrontWebsiteBaseTest{
 		sfCheckoutPage.closePopUp();
 		sfCheckoutPage.selectTermsAndConditionsCheckBoxForAutoshipOrder().clickPlaceOrderButton();
 		s_assert.assertTrue(sfCheckoutPage.isOrderPlacedSuccessfully(),"Order is Not placed successfully");
-//		//Cancel pulse of user.
-//		sfHomePage.clickWelcomeDropdown();
-//		sfHomePage.navigateToAutoshipStatusPage();
-//		sfAutoshipStatusPage.clickCancelPulseSubscription();
-//		sfAutoshipStatusPage.clickConfirmSubscriptionButton();
-//		s_assert.assertTrue(sfAutoshipStatusPage.isPulseCancellationPopupPresent(),"Pulse cancellation popup is not present.");
-//		sfAutoshipStatusPage.clickCancelOnPulseCancellationPopup();
-//		s_assert.assertFalse(sfAutoshipStatusPage.isPulseCancellationPopupPresent(),"Pulse cancellation popup is present after clicking cancel button.");
-//		sfAutoshipStatusPage.clickConfirmSubscription();
-//		s_assert.assertTrue(sfAutoshipStatusPage.isSubscribeToPulseBtnDisplayed(), "Pulse subscription is NOT cancelled");
+		//		//Cancel pulse of user.
+		//		sfHomePage.clickWelcomeDropdown();
+		//		sfHomePage.navigateToAutoshipStatusPage();
+		//		sfAutoshipStatusPage.clickCancelPulseSubscription();
+		//		sfAutoshipStatusPage.clickConfirmSubscriptionButton();
+		//		s_assert.assertTrue(sfAutoshipStatusPage.isPulseCancellationPopupPresent(),"Pulse cancellation popup is not present.");
+		//		sfAutoshipStatusPage.clickCancelOnPulseCancellationPopup();
+		//		s_assert.assertFalse(sfAutoshipStatusPage.isPulseCancellationPopupPresent(),"Pulse cancellation popup is present after clicking cancel button.");
+		//		sfAutoshipStatusPage.clickConfirmSubscription();
+		//		s_assert.assertTrue(sfAutoshipStatusPage.isSubscribeToPulseBtnDisplayed(), "Pulse subscription is NOT cancelled");
 		s_assert.assertAll();
 	}
 
@@ -1327,7 +1324,7 @@ public class MyAccountTest extends StoreFrontWebsiteBaseTest{
 		sfHomePage.switchToParentWindow(currentWindowID);
 		s_assert.assertAll();
 	}
-	
+
 	/***
 	 * qtest: TC-277 Consultant Autoship Status- Subscribe to Pulse (First Time Pulse Enrollment)
 	 * Description: This method subscribe the consultant with pulse and also cancels the same

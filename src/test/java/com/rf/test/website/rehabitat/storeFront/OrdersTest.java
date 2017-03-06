@@ -1454,7 +1454,7 @@ public class OrdersTest extends StoreFrontWebsiteBaseTest{
 	 * Description : This test case validates shipping method cost should reduce while adding a product > 100$
 	 *     
 	 */
-	@Test(enabled=true)
+	@Test(enabled=false)
 	public void testShippingMethodCostShouldReduceForConsultantAdhocOrderWithMoreThanHundredSVValue_233(){
 		double shippingMethodWithCostBefore = 0.00;
 		double shippingMethodWithCostAfter = 0.00;

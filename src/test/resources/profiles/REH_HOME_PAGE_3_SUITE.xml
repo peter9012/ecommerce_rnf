@@ -12,11 +12,9 @@
 				<class name="com.rf.test.website.rehabitat.storeFront.homePage.refinement.RefinementByRegimenTest"></class>
 				<class name="com.rf.test.website.rehabitat.storeFront.homePage.refinement.RefinementWithMultipleRegimensTest"></class>
 				<class name="com.rf.test.website.rehabitat.storeFront.homePage.refinement.RFRefineRemovalTest"></class>
-								
 				<class name="com.rf.test.website.rehabitat.storeFront.homePage.shopSkincareHeaderNavigation.CategoryFAQPageTest"></class>
 				<class name="com.rf.test.website.rehabitat.storeFront.homePage.shopSkincareHeaderNavigation.CategoryResultsPageTest"></class>
 				<class name="com.rf.test.website.rehabitat.storeFront.homePage.shopSkincareHeaderNavigation.FeatureProductTest"></class>
-				
 				<class name="com.rf.test.website.rehabitat.storeFront.TopNavigationTest"></class>
 		</classes>
 	</test>

@@ -1262,7 +1262,7 @@ public class OrdersTest extends StoreFrontWebsiteBaseTest{
 		shippingProfile = sfCheckoutPage.getDefaultShippingAddressNameAtCheckoutPage();
 		sfCheckoutPage.clickShippingDetailsNextbutton();
 		sfCheckoutPage.clickAddNewBillingProfileButton();
-		sfCheckoutPage.enterUserBillingDetails(TestConstants.CARD_TYPE, TestConstants.CARD_NUMBER, TestConstants.CARD_NAME, TestConstants.CVV);
+		sfCheckoutPage.enterUserBillingDetails(cardType, cardNumber, cardName, CVV);
 		sfCheckoutPage.clickBillingDetailsNextbutton();
 		billingProfileName = sfCheckoutPage.getBillingProfileName();
 		billingProfileLastName = sfCheckoutPage.getLastName(billingProfileName);

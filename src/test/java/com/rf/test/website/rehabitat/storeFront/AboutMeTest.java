@@ -577,4 +577,71 @@ public class AboutMeTest extends StoreFrontWebsiteBaseTest{
 		s_assert.assertAll();
 	}
 
+	/***
+	  * qTest : TC-614 Consultant adds the content on the questions
+	  * Description : This test validates the content on the questions
+	  *    
+	  */
+	 @Test 
+	 public void testConsultantAddsTheContentOnTheQuestions_614(){
+	  String homePageURL = null;
+	  String currentURL = null;
+	  String testMsg="This is a test message";
+	  String content=null;
+	  int randomNum;
+	  String contentOnJoinPWS=null;
+	  String urlToAssert = "about-me";
+	  String aboutMeEdit="about-me/edit";
+	  String questionName="WHAT I LOVE MOST ABOUT MY R+F BUSINESS(ONLY SHOWS UP ON JOIN PWS)";
+	  String prefix = pwsPrefix();
+	  homePageURL = sfHomePage.getCurrentURL();
+	  sfHomePage.navigateToUrl(homePageURL + "/pws/" + prefix);
+	  sfHomePage.loginToStoreFront(consultantWithPulseAndWithCRP(), password,true);
+	  sfHomePage.clickWelcomeDropdown();
+	  sfAboutMePage=sfHomePage.navigateToEditPWSPage();
+	  currentURL = sfAboutMePage.getCurrentURL();
+	  s_assert.assertTrue(currentURL.contains(urlToAssert),"Expected URL should contain "+urlToAssert+" but actual on UI is "+currentURL);
+	  sfAboutMePage.clickPersonalizeMyProfileButton();
+	  currentURL = sfAboutMePage.getCurrentURL();
+	  s_assert.assertTrue(sfAboutMePage.isSubmissionGuidelinesDisplayed() && currentURL.contains(aboutMeEdit),"Expected user should redirected to: "+aboutMeEdit +" Page after click on 'personalize My profile' button but actual user is redirected to "+currentURL);
+	  randomNum=CommonUtils.getRandomNum(100, 10000);
+	  sfAboutMePage.typeContentOfSelectedQuestion(randomNum,testMsg,1);
+	  content=sfAboutMePage.getContentOfRFBusinessQuestion();
+	  s_assert.assertTrue(content.contains(testMsg+randomNum),"Expected Content is not Added in First Question");
+	  sfAboutMePage.clickResetToDefaultLink(questionName);
+	  content=sfAboutMePage.getContentOfRFBusinessQuestion();
+	  s_assert.assertFalse(content.contains(testMsg+randomNum),"Expected Content is not Removed from First Question");
+	  randomNum=CommonUtils.getRandomNum(100, 10000);
+	  sfAboutMePage.typeContentOfSelectedQuestion(randomNum,testMsg,1);
+	  sfAboutMePage.clickSaveButtonAboutMePage();
+	  sfHomePage.navigateToUrl(homePageURL + "/pws/" + prefix+"/join/");
+	  sfHomePage.clickWelcomeDropdown();
+	  sfHomePage.navigateToEditPWSPage();
+	  contentOnJoinPWS=sfAboutMePage.getRFBusinessQuestionContentFromJoinAboutMePage();
+	  System.out.println("contentOnJoinPWS =  "+contentOnJoinPWS);
+	  s_assert.assertTrue(contentOnJoinPWS.contains(testMsg+randomNum),"Expected content is not found on Join Pws page But actual displaying on UI is:"+contentOnJoinPWS);
+	  
+	  //For Second Question on About Me Page
+	  sfHomePage.navigateToUrl(homePageURL + "/pws/" + prefix);
+	  sfHomePage.clickWelcomeDropdown();
+	  sfHomePage.navigateToEditPWSPage();
+	  sfAboutMePage.clickPersonalizeMyProfileButton();
+	  currentURL = sfAboutMePage.getCurrentURL();
+	  s_assert.assertTrue(sfAboutMePage.isSubmissionGuidelinesDisplayed() && currentURL.contains(aboutMeEdit),"Expected user should redirected to: "+aboutMeEdit +" Page after click on 'personalize My profile' button but actual user is redirected to "+currentURL);
+	  randomNum=CommonUtils.getRandomNum(100, 10000);
+	  sfAboutMePage.typeContentOfSelectedQuestion(randomNum,testMsg,2);
+	  sfAboutMePage.clickSaveButtonAboutMePage();
+	  content=sfAboutMePage.getWhatILoveMostAbtRFQuestionContentFromAboutMePage();
+	  s_assert.assertTrue(content.contains(testMsg+randomNum),"Expected Content is not Found on About Me Page But Actual content on UI is:"+content);
+	  sfHomePage.clickWelcomeDropdown();
+	  sfHomePage.logout();
+	  
+	  //For Anonymous User
+	  sfHomePage.navigateToUrl(homePageURL + "/pws/" + prefix);
+	  sfHomePage.clickAboutMe();
+	  content=sfAboutMePage.getWhatILoveMostAbtRFQuestionContentFromAboutMePage();
+	  s_assert.assertTrue(content.contains(testMsg+randomNum),"Expected Content is not Found on About Me Page For Anonymous user But Actual content on UI is:"+content);
+	  s_assert.assertAll();
+	 }
+	
 }

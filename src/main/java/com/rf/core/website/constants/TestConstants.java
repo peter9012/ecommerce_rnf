@@ -63,7 +63,7 @@ public class TestConstants {
 	public static final String LOW_PRICE_FILTER_US="$0-$49.99";
 	public static final String MID_PRICE_FILTER_US="$50-$199.99";
 	public static final String HIGH_PRICE_FILTER_US="$200-$499.99";
-	
+
 	// Order page Details
 	public static final String TITLE_OF_ORDER_DETAILS_PAGE = "Order Details | Rodan and Fields";
 
@@ -81,14 +81,14 @@ public class TestConstants {
 	public static final String CITY_ND_US = "Bismarck";
 	public static final String POSTAL_CODE_ND_US = "58503";
 	public static final String STATE_ND_US = "North Dakota";
-	
+
 	//Canada
 	public static final String ADDRESS_LINE_1_CA = "5940 Macleod Trail SW Suite 500";
 	public static final String ADDRESS_LINE_2_CA = "";
 	public static final String CITY_CA = "Calgary";
 	public static final String POSTAL_CODE_CA = "T2H 2G4";
 	public static final String STATE_CA = "Alberta";
-	
+
 	public static final String SECOND_ADDRESS_LINE_1_CA = "60 Patterson Blvd SW";
 	public static final String SECOND_ADDRESS_LINE_2_CA = "";
 	public static final String SECOND_CITY_CA = "Calgary";
@@ -143,7 +143,7 @@ public class TestConstants {
 	public static final String CARD_TYPE = "Visa";
 	public static final String CARD_NUMBER = "4012000077777777";
 	public static final String CARD_LASTNAME = "lauto";
-	public static final String CARD_NAME = "auto"+CARD_LASTNAME;
+	public static final String CARD_NAME = "auto"+" "+CARD_LASTNAME;
 	public static final String CVV = "123";
 	public static final String CARD_NUMBER_2 = "5424180279791773";
 	public static final String CARD_NUMBER_MORE_THAN_16_DIGIT = "47474747474747474";
@@ -188,9 +188,25 @@ public class TestConstants {
 	public static final String DEFAULT_SHIPPING_ADDRESS_UPDATION_MSG = "Your default address was updated.";
 	public static final String AUTOSHIP_DELIVERY_ADDRESS_UPDATION_MSG = "Delivery Address has been Updated for your Cart.";
 	public static final String ERROR_MSG_EXISTING_PREFIX = "Subscription Prefix not available";
-	
+
 	public static final String ECC_ORDER_TYPE_CONSULTANT_ADHOC = "ConsultantAdhocOrder";
 	public static final String ECC_ORDER_TYPE_PC_ADHOC = "PCAdhocOrder";
 	public static final String ECC_ORDER_TYPE_RC_ADHOC = "RCAdhocOrder";
-	
+
+	public static final String ORDER_NUMBER_HEADING = "ORDER_NUMBER";
+	public static final String PRODUCT_NAME_HEADING = "PRODUCT_NAME";
+	public static final String ITEM_QTY_HEADING = "ITEM_QTY";
+	public static final String CARD_TYPE_HEADING = "CARD_TYPE";
+	public static final String ORDER_DATE_HEADING = "ORDER_DATE";
+	public static final String TOTAL_PRICE_HEADING = "TOTAL_PRICE";
+	public static final String ORDER_STATUS_HEADING = "ORDER_STATUS";
+	public static final String CARD_TYPE_VISA = "Visa";
+	public static final String CARD_TYPE_AMEX = "Amex";
+	public static final String CARD_TYPE_MASTER_CARD = "MasterCard";
+	public static final String CARD_TYPE_DISCOVER = "Discover";
+	public static final String CARD_NUMBER_VISA = "4012000077777777";
+	public static final String CARD_NUMBER_AMEX = "373953192351004";
+	public static final String CARD_NUMBER_MASTERCARD = "5424180279791773";
+	public static final String CARD_NUMBER_DISCOVER = "6011000991200035";
+
 }

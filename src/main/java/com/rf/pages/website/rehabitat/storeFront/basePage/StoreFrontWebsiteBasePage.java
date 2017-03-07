@@ -478,8 +478,9 @@ public class StoreFrontWebsiteBasePage extends RFBasePage {
 	 * 
 	 */
 	public StoreFrontHomePage clickRodanAndFieldsLogo() {
+		driver.pauseExecutionFor(3000);
 		driver.waitForElementPresent(RODAN_AND_FIELDS_IMAGE_LOC);
-		if (driver.isElementVisible(RODAN_AND_FIELDS_IMAGE_LOC)) {
+		if (driver.isElementPresent(RODAN_AND_FIELDS_IMAGE_LOC)) {
 			driver.clickByJS(RFWebsiteDriver.driver, RODAN_AND_FIELDS_IMAGE_LOC);
 		} else {
 			driver.clickByJS(RFWebsiteDriver.driver, RODAN_AND_FIELDS_LOGO_LOC);

@@ -269,7 +269,7 @@ public class RFWebsiteDriver implements RFDriver,WebDriver {
 			}
 		}
 	}
-	
+
 	public void quickWaitForElementPresent(By locator,int timeout){
 		logger.info("quick wait started for "+locator);
 		turnOffImplicitWaits(1);
@@ -1108,5 +1108,9 @@ public class RFWebsiteDriver implements RFDriver,WebDriver {
 		return propertyFile.getProperty("crmUrl");
 	}
 
+	public void switchToFrame(By by){
+		WebElement element= driver.findElement(by);
+		driver.switchTo().frame(element);
+	}
 }
 

@@ -93,7 +93,7 @@ public class TestConstants {
 	public static final String SECOND_ADDRESS_LINE_2_CA = "";
 	public static final String SECOND_CITY_CA = "Calgary";
 	public static final String SECOND_POSTAL_CODE_CA = "T3H 2E1";
-	public static final String STATE_CA_ABBREVIATION = "CA-AB";
+	public static final String STATE_CA_ABBREVIATION = "AB";
 
 	public static final String FIRST_NAME_BILLING_ADDRESS = "BAFirstname";
 	public static final String LAST_NAME_BILLING_ADDRESS = "BALastname";

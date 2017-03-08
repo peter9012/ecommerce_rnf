@@ -334,35 +334,35 @@ public class PCEnrollmentTest extends StoreFrontWebsiteBaseTest{
 	}
 
 	/***
-	 * qTest : TC-496 PC registering from PWS will have default sposnor
-	 * Description : This test validates default selected sponsor while start from PWS 
-	 *     
-	 */
-	@Test(enabled=true)
-	public void testPCRegisteringFromPWSWillHaveDefaultsponsor_496(){
-		String allProduct = "ALL PRODUCTS";
-		firstName=TestConstants.PC_FIRST_NAME;
-		timeStamp = CommonUtils.getCurrentTimeStamp();
-		randomWords = CommonUtils.getRandomWord(5);  
-		lastName = TestConstants.LAST_NAME+randomWords;
-		email = firstName+"pc"+timeStamp+TestConstants.EMAIL_SUFFIX;
-		String homePageURL = sfHomePage.getCurrentURL();
-		String prefix = pwsPrefix();
-		sfHomePage.navigateToUrl(homePageURL + "/pws/" + prefix);
-		sfShopSkinCarePage = sfHomePage.clickAllProducts();
-		sfShopSkinCarePage.addProductToCart(TestConstants.PRODUCT_NUMBER, TestConstants.ORDER_TYPE_ENROLLMENT);;
-		sfCartPage = sfShopSkinCarePage.checkoutTheCartFromPopUp();
-		sfCheckoutPage=sfCartPage.checkoutTheCart();
-		sfCheckoutPage.fillNewUserDetails(TestConstants.USER_TYPE_PC, firstName, lastName, email, password);
-		sfCheckoutPage.clickCreateAccountButton(TestConstants.USER_TYPE_PC);
-		sfCheckoutPage = sfCartPage.clickCheckoutBtn();
-		s_assert.assertTrue(sfCheckoutPage.isSponsorSelected(), "Sponsor is not selected by default");
-		sfCheckoutPage.clickRemoveLink();
-		sfCheckoutPage.searchSponsor(TestConstants.SPONSOR);
-		sfHomePage.selectFirstSponsorFromList();
-		s_assert.assertTrue(sfCheckoutPage.isSponsorSelected(), "Searched sponsor is not selected");
-		s_assert.assertAll();
-	}
+	  * qTest : TC-496 PC registering from PWS will have default sposnor
+	  * Description : This test validates default selected sponsor while start from PWS 
+	  *     
+	  */
+	 @Test(enabled=true)
+	 public void testPCRegisteringFromPWSWillHaveDefaultsponsor_496(){
+	  String allProduct = "ALL PRODUCTS";
+	  firstName=TestConstants.PC_FIRST_NAME;
+	  timeStamp = CommonUtils.getCurrentTimeStamp();
+	  randomWords = CommonUtils.getRandomWord(5);  
+	  lastName = TestConstants.LAST_NAME+randomWords;
+	  email = firstName+"pc"+timeStamp+TestConstants.EMAIL_SUFFIX;
+	  String homePageURL = sfHomePage.getCurrentURL();
+	  String prefix = pwsPrefix();
+	  sfHomePage.navigateToUrl(homePageURL + "/pws/" + prefix);
+	  sfShopSkinCarePage = sfHomePage.clickAllProducts();
+	  sfShopSkinCarePage.addProductToCart(TestConstants.PRODUCT_NUMBER, TestConstants.ORDER_TYPE_ENROLLMENT);;
+	  sfCartPage = sfShopSkinCarePage.checkoutTheCartFromPopUp();
+	  sfCheckoutPage=sfCartPage.checkoutTheCart();
+	  sfCheckoutPage.fillNewUserDetails(TestConstants.USER_TYPE_PC, firstName, lastName, email, password);
+	  sfCheckoutPage.clickCreateAccountButton(TestConstants.USER_TYPE_PC);
+	  sfCheckoutPage = sfCartPage.clickCheckoutBtn();
+	  s_assert.assertTrue(sfCheckoutPage.isSponsorSelected(), "Sponsor is not selected by default");
+	  sfCheckoutPage.clickRemoveLink();
+	  sfCheckoutPage.searchSponsor(TestConstants.SPONSOR);
+	  sfHomePage.selectFirstSponsorFromList();
+	  s_assert.assertTrue(sfCheckoutPage.isSearchedSponsorSelected(), "Searched sponsor is not selected");
+	  s_assert.assertAll();
+	 }
 
 	//------------------------TEST USERS CREATION SCRIPTS--------------------------------------------------------------------------------------------------------------------------------
 

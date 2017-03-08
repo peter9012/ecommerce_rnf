@@ -166,7 +166,8 @@ public class StoreFrontCheckoutPage extends StoreFrontWebsiteBasePage{
 	//private final By TERMS_AND_CONDITIONS_CHCKBOX_FOR_CONSULTANT_CRP_LOC = By.xpath("//a[contains(text(),'Consultant Replenishment Program Terms & Conditions')]/ancestor::label[1]/preceding-sibling::input[1]");
 	private final By EDIT_LINK_OF_BILLING_PROFILE_LOC=By.xpath("//div[contains(text(),'Billing')]/following::a[1]");
 	private final By EDIT_LINK_OF_SHIPPING_SECTION_LOC=By.xpath("//div[@class='checkout-shipping']//a[1]");
-
+	private final By SEARCHED_SELECTED_SPONSOR_LOC = By.xpath("//div[@class='customerid']/preceding::span[@id='selectd-consultant'][1]");
+	
 	private String useThisAddressBtnInAddressBookLoc = "//div[@id='addressbook']/descendant::form[@id='useShipAddressFromBook'][%s]//button";
 	private String profileNameFromAddressBookLoc = "//div[@id='addressbook']/descendant::strong[%s]";
 	private String useThisPaymentDetailsBtnInSavedCardLoc = "//div[@id='savedpaymentsbody']/descendant::button[contains(text(),'Use these payment details')][%s]";
@@ -1101,7 +1102,7 @@ public class StoreFrontCheckoutPage extends StoreFrontWebsiteBasePage{
 		return isMandatoryFieldMsgPresentForTheField("firstName") &&
 				isMandatoryFieldMsgPresentForTheField("line1") &&
 				isMandatoryFieldMsgPresentForTheField("townCity") &&
-				isMandatoryFieldMsgPresentForTheField("region") &&
+				//				isMandatoryFieldMsgPresentForTheField("region") &&
 				isMandatoryFieldMsgPresentForTheField("postcode") &&
 				isMandatoryFieldMsgPresentForTheField("phone");
 	}
@@ -1871,6 +1872,16 @@ public class StoreFrontCheckoutPage extends StoreFrontWebsiteBasePage{
 		}
 		logger.info("Clicked on Edit link of Shipping Address");
 		return this;
+	}
+
+	/**
+	 * This method verify the sponsor is selected or not
+	 * 
+	 * @param 
+	 * @return boolean
+	 */
+	public boolean isSearchedSponsorSelected(){
+		return driver.isElementPresent(SEARCHED_SELECTED_SPONSOR_LOC);
 	}
 
 }

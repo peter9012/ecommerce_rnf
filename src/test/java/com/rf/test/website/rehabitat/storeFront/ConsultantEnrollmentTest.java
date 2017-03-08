@@ -77,8 +77,8 @@ public class ConsultantEnrollmentTest extends StoreFrontWebsiteBaseTest{
 		sfHomePage.selectConsentFormChkBox();
 		sfHomePage.clickBecomeAConsultant();
 		s_assert.assertTrue(sfHomePage.isEnrollemntSuccessfulMsgDisplayed(), "Expected 'ENROLLMENT SUCCESSFUL' msg has NOT displayed"); 
-//		sfHomePage.clickRodanAndFieldsLogo();
-//		s_assert.assertTrue(sfHomePage.isWelcomeUserElementDisplayed(), "Welcome user locator has not displayed after consultant enrollment");
+		//		sfHomePage.clickRodanAndFieldsLogo();
+		//		s_assert.assertTrue(sfHomePage.isWelcomeUserElementDisplayed(), "Welcome user locator has not displayed after consultant enrollment");
 		s_assert.assertAll();
 	}
 
@@ -87,12 +87,12 @@ public class ConsultantEnrollmentTest extends StoreFrontWebsiteBaseTest{
 	 * 
 	 * Description : This test validates the Request for a Sponsor functionality during
 	 * consultant enrollment
-	 * 				
+	 *     
 	 */
 	@Test(enabled=true)
 	public void testRequestSponsorConsultantEnrollment_261(){
 		timeStamp = CommonUtils.getCurrentTimeStamp();
-		randomWords = CommonUtils.getRandomWord(5);		
+		randomWords = CommonUtils.getRandomWord(5);  
 		lastName = TestConstants.LAST_NAME+randomWords;
 		email = firstName+"cons"+timeStamp+TestConstants.EMAIL_SUFFIX;
 		String fieldName;
@@ -107,15 +107,15 @@ public class ConsultantEnrollmentTest extends StoreFrontWebsiteBaseTest{
 		s_assert.assertTrue(sfHomePage.isEmptyFieldValidationForSponsorOnPopupDisplayed(fieldName),"empty field validation is not displayed for "+fieldName);
 		fieldName = "zipcode";
 		s_assert.assertTrue(sfHomePage.isEmptyFieldValidationForSponsorOnPopupDisplayed(fieldName),"empty field validation is not displayed for "+fieldName);
-		sfHomePage.enterDetailsInRequiredConsultantSponsorPopUp("", "", "", TestConstants.SPONSOR_ZIP_CODE_US);
+		sfHomePage.enterDetailsInRequiredConsultantSponsorPopUp("", "", "", postalCode);
 		s_assert.assertTrue(sfHomePage.isSubmitBtnOnSponsorPopUpDisabled(),"Submit button is not disabled");
-		sfHomePage.enterDetailsInRequiredConsultantSponsorPopUp(TestConstants.SPONSOR_FIRST_NAME, TestConstants.SPONSOR_LAST_NAME, TestConstants.SPONSOR_EMAIL, TestConstants.SPONSOR_INVALID_ZIP_CODE_US);
+		sfHomePage.enterDetailsInRequiredConsultantSponsorPopUp(TestConstants.SPONSOR_FIRST_NAME, TestConstants.SPONSOR_LAST_NAME, TestConstants.SPONSOR_EMAIL, TestConstants.INVALID_POSTAL_CODE);
 		fieldName = "zipcode";
 		s_assert.assertTrue(sfHomePage.isInvalidFieldValidationForSponsorOnPopupDisplayed(fieldName),"invalid field validation is not displayed for "+fieldName);
-		sfHomePage.enterDetailsInRequiredConsultantSponsorPopUp(TestConstants.SPONSOR_FIRST_NAME, TestConstants.SPONSOR_LAST_NAME, TestConstants.SPONSOR_INVALID_EMAIL, TestConstants.SPONSOR_ZIP_CODE_US);
+		sfHomePage.enterDetailsInRequiredConsultantSponsorPopUp(TestConstants.SPONSOR_FIRST_NAME, TestConstants.SPONSOR_LAST_NAME, TestConstants.SPONSOR_INVALID_EMAIL, postalCode);
 		fieldName = "email";
 		s_assert.assertTrue(sfHomePage.isInvalidFieldValidationForSponsorOnPopupDisplayed(fieldName),"invalid field validation is not displayed for "+fieldName);
-		sfHomePage.enterDetailsInRequiredConsultantSponsorPopUp(TestConstants.SPONSOR_FIRST_NAME, TestConstants.SPONSOR_LAST_NAME, TestConstants.SPONSOR_EMAIL, TestConstants.SPONSOR_ZIP_CODE_US);
+		sfHomePage.enterDetailsInRequiredConsultantSponsorPopUp(TestConstants.SPONSOR_FIRST_NAME, TestConstants.SPONSOR_LAST_NAME, TestConstants.SPONSOR_EMAIL, postalCode);
 		sfHomePage.clickSubmitBtnOnRequiredConsultantSponsorPopUp();
 		s_assert.assertTrue(sfHomePage.isThanksMessageAfterSponsorRequestPresent(),"Thank msg not displayed after sponsor request submit");
 		sfHomePage.clickBackToHomePageBtn();
@@ -318,7 +318,7 @@ public class ConsultantEnrollmentTest extends StoreFrontWebsiteBaseTest{
 		String policiesAndProceduresPdfUrl = null;
 		String pulseProTCUrl = null;
 		String crpTCPdfUrl = null;
-		
+
 		String socialInsuranceNumber = String.valueOf(CommonUtils.getRandomNum(100000000, 999999999));
 		if(country.equalsIgnoreCase("us")){
 			policiesAndProceduresPdfUrl = "Policies_Procedures_USA.pdf";

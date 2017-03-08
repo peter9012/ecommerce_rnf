@@ -176,9 +176,8 @@ public class TestConstants {
 	public static final String PHONE_NUMBER_MANDATORY_MSG = "Please specify a valid phone number.";
 	public static final String MORE_THAN_200_CHARS = "This is the test message This is the test message This is the test message This is the test message "+
 			"This is the test message This is the test message This is the test message This is the test message T";
-	public static final String CANCELLED_CRP_ORDER_SUCCESS_MESSAGE = "Your CRP Order has been canceled.";
+	public static final String CANCELLED_CRP_ORDER_SUCCESS_MESSAGE = "Your CRP Order has been cancelled.";
 	public static final String PRODUCT_CATEGORY_REDEFINE = "REDEFINE";
-
 	public static final String SECOND_ADDRESS_LINE_1_US = "1625 Sixth Street";
 	public static final String SECOND_ADDRESS_LINE_2_US = "211";
 	public static final String SECOND_CITY_US = "Concord";

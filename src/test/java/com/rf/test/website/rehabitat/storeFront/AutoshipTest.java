@@ -457,6 +457,7 @@ public class AutoshipTest extends StoreFrontWebsiteBaseTest{
 		s_assert.assertAll();
 	}
 
+
 	/***
 	 * qTest : TC-449 Consultant Autoship Status- Cancel CRP
 	 * Description : This test validates the Cancel CRP functionality for Consulatnt user.
@@ -477,7 +478,7 @@ public class AutoshipTest extends StoreFrontWebsiteBaseTest{
 			sfCheckoutPage.clickShippingDetailsNextbutton();
 			sfCheckoutPage.clickBillingDetailsNextbutton();
 			sfCheckoutPage.selectTermsAndConditionsCheckBoxForAutoshipOrder();
-			//		sfCheckoutPage.selectCheckboxForPoliciesAndProcedures();
+			//  sfCheckoutPage.selectCheckboxForPoliciesAndProcedures();
 			sfCheckoutPage.clickConfirmAutoshipOrderButton();
 			s_assert.assertTrue(sfCheckoutPage.isCRPOrderConfirmedSuccessMsgAppeared(),"CRP Order confirmed success messge is not appeared");
 			sfCheckoutPage.clickRodanAndFieldsLogo();
@@ -486,8 +487,8 @@ public class AutoshipTest extends StoreFrontWebsiteBaseTest{
 			s_assert.assertTrue(sfAutoshipStatusPage.getCurrentCRPStatus().contains("Enrolled"),"Consultant does not get enrolled in CRP");
 			sfCheckoutPage.clickRodanAndFieldsLogo();
 		}
-		sfCheckoutPage.clickWelcomeDropdown();
-		sfCheckoutPage.navigateToAutoshipStatusPage();
+		sfAutoshipStatusPage.clickWelcomeDropdown();
+		sfAutoshipStatusPage.navigateToAutoshipStatusPage();
 		s_assert.assertTrue(sfAutoshipStatusPage.getCurrentCRPStatus().contains("Enrolled"),"Consultant is not enrolled into CRP yet");
 		sfAutoshipStatusPage.clickCancelCRPLink();
 		sfAutoshipStatusPage.clickCancelCRPButton();
@@ -501,7 +502,7 @@ public class AutoshipTest extends StoreFrontWebsiteBaseTest{
 		sfCheckoutPage.clickShippingDetailsNextbutton();
 		sfCheckoutPage.clickBillingDetailsNextbutton();
 		sfCheckoutPage.selectTermsAndConditionsCheckBoxForAutoshipOrder();
-		//		sfCheckoutPage.selectCheckboxForPoliciesAndProcedures();
+		//  sfCheckoutPage.selectCheckboxForPoliciesAndProcedures();
 		sfCheckoutPage.clickConfirmAutoshipOrderButton();
 		s_assert.assertTrue(sfCheckoutPage.isCRPOrderConfirmedSuccessMsgAppeared(),"CRP Order confirmed success messge is not appeared");
 		sfCheckoutPage.clickRodanAndFieldsLogo();

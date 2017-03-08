@@ -14,14 +14,18 @@ public class AccessFooterLinksTest extends StoreFrontWebsiteBaseTest{
 	 */
 	@Test(enabled=true)
 	public void testVerifyFooterLinksOfSite_13(){
+		String homePageURL = null;
 		String disclaimer = "Disclaimer";
 		String satisfactionGuarantee = "Satisfaction Guarantee";
 		String contactUS = "Contact Us";
 		String careers = "Careers";
 		String pressRoom = "Press Room";
-		String directSellingAssociation= "Direct Selling Association";
+		//String directSellingAssociation= "Direct Selling Association";
 		String termsAndConditions = "Terms & Condition";
-		String PrivacyPolicy = "Privacy Policy";	  
+		String PrivacyPolicy = "Privacy Policy";
+		String prefix = pwsPrefix();
+		homePageURL = sfHomePage.getCurrentURL();
+		sfHomePage.navigateToUrl(homePageURL + "/pws/" + prefix);
 		//Verify disclaimer link in footer section.
 		s_assert.assertTrue(sfHomePage.isTheFooterLinkDisplayed(disclaimer),"Disclaimer link is not present in footer section");
 		//Verify satisfaction guarantee link in footer section.
@@ -33,7 +37,7 @@ public class AccessFooterLinksTest extends StoreFrontWebsiteBaseTest{
 		//Verify pressroom link in footer section.
 		s_assert.assertTrue(sfHomePage.isTheFooterLinkDisplayed(pressRoom),"pressroom link is not present in footer section");
 		//Verify direct selling association link in footer section.
-		s_assert.assertTrue(sfHomePage.isTheFooterLinkDisplayed(directSellingAssociation),"Direct selling association link is not present in footer section");
+		//s_assert.assertTrue(sfHomePage.isTheFooterLinkDisplayed(directSellingAssociation),"Direct selling association link is not present in footer section");
 		//Verify terms and conditions link in footer section.
 		s_assert.assertTrue(sfHomePage.isTheFooterLinkDisplayed(termsAndConditions),"terms and conditions link is not present in footer section");
 		//Verify Privacy policy link in footer section.
@@ -49,13 +53,14 @@ public class AccessFooterLinksTest extends StoreFrontWebsiteBaseTest{
 	 */
 	@Test(enabled=true) 
 	public void testVerifyFooterLinksOfSiteOpensInSameWindow_14(){
+		String homePageURL = null;
 		String currentURL = null;
 		String disclaimer = "Disclaimer";
 		String satisfactionGuarantee = "Satisfaction Guarantee";
 		String contactUS = "Contact Us";
 		String careers = "Careers";
 		String pressRoom = "Press Room";
-		String directSellingAssociation= "Direct Selling Association";
+		//String directSellingAssociation= "Direct Selling Association";
 		String termsAndConditions = "Terms & Condition";
 		String PrivacyPolicy = "Privacy Policy";
 		String disclaimerURL = "disclaimer";
@@ -66,7 +71,9 @@ public class AccessFooterLinksTest extends StoreFrontWebsiteBaseTest{
 		String directSellingAssociationURL = "who-we-are";
 		String termsAndConditionURL = "terms-conditions";
 		String privacyPolicyURL = "privacy-policy";
-
+		String prefix = pwsPrefix();
+		homePageURL = sfHomePage.getCurrentURL();
+		sfHomePage.navigateToUrl(homePageURL + "/pws/" + prefix);
 		//Verify and validate disclaimer link in footer section.
 		s_assert.assertTrue(sfHomePage.isTheFooterLinkDisplayed(disclaimer),"Disclaimer link is not present in footer section");
 		sfHomePage.clickFooterLink(disclaimer);
@@ -93,10 +100,10 @@ public class AccessFooterLinksTest extends StoreFrontWebsiteBaseTest{
 		currentURL = sfHomePage.getCurrentURL();
 		s_assert.assertTrue(currentURL.contains(pressroomURL), "Expected URL should contain "+pressroomURL+" but actual on UI is"+currentURL);
 		//Verify and validate direct selling association link in footer section.
-		s_assert.assertTrue(sfHomePage.isTheFooterLinkDisplayed(directSellingAssociation),"Direct selling association link is not present in footer section");
-		sfHomePage.clickFooterLink(directSellingAssociation);
-		currentURL = sfHomePage.getCurrentURL();
-		s_assert.assertTrue(currentURL.contains(directSellingAssociationURL), "Expected URL should contain "+directSellingAssociationURL+" but actual on UI is"+currentURL);
+		//s_assert.assertTrue(sfHomePage.isTheFooterLinkDisplayed(directSellingAssociation),"Direct selling association link is not present in footer section");
+		//sfHomePage.clickFooterLink(directSellingAssociation);
+		//currentURL = sfHomePage.getCurrentURL();
+		//s_assert.assertTrue(currentURL.contains(directSellingAssociationURL), "Expected URL should contain "+directSellingAssociationURL+" but actual on UI is"+currentURL);
 		//Verify and validate terms and conditions link in footer section.
 		s_assert.assertTrue(sfHomePage.isTheFooterLinkDisplayed(termsAndConditions),"terms and conditions link is not present in footer section");
 		sfHomePage.clickFooterLink(termsAndConditions);

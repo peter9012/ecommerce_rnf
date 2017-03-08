@@ -25,7 +25,7 @@ public class MeetTheDoctorsTest extends StoreFrontWebsiteBaseTest{
 	 *  
 	 *     
 	 */
-	@Test(enabled=true)
+	@Test(enabled=false)//No such functionality
 	public void testVerifyMeetTheExecutivePageFromMeetTheDoctorsPage_19(){
 		String currentURL = null;
 		String urlToAssert = "executive-team";

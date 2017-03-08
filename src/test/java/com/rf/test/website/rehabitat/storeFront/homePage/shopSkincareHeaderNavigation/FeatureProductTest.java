@@ -15,7 +15,7 @@ public class FeatureProductTest extends StoreFrontWebsiteBaseTest{
 	 */
 	@Test(enabled=true)
 	public void testVerifyFeaturedProductCategoryUnderShopSkincareOnCorpComAndBizSite_81(){
-		String prefix = TestConstants.CONSULTANT_PWS_PREFIX;
+		String prefix = pwsPrefix();
 		String currentURL = null;
 		String featuredRegimenURL = "/c/featured";
 		String category_Featured = "FEATURED";

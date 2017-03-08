@@ -31,13 +31,18 @@ import com.rf.core.website.constants.TestConstants;
 @Listeners({ com.rf.core.listeners.TestListner.class})
 public class RFBaseTest{
 	//public static WebDriver driver;
-	// Added for local testing and will be removed later
 	public String defaultProps = "defaultenv.properties";
-	public String userProps = "user.properties";
+	public String testUsers_QA2_US_propertes = "testUsers_QA2_US.properties";
+	public String testUsers_QA2_CA_propertes = "testUsers_QA2_CA.properties";
+	public String testUsers_QA1_US_propertes = "testUsers_QA1_US.properties";
+	public String testUsers_PROD_US_propertes = "testUsers_PROD_US.properties";
+	public String testUsers_DEV1_US_propertes = "testUsers_DEV1_US.properties";
+	public String testUsers_DEV1_CA_propertes = "testUsers_DEV1_CA.properties";
+	public static String userProps = null;
 
 	protected static PropertyFile propertyFile = new PropertyFile();
 	protected static PropertyFile userPropertyFile = new PropertyFile();
-	
+
 	private static final Logger logger = LogManager
 			.getLogger(RFBaseTest.class.getName());
 	protected SoftAssert s_assert;
@@ -56,9 +61,11 @@ public class RFBaseTest{
 			propertyFile.loadProps(envproperties);
 			logger.debug("Environment properties recieved and preparing the environment for "
 					+ envproperties); 
+			setUserPropertyFile(envproperties);
 		} else {
 			System.out.println("Started execution with " + " " + defaultProps);
 			propertyFile.loadProps(defaultProps);
+			setUserPropertyFile(propertyFile.getProperty("environment")+propertyFile.getProperty("country"));			
 			logger.info("Environment properties are not provided by the user ... loading the default properties");
 			logger.info("Default Browser is  ------ "+propertyFile.getProperty("browser"));
 			logger.info("Default URL is  ------ "+propertyFile.getProperty("baseUrl"));
@@ -67,34 +74,34 @@ public class RFBaseTest{
 			logger.info("Default DB IP is  ------ "+propertyFile.getProperty("dbIP"));
 			logger.info("Default DB Username is  ------ "+propertyFile.getProperty("dbUsername"));
 			logger.info("Default DB Password is  ------ "+propertyFile.getProperty("dbPassword"));
-			logger.info("Default DB Domain is  ------ "+propertyFile.getProperty("dbDomain"));			
+			logger.info("Default DB Domain is  ------ "+propertyFile.getProperty("dbDomain"));
 		}
 		// clear screenshots folder
 		try {
 			File fDir = new File(System.getProperty("user.dir")
-					+ "\\output\\ScreenShots");
+					+ "/output/ScreenShots");
 			if (!fDir.exists()) {
 				fDir.mkdirs();
 			}
 			FileUtils.cleanDirectory(new File(System.getProperty("user.dir")
-					+ "\\output\\ScreenShots"));
+					+ "/output/ScreenShots"));
 		} catch (IOException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 
 		File fDir2 = new File(System.getProperty("user.dir")
-				+ "\\test-output");
+				+ "/test-output");
 		if (!fDir2.exists()) {
 			fDir2.mkdirs();
 		}
-		
+
 		File logDir = new File(System.getProperty("user.dir")
-				+ "\\logs");
+				+ "/logs");
 		if (!logDir.exists()) {
 			logDir.mkdirs();
 		}
-		
+
 	}
 
 	@AfterSuite(alwaysRun=true)
@@ -105,14 +112,14 @@ public class RFBaseTest{
 		String timeStamp = String.valueOf(dateFormat.format(date));
 
 		// set the location of the source directories of logs,output and test-output folder
-		String srcLogsDirectory = System.getProperty("user.dir")+"\\logs";
+		String srcLogsDirectory = System.getProperty("user.dir")+"/logs";
 		String srcOutputDirectory = System.getProperty("user.dir")+"/output";
-		String srcTestOutputDirectory = System.getProperty("user.dir")+"\\test-output";
+		String srcTestOutputDirectory = System.getProperty("user.dir")+"/test-output";
 
 		// set the location of the destination directories of logs,output and test-output folder under buildHistory folder
-		String destinationLogsDirectory = System.getProperty("user.dir")+"\\buildHistory\\logs\\logs-"+timeStamp;
-		String destinationOutputDirectory = System.getProperty("user.dir")+"\\buildHistory\\output/output-"+timeStamp;
-		String destinationTestOutputDirectory = System.getProperty("user.dir")+"\\buildHistory\\test-output\\test-output-"+timeStamp;
+		String destinationLogsDirectory = System.getProperty("user.dir")+"/buildHistory/logs/logs-"+timeStamp;
+		String destinationOutputDirectory = System.getProperty("user.dir")+"/buildHistory/output/output-"+timeStamp;
+		String destinationTestOutputDirectory = System.getProperty("user.dir")+"/buildHistory/test-output/test-output-"+timeStamp;
 
 		// create new folders for logs,output and test-output directories
 		try {
@@ -134,7 +141,6 @@ public class RFBaseTest{
 			e.printStackTrace();
 		}
 	}
-
 
 	/**
 	 * @throws Exception
@@ -160,5 +166,25 @@ public class RFBaseTest{
 		return s_assert;
 	}
 
-
+	// load env properties
+	public void setUserPropertyFile(String propertyFileName){
+		if(propertyFileName.toLowerCase().contains("qa2") && propertyFileName.toLowerCase().contains("us")){
+			userProps=testUsers_QA2_US_propertes;		  
+		}else  if(propertyFileName.toLowerCase().contains("dev1") && propertyFileName.toLowerCase().contains("us")){
+			userProps=testUsers_DEV1_US_propertes;
+		}
+		else  if(propertyFileName.toLowerCase().contains("dev1") && propertyFileName.toLowerCase().contains("ca")){
+			userProps=testUsers_DEV1_CA_propertes;
+		}
+		else  if(propertyFileName.toLowerCase().contains("qa1") && propertyFileName.toLowerCase().contains("us")){
+			userProps=testUsers_QA1_US_propertes;
+		}
+		else  if(propertyFileName.toLowerCase().contains("qa2") && propertyFileName.toLowerCase().contains("ca")){
+			userProps=testUsers_QA2_CA_propertes;
+		}
+		else  if(propertyFileName.toLowerCase().contains("prod") && propertyFileName.toLowerCase().contains("us")){
+			userProps=testUsers_PROD_US_propertes;
+		}
+		logger.info("testUsers are loaded from "+userProps);
+	}
 }

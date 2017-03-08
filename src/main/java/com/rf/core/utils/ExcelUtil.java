@@ -14,15 +14,19 @@ import java.io.InputStream;
 import java.text.DecimalFormat;
 import java.util.HashMap;
 import java.util.Iterator;
+import java.util.List;
 
 import org.apache.poi.ss.usermodel.Cell;
 import org.apache.poi.ss.usermodel.DateUtil;
 import org.apache.poi.ss.usermodel.FormulaEvaluator;
 import org.apache.poi.ss.usermodel.Row;
 import org.apache.poi.ss.usermodel.Workbook;
+import org.apache.poi.xssf.usermodel.XSSFCell;
 import org.apache.poi.xssf.usermodel.XSSFSheet;
 import org.apache.poi.xssf.usermodel.XSSFWorkbook;
 import org.testng.Assert;
+
+import com.rf.core.website.constants.TestConstants;
 
 /**
  * @author GSPANN
@@ -32,6 +36,10 @@ public class ExcelUtil {
 
 	static FileInputStream fileIn;
 	static XSSFWorkbook workbook;
+	static XSSFSheet consSheet;
+	static XSSFSheet pcSheet;
+	static XSSFSheet rcSheet;
+	static FileOutputStream fileOut;
 
 	public static void openFile(String path) {
 		try {
@@ -53,7 +61,7 @@ public class ExcelUtil {
 	}
 
 	public static void closeFile(String path) {
-		FileOutputStream fileOut;
+
 		try {
 			fileOut = CommonUtils.getFileOutputStream(path);
 			workbook.write(fileOut);
@@ -66,7 +74,7 @@ public class ExcelUtil {
 	public static void updateCell(int sheetId, int colId, int rowId,
 			String newVal) {
 		XSSFSheet sheet = workbook.getSheetAt(sheetId);
-		sheet.getRow(rowId).getCell(colId).setCellValue(newVal);
+		sheet.getRow(rowId).getCell(colId).setCellValue(newVal);		
 	}
 
 	public static void updatExcelCell(String path, int sheetId, int colId,
@@ -241,7 +249,7 @@ public class ExcelUtil {
 			case Cell.CELL_TYPE_BOOLEAN:
 				cellValue = formulaFlag ? evaluator.evaluate(cell)
 						.getBooleanValue() : cell.getBooleanCellValue();
-				break;
+						break;
 			}
 		}
 
@@ -291,4 +299,124 @@ public class ExcelUtil {
 		}
 		return map;
 	}
+
+	public static void createNewSheetInECCOrdersExcelFile(String path){
+		int index=0;
+		openFile(path);
+		if(workbook.getSheet(TestConstants.ECC_ORDER_TYPE_CONSULTANT_ADHOC)!=null){
+			index = workbook.getSheetIndex(TestConstants.ECC_ORDER_TYPE_CONSULTANT_ADHOC);
+			workbook.removeSheetAt(index);	
+		}
+		if(workbook.getSheet(TestConstants.ECC_ORDER_TYPE_PC_ADHOC)!=null){
+			index = workbook.getSheetIndex(TestConstants.ECC_ORDER_TYPE_PC_ADHOC);
+			workbook.removeSheetAt(index);	
+		}
+		if(workbook.getSheet(TestConstants.ECC_ORDER_TYPE_RC_ADHOC)!=null){
+			index = workbook.getSheetIndex(TestConstants.ECC_ORDER_TYPE_RC_ADHOC);
+			workbook.removeSheetAt(index);	
+		}
+		consSheet = workbook.createSheet(TestConstants.ECC_ORDER_TYPE_CONSULTANT_ADHOC);
+		pcSheet = workbook.createSheet(TestConstants.ECC_ORDER_TYPE_PC_ADHOC);
+		rcSheet = workbook.createSheet(TestConstants.ECC_ORDER_TYPE_RC_ADHOC);
+		try {
+			fileOut = CommonUtils.getFileOutputStream(path);
+		} catch (IOException e1) {
+			// TODO Auto-generated catch block
+			e1.printStackTrace();
+		}
+	}
+
+	public static void setOrderValuesInECCExcelFile(String path,String sheetName, int colId, int rowId,String newVal){
+		if(sheetName.equalsIgnoreCase(TestConstants.ECC_ORDER_TYPE_CONSULTANT_ADHOC)){
+			consSheet.createRow(rowId);
+			XSSFCell cell = consSheet.getRow(rowId).createCell(colId);
+			cell.setCellValue(newVal);	
+		}
+		if(sheetName.equalsIgnoreCase(TestConstants.ECC_ORDER_TYPE_PC_ADHOC)){
+			pcSheet.createRow(rowId);
+			XSSFCell cell = pcSheet.getRow(rowId).createCell(colId);
+			cell.setCellValue(newVal);	
+		}
+		if(sheetName.equalsIgnoreCase(TestConstants.ECC_ORDER_TYPE_RC_ADHOC)){
+			rcSheet.createRow(rowId);
+			XSSFCell cell = rcSheet.getRow(rowId).createCell(colId);
+			cell.setCellValue(newVal);	
+		}
+
+	}
+
+	public static void closeECCOrdersExcelFile(){
+		try {
+			workbook.write(fileOut);
+		} catch (IOException e1) {
+			// TODO Auto-generated catch block
+			e1.printStackTrace();
+		}
+		try {
+			fileIn.close();
+			fileOut.close();			
+		} catch (Exception e) {
+			Assert.fail(e.toString());
+		}
+	}
+
+	public static void setOrderDetailsInECCExcelFile(String path,String sheetName, int rowId, List<String> orderDetails){
+		XSSFCell cell = null;
+		int col = 0;
+		if(sheetName.equalsIgnoreCase(TestConstants.ECC_ORDER_TYPE_CONSULTANT_ADHOC)){
+			consSheet.createRow(rowId);
+			for(String value : orderDetails){
+				cell = consSheet.getRow(rowId).createCell(col);
+				cell.setCellValue(value);
+				col++;
+			}  
+		}
+		if(sheetName.equalsIgnoreCase(TestConstants.ECC_ORDER_TYPE_PC_ADHOC)){
+			pcSheet.createRow(rowId);
+			for(String value : orderDetails){
+				cell = pcSheet.getRow(rowId).createCell(col);
+				cell.setCellValue(value);
+				col++;
+			}
+		}
+		if(sheetName.equalsIgnoreCase(TestConstants.ECC_ORDER_TYPE_RC_ADHOC)){
+			rcSheet.createRow(rowId);
+			for(String value : orderDetails){
+				cell = rcSheet.getRow(rowId).createCell(col);
+				cell.setCellValue(value);
+				col++;
+			}
+		}
+	}
+
+	public static void createNewSheetInECCOrdersExcelFile(String path, String country){
+		int index=0;
+		String countryName = country.toUpperCase();
+		openFile(path);
+		String consSheetName = TestConstants.ECC_ORDER_TYPE_CONSULTANT_ADHOC+"_"+countryName;
+		String pcSheetName = TestConstants.ECC_ORDER_TYPE_PC_ADHOC+"_"+countryName;
+		String rcSheetName = TestConstants.ECC_ORDER_TYPE_RC_ADHOC+"_"+countryName;
+		if(workbook.getSheet(consSheetName)!=null){
+			index = workbook.getSheetIndex(consSheetName);
+			workbook.removeSheetAt(index); 
+		}
+		if(workbook.getSheet(pcSheetName)!=null){
+			index = workbook.getSheetIndex(pcSheetName);
+			workbook.removeSheetAt(index); 
+		}
+		if(workbook.getSheet(rcSheetName)!=null){
+			index = workbook.getSheetIndex(rcSheetName);
+			workbook.removeSheetAt(index); 
+		}
+		consSheet = workbook.createSheet(consSheetName);
+		pcSheet = workbook.createSheet(pcSheetName);
+		rcSheet = workbook.createSheet(rcSheetName);
+		try {
+			fileOut = CommonUtils.getFileOutputStream(path);
+		} catch (IOException e1) {
+			// TODO Auto-generated catch block
+			e1.printStackTrace();
+		}
+	}
 }
+

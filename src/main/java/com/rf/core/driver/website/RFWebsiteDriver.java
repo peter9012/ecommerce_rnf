@@ -72,7 +72,6 @@ public class RFWebsiteDriver implements RFDriver,WebDriver {
 	private static final Logger logger = LogManager
 			.getLogger(RFWebsiteDriver.class.getName());
 
-
 	/**
 	 * @throws MalformedURLException
 	 *             Prepares the environment that tests to be run on
@@ -89,7 +88,7 @@ public class RFWebsiteDriver implements RFDriver,WebDriver {
 		if (browser.equalsIgnoreCase("firefox"))
 			driver = new FirefoxDriver(prof);
 		else if (browser.equalsIgnoreCase("chrome")){
-			System.setProperty("webdriver.chrome.driver", "src\\test\\resources\\chromedriver.exe");
+			System.setProperty("webdriver.chrome.driver", "src/test/resources/chromedriver.exe");
 			ChromeOptions options = new ChromeOptions();
 			options.addArguments("no-sandbox");
 			options.addArguments("chrome.switches","--disable-extensions");
@@ -198,7 +197,7 @@ public class RFWebsiteDriver implements RFDriver,WebDriver {
 	 * @return
 	 */
 	public boolean isElementPresent(By locator) {
-		turnOffImplicitWaits();
+		turnOffImplicitWaits(3);
 		try{
 			if (driver.findElements(locator).size() > 0) {
 				return true;
@@ -218,7 +217,32 @@ public class RFWebsiteDriver implements RFDriver,WebDriver {
 	public void waitForElementPresent(By locator) {
 		logger.info("wait started for "+locator);
 		int timeout = 30;
-		turnOffImplicitWaits();
+		turnOffImplicitWaits(1);
+		boolean isElementFound = false;
+		for(int i=1;i<=timeout;i++){		
+			try{
+				if(driver.findElements(locator).size()==0){
+					pauseExecutionFor(1000);
+					logger.info("waiting...");
+					continue;
+				}else{
+					logger.info("wait over,element found");
+					isElementFound =true;
+					turnOnImplicitWaits();
+					pauseExecutionFor(1000);
+					break;
+				}			
+			}catch(Exception e){
+				continue;
+			}
+		}
+		if(isElementFound ==false)
+			logger.info("ELEMENT NOT FOUND");		
+	}
+
+	public void waitForElementPresent(By locator, int timeout) {
+		logger.info("wait started for "+locator);
+		turnOffImplicitWaits(1);
 		boolean isElementFound = false;
 		for(int i=1;i<=timeout;i++){		
 			try{
@@ -243,8 +267,28 @@ public class RFWebsiteDriver implements RFDriver,WebDriver {
 
 	public void quickWaitForElementPresent(By locator){
 		logger.info("quick wait started for "+locator);
-		int timeout = 2;
-		turnOffImplicitWaits();
+		int timeout = 5;
+		turnOffImplicitWaits(3);
+		for(int i=1;i<=timeout;i++){
+			try{
+				if(driver.findElements(locator).size()==0){
+					pauseExecutionFor(1000);
+					logger.info("waiting...");
+					continue;
+				}else{
+					logger.info("wait over,element found");
+					turnOnImplicitWaits();
+					break;
+				}			
+			}catch(Exception e){
+				continue;
+			}
+		}
+	}
+	
+	public void quickWaitForElementPresent(By locator,int timeout){
+		logger.info("quick wait started for "+locator);
+		turnOffImplicitWaits(1);
 		for(int i=1;i<=timeout;i++){
 			try{
 				if(driver.findElements(locator).size()==0){
@@ -273,9 +317,43 @@ public class RFWebsiteDriver implements RFDriver,WebDriver {
 		}		
 	}
 
+	public void waitForElementNotPresent(By locator, int timeout) {
+		try {
+			WebDriverWait wait = new WebDriverWait(driver, timeout);
+			logger.info("waiting for locator " + locator);
+			wait.until(ExpectedConditions.not(ExpectedConditions.presenceOfElementLocated(locator)));
+			logger.info("Element found");
+		} catch (Exception e) {
+			e.getStackTrace();
+		}		
+	}
+
+	public void waitForURLNotHaving(String keyWord, int timeout) {
+		logger.info("wait started for not having " + keyWord + " in Current url");
+		boolean iskeyWordPresent = true;
+		for(int i=1;i<=timeout;i++){  
+			try{
+				if(driver.getCurrentUrl().contains(keyWord)){
+					pauseExecutionFor(1000);
+					logger.info("waiting...");
+					continue;
+				}else{
+					logger.info("wait over," + keyWord + " is not present in Current Url");
+					iskeyWordPresent = false;
+					pauseExecutionFor(1000);
+					break;
+				}   
+			}catch(Exception e){
+				continue;
+			}
+		}
+		if(iskeyWordPresent == false)
+			logger.info(keyWord + " is not present in current URL");  
+	}
+
 	public void waitForLoadingImageToDisappear(){
-		int DEFAULT_TIMEOUT = 50;
-		turnOffImplicitWaits();
+		int DEFAULT_TIMEOUT = 10;
+		turnOffImplicitWaits(1);
 		//		By locator = By.xpath("//div[@id='blockUIBody']");
 		By locator = By.xpath("//html[@class='loader']");
 		logger.info("Waiting for loading image to get disappear");
@@ -298,7 +376,7 @@ public class RFWebsiteDriver implements RFDriver,WebDriver {
 	}
 
 	public void waitForCSCockpitLoadingImageToDisappear(){
-		turnOffImplicitWaits();
+		turnOffImplicitWaits(1);
 		By locator = By.xpath("//div[@class='z-loading-indicator']");
 		logger.info("Waiting for cscockpit loading image to get disappear");
 		for(int i=1;i<=DEFAULT_TIMEOUT_CSCOCKPIT;i++){			
@@ -320,7 +398,7 @@ public class RFWebsiteDriver implements RFDriver,WebDriver {
 	}
 
 	public void waitForCSCockpitLoadingImageToDisappear(int time){
-		turnOffImplicitWaits();
+		turnOffImplicitWaits(1);
 		By locator = By.xpath("//div[@class='z-loading-indicator']");
 		logger.info("Waiting for cscockpit loading image to get disappear");
 		for(int i=1;i<=time;i++){			
@@ -342,7 +420,7 @@ public class RFWebsiteDriver implements RFDriver,WebDriver {
 	}
 
 	public void waitForCRMLoadingImageToDisappear(){
-		turnOffImplicitWaits();
+		turnOffImplicitWaits(2);
 		By locator = By.xpath("//span[contains(text(),'Loading')]");
 		logger.info("Waiting for crm loading image to get disappear");
 		for(int i=1;i<=DEFAULT_TIMEOUT;i++){			
@@ -364,7 +442,7 @@ public class RFWebsiteDriver implements RFDriver,WebDriver {
 	}	
 
 	public void waitForLoadingImageToAppear(){
-		turnOffImplicitWaits();
+		turnOffImplicitWaits(2);
 		By locator = By.xpath("//div[@id='blockUIBody']");
 		int timeout = 3;
 
@@ -387,7 +465,7 @@ public class RFWebsiteDriver implements RFDriver,WebDriver {
 	}
 
 	public void waitForSpinImageToDisappear(){
-		turnOffImplicitWaits();
+		turnOffImplicitWaits(1);
 		By locator = By.xpath("//span[@id='email-ajax-spinner'][contains(@style,'display: inline;')]");
 		logger.info("Waiting for spin image to get disappear");
 		for(int i=1;i<=DEFAULT_TIMEOUT;i++){
@@ -408,12 +486,12 @@ public class RFWebsiteDriver implements RFDriver,WebDriver {
 	}
 
 	public void waitForTokenizing() {
-		int timeout = 90;
-		turnOffImplicitWaits();
+		int timeout = 5;
+		turnOffImplicitWaits(1);
 		boolean isElementFound = false;
 		for(int i=1;i<=timeout;i++){  
 			try{
-				if(driver.findElements(By.xpath("//div[@class='card-icons']//span[not(contains(@class,'disabled'))]")).size()==0){
+				if(driver.findElements(By.xpath("//*[@id='card_accountNumber'][@style='']")).size()==0){
 					pauseExecutionFor(1000);
 					logger.info("waiting...");
 					continue;
@@ -433,7 +511,7 @@ public class RFWebsiteDriver implements RFDriver,WebDriver {
 	}
 
 	public void waitForStorfrontLegacyLoadingImageToDisappear(){
-		turnOffImplicitWaits();
+		turnOffImplicitWaits(2);
 		By locator = By.xpath("//div[contains(@id,'UpdateProgress')][contains(@style,'display: block;')]");
 		logger.info("Waiting for storefront legacy loading image to get disappear");
 		for(int i=1;i<=DEFAULT_TIMEOUT;i++){   
@@ -455,7 +533,7 @@ public class RFWebsiteDriver implements RFDriver,WebDriver {
 	}
 
 	public void waitForNSCore4LoadingImageToDisappear(){
-		turnOffImplicitWaits();
+		turnOffImplicitWaits(1);
 		By locator = By.xpath("//div[@style='display: block;']/img");
 		logger.info("Waiting for NSCore4 loading image to get disappear");
 		for(int i=1;i<=DEFAULT_TIMEOUT;i++){   
@@ -477,7 +555,7 @@ public class RFWebsiteDriver implements RFDriver,WebDriver {
 	}
 
 	public void waitForNSCore4ProcessImageToDisappear(){
-		turnOffImplicitWaits();
+		turnOffImplicitWaits(1);
 		By locator = By.xpath("//div[@class='HModalOverlay']");
 		logger.info("Waiting for NSCore4 process loading image to get disappear");
 		for(int i=1;i<=DEFAULT_TIMEOUT;i++){   
@@ -498,7 +576,7 @@ public class RFWebsiteDriver implements RFDriver,WebDriver {
 	}
 
 	public void waitForLSDJustAMomentImageToDisappear(){
-		turnOffImplicitWaits();
+		turnOffImplicitWaits(1);
 		By locator = By.xpath("//div[@id='preload'][not(@style='display:none')]");
 		logger.info("Waiting for LSD loading image to get disappear");
 		for(int i=1;i<=DEFAULT_TIMEOUT;i++){   
@@ -519,7 +597,7 @@ public class RFWebsiteDriver implements RFDriver,WebDriver {
 	}
 
 	public void waitForLSDLoaderAnimationImageToDisappear(){
-		turnOffImplicitWaits();
+		turnOffImplicitWaits(1);
 		By locator = By.xpath("//div[contains(@class,'loader-animation')][(@style='')]");
 		logger.info("Waiting for LSD loading image to get disappear");
 		for(int i=1;i<=DEFAULT_TIMEOUT;i++){   
@@ -568,16 +646,38 @@ public class RFWebsiteDriver implements RFDriver,WebDriver {
 		js.executeScript(strJavaScript, driver.findElement(locator));
 		pauseExecutionFor(1000);
 	}
-
-	public void dblClickByJS(By locator) {		
-		String strJavaScript = "var targLink  = arguments[0];"
-				+" var clickEvent  = document.createEvent ('MouseEvents');"
-				+"clickEvent.initEvent ('dblclick', true, true);"
-				+"targLink.dispatchEvent (clickEvent);";
-		JavascriptExecutor js =  (JavascriptExecutor)RFWebsiteDriver.driver;
-		js.executeScript(strJavaScript, driver.findElement(locator));
-		pauseExecutionFor(1000);
-	}
+	
+	public void dblClickByJS(By locator) {  
+		  String strJavaScript = "var targLink  = arguments[0];"
+		    +" var clickEvent  = document.createEvent ('MouseEvents');"
+		    +"clickEvent.initEvent ('dblclick', true, true);"
+		    +"targLink.dispatchEvent (clickEvent);";
+		  JavascriptExecutor js =  (JavascriptExecutor)RFWebsiteDriver.driver;
+		  js.executeScript(strJavaScript, driver.findElement(locator));
+		  pauseExecutionFor(1000);
+		 }
+	
+	public void doubleClickByJS(By locator) {  
+		  String strJavaScript = "var targLink  = arguments[0];"
+		    +" var event = new MouseEvent('dblclick', {"
+		    +"'view': window,"
+		    +"'bubbles': true,"
+		    +"'cancelable': true});"
+		    +"targLink.dispatchEvent (event);";
+		  JavascriptExecutor js =  (JavascriptExecutor)RFWebsiteDriver.driver;
+		  js.executeScript(strJavaScript, driver.findElement(locator));
+		  pauseExecutionFor(1000);
+		 }
+	
+	public void clickByJS(By locator) {  
+		  String strJavaScript = "var targLink  = arguments[0];"
+		    +" var clickEvent  = document.createEvent ('MouseEvents');"
+		    +"clickEvent.initEvent ('click', true, true,window);"
+		    +"targLink.dispatchEvent (clickEvent);";
+		  JavascriptExecutor js =  (JavascriptExecutor)RFWebsiteDriver.driver;
+		  js.executeScript(strJavaScript, driver.findElement(locator));
+		  pauseExecutionFor(1000);
+		 }
 
 	public void get(String Url) {
 		logger.info("URL opened is "+Url);
@@ -588,7 +688,7 @@ public class RFWebsiteDriver implements RFDriver,WebDriver {
 	public void click(By locator) {		
 		waitForElementToBeClickable(locator, DEFAULT_TIMEOUT);
 		//movetToElementJavascript(locator);
-		turnOffImplicitWaits();
+		turnOffImplicitWaits(1);
 		try{
 			findElement(locator).click();			
 		}catch(Exception e){
@@ -600,6 +700,7 @@ public class RFWebsiteDriver implements RFDriver,WebDriver {
 	public void clickByAction(By locator) {
 		Actions build = new Actions(driver);
 		build.doubleClick(driver.findElement(locator)).build().perform();
+		logger.info("double clicked on "+locator);
 		pauseExecutionFor(1000);
 	}
 
@@ -616,6 +717,11 @@ public class RFWebsiteDriver implements RFDriver,WebDriver {
 			findElement(locator).clear();	
 		}
 		findElement(locator).sendKeys(input);
+	}
+
+	public void typeByJSLocId(String id, String input) {
+		String javascript = "document.getElementById('"+id+"').value="+input;
+		((JavascriptExecutor) RFWebsiteDriver.driver).executeScript(javascript);
 	}
 
 	public void quit() {
@@ -756,7 +862,7 @@ public class RFWebsiteDriver implements RFDriver,WebDriver {
 	 */
 	public boolean isElementVisible(By by) {
 		try{
-			turnOffImplicitWaits();
+			turnOffImplicitWaits(3);
 			return driver.findElement(by).isDisplayed() ? true : false;
 		}catch(Exception ex){
 			return false;
@@ -957,15 +1063,25 @@ public class RFWebsiteDriver implements RFDriver,WebDriver {
 				"arguments[0].scrollIntoView(true);", element);
 	}
 
-	public void turnOffImplicitWaits() {
-		driver.manage().timeouts().implicitlyWait(3, TimeUnit.SECONDS);
-	}
+	//	public void turnOffImplicitWaits() {
+	//		driver.manage().timeouts().implicitlyWait(10, TimeUnit.SECONDS);
+	//	}
 
 	public void turnOnImplicitWaits() {
-		driver.manage().timeouts().implicitlyWait(15, TimeUnit.SECONDS);
+		driver.manage().timeouts().implicitlyWait(20, TimeUnit.SECONDS);
 	}
 
-	public void clickByJS(WebDriver driver, WebElement element) {
+	public void turnOffImplicitWaits(int time) {
+		driver.manage().timeouts().implicitlyWait(time, TimeUnit.SECONDS);
+	}
+
+	//	public void turnOnImplicitWaits(int time) {
+	//		driver.manage().timeouts().implicitlyWait(time, TimeUnit.SECONDS);
+	//	}
+
+	public void clickByJS(WebDriver driver, By by) {
+		quickWaitForElementPresent(by);
+		WebElement element = driver.findElement(by);
 		JavascriptExecutor executor = (JavascriptExecutor) driver;
 		executor.executeScript("arguments[0].click();", element);
 	}

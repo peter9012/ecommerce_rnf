@@ -38,7 +38,8 @@ public class StoreFrontHomePage extends StoreFrontWebsiteBasePage{
 	private final By BILLING_ADDRESS_DD_LOC= By.id("default-address");
 	private final By BILLING_ADDRESS_OPTION_VALUE_LOC= By.xpath("//select[@id='default-address']//option[2]");
 	private final By BIG_BUSNINESS_KIT_PAGE_LOC = By.xpath("//input[@id='ENROLL_KIT_0002']");
-	private final By PERSONAL_RESULTS_KIT_PAGE_LOC = By.xpath("//input[@id='ENROLL_KIT_0003']");
+	//	private final By PERSONAL_RESULTS_KIT_PAGE_LOC = By.xpath("//input[@id='PRKT']");
+	private final By PERSONAL_RESULTS_KIT_PAGE_LOC = By.xpath("//label[normalize-space(text())='Personal Results Kit']//preceding-sibling::input[1]");
 	private final By FIRST_NAME_FOR_REGISTRATION_LOC = By.id("register.firstName");
 	private final By LAST_NAME_FOR_REGISTRATION_LOC = By.id("register.lastName");
 	private final By EMAIL_ID_FOR_REGISTRATION_LOC = By.id("register.email");
@@ -56,9 +57,9 @@ public class StoreFrontHomePage extends StoreFrontWebsiteBasePage{
 	private final By WELCOME_USER_LOC = By.xpath("//div[@class='loginBlock']/div");
 	private final By CONFIRMATION_MSG_OF_CONSULTANT_ENROLLMENT_LOC = By.xpath("//div[@class='global-alerts']/div");
 	private final By POLICIES_AND_PROCEDURES_LINK_LOC = By.xpath("//a[contains(text(),'Rodan+Fields Policies and Procedure')]");
-	private final By PULSE_PRO_T_C_LINK_LOC = By.xpath("//a[contains(text(),'Pulse Pro Terms and Conditions')]");
+	private final By PULSE_PRO_T_C_LINK_LOC = By.xpath("//a[contains(text(),'Pulse Pro')]");
 	private final By CRP_T_C_LINK_LOC = By.xpath("//a[contains(text(),'Consultant Replenishment Program (CRP) Terms and Conditions')]");
-	private final By NORTH_DAKOTA_CHKBOX_LOC = By.xpath("//label[@for='noEnrollmentKit']/..");
+	private final By NORTH_DAKOTA_CHKBOX_LOC = By.xpath("//input[@id='noEnrollmentKit']");
 	private final By ALL_KIT_SECTION_LOC = By.xpath("//div[@class='enrollmentKit-wrapper row']/div");
 	private final By CONNECT_BTN_LOC = By.xpath("//a[text()='CONNECT']");
 	private final By APPLYING_AS_BUSINESS_ENTITY_LINK_LOC = By.xpath("//a[text()='Applying as a business entity?']");
@@ -75,23 +76,26 @@ public class StoreFrontHomePage extends StoreFrontWebsiteBasePage{
 	private final By LOGIN_OR_REGISTER_TXT_LOC = By.xpath("//h1[contains(text(),'LOG IN OR REGISTER') or contains(text(),'Log in') or contains(text(),'Log in or create an account')]");
 	private final By EMAIL_AVAILABLE_MSG_LOC = By.xpath("//div[@class='emailbox-available']//div[contains(text(),'Available')]");
 	private final By SPONSOR_NAME_LINK_LOC = By.xpath("//div[contains(@class,'findAConsultant')]/a[contains(@href,'/pws/') and contains(@href,'about-me')]");
-	private final By FIRST_PRODUCT_ADD_TO_CRP_BTN_LOC = By.xpath("//div[@id='product_category']/following-sibling::div/descendant::span[text()='Add to CRP'][1]");
-	private final By CRP_CHECKOUT_BTN_LOC = By.xpath("//button[contains(text(),'Checkout')]");
-	private final By SET_UP_CRP_BTN_LOC = By.xpath("//a[contains(text(),'SET UP CRP')]");
-	private final By SET_UP_CRP_LINK_LOC = By.xpath("//a[contains(text(),'SET UP CRP')]");
+	private final By FIRST_PRODUCT_ADD_TO_CRP_BTN_LOC = By.xpath("//div[@id='product_category']/following-sibling::div/descendant::span[text()='Add to CRP'][2]");
+	private final By CRP_CHECKOUT_BTN_LOC = By.xpath("//button[contains(text(),'Next')]");
+	private final By SET_UP_CRP_BTN_LOC = By.xpath("//a[contains(text(),'JOIN CRP')]");
 	private final By PRODUCT_SEARCH_AUTOSUGGESTION_LOC = By.xpath("//div[@class='name']");
 	private final By MEET_THE_DOCTORS_TXT_LOC = By.xpath("//h1[contains(text(),'Meet the Doctors')]");
+	private final By CONTINUE_SHOPPING_CRP_BTN_LOC = By.xpath("//button[contains(text(),'Continue')]");
 
+	private String appliedFilterNameLoc = "//div[@id='applied_filters']/descendant::li[contains(text(),'%s')]";
 	private String specificProductAddToCRPBtnLoc = "//div[@id='product_category']/following-sibling::div/descendant::span[text()='Add to CRP'][%s]";
 	private String viewDetailsLinkLoc = "//div[contains(@class,'enrollmentKit-wrapper')]/descendant::a[contains(text(),'View Details')][%s]";
 	private String expandedKitDescriptionLoc = "//div[contains(@class,'enrollmentKit-wrapper')]/div[%s]//div[@class='detailed-description']";
 	private String closeBtnForKitDetailsLoc = "//div[contains(@class,'enrollmentKit-wrapper')]/div[%s]//a[@class='enrollKit-close']";
-	private String kitNameLoc = "//label[text()='%s']/preceding::input[1]";
-	private String priceOfProductLoc = "//div[contains(@class,'product__listing')]//div[@class='product-item'][%s]//span[@id='cust_price']";
+	private String kitNameLoc = "//label[text()='%s' or text()='%s']/preceding::input[1]";
 	private String socialMediaIconLoc = "//div[@class='container']//a[contains(@href,'%s')]";
 	private String teamMemberNameLoc = "//div[@id='modal_front']/div[%s]//div[@class='title']/h4";
 	private String categoryUnderShopSkinCareLoc = topNavigationLoc+"//a[@title='%s']";
 	private String socialMediaLoc = "//div[contains(@class,'social-icons')]//a[contains(@href,'%s')]";
+
+	//CA specific
+	//private final By PERSONAL_RESULTS_KIT_PAGE_LOC_CA = By.xpath("//label[normalize-space(text())='Personal Results Kit']//preceding-sibling::input[1]");
 
 	private int randomLink =0;
 
@@ -153,7 +157,7 @@ public class StoreFrontHomePage extends StoreFrontWebsiteBasePage{
 	 * 
 	 */
 	public StoreFrontHomePage clickDirectLinkAssociationLink(){
-		driver.clickByJS(RFWebsiteDriver.driver,driver.findElement(DIRECT_LINK_ASSOCIATION));
+		driver.clickByJS(RFWebsiteDriver.driver,DIRECT_LINK_ASSOCIATION);
 		logger.info("clicked on 'direct link association' link");
 		driver.pauseExecutionFor(2000);
 		return this;
@@ -313,6 +317,11 @@ public class StoreFrontHomePage extends StoreFrontWebsiteBasePage{
 		logger.info("Entered confirm password as "+password);
 		driver.type(SSN_FOR_REGISTRATION_LOC, SSN);
 		logger.info("Entered SSN  as "+SSN);
+		driver.findElement(SSN_FOR_REGISTRATION_LOC).sendKeys(Keys.TAB);
+		driver.pauseExecutionFor(1000);
+		//The following is a patch to make next buuton enabled
+		driver.type(FIRST_NAME_FOR_REGISTRATION_LOC, firstName);
+		logger.info("Entered first name as "+firstName);
 		return this;
 	}
 
@@ -324,10 +333,48 @@ public class StoreFrontHomePage extends StoreFrontWebsiteBasePage{
 	 * 
 	 */
 	public StoreFrontHomePage clickNextButton(){
-		driver.clickByJS(RFWebsiteDriver.driver,driver.findElement(NEXT_BUTTON_LOC));
+		driver.pauseExecutionFor(2000);
+		driver.quickWaitForElementPresent(NEXT_BUTTON_LOC);
+		driver.click(NEXT_BUTTON_LOC);
 		logger.info("Next button clicked");
 		driver.waitForPageLoad();
-		driver.waitForLoadingImageToDisappear();
+		if(driver.getCurrentUrl().contains("delivery-account")==false){
+			driver.clickByJS(RFWebsiteDriver.driver,NEXT_BUTTON_LOC);
+			logger.info("Next button clicked");
+			driver.waitForPageLoad();
+		}
+		if(driver.getCurrentUrl().contains("delivery-account")==false){
+			driver.clickByJS(RFWebsiteDriver.driver,NEXT_BUTTON_LOC);
+			logger.info("Next button clicked by JS");
+			driver.waitForPageLoad();
+		}
+		
+		return this;
+	}
+	
+	/***
+	 * This method click the next button after selecting sponsor
+	 * 
+	 * @param
+	 * @return store front Home page object
+	 * 
+	 */
+	public StoreFrontHomePage clickNextButtonConsAccountDetails(){
+		driver.pauseExecutionFor(2000);
+		driver.quickWaitForElementPresent(NEXT_BUTTON_LOC);
+		driver.click(NEXT_BUTTON_LOC);
+		logger.info("Next button clicked");
+		driver.waitForPageLoad();
+		if(driver.getCurrentUrl().contains("choose-kit")==false){
+			driver.clickByJS(RFWebsiteDriver.driver,NEXT_BUTTON_LOC);
+			logger.info("Next button clicked again by JS");
+			driver.waitForPageLoad();
+		}
+		if(driver.getCurrentUrl().contains("choose-kit")==false){
+			driver.click(NEXT_BUTTON_LOC);
+			logger.info("Next button clicked again by Action");
+			driver.waitForPageLoad();
+		}
 		return this;
 	}
 
@@ -345,7 +392,8 @@ public class StoreFrontHomePage extends StoreFrontWebsiteBasePage{
 	 * @return
 	 */
 	public StoreFrontHomePage clickAnyViewDetailsLink(String kitNumber){
-		driver.click(By.xpath(String.format(viewDetailsLinkLoc, kitNumber)));
+		driver.waitForElementPresent(By.xpath(String.format(viewDetailsLinkLoc, kitNumber)));
+		driver.clickByJS(RFWebsiteDriver.driver,By.xpath(String.format(viewDetailsLinkLoc, kitNumber)));
 		logger.info("clicked on link "+kitNumber);
 		return this;
 	}
@@ -368,7 +416,7 @@ public class StoreFrontHomePage extends StoreFrontWebsiteBasePage{
 	 */
 	public StoreFrontHomePage closeTheExpandedKitDetails(String kitNumber){
 		driver.pauseExecutionFor(1000);
-		driver.clickByJS(RFWebsiteDriver.driver, driver.findElement((By.xpath(String.format(closeBtnForKitDetailsLoc, kitNumber)))));
+		driver.clickByJS(RFWebsiteDriver.driver, By.xpath(String.format(closeBtnForKitDetailsLoc, kitNumber)));
 		logger.info("clicked on the close btn of the expanded kit details for kitNumber "+kitNumber);
 		return this;
 	}
@@ -386,8 +434,10 @@ public class StoreFrontHomePage extends StoreFrontWebsiteBasePage{
 	 * @return
 	 */
 	public StoreFrontHomePage selectNorthDakotaCheckBoxOnKitPage(){
-		driver.click(NORTH_DAKOTA_CHKBOX_LOC);
+		driver.waitForElementPresent(NORTH_DAKOTA_CHKBOX_LOC);
+		driver.clickByJS(RFWebsiteDriver.driver,NORTH_DAKOTA_CHKBOX_LOC);
 		logger.info("North Dakota Checkbox selected");
+		driver.pauseExecutionFor(2000);
 		return this;
 	}
 
@@ -399,7 +449,7 @@ public class StoreFrontHomePage extends StoreFrontWebsiteBasePage{
 	 * 
 	 */
 	public StoreFrontHomePage chooseProductFromKitPage(){
-		driver.clickByJS(RFWebsiteDriver.driver, driver.findElement(PERSONAL_RESULTS_KIT_PAGE_LOC));
+		driver.clickByJS(RFWebsiteDriver.driver, PERSONAL_RESULTS_KIT_PAGE_LOC);
 		logger.info("selected the personal result kit");
 		return this;
 	}
@@ -423,8 +473,9 @@ public class StoreFrontHomePage extends StoreFrontWebsiteBasePage{
 	 * 
 	 */
 	public StoreFrontHomePage chooseProductFromKitPage(String kitName){
-		driver.clickByJS(RFWebsiteDriver.driver, driver.findElement(By.xpath(String.format(kitNameLoc,kitName.toUpperCase()))));
-		logger.info("Choose "+kitName.toUpperCase()+" product at kit page");
+		driver.pauseExecutionFor(3000);
+		driver.clickByJS(RFWebsiteDriver.driver, By.xpath(String.format(kitNameLoc,kitName,kitName.toUpperCase())));
+		logger.info("Choose "+kitName+" product at kit page");
 		return this;
 	}
 
@@ -446,7 +497,8 @@ public class StoreFrontHomePage extends StoreFrontWebsiteBasePage{
 	 * @return boolean
 	 */
 	public boolean isWelcomeUserElementDisplayed(){
-		return driver.isElementVisible(WELCOME_DROPDOWN_LOC);
+		driver.quickWaitForElementPresent(WELCOME_DROPDOWN_LOC,2);
+		return driver.isElementPresent(WELCOME_DROPDOWN_LOC);
 	}
 
 
@@ -480,18 +532,6 @@ public class StoreFrontHomePage extends StoreFrontWebsiteBasePage{
 	}
 
 	/***
-	 * This method verify add to cart button is present for first product
-	 * 
-	 * @param
-	 * @return boolean value.
-	 * 
-	 */
-
-	public boolean isAddToCartPresentForFirstProduct(){
-		return driver.isElementVisible(ADD_TO_CART_FIRST_PRODUCT_LOC);
-	}
-
-	/***
 	 * This method select the first filter option under shop by price filter
 	 * 
 	 * @param
@@ -499,9 +539,9 @@ public class StoreFrontHomePage extends StoreFrontWebsiteBasePage{
 	 * 
 	 */
 	public StoreFrontHomePage selectFirstOptionInShopByPriceFilter(){
-		driver.clickByJS(RFWebsiteDriver.driver, driver.findElement(SHOP_BY_PRICE_FILTER_LOC));
+		driver.clickByJS(RFWebsiteDriver.driver, SHOP_BY_PRICE_FILTER_LOC);
 		logger.info("Shop by price dropdown clicked");
-		driver.clickByJS(RFWebsiteDriver.driver, driver.findElement(SHOP_BY_PRICE_FILTER_OPTION_0_TO_49$_LOC));
+		driver.clickByJS(RFWebsiteDriver.driver, SHOP_BY_PRICE_FILTER_OPTION_0_TO_49$_LOC);
 		logger.info("First option under shop by price filter selected");
 		return this;
 	}
@@ -592,9 +632,9 @@ public class StoreFrontHomePage extends StoreFrontWebsiteBasePage{
 	 * 
 	 */
 	public StoreFrontHomePage selectSecondOptionInShopByPriceFilter(){
-		driver.clickByJS(RFWebsiteDriver.driver, driver.findElement(SHOP_BY_PRICE_FILTER_LOC));
+		driver.clickByJS(RFWebsiteDriver.driver, SHOP_BY_PRICE_FILTER_LOC);
 		logger.info("Shop by price dropdown clicked");
-		driver.clickByJS(RFWebsiteDriver.driver, driver.findElement(SHOP_BY_PRICE_FILTER_OPTION_50_TO_199$_LOC));
+		driver.clickByJS(RFWebsiteDriver.driver, SHOP_BY_PRICE_FILTER_OPTION_50_TO_199$_LOC);
 		logger.info("Second option under shop by price filter selected");
 		return this;
 	}
@@ -619,9 +659,9 @@ public class StoreFrontHomePage extends StoreFrontWebsiteBasePage{
 	 * 
 	 */
 	public StoreFrontHomePage selectThirdOptionInShopByPriceFilter(){
-		driver.clickByJS(RFWebsiteDriver.driver, driver.findElement(SHOP_BY_PRICE_FILTER_LOC));
+		driver.clickByJS(RFWebsiteDriver.driver, SHOP_BY_PRICE_FILTER_LOC);
 		logger.info("Shop by price dropdown clicked");
-		driver.clickByJS(RFWebsiteDriver.driver, driver.findElement(SHOP_BY_PRICE_FILTER_OPTION_200_TO_499$_LOC));
+		driver.clickByJS(RFWebsiteDriver.driver, SHOP_BY_PRICE_FILTER_OPTION_200_TO_499$_LOC);
 		logger.info("Third option under shop by price filter selected");
 		return this;
 	}
@@ -707,7 +747,7 @@ public class StoreFrontHomePage extends StoreFrontWebsiteBasePage{
 	 * @return
 	 */
 	public boolean isHomePageBannerDisplayed(){
-		return driver.isElementVisible(By.xpath("//div[@class='hpage-banner-box']"));
+		return driver.isElementVisible(By.xpath("//div[contains(@class,'rf-home')]"));
 	}
 
 	/***
@@ -742,11 +782,11 @@ public class StoreFrontHomePage extends StoreFrontWebsiteBasePage{
 	}
 
 	/***
-	 * This method selects the Subscribe to Pulse checkbox
+	 * This method selects the UnSubscribe to Pulse checkbox
 	 * @return SF home page object
 	 */
-	public StoreFrontHomePage selectSubscribeToPulseCheckBox(){
-		driver.clickByJS(RFWebsiteDriver.driver, driver.findElement(SUBSCRIBE_TO_PULSE_CHKBOX_LOC));
+	public StoreFrontHomePage UnSelectSubscribeToPulseCheckBox(){
+		driver.clickByJS(RFWebsiteDriver.driver, SUBSCRIBE_TO_PULSE_CHKBOX_LOC);
 		logger.info("Subscribe to Pulse checkbox has been selected");
 		return this;
 	}
@@ -757,6 +797,7 @@ public class StoreFrontHomePage extends StoreFrontWebsiteBasePage{
 	 * @return
 	 */
 	public StoreFrontHomePage enterPrefix(String prefix){
+		logger.info("Prefix is "+prefix);
 		driver.type(PREFIX_FIELD_LOC, prefix);
 		return this;
 	}
@@ -878,7 +919,7 @@ public class StoreFrontHomePage extends StoreFrontWebsiteBasePage{
 	 * 
 	 */
 	public StoreFrontWebsiteBasePage clickEnrollNowButton(){
-		driver.clickByJS(RFWebsiteDriver.driver,driver.findElement(ENROLL_NOW_BUTTON_LOC));
+		driver.clickByJS(RFWebsiteDriver.driver,ENROLL_NOW_BUTTON_LOC);
 		//driver.click(ENROLL_NOW_BUTTON_LOC);
 		driver.waitForPageLoad();
 		logger.info("clicked on 'Enroll now button'");
@@ -929,8 +970,15 @@ public class StoreFrontHomePage extends StoreFrontWebsiteBasePage{
 	 * 
 	 */
 	public StoreFrontHomePage addFirstProductForCRPCheckout(){
-		driver.clickByJS(RFWebsiteDriver.driver, driver.findElement(FIRST_PRODUCT_ADD_TO_CRP_BTN_LOC));
+		driver.clickByJS(RFWebsiteDriver.driver, FIRST_PRODUCT_ADD_TO_CRP_BTN_LOC);
 		logger.info("Clicked Add to CRP button of First Product");
+		driver.pauseExecutionFor(2000);
+		while(driver.isElementPresent(CRP_CHECKOUT_BTN_LOC)==false){
+			driver.clickByJS(RFWebsiteDriver.driver, CONTINUE_SHOPPING_CRP_BTN_LOC);
+			driver.pauseExecutionFor(1000);
+			driver.clickByJS(RFWebsiteDriver.driver, FIRST_PRODUCT_ADD_TO_CRP_BTN_LOC);
+			logger.info("Clicked Add to CRP button of First Product");
+		}
 		return this;
 	}
 
@@ -943,7 +991,7 @@ public class StoreFrontHomePage extends StoreFrontWebsiteBasePage{
 	 */
 	public StoreFrontCheckoutPage checkoutCRPBag(){
 		driver.click(CRP_CHECKOUT_BTN_LOC);
-		logger.info("Clicked CRP checkout button");
+		logger.info("Clicked next button");
 		return new StoreFrontCheckoutPage(driver);
 	}
 
@@ -985,4 +1033,16 @@ public class StoreFrontHomePage extends StoreFrontWebsiteBasePage{
 		logger.info("Clicked Add to CRP button of Product Number : " + productNum);
 		return this;
 	}
+	
+	/***
+	  * This method verify the first filter option under shop by price filter
+	  * is applied or removed successfully or not
+	  * 
+	  * @param filter name
+	  * @return boolean value.
+	  * 
+	  */
+	 public boolean isFilterAppliedAndRemovedSuccessfully(String filterName){
+	  return driver.isElementPresent(By.xpath(String.format(appliedFilterNameLoc,filterName)));
+	 }
 }

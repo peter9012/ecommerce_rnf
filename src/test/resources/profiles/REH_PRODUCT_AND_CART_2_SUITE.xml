@@ -26,8 +26,7 @@
 					<include name="testCartPageCheckoutCTAAnonymousCreateAccount_500"></include>
 					<include name="testCartPagePCPerksTermsAndConditionsAnonymousUser_220"></include>
 					<include name="testCartPageRetailUserAdHocCart_162"></include>
-					<include
-						name="testProceedToCheckoutConfirmationAlertForAdhocOrdersConsultant_602"></include>
+					<include name="testProceedToCheckoutConfirmationAlertForAdhocOrdersConsultant_602"></include>
 					<include name="testPCPerksInformationOverlay_169"></include>
 					<include name="testAddMultipleProductsToCartAfterLogin_69"></include>
 					<include name="testSortAndUnsortProductBaseOnPriceFilterApplied_63"></include>

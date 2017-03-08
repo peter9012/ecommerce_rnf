@@ -27,7 +27,7 @@ public class AccessLinkToCreateNewRFAccountTest extends StoreFrontWebsiteBaseTes
 	 */
 	@Test(enabled=true)
 	public void testAccessALinkToCreateANewRFAccountFromComSite_16(){
-		String prefix = TestConstants.CONSULTANT_PWS_PREFIX;
+		String prefix = pwsPrefix();
 		sfHomePage.navigateToUrl(sfHomePage.getBaseUrl()+"/" +sfHomePage.getCountry() +"/pws/" + prefix);
 		sfHomePage.clickLoginIcon();
 		sfHomePage.clickSignUpNowLink();

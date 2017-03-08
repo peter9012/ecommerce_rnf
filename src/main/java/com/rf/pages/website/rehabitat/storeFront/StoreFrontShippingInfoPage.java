@@ -18,23 +18,25 @@ public class StoreFrontShippingInfoPage extends StoreFrontWebsiteBasePage{
 
 	private final By ADD_NEW_SHIPPING_ADDRESS_LOC = By.xpath("//a[contains(text(),'Add new shipping address')]");
 	private final By CANCEL_BUTTON_OF_SHIPPING_ADDRESS_LOC = By.xpath("//div[@class='accountActions']//a");
-	private final By DEFAULT_SHIPPING_ADDRESS_NAME_LOC = By.xpath("//a[contains(@class,'selected') and contains(text(),'Default')]/ancestor::div[1]/preceding-sibling::ul//strong");
-	private final By EDIT_LINK_OF_DEFAULT_SHIPPING_ADDRESS_LOC = By.xpath("//a[contains(@class,'selected') and contains(text(),'Default')]/ancestor::div[1]/preceding-sibling::div/a[contains(text(),'Edit')]");
 	private final By ACTION_SUCCESS_MSG_LOC = By.xpath("//div[contains(@class,'alert-info') and contains(@class,'alert-dismissable')]");
 	private final By CANCEL_BUTTON_ON_DELETE_SHIPPING_POPUP_LOC = By.xpath("//div[@id='colorbox']//a[contains(text(),'Cancel')]");
 	private final By DELETE_BUTTON_ON_DELETE_SHIPPING_POPUP_LOC = By.xpath("//div[@id='colorbox']//a[contains(text(),'Delete')]");
-    private final By LEAVE_AS_IS_BUTTON_ON_UPDATE_AUTOSHIP_MODAL_LOC = By.xpath("//div[@class='myModal' and contains(@style,'display')]//a[contains(text(),'LEAVE AS IS')]");
-    private final By UPDATE_MY_AUTOSHIP_BUTTON_ON_UPDATE_AUTOSHIP_MODAL_LOC = By.xpath("//div[@class='myModal' and contains(@style,'display')]//a[contains(text(),'UPDATE MY AUTO-SHIP')]");
-    private final By NEXT_CRP_DEFAULT_ADDRESS_LOC = By.xpath("//strong[contains(text(),'Next CRP')]//following-sibling::div[@class='address']/strong");
+	private final By LEAVE_AS_IS_BUTTON_ON_UPDATE_AUTOSHIP_MODAL_LOC = By.xpath("//div[@class='myModal' and contains(@style,'display')]//a[contains(text(),'LEAVE AS IS')]");
+	private final By UPDATE_MY_AUTOSHIP_BUTTON_ON_UPDATE_AUTOSHIP_MODAL_LOC = By.xpath("//div[@class='myModal' and contains(@style,'display')]//a[contains(text(),'UPDATE MY AUTO-SHIP')]");
+	private final By NEXT_CRP_DEFAULT_ADDRESS_LOC = By.xpath("//strong[contains(text(),'Next CRP')]//following-sibling::div[@class='address']/strong");
 	private final By TOTAL_NO_OF_SHIPPING_PROFILE_LOC = By.xpath("//div[contains(@class,'account-addressbook')]/descendant::div[@class='set-default-addform']");
 	private final By AUTOSHIP_SHIPPING_PROFILE_NAME_LOC = By.xpath("//strong[contains(text(),'Next CRP')]/following::strong[1]");
 	private final By CANCEL_BUTTON_OF_DELETE_ADDRESS_AND_UPDATE_SHIPPING_ADDRESS_FOR_AUTOSHIP_POPUP_LOC = By.xpath("//div[@id='cboxLoadedContent']//a[contains(text(),'Cancel')]");
 	private final By UPDATE_MY_AUTOSHIP_BUTTON_OF_DELETE_ADDRESS_AND_UPDATE_SHIPPING_ADDRESS_FOR_AUTOSHIP_POPUP_LOC = By.xpath("//div[@id='cboxLoadedContent']//a[contains(text(),'Update My Autoship')]");
+	private final By EDIT_LINK_OF_DEFAULT_SHIPPING_ADDRESS_LOC = By.xpath("//strong[contains(text(),'(Default)')]/ancestor::ul[1]/following-sibling::div[@class='account-cards-actions']//a[contains(text(),'Edit')]");
+	private final By DEFAULT_SHIPPING_ADDRESS_NAME_LOC = By.xpath("//strong[contains(text(),'(Default)')]");
 	
 	private String defaultLinkForProfileLoc = "//strong[contains(text(),'%s')]/ancestor::ul[1]/following-sibling::div//a[contains(text(),'Default')]";
 	private String deleteLinkForProfileLoc = "//strong[contains(text(),'%s')]/ancestor::ul[1]/following-sibling::div[@class='account-cards-actions']//a[contains(text(),'Delete')]";
 	private String shippingProfileNameLoc  = "//div[contains(@class,'account-addressbook')]/descendant::strong[contains(text(),'%s')][1]";
-	
+	private String shippingEditLoc  = "//*[contains(text(),'%s')]/following::a[contains(text(),'Edit')][1]";
+
+
 	/***
 	 * This method clicked on add a new shipping address link 
 	 * 
@@ -99,7 +101,7 @@ public class StoreFrontShippingInfoPage extends StoreFrontWebsiteBasePage{
 	 */
 	public String getDefaultShippingAddressName(){
 		driver.pauseExecutionFor(2000);
-		String profileName = driver.findElement(DEFAULT_SHIPPING_ADDRESS_NAME_LOC).getText();
+		String profileName = driver.findElement(DEFAULT_SHIPPING_ADDRESS_NAME_LOC).getText().replace("(DEFAULT)","");
 		logger.info("default profile name is "+profileName);
 		return profileName;
 	}
@@ -116,6 +118,21 @@ public class StoreFrontShippingInfoPage extends StoreFrontWebsiteBasePage{
 		logger.info("Edit link clicked of default shipping address");
 		return this;
 	}
+
+	/***
+	 * This method clicked on edit link of shipping address based on lastName 
+	 * 
+	 * @param
+	 * @return store front shipping info page object
+	 * 
+	 */
+	public StoreFrontShippingInfoPage clickEditLinkOfShippingAddress(String lastName){
+		driver.click(By.xpath(String.format(shippingEditLoc, lastName)));
+		logger.info("Edit link clicked for shipping address with lastName "+lastName);
+		return this;
+	}
+
+
 
 	/***
 	 * This method fetch the address update success message  
@@ -164,7 +181,7 @@ public class StoreFrontShippingInfoPage extends StoreFrontWebsiteBasePage{
 	 * 
 	 */
 	public StoreFrontShippingInfoPage clickDeleteLinkForShippingProfile(String profile){
-		driver.clickByJS(RFWebsiteDriver.driver,driver.findElement(By.xpath(String.format(deleteLinkForProfileLoc, profile))));
+		driver.clickByJS(RFWebsiteDriver.driver,By.xpath(String.format(deleteLinkForProfileLoc, profile)));
 		logger.info("Delete Link clicked for profile : " + profile);
 		driver.pauseExecutionFor(3000);
 		return this;
@@ -256,6 +273,7 @@ public class StoreFrontShippingInfoPage extends StoreFrontWebsiteBasePage{
 	public StoreFrontShippingInfoPage clickLeaveAsIsBtnOnUpdateAutoshipModal(){
 		driver.click(LEAVE_AS_IS_BUTTON_ON_UPDATE_AUTOSHIP_MODAL_LOC);
 		logger.info("Clicked 'Leave As Is' Button on update Autoship modal");
+		driver.waitForPageLoad();
 		return this;
 	}
 

@@ -14,10 +14,10 @@ public class RefinementWithMultipleRegimensTest extends StoreFrontWebsiteBaseTes
 	 * applied successfully or not
 	 *     
 	 */
-	@Test(enabled=true)
+	@Test(enabled=false)
 	public void testRefinmentWithMultipleRegimens_122(){
 		String categoryUnblemish = "UNBLEMISH";
-		String categoryFeatured = "FEATURED";
+		//String categoryFeatured = "FEATURED";
 		String categoryEssentials = "ESSENTIALS";
 		String categoryReverse = "REVERSE";
 		String categorySoothe = "SOOTHE";
@@ -26,7 +26,7 @@ public class RefinementWithMultipleRegimensTest extends StoreFrontWebsiteBaseTes
 		String categoryName1 = null;
 		String categoryName2 = null;
 		String appliedFilterName = null;
-		sfHomePage.loginToStoreFront(TestConstants.PC_EMAIL_HAVING_AUTOSHIP,  password,true);
+		sfHomePage.loginToStoreFront(pcUserWithPWSSponsor(),  password,true);
 		sfHomePage.clickSearchIcon();
 		sfShopSkinCarePage = sfHomePage.searchEntityAndHitEnter("Redefine");
 		s_assert.assertTrue(sfShopSkinCarePage.isSearchResultsTextAppearedAsExpected("Redefine"), "search result page is not present");
@@ -36,7 +36,7 @@ public class RefinementWithMultipleRegimensTest extends StoreFrontWebsiteBaseTes
 		s_assert.assertTrue(sfShopSkinCarePage.isCategoryNameVisibleInShopByCategoryDD(categorySoothe), categorySoothe+" is not visible in shop by category DD");
 		s_assert.assertTrue(sfShopSkinCarePage.isCategoryNameVisibleInShopByCategoryDD(categoryRedefine), categoryRedefine+" is not visible in shop by category DD");
 		s_assert.assertFalse(sfShopSkinCarePage.isCategoryNameVisibleInShopByCategoryDD(categoryConsultantOnly), categoryConsultantOnly+" is visible in shop by category DD for PC");
-		s_assert.assertTrue(sfShopSkinCarePage.isCategoryNameVisibleInShopByCategoryDD(categoryFeatured), categoryFeatured+" is not visible in shop by category DD");
+		//s_assert.assertTrue(sfShopSkinCarePage.isCategoryNameVisibleInShopByCategoryDD(categoryFeatured), categoryFeatured+" is not visible in shop by category DD");
 		s_assert.assertTrue(sfShopSkinCarePage.isCategoryNameVisibleInShopByCategoryDD(categoryEssentials), categoryEssentials+" is not visible in shop by category DD");
 		sfShopSkinCarePage.clickShopByCategoryDD();
 		categoryName1 = sfShopSkinCarePage.refineShopByCategoryAndReturnCategoryName().toLowerCase().trim();
@@ -46,7 +46,5 @@ public class RefinementWithMultipleRegimensTest extends StoreFrontWebsiteBaseTes
 		appliedFilterName = sfShopSkinCarePage.getAppliedFilterName(2).toLowerCase();
 		s_assert.assertTrue(appliedFilterName.contains(categoryName2),"Expected applied category name is "+categoryName2+" but actual on UI is"+categoryName1);
 		s_assert.assertAll();
-		
 	}
-	
 }

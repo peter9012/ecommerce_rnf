@@ -1,10 +1,14 @@
 package com.rf.pages.website.rehabitat.storeFront;
 
 import org.openqa.selenium.By;
+import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.ui.Select;
 
 import com.rf.core.driver.website.RFWebsiteDriver;
 import com.rf.pages.website.rehabitat.storeFront.basePage.StoreFrontWebsiteBasePage;
+
+import java.util.List;
+
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
@@ -18,7 +22,7 @@ public class StoreFrontOrdersPage extends StoreFrontWebsiteBasePage{
 			.getLogger(StoreFrontOrdersPage.class.getName());
 
 
-private final By PULSE_ORDER_ITEM_ON_ORDER_DETAIL_PAGE_LOC = By.xpath("//li[@class='orderItemsHeading']/following::p[text()='Pulse Pro-1 Month']");
+	private final By PULSE_ORDER_ITEM_ON_ORDER_DETAIL_PAGE_LOC = By.xpath("//p[contains(text(),'PULSE Pro One Month FREE Trial')]");
 	private final By FIRST_ORDER_STATUS_IN_AUTOSHIP_ORDER_HISTORY_LOC = By.xpath("//div[contains(text(),'PENDING AUTOSHIP ORDERS')]/following-sibling::div//tbody//a[contains(text(),'Edit')]/../preceding-sibling::td[@class='status']");
 	private final By FIRST_ORDER_NUMBER_UNDER_ORDER_HISTORY_LOC = By.xpath("//div[@id='orderHistoryContentArea']//tr[2]//td[2]/a");
 	private final By FIRST_ACTIONS_DD_UNDER_ORDER_HISTORY_LOC = By.xpath("//div[@id='orderHistoryContentArea']//tr[2]//div[contains(text(),'Actions')]");
@@ -50,7 +54,11 @@ private final By PULSE_ORDER_ITEM_ON_ORDER_DETAIL_PAGE_LOC = By.xpath("//li[@cla
 	private final By SELECTED_PROBLEEM_REASON_AT_ORDER_PROBLEM_PAGE_LOC = By.id("itemCodeValue");
 	private final By AUTOSHIP_ORDER_HISTORY_TABLE_LOC = By.xpath("//div[contains(text(),'PENDING AUTOSHIP ORDERS')]/following-sibling::div//tbody");
 	private final By PULSE_LINK_ORDER_PAGE = By.xpath("//div[@class='account-orderhistory']//a[text()='Pulse']");
+	private final By CONFIRM_AUTOSHIP_ORDER_BTN_LOC = By.xpath("//input[@id='asmrunnowconfirmsubmit']");
+	private final By ORDER_TYPE_FROM_ORDER_DETAILS_LOC = By.xpath("//span[@class='orderLabel' and contains(text(),'Type')]/following-sibling::span[@class='orderValue'][1]");
 
+	private String productNameLoc = "//p[contains(text(),'%s')]";
+	private String productQuantityLoc = "//p[contains(text(),'%s')]/../following::div[@class='orderQty']";
 	private String orderNumberLoc = "//a[contains(text(),'%s')]";
 	private String optionsLinkUnderReturnOrderSectionLoc = "//div[contains(text(),'RETURN ORDERS AND CREDITS')]/../../descendant::a[contains(text(),'%s')]";
 	private String headerTitleInOrderHistorySection = "//div[@id='orderHistoryContentArea']//th[contains(text(),'%s')]";
@@ -60,6 +68,9 @@ private final By PULSE_ORDER_ITEM_ON_ORDER_DETAIL_PAGE_LOC = By.xpath("//li[@cla
 	private String detailsLinkUnderOrderHistoryLoc = "//div[@id='orderHistoryContentArea']//tr[2]//a[contains(text(),'%s')]";
 	private String problemDropdownOptionsLoc = "//select[@id='problemReasonCode']//option[contains(text(),%s)]";
 	private String informationAtOrderReportConfirmationPage = "//div[text()='%s:']/following::div[1]";
+	private String autoshipStatusLoc = "//div[@class='account-section']/descendant::div[@class='account-orderhistory'][1]//tr[@class='responsive-table-item'][%s]//td[@class='status'][1]";
+	private String autoshipOrderRunNowLoc = "//div[@class='account-section']/descendant::div[@class='account-orderhistory'][1]//tr[@class='responsive-table-item'][%s]//a[text()='Run Now']";
+	private String orderDetailsForOrderNumberLoc = "//a[contains(text(),'%s')]/ancestor::td[1]/following-sibling::td[contains(text(),'%s')]/following-sibling::td[1]";
 
 	/***
 	 * This method get first order number from order history 
@@ -260,6 +271,7 @@ private final By PULSE_ORDER_ITEM_ON_ORDER_DETAIL_PAGE_LOC = By.xpath("//li[@cla
 		logger.info("Navigated back to Orders Page");
 		return this;
 	}
+
 	public String getHeaderOfPage(){
 		return driver.getText(REPORT_PROBLEM_PAGE_HEADER_LOC);
 	}
@@ -385,7 +397,7 @@ private final By PULSE_ORDER_ITEM_ON_ORDER_DETAIL_PAGE_LOC = By.xpath("//li[@cla
 	 * 
 	 */
 	public StoreFrontOrdersPage clickOnTheImageOfProductForSelectingChckBox(){
-		driver.clickByJS(RFWebsiteDriver.driver,driver.findElement(PRODUCT_IMG_LOC));
+		driver.clickByJS(RFWebsiteDriver.driver,PRODUCT_IMG_LOC);
 		logger.info("Product Image Clicked for Selecting checkbox");
 		return this;
 	}
@@ -534,7 +546,7 @@ private final By PULSE_ORDER_ITEM_ON_ORDER_DETAIL_PAGE_LOC = By.xpath("//li[@cla
 	 * 
 	 */
 	public String getEmailFromOrderReportProblemPage(){
-		String email = driver.findElement(EMAIL_FIELD_AT_REPORT_PROBLEM_PAGE_LOC).getText();
+		String email = driver.getAttribute(EMAIL_FIELD_AT_REPORT_PROBLEM_PAGE_LOC, "value");
 		logger.info("Email is "+email);
 		return email;
 	}
@@ -547,7 +559,7 @@ private final By PULSE_ORDER_ITEM_ON_ORDER_DETAIL_PAGE_LOC = By.xpath("//li[@cla
 	 * 
 	 */
 	public StoreFrontOrdersPage enterTheDetailsForReportProblem(String message){
-		driver.clickByJS(RFWebsiteDriver.driver, driver.findElement(CHKBOX_OF_PRODUCT_LOC));
+		driver.clickByJS(RFWebsiteDriver.driver, CHKBOX_OF_PRODUCT_LOC);
 		logger.info("Check box checked for product");
 		driver.click(PROBLEM_DD_LOC);
 		logger.info("Problem dropdown clicked");
@@ -639,6 +651,20 @@ private final By PULSE_ORDER_ITEM_ON_ORDER_DETAIL_PAGE_LOC = By.xpath("//li[@cla
 		return this;
 	}
 
+	/***
+	 * This method clicked on an order number  
+	 * 
+	 * @param
+	 * @return Store front order page obj
+	 * 
+	 */
+	public StoreFrontOrdersPage clickOrderNumber(String orderNumber, int sequenceNum){
+		List<WebElement> allElements = driver.findElements(By.xpath(String.format(orderNumberLoc, orderNumber)));
+		allElements.get(sequenceNum-1).click();
+		logger.info(orderNumber+" Order number clicked on sequence "+sequenceNum);
+		return this;
+	}
+
 
 	/***
 	 * This method enter the details for return a product  
@@ -648,7 +674,7 @@ private final By PULSE_ORDER_ITEM_ON_ORDER_DETAIL_PAGE_LOC = By.xpath("//li[@cla
 	 * 
 	 */
 	public StoreFrontOrdersPage enterTheDetailsForReportProblem(String message, String problemReason){
-		driver.clickByJS(RFWebsiteDriver.driver, driver.findElement(CHKBOX_OF_PRODUCT_LOC));
+		driver.clickByJS(RFWebsiteDriver.driver, CHKBOX_OF_PRODUCT_LOC);
 		logger.info("Check box checked for product");
 		driver.click(PROBLEM_DD_LOC);
 		logger.info("Problem dropdown clicked");
@@ -686,7 +712,7 @@ private final By PULSE_ORDER_ITEM_ON_ORDER_DETAIL_PAGE_LOC = By.xpath("//li[@cla
 		driver.waitForPageLoad();
 		return orderNumber;
 	}
-	
+
 	/***
 	 * This method validates pulse pro order from order detail page 
 	 * @param
@@ -695,6 +721,63 @@ private final By PULSE_ORDER_ITEM_ON_ORDER_DETAIL_PAGE_LOC = By.xpath("//li[@cla
 	public boolean isPulseProOrderPresentOnOrderDetailPage(){
 		return driver.isElementVisible(PULSE_ORDER_ITEM_ON_ORDER_DETAIL_PAGE_LOC);
 	}
-	
+
+	/***
+	 * This method validates product name at orders page 
+	 * @param
+	 * @return boolean
+	 */
+	public boolean isProductNamePresentOnOrderDetailPage(String productName){
+		return driver.isElementPresent(By.xpath(String.format(productNameLoc, productName)));
+	}
+
+
+	/***
+	 * This method get product quantity for specific product
+	 * 
+	 * @param productName
+	 * @return product quantity
+	 * 
+	 */
+	public String getQuantityOfSpecificProductFromOrdersPage(String productName) {
+		String productQty = driver.getText(By.xpath(String.format(productQuantityLoc, productName)));
+		logger.info("Quantity of " + productName + " is " + productQty);
+		return productQty;
+	}
+
+	public String getAutoshipStatus(String row){
+		String status = driver.getText(By.xpath(String.format(autoshipStatusLoc, row)));
+		logger.info("Autoship status is "+status);
+		return status.trim().toLowerCase();
+	}
+
+	public void clickRunAutoshipOrder(String row){
+		driver.click(By.xpath(String.format(autoshipOrderRunNowLoc, row)));
+		logger.info("Autoship run now link clicked for row "+row);
+		driver.pauseExecutionFor(2000);
+		driver.quickWaitForElementPresent(CONFIRM_AUTOSHIP_ORDER_BTN_LOC);
+		driver.clickByJS(RFWebsiteDriver.driver,CONFIRM_AUTOSHIP_ORDER_BTN_LOC);
+		logger.info("CONFIRM button from the popup clicked");
+		driver.pauseExecutionFor(5000);// the functionality taking time, so deliberately added
+		driver.waitForPageLoad();
+	}
+
+	public String getOrderTypeFromOrderDetailsTemplate(){
+		driver.quickWaitForElementPresent(ORDER_TYPE_FROM_ORDER_DETAILS_LOC);
+		String orderType = driver.getText(ORDER_TYPE_FROM_ORDER_DETAILS_LOC);
+		logger.info("Order Type "+orderType);
+		return orderType.trim().toLowerCase();
+	}
+
+	/***
+	 * This method return the order detail corresponding to order number 
+	 * @param String orderNumber, String detailToFetch
+	 * @return String
+	 */
+	public String getValueForOrderFromOrderHistory(String orderNum, String detailToFetch){
+		String value = driver.getText(By.xpath(String.format(orderDetailsForOrderNumberLoc,orderNum,detailToFetch))).replace("$","").trim();
+		logger.info(detailToFetch + " for Order number : " + orderNum + " is : " + value);
+		return value;
+	}
 }
 

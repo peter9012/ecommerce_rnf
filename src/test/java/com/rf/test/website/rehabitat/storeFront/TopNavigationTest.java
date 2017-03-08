@@ -15,7 +15,7 @@ public class TopNavigationTest extends StoreFrontWebsiteBaseTest{
 	 * new tab which contain calendar
 	 *     
 	 */
-	@Test(enabled=true)
+	@Test(enabled=false)//no such functionality coming on UI
 	public void testBecomeAConsultantEvents_73(){
 		String currentWindowID = null; 
 		String currentURL = null;
@@ -177,7 +177,7 @@ public class TopNavigationTest extends StoreFrontWebsiteBaseTest{
 	 */
 	@Test(enabled=true)
 	public void testViewSearchTextBox_345(){
-		sfHomePage.loginToStoreFront(TestConstants.CONSULTANT_EMAIL_WITH_CRP_AND_PULSE,  password,true);
+		sfHomePage.loginToStoreFront(consultantWithPulseAndWithCRP(),  password,true);
 		sfHomePage.clickSearchIcon();
 		s_assert.assertTrue(sfHomePage.isSearchTextBoxDisplayed(),"Search text box not present after clicking search");
 		sfHomePage.closeSearchTextBox();
@@ -197,8 +197,6 @@ public class TopNavigationTest extends StoreFrontWebsiteBaseTest{
 		String executiveTeamURL = "executive-team";
 		String whoWeAreURL = "who-we-are";
 		String givingBackURL ="giving-back";
-
-		sfHomePage.loginToStoreFront(TestConstants.PC_EMAIL_HAVING_AUTOSHIP,  password,true);
 		//Verify meet the doctors link.
 		sfHomePage.clickMeetTheDoctorsLink();
 		s_assert.assertTrue(sfHomePage.isMeetTheDoctorsPagePresent(),"'Meet the Doctors' page either doesn't have the URL as 'meet-the-doctors' or meet the doctor Text is not present on page");
@@ -227,7 +225,7 @@ public class TopNavigationTest extends StoreFrontWebsiteBaseTest{
 	public void testVerifyFeaturedProductSectionUnderShopSkinCare_347(){
 		String category="FEATURED";
 
-		sfHomePage.loginToStoreFront(TestConstants.PC_EMAIL_HAVING_AUTOSHIP,  password,true);
+		sfHomePage.loginToStoreFront(pcUserWithPWSSponsor(),  password,true);
 		sfShopSkinCarePage = sfHomePage.navigateToShopSkincareLink(category);
 		String pageTitle=sfShopSkinCarePage.getCurrentpageTitle();
 		s_assert.assertTrue(sfShopSkinCarePage.isProductsDisplayedOnPage() && pageTitle.contains(category),"Expected featured products not displayed for selected category or Expected page title contains:"+category+" But actual on UI is: "+pageTitle);
@@ -242,7 +240,7 @@ public class TopNavigationTest extends StoreFrontWebsiteBaseTest{
 	 */
 	@Test(enabled=true)
 	public void testVerifyPLPUnderShopSkinCare_348(){
-		sfHomePage.loginToStoreFront(TestConstants.RC_EMAIL_HAVING_ORDER,  password,true);
+		sfHomePage.loginToStoreFront(rcWithOrderWithoutSponsor(),  password,true);
 		sfShopSkinCarePage=sfHomePage.clickAllProducts();
 		s_assert.assertTrue(sfShopSkinCarePage.isProductsDisplayedOnPage(),"All product page not present after clicking continue shopping.");
 		s_assert.assertAll();
@@ -267,7 +265,7 @@ public class TopNavigationTest extends StoreFrontWebsiteBaseTest{
 		String expectedURLForRedefineResults = "redefine-results";
 		String expectedURLForUnblemishResults = "unblemish-results";
 
-		sfHomePage.loginToStoreFront(TestConstants.PC_EMAIL_HAVING_AUTOSHIP,  password,true);
+		sfHomePage.loginToStoreFront(pcUserWithPWSSponsor(),  password,true);
 		//Verify FAQ page for soothe regimen.
 		sfHomePage.navigateToShopSkinCareSubLinks(sootheLinkUnderShopSkincare, sublinkNameUnderShopSkincare);
 		currentURL = sfHomePage.getCurrentURL().toLowerCase();
@@ -306,7 +304,7 @@ public class TopNavigationTest extends StoreFrontWebsiteBaseTest{
 		String expectedURLForRedefineFAQ = "redefine-faq";
 		String expectedURLForUnblemishFAQ = "unblemish-faq";
 
-		sfHomePage.loginToStoreFront(TestConstants.RC_EMAIL_HAVING_ORDER,  password,true);
+		sfHomePage.loginToStoreFront(rcWithOrderWithoutSponsor(),  password,true);
 		//Verify FAQ page for soothe regimen.
 		sfHomePage.navigateToShopSkinCareSubLinks(sootheLinkUnderShopSkincare, sublinkNameUnderShopSkincare);
 		currentURL = sfHomePage.getCurrentURL().toLowerCase();
@@ -338,12 +336,12 @@ public class TopNavigationTest extends StoreFrontWebsiteBaseTest{
 		String allProductLinkUnderShopSkincare = "ALL PRODUCTS";
 
 		//Login to application.
-		sfHomePage.loginToStoreFront(TestConstants.RC_EMAIL_HAVING_ORDER,  password,true);
+		sfHomePage.loginToStoreFront(rcWithOrderWithoutSponsor(),  password,true);
 		sfHomePage.navigateToShopSkincareLink(reverseLinkUnderShopSkincare);
 		s_assert.assertTrue(sfHomePage.isHeaderIsConsistentOnAllPages(),"Header is not present on reverse product category page.");
 		sfShopSkinCarePage = sfHomePage.navigateToShopSkincareLink(allProductLinkUnderShopSkincare);
 		s_assert.assertTrue(sfShopSkinCarePage.isHeaderIsConsistentOnAllPages(),"Header is not present on All product page.");
-		sfProductDetailPage = sfShopSkinCarePage.clickNameOfFirstProduct(TestConstants.PRODUCT_NUMBER);
+		sfProductDetailPage = sfShopSkinCarePage.clickNameOfProduct(TestConstants.PRODUCT_NUMBER);
 		s_assert.assertTrue(sfProductDetailPage.isHeaderIsConsistentOnAllPages(),"Header is not present on product detail page.");
 		sfProductDetailPage.addProductToCartFromProductDetailPageAfterLogin();
 		sfCartPage = sfShopSkinCarePage.checkoutTheCartFromPopUp();
@@ -362,7 +360,7 @@ public class TopNavigationTest extends StoreFrontWebsiteBaseTest{
 	@Test(enabled=false)
 	public void testAsAUserIWillBeAbleToAccessThePLPFromTheShopSkincareSection_542(){
 		String category="ALL PRODUCTS";
-		sfShopSkinCarePage=sfHomePage.navigateToShopSkincareLink(category);
+		sfShopSkinCarePage = sfHomePage.clickAllProducts();
 		s_assert.assertTrue(sfShopSkinCarePage.isProductsDisplayedOnPage(),"Expected user is not redirected to all products page");
 		s_assert.assertAll();
 	}

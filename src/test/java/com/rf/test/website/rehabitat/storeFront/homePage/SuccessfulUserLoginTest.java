@@ -17,7 +17,7 @@ public class SuccessfulUserLoginTest extends StoreFrontWebsiteBaseTest{
 	 */
 	@Test(enabled=true)
 	public void testUserloginFromCorp_27(){
-		sfHomePage.loginToStoreFront(TestConstants.CONSULTANT_EMAIL_WITH_CRP_AND_PULSE,  password,true);
+		sfHomePage.loginToStoreFront(consultantWithPulseAndWithCRP(),  password,true);
 		s_assert.assertTrue(sfHomePage.isWelcomeUserElementDisplayed(),"user is NOT successfully logged in");
 		s_assert.assertTrue(sfHomePage.getCurrentURL().contains(sfHomePage.getBaseUrl()),"User is not on corp site after login");
 		s_assert.assertAll();
@@ -32,7 +32,7 @@ public class SuccessfulUserLoginTest extends StoreFrontWebsiteBaseTest{
 	 */
 	@Test(enabled=false)//TODO
 	public void testRememberMe_528(){
-		sfHomePage.loginToStoreFrontWithRememberMe(TestConstants.CONSULTANT_EMAIL_WITH_CRP_AND_PULSE, password);
+		sfHomePage.loginToStoreFrontWithRememberMe(consultantWithPulseAndWithCRP(), password);
 		s_assert.assertTrue(sfHomePage.isWelcomeUserElementDisplayed(),"user is NOT successfully logged in");
 		closeCurrentWindow();
 		openTheBrowserAndApplication();
@@ -56,32 +56,25 @@ public class SuccessfulUserLoginTest extends StoreFrontWebsiteBaseTest{
 	@Test(enabled=true)
 	public void testResetPasswordFromLogin_536(){
 		sfHomePage.clickLoginIcon().clickForgetPasswordLink();
-		sfHomePage.enterPasswordRecoverEmail(TestConstants.CONSULTANT_EMAIL_WITH_CRP_AND_PULSE).clickSubmitBtnForPasswordRecovery();
+		sfHomePage.enterPasswordRecoverEmail(consultantWithPulseAndWithCRP()).clickSubmitBtnForPasswordRecovery();
 		s_assert.assertTrue(sfHomePage.isPasswordRecoveryEmailMsgDisplayed(TestConstants.PASSWORD_RECOVERY_SUBMIT_SUCCESS_MESSAGE), "Success msg has NOT displayed after clicking submit btn for password recovery");
 		s_assert.assertAll();
 	}
 
-	/***
-	 * qTest : TC-537 Reset password from "Create Account Page"
-	 * 
-	 * Description : This test validates the reset password functionality
-	 * from from "Create Account Page"
-	 * 
-	 * THIS TEST DOESN'T VERIFY THE PASSWORD RESET FROM EMAIL FUNCTIONALITY			
-	 */
 	@Test(enabled=true)
 	public void testResetPasswordFromCreateAccountPage_537(){
 		String allProduct = "ALL PRODUCTS";
 		sfCartPage = new StoreFrontCartPage(driver);
 		sfShopSkinCarePage = sfHomePage.navigateToShopSkincareLink(allProduct);
-		sfShopSkinCarePage.addProductToCart(TestConstants.PRODUCT_NUMBER, TestConstants.ORDER_TYPE_ADHOC);
+		sfShopSkinCarePage.addProductToCart(TestConstants.PRODUCT_NUMBER, TestConstants.ORDER_TYPE_ENROLLMENT);
 		sfShopSkinCarePage.checkoutTheCartFromPopUp();
 		sfCheckoutPage=sfShopSkinCarePage.checkoutTheCart();
 		sfCheckoutPage.clickForgetPasswordLinkAtCheckout();
-		sfCheckoutPage.enterPasswordRecoverEmailAtCheckout(TestConstants.CONSULTANT_EMAIL_WITH_CRP_AND_PULSE).clickSubmitBtnForPasswordRecoveryAtCheckout();
+		sfCheckoutPage.enterPasswordRecoverEmailAtCheckout(consultantWithPulseAndWithCRP()).clickSubmitBtnForPasswordRecoveryAtCheckout();
 		s_assert.assertTrue(sfCheckoutPage.isPasswordRecoveryEmailMsgDisplayed(TestConstants.PASSWORD_RECOVERY_SUBMIT_SUCCESS_MESSAGE), "Success msg has NOT displayed after clicking submit btn for password recovery");
 		s_assert.assertAll();
 	}
+
 
 	/***
 	 * qTest : TC-538 Reset password warning message when email address entered with is not registered in RF
@@ -110,9 +103,9 @@ public class SuccessfulUserLoginTest extends StoreFrontWebsiteBaseTest{
 	 */
 	@Test(enabled=true)
 	public void testUserloginFromPWS_28(){
-		String prefix = TestConstants.CONSULTANT_PWS_PREFIX;
+		String prefix = pwsPrefix();
 		sfHomePage.navigateToUrl(sfHomePage.getBaseUrl()+"/" +sfHomePage.getCountry() +"/pws/" + prefix);
-		sfHomePage.loginToStoreFront(TestConstants.CONSULTANT_EMAIL_WITH_CRP_AND_PULSE,  password,true);
+		sfHomePage.loginToStoreFront(consultantWithPulseAndWithCRP(),  password,true);
 		s_assert.assertTrue(sfHomePage.isWelcomeUserElementDisplayed(),"user is NOT successfully logged in");
 		s_assert.assertTrue(sfHomePage.getCurrentURL().contains(prefix),"User is not on PWS site after login");
 		s_assert.assertAll();

@@ -17,16 +17,17 @@ public class FindAConsultantLinkTest extends StoreFrontWebsiteBaseTest{
 	public void testCorporateSitesShouldHaveFindAConsultantLinkOnTheHomePage_7(){
 		sfHomePage.clickFindAConsultantLinkOnHomePage();
 		s_assert.assertTrue(sfHomePage.isFindAConsultantPagePresent(),"'Find A Consultant' page either doesn't have the URL as 'find-consultant' or sponsor search field is not present for Consultant");
-		sfHomePage.loginToStoreFront(TestConstants.PC_EMAIL_HAVING_AUTOSHIP,  password,true);
+		sfHomePage.loginToStoreFront(pcUserWithoutSponsor(),  password,true);
 		sfHomePage.clickFindAConsultantLinkOnHomePage();
 		s_assert.assertTrue(sfHomePage.isFindAConsultantPagePresent(),"'Find A Consultant' page either doesn't have the URL as 'find-consultant' or sponsor search field is not present for PC");
 		sfHomePage.clickWelcomeDropdown();
 		sfHomePage.logout();
-		sfHomePage.loginToStoreFront(TestConstants.RC_EMAIL_HAVING_ORDER,  password,true);
+		sfHomePage.loginToStoreFront(rcWithOrderWithoutSponsor(),  password,true);
 		sfHomePage.clickFindAConsultantLinkOnHomePage();
 		s_assert.assertTrue(sfHomePage.isFindAConsultantPagePresent(),"'Find A Consultant' page either doesn't have the URL as 'find-consultant' or sponsor search field is not present for RC");
 		s_assert.assertAll();
 	}
+	
 
 	/***
 	 * qTest : TC-8 BIZ and Com sites shouldn’t have "Find a consultant" link on the header of the home page
@@ -36,7 +37,7 @@ public class FindAConsultantLinkTest extends StoreFrontWebsiteBaseTest{
 	 */
 	@Test(enabled=true)
 	public void testPWSSitesShouldNotHaveFindAConsultantLinkOnTheHomePage_8(){
-		String prefix = TestConstants.CONSULTANT_PWS_PREFIX;
+		String prefix = pwsPrefix();
 		sfHomePage.navigateToUrl(sfHomePage.getBaseUrl()+"/" +sfHomePage.getCountry() +"/pws/" + prefix);
 		s_assert.assertFalse(sfHomePage.isFindAConsultantLinkOnHomePagePresent(),"'Find a consultant' link is present on home page of PWS site");
 		s_assert.assertAll();

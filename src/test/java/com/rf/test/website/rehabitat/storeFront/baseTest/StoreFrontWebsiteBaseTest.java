@@ -12,8 +12,10 @@ import java.util.Set;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.openqa.selenium.By;
+import org.testng.ITestContext;
 import org.testng.annotations.AfterGroups;
 import org.testng.annotations.AfterSuite;
+import org.testng.annotations.BeforeClass;
 import org.testng.annotations.BeforeMethod;
 import org.testng.annotations.BeforeSuite;
 
@@ -44,11 +46,35 @@ import com.rf.test.base.RFBaseTest;
  */
 public class StoreFrontWebsiteBaseTest extends RFBaseTest {
 	protected static RFWebsiteDriver driver = new RFWebsiteDriver(propertyFile);
+
+	protected String email=null;
+	protected String firstName = null;
+	protected String lastName = null;
+	protected String addressLine1 = null;
+	protected String addressLine2 = null;
+	protected String city = null;
+	protected String state = null;
+	protected String postalCode = null;
+	protected String phoneNumber = null;
+	protected String cardType = null;
+	protected String cardNumber = null;
+	protected String cardName = null;
+	protected String CVV = null;
+	protected String timeStamp=null;
+	protected String randomWords = null;
+
+	protected String updatedAddressLine1 = null;
+	protected String updatedAddressLine2 = null;
+	protected String updatedCity = null;
+	protected String updatedPostalCode = null;
+	protected String stateAbbreviation = null;
+
 	/***
 	 * @author Shubham Mathur
 	 * @description StoreFrontWebsiteBaseTest constructor having StoreFront HomePage initialization
 	 */
 	public StoreFrontWebsiteBaseTest() {
+		setCountry();
 		sfHomePage = new StoreFrontHomePage(driver);		
 	}
 
@@ -56,7 +82,6 @@ public class StoreFrontWebsiteBaseTest extends RFBaseTest {
 	 * All page class reference declarations
 	 */
 	protected StoreFrontHomePage sfHomePage;
-	//protected StoreFrontConsultantEnrollNowPage sfConsEnrollNowPage;
 	protected StoreFrontShopSkinCarePage sfShopSkinCarePage;
 	protected StoreFrontCartPage sfCartPage;
 	protected StoreFrontCheckoutPage sfCheckoutPage;
@@ -75,12 +100,12 @@ public class StoreFrontWebsiteBaseTest extends RFBaseTest {
 	protected String country=null;
 	protected boolean runBaseURLOrLogoutExecutionCode = true;
 
-	protected static String conultantWithPulseAndWithCRP = null;
-	protected static String conultantWithoutPulseAndWithoutCRP = null;
-	protected static String conultantWithPulseAndWithCRPForCancellation = null;
-	protected static String conultantHavingSponsorWithoutPWS = null;
+	protected static String consultantWithPulseAndWithCRP = null;
+	protected static String consultantWithoutPulseAndWithoutCRP = null;
+	protected static String consultantWithPulseAndWithCRPForCancellation = null;
+	protected static String consultantHavingSponsorWithoutPWS = null;
 	protected static String rcWithoutOrder = null;
-	protected static String rcWithOrder = null;
+	protected static String rcWithOrderWithoutSponsor = null;
 	protected static String pcUserWithoutSponsor = null;
 	protected static String pcUserWithPWSSponsor = null;
 	protected static String pcUserWithoutPWSSponsor = null;
@@ -96,7 +121,8 @@ public class StoreFrontWebsiteBaseTest extends RFBaseTest {
 	 *             for the tests
 	 */
 	@BeforeSuite(alwaysRun=true)
-	public void setUp() throws Exception {
+	public void setUp(ITestContext context) throws Exception {
+		userPropertyFile.loadProps(userProps);
 		driver.loadApplication();
 		driver.setDBConnectionString();
 	}
@@ -105,33 +131,68 @@ public class StoreFrontWebsiteBaseTest extends RFBaseTest {
 	public void beforeMethod(){
 		s_assert = new SoftAssert();
 		setStoreFrontPassword(driver.getStoreFrontUserPassword());
-		setCountry();
-		setCountryId();
 		checkAndCloseMoreThanOneWindows();
 		navigateToStoreFrontBaseURL();
 		if(sfHomePage.isWelcomeUserElementDisplayed()==true){
 			sfHomePage.clickWelcomeDropdown();
 			sfHomePage.logout();
+			navigateToStoreFrontBaseURL();
+		}			
+	}
+
+	@BeforeClass(alwaysRun=true)
+	public void setAddressDetailsAsPerCountry(){
+		setCountry();
+		setCountryId();
+		String countryName = getCountry();
+		firstName = TestConstants.FIRST_NAME;
+		phoneNumber = TestConstants.PHONE_NUMBER;
+		cardType = TestConstants.CARD_TYPE;
+		cardNumber = TestConstants.CARD_NUMBER;
+		cardName = TestConstants.CARD_NAME;
+		CVV = TestConstants.CVV;
+		if(countryName.equalsIgnoreCase("us")){
+			addressLine1 = TestConstants.ADDRESS_LINE_1_US;
+			addressLine2 = TestConstants.ADDRESS_LINE_2_US;
+			city = TestConstants.CITY_US;
+			state = TestConstants.STATE_US;
+			postalCode = TestConstants.POSTAL_CODE_US;
+			updatedAddressLine1 = TestConstants.SECOND_ADDRESS_LINE_1_US;
+			updatedAddressLine2 = TestConstants.SECOND_ADDRESS_LINE_2_US;
+			updatedCity = TestConstants.SECOND_CITY_US;
+			updatedPostalCode = TestConstants.SECOND_POSTAL_CODE_US;
+			stateAbbreviation = TestConstants.STATE_US_ABBREVIATION;
+		}
+		else if(countryName.equalsIgnoreCase("ca")){
+			addressLine1 = TestConstants.ADDRESS_LINE_1_CA;
+			addressLine2 = TestConstants.ADDRESS_LINE_2_CA;
+			city = TestConstants.CITY_CA;
+			state = TestConstants.STATE_CA;
+			postalCode = TestConstants.POSTAL_CODE_CA;
+			updatedAddressLine1 = TestConstants.SECOND_ADDRESS_LINE_1_CA;
+			updatedAddressLine2 = TestConstants.SECOND_ADDRESS_LINE_2_CA;
+			updatedCity = TestConstants.SECOND_CITY_CA;
+			updatedPostalCode = TestConstants.SECOND_POSTAL_CODE_CA;
+			stateAbbreviation = TestConstants.STATE_CA_ABBREVIATION;
 		}
 	}
 
-	@AfterGroups(alwaysRun=true,groups="users")
-	public void afterGroup() throws IOException{
-		logger.info("After Group");
-		userPropertyFile.loadProps(userProps);
-		userPropertyFile.clearProperty();
-		setUsers("conultantWithPulseAndWithCRP", conultantWithPulseAndWithCRP);
-		setUsers("pwsPrefix", pwsPrefix);
-		setUsers("conultantWithoutPulseAndWithoutCRP", conultantWithoutPulseAndWithoutCRP);
-		setUsers("conultantWithPulseAndWithCRPForCancellation", conultantWithPulseAndWithCRPForCancellation);
-		setUsers("conultantHavingSponsorWithoutPWS", conultantHavingSponsorWithoutPWS);
-		setUsers("pcUserWithPWSSponsor", pcUserWithPWSSponsor);
-		setUsers("pcUserWithoutSponsor", pcUserWithoutSponsor);
-		setUsers("pcUserWithoutPWSSponsor", pcUserWithoutPWSSponsor);
-		setUsers("pcUserHavingSingleBillingProfile", pcUserHavingSingleBillingProfile);
-		setUsers("rcWithOrder", rcWithOrder);
-		setUsers("rcWithoutOrder", rcWithoutOrder);
-	}
+	//	@AfterGroups(alwaysRun=true,groups="users")
+	//	public void afterGroup() throws IOException{
+	//		logger.info("After Group");
+	//		userPropertyFile.loadProps(userProps);
+	//		setUsers("consultantWithPulseAndWithCRP", consultantWithPulseAndWithCRP);
+	//		setUsers("pwsPrefix", pwsPrefix);
+	//		setUsers("consultantWithoutPulseAndWithoutCRP", consultantWithoutPulseAndWithoutCRP);
+	//		//setUsers("consultantWithPulseAndWithCRPForCancellation", consultantWithPulseAndWithCRPForCancellation);
+	//		//		setUsers("consultantHavingSponsorWithoutPWS", consultantHavingSponsorWithoutPWS);
+	//		setUsers("pcUserWithPWSSponsor", pcUserWithPWSSponsor);
+	//		//		setUsers("pcUserWithoutSponsor", pcUserWithoutSponsor);
+	//		//		setUsers("pcUserWithoutPWSSponsor", pcUserWithoutPWSSponsor);
+	//		//		setUsers("pcUserHavingSingleBillingProfile", pcUserHavingSingleBillingProfile);
+	//		setUsers("rcWithOrder", rcWithOrder);
+	//		//		setUsers("rcWithoutOrder", rcWithoutOrder);
+	//	}
 
 	public void setUsers(String key,String value){
 		if(value!=null)
@@ -170,6 +231,8 @@ public class StoreFrontWebsiteBaseTest extends RFBaseTest {
 	public void navigateToStoreFrontBaseURL(){
 		driver.get(driver.getURL()+"/"+country.toUpperCase());
 		logger.info("Navigated to base URL");
+		driver.waitForPageLoad();
+		driver.pauseExecutionFor(2000);
 	}
 
 	public void navigateToStoreFrontBaseURLWithoutCountry(){
@@ -226,12 +289,45 @@ public class StoreFrontWebsiteBaseTest extends RFBaseTest {
 		return allReturnedValuesFromQuery;
 	}
 
-	public String getConultantWithPulseAndWithCRP(){
-		return userPropertyFile.getProperty("conultantWithPulseAndWithCRP");
+	public String consultantWithPulseAndWithCRP(){
+		return userPropertyFile.getProperty("consultantWithPulseAndWithCRP");
 	}
 
-	public String getConultantWithoutPulseAndWithoutCRP(){
-		return userPropertyFile.getProperty("conultantWithPulseAndWithCRP");
+	public String consultantWithoutPulseAndWithoutCRP(){
+		return userPropertyFile.getProperty("consultantWithoutPulseAndWithoutCRP");
+	}
+
+	public String pcUserWithPWSSponsor(){
+		return userPropertyFile.getProperty("pcUserWithPWSSponsor");
+	}
+
+	public String pwsPrefix(){
+		return userPropertyFile.getProperty("pwsPrefix");
+	}
+
+	public String rcWithOrderWithoutSponsor(){
+		return userPropertyFile.getProperty("rcWithOrderWithoutSponsor");
+	}
+
+	public String rcWithoutOrder(){
+		return userPropertyFile.getProperty("rcWithoutOrder");
+	}
+
+	public String pcWithSigleBillingProfile(){
+		return userPropertyFile.getProperty("pcWithSigleBillingProfile");
+	}
+
+	public String consultantWithPulseAndWithCRPForCancellation(){
+		return userPropertyFile.getProperty("consultantWithPulseAndWithCRPForCancellation");
+	}
+
+	public String pcUserWithoutSponsor(){
+		return userPropertyFile.getProperty("pcUserWithoutSponsor");
+	}
+
+	public static String getSuiteName(ITestContext context){
+		String suiteName = context.getCurrentXmlTest().getSuite().getName();
+		return suiteName;
 	}
 
 }

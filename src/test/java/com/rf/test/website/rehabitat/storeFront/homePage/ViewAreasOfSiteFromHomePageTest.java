@@ -7,6 +7,7 @@ import com.rf.test.website.rehabitat.storeFront.baseTest.StoreFrontWebsiteBaseTe
 
 public class ViewAreasOfSiteFromHomePageTest extends StoreFrontWebsiteBaseTest{
 
+
 	/***
 	 * qTest : TC-4 Home Page Navigate And View Area Of The Site
 	 * Description : This test validates category, Category landing pages, toggle button,
@@ -90,7 +91,7 @@ public class ViewAreasOfSiteFromHomePageTest extends StoreFrontWebsiteBaseTest{
 		s_assert.assertTrue(sfHomePage.isSocialMediaIconPresentAtFooter(socialIconPinterest), socialIconPinterest+" icon is not present at homepage as anonymous user");
 		s_assert.assertTrue(sfHomePage.isSocialMediaIconPresentAtFooter(socialIconYoutube), socialIconYoutube+" icon is not present at homepage as anonymous user");
 		s_assert.assertTrue(sfHomePage.isSocialMediaIconPresentAtFooter(socialIconGooglePlus), socialIconGooglePlus+" icon is not present at homepage as anonymous user");
-		sfHomePage.loginToStoreFront(TestConstants.CONSULTANT_EMAIL_WITH_CRP_AND_PULSE,  password,true);
+		sfHomePage.loginToStoreFront(consultantWithPulseAndWithCRP(),  password,true);
 		//Verify Category links
 		s_assert.assertTrue(sfHomePage.isTopNavigationSublinkDisplayed(topNavigationLink,category_Unblemish), category_Unblemish +"category is not present under shop skincare  as consultant user");
 		s_assert.assertTrue(sfHomePage.isTopNavigationSublinkDisplayed(topNavigationLink,category_Featured), category_Featured +"category is not present under shop skincare as consultant user");
@@ -153,7 +154,7 @@ public class ViewAreasOfSiteFromHomePageTest extends StoreFrontWebsiteBaseTest{
 		s_assert.assertTrue(sfHomePage.isSocialMediaIconPresentAtFooter(socialIconGooglePlus), socialIconGooglePlus+" icon is not present at homepage as consultant user");
 		sfHomePage.clickWelcomeDropdown();
 		sfHomePage.logout();
-		sfHomePage.loginToStoreFront(TestConstants.RC_EMAIL_HAVING_ORDER,  password,true);
+		sfHomePage.loginToStoreFront(rcWithOrderWithoutSponsor(),  password,true);
 		//Verify Category links
 		s_assert.assertTrue(sfHomePage.isTopNavigationSublinkDisplayed(topNavigationLink,category_Unblemish), category_Unblemish +"category is not present under shop skincare  as rc user");
 		s_assert.assertTrue(sfHomePage.isTopNavigationSublinkDisplayed(topNavigationLink,category_Featured), category_Featured +"category is not present under shop skincare as rc user");
@@ -216,6 +217,7 @@ public class ViewAreasOfSiteFromHomePageTest extends StoreFrontWebsiteBaseTest{
 		s_assert.assertTrue(sfHomePage.isSocialMediaIconPresentAtFooter(socialIconGooglePlus), socialIconGooglePlus+" icon is not present at homepage as rc user");
 		s_assert.assertAll();
 	}
+
 	/***
 	 * qTest : TC-5 Consultant only products shouldn't be searched by anonymous user, Retail or PC user
 	 * Description : This test validates consultant only products shouldn't be searched by 
@@ -228,12 +230,12 @@ public class ViewAreasOfSiteFromHomePageTest extends StoreFrontWebsiteBaseTest{
 	public void testSearchConsultantOnlyProductByAnonymousRCPCUser_5(){
 		sfHomePage.mouseHoverOn(TestConstants.SHOP_SKINCARE);
 		s_assert.assertFalse(sfHomePage.isConsultantOnlyProductsLinkDisplayed(), "Consultant Only Link should NOT be present for anonymous user");
-		sfHomePage.loginToStoreFront(TestConstants.PC_EMAIL_HAVING_AUTOSHIP,  password,true);
+		sfHomePage.loginToStoreFront(pcUserWithPWSSponsor(), password,true);
 		sfHomePage.mouseHoverOn(TestConstants.SHOP_SKINCARE);
 		s_assert.assertFalse(sfHomePage.isConsultantOnlyProductsLinkDisplayed(), "Consultant Only Link should NOT be present for PC user");
 		sfHomePage.clickWelcomeDropdown();
 		sfHomePage.logout();
-		sfHomePage.loginToStoreFront(TestConstants.RC_EMAIL_HAVING_ORDER,  password,true);
+		sfHomePage.loginToStoreFront(rcWithOrderWithoutSponsor(),  password,true);
 		sfHomePage.mouseHoverOn(TestConstants.SHOP_SKINCARE);
 		s_assert.assertFalse(sfHomePage.isConsultantOnlyProductsLinkDisplayed(), "Consultant Only Link should NOT be present for RC user");
 		s_assert.assertAll();

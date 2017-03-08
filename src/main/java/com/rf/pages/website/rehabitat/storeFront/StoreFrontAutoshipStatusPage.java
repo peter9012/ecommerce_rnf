@@ -16,14 +16,16 @@ public class StoreFrontAutoshipStatusPage extends StoreFrontWebsiteBasePage{
 	private static final Logger logger = LogManager
 			.getLogger(StoreFrontAutoshipStatusPage.class.getName());
 
+	private final By VIEW_DETAILS_LINK_AUTOSHIP_STATUS_LOC = By.xpath("//a[text()='View details']");
 	private final By CLOSE_ICON_PULSE_OVERLAY_LOC = By.id("cboxClose");
-	private final By LEARN_MORE_ABOUT_PULSE_LOC = By.xpath("//a[contains(text(),'Learn more about Pulse')]");
+	private final By LEARN_MORE_ABOUT_PULSE_LOC = By.xpath("//a[contains(text(),'Learn more about PULSE')]");
 	private final By PULSE_POPUP_LOC = By.xpath("//h1[contains(text(),'Pulse Business Management')]");
 	private final By PC_PERKS_AUTOSHIP_STATUS_LOC = By.xpath("//div[contains(@class,'pcPerks-statusPage')]/div[contains(text(),'PC Perks Status')]");
 	private final By DELAY_OR_CANCEL_PC_PERKS_LOC = By.xpath("//a[text()='Delay or Cancel PC Perks']");
 	private final By DELAY_OR_CANCEL_PC_PERKS_POPUP_LOC = By.xpath("//h2[text()='Delay or Cancel PC Perks']");
 	private final By CANCEL_OPTION_ON_CANCEL_PC_PERKS_POPUP_LOC = By.xpath("//h2[text()='Delay or Cancel PC Perks']");
 	private final By DELAY_OPTION_ON_CANCEL_PC_PERKS_POPUP_LOC = By.xpath("//a[text()='Delay']");
+	private final By YES_CHANGE_MY_AUTOSHIP_DATE_BTN_LOC = By.xpath("//a[contains(text(),'Yes change my autoship date')]");
 	private final By REASON_DD_LOC = By.id("//select[@id='code']");
 	private final By REASON_DD_VALUE_OTHER_LOC = By.id("//select[@id='code']/option[text()='Other']");
 	private final By MESSAGE_BOX_LOC = By.id("reasonMessage");
@@ -33,11 +35,10 @@ public class StoreFrontAutoshipStatusPage extends StoreFrontWebsiteBasePage{
 	private final By NEXT_BILL_SHIP_DATE_LOC = By.id("strtDate");
 	private final By NEXT_BILL_SHIP_DATE_TEXTBOX_LOC = By.id("pcDelayDate");
 	private final By SUBMIT_QUERY_BUTTON = By.xpath("//*[@id='command']/input[@type='submit']");
-	private final By VIEW_DETAILS_LINK_AUTOSHIP_STATUS_LOC = By.xpath("//a[text()='view details']");
 	private final By PC_PERKS_STATUS_ON_AUTOSHIP_STATUS_PAGE = By.xpath("//div[contains(text(),'Current PC Perks Status')]/following::div[1]");
 	private final By SUBSCRIBE_TO_PULSE_BTN_LOC = By.id("confirmsubmitsubs");
 	private final By CANCEL_PULSE_SUBSCRIPTION_BTN_LOC = By.xpath("//a[contains(text(),'Cancel my Pulse subscription')]");
-	private final By ENROLL_IN_CRP_BTN_LOC = By.xpath("//input[@value='Enroll In CRP']");
+	private final By ENROLL_IN_CRP_BTN_LOC = By.xpath("//input[@value='Enroll in CRP']");
 	private final By CANCEL_MY_CRP_LINK_LOC = By.xpath("//a[@id='cancelCRPStatus']");
 	private final By CANCEL_CRP_BUTTON_LOC = By.xpath("//input[@value='CANCEL CRP']");
 	private final By ACTION_SUCCESS_MSG_ON_AUTOSHIP_STATUS_PAGE_LOC = By.xpath("//div[@class='alert alert-info alert-dismissable']"); 
@@ -47,7 +48,7 @@ public class StoreFrontAutoshipStatusPage extends StoreFrontWebsiteBasePage{
 	private final By PULSE_NEXT_BILL_SHIP_DATE_LOC = By.xpath("//*[contains(text(),'Next Bill Date:')]/following-sibling::div[1]");
 
 	private String socialMediaIconLoc = "//div[@class='container']//a[contains(@href,'%s')]";
-
+	private String delayAutoshipDateIdLoc = "pcDelayDate";
 	/***
 	 * This method click on learn more about pulse link.
 	 * 
@@ -144,7 +145,7 @@ public class StoreFrontAutoshipStatusPage extends StoreFrontWebsiteBasePage{
 		driver.click(REASON_DD_LOC);
 		driver.click(REASON_DD_VALUE_OTHER_LOC);
 		driver.type(MESSAGE_BOX_LOC, "I want to terminate my account");
-		driver.clickByJS(RFWebsiteDriver.driver, driver.findElement(SEND_EMAIL_TO_CANCEL_ACCOUNT_BUTTON_LOC));
+		driver.clickByJS(RFWebsiteDriver.driver, SEND_EMAIL_TO_CANCEL_ACCOUNT_BUTTON_LOC);
 		driver.waitForLoadingImageToDisappear(); 
 		return this;
 	}
@@ -182,13 +183,18 @@ public class StoreFrontAutoshipStatusPage extends StoreFrontWebsiteBasePage{
 	 */
 	public String getNextBillAndShipDateFromAutoship(){
 		String nextBillShipDate = null;
-		if(driver.isElementVisible(NEXT_BILL_SHIP_DATE_LOC)){
+		driver.quickWaitForElementPresent(NEXT_BILL_SHIP_DATE_LOC);
+		try{
+			driver.turnOffImplicitWaits(2);
 			nextBillShipDate=driver.findElement(NEXT_BILL_SHIP_DATE_LOC).getText();
 			logger.info("Next bill and ship date "+nextBillShipDate);
 			return nextBillShipDate;
-		}else{
+		}catch(Exception e){
 			logger.info("No next bill and ship date present for user.");
 			return nextBillShipDate;
+		}
+		finally {
+			driver.turnOnImplicitWaits();
 		}
 	}
 	/***
@@ -376,6 +382,13 @@ public class StoreFrontAutoshipStatusPage extends StoreFrontWebsiteBasePage{
 		driver.pauseExecutionFor(2000);
 		return this;
 	}
+	
+	public StoreFrontAutoshipStatusPage clickYesChangeMyAutoshipDateBtn(){
+		driver.click(YES_CHANGE_MY_AUTOSHIP_DATE_BTN_LOC);
+		logger.info("clicked on 'Yes Change My autoship date button'");
+		driver.pauseExecutionFor(2000);
+		return this;
+	}
 
 	/***
 	 * This method fill next bill and ship date for autoship.
@@ -385,9 +398,11 @@ public class StoreFrontAutoshipStatusPage extends StoreFrontWebsiteBasePage{
 	 * 
 	 */
 	public StoreFrontAutoshipStatusPage fillNextBillAndShipdate(String nextBillShipDate){
-		driver.type(NEXT_BILL_SHIP_DATE_TEXTBOX_LOC,nextBillShipDate);
+		driver.typeByJSLocId(delayAutoshipDateIdLoc, nextBillShipDate);
+		//driver.findElement(NEXT_BILL_SHIP_DATE_TEXTBOX_LOC).sendKeys(nextBillShipDate);
 		logger.info("Next bill and ship date entered as "+nextBillShipDate);
-		driver.waitForLoadingImageToDisappear(); 
+		driver.pauseExecutionFor(2000);
+		//driver.waitForLoadingImageToDisappear(); 
 		return this;
 	}
 
@@ -454,7 +469,7 @@ public class StoreFrontAutoshipStatusPage extends StoreFrontWebsiteBasePage{
 	 * @return
 	 */
 	public StoreFrontAutoshipStatusPage clickSubscribeToPulseBtn(){
-		driver.clickByJS(RFWebsiteDriver.driver,driver.findElement(SUBSCRIBE_TO_PULSE_BTN_LOC));
+		driver.clickByJS(RFWebsiteDriver.driver,SUBSCRIBE_TO_PULSE_BTN_LOC);
 		logger.info("Subscribe to pulse btn clicked");
 		return this;
 	}
@@ -606,8 +621,8 @@ public class StoreFrontAutoshipStatusPage extends StoreFrontWebsiteBasePage{
 		String popupText = null;
 		boolean pulsePopup = false;
 		if(driver.isElementPresent(PULSE_CANCELLATION_POPUP_TEXT_LOC)){
-			popupText = driver.findElement(PULSE_CANCELLATION_POPUP_TEXT_LOC).getText().trim();	
-			if(popupText.contains("Are you sure you want to cancel the PULSE Subscription")){
+			popupText = driver.findElement(PULSE_CANCELLATION_POPUP_TEXT_LOC).getText().trim(); 
+			if(popupText.contains("Are you sure you want to cancel the PULSE subscription")){
 				pulsePopup  =true;
 			}
 		}else{
@@ -615,4 +630,5 @@ public class StoreFrontAutoshipStatusPage extends StoreFrontWebsiteBasePage{
 		}
 		return pulsePopup;
 	}
+
 }

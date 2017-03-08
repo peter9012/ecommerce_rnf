@@ -20,7 +20,7 @@ public class CategoryLandingPageTest extends StoreFrontWebsiteBaseTest{
 		sfHomePage.clickCategoryLink(category_Redefine);
 		currentURL = sfHomePage.getCurrentURL().toUpperCase();
 		s_assert.assertTrue(currentURL.contains(category_Redefine), "Expected URL should contain "+category_Redefine+" but actual on UI is"+currentURL);
-		s_assert.assertTrue(sfHomePage.isAddToCartPresentForFirstProduct(), "Add to cart is not present for first product on Category Landing page");
+		s_assert.assertTrue(sfHomePage.isProductsDisplayedOnPage(), "Add to cart is not present for first product on Category Landing page");
 		s_assert.assertAll();
 	}
 
@@ -37,7 +37,7 @@ public class CategoryLandingPageTest extends StoreFrontWebsiteBaseTest{
 		sfHomePage.clickCategoryLink(category_Reverse);
 		currentURL = sfHomePage.getCurrentURL().toUpperCase();
 		s_assert.assertTrue(currentURL.contains(category_Reverse), "Expected URL should contain "+category_Reverse+" but actual on UI is"+currentURL);
-		s_assert.assertTrue(sfHomePage.isAddToCartPresentForFirstProduct(), "Add to cart is not present for first product on Category Landing page");
+		s_assert.assertTrue(sfHomePage.isProductsDisplayedOnPage(), "Add to cart is not present for first product on Category Landing page");
 		s_assert.assertAll();
 	}
 
@@ -54,7 +54,7 @@ public class CategoryLandingPageTest extends StoreFrontWebsiteBaseTest{
 		sfHomePage.clickCategoryLink(category_Unblemish);
 		currentURL = sfHomePage.getCurrentURL().toUpperCase();
 		s_assert.assertTrue(currentURL.contains(category_Unblemish), "Expected URL should contain "+category_Unblemish+" but actual on UI is"+currentURL);
-		s_assert.assertTrue(sfHomePage.isAddToCartPresentForFirstProduct(), "Add to cart is not present for first product on Category Landing page");
+		s_assert.assertTrue(sfHomePage.isProductsDisplayedOnPage(), "Add to cart is not present for first product on Category Landing page");
 		s_assert.assertAll();
 	}
 
@@ -71,7 +71,7 @@ public class CategoryLandingPageTest extends StoreFrontWebsiteBaseTest{
 		sfHomePage.clickCategoryLink(category_Soothe);
 		currentURL = sfHomePage.getCurrentURL().toUpperCase();
 		s_assert.assertTrue(currentURL.contains(category_Soothe), "Expected URL should contain "+category_Soothe+" but actual on UI is"+currentURL);
-		s_assert.assertTrue(sfHomePage.isAddToCartPresentForFirstProduct(), "Add to cart is not present for first product on Category Landing page");
+		s_assert.assertTrue(sfHomePage.isProductsDisplayedOnPage(), "Add to cart is not present for first product on Category Landing page");
 		s_assert.assertAll();
 	}
 
@@ -88,7 +88,7 @@ public class CategoryLandingPageTest extends StoreFrontWebsiteBaseTest{
 		sfHomePage.clickCategoryLink(category_Essentials);
 		currentURL = sfHomePage.getCurrentURL().toUpperCase();
 		s_assert.assertTrue(currentURL.contains(category_Essentials), "Expected URL should contain "+category_Essentials+" but actual on UI is"+currentURL);
-		s_assert.assertTrue(sfHomePage.isAddToCartPresentForFirstProduct(), "Add to cart is not present for first product on Category Landing page");
+		s_assert.assertTrue(sfHomePage.isProductsDisplayedOnPage(), "Add to cart is not present for first product on Category Landing page");
 		s_assert.assertAll();
 	}
 
@@ -100,12 +100,12 @@ public class CategoryLandingPageTest extends StoreFrontWebsiteBaseTest{
 	 */
 	@Test(enabled=true)
 	public void testEnhancementsCategoryLandingPage_96(){
-		String category_Enhancements = "ENHANCEMENT";
+		String category_Enhancements = "ENHANCEMENTS";
 		String currentURL = null;
 		sfHomePage.clickCategoryLink(category_Enhancements);
 		currentURL = sfHomePage.getCurrentURL().toUpperCase();
 		s_assert.assertTrue(currentURL.contains(category_Enhancements), "Expected URL should contain "+category_Enhancements+" but actual on UI is"+currentURL);
-		s_assert.assertTrue(sfHomePage.isAddToCartPresentForFirstProduct(), "Add to cart is not present for first product on Category Landing page");
+		s_assert.assertTrue(sfHomePage.isProductsDisplayedOnPage(), "Add to cart is not present for first product on Category Landing page");
 		s_assert.assertAll();
 	}
 
@@ -117,13 +117,13 @@ public class CategoryLandingPageTest extends StoreFrontWebsiteBaseTest{
 	 */
 	@Test(enabled=true)
 	public void testAllProductsLandingPage_95(){
-		String category_AllProducts = "ALL PRODUCTS";
 		String currentURL = null;
 		String allProducts = "shopskincare";
-		sfHomePage.clickCategoryLink(category_AllProducts);
+		
+		sfShopSkinCarePage = sfHomePage.clickAllProducts();
 		currentURL = sfHomePage.getCurrentURL().toLowerCase();
 		s_assert.assertTrue(currentURL.contains(allProducts), "Expected URL should contain "+allProducts+" but actual on UI is"+currentURL);
-		s_assert.assertTrue(sfHomePage.isAddToCartPresentForFirstProduct(), "Add to cart is not present for first product on Category Landing page");
+		s_assert.assertTrue(sfHomePage.isProductsDisplayedOnPage(), "Add to cart is not present for first product on Category Landing page");
 		s_assert.assertAll();
 	}
 
@@ -140,7 +140,7 @@ public class CategoryLandingPageTest extends StoreFrontWebsiteBaseTest{
 		sfHomePage.clickCategoryLink(category_Featured);
 		currentURL = sfHomePage.getCurrentURL().toUpperCase();
 		s_assert.assertTrue(currentURL.contains(category_Featured), "Expected URL should contain "+category_Featured+" but actual on UI is"+currentURL);
-		s_assert.assertTrue(sfHomePage.isAddToCartPresentForFirstProduct(), "Add to cart is not present for first product on Category Landing page");
+		s_assert.assertTrue(sfHomePage.isProductsDisplayedOnPage(), "Add to cart is not present for first product on Category Landing page");
 		s_assert.assertAll();
 	}
 
@@ -151,17 +151,17 @@ public class CategoryLandingPageTest extends StoreFrontWebsiteBaseTest{
 	 */
 	@Test(enabled=true)
 	public void testConsultantOnlyCategoryAppearsForTheConsultantUser_90(){
-		sfHomePage.loginToStoreFront(TestConstants.PC_EMAIL_HAVING_AUTOSHIP,  password,true);
+		sfHomePage.loginToStoreFront(pcUserWithPWSSponsor(),  password,true);
 		sfHomePage.mouseHoverOn(TestConstants.SHOP_SKINCARE);
 		s_assert.assertFalse(sfHomePage.isConsultantOnlyProductsLinkDisplayed(), "Consultant Only Link should NOT be present for PC user");
 		sfHomePage.clickWelcomeDropdown();
 		sfHomePage.logout();
-		sfHomePage.loginToStoreFront(TestConstants.RC_EMAIL_HAVING_ORDER,  password,true);
+		sfHomePage.loginToStoreFront(rcWithOrderWithoutSponsor(),  password,true);
 		sfHomePage.mouseHoverOn(TestConstants.SHOP_SKINCARE);
 		s_assert.assertFalse(sfHomePage.isConsultantOnlyProductsLinkDisplayed(), "Consultant Only Link should NOT be present for RC user");
 		sfHomePage.clickWelcomeDropdown();
 		sfHomePage.logout();
-		sfHomePage.loginToStoreFront(TestConstants.CONSULTANT_EMAIL_WITH_CRP_AND_PULSE,  password,true);
+		sfHomePage.loginToStoreFront(consultantWithPulseAndWithCRP(),  password,true);
 		sfHomePage.mouseHoverOn(TestConstants.SHOP_SKINCARE);
 		s_assert.assertTrue(sfHomePage.isConsultantOnlyProductsLinkDisplayed(), "Consultant Only Link should NOT be present for PC user");
 		sfShopSkinCarePage = sfHomePage.clickConsultantOnlyProductsLink();

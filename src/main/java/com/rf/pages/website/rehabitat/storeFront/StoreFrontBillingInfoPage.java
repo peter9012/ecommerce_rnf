@@ -42,7 +42,7 @@ public class StoreFrontBillingInfoPage extends StoreFrontWebsiteBasePage{
 	private final By SUCCESSFUL_ACTION_MSG_LOC = By.xpath("//div[@class='global-alerts']/div[@class='alert alert-info alert-dismissable']");
 	private final By ADD_NEW_BILLING_ADDRESS_BLOCK_LOC = By.xpath("//div[@id='billingAddressForm']");
 	private final By STREET_ERROR_MSG_LOC = By.xpath("//div[@id='accountBillingForm']//p[@id='errorMessage']");
-	private final By CARD_ICONS_LOC = By.xpath("//div[@class='form-group']//div[@class='card-icons']/span");
+	private final By CARD_ICONS_LOC = By.xpath("//div[@id='editBillingForm']//div[contains(@class,'card-icons')]/span");
 	private final By BILLING_ADDRESS_DD_FOR_EXISTING_PROFILE_LOC = By.id("addressId");
 	private final By BILLING_ADDRESS_DD_OPTIONS_FOR_EXISTING_PROFILE_LOC = By.xpath("//select[@id='addressId']/option[not(@label)]");
 	private final By BILLING_ADDRESS_FORM_FOR_EXISTING_PROFILE_LOC = By.xpath("//div[@id='checkoutEditBillingAddressForm']//div[@id='billingAddressForm']");
@@ -70,7 +70,7 @@ public class StoreFrontBillingInfoPage extends StoreFrontWebsiteBasePage{
 	 * 
 	 */
 	public StoreFrontBillingInfoPage clickSaveButtonForBillingDetails(){
-		driver.clickByJS(RFWebsiteDriver.driver, driver.findElement(SAVE_BUTTON_FOR_BILLING_DETAILS_LOC));
+		driver.clickByJS(RFWebsiteDriver.driver, SAVE_BUTTON_FOR_BILLING_DETAILS_LOC);
 		logger.info("Save button clicked");
 		return this;
 	}
@@ -318,7 +318,7 @@ public class StoreFrontBillingInfoPage extends StoreFrontWebsiteBasePage{
 	public StoreFrontBillingInfoPage setProfileAsDefault(String profile){
 		driver.click(By.xpath(String.format(setDefaultSpecificBillingProfileRadioBtnLoc,profile)));
 		logger.info("Default button is clicked for Billing Profile : "+profile);
-		driver.clickByJS(RFWebsiteDriver.driver,driver.findElement(SET_AS_DEFAULT_BILLING_PROFILE_BUTTON_LOC));
+		driver.clickByJS(RFWebsiteDriver.driver,SET_AS_DEFAULT_BILLING_PROFILE_BUTTON_LOC);
 		logger.info("Set as default option is selected from Popup");
 		return this;
 	}
@@ -379,7 +379,7 @@ public class StoreFrontBillingInfoPage extends StoreFrontWebsiteBasePage{
 	 * 
 	 */
 	public StoreFrontBillingInfoPage clickAddNewBillingProfileLink(){
-		driver.clickByJS(RFWebsiteDriver.driver,driver.findElement(ADD_NEW_BILLING_PROFILE_LOC));
+		driver.clickByJS(RFWebsiteDriver.driver,ADD_NEW_BILLING_PROFILE_LOC);
 		logger.info("Add New Billing Profile link clicked");
 		return this;
 	}
@@ -391,11 +391,11 @@ public class StoreFrontBillingInfoPage extends StoreFrontWebsiteBasePage{
 	 * @return store front billing info page object
 	 * 
 	 */
-	public StoreFrontBillingInfoPage clickOnAddressSuggestionModalCloseBtn(){
-		driver.clickByJS(RFWebsiteDriver.driver, driver.findElement(ADDRESS_SUGGESTION_MODAL_CLOSE_BTN_LOC));
-		logger.info("Address Suggestion Modal Close Button clicked");
-		return this;
-	}
+	//	public StoreFrontBillingInfoPage clickOnAddressSuggestionModalCloseBtn(){
+	//		driver.clickByJS(RFWebsiteDriver.driver, driver.findElement(ADDRESS_SUGGESTION_MODAL_CLOSE_BTN_LOC));
+	//		logger.info("Address Suggestion Modal Close Button clicked");
+	//		return this;
+	//	}
 
 	/***
 	 * This method clicked on add a New Billing Address link 
@@ -405,7 +405,7 @@ public class StoreFrontBillingInfoPage extends StoreFrontWebsiteBasePage{
 	 * 
 	 */
 	public StoreFrontBillingInfoPage clickAddNewBillingAddressLink(){
-		driver.clickByJS(RFWebsiteDriver.driver,driver.findElement(ADD_NEW_BILLING_ADDRESS_LINK_LOC));
+		driver.clickByJS(RFWebsiteDriver.driver,ADD_NEW_BILLING_ADDRESS_LINK_LOC);
 		logger.info("Add New Billing Address link clicked");
 		return this;
 	}
@@ -418,7 +418,7 @@ public class StoreFrontBillingInfoPage extends StoreFrontWebsiteBasePage{
 	 * 
 	 */
 	public StoreFrontBillingInfoPage clickOnDefaultBillingProfileEditButton(){
-		driver.clickByJS(RFWebsiteDriver.driver,driver.findElement(DEFAULT_BILLING_PROFILE_EDIT_BTN_LOC));
+		driver.clickByJS(RFWebsiteDriver.driver,DEFAULT_BILLING_PROFILE_EDIT_BTN_LOC);
 		logger.info("Default Billing Profile Edit Button Clicked");
 		return this;
 	}
@@ -564,7 +564,7 @@ public class StoreFrontBillingInfoPage extends StoreFrontWebsiteBasePage{
 	 * 
 	 */
 	public StoreFrontBillingInfoPage clickBillingProfileEditLink(String profile){
-		driver.clickByJS(RFWebsiteDriver.driver,driver.findElement(By.xpath(String.format(editLinkForSpecificBillingProfileLoc,profile))));
+		driver.clickByJS(RFWebsiteDriver.driver,By.xpath(String.format(editLinkForSpecificBillingProfileLoc,profile)));
 		logger.info("Edit Link Clicked for Billing Profile : " + profile);
 		return this;
 	}
@@ -590,6 +590,7 @@ public class StoreFrontBillingInfoPage extends StoreFrontWebsiteBasePage{
 	public boolean isAddNewBillingAddressFormDisplayedForExistingProfile(){
 		return driver.isElementVisible(BILLING_ADDRESS_FORM_FOR_EXISTING_PROFILE_LOC);
 	}
+
 
 }
 

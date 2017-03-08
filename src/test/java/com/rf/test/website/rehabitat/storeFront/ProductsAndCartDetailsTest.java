@@ -26,8 +26,7 @@ public class ProductsAndCartDetailsTest extends StoreFrontWebsiteBaseTest{
 		s_assert.assertTrue(sfShopSkinCarePage.isPriceFilterHighToLowAppliedSuccessfully(),"Selected Price filter 'High To Low' is not applied to product successfully");
 		sfShopSkinCarePage.productPriceFilterDefault();
 		//Verify the default price filter applied.
-		s_assert.assertFalse(sfShopSkinCarePage.isPriceFilterLowToHighAppliedSuccessfully(),"Selected Price filter 'Default' is not applied but 'Low To High' applied to product successfully");
-		s_assert.assertFalse(sfShopSkinCarePage.isPriceFilterHighToLowAppliedSuccessfully(),"Selected Price filter 'Default' is not applied but 'High To Low' applied to product successfully");
+		s_assert.assertTrue(sfShopSkinCarePage.isDefaultFilterAppliedSuccessfully(),"Default Filter has not been applied successfully on Price filter");
 		s_assert.assertAll();
 	}
 
@@ -45,9 +44,9 @@ public class ProductsAndCartDetailsTest extends StoreFrontWebsiteBaseTest{
 		String usageNoteTab = "Usage Notes";
 		String ingredientsTab = "Ingredients";
 
-		sfShopSkinCarePage = sfHomePage.navigateToShopSkincareLink(allProduct);
+		sfShopSkinCarePage = sfHomePage.clickAllProducts();
 		productName = sfShopSkinCarePage.getProductNameFromAllProductPage(TestConstants.PRODUCT_NUMBER);
-		sfProductDetailPage = sfShopSkinCarePage.clickNameOfFirstProduct(TestConstants.PRODUCT_NUMBER);
+		sfProductDetailPage = sfShopSkinCarePage.clickNameOfProduct(TestConstants.PRODUCT_NUMBER);
 		s_assert.assertTrue(sfProductDetailPage.getProductNameFromProductDetailsPage().contains(productName),"User is not redirecting to product details page after clicking on product name");
 		s_assert.assertTrue(sfProductDetailPage.isAddToCartButtonIsPresentAtProductDetailsPage(),"Add to Cart button not present on product detail page");
 		//Verify all 3 tabs under product detail page.
@@ -81,7 +80,7 @@ public class ProductsAndCartDetailsTest extends StoreFrontWebsiteBaseTest{
 
 		sfShopSkinCarePage = sfHomePage.clickAllProducts();
 		firstProductName = sfShopSkinCarePage.getProductNameFromAllProductPage(TestConstants.PRODUCT_NUMBER);
-		sfProductDetailPage = sfShopSkinCarePage.clickNameOfFirstProduct(TestConstants.PRODUCT_NUMBER);
+		sfProductDetailPage = sfShopSkinCarePage.clickNameOfProduct(TestConstants.PRODUCT_NUMBER);
 		s_assert.assertTrue(sfProductDetailPage.getProductNameFromProductDetailsPage().contains(firstProductName),"User is not redirecting to product details page after clicking on product name");
 		s_assert.assertTrue(sfProductDetailPage.isAddToCartButtonIsPresentAtProductDetailsPage(),"Add to Cart button not present on product detail page");
 		//Verify Recently view tab on product detail page.
@@ -104,7 +103,7 @@ public class ProductsAndCartDetailsTest extends StoreFrontWebsiteBaseTest{
 		//Verify product detail page.
 		s_assert.assertTrue(sfProductDetailPage.getProductNameFromProductDetailsPage().contains(firstProductName),"User is not redirecting to product details page after clicking on product name from cart page");
 		//View more products from product detail page.
-		sfShopSkinCarePage = sfHomePage.navigateToShopSkincareLink(allProduct);
+		sfShopSkinCarePage = sfHomePage.clickAllProducts();
 		thirdProductName = sfShopSkinCarePage.getProductNameFromAllProductPage(String.valueOf(Integer.parseInt(TestConstants.PRODUCT_NUMBER)+2));
 		sfProductDetailPage = sfShopSkinCarePage.clickNameOfProductOnAllProductPage(String.valueOf(Integer.parseInt(TestConstants.PRODUCT_NUMBER)+2));
 		sfProductDetailPage.navigateToBackPage();
@@ -149,7 +148,7 @@ public class ProductsAndCartDetailsTest extends StoreFrontWebsiteBaseTest{
 		String pcPerksStatusPage = "pc-perks-status";
 		String pcPerksStatusPageTitle = "Rodan and Fields";
 
-		sfHomePage.loginToStoreFront(TestConstants.PC_EMAIL_HAVING_AUTOSHIP, password,true);
+		sfHomePage.loginToStoreFront(pcUserWithPWSSponsor(), password,true);
 		sfHomePage.clickWelcomeDropdown();
 		sfAccountInfoPage=sfHomePage.navigateToAccountInfoPage();
 		currentURL = sfAccountInfoPage.getCurrentURL().toLowerCase();
@@ -226,7 +225,7 @@ public class ProductsAndCartDetailsTest extends StoreFrontWebsiteBaseTest{
 	 */
 	@Test(enabled=true)
 	public void testAddToCart_339(){
-		sfHomePage.loginToStoreFront(TestConstants.CONSULTANT_EMAIL_WITH_CRP_AND_PULSE, password,true);
+		sfHomePage.loginToStoreFront(consultantWithPulseAndWithCRP(), password,true);
 		sfShopSkinCarePage=sfHomePage.clickAllProducts();
 		sfShopSkinCarePage.addProductToCart(TestConstants.PRODUCT_NUMBER, TestConstants.ORDER_TYPE_ADHOC);
 		s_assert.assertTrue(sfShopSkinCarePage.isCheckoutPopupDisplayed(),"Expected checkout popup is not displayed");
@@ -240,7 +239,7 @@ public class ProductsAndCartDetailsTest extends StoreFrontWebsiteBaseTest{
 	 */
 	@Test(enabled=true)
 	public void testCartPageCheckoutCTAConsultantOrPC_497(){
-		sfHomePage.loginToStoreFront(TestConstants.CONSULTANT_EMAIL_WITH_CRP_AND_PULSE, password,true);
+		sfHomePage.loginToStoreFront(consultantWithPulseAndWithCRP(), password,true);
 		sfShopSkinCarePage=sfHomePage.clickAllProducts();
 		sfShopSkinCarePage.addProductToCart(TestConstants.PRODUCT_NUMBER, TestConstants.ORDER_TYPE_ADHOC);
 		sfCartPage = sfShopSkinCarePage.checkoutTheCartFromPopUp();
@@ -257,9 +256,9 @@ public class ProductsAndCartDetailsTest extends StoreFrontWebsiteBaseTest{
 	 */
 	@Test(enabled=true)
 	public void testCartPageCheckoutCTARC_498(){
-		sfHomePage.loginToStoreFront(TestConstants.RC_EMAIL_HAVING_ORDER, password,true);
+		sfHomePage.loginToStoreFront(rcWithOrderWithoutSponsor(), password,true);
 		sfShopSkinCarePage=sfHomePage.clickAllProducts();
-		sfShopSkinCarePage.addProductToCart(TestConstants.PRODUCT_NUMBER, TestConstants.ORDER_TYPE_ADHOC);
+		sfShopSkinCarePage.addProductToCart(TestConstants.PRODUCT_NUMBER, TestConstants.ORDER_TYPE_ENROLLMENT);
 		sfShopSkinCarePage.checkoutTheCartFromPopUp();
 		sfCheckoutPage=sfShopSkinCarePage.checkoutTheCart();
 		String currentURL=sfCheckoutPage.getCurrentURL().toLowerCase();
@@ -276,11 +275,11 @@ public class ProductsAndCartDetailsTest extends StoreFrontWebsiteBaseTest{
 	@Test(enabled=true)//TODO Unable to login at checkout page
 	public void testCartPageCheckoutCTAAnonymousLogin_499(){
 		sfShopSkinCarePage=sfHomePage.clickAllProducts();
-		sfShopSkinCarePage.addProductToCart(TestConstants.PRODUCT_NUMBER, TestConstants.ORDER_TYPE_ADHOC);
+		sfShopSkinCarePage.addProductToCart(TestConstants.PRODUCT_NUMBER, TestConstants.ORDER_TYPE_ENROLLMENT);
 		sfShopSkinCarePage.checkoutTheCartFromPopUp();
 		sfCheckoutPage=sfShopSkinCarePage.checkoutTheCart();
 		s_assert.assertTrue(sfCheckoutPage.isLoginOrRegisterTextDisplayed()," user is not redirected to expected login page");
-		sfCheckoutPage.loginAtCheckoutPage(TestConstants.RC_EMAIL_HAVING_ORDER, password);
+		sfCheckoutPage.loginAtCheckoutPage(rcWithOrderWithoutSponsor(), password);
 		String currentURL=sfCheckoutPage.getCurrentURL().toLowerCase();
 		s_assert.assertTrue(currentURL.contains("checkout"),"Current url should contain checkout but actual on UI is "+currentURL);
 		s_assert.assertAll();
@@ -316,7 +315,7 @@ public class ProductsAndCartDetailsTest extends StoreFrontWebsiteBaseTest{
 		String currentWindowID = null; 
 		String currentURL = null;
 		String utlToAssertForTCDetailsPage = "common/pdf/Archives/PCPerks-TCs";
-		sfHomePage.loginToStoreFront(TestConstants.PC_EMAIL_HAVING_AUTOSHIP,password,true);
+		sfHomePage.loginToStoreFront(pcUserWithPWSSponsor(),password,true);
 		sfShopSkinCarePage = sfHomePage.clickAllProducts();
 		sfShopSkinCarePage.addProductToCart(TestConstants.PRODUCT_NUMBER, TestConstants.ORDER_TYPE_ADHOC);
 		sfCartPage = sfShopSkinCarePage.checkoutTheCartFromPopUp();
@@ -339,9 +338,9 @@ public class ProductsAndCartDetailsTest extends StoreFrontWebsiteBaseTest{
 		String currentWindowID = null; 
 		String currentURL = null;
 		String utlToAssertForTCDetailsPage = "common/pdf/Archives/PCPerks-TCs";
-		sfHomePage.loginToStoreFront(TestConstants.RC_EMAIL_HAVING_ORDER,password,true);
+		sfHomePage.loginToStoreFront(rcWithOrderWithoutSponsor(),password,true);
 		sfShopSkinCarePage = sfHomePage.clickAllProducts();
-		sfShopSkinCarePage.addProductToCart(TestConstants.PRODUCT_NUMBER, TestConstants.ORDER_TYPE_ADHOC);
+		sfShopSkinCarePage.addProductToCart(TestConstants.PRODUCT_NUMBER, TestConstants.ORDER_TYPE_ENROLLMENT);
 		sfCartPage = sfShopSkinCarePage.checkoutTheCartFromPopUp();
 		currentWindowID = CommonUtils.getCurrentWindowHandle();
 		sfCartPage.clickPCTermsAndConditionsLink();
@@ -370,7 +369,7 @@ public class ProductsAndCartDetailsTest extends StoreFrontWebsiteBaseTest{
 		String quantityAsZero = "0";
 
 		sfShopSkinCarePage=sfHomePage.clickAllProducts();
-		sfShopSkinCarePage.addProductToCart(TestConstants.PRODUCT_NUMBER, TestConstants.ORDER_TYPE_ADHOC);
+		sfShopSkinCarePage.addProductToCart(TestConstants.PRODUCT_NUMBER, TestConstants.ORDER_TYPE_ENROLLMENT);
 		sfCartPage = sfShopSkinCarePage.checkoutTheCartFromPopUp();
 		subTotalFromCart = sfCartPage.getSubtotalofItems(); 
 		quantityOfProduct = sfCartPage.getQuantityOfProductFromCart("1");
@@ -407,7 +406,7 @@ public class ProductsAndCartDetailsTest extends StoreFrontWebsiteBaseTest{
 		String productQTY = null;
 
 		//Access cart page via all product page.
-		sfHomePage.loginToStoreFront(TestConstants.PC_EMAIL_HAVING_AUTOSHIP,password,true);
+		sfHomePage.loginToStoreFront(pcUserWithPWSSponsor(),password,true);
 		sfCartPage = sfHomePage.clickMiniCartBagLink();
 		sfCartPage.removeAllProductsFromCart();
 		s_assert.assertFalse(sfCartPage.isProductPresentInCart(),"No product expected in cart but product are present in cart");
@@ -438,7 +437,7 @@ public class ProductsAndCartDetailsTest extends StoreFrontWebsiteBaseTest{
 		String productQTY = null;
 
 		//Access cart page via all product page.
-		sfHomePage.loginToStoreFront(TestConstants.CONSULTANT_EMAIL_WITH_CRP_AND_PULSE, password,true);
+		sfHomePage.loginToStoreFront(consultantWithPulseAndWithCRP(), password,true);
 		sfCartPage = sfHomePage.clickMiniCartBagLink();
 		sfCartPage.removeAllProductsFromCart();
 		s_assert.assertFalse(sfCartPage.isProductPresentInCart(),"No product expected in cart but product are present in cart");
@@ -484,7 +483,7 @@ public class ProductsAndCartDetailsTest extends StoreFrontWebsiteBaseTest{
 	 */
 	@Test(enabled=true)
 	public void testProductPricingRC_502(){
-		sfHomePage.loginToStoreFront(TestConstants.RC_EMAIL_HAVING_ORDER,password,true);
+		sfHomePage.loginToStoreFront(rcWithOrderWithoutSponsor(),password,true);
 		sfShopSkinCarePage = sfHomePage.clickOnCategoryFromShopSkinCare("REDEFINE");
 		s_assert.assertTrue(sfShopSkinCarePage.isRetailPricePresentForProductNumber("1"),"Retail price is not present for Product on category Page");
 		sfHomePage.clickAllProducts();
@@ -496,20 +495,54 @@ public class ProductsAndCartDetailsTest extends StoreFrontWebsiteBaseTest{
 		s_assert.assertAll();
 	}
 
+
 	/***
 	 * qTest : TC-157 Product Details page- Qty
 	 * Description : This test validates quantity with different values
 	 *     
 	 */
-	@Test(enabled=false) //TODO Incomplete as no quantity update link present on overlay.
+	@Test(enabled=true)
 	public void testProductDetailsPageQty_157(){
 		String productQty=null;
-		String updatedQty=null;
-
+		String qtyToEnter=null;
+		String qtyOnCheckoutPopup = null;
 		sfShopSkinCarePage=sfHomePage.clickAllProducts();
 		sfShopSkinCarePage.clickOnFirstProductQuickViewButtonAndReturnProductName();
 		productQty=sfShopSkinCarePage.getProductQuantityFromQuickViewOption();
-		updatedQty = sfCartPage.updateQuantityByOne(productQty);
+
+		// Enter product quantity increased by 1
+		qtyToEnter = sfShopSkinCarePage.updateQuantityByOne(productQty);
+		sfShopSkinCarePage.enterQuantityonQuickViewPopup(qtyToEnter);
+		sfShopSkinCarePage.addProductToCartFromQuickViewPopup(TestConstants.ORDER_TYPE_ENROLLMENT);
+		qtyOnCheckoutPopup = sfShopSkinCarePage.getQuantityAddedFromCheckoutPopup();
+		s_assert.assertTrue(qtyToEnter.equals(qtyOnCheckoutPopup),"Product Quantity is not found same on Checkout popup. Expected : "+qtyToEnter+". Actual : "+qtyOnCheckoutPopup);
+		sfShopSkinCarePage.clickOnCloseButtonForCheckoutPopUp();
+
+		// Enter Product Quantity as zero
+		qtyToEnter = "0";
+		sfShopSkinCarePage.clickOnFirstProductQuickViewButtonAndReturnProductName();
+		sfShopSkinCarePage.enterQuantityonQuickViewPopup(qtyToEnter);
+		sfShopSkinCarePage.addProductToCartFromQuickViewPopup(TestConstants.ORDER_TYPE_ENROLLMENT);
+		qtyOnCheckoutPopup = sfShopSkinCarePage.getQuantityAddedFromCheckoutPopup();
+		s_assert.assertTrue(qtyOnCheckoutPopup.equals("1"),"Product Quantity is not found same on Checkout popup. Expected : 1. Actual : "+qtyOnCheckoutPopup);
+		sfShopSkinCarePage.clickOnCloseButtonForCheckoutPopUp();
+
+		// Enter Product Quantity as Special character
+		qtyToEnter = "$";
+		sfShopSkinCarePage.clickOnFirstProductQuickViewButtonAndReturnProductName();
+		sfShopSkinCarePage.enterQuantityonQuickViewPopup(qtyToEnter);
+		sfShopSkinCarePage.addProductToCartFromQuickViewPopup(TestConstants.ORDER_TYPE_ENROLLMENT);
+		qtyOnCheckoutPopup = sfShopSkinCarePage.getQuantityAddedFromCheckoutPopup();
+		s_assert.assertTrue(qtyOnCheckoutPopup.equals("1"),"Product Quantity is not found same on Checkout popup. Expected : 1. Actual : "+qtyOnCheckoutPopup);
+		sfShopSkinCarePage.clickOnCloseButtonForCheckoutPopUp();
+
+		// Enter Product Quantity as blank
+		qtyToEnter = "";
+		sfShopSkinCarePage.clickOnFirstProductQuickViewButtonAndReturnProductName();
+		sfShopSkinCarePage.enterQuantityonQuickViewPopup(qtyToEnter);
+		sfShopSkinCarePage.addProductToCartFromQuickViewPopup(TestConstants.ORDER_TYPE_ENROLLMENT);
+		qtyOnCheckoutPopup = sfShopSkinCarePage.getQuantityAddedFromCheckoutPopup();
+		s_assert.assertTrue(qtyOnCheckoutPopup.equals("1"),"Product Quantity is not found same on Checkout popup. Expected : 1. Actual : "+qtyOnCheckoutPopup);
 		s_assert.assertAll();
 	}
 
@@ -520,11 +553,11 @@ public class ProductsAndCartDetailsTest extends StoreFrontWebsiteBaseTest{
 	 */
 	@Test(enabled=true)
 	public void testProductDetailsPageProductPricingConsultant_158(){
-		sfHomePage.loginToStoreFront(TestConstants.CONSULTANT_EMAIL_WITH_CRP_AND_PULSE, password,true);
+		sfHomePage.loginToStoreFront(consultantWithPulseAndWithCRP(), password,true);
 		sfShopSkinCarePage=sfHomePage.clickAllProducts();
 		String consultantPrice=sfShopSkinCarePage.getProductPrice(TestConstants.PRODUCT_NUMBER);
 		String retailAndSvPrice=sfShopSkinCarePage.getProductRetailAndSVPrice(TestConstants.PRODUCT_NUMBER);
-		s_assert.assertTrue(consultantPrice.contains("$") && consultantPrice.contains("Your Price:") && retailAndSvPrice.contains("Retail:") && retailAndSvPrice.contains("$") && retailAndSvPrice.contains("Total SV"),"Expected price should contain '$' , 'Retail', 'Your Price' and 'Total SV'");
+		s_assert.assertTrue(consultantPrice.contains("$") && consultantPrice.contains("Your Price:") && retailAndSvPrice.contains("Retail:") && retailAndSvPrice.contains("$") && retailAndSvPrice.contains("QV"),"Expected price should contain '$' , 'Retail', 'Your Price' and 'QV'");
 		s_assert.assertAll();
 	}
 
@@ -535,7 +568,7 @@ public class ProductsAndCartDetailsTest extends StoreFrontWebsiteBaseTest{
 	 */
 	@Test(enabled=true)
 	public void testProductDetailsPageProductPricingPC_159(){
-		sfHomePage.loginToStoreFront(TestConstants.PC_EMAIL_HAVING_AUTOSHIP, password,true);
+		sfHomePage.loginToStoreFront(pcUserWithPWSSponsor(), password,true);
 		sfShopSkinCarePage=sfHomePage.clickAllProducts();
 		String consultantPrice=sfShopSkinCarePage.getProductPrice(TestConstants.PRODUCT_NUMBER);
 		String retailAndSvPrice=sfShopSkinCarePage.getProductRetailAndSVPrice(TestConstants.PRODUCT_NUMBER);
@@ -565,7 +598,7 @@ public class ProductsAndCartDetailsTest extends StoreFrontWebsiteBaseTest{
 	@Test(enabled=true)
 	public void testCartPagePCPerksPromotionMessageLinkAnonymousUser_165(){
 		sfShopSkinCarePage=sfHomePage.clickAllProducts();
-		sfShopSkinCarePage.addProductToCart(TestConstants.PRODUCT_NUMBER, TestConstants.ORDER_TYPE_ADHOC);
+		sfShopSkinCarePage.addProductToCart(TestConstants.PRODUCT_NUMBER, TestConstants.ORDER_TYPE_ENROLLMENT);
 		sfShopSkinCarePage.checkoutTheCartFromPopUp();
 		s_assert.assertTrue(sfShopSkinCarePage.isPCPerksPromoMsgDisplayed(),"PC Perks promo msg is NOT displayed for anonymous user");
 		s_assert.assertAll();
@@ -578,11 +611,11 @@ public class ProductsAndCartDetailsTest extends StoreFrontWebsiteBaseTest{
 	 */
 	@Test(enabled=true)
 	public void testCartPagePCPerksPromotionMessageLinkRetailUser_166(){
-		sfHomePage.loginToStoreFront(TestConstants.RC_EMAIL_HAVING_ORDER, password,true);
+		sfHomePage.loginToStoreFront(rcWithOrderWithoutSponsor(), password,true);
 		sfShopSkinCarePage=sfHomePage.clickAllProducts();
-		sfShopSkinCarePage.addProductToCart(TestConstants.PRODUCT_NUMBER, TestConstants.ORDER_TYPE_ADHOC);
+		sfShopSkinCarePage.addProductToCart(TestConstants.PRODUCT_NUMBER, TestConstants.ORDER_TYPE_ENROLLMENT);
 		sfShopSkinCarePage.checkoutTheCartFromPopUp();
-		s_assert.assertTrue(sfShopSkinCarePage.isPCPerksPromoMsgDisplayed(),"PC Perks promo msg is NOT displayed for anonymous user");
+		s_assert.assertTrue(sfShopSkinCarePage.isPCPerksPromoMsgDisplayed(),"PC Perks promo msg is NOT displayed RC user");
 		s_assert.assertAll();
 	}
 
@@ -593,7 +626,7 @@ public class ProductsAndCartDetailsTest extends StoreFrontWebsiteBaseTest{
 	 */
 	@Test(enabled=true)
 	public void testCartPagePCPerksPromotionMessageLinkPreferredCustomer_167(){
-		sfHomePage.loginToStoreFront(TestConstants.PC_EMAIL_HAVING_AUTOSHIP, password,true);
+		sfHomePage.loginToStoreFront(pcUserWithPWSSponsor(), password,true);
 		sfShopSkinCarePage=sfHomePage.clickAllProducts();
 		sfShopSkinCarePage.addProductToCart(TestConstants.PRODUCT_NUMBER, TestConstants.ORDER_TYPE_ADHOC);
 		sfShopSkinCarePage.checkoutTheCartFromPopUp();
@@ -608,7 +641,7 @@ public class ProductsAndCartDetailsTest extends StoreFrontWebsiteBaseTest{
 	 */
 	@Test(enabled=true)
 	public void testCartPagePCPerksPromotionMessageLinkConsultantUser_168(){
-		sfHomePage.loginToStoreFront(TestConstants.CONSULTANT_EMAIL_WITH_CRP_AND_PULSE, password,true);
+		sfHomePage.loginToStoreFront(consultantWithPulseAndWithCRP(), password,true);
 		sfShopSkinCarePage=sfHomePage.clickAllProducts();
 		sfShopSkinCarePage.addProductToCart(TestConstants.PRODUCT_NUMBER, TestConstants.ORDER_TYPE_ADHOC);
 		sfShopSkinCarePage.checkoutTheCartFromPopUp();
@@ -624,7 +657,7 @@ public class ProductsAndCartDetailsTest extends StoreFrontWebsiteBaseTest{
 	 */
 	@Test(enabled=true)
 	public void testProductPricingPC_503(){
-		sfHomePage.loginToStoreFront(TestConstants.PC_EMAIL_HAVING_AUTOSHIP,password,true);
+		sfHomePage.loginToStoreFront(pcUserWithPWSSponsor(),password,true);
 		//		sfShopSkinCarePage = sfHomePage.clickOnCategoryFromShopSkinCare("REDEFINE");
 		//		s_assert.assertTrue(sfShopSkinCarePage.isRetailPricePresentForProductNumber("1"),"Retail price is not present for Product on category Page for PC User");
 		//		s_assert.assertTrue(sfShopSkinCarePage.isSpecificPricePresentForProductNumber("1"),"Specific price is not present for Product on category Page for PC User");
@@ -647,7 +680,7 @@ public class ProductsAndCartDetailsTest extends StoreFrontWebsiteBaseTest{
 	 */
 	@Test(enabled=true)
 	public void testProductPricingConsultant_504(){
-		sfHomePage.loginToStoreFront(TestConstants.CONSULTANT_EMAIL_WITH_CRP_AND_PULSE,password,true);
+		sfHomePage.loginToStoreFront(consultantWithPulseAndWithCRP(),password,true);
 		//		sfShopSkinCarePage = sfHomePage.clickOnCategoryFromShopSkinCare("REDEFINE");
 		//		s_assert.assertTrue(sfShopSkinCarePage.isRetailPricePresentForProductNumber("1"),"Retail price is not present for Product on category Page for Consultant");
 		//		s_assert.assertTrue(sfShopSkinCarePage.isSpecificPricePresentForProductNumber("1"),"Specific price is not present for Product on category Page for Consultant");
@@ -671,7 +704,7 @@ public class ProductsAndCartDetailsTest extends StoreFrontWebsiteBaseTest{
 	@Test(enabled=true)
 	public void testProductDetailsPageProductImages_337(){
 		sfShopSkinCarePage=sfHomePage.clickAllProducts();
-		sfProductDetailPage=sfShopSkinCarePage.clickNameOfProductOnAllProductPage("1");
+		sfProductDetailPage=sfShopSkinCarePage.clickNameOfProduct(TestConstants.PRODUCT_NUMBER);
 		s_assert.assertTrue(sfProductDetailPage.isProductImageDisplayed(),"Expected user is not redirected to product detail page");
 		sfProductDetailPage.clickToViewLargerImage();
 		s_assert.assertTrue(sfProductDetailPage.isProductImageDisplayedInLargerSize(),"Expected product image is not displayed in larger size");
@@ -687,25 +720,28 @@ public class ProductsAndCartDetailsTest extends StoreFrontWebsiteBaseTest{
 	 */
 	@Test(enabled=true)
 	public void testProductDetailPage_196(){
-		String productName = TestConstants.PRODUCT_NAME;
+		String productName = null;
+		String productNameOnPDP = null;
+		String recentlyViewedProduct = null;
+
 		sfShopSkinCarePage=sfHomePage.clickAllProducts();
-		String firstProductName=sfShopSkinCarePage.getProductNameFromAllProductPage("1");
-		sfProductDetailPage=sfShopSkinCarePage.clickNameOfProductOnAllProductPage("1");
-		String productNameAtPDP=sfProductDetailPage.getProductNameFromProductDetailsPage();
-		s_assert.assertTrue(productNameAtPDP.contains(firstProductName),"Expected first product name is:"+firstProductName+" But Actual on product details page is:"+productNameAtPDP);
+		productName = sfShopSkinCarePage.getProductNameFromAllProductPage(TestConstants.PRODUCT_NUMBER);
+		sfProductDetailPage = sfShopSkinCarePage.clickNameOfProduct(TestConstants.PRODUCT_NUMBER);
+		productNameOnPDP = sfProductDetailPage.getProductNameFromProductDetailsPage();
+		s_assert.assertTrue(productNameOnPDP.contains(productName),"Expected first product name is:"+productName+" But Actual on product details page is:"+productNameOnPDP);
+		sfShopSkinCarePage = sfProductDetailPage.clickAllProducts();
+		sfShopSkinCarePage.clickNameOfProduct(TestConstants.PRODUCT_NUMBER + 1);
+		recentlyViewedProduct = sfProductDetailPage.clickRecentlyViewedProductNameAndReturnProductName();
+		productNameOnPDP = sfProductDetailPage.getProductNameFromProductDetailsPage();
+		s_assert.assertTrue(productNameOnPDP.toLowerCase().contains(recentlyViewedProduct.toLowerCase()),"Expected recently viewed product name is:"+recentlyViewedProduct+" But actual product name on PDP is:" +productNameOnPDP);
 		sfShopSkinCarePage=sfProductDetailPage.clickAllProducts();
-		sfProductDetailPage=sfShopSkinCarePage.clickNameOfProductOnAllProductPage("2");
-		String recentlyViewedProduct=sfProductDetailPage.clickRecentlyViewedProductNameAndReturnProductName();
-		productNameAtPDP=sfProductDetailPage.getProductNameFromProductDetailsPage();
-		s_assert.assertTrue(productNameAtPDP.toLowerCase().contains(recentlyViewedProduct.toLowerCase()),"Expected recently viewed product name is:"+recentlyViewedProduct+" But actual product name on PDP is:" +productNameAtPDP);
-		sfShopSkinCarePage=sfProductDetailPage.clickAllProducts();
-		String productNameFromAllProdutcs=sfShopSkinCarePage.clickOnFirstProductQuickViewButtonAndReturnProductName();
-		sfProductDetailPage=sfShopSkinCarePage.clickOnViewProductDetailsLinkOnQuickViewPopup();
-		productNameAtPDP=sfProductDetailPage.getProductNameFromProductDetailsPage();
-		s_assert.assertTrue(productNameAtPDP.contains(productNameFromAllProdutcs)," Expected product name at all products page is:"+productNameFromAllProdutcs+" But actual product name at PDP is:"+productNameAtPDP);
+		sfShopSkinCarePage.clickOnQuickViewLinkForProduct(TestConstants.PRODUCT_NUMBER);
+		sfShopSkinCarePage.clickOnViewProductDetailsLinkOnQuickViewPopup();
+		productNameOnPDP = sfProductDetailPage.getProductNameFromProductDetailsPage();
+		s_assert.assertTrue(productNameOnPDP.contains(productName)," Expected product name at all products page is:"+productName+" But actual product name at PDP is:"+productNameOnPDP);
 		sfProductDetailPage.clickSearchIcon();
 		sfProductDetailPage.searchProduct(productName);
-		s_assert.assertTrue(sfShopSkinCarePage.isProductPresentOnPage(productName),"searched product is not displayed on the page");
+		s_assert.assertTrue(sfShopSkinCarePage.isProductPresentOnPage(productName),"Searched product : " + productName + " is not displayed on the page");
 		s_assert.assertAll();
 	}
 
@@ -719,7 +755,7 @@ public class ProductsAndCartDetailsTest extends StoreFrontWebsiteBaseTest{
 		int productInAdhocCart;
 		int newProductCount;
 		//Add product to consultant adhoc cart.
-		sfHomePage.loginToStoreFront(TestConstants.CONSULTANT_EMAIL_WITH_CRP_AND_PULSE, password,true);
+		sfHomePage.loginToStoreFront(consultantWithPulseAndWithCRP(), password,true);
 		sfCartPage = sfHomePage.clickMiniCartBagLink();
 		sfCartPage.removeAllProductsFromCart();
 		s_assert.assertFalse(sfCartPage.isProductPresentInCart(),"No product expected in cart but product are present in cart");
@@ -731,14 +767,14 @@ public class ProductsAndCartDetailsTest extends StoreFrontWebsiteBaseTest{
 		productInAdhocCart = sfCartPage.getProductCountInAdhocCart();
 		sfCartPage.clickWelcomeDropdown();
 		sfCartPage.logout();
-		sfHomePage.loginToStoreFront(TestConstants.CONSULTANT_EMAIL_WITH_CRP_AND_PULSE, password,true);
+		sfHomePage.loginToStoreFront(consultantWithPulseAndWithCRP(), password,true);
 		sfHomePage.clickMiniCartBagLink();
 		newProductCount = sfCartPage.getProductCountInAdhocCart();
 		s_assert.assertTrue(newProductCount==productInAdhocCart,"Expected product count"+productInAdhocCart+" while actual on UI "+newProductCount);
 		sfCartPage.clickWelcomeDropdown();
 		sfCartPage.logout();
 		//Add  product to PC adhoc cart.
-		sfHomePage.loginToStoreFront(TestConstants.PC_EMAIL_HAVING_AUTOSHIP, password,true);
+		sfHomePage.loginToStoreFront(pcUserWithPWSSponsor(), password,true);
 		sfCartPage = sfHomePage.clickMiniCartBagLink();
 		sfCartPage.removeAllProductsFromCart();
 		s_assert.assertFalse(sfCartPage.isProductPresentInCart(),"No product expected in cart but product are present in cart");
@@ -750,26 +786,26 @@ public class ProductsAndCartDetailsTest extends StoreFrontWebsiteBaseTest{
 		productInAdhocCart = sfCartPage.getProductCountInAdhocCart();
 		sfCartPage.clickWelcomeDropdown();
 		sfCartPage.logout();
-		sfHomePage.loginToStoreFront(TestConstants.PC_EMAIL_HAVING_AUTOSHIP,password,true);
+		sfHomePage.loginToStoreFront(pcUserWithPWSSponsor(),password,true);
 		sfHomePage.clickMiniCartBagLink();
 		newProductCount = sfCartPage.getProductCountInAdhocCart();
 		s_assert.assertTrue(newProductCount==productInAdhocCart,"Expected product count"+productInAdhocCart+" while actual on UI "+newProductCount);
 		sfCartPage.clickWelcomeDropdown();
 		sfCartPage.logout();
 		//Add  product to RC adhoc cart.
-		sfHomePage.loginToStoreFront(TestConstants.RC_EMAIL_HAVING_ORDER,password,true);
+		sfHomePage.loginToStoreFront(rcWithOrderWithoutSponsor(),password,true);
 		sfCartPage = sfHomePage.clickMiniCartBagLink();
 		sfCartPage.removeAllProductsFromCart();
 		s_assert.assertFalse(sfCartPage.isProductPresentInCart(),"No product expected in cart but product are present in cart");
 		sfHomePage.clickRodanAndFieldsLogo();
 		sfShopSkinCarePage=sfHomePage.clickAllProducts();
-		sfShopSkinCarePage.addProductToCart(TestConstants.PRODUCT_NUMBER, TestConstants.ORDER_TYPE_ADHOC);
+		sfShopSkinCarePage.addProductToCart(TestConstants.PRODUCT_NUMBER, TestConstants.ORDER_TYPE_ENROLLMENT);
 		sfCartPage = sfShopSkinCarePage.checkoutTheCartFromPopUp();
 		s_assert.assertTrue(sfCartPage.isProductPresentInCart(),"Newly Added product not present in adhoc cart of RC user");
 		productInAdhocCart = sfCartPage.getProductCountInAdhocCart();
 		sfCartPage.clickWelcomeDropdown();
 		sfCartPage.logout();
-		sfHomePage.loginToStoreFront(TestConstants.RC_EMAIL_HAVING_ORDER, password,true);
+		sfHomePage.loginToStoreFront(rcWithOrderWithoutSponsor(), password,true);
 		sfHomePage.clickMiniCartBagLink();
 		newProductCount = sfCartPage.getProductCountInAdhocCart();
 		s_assert.assertTrue(newProductCount==productInAdhocCart,"Expected product count"+productInAdhocCart+" while actual on UI "+newProductCount);
@@ -785,8 +821,7 @@ public class ProductsAndCartDetailsTest extends StoreFrontWebsiteBaseTest{
 	 */ 
 	@Test(enabled=true)
 	public void testSortProductBaseOnPriceFilter_61(){
-		String allProduct = "ALL PRODUCTS";
-		sfShopSkinCarePage = sfHomePage.navigateToShopSkincareLink(allProduct);
+		sfShopSkinCarePage = sfHomePage.clickAllProducts();
 		sfShopSkinCarePage.productPriceFilterLowToHigh();
 		s_assert.assertTrue(sfShopSkinCarePage.isPriceFilterLowToHighAppliedSuccessfully(),"Selected Price filter 'Low To High' is not applied to product successfully");
 		sfShopSkinCarePage.productPriceFilterHighToLow();
@@ -800,6 +835,7 @@ public class ProductsAndCartDetailsTest extends StoreFrontWebsiteBaseTest{
 	}
 
 
+
 	/***
 	 * qTest:TC-154 Product Detail pages- PC Perks Promo as Anonymous user
 	 * 
@@ -809,7 +845,7 @@ public class ProductsAndCartDetailsTest extends StoreFrontWebsiteBaseTest{
 	@Test(enabled=true)
 	public void testPCPerksPromoMsgAnonymousUser_154(){
 		sfShopSkinCarePage = sfHomePage.clickAllProducts();
-		sfProductDetailPage=sfShopSkinCarePage.clickNameOfProductOnAllProductPage("1");
+		sfProductDetailPage=sfShopSkinCarePage.clickNameOfProductOnAllProductPage(TestConstants.PRODUCT_NUMBER);
 		s_assert.assertTrue(sfProductDetailPage.isDescriptionTabPresentAtProductDetailsPage(), "Not on Product details page");
 		//		s_assert.assertTrue(sfShopSkinCarePage.isProductImagePresentAtQuickViewPopup(),
 		//				"Product image is not present at Quick view popup");
@@ -832,9 +868,9 @@ public class ProductsAndCartDetailsTest extends StoreFrontWebsiteBaseTest{
 	 */
 	@Test(enabled=true)
 	public void testPCPerksPromoMsgRCUser_155(){
-		sfHomePage.loginToStoreFront(TestConstants.RC_EMAIL_HAVING_ORDER,password,true);
+		sfHomePage.loginToStoreFront(rcWithOrderWithoutSponsor(),password,true);
 		sfShopSkinCarePage = sfHomePage.clickAllProducts();
-		sfProductDetailPage=sfShopSkinCarePage.clickNameOfProductOnAllProductPage("1");
+		sfProductDetailPage=sfShopSkinCarePage.clickNameOfProductOnAllProductPage(TestConstants.PRODUCT_NUMBER);
 		s_assert.assertTrue(sfProductDetailPage.isDescriptionTabPresentAtProductDetailsPage(), "Not on Product details page");
 		//		s_assert.assertTrue(sfShopSkinCarePage.isProductImagePresentAtQuickViewPopup(),
 		//				"Product image is not present at Quick view popup");
@@ -848,7 +884,6 @@ public class ProductsAndCartDetailsTest extends StoreFrontWebsiteBaseTest{
 		s_assert.assertFalse(sfShopSkinCarePage.isLearnMoreAboutPCPromoPopupDisplayed(), "pc perks promo popup has NOT closed");
 		s_assert.assertAll();
 	}
-
 	/***
 	 * qTest:TC-156 Product details page- Image gallery
 	 * 
@@ -866,18 +901,22 @@ public class ProductsAndCartDetailsTest extends StoreFrontWebsiteBaseTest{
 	 */
 	@Test(enabled=true)
 	public void testAddMultipleProductToCartAndRemoveTillCartEmpty_68(){
-		sfShopSkinCarePage=sfHomePage.clickAllProducts();
-		sfShopSkinCarePage.addProductToCart(TestConstants.PRODUCT_NUMBER, TestConstants.ORDER_TYPE_ADHOC);
+		String productNumber = TestConstants.PRODUCT_NUMBER;
+		sfShopSkinCarePage = sfHomePage.clickAllProducts();
+		sfShopSkinCarePage.addProductToCart(productNumber, TestConstants.ORDER_TYPE_ENROLLMENT);
 		sfCartPage = sfShopSkinCarePage.checkoutTheCartFromPopUp();
 		sfCartPage.clickAddMoreItemsBtn();
-		sfShopSkinCarePage.addProductToCart("3", TestConstants.ORDER_TYPE_ADHOC);
+		productNumber = sfShopSkinCarePage.getProductNumberIncrementedByOne(productNumber);
+		sfShopSkinCarePage.addProductToCart(productNumber, TestConstants.ORDER_TYPE_ENROLLMENT);
 		sfCartPage = sfShopSkinCarePage.checkoutTheCartFromPopUp();
 		sfCartPage.clickAddMoreItemsBtn();
-		sfShopSkinCarePage.addProductToCart("4", TestConstants.ORDER_TYPE_ADHOC);
-		sfCartPage = sfShopSkinCarePage.checkoutTheCartFromPopUp();
+		productNumber = sfShopSkinCarePage.getProductNumberIncrementedByOne(productNumber);
+		sfShopSkinCarePage.addProductToCart(productNumber, TestConstants.ORDER_TYPE_ENROLLMENT);
+		sfShopSkinCarePage.checkoutTheCartFromPopUp();
 		sfCartPage.clickAddMoreItemsBtn();
-		sfShopSkinCarePage.addProductToCart("5", TestConstants.ORDER_TYPE_ADHOC);
-		sfCartPage = sfShopSkinCarePage.checkoutTheCartFromPopUp();
+		productNumber = sfShopSkinCarePage.getProductNumberIncrementedByOne(productNumber);
+		sfShopSkinCarePage.addProductToCart(productNumber, TestConstants.ORDER_TYPE_ENROLLMENT);
+		sfShopSkinCarePage.checkoutTheCartFromPopUp();
 		s_assert.assertTrue(sfCartPage.isProductPresentInCart(),"No product is present in cart.");
 		sfCartPage.removeAllProductsFromCart();
 		s_assert.assertFalse(sfCartPage.isProductPresentInCart(),"No product expected in cart but product are present in cart");
@@ -898,8 +937,8 @@ public class ProductsAndCartDetailsTest extends StoreFrontWebsiteBaseTest{
 		String newItemsOfProduct = null;
 		String updatedQuantity = null;
 
-		sfShopSkinCarePage = sfHomePage.navigateToShopSkincareLink(allProduct);
-		sfShopSkinCarePage.addProductToCart(TestConstants.PRODUCT_NUMBER, TestConstants.ORDER_TYPE_ADHOC);
+		sfShopSkinCarePage = sfHomePage.clickAllProducts();
+		sfShopSkinCarePage.addProductToCart(TestConstants.PRODUCT_NUMBER, TestConstants.ORDER_TYPE_ENROLLMENT);
 		sfCartPage=sfShopSkinCarePage.checkoutTheCartFromPopUp();
 		numberOfProductInCart=sfCartPage.getProductCountInAdhocCart();
 		sfCartPage.clickRodanAndFieldsLogo();
@@ -912,7 +951,7 @@ public class ProductsAndCartDetailsTest extends StoreFrontWebsiteBaseTest{
 		sfCartPage.clickRodanAndFieldsLogo();
 		//Navigate to cart page through product popup.
 		sfShopSkinCarePage=sfHomePage.clickAllProducts();
-		sfShopSkinCarePage.addProductToCart(TestConstants.PRODUCT_NUMBER, TestConstants.ORDER_TYPE_ADHOC);
+		sfShopSkinCarePage.addProductToCart(TestConstants.PRODUCT_NUMBER, TestConstants.ORDER_TYPE_ENROLLMENT);
 		sfCartPage = sfShopSkinCarePage.checkoutTheCartFromPopUp();
 		newItemsOfProduct = sfCartPage.getQuantityOfProductFromCart("1");
 		s_assert.assertTrue(newItemsOfProduct.equalsIgnoreCase(updatedQuantity),"Expected items in cart"+updatedQuantity+" but actual in UI"+newItemsOfProduct);
@@ -927,18 +966,19 @@ public class ProductsAndCartDetailsTest extends StoreFrontWebsiteBaseTest{
 	@Test(enabled=true)
 	public void testCartPageCheckoutCTAAnonymousCreateAccount_500(){
 		String userType=TestConstants.USER_TYPE_PC;
-		String firstName=TestConstants.FIRST_NAME;
-		String lastName=TestConstants.LAST_NAME;
-		String email=TestConstants.PC_EMAIL_HAVING_AUTOSHIP;
+		lastName = TestConstants.LAST_NAME;
+		timeStamp = CommonUtils.getCurrentTimeStamp();
+		email = firstName+timeStamp+TestConstants.EMAIL_SUFFIX;
+
 		sfShopSkinCarePage=sfHomePage.clickAllProducts();
-		sfShopSkinCarePage.addProductToCart(TestConstants.PRODUCT_NUMBER, TestConstants.ORDER_TYPE_ADHOC);
+		sfShopSkinCarePage.addProductToCart(TestConstants.PRODUCT_NUMBER, TestConstants.ORDER_TYPE_ENROLLMENT);
 		sfShopSkinCarePage.checkoutTheCartFromPopUp();
 		sfCheckoutPage=sfShopSkinCarePage.checkoutTheCart();
 		s_assert.assertTrue(sfCheckoutPage.isLoginOrRegisterTextDisplayed()," user is not redirected to expected login page");
 		sfCheckoutPage.fillNewUserDetails(userType, firstName, lastName, email, password);
 		sfCheckoutPage.clickCreateAccountButton(TestConstants.USER_TYPE_PC);
 		String currentURL=sfCheckoutPage.getCurrentURL().toLowerCase();
-		s_assert.assertTrue(currentURL.contains("checkout"),"Current url should contain checkout but actual on UI is "+currentURL);
+		s_assert.assertTrue(currentURL.contains("cart"),"Current url should contain checkout but actual on UI is "+currentURL);
 		s_assert.assertAll();
 	}
 	/***
@@ -952,7 +992,7 @@ public class ProductsAndCartDetailsTest extends StoreFrontWebsiteBaseTest{
 		String currentURL = null;
 		String utlToAssertForTCDetailsPage = "common/pdf/Archives/PCPerks-TCs";
 		sfShopSkinCarePage = sfHomePage.clickAllProducts();
-		sfShopSkinCarePage.addProductToCart(TestConstants.PRODUCT_NUMBER, TestConstants.ORDER_TYPE_ADHOC);
+		sfShopSkinCarePage.addProductToCart(TestConstants.PRODUCT_NUMBER, TestConstants.ORDER_TYPE_ENROLLMENT);
 		sfCartPage = sfShopSkinCarePage.checkoutTheCartFromPopUp();
 		sfCheckoutPage = sfCartPage.clickCheckoutBtn();
 		currentWindowID = CommonUtils.getCurrentWindowHandle();
@@ -976,7 +1016,7 @@ public class ProductsAndCartDetailsTest extends StoreFrontWebsiteBaseTest{
 		String newItemsOfProduct = null;
 		String updatedQuantity = null;
 		int newProductCount;
-		sfHomePage.loginToStoreFront(TestConstants.RC_EMAIL_HAVING_ORDER, password,true);
+		sfHomePage.loginToStoreFront(rcWithOrderWithoutSponsor(), password,true);
 		//Remove all products from cart.
 		sfCartPage = sfHomePage.clickMiniCartBagLink();
 		sfCartPage.removeAllProductsFromCart();
@@ -984,7 +1024,7 @@ public class ProductsAndCartDetailsTest extends StoreFrontWebsiteBaseTest{
 		sfHomePage.clickRodanAndFieldsLogo();
 		//Add new product to cart page.
 		sfShopSkinCarePage=sfHomePage.clickAllProducts();
-		sfShopSkinCarePage.addProductToCart(TestConstants.PRODUCT_NUMBER, TestConstants.ORDER_TYPE_ADHOC);
+		sfShopSkinCarePage.addProductToCart(TestConstants.PRODUCT_NUMBER, TestConstants.ORDER_TYPE_ENROLLMENT);
 		sfCartPage = sfShopSkinCarePage.checkoutTheCartFromPopUp();
 		s_assert.assertTrue(sfCartPage.isProductPresentInCart(),"Newly Added product not present in adhoc cart");
 		numberOfProductInCart = sfCartPage.getProductCountInAdhocCart();
@@ -998,7 +1038,7 @@ public class ProductsAndCartDetailsTest extends StoreFrontWebsiteBaseTest{
 		sfCartPage.clickRodanAndFieldsLogo();
 		//Access cart page via product popup.
 		sfShopSkinCarePage=sfHomePage.clickAllProducts();
-		sfShopSkinCarePage.addProductToCart(TestConstants.PRODUCT_NUMBER, TestConstants.ORDER_TYPE_ADHOC);
+		sfShopSkinCarePage.addProductToCart(TestConstants.PRODUCT_NUMBER, TestConstants.ORDER_TYPE_ENROLLMENT);
 		sfCartPage = sfShopSkinCarePage.checkoutTheCartFromPopUp();
 		newItemsOfProduct = sfCartPage.getQuantityOfProductFromCart("1");
 		s_assert.assertTrue(newItemsOfProduct.equalsIgnoreCase(updatedQuantity),"Expected items in cart"+updatedQuantity+" but actual in UI"+newItemsOfProduct);
@@ -1016,7 +1056,7 @@ public class ProductsAndCartDetailsTest extends StoreFrontWebsiteBaseTest{
 		String currentURL = null;
 		String urlToAssertForCartPage = "cart";
 		String urlToAssertForCheckoutPage = "checkout";
-		sfHomePage.loginToStoreFront(TestConstants.CONSULTANT_EMAIL_WITH_CRP_AND_PULSE, password,true);
+		sfHomePage.loginToStoreFront(consultantWithPulseAndWithCRP(), password,true);
 		sfShopSkinCarePage = sfHomePage.clickAllProducts();
 		sfShopSkinCarePage.addProductToCart(TestConstants.PRODUCT_NUMBER, TestConstants.ORDER_TYPE_ADHOC);
 		sfCartPage = sfShopSkinCarePage.checkoutTheCartFromPopUp();
@@ -1043,7 +1083,7 @@ public class ProductsAndCartDetailsTest extends StoreFrontWebsiteBaseTest{
 	public void testPCPerksInformationOverlay_169(){
 		String overlayPromoMsg = null;
 		sfShopSkinCarePage = sfHomePage.clickAllProducts();
-		sfShopSkinCarePage.addProductToCart(TestConstants.PRODUCT_NUMBER, TestConstants.ORDER_TYPE_ADHOC);
+		sfShopSkinCarePage.addProductToCart(TestConstants.PRODUCT_NUMBER, TestConstants.ORDER_TYPE_ENROLLMENT);
 		sfCartPage = sfShopSkinCarePage.checkoutTheCartFromPopUp();
 		sfCartPage.clickLearnMoreLink();
 		s_assert.assertTrue(sfCartPage.isPCPerksPromotionPopupPresent(),"PC Perks Promotion overlay is not present");
@@ -1074,7 +1114,7 @@ public class ProductsAndCartDetailsTest extends StoreFrontWebsiteBaseTest{
 		String noOfItemFromUI = null;   
 		//Verify anonymous user cart page product.
 		sfShopSkinCarePage = sfHomePage.clickAllProducts();
-		sfShopSkinCarePage.addProductToCart(TestConstants.PRODUCT_NUMBER, TestConstants.ORDER_TYPE_ADHOC);
+		sfShopSkinCarePage.addProductToCart(TestConstants.PRODUCT_NUMBER, TestConstants.ORDER_TYPE_ENROLLMENT);
 		sfCartPage = sfShopSkinCarePage.checkoutTheCartFromPopUp();
 		noOfItemFromUI = sfCartPage.getNumberOfItemFromMiniCart();
 		s_assert.assertTrue(noOfItemFromUI.equalsIgnoreCase(itemInAdhocCart), "Expected no of item is "+itemInAdhocCart+" Actual on UI is "+noOfItemFromUI);
@@ -1083,7 +1123,7 @@ public class ProductsAndCartDetailsTest extends StoreFrontWebsiteBaseTest{
 		sfShopSkinCarePage.clickRodanAndFieldsLogo();
 		//Add multiple products to consultant adhoc and autoship cart.
 		//Adhoc cart
-		sfHomePage.loginToStoreFront(TestConstants.CONSULTANT_EMAIL_WITH_CRP_AND_PULSE, password,true);
+		sfHomePage.loginToStoreFront(consultantWithPulseAndWithCRP(), password,true);
 		sfShopSkinCarePage=sfHomePage.clickAllProducts();
 		sfShopSkinCarePage.refineProductByCategory(TestConstants.CONSULTANT_CRP_AUTOSHIP_PRODUCT_CATEGORY);
 		sfShopSkinCarePage.addProductToCart(TestConstants.PRODUCT_NUMBER, TestConstants.ORDER_TYPE_ADHOC);
@@ -1102,7 +1142,7 @@ public class ProductsAndCartDetailsTest extends StoreFrontWebsiteBaseTest{
 		navigateToStoreFrontBaseURL();
 		//Add multiple products to PC adhoc And Autoship cart
 		//PC adhoc cart
-		sfHomePage.loginToStoreFront(TestConstants.PC_EMAIL_HAVING_AUTOSHIP,password,true);
+		sfHomePage.loginToStoreFront(pcUserWithPWSSponsor(),password,true);
 		sfShopSkinCarePage=sfHomePage.clickAllProducts();
 		sfShopSkinCarePage.refineProductByCategory(TestConstants.PC_PERKS_AUTOSHIP_PRODUCT_CATEGORY);
 		sfShopSkinCarePage.addProductToCart(TestConstants.PRODUCT_NUMBER, TestConstants.ORDER_TYPE_ADHOC);
@@ -1123,9 +1163,9 @@ public class ProductsAndCartDetailsTest extends StoreFrontWebsiteBaseTest{
 		navigateToStoreFrontBaseURL();
 		//Add multiple products to RC adhoc And Autoship cart
 		//RC adhoc cart
-		sfHomePage.loginToStoreFront(TestConstants.RC_EMAIL_HAVING_ORDER,password,true);
+		sfHomePage.loginToStoreFront(rcWithOrderWithoutSponsor(),password,true);
 		sfShopSkinCarePage=sfHomePage.clickAllProducts();
-		sfShopSkinCarePage.addProductToCart(TestConstants.PRODUCT_NUMBER, TestConstants.ORDER_TYPE_ADHOC);
+		sfShopSkinCarePage.addProductToCart(TestConstants.PRODUCT_NUMBER, TestConstants.ORDER_TYPE_ENROLLMENT);
 		sfCartPage = sfShopSkinCarePage.checkoutTheCartFromPopUp();
 		sfCartPage.clickAddMoreItemsBtn();
 		s_assert.assertTrue(sfShopSkinCarePage.isProductsDisplayedOnPage(),"All product page not present after clicking continue shopping on RC adhoc cart.");
@@ -1137,18 +1177,17 @@ public class ProductsAndCartDetailsTest extends StoreFrontWebsiteBaseTest{
 	 * 
 	 * Description : This test validates the sorting of product base on price filter applied
 	 * and also Unsorting of product when filter removed by clicking clear all link.
-	 * 				
+	 *     
 	 */ 
-	@Test(enabled=false)//No price present for first 3 products.
+	@Test(enabled=true)
 	public void testSortAndUnsortProductBaseOnPriceFilterApplied_63(){
-		String allProduct = "ALL PRODUCTS";
-		sfShopSkinCarePage=sfHomePage.navigateToShopSkincareLink(allProduct);
+		sfShopSkinCarePage=sfHomePage.clickAllProducts();
 		sfShopSkinCarePage.refineProductByCategoryAndReturnCategoryName();
 		sfShopSkinCarePage.productPriceFilterLowToHighSelect();
 		s_assert.assertTrue(sfShopSkinCarePage.isPriceFilterLowToHighAppliedSuccessfully(),"Selected Price filter 'Low To High' is not applied to product successfully");
 		//Click clear all link and verify all filters are removed.
 		sfShopSkinCarePage.selectClearAllLink(); 
-		s_assert.assertFalse(sfShopSkinCarePage.isPriceFilterLowToHighAppliedSuccessfully(),"Selected Price filter 'Low To High' is still applied after clicking clear all link.");
+		s_assert.assertTrue(sfShopSkinCarePage.isDefaultFilterAppliedSuccessfully(),"Default Filter has not been applied successfully on Price filter");
 		s_assert.assertAll();
 	}
 
@@ -1163,7 +1202,7 @@ public class ProductsAndCartDetailsTest extends StoreFrontWebsiteBaseTest{
 		String currentURL = null;
 		String urlToAssertForCartPage = "cart";
 		String urlToAssertForCheckoutPage = "checkout";
-		sfHomePage.loginToStoreFront(TestConstants.PC_EMAIL_HAVING_AUTOSHIP, password,true);
+		sfHomePage.loginToStoreFront(pcUserWithPWSSponsor(), password,true);
 		sfShopSkinCarePage = sfHomePage.clickAllProducts();
 		sfShopSkinCarePage.refineProductByCategory(TestConstants.PC_PERKS_AUTOSHIP_PRODUCT_CATEGORY);
 		sfShopSkinCarePage.addProductToCart(TestConstants.PRODUCT_NUMBER, TestConstants.ORDER_TYPE_ADHOC);
@@ -1197,7 +1236,7 @@ public class ProductsAndCartDetailsTest extends StoreFrontWebsiteBaseTest{
 		String cardNumber = TestConstants.CARD_NUMBER;
 		String cardName = TestConstants.CARD_NAME;
 		String CVV = TestConstants.CVV;
-		sfHomePage.loginToStoreFront(TestConstants.CONSULTANT_EMAIL_WITH_CRP_AND_PULSE, password,true);
+		sfHomePage.loginToStoreFront(consultantWithPulseAndWithCRP(), password,true);
 		sfShopSkinCarePage = sfHomePage.clickAllProducts();
 		sfShopSkinCarePage.refineProductByCategory(TestConstants.CONSULTANT_CRP_AUTOSHIP_PRODUCT_CATEGORY);
 		firstProductName = sfShopSkinCarePage.getProductNameFromAllProductPage(TestConstants.PRODUCT_NUMBER);
@@ -1249,7 +1288,7 @@ public class ProductsAndCartDetailsTest extends StoreFrontWebsiteBaseTest{
 		String productPriceOnListingPage = null;
 		String productPriceOnCheckoutPopup = null;
 		String secondProductNumber = Integer.toString(Integer.parseInt(TestConstants.PRODUCT_NUMBER) + 1);
-		sfHomePage.loginToStoreFront(TestConstants.PC_EMAIL_HAVING_AUTOSHIP, password,true);
+		sfHomePage.loginToStoreFront(pcUserWithPWSSponsor(), password,true);
 		sfShopSkinCarePage = sfHomePage.clickAllProducts();
 		sfShopSkinCarePage.refineProductByCategory(TestConstants.PC_PERKS_AUTOSHIP_PRODUCT_CATEGORY);
 		firstProductName = sfShopSkinCarePage.getProductNameFromAllProductPage(TestConstants.PRODUCT_NUMBER);
@@ -1286,13 +1325,7 @@ public class ProductsAndCartDetailsTest extends StoreFrontWebsiteBaseTest{
 	 */
 	@Test(enabled=true)
 	public void testProductListingPagePC_340(){
-		String userType=TestConstants.USER_TYPE_PC;
-		sfHomePage.loginToStoreFront(TestConstants.PC_EMAIL_HAVING_AUTOSHIP, password,true);
-		sfShopSkinCarePage=sfHomePage.clickAllProducts();
-		sfShopSkinCarePage.refineProductByCategory(TestConstants.PC_PERKS_AUTOSHIP_PRODUCT_CATEGORY);
-		sfShopSkinCarePage.mouseHoverOnAddToCart();
-		s_assert.assertTrue(sfShopSkinCarePage.isAddToCartDDOptionsDisplayed(userType),"Expected add to cart dropdown option not displayed");
-		s_assert.assertAll();
+		//Already covered in other tests
 	}
 
 	/***
@@ -1302,13 +1335,7 @@ public class ProductsAndCartDetailsTest extends StoreFrontWebsiteBaseTest{
 	 */
 	@Test(enabled=true)
 	public void testProductListingPageConsultant_341(){
-		String userType="Consultant";
-		sfHomePage.loginToStoreFront(TestConstants.CONSULTANT_EMAIL_WITH_CRP_AND_PULSE,password,true);
-		sfShopSkinCarePage=sfHomePage.clickAllProducts();
-		sfShopSkinCarePage.refineProductByCategory(TestConstants.CONSULTANT_CRP_AUTOSHIP_PRODUCT_CATEGORY);
-		sfShopSkinCarePage.mouseHoverOnAddToCart();
-		s_assert.assertTrue(sfShopSkinCarePage.isAddToCartDDOptionsDisplayed(userType),"Expected add to cart dropdown option not displayed");
-		s_assert.assertAll();
+		//Already covered in other tests
 	}
 
 	/***
@@ -1323,7 +1350,7 @@ public class ProductsAndCartDetailsTest extends StoreFrontWebsiteBaseTest{
 		String productPriceOnCheckoutPopup = null;
 		String productPriceOnListingPage = null;
 		String currentURL  = null;
-		sfHomePage.loginToStoreFront(TestConstants.CONSULTANT_EMAIL_WITH_CRP_AND_PULSE, password,true);
+		sfHomePage.loginToStoreFront(consultantWithPulseAndWithCRP(), password,true);
 		sfShopSkinCarePage = sfHomePage.clickAllProducts();
 		sfShopSkinCarePage.refineProductByCategory(TestConstants.CONSULTANT_CRP_AUTOSHIP_PRODUCT_CATEGORY);
 		productName = sfShopSkinCarePage.getProductNameFromAllProductPage(TestConstants.PRODUCT_NUMBER);
@@ -1346,4 +1373,5 @@ public class ProductsAndCartDetailsTest extends StoreFrontWebsiteBaseTest{
 		s_assert.assertTrue(currentURL.contains("autoship/cart"), "Expected URL should contains 'autoship/cart' but actual on UI is"+currentURL);
 		s_assert.assertAll();
 	}
+
 }

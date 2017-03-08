@@ -11,6 +11,8 @@ public class TestConstants {
 	public static final String BECOME_A_CONSULTANT = "Become A Consultant";
 	public static final String SHOP_SKINCARE = "Shop Skincare";
 	public static final String SPONSOR = "purush";
+	//public static final String SPONSOR = "purush@consult2.com";
+	public static final String SPONSOR_PREFIX = "purushb2b2";
 	public static final String SPONSOR_3_CHARS = "tes";
 	public static final String SPONSOR_FIRST_NAME = "Purush";
 	public static final String SPONSOR_LAST_NAME = "Born";
@@ -25,11 +27,13 @@ public class TestConstants {
 	public static final String ORDER_TYPE_ADHOC = "One Time Order";
 	public static final String ORDER_TYPE_PC_PERKS = "Add to PC Perks";
 	public static final String ORDER_TYPE_CRP= "Add to CRP";
+	public static final String ORDER_TYPE_ENROLLMENT = "Enrollment";
 	public static final String PRODUCT_NUMBER = "2";
-//	public static final String OTHER_PRODUCT_NUMBER = "3";
-	public static final String PC_FIRST_NAME = "AutoPC";
-	public static final String RC_FIRST_NAME = "AutoRC";
-	public static final String LAST_NAME = "lName";
+	public static final String PRODUCT_NUMBER_PC_AUTOSHIP = "3";
+	//	public static final String OTHER_PRODUCT_NUMBER = "3";
+	public static final String PC_FIRST_NAME = "autopc";
+	public static final String RC_FIRST_NAME = "autorc";
+	public static final String LAST_NAME = "lname";
 	public static final String EMAIL_SUFFIX = "@mailinator.com";
 	public static final String ABOUT_RF = "ABOUT R+F";
 	public static final String PRODUCT_NAME = "Aging REDEFINED Special";
@@ -40,7 +44,7 @@ public class TestConstants {
 	public static final String CONFIRM_PASSWORD_VALIDATION_ERROR_SAME_VALUE = "Please enter the same value";
 	public static final String POSTAL_VALIDATION_ERROR_VALID_POSTAL_CODE = "Please enter valid postal code";
 	public static final String VALIDATION_ERROR_LESS_THAN_200_CHARS = "Please enter no more than 200 characters";
-	public static final String SHIPPING_ADDRESS_UPDATE_MESSAGE = "Your address was updated.";
+	public static final String SHIPPING_ADDRESS_UPDATE_MESSAGE = "Address updated successfully";
 	public static final String ADD_TO_BAG = "Add to Bag";
 	public static final String WRONG_ADDRESS_LINE_1_US = "BAJCAC";
 	public static final String CITY_DALLAS_US = "Dallas";
@@ -48,19 +52,27 @@ public class TestConstants {
 	//public static final String CONSULTANT_PWS_PREFIX =  "autocons20170114150644";
 	public static final String ABOUT_ME_PAGE_QUES_FROM_PREFIX_URL = "WHAT I LOVE MOST ABOUT R+F PRODUCTS";
 	public static final String ABOUT_ME_PAGE_QUES_FROM_JOIN_URL = "WHAT I LOVE MOST ABOUT MY R+F BUSINESS";
-	public static final String SHIPPING_ADDRESS_ADDED_MESSAGE = "Your address was created.";
-	public static final String SHIPPING_ADDRESS_REMOVED_MESSAGE = "Your address was removed.";
+	public static final String SHIPPING_ADDRESS_ADDED_MESSAGE = "Address created successfully";
+	public static final String SHIPPING_ADDRESS_REMOVED_MESSAGE = "Address removed successfully";
 	public static final String TITLE_OF_ALL_SKINCARE_PAGE = "All Skincare | Rodan and Fields";
-
+	public static final String CONFIRMATION_MSG_FOR_REPORT_PROBLEMS = "we have sent your problem to our customer service department, and they will review the issue and respond within 48 hours";
+	public static final String PASSWORD_RECOVERY_SUBMIT_SUCCESS_MESSAGE = "Password reset instructions have been sent to your email address. Please contact customer support if you require additional assistance";
+	public static final String PASSWORD_RECOVERY_SUBMIT_EMAIL_NOT_REGISTERED_MESSAGE = "You do not have an account with us. Please create your account";
+	public static final String NON_DELIVERABLE_ADDRESS_MSG = "Address entered may not be a deliverable address";
+	public static final String PROMOTION_OVERLAY_MSG = "Your favourite Rodan + Fieldsï¿½ products automatically delivered to your doorstep";
+	public static final String LOW_PRICE_FILTER_US="$0-$49.99";
+	public static final String MID_PRICE_FILTER_US="$50-$199.99";
+	public static final String HIGH_PRICE_FILTER_US="$200-$499.99";
+	
 	// Order page Details
 	public static final String TITLE_OF_ORDER_DETAILS_PAGE = "Order Details | Rodan and Fields";
 
 	//Consultant user details
 	public static final String CONSULTANT_ACCOUNT_ID = "";
 	public static final String CONSULTANT_ACCOUNT_NUMBER = "";
-	public static final String FIRST_NAME = "AutoCons";
-	public static final String ADDRESS_LINE_1_US = "60 Spear St";
-	public static final String ADDRESS_LINE_2_US = "600";
+	public static final String FIRST_NAME = "auto";
+	public static final String ADDRESS_LINE_1_US = "60 spear st suite 600";
+	public static final String ADDRESS_LINE_2_US = "";
 	public static final String CITY_US = "San Francisco";
 	public static final String POSTAL_CODE_US = "94105";
 	public static final String PHONE_NUMBER = "9842342342";
@@ -69,9 +81,22 @@ public class TestConstants {
 	public static final String CITY_ND_US = "Bismarck";
 	public static final String POSTAL_CODE_ND_US = "58503";
 	public static final String STATE_ND_US = "North Dakota";
+	
+	//Canada
+	public static final String ADDRESS_LINE_1_CA = "5940 Macleod Trail SW Suite 500";
+	public static final String ADDRESS_LINE_2_CA = "";
+	public static final String CITY_CA = "Calgary";
+	public static final String POSTAL_CODE_CA = "T2H 2G4";
+	public static final String STATE_CA = "Alberta";
+	
+	public static final String SECOND_ADDRESS_LINE_1_CA = "60 Patterson Blvd SW";
+	public static final String SECOND_ADDRESS_LINE_2_CA = "";
+	public static final String SECOND_CITY_CA = "Calgary";
+	public static final String SECOND_POSTAL_CODE_CA = "T3H 2E1";
+	public static final String STATE_CA_ABBREVIATION = "CA-AB";
 
-	public static final String FIRST_NAME_BILLING_ADDRESS = "BAFirstName";
-	public static final String LAST_NAME_BILLING_ADDRESS = "BALastName";
+	public static final String FIRST_NAME_BILLING_ADDRESS = "BAFirstname";
+	public static final String LAST_NAME_BILLING_ADDRESS = "BALastname";
 
 	public static final String DAY_OF_BIRTH = "14";
 	public static final String MONTH_OF_BIRTH = "Jun";
@@ -86,11 +111,10 @@ public class TestConstants {
 	public static final String SPOUSE_FIRST_NAME = "FNSpouse";
 	public static final String SPOUSE_LAST_NAME = "LNSpouse";
 	public static final String PROFILE_UPDATION_MESSAGE = "Your profile has been updated";
+	public static final String EMAIL_SENT_MESSAGE = "Email Sent";
 	public static final String STATE_US_ABBREVIATION = "CA";
 	public static final String BILLING_PROFILE_UPDATION_MESSAGE = "Successfully updated Payment Details.";
 	public static final String BILLING_PROFILE_ADDED_MESSAGE = "Card details are added successfully.";
-	public static final String PASSWORD_RECOVERY_SUBMIT_SUCCESS_MESSAGE = "Password reset instructions have been sent to your e-mail address. Please contact customer support if you require additional assistance";
-	public static final String PASSWORD_RECOVERY_SUBMIT_EMAIL_NOT_REGISTERED_MESSAGE = "You do not have account with us. Please create your account";
 
 	//PO address details
 	public static final String PO_ADDRESS_LINE_1_US = "P.O. Box 283 8562 Fusce Rd";
@@ -117,10 +141,11 @@ public class TestConstants {
 	public static final String SHIPPING_METHOD_UPS_GROUND = "UPS Ground";
 	public static final String SHIPPING_METHOD_UPS_OVERNIGHT = "UPS Overnight";
 	public static final String CARD_TYPE = "Visa";
-	public static final String CARD_NUMBER = "4111111111111111";
-	public static final String CARD_NAME = "auto lauto";
+	public static final String CARD_NUMBER = "4012000077777777";
+	public static final String CARD_LASTNAME = "lauto";
+	public static final String CARD_NAME = "auto"+" "+CARD_LASTNAME;
 	public static final String CVV = "123";
-	public static final String CARD_NUMBER_2 = "4111111111111111";
+	public static final String CARD_NUMBER_2 = "5424180279791773";
 	public static final String CARD_NUMBER_MORE_THAN_16_DIGIT = "47474747474747474";
 	public static final String CARD_NUMBER_LESS_THAN_16_DIGIT = "474747474747474";
 	public static final String CVV_WITH_TWO_DIGIT = "12";
@@ -151,34 +176,21 @@ public class TestConstants {
 	public static final String PHONE_NUMBER_MANDATORY_MSG = "Please specify a valid phone number.";
 	public static final String MORE_THAN_200_CHARS = "This is the test message This is the test message This is the test message This is the test message "+
 			"This is the test message This is the test message This is the test message This is the test message T";
-	public static final String CANCELLED_CRP_ORDER_SUCCESS_MESSAGE = "Your CRP Order has been cancelled.";
+	public static final String CANCELLED_CRP_ORDER_SUCCESS_MESSAGE = "Your CRP Order has been canceled.";
 	public static final String PRODUCT_CATEGORY_REDEFINE = "REDEFINE";
-	
+
 	public static final String SECOND_ADDRESS_LINE_1_US = "1625 Sixth Street";
 	public static final String SECOND_ADDRESS_LINE_2_US = "211";
 	public static final String SECOND_CITY_US = "Concord";
 	public static final String SECOND_POSTAL_CODE_US = "94519";
 	public static final String CONSULTANT_CRP_AUTOSHIP_PRODUCT_CATEGORY = "CRP Autoship";
 	public static final String PC_PERKS_AUTOSHIP_PRODUCT_CATEGORY = "PC Perk Autoship";
-	public static final String PROMOTION_OVERLAY_MSG = "Your favourite Rodan + Fields® products automatically delivered to your doorstep";
-	public static final String ERROR_MSG_EXISTING_PREFIX = "Subscription Prefix Not available";
 	public static final String DEFAULT_SHIPPING_ADDRESS_UPDATION_MSG = "Your default address was updated.";
 	public static final String AUTOSHIP_DELIVERY_ADDRESS_UPDATION_MSG = "Delivery Address has been Updated for your Cart.";
-
-	//Users
-	public static final String CONSULTANT_EMAIL_SPONSOR_WITHOUT_PWS = "consponsorwiithoutpws1@mailinator.com";
-	public static final String CONSULTANT_EMAIL_WITH_CRP_AND_PULSE = "AutoConsWPWCRP20170203093048@mailinator.com";
-	public static final String CONSULTANT_EMAIL_WITH_CRP_AND_PULSE_FOR_CANCELLATION = "AutoConsWPWCRP20170127094455@mailinator.com";
-	public static final String CONSULTANT_PWS_PREFIX = "autocons";
-	public static final String CONSULTANT_EMAIL_WITHOUT_CRP_AND_PULSE = "AutoCons20170201150551@mailinator.com";
-
-	public static final String PC_EMAIL_HAVING_AUTOSHIP = "AutoPC20170202113611@mailinator.com";
-	public static final String PC_EMAIL_HAVING_SINGLE_BILLING_PROFILE = "AutoPC20170125115552@mailinator.com";
-	public static final String PC_EMAIL_WHO_ENROLLED_UNDER_SPONSOR_WITH_PWS = "autopc1100@mailinator.com";
-	public static final String PC_EMAIL_WHO_ENROLLED_UNDER_SPONSOR_WITHOUT_PWS = "autopc19012017@mailinator.com";
-
-	public static final String RC_EMAIL_WITHOUT_ORDER = "AutoRC20170125112634@mailinator.com";
-	public static final String RC_EMAIL_HAVING_ORDER = "AutoRC20170125114847@mailinator.com";
-
+	public static final String ERROR_MSG_EXISTING_PREFIX = "Subscription Prefix not available";
+	
+	public static final String ECC_ORDER_TYPE_CONSULTANT_ADHOC = "ConsultantAdhocOrder";
+	public static final String ECC_ORDER_TYPE_PC_ADHOC = "PCAdhocOrder";
+	public static final String ECC_ORDER_TYPE_RC_ADHOC = "RCAdhocOrder";
+	
 }
-

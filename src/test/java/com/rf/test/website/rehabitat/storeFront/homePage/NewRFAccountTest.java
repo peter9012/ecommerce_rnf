@@ -14,7 +14,7 @@ public class NewRFAccountTest extends StoreFrontWebsiteBaseTest{
 	 */
 	@Test(enabled=true)
 	public void testValidateCreateAnAccountPage_50(){
-		String prefix = TestConstants.CONSULTANT_PWS_PREFIX;
+		String prefix = pwsPrefix();
 		//Verify create an account page on corp site
 		sfHomePage.clickLoginIcon();
 		sfHomePage.clickSignUpNowLink();

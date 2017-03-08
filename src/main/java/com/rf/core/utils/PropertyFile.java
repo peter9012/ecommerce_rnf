@@ -6,8 +6,15 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 import java.util.Properties;
 
-public class PropertyFile {
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
+import com.rf.pages.website.rehabitat.storeFront.StoreFrontHomePage;
+
+public class PropertyFile {
+	private static final Logger logger = LogManager
+			.getLogger(PropertyFile.class.getName());
+	
 	public String path = "src/test/resources/environments/";
 	private final Properties props = new Properties();
 	private FileOutputStream outputStream = null;
@@ -54,6 +61,7 @@ public class PropertyFile {
 		setProperty(key, value);
 		try {
 			props.store(outputStream, null);
+			logger.info("key = "+key+" with value ="+value+" stored in "+fileName);
 			outputStream.close();
 		} catch (IOException e) {
 			// TODO Auto-generated catch block

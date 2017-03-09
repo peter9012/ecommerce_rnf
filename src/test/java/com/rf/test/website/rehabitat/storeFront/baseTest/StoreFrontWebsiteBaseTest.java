@@ -121,13 +121,13 @@ public class StoreFrontWebsiteBaseTest extends RFBaseTest {
 	 *             for the tests
 	 */
 	@BeforeSuite(alwaysRun=true)
-	public void setUp(ITestContext context) throws Exception {
+	public void setUp() throws Exception {
 		userPropertyFile.loadProps(userProps);
 		driver.loadApplication();
 		driver.setDBConnectionString();
 	}
 
-	@BeforeMethod(alwaysRun=true)
+	/*@BeforeMethod(alwaysRun=true)
 	public void beforeMethod(){
 		s_assert = new SoftAssert();
 		setStoreFrontPassword(driver.getStoreFrontUserPassword());
@@ -138,7 +138,7 @@ public class StoreFrontWebsiteBaseTest extends RFBaseTest {
 			sfHomePage.logout();
 			navigateToStoreFrontBaseURL();
 		}			
-	}
+	}*/
 
 	@BeforeClass(alwaysRun=true)
 	public void setAddressDetailsAsPerCountry(){
@@ -328,6 +328,29 @@ public class StoreFrontWebsiteBaseTest extends RFBaseTest {
 	public static String getSuiteName(ITestContext context){
 		String suiteName = context.getCurrentXmlTest().getSuite().getName();
 		return suiteName;
+	}
+
+//	public void setUpPreRequisites() throws Exception {
+//		userPropertyFile.loadProps(userProps);
+//		driver.loadApplication();
+//		driver.setDBConnectionString();
+//	}
+
+	@BeforeMethod(alwaysRun=true)
+	public void beforeMethod() throws Exception{
+		s_assert = new SoftAssert();
+		if(sfHomePage.isErrorPagePresent()){
+			driver.quit();
+			setUp();
+		}
+		setStoreFrontPassword(driver.getStoreFrontUserPassword());
+		checkAndCloseMoreThanOneWindows();
+		navigateToStoreFrontBaseURL();
+		if(sfHomePage.isWelcomeUserElementDisplayed()==true){
+			sfHomePage.clickWelcomeDropdown();
+			sfHomePage.logout();
+			navigateToStoreFrontBaseURL();
+		}   
 	}
 
 }

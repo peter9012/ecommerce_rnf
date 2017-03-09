@@ -145,6 +145,7 @@ public class TestConstants {
 	public static final String CARD_LASTNAME = "lauto";
 	public static final String CARD_NAME = "auto"+" "+CARD_LASTNAME;
 	public static final String CVV = "123";
+	public static final String CVV_AMEX = "1234";
 	public static final String CARD_NUMBER_2 = "5424180279791773";
 	public static final String CARD_NUMBER_MORE_THAN_16_DIGIT = "47474747474747474";
 	public static final String CARD_NUMBER_LESS_THAN_16_DIGIT = "474747474747474";
@@ -192,6 +193,7 @@ public class TestConstants {
 	public static final String ECC_ORDER_TYPE_PC_ADHOC = "PCAdhocOrder";
 	public static final String ECC_ORDER_TYPE_RC_ADHOC = "RCAdhocOrder";
 
+	public static final String USER_EMAIL_HEADING = "USER_EMAIL";
 	public static final String ORDER_NUMBER_HEADING = "ORDER_NUMBER";
 	public static final String PRODUCT_NAME_HEADING = "PRODUCT_NAME";
 	public static final String ITEM_QTY_HEADING = "ITEM_QTY";

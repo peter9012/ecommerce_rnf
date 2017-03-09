@@ -13,7 +13,7 @@ import com.rf.test.website.rehabitat.storeFront.baseTest.StoreFrontWebsiteBaseTe
 
 public class ECCOrdersTest extends StoreFrontWebsiteBaseTest{
 
-	private static final int var=1;
+	private static final int var=12;
 	private static int consOrdercounter=0;
 	private static int pcOrdercounter=0;
 	private static int rcOrdercounter=0;
@@ -27,14 +27,16 @@ public class ECCOrdersTest extends StoreFrontWebsiteBaseTest{
 	private List<String> cardsListForRandomSelection = null;
 	private int fixedSelectionCountForAllCards;
 	private int fixedSelectionCountToReset;
-	private int cardSelectionCounter = 0; 
+	private int cardSelectionCounter = 0;
+	private String userEmail = null;
 
 	private static final String FILE_PATH=System.getProperty("user.dir")+"\\src\\test\\resources\\ordersECC\\ordersECC.xlsx";
 
 	// Place an adhoc order from consultant
 	@Test(priority=1,invocationCount=var)
 	public void testPlaceAnAdhocOrderFromConsultant(){
-		sfHomePage.loginToStoreFront(consultantWithPulseAndWithCRP(), password,true);
+		userEmail = consultantWithPulseAndWithCRP();
+		sfHomePage.loginToStoreFront(userEmail, password,true);
 		sfCartPage = sfHomePage.clickMiniCartBagLink();
 		sfCartPage.removeAllProductsFromCart();
 		sfCartPage.clickRodanAndFieldsLogo();
@@ -69,7 +71,8 @@ public class ECCOrdersTest extends StoreFrontWebsiteBaseTest{
 	//PC Adhoc Order
 	@Test(priority=2,invocationCount=var)
 	public void testPlaceAnAdhocOrderFromPC(){
-		sfHomePage.loginToStoreFront(pcUserWithPWSSponsor(), password,true);
+		userEmail = pcUserWithPWSSponsor();
+		sfHomePage.loginToStoreFront(userEmail, password,true);
 		sfCartPage = sfHomePage.clickMiniCartBagLink();
 		sfCartPage.removeAllProductsFromCart();
 		sfCartPage.clickRodanAndFieldsLogo();
@@ -103,7 +106,8 @@ public class ECCOrdersTest extends StoreFrontWebsiteBaseTest{
 	//RC Adhoc Order
 	@Test(priority=3,invocationCount=var)
 	public void testPlaceAnAdhocOrderFromRC(){
-		sfHomePage.loginToStoreFront(rcWithOrderWithoutSponsor(), password,true);
+		userEmail = rcWithOrderWithoutSponsor();
+		sfHomePage.loginToStoreFront(userEmail, password,true);
 		sfCartPage = sfHomePage.clickMiniCartBagLink();
 		sfCartPage.removeAllProductsFromCart();
 		sfCartPage.clickRodanAndFieldsLogo();
@@ -148,6 +152,7 @@ public class ECCOrdersTest extends StoreFrontWebsiteBaseTest{
 
 	public List<String> setOrderDetails(){
 		List<String> orderDetails = new ArrayList<String>();
+		orderDetails.add(userEmail);
 		orderDetails.add(orderNumber);
 		orderDetails.add(productName);
 		orderDetails.add(itemQty);
@@ -172,6 +177,7 @@ public class ECCOrdersTest extends StoreFrontWebsiteBaseTest{
 
 	public List<String> setColumnHeadings(){
 		List<String> columnHeadings = new ArrayList<String>();
+		columnHeadings.add(TestConstants.USER_EMAIL_HEADING);
 		columnHeadings.add(TestConstants.ORDER_NUMBER_HEADING);
 		columnHeadings.add(TestConstants.PRODUCT_NAME_HEADING);
 		columnHeadings.add(TestConstants.ITEM_QTY_HEADING);
@@ -208,25 +214,25 @@ public class ECCOrdersTest extends StoreFrontWebsiteBaseTest{
 				cardsListForFixedSelection.remove(0);
 			}
 		}
-		return cardsListForRandomSelection.get(CommonUtils.getRandomNum(0,3));
+		return cardsListForRandomSelection.get(CommonUtils.getRandomNum(0,2));
 	}
 
 	public void setAllCardsAndSelectionCount(){
 		String visaCard = TestConstants.CARD_TYPE_VISA;
-		String amexCard = TestConstants.CARD_TYPE_AMEX;
+		//String amexCard = TestConstants.CARD_TYPE_AMEX;
 		String masterCard = TestConstants.CARD_TYPE_MASTER_CARD;
 		String discoverCard = TestConstants.CARD_TYPE_DISCOVER;
 		cardsListForFixedSelection = new ArrayList<String>();
 		cardsListForRandomSelection = new ArrayList<String>();
 		cardsListForFixedSelection.add(visaCard);
-		cardsListForFixedSelection.add(amexCard);
+		//cardsListForFixedSelection.add(amexCard);
 		cardsListForFixedSelection.add(masterCard);
 		cardsListForFixedSelection.add(discoverCard);
 		cardsListForRandomSelection.add(visaCard);
-		cardsListForRandomSelection.add(amexCard);
+		//cardsListForRandomSelection.add(amexCard);
 		cardsListForRandomSelection.add(masterCard);
 		cardsListForRandomSelection.add(discoverCard);
-		fixedSelectionCountForAllCards = var/4;
+		fixedSelectionCountForAllCards = var/3;
 		fixedSelectionCountToReset = fixedSelectionCountForAllCards;
 	}
 
@@ -235,9 +241,9 @@ public class ECCOrdersTest extends StoreFrontWebsiteBaseTest{
 		if(cardType.equals(TestConstants.CARD_TYPE_VISA)){
 			cardNum = TestConstants.CARD_NUMBER_VISA;
 		}
-		if(cardType.equals(TestConstants.CARD_TYPE_AMEX)){
-			cardNum = TestConstants.CARD_NUMBER_AMEX;
-		}
+//		if(cardType.equals(TestConstants.CARD_TYPE_AMEX)){
+//			cardNum = TestConstants.CARD_NUMBER_AMEX;
+//		}
 		if(cardType.equals(TestConstants.CARD_TYPE_MASTER_CARD)){
 			cardNum = TestConstants.CARD_NUMBER_MASTERCARD;
 		}

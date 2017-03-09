@@ -295,7 +295,8 @@ public class StoreFrontWebsiteBasePage extends RFBasePage {
 	protected final By SHOP_BY_PRICE_FILTER_OPTION_HIGH_TO_LOW_LOC = By.xpath("//select[@id='sortOptions1']/descendant::option[2]");
 	private final By WHY_RF_LOC = By.xpath(topNavigationLoc + "//a[contains(@title,'WHY')]");
 	private final By MEET_OUR_COMMUNITY_LOC = By.xpath(topNavigationLoc + "//a[contains(@title,'MEET OUR')]");
-
+	private final By EEROR_PAGE_LOC = By.xpath("//b[contains(text(),'Status code')]");
+	
 	protected String priceOfProductLoc = "//div[contains(@class,'product__listing')]/descendant::span[@id='retail'][contains(text(),'$')][%s]";
 	private String productNameAllItemsInCartLoc = "//span[@class='item-name' and contains(text(),%s)]";
 	protected String addToCartButtonLoc = "//div[contains(@class,'product__listing')]/descendant::*[contains(text(),'Add to bag')][%s]";
@@ -4030,4 +4031,16 @@ public class StoreFrontWebsiteBasePage extends RFBasePage {
 	public String getProductNumberIncrementedByOne(String productNumber){
 		return Integer.toString(Integer.parseInt(productNumber)+1);
 	}
+	
+	/***
+	  * This method validate the error page is present ot not 
+	  * 
+	  * @param
+	  * @return String
+	  * 
+	  */
+	 public boolean isErrorPagePresent(){
+	  return driver.isElementPresent(EEROR_PAGE_LOC);
+	 }
+
 }

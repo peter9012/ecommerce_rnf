@@ -128,7 +128,7 @@ public class RCEnrollmentTest extends StoreFrontWebsiteBaseTest{
 		s_assert.assertAll();
 	}
 	
-	@Test
+	@Test(invocationCount=50)
 	public void testRCEnrollmentWithSponsor(){
 		timeStamp = CommonUtils.getCurrentTimeStamp();
 		email = firstName+"rc"+timeStamp+TestConstants.EMAIL_SUFFIX;
@@ -157,5 +157,6 @@ public class RCEnrollmentTest extends StoreFrontWebsiteBaseTest{
 		sfCheckoutPage.clickPlaceOrderButton();
 		s_assert.assertTrue(sfCheckoutPage.isOrderPlacedSuccessfully(), "Adhoc order is not placed successfully by PC");
 		s_assert.assertAll();
+		System.out.println(email);
 	}
 }

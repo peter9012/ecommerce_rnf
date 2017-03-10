@@ -618,7 +618,6 @@ public class AboutMeTest extends StoreFrontWebsiteBaseTest{
 	  sfHomePage.clickWelcomeDropdown();
 	  sfHomePage.navigateToEditPWSPage();
 	  contentOnJoinPWS=sfAboutMePage.getRFBusinessQuestionContentFromJoinAboutMePage();
-	  System.out.println("contentOnJoinPWS =  "+contentOnJoinPWS);
 	  s_assert.assertTrue(contentOnJoinPWS.contains(testMsg+randomNum),"Expected content is not found on Join Pws page But actual displaying on UI is:"+contentOnJoinPWS);
 	  
 	  //For Second Question on About Me Page

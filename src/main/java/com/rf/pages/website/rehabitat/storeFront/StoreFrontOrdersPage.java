@@ -758,7 +758,7 @@ public class StoreFrontOrdersPage extends StoreFrontWebsiteBasePage{
 		driver.quickWaitForElementPresent(CONFIRM_AUTOSHIP_ORDER_BTN_LOC);
 		driver.clickByJS(RFWebsiteDriver.driver,CONFIRM_AUTOSHIP_ORDER_BTN_LOC);
 		logger.info("CONFIRM button from the popup clicked");
-		driver.pauseExecutionFor(5000);// the functionality taking time, so deliberately added
+		driver.pauseExecutionFor(15000);// the functionality taking time, so deliberately added
 		driver.waitForPageLoad();
 	}
 

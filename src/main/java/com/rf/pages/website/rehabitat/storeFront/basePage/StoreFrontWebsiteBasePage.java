@@ -3908,7 +3908,7 @@ public class StoreFrontWebsiteBasePage extends RFBasePage {
 	 * 
 	 */
 	public boolean isOrderPlacedSuccessfully(){
-		driver.quickWaitForElementPresent(CONFIRMATION_MSG_OF_PLACED_ORDER_LOC);
+		driver.waitForElementPresent(CONFIRMATION_MSG_OF_PLACED_ORDER_LOC);
 		//		String confirmationText= driver.getText(CONFIRMATION_MSG_OF_PLACED_ORDER_LOC);
 		if(driver.isElementPresent(CONFIRMATION_MSG_OF_PLACED_ORDER_LOC)){
 			return true;

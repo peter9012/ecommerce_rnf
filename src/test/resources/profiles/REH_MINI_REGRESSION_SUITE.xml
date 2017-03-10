@@ -83,6 +83,7 @@
 			<class name="com.rf.test.website.rehabitat.storeFront.AboutMeTest">
 				<methods>
 					<include name="testConsultantAddsTheContentOnTheQuestions_614"></include>
+					<include name="testPersonalizingPWSAboutMePageSaveChanges_579"></include>					
 				</methods>
 			</class>
 		</classes>

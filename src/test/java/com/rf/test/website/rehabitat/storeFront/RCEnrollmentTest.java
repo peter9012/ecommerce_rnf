@@ -128,7 +128,7 @@ public class RCEnrollmentTest extends StoreFrontWebsiteBaseTest{
 		s_assert.assertAll();
 	}
 	
-	@Test()
+	@Test
 	public void testRCEnrollmentWithSponsor(){
 		timeStamp = CommonUtils.getCurrentTimeStamp();
 		email = firstName+"rc"+timeStamp+TestConstants.EMAIL_SUFFIX;

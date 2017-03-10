@@ -946,15 +946,16 @@ public class AutoshipTest extends StoreFrontWebsiteBaseTest{
 	@Test(enabled=true)
 	public void testPCAutoshipCartMaintenanceAndThreshold_406(){
 		String thresholdMessage = null;
-		String expectedThresholdMessage = "please add minimum worth of $80 products excluding enrollment fee".toLowerCase();
 
 		// Login As PC
 		sfHomePage.loginToStoreFront(pcUserWithPWSSponsor(), password,true);
 		sfAutoshipCartPage = sfHomePage.clickAutoshipLink();
 		thresholdMessage = sfAutoshipCartPage.getThresholdMessageWhileRemovingProductFromAutoshipCart().toLowerCase();
+		String expectedThresholdMessage = sfAutoshipCartPage.getExpectedThresholdMsgForPCAutoshipCart(country);
 		s_assert.assertTrue(thresholdMessage.contains(expectedThresholdMessage), "Expected threshold message is"+expectedThresholdMessage+" for Min SV but actual on UI is "+thresholdMessage);
 		s_assert.assertAll();
 	}
+
 	/***
 	 * qTest : TC-421 Update Autoship- Add a billing address to new Profile - PC
 	 * Description : This test adds and validates new Autoship billing profile with new billing address for PC user.

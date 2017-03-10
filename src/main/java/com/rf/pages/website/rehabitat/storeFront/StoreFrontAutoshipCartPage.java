@@ -260,17 +260,35 @@ public class StoreFrontAutoshipCartPage extends StoreFrontWebsiteBasePage{
 		logger.info("Clicked Update Quantity Link for Item Number : " + itemNumber);
 		return this;
 	}
-	
+
 	/***
-	  * This method click on the CRP Checkout button
-	  * 
-	  * @param
-	  * @return StoreFrontCheckoutPage object
-	  */
-	 public StoreFrontCheckoutPage clickOnCRPCheckoutButton(){
-	  driver.clickByJS(RFWebsiteDriver.driver,CRP_CHECKOUT_LOC);
-	  logger.info("Clicked on CRP checkout button");
-	  return new StoreFrontCheckoutPage(driver);
-	 }
+	 * This method click on the CRP Checkout button
+	 * 
+	 * @param
+	 * @return StoreFrontCheckoutPage object
+	 */
+	public StoreFrontCheckoutPage clickOnCRPCheckoutButton(){
+		driver.clickByJS(RFWebsiteDriver.driver,CRP_CHECKOUT_LOC);
+		logger.info("Clicked on CRP checkout button");
+		return new StoreFrontCheckoutPage(driver);
+	}
+
+	/***
+	 * This method get the expected threshold message for PC Autoship Cart
+	 * 
+	 * @param country
+	 * @return String threshold msg
+	 * 
+	 */
+	public String getExpectedThresholdMsgForPCAutoshipCart(String country){
+		String thresholdMsg = null;
+		if(country.equalsIgnoreCase("us")){
+			thresholdMsg = "please add minimum worth of $80 products excluding enrollment fee";
+		}
+		else if(country.equalsIgnoreCase("ca")){
+			thresholdMsg = "please add minimum worth of cad$90 products excluding enrollment fee";
+		}
+		return thresholdMsg;
+	}
 
 }

@@ -60,7 +60,7 @@ public class RCEnrollmentTest extends StoreFrontWebsiteBaseTest{
 	public void testRCEnrollmentFromPWSSite_551(){
 		String prefix = pwsPrefix();
 		String currentURL = null;
-		String pwsURL=sfHomePage.getBaseUrl()+"//" +sfHomePage.getCountry() +"/pws/" + prefix;
+		String pwsURL=sfHomePage.getBaseUrl()+"/" +sfHomePage.getCountry() +"/pws/" + prefix;
 		timeStamp = CommonUtils.getCurrentTimeStamp();
 		email = firstName+"rc"+timeStamp+TestConstants.EMAIL_SUFFIX;
 		randomWords = CommonUtils.getRandomWord(5);		
@@ -95,7 +95,7 @@ public class RCEnrollmentTest extends StoreFrontWebsiteBaseTest{
 		rcWithoutOrder=email;
 		s_assert.assertAll();
 	}
-//-------------------Tesrt Users Creation Scripts----------------------------------------------------------------------
+	//-------------------Tesrt Users Creation Scripts----------------------------------------------------------------------
 	@Test(enabled=true, groups="users")
 	public void testRCEnrollmentWithOrderWithoutSponsor(){
 		timeStamp = CommonUtils.getCurrentTimeStamp();
@@ -127,7 +127,7 @@ public class RCEnrollmentTest extends StoreFrontWebsiteBaseTest{
 		setUsers("rcWithOrderWithoutSponsor", rcWithOrderWithoutSponsor);
 		s_assert.assertAll();
 	}
-	
+
 	@Test
 	public void testRCEnrollmentWithSponsor(){
 		timeStamp = CommonUtils.getCurrentTimeStamp();

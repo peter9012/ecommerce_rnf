@@ -1,7 +1,10 @@
 package com.rf.test.website.rehabitat.storeFront.ordersECC;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
+
 import org.testng.annotations.AfterClass;
 import org.testng.annotations.BeforeClass;
 import org.testng.annotations.Test;
@@ -13,7 +16,7 @@ import com.rf.test.website.rehabitat.storeFront.baseTest.StoreFrontWebsiteBaseTe
 
 public class ECCOrdersTest extends StoreFrontWebsiteBaseTest{
 
-	private static final int var=12;
+	private static final int var=4;
 	private static int consOrdercounter=0;
 	private static int pcOrdercounter=0;
 	private static int rcOrdercounter=0;
@@ -29,28 +32,33 @@ public class ECCOrdersTest extends StoreFrontWebsiteBaseTest{
 	private int fixedSelectionCountToReset;
 	private int cardSelectionCounter = 0;
 	private String userEmail = null;
+	Map<String,String> cardDetails = null;
 
 	private static final String FILE_PATH=System.getProperty("user.dir")+"\\src\\test\\resources\\ordersECC\\ordersECC.xlsx";
 
 	// Place an adhoc order from consultant
 	@Test(priority=1,invocationCount=var)
 	public void testPlaceAnAdhocOrderFromConsultant(){
+		String productNumber = null;
 		userEmail = consultantWithPulseAndWithCRP();
 		sfHomePage.loginToStoreFront(userEmail, password,true);
 		sfCartPage = sfHomePage.clickMiniCartBagLink();
 		sfCartPage.removeAllProductsFromCart();
 		sfCartPage.clickRodanAndFieldsLogo();
 		sfShopSkinCarePage = sfHomePage.clickAllProducts();
-		productName = sfShopSkinCarePage.getProductName(TestConstants.PRODUCT_NUMBER);
-		sfShopSkinCarePage.addProductToCart(TestConstants.PRODUCT_NUMBER, TestConstants.ORDER_TYPE_ADHOC);
+		cardType = getCardType();
+		productNumber = sfShopSkinCarePage.getProductNumToSelectForCard(TestConstants.USER_TYPE_CONSULTANT,cardType, TestConstants.PRODUCT_NUMBER);
+		productName = sfShopSkinCarePage.getProductName(productNumber);
+		sfShopSkinCarePage.addProductToCart(productNumber, TestConstants.ORDER_TYPE_ADHOC);
 		sfShopSkinCarePage.checkoutTheCartFromPopUp();
 		itemQty = sfCartPage.getQuantityOfProductFromCart("1");
 		sfCheckoutPage=sfCartPage.checkoutTheCart();
 		sfCheckoutPage.clickSaveButton();
 		sfCheckoutPage.clickShippingDetailsNextbutton();
 		sfCheckoutPage.clickAddNewBillingProfileButton();
-		cardType = getCardType();
-		cardNumber = getCardNumberUsingType(cardType);		
+		cardDetails = getCardDetailsUsingType(cardType);
+		cardNumber = cardDetails.get("cardNum");
+		CVV = cardDetails.get("cardCVV");
 		sfCheckoutPage.enterUserBillingDetails(cardType, cardNumber, cardName, CVV);
 		sfCheckoutPage.clickBillingDetailsNextbutton();
 		sfCheckoutPage.selectPCTermsAndConditionsChkBox();
@@ -71,22 +79,26 @@ public class ECCOrdersTest extends StoreFrontWebsiteBaseTest{
 	//PC Adhoc Order
 	@Test(priority=2,invocationCount=var)
 	public void testPlaceAnAdhocOrderFromPC(){
+		String productNumber = null;
 		userEmail = pcUserWithPWSSponsor();
 		sfHomePage.loginToStoreFront(userEmail, password,true);
 		sfCartPage = sfHomePage.clickMiniCartBagLink();
 		sfCartPage.removeAllProductsFromCart();
 		sfCartPage.clickRodanAndFieldsLogo();
 		sfShopSkinCarePage = sfHomePage.clickAllProducts();
-		productName = sfShopSkinCarePage.getProductName(TestConstants.PRODUCT_NUMBER);
-		sfShopSkinCarePage.addProductToCart(TestConstants.PRODUCT_NUMBER, TestConstants.ORDER_TYPE_ADHOC);
+		cardType = getCardType();
+		productNumber = sfShopSkinCarePage.getProductNumToSelectForCard(TestConstants.USER_TYPE_PC,cardType, TestConstants.PRODUCT_NUMBER);
+		productName = sfShopSkinCarePage.getProductName(productNumber);
+		sfShopSkinCarePage.addProductToCart(productNumber, TestConstants.ORDER_TYPE_ADHOC);
 		sfShopSkinCarePage.checkoutTheCartFromPopUp();
 		itemQty = sfCartPage.getQuantityOfProductFromCart("1");
 		sfCheckoutPage=sfCartPage.checkoutTheCart();
 		sfCheckoutPage.clickSaveButton();
 		sfCheckoutPage.clickShippingDetailsNextbutton();
 		sfCheckoutPage.clickAddNewBillingProfileButton();
-		cardType = getCardType();
-		cardNumber = getCardNumberUsingType(cardType);	
+		cardDetails = getCardDetailsUsingType(cardType);
+		cardNumber = cardDetails.get("cardNum");
+		CVV = cardDetails.get("cardCVV");
 		sfCheckoutPage.enterUserBillingDetails(cardType, cardNumber, cardName, CVV);
 		sfCheckoutPage.clickBillingDetailsNextbutton();
 		sfCheckoutPage.selectPCTermsAndConditionsChkBox();
@@ -106,14 +118,17 @@ public class ECCOrdersTest extends StoreFrontWebsiteBaseTest{
 	//RC Adhoc Order
 	@Test(priority=3,invocationCount=var)
 	public void testPlaceAnAdhocOrderFromRC(){
+		String productNumber = null;
 		userEmail = rcWithOrderWithoutSponsor();
 		sfHomePage.loginToStoreFront(userEmail, password,true);
 		sfCartPage = sfHomePage.clickMiniCartBagLink();
 		sfCartPage.removeAllProductsFromCart();
 		sfCartPage.clickRodanAndFieldsLogo();
 		sfShopSkinCarePage = sfHomePage.clickAllProducts();
-		productName = sfShopSkinCarePage.getProductName(TestConstants.PRODUCT_NUMBER);
-		sfShopSkinCarePage.addProductToCart(TestConstants.PRODUCT_NUMBER, TestConstants.ORDER_TYPE_ENROLLMENT);
+		cardType = getCardType();
+		productNumber = sfShopSkinCarePage.getProductNumToSelectForCard(TestConstants.USER_TYPE_RC,cardType, TestConstants.PRODUCT_NUMBER);
+		productName = sfShopSkinCarePage.getProductName(productNumber);
+		sfShopSkinCarePage.addProductToCart(productNumber, TestConstants.ORDER_TYPE_ENROLLMENT);
 		sfShopSkinCarePage.checkoutTheCartFromPopUp();
 		itemQty = sfCartPage.getQuantityOfProductFromCart("1");
 		sfCheckoutPage=sfCartPage.checkoutTheCart();
@@ -121,8 +136,9 @@ public class ECCOrdersTest extends StoreFrontWebsiteBaseTest{
 		sfCheckoutPage.clickSaveButton();
 		sfCheckoutPage.clickShippingDetailsNextbutton();
 		sfCheckoutPage.clickAddNewBillingProfileButton();
-		cardType = getCardType();
-		cardNumber = getCardNumberUsingType(cardType);	
+		cardDetails = getCardDetailsUsingType(cardType);
+		cardNumber = cardDetails.get("cardNum");
+		CVV = cardDetails.get("cardCVV");
 		sfCheckoutPage.enterUserBillingDetails(cardType, cardNumber, cardName, CVV);
 		sfCheckoutPage.clickBillingDetailsNextbutton();
 		sfCheckoutPage.selectPCTermsAndConditionsChkBox();
@@ -214,43 +230,47 @@ public class ECCOrdersTest extends StoreFrontWebsiteBaseTest{
 				cardsListForFixedSelection.remove(0);
 			}
 		}
-		return cardsListForRandomSelection.get(CommonUtils.getRandomNum(0,2));
+		return cardsListForRandomSelection.get(CommonUtils.getRandomNum(0,3));
 	}
 
 	public void setAllCardsAndSelectionCount(){
 		String visaCard = TestConstants.CARD_TYPE_VISA;
-		//String amexCard = TestConstants.CARD_TYPE_AMEX;
+		String amexCard = TestConstants.CARD_TYPE_AMEX;
 		String masterCard = TestConstants.CARD_TYPE_MASTER_CARD;
 		String discoverCard = TestConstants.CARD_TYPE_DISCOVER;
 		cardsListForFixedSelection = new ArrayList<String>();
 		cardsListForRandomSelection = new ArrayList<String>();
 		cardsListForFixedSelection.add(visaCard);
-		//cardsListForFixedSelection.add(amexCard);
+		cardsListForFixedSelection.add(amexCard);
 		cardsListForFixedSelection.add(masterCard);
 		cardsListForFixedSelection.add(discoverCard);
 		cardsListForRandomSelection.add(visaCard);
-		//cardsListForRandomSelection.add(amexCard);
+		cardsListForRandomSelection.add(amexCard);
 		cardsListForRandomSelection.add(masterCard);
 		cardsListForRandomSelection.add(discoverCard);
-		fixedSelectionCountForAllCards = var/3;
+		fixedSelectionCountForAllCards = var/4;
 		fixedSelectionCountToReset = fixedSelectionCountForAllCards;
 	}
 
-	public String getCardNumberUsingType(String cardType){
-		String cardNum = null;
+	public Map<String,String> getCardDetailsUsingType(String cardType){
+		Map<String,String> cardDetails = new HashMap<String,String>();
 		if(cardType.equals(TestConstants.CARD_TYPE_VISA)){
-			cardNum = TestConstants.CARD_NUMBER_VISA;
+			cardDetails.put("cardNum",TestConstants.CARD_NUMBER_VISA);
+			cardDetails.put("cardCVV",TestConstants.CVV);
 		}
-//		if(cardType.equals(TestConstants.CARD_TYPE_AMEX)){
-//			cardNum = TestConstants.CARD_NUMBER_AMEX;
-//		}
+		if(cardType.equals(TestConstants.CARD_TYPE_AMEX)){
+			cardDetails.put("cardNum",TestConstants.CARD_NUMBER_AMEX);
+			cardDetails.put("cardCVV",TestConstants.CVV_AMEX);
+		}
 		if(cardType.equals(TestConstants.CARD_TYPE_MASTER_CARD)){
-			cardNum = TestConstants.CARD_NUMBER_MASTERCARD;
+			cardDetails.put("cardNum",TestConstants.CARD_NUMBER_MASTERCARD);
+			cardDetails.put("cardCVV",TestConstants.CVV);
 		}
 		if(cardType.equals(TestConstants.CARD_TYPE_DISCOVER)){
-			cardNum = TestConstants.CARD_NUMBER_VISA;
+			cardDetails.put("cardNum",TestConstants.CARD_NUMBER_DISCOVER);
+			cardDetails.put("cardCVV",TestConstants.CVV);
 		}
-		return cardNum;
+		return cardDetails;
 	}
 
 }

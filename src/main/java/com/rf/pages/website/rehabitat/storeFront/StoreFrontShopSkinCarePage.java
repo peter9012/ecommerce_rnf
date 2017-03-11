@@ -10,6 +10,9 @@ import com.rf.core.driver.website.RFWebsiteDriver;
 import com.rf.core.utils.CommonUtils;
 import com.rf.core.website.constants.TestConstants;
 import com.rf.pages.website.rehabitat.storeFront.basePage.StoreFrontWebsiteBasePage;
+
+import java.util.List;
+
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
@@ -21,6 +24,9 @@ public class StoreFrontShopSkinCarePage extends StoreFrontWebsiteBasePage{
 	private static final Logger logger = LogManager
 			.getLogger(StoreFrontShopSkinCarePage.class.getName());
 
+	private final By YOUR_PRICE_FOR_ALL_PRODUCTS_LOC = By.xpath("//div[@id='product_listing']/descendant::span[contains(@id,'cust_price') and contains(text(),'$')]");
+	private final By RETAIL_PRICE_FOR_ALL_PRODUCTS_LOC = By.xpath("//div[@id='product_listing']/descendant::span[contains(@id,'retail') and contains(text(),'$')]");
+	private final By PAGINATION_NEXT_ARROW_LOC = By.xpath("//li[@class='pagination-next']/a");
 	private final By SHOP_BY_PRICE_FILTER_SELECTED_OPTION_LOC = By.xpath("//select[@id='sortOptions1']/option[@selected]");
 	private final By PRODUCT_QTY_ON_CHECKOUT_POPUP_LOC = By.xpath("//div[@id='cboxLoadedContent']//div[@class='qty']");
 	private final By QTY_TF_ON_QUICK_VIEW_POPUP_LOC = By.xpath("//input[@id='qty']");
@@ -995,6 +1001,49 @@ public class StoreFrontShopSkinCarePage extends StoreFrontWebsiteBasePage{
 	public StoreFrontShopSkinCarePage enterQuantityonQuickViewPopup(String qty){
 		driver.type(QTY_TF_ON_QUICK_VIEW_POPUP_LOC,qty);
 		return this;
+	}
+
+	public String getProductNumToSelectForCard(String userType, String cardType,String defaultProdNumber){
+		if(!cardType.equals(TestConstants.CARD_TYPE_AMEX)){
+			return defaultProdNumber;
+		}
+		else{
+			return getProductIndexWithPriceInRange(63,70,userType);
+		}
+	}
+
+
+	private List<WebElement> getProductsPriceForUserType(String userType){
+		List<WebElement> productsPrice = null;
+		if(userType.equals(TestConstants.USER_TYPE_RC)){
+			productsPrice = driver.findElements(RETAIL_PRICE_FOR_ALL_PRODUCTS_LOC);
+		}
+		else{
+			productsPrice = driver.findElements(YOUR_PRICE_FOR_ALL_PRODUCTS_LOC);
+		}
+		return productsPrice;
+	}
+
+	private String getProductIndexWithPriceInRange(int minRange,int maxRange,String userType){
+		while(true){
+			int counter = 1;
+			for(WebElement prodPrice : getProductsPriceForUserType(userType)){
+				int price = Integer.valueOf(prodPrice.getText().replace(".00","").replaceAll("[^-?0-9]+","").trim());
+				if(minRange <= price &&  price <= maxRange){
+					return Integer.toString(counter);
+				}
+				counter++;
+			}
+			if(driver.isElementPresent(PAGINATION_NEXT_ARROW_LOC)){
+				driver.click(PAGINATION_NEXT_ARROW_LOC);
+				logger.info("Pagination Next Link Clicked");
+			}
+			else{
+				break;
+			}
+		}
+		logger.info("No Product Found for the Selected Range on All Products Page");
+		return null;
 	}
 
 }

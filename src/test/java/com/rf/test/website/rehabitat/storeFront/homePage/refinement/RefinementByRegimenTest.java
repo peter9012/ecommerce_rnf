@@ -28,18 +28,17 @@ public class RefinementByRegimenTest extends StoreFrontWebsiteBaseTest{
 		sfShopSkinCarePage = sfHomePage.searchEntityAndHitEnter(TestConstants.SHOP_SKINCARE);
 		s_assert.assertTrue(sfShopSkinCarePage.isSearchResultsTextAppearedAsExpected(TestConstants.SHOP_SKINCARE), "search result page is not present");
 		sfShopSkinCarePage.clickShopByCategoryDD();
-		s_assert.assertTrue(sfShopSkinCarePage.isCategoryNameVisibleInShopByCategoryDD(categoryUnblemish), categoryUnblemish+" is not visible in shop by category DD");
 		s_assert.assertTrue(sfShopSkinCarePage.isCategoryNameVisibleInShopByCategoryDD(categoryFeatured), categoryFeatured+" is not visible in shop by category DD");
 		s_assert.assertTrue(sfShopSkinCarePage.isCategoryNameVisibleInShopByCategoryDD(categoryEssentials), categoryEssentials+" is not visible in shop by category DD");
 		s_assert.assertTrue(sfShopSkinCarePage.isCategoryNameVisibleInShopByCategoryDD(categoryReverse), categoryReverse+" is not visible in shop by category DD");
 		s_assert.assertTrue(sfShopSkinCarePage.isCategoryNameVisibleInShopByCategoryDD(categorySoothe), categorySoothe+" is not visible in shop by category DD");
 		s_assert.assertTrue(sfShopSkinCarePage.isCategoryNameVisibleInShopByCategoryDD(categoryRedefine), categoryRedefine+" is not visible in shop by category DD");
 		s_assert.assertFalse(sfShopSkinCarePage.isCategoryNameVisibleInShopByCategoryDD(categoryConsultantOnly), categoryConsultantOnly+" is visible in shop by category DD for PC");
+		s_assert.assertTrue(sfShopSkinCarePage.isCategoryNameVisibleInShopByCategoryDD(categoryUnblemish), categoryUnblemish+" is not visible in shop by category DD");
 		sfShopSkinCarePage.clickShopByCategoryDD();
 		String categoryName = sfShopSkinCarePage.refineProductByCategoryAndReturnCategoryName();
 		String currentURL = sfShopSkinCarePage.getCurrentURL().toLowerCase();
 		s_assert.assertTrue(currentURL.contains(categoryName.toLowerCase()) && sfHomePage.isFilterAppliedAndRemovedSuccessfully(categoryName),"Current url should contain category name is "+categoryName.toLowerCase()+"but actual on UI is "+currentURL+" and category details page is not present");
 		s_assert.assertAll();
 	}
-
 }

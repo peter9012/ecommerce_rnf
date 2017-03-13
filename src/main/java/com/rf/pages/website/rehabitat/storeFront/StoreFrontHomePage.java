@@ -355,7 +355,7 @@ public class StoreFrontHomePage extends StoreFrontWebsiteBasePage{
 		}
 		return this;
 	}
-	
+
 	/***
 	 * This method click the next button after selecting sponsor
 	 * 
@@ -904,8 +904,8 @@ public class StoreFrontHomePage extends StoreFrontWebsiteBasePage{
 		List<WebElement> searchResultsProducts = driver.findElements(SEARCH_RESULT_PRODUCTS_LOC);
 		for(WebElement product : searchResultsProducts){
 			String productName = null;
-			productName = product.getText().trim();
-			if(productName.contains(expectedProductName)){
+			productName = product.getText().trim().toLowerCase();
+			if(productName.contains(expectedProductName.toLowerCase())){
 				logger.info("Expected product name found in search list");
 				return true;
 			}
@@ -1036,16 +1036,81 @@ public class StoreFrontHomePage extends StoreFrontWebsiteBasePage{
 		logger.info("Clicked Add to CRP button of Product Number : " + productNum);
 		return this;
 	}
+
+	/***
+	 * This method verify the first filter option under shop by price filter
+	 * is applied or removed successfully or not
+	 * 
+	 * @param filter name
+	 * @return boolean value.
+	 * 
+	 */
+	public boolean isFilterAppliedAndRemovedSuccessfully(String filterName){
+		return driver.isElementPresent(By.xpath(String.format(appliedFilterNameLoc,filterName)));
+	}
 	
 	/***
-	  * This method verify the first filter option under shop by price filter
-	  * is applied or removed successfully or not
-	  * 
-	  * @param filter name
-	  * @return boolean value.
-	  * 
-	  */
-	 public boolean isFilterAppliedAndRemovedSuccessfully(String filterName){
-	  return driver.isElementPresent(By.xpath(String.format(appliedFilterNameLoc,filterName)));
-	 }
+	 * This method select the country from toggle button
+	 * 
+	 * @param country
+	 *            name
+	 * @return store front website base page object
+	 * 
+	 */
+	public StoreFrontHomePage selectUSCountryFromToggleButton(String countryName) {
+
+		if(!countryName.equalsIgnoreCase("us")){
+			clickToggleButtonOfCountry();
+			driver.click(By.xpath(String.format(countryOptionsInToggleButtonLoc, "USA")));
+			logger.info("Country " + countryName + " is Selected");
+		}
+		return this;
+	}
+	
+	/***
+	 * This method select the country from toggle button
+	 * 
+	 * @param country
+	 *            name
+	 * @return store front website base page object
+	 * 
+	 */
+	public StoreFrontHomePage selectDefaultCountryFromToggleButton(String countryName) {
+		if(countryName.equalsIgnoreCase("us")){
+			clickToggleButtonOfCountry();
+			driver.click(By.xpath(String.format(countryOptionsInToggleButtonLoc, "USA")));
+			logger.info("Country " + countryName + " is Selected");
+		}else if(countryName.equalsIgnoreCase("ca")){
+			clickToggleButtonOfCountry();
+			driver.click(By.xpath(String.format(countryOptionsInToggleButtonLoc, "CAN")));
+			logger.info("Country " + countryName + " is Selected");
+		}else if(countryName.equalsIgnoreCase("au")){
+			clickToggleButtonOfCountry();
+			driver.click(By.xpath(String.format(countryOptionsInToggleButtonLoc, "AUS")));
+			logger.info("Country " + countryName + " is Selected");
+		}
+
+		return this;
+	}
+
+	/***
+	 * This method get the different country name
+	 * 
+	 * @param country name
+	 * @return country name
+	 */
+
+	public String getDifferentCountryName(String defaultCountryName){
+		String countryName=null;
+		if(defaultCountryName.equalsIgnoreCase("us")){
+			countryName="ca";
+		}else if(defaultCountryName.equalsIgnoreCase("ca")){
+			countryName="us";
+		} else if(defaultCountryName.equalsIgnoreCase("au")){
+			countryName="ca";
+		}
+		return countryName;
+	}
+
+
 }

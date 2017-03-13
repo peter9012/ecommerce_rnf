@@ -346,7 +346,7 @@ public class MiniCartTest extends StoreFrontWebsiteBaseTest{
 		s_assert.assertTrue(secondProductName.contains(productNameInMiniCart), "Expected Second product name in mini cart is "+secondProductName+" Actual on UI is "+productNameInMiniCart);
 		s_assert.assertTrue(quantityOfSecondProduct.contains(quantityOfProductInMiniCart), "Expected quantity of first product in mini cart is "+quantityOfSecondProduct+" Actual on UI is "+quantityOfProductInMiniCart);
 		subTotalInMiniCart = sfCartPage.getSubtotalofItemsFromMiniCart();
-		totalOfProdutsInMiniCart = sfCartPage.gettotalofItemsInMiniCart();
+		totalOfProdutsInMiniCart = sfCartPage.gettotalofItemsInMiniCart(country);
 		s_assert.assertTrue(subTotalOnCartPage.contains(totalOfProdutsInMiniCart), "Expected total in mini cart : "+subTotalOnCartPage+" Actual in mini cart : "+totalOfProdutsInMiniCart);
 		s_assert.assertTrue(orderTotalOnCartPage.contains(subTotalInMiniCart), "Expected order total in mini cart : "+orderTotalOnCartPage+" Actual in mini cart : "+subTotalInMiniCart);
 		sfCartPage.clickViewShoppingCartLink();

@@ -296,7 +296,7 @@ public class StoreFrontWebsiteBasePage extends RFBasePage {
 	private final By WHY_RF_LOC = By.xpath(topNavigationLoc + "//a[contains(@title,'WHY')]");
 	private final By MEET_OUR_COMMUNITY_LOC = By.xpath(topNavigationLoc + "//a[contains(@title,'MEET OUR')]");
 	private final By EEROR_PAGE_LOC = By.xpath("//b[contains(text(),'Status code')]");
-	
+
 	protected String priceOfProductLoc = "//div[contains(@class,'product__listing')]/descendant::span[@id='retail'][contains(text(),'$')][%s]";
 	private String productNameAllItemsInCartLoc = "//span[@class='item-name' and contains(text(),%s)]";
 	protected String addToCartButtonLoc = "//div[contains(@class,'product__listing')]/descendant::*[contains(text(),'Add to bag')][%s]";
@@ -324,7 +324,7 @@ public class StoreFrontWebsiteBasePage extends RFBasePage {
 	private String navigationPageNumberLoc = "//ul[@class='pagination']//a[contains(text(),'%s')]";
 	private String subLinkUnderAboutRFLoc = topNavigationLoc + "//a[@title='%s']/following::a[text()='%s'][1]";
 	private String footerLinkLoc = "//div[@class='footer-sections']//a[text()='%s']";
-	private String countryOptionsInToggleButtonLoc = "//div[@class='wSelect-options-holder']//div[contains(text(),'%s')]";
+	protected String countryOptionsInToggleButtonLoc = "//div[@class='wSelect-options-holder']//div[contains(text(),'%s')]";
 	private String socialMediaLinkAtFooterLoc = "//a[contains(@class,'%s')]";
 	private String sponsorEmptyFieldValidationOnPopUpLoc = "//label[@id='sponsor.%s-error'][contains(text(),'%s')]";
 	private String sponsorInvalidFieldValidationOnPopUpLoc = "//label[@id='sponsor.%s-error'][contains(text(),'%s')]";
@@ -4031,16 +4031,41 @@ public class StoreFrontWebsiteBasePage extends RFBasePage {
 	public String getProductNumberIncrementedByOne(String productNumber){
 		return Integer.toString(Integer.parseInt(productNumber)+1);
 	}
-	
+
 	/***
-	  * This method validate the error page is present ot not 
-	  * 
-	  * @param
-	  * @return String
-	  * 
-	  */
-	 public boolean isErrorPagePresent(){
-	  return driver.isElementPresent(EEROR_PAGE_LOC);
-	 }
+	 * This method validate the error page is present ot not 
+	 * 
+	 * @param
+	 * @return String
+	 * 
+	 */
+	public boolean isErrorPagePresent(){
+		return driver.isElementPresent(EEROR_PAGE_LOC);
+	}
+
+	/***
+	 * This method get total of all products in mini cart
+	 * 
+	 * @param countryName
+	 * @return String total
+	 * 
+	 */
+	public String gettotalofItemsInMiniCart(String countryName){
+		List<WebElement> prices = driver.findElements(TOTAL_PRICE_OF_ITEMS_IN_MINI_CART_LOC);
+		float totalPrice = 0;
+		if(countryName.equalsIgnoreCase("us")){
+			for(WebElement productPrice : prices){
+				float price = Float.parseFloat(productPrice.getText().replace("$", "").trim());
+				totalPrice = totalPrice + price;
+			}
+		}else if(countryName.equalsIgnoreCase("ca")){
+			for(WebElement productPrice : prices){
+				float price = Float.parseFloat(productPrice.getText().replace("CAD$", "").trim());
+				totalPrice = totalPrice + price;
+			}
+		}
+		logger.info("Total Price of Items in Cart : " + totalPrice);
+		return String.valueOf(totalPrice);
+	}
 
 }

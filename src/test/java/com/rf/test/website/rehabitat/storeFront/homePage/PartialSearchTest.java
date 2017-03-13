@@ -15,8 +15,8 @@ public class PartialSearchTest extends StoreFrontWebsiteBaseTest{
 
 	@Test(enabled=true)
 	public void testUserEnterPartOfAProductNameOrDescriptionAndHitsEnter_204(){
-		String productName = "60 Day Supply";
-		String partialProductName = "Day";
+		String productName = "AMP MD System Refill";
+		String partialProductName = "AMP";
 
 		//Searching with  product name
 		sfHomePage.clickSearchIcon();
@@ -41,7 +41,7 @@ public class PartialSearchTest extends StoreFrontWebsiteBaseTest{
 
 	@Test(enabled=true)
 	public void testUserEnterPartOfAProductDescriptionAndHitsEnter_205(){
-		String productDesc = "AMP MD™ System Refill";
+		String productDesc = "AMP MD System Refill";
 
 		//Searching with  product description.
 		sfHomePage.clickSearchIcon();

@@ -47,11 +47,12 @@ public class StoreFrontAboutMePage extends StoreFrontWebsiteBasePage{
 	private final By FRAME2_LOC=By.xpath("//div[@id='cke_question_2']//iframe");
 	private final By QUESTION_CONTENT_LOC=By.xpath("//p[1]");
 	private final By RF_BUSINESS_CONTENT_JOIN_ABOUT_ME_PAGE_LOC=By.xpath("//p[contains(text(),'Rodan + Fields has brought confidence, freedom')]");
-	private final By QUESTION2_ON_ABOUTME_PAGE_LOC=By.xpath("//h2[contains(text(),'What I love most about Rodan and Fields')]/following::p[1]");
+	//private final By QUESTION2_ON_ABOUTME_PAGE_LOC=By.xpath("//h2[contains(text(),'What I love most about Rodan and Fields')]/following::p[1]");
 
 	private final String resetToDefaultLinkLoc="//h2[contains(text(),'%s')]//a";
 	private String quesOnAboutMePageLoc = "//form[@id='aboutmeFormData']//h2[contains(text(),'%s')]";
 	private String answerOnAboutMePageLoc = "//form[@id='aboutmeFormData']//h2[contains(text(),'%s')]/following-sibling::p";
+	private String question2OnAboutMePageLoc="//h2[contains(text(),'What I love most about Rodan and Fields')]/following::p[contains(text(),'%s')]";
 
 	/***
 	 * This method click Personalize my profile button
@@ -549,11 +550,11 @@ public class StoreFrontAboutMePage extends StoreFrontWebsiteBasePage{
 	/***
 	 * This method return the content of WHAT I LOVE MOST ABOUT RODAN AND FIELDS(FOR PWS) From About Me Page(PWS)
 	 * 
-	 * @param
+	 * @param message
 	 * @return question content
 	 * 
 	 */
-	public String getWhatILoveMostAbtRFQuestionContentFromAboutMePage(){
-		return driver.getText(QUESTION2_ON_ABOUTME_PAGE_LOC);
+	public String getWhatILoveMostAbtRFQuestionContentFromAboutMePage(String message){
+		return driver.getText(By.xpath(String.format(question2OnAboutMePageLoc, message)));
 	}
 }

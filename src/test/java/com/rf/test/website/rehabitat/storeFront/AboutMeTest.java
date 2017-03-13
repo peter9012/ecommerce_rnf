@@ -8,7 +8,7 @@ import com.rf.test.website.rehabitat.storeFront.baseTest.StoreFrontWebsiteBaseTe
 
 public class AboutMeTest extends StoreFrontWebsiteBaseTest{
 	private String timeStamp=null;
-	
+
 	/***
 	 * qTest : TC-578 PWS sites - Access Join URL
 	 * Description : This test validate the Enroll Now, Events, Meet Our Community,
@@ -70,20 +70,9 @@ public class AboutMeTest extends StoreFrontWebsiteBaseTest{
 	public void testPWSSitesEnrollWithPulse_576(){
 		String timeStamp = CommonUtils.getCurrentTimeStamp();
 		String socialInsuranceNumber = String.valueOf(CommonUtils.getRandomNum(100000000, 999999999));
-		String firstName = TestConstants.FIRST_NAME;
-		String lastName = TestConstants.LAST_NAME;
-		String emailID = TestConstants.FIRST_NAME+timeStamp+TestConstants.EMAIL_SUFFIX;
-		String addressLine1 = TestConstants.ADDRESS_LINE_1_US;
-		String addressLine2 = TestConstants.ADDRESS_LINE_2_US;
-		String city = TestConstants.CITY_US;
-		String state = TestConstants.STATE_US;
-		String postalCode = TestConstants.POSTAL_CODE_US;
-		String phoneNumber = TestConstants.PHONE_NUMBER;
-		String cardType = TestConstants.CARD_TYPE;
-		String cardNumber = TestConstants.CARD_NUMBER;
-		String cardName = TestConstants.CARD_NAME;
-		String CVV = TestConstants.CVV;
-		String prefix = TestConstants.FIRST_NAME+timeStamp;
+		String emailID = firstName+timeStamp+TestConstants.EMAIL_SUFFIX;
+		String prefix = firstName+timeStamp;
+		String lastName = TestConstants.LAST_NAME; 
 		String currentURL = null;
 		String urlToAssert = "/pws/" + prefix.toLowerCase();
 		sfHomePage.clickEnrollNow();
@@ -235,14 +224,11 @@ public class AboutMeTest extends StoreFrontWebsiteBaseTest{
 	public void testAddCityAndProvinceToConsultantsAboutMePage_618(){
 		String homePageURL = null;
 		String currentURL = null;
-		String city="San Francisco";
-		String visibleStateName="New York";
 		String pageHeader=null;
 		String urlToAssert = "about-me";
 		String aboutMeEdit="about-me/edit";
 		String prefix = pwsPrefix();
 		homePageURL = sfHomePage.getCurrentURL();
-
 		//sfHomePage.navigateToUrl(homePageURL + "/pws/" + prefix);
 		sfHomePage.loginToStoreFront(consultantWithPulseAndWithCRP(), password,true);
 		sfHomePage.clickWelcomeDropdown();
@@ -253,11 +239,11 @@ public class AboutMeTest extends StoreFrontWebsiteBaseTest{
 		currentURL = sfAboutMePage.getCurrentURL();
 		s_assert.assertTrue(sfAboutMePage.isSubmissionGuidelinesDisplayed() && currentURL.contains(aboutMeEdit),"Expected user should redirected to: "+aboutMeEdit +" Page after click on 'personalize My profile' button but actual user is redirected to "+currentURL);
 		sfAboutMePage.typeCityOnAboutMePage(city);
-		sfAboutMePage.selectProvinceOnAboutMePage(visibleStateName);
+		sfAboutMePage.selectProvinceOnAboutMePage(state);
 		sfAboutMePage.clickSavePWSButton();
 		pageHeader=sfAboutMePage.getCityStateTextOnAboutMePageHeader();
 		s_assert.assertTrue(pageHeader.contains(city),"Expected about me page header should contains:"+city+ "But actual on UI is"+pageHeader);
-		s_assert.assertTrue(pageHeader.contains(visibleStateName),"Expected about me page header should contains:"+visibleStateName+ "But actual on UI is"+pageHeader);
+		s_assert.assertTrue(pageHeader.contains(state),"Expected about me page header should contains:"+state+ "But actual on UI is"+pageHeader);
 		s_assert.assertAll();
 	}
 
@@ -454,23 +440,23 @@ public class AboutMeTest extends StoreFrontWebsiteBaseTest{
 
 		sfAboutMePage.clickWelcomeDropdown();
 		sfAboutMePage.logout();
-//		sfAboutMePage.loginToStoreFront(rcWithOrderWithoutSponsor(), password,true);
-//		sfAboutMePage.clickAboutMe();
-//		phoneOnAboutMePage=sfAboutMePage.getPhoneNumberFromAboutMePageHeader();
-//		s_assert.assertTrue(phoneOnAboutMePage.contains(phoneNo),"Expected phone number is:"+phoneNo+"But actual on UI is"+phoneOnAboutMePage);
-//		emailOnAboutMePage=sfAboutMePage.getEmailFromAboutMePageHeader();
-//		s_assert.assertTrue(emailOnAboutMePage.contains(email),"Expected email id is:"+email+"But actual on UI is"+emailOnAboutMePage);
-//		cityOnAboutMePage=sfAboutMePage.getCityStateTextOnAboutMePageHeader();
-//		s_assert.assertTrue(cityOnAboutMePage.contains(city),"Expected city on about me page is:"+city+"But actual on UI is"+cityOnAboutMePage);
-//		facebookOnAboutMePage=sfAboutMePage.getFacebookIDFromAboutMePageHeader();
-//		s_assert.assertTrue(facebookOnAboutMePage.contains(fbId),"Expected facebook id on about me page is:"+fbId+"But actual on UI is"+facebookOnAboutMePage);
-//		twitterOnAboutMePage=sfAboutMePage.getTwitterIDFromAboutMePageHeader();
-//		s_assert.assertTrue(twitterOnAboutMePage.contains(twitterID),"Expected twitter id on about me page is:"+twitterID+"But actual on UI is"+twitterOnAboutMePage);
-//		pinterestOnAboutMePage=sfAboutMePage.getPinterestIDFromAboutMePageHeader();
-//		s_assert.assertTrue(pinterestOnAboutMePage.contains(pinterestId),"Expected pinterest id on about me page is:"+pinterestId+"But actual on UI is"+pinterestOnAboutMePage);
+		//		sfAboutMePage.loginToStoreFront(rcWithOrderWithoutSponsor(), password,true);
+		//		sfAboutMePage.clickAboutMe();
+		//		phoneOnAboutMePage=sfAboutMePage.getPhoneNumberFromAboutMePageHeader();
+		//		s_assert.assertTrue(phoneOnAboutMePage.contains(phoneNo),"Expected phone number is:"+phoneNo+"But actual on UI is"+phoneOnAboutMePage);
+		//		emailOnAboutMePage=sfAboutMePage.getEmailFromAboutMePageHeader();
+		//		s_assert.assertTrue(emailOnAboutMePage.contains(email),"Expected email id is:"+email+"But actual on UI is"+emailOnAboutMePage);
+		//		cityOnAboutMePage=sfAboutMePage.getCityStateTextOnAboutMePageHeader();
+		//		s_assert.assertTrue(cityOnAboutMePage.contains(city),"Expected city on about me page is:"+city+"But actual on UI is"+cityOnAboutMePage);
+		//		facebookOnAboutMePage=sfAboutMePage.getFacebookIDFromAboutMePageHeader();
+		//		s_assert.assertTrue(facebookOnAboutMePage.contains(fbId),"Expected facebook id on about me page is:"+fbId+"But actual on UI is"+facebookOnAboutMePage);
+		//		twitterOnAboutMePage=sfAboutMePage.getTwitterIDFromAboutMePageHeader();
+		//		s_assert.assertTrue(twitterOnAboutMePage.contains(twitterID),"Expected twitter id on about me page is:"+twitterID+"But actual on UI is"+twitterOnAboutMePage);
+		//		pinterestOnAboutMePage=sfAboutMePage.getPinterestIDFromAboutMePageHeader();
+		//		s_assert.assertTrue(pinterestOnAboutMePage.contains(pinterestId),"Expected pinterest id on about me page is:"+pinterestId+"But actual on UI is"+pinterestOnAboutMePage);
 		s_assert.assertAll();
 	}
-	
+
 	/***
 	 * qTest : TC-580 Personalizing PWS (About Me Page) - Discard changes
 	 * Description : This test validates Personalizing PWS (About Me Page) - Discard changes
@@ -578,69 +564,68 @@ public class AboutMeTest extends StoreFrontWebsiteBaseTest{
 	}
 
 	/***
-	  * qTest : TC-614 Consultant adds the content on the questions
-	  * Description : This test validates the content on the questions
-	  *    
-	  */
-	 @Test 
-	 public void testConsultantAddsTheContentOnTheQuestions_614(){
-	  String homePageURL = null;
-	  String currentURL = null;
-	  String testMsg="This is a test message";
-	  String content=null;
-	  int randomNum;
-	  String contentOnJoinPWS=null;
-	  String urlToAssert = "about-me";
-	  String aboutMeEdit="about-me/edit";
-	  String questionName="WHAT I LOVE MOST ABOUT MY R+F BUSINESS(ONLY SHOWS UP ON JOIN PWS)";
-	  String prefix = pwsPrefix();
-	  homePageURL = sfHomePage.getCurrentURL();
-	  sfHomePage.navigateToUrl(homePageURL + "/pws/" + prefix);
-	  sfHomePage.loginToStoreFront(consultantWithPulseAndWithCRP(), password,true);
-	  sfHomePage.clickWelcomeDropdown();
-	  sfAboutMePage=sfHomePage.navigateToEditPWSPage();
-	  currentURL = sfAboutMePage.getCurrentURL();
-	  s_assert.assertTrue(currentURL.contains(urlToAssert),"Expected URL should contain "+urlToAssert+" but actual on UI is "+currentURL);
-	  sfAboutMePage.clickPersonalizeMyProfileButton();
-	  currentURL = sfAboutMePage.getCurrentURL();
-	  s_assert.assertTrue(sfAboutMePage.isSubmissionGuidelinesDisplayed() && currentURL.contains(aboutMeEdit),"Expected user should redirected to: "+aboutMeEdit +" Page after click on 'personalize My profile' button but actual user is redirected to "+currentURL);
-	  randomNum=CommonUtils.getRandomNum(100, 10000);
-	  sfAboutMePage.typeContentOfSelectedQuestion(randomNum,testMsg,1);
-	  content=sfAboutMePage.getContentOfRFBusinessQuestion();
-	  s_assert.assertTrue(content.contains(testMsg+randomNum),"Expected Content is not Added in First Question");
-	  sfAboutMePage.clickResetToDefaultLink(questionName);
-	  content=sfAboutMePage.getContentOfRFBusinessQuestion();
-	  s_assert.assertFalse(content.contains(testMsg+randomNum),"Expected Content is not Removed from First Question");
-	  randomNum=CommonUtils.getRandomNum(100, 10000);
-	  sfAboutMePage.typeContentOfSelectedQuestion(randomNum,testMsg,1);
-	  sfAboutMePage.clickSaveButtonAboutMePage();
-	  sfHomePage.navigateToUrl(homePageURL + "/pws/" + prefix+"/join/");
-	  sfHomePage.clickWelcomeDropdown();
-	  sfHomePage.navigateToEditPWSPage();
-	  contentOnJoinPWS=sfAboutMePage.getRFBusinessQuestionContentFromJoinAboutMePage();
-	  s_assert.assertTrue(contentOnJoinPWS.contains(testMsg+randomNum),"Expected content is not found on Join Pws page But actual displaying on UI is:"+contentOnJoinPWS);
-	  
-	  //For Second Question on About Me Page
-	  sfHomePage.navigateToUrl(homePageURL + "/pws/" + prefix);
-	  sfHomePage.clickWelcomeDropdown();
-	  sfHomePage.navigateToEditPWSPage();
-	  sfAboutMePage.clickPersonalizeMyProfileButton();
-	  currentURL = sfAboutMePage.getCurrentURL();
-	  s_assert.assertTrue(sfAboutMePage.isSubmissionGuidelinesDisplayed() && currentURL.contains(aboutMeEdit),"Expected user should redirected to: "+aboutMeEdit +" Page after click on 'personalize My profile' button but actual user is redirected to "+currentURL);
-	  randomNum=CommonUtils.getRandomNum(100, 10000);
-	  sfAboutMePage.typeContentOfSelectedQuestion(randomNum,testMsg,2);
-	  sfAboutMePage.clickSaveButtonAboutMePage();
-	  content=sfAboutMePage.getWhatILoveMostAbtRFQuestionContentFromAboutMePage();
-	  s_assert.assertTrue(content.contains(testMsg+randomNum),"Expected Content is not Found on About Me Page But Actual content on UI is:"+content);
-	  sfHomePage.clickWelcomeDropdown();
-	  sfHomePage.logout();
-	  
-	  //For Anonymous User
-	  sfHomePage.navigateToUrl(homePageURL + "/pws/" + prefix);
-	  sfHomePage.clickAboutMe();
-	  content=sfAboutMePage.getWhatILoveMostAbtRFQuestionContentFromAboutMePage();
-	  s_assert.assertTrue(content.contains(testMsg+randomNum),"Expected Content is not Found on About Me Page For Anonymous user But Actual content on UI is:"+content);
-	  s_assert.assertAll();
-	 }
-	
+	 * qTest : TC-614 Consultant adds the content on the questions
+	 * Description : This test validates the content on the questions
+	 *    
+	 */
+	@Test 
+	public void testConsultantAddsTheContentOnTheQuestions_614(){
+		String homePageURL = null;
+		String currentURL = null;
+		String testMsg="This is a test message";
+		String content=null;
+		int randomNum;
+		String contentOnJoinPWS=null;
+		String urlToAssert = "about-me";
+		String aboutMeEdit="about-me/edit";
+		String questionName="WHAT I LOVE MOST ABOUT MY R+F BUSINESS(ONLY SHOWS UP ON JOIN PWS)";
+		String prefix = pwsPrefix();
+		homePageURL = sfHomePage.getCurrentURL();
+		sfHomePage.navigateToUrl(homePageURL + "/pws/" + prefix);
+		sfHomePage.loginToStoreFront(consultantWithPulseAndWithCRP(), password,true);
+		sfHomePage.clickWelcomeDropdown();
+		sfAboutMePage=sfHomePage.navigateToEditPWSPage();
+		currentURL = sfAboutMePage.getCurrentURL();
+		s_assert.assertTrue(currentURL.contains(urlToAssert),"Expected URL should contain "+urlToAssert+" but actual on UI is "+currentURL);
+		sfAboutMePage.clickPersonalizeMyProfileButton();
+		currentURL = sfAboutMePage.getCurrentURL();
+		s_assert.assertTrue(sfAboutMePage.isSubmissionGuidelinesDisplayed() && currentURL.contains(aboutMeEdit),"Expected user should redirected to: "+aboutMeEdit +" Page after click on 'personalize My profile' button but actual user is redirected to "+currentURL);
+		randomNum=CommonUtils.getRandomNum(100, 10000);
+		sfAboutMePage.typeContentOfSelectedQuestion(randomNum,testMsg,1);
+		content=sfAboutMePage.getContentOfRFBusinessQuestion();
+		s_assert.assertTrue(content.contains(testMsg+randomNum),"Expected Content is not Added in First Question");
+		sfAboutMePage.clickResetToDefaultLink(questionName);
+		content=sfAboutMePage.getContentOfRFBusinessQuestion();
+		s_assert.assertFalse(content.contains(testMsg+randomNum),"Expected Content is not Removed from First Question");
+		randomNum=CommonUtils.getRandomNum(100, 10000);
+		sfAboutMePage.typeContentOfSelectedQuestion(randomNum,testMsg,1);
+		sfAboutMePage.clickSaveButtonAboutMePage();
+		sfHomePage.navigateToUrl(homePageURL + "/pws/" + prefix+"/join/");
+		sfHomePage.clickWelcomeDropdown();
+		sfHomePage.navigateToEditPWSPage();
+		contentOnJoinPWS=sfAboutMePage.getRFBusinessQuestionContentFromJoinAboutMePage();
+		s_assert.assertTrue(contentOnJoinPWS.contains(testMsg+randomNum),"Expected content is not found on Join Pws page But actual displaying on UI is:"+contentOnJoinPWS);
+
+		//For Second Question on About Me Page
+		sfHomePage.navigateToUrl(homePageURL + "/pws/" + prefix);
+		sfHomePage.clickWelcomeDropdown();
+		sfHomePage.navigateToEditPWSPage();
+		sfAboutMePage.clickPersonalizeMyProfileButton();
+		currentURL = sfAboutMePage.getCurrentURL();
+		s_assert.assertTrue(sfAboutMePage.isSubmissionGuidelinesDisplayed() && currentURL.contains(aboutMeEdit),"Expected user should redirected to: "+aboutMeEdit +" Page after click on 'personalize My profile' button but actual user is redirected to "+currentURL);
+		randomNum=CommonUtils.getRandomNum(100, 10000);
+		sfAboutMePage.typeContentOfSelectedQuestion(randomNum,testMsg,2);
+		sfAboutMePage.clickSaveButtonAboutMePage();
+		content=sfAboutMePage.getWhatILoveMostAbtRFQuestionContentFromAboutMePage(""+randomNum);
+		s_assert.assertTrue(content.contains(testMsg+randomNum),"Expected Content is not Found on About Me Page But Actual content on UI is:"+content);
+		sfHomePage.clickWelcomeDropdown();
+		sfHomePage.logout();
+
+		//For Anonymous User
+		sfHomePage.navigateToUrl(homePageURL + "/pws/" + prefix);
+		sfHomePage.clickAboutMe();
+		content=sfAboutMePage.getWhatILoveMostAbtRFQuestionContentFromAboutMePage(""+randomNum);
+		s_assert.assertTrue(content.contains(testMsg+randomNum),"Expected Content is not Found on About Me Page For Anonymous user But Actual content on UI is:"+content);
+		s_assert.assertAll();
+	}
 }

@@ -1227,7 +1227,7 @@ public class OrdersTest extends StoreFrontWebsiteBaseTest{
 		String text_Shipping = "Shipping";
 		String text_GrandTotal = "GRAND TOTAL";
 		String text_Delivery = "Delivery";
-		String text_OrderTotal = "Order Total";
+		String text_OrderTotal = "Total";
 		String productSVValue = null;
 		String yourPrice = null;
 		String orderStatus= null;

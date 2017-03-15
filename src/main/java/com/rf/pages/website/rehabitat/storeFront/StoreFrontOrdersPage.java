@@ -58,7 +58,7 @@ public class StoreFrontOrdersPage extends StoreFrontWebsiteBasePage{
 	private final By ORDER_TYPE_FROM_ORDER_DETAILS_LOC = By.xpath("//span[@class='orderLabel' and contains(text(),'Type')]/following-sibling::span[@class='orderValue'][1]");
 
 	private String productNameLoc = "//p[contains(text(),'%s')]";
-	private String productQuantityLoc = "//p[contains(text(),'%s')]/../following::div[@class='orderQty']";
+	private String productQuantityLoc = "//p[contains(text(),'%s')]/../following::div[@class='orderQty'][text()]";
 	private String orderNumberLoc = "//a[contains(text(),'%s')]";
 	private String optionsLinkUnderReturnOrderSectionLoc = "//div[contains(text(),'RETURN ORDERS AND CREDITS')]/../../descendant::a[contains(text(),'%s')]";
 	private String headerTitleInOrderHistorySection = "//div[@id='orderHistoryContentArea']//th[contains(text(),'%s')]";

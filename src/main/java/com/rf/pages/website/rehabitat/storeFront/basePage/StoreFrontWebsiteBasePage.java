@@ -45,7 +45,7 @@ public class StoreFrontWebsiteBasePage extends RFBasePage {
 		this.driver = driver;
 	}
 
-	private final By TOTAL_CATEGORY_NAME_LOC = By.xpath("//div[@id='product-facet']//descendant::ul[2]/li//input[contains(@id,'ID')]");
+	protected final By TOTAL_CATEGORY_NAME_LOC = By.xpath("//div[@id='product-facet']//descendant::ul[2]/li//input[contains(@id,'ID')]");
 	private final By SELECT_AND_CONTINUE_FIRST_SPONSER_LOC = By.xpath(
 			   "//div[@id='findConsultantResultArea']/descendant::div[contains(@class,'consultant-box')][1]//input[@id='consultantUid']");
 	private final By ADDRESS_NON_DELIVERABLE_WARNING_MSG_LOC = By.xpath("//div[@id='cboxLoadedContent']/h3");
@@ -170,7 +170,7 @@ public class StoreFrontWebsiteBasePage extends RFBasePage {
 	private final By I_ACKNOWLEDGE_PC_CHK_BOX_LOC = By.xpath("//input[@id='Terms2']");
 	private final By BILLING_NEXT_BUTTON_LOC = By.id("cmdSubmit");
 	private final By BECOME_A_CONSULTANT_BTN_LOC = By.id("placeOrder");
-	private final By ENROLLMENT_SUCCESSFUL_MSG_LOC = By.xpath("//*[contains(text(),'ENROLLMENT SUCCESSFUL')]");
+	private final By ENROLLMENT_SUCCESSFUL_MSG_LOC = By.xpath("//*[contains(text(),'ENROLLMENT SUCCESSFUL') or contains(text(),'Step One is complete. Your order number is')]");
 	private final By REMOVE_LINK_LOC = By.xpath("//a[contains(text(),'REMOVE')]");
 	private final By CONSULTANT_ONLY_PRODUCTS_LINK_LOC = By
 			.xpath("//div[@class='navbar-inverse']//a[@title='CONSULTANT ONLY']");
@@ -298,7 +298,7 @@ public class StoreFrontWebsiteBasePage extends RFBasePage {
 	private final By MEET_OUR_COMMUNITY_LOC = By.xpath(topNavigationLoc + "//a[contains(@title,'MEET OUR')]");
 	private final By EEROR_PAGE_LOC = By.xpath("//b[contains(text(),'Status code')]");
 
-	private String randomCategoryNameLoc = "//input[@id='%s']/..";
+	protected String randomCategoryNameLoc = "//input[@id='%s']/..";
 	private String selectAndContinueSponserLoc = "//div[@id='findConsultantResultArea']/descendant::div[contains(@class,'consultant-box')][%s]//input[@id='consultantUid']";
 	protected String priceOfProductLoc = "//div[contains(@class,'product__listing')]/descendant::span[@id='retail'][contains(text(),'$')][%s]";
 	private String productNameAllItemsInCartLoc = "//span[@class='item-name' and contains(text(),%s)]";

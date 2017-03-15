@@ -980,6 +980,41 @@ public class StoreFrontShopSkinCarePage extends StoreFrontWebsiteBasePage{
 	}
 
 	/***
+	 * This method adds the product to the cart(adhoc/autoship/PC perks as specified)
+	 * 
+	 * @param
+	 * @return string price
+	 * 
+	 */
+	public String addProductToCart(String productNumber,String orderType,String product){
+		String priceToAssert = null;
+		driver.pauseExecutionFor(3000);
+		driver.waitForElementPresent(By.xpath(String.format(addToCartButtonLoc, productNumber)), 15);
+		clickSearchIcon();
+		searchEntityAndHitEnter(product);
+		driver.moveToElementByJS(By.xpath(String.format(addToCartButtonLoc, productNumber)));
+		driver.clickByAction(By.xpath(String.format(addToCartButtonLoc, productNumber)));
+		if(orderType.equals(TestConstants.ORDER_TYPE_ENROLLMENT)){
+			logger.info("Adding product for Enrollment");
+		}
+		else if(orderType.equals(TestConstants.ORDER_TYPE_ADHOC)&& driver.isElementPresent(By.xpath(String.format(productPriceThroughProductNumberLoc,TestConstants.ORDER_TYPE_ADHOC,productNumber)))){
+			priceToAssert = driver.getText(By.xpath(String.format(productPriceThroughProductNumberLoc,TestConstants.ORDER_TYPE_ADHOC,productNumber))).replace("$","");
+			driver.clickByAction(By.xpath(String.format(addToCartDDLoc,TestConstants.ORDER_TYPE_ADHOC,productNumber)));
+		}
+		else if(orderType.equals(TestConstants.ORDER_TYPE_PC_PERKS)&& driver.isElementPresent(By.xpath(String.format(productPriceThroughProductNumberLoc,TestConstants.ORDER_TYPE_PC_PERKS,productNumber)))){
+			priceToAssert = driver.getText(By.xpath(String.format(productPriceThroughProductNumberLoc,TestConstants.ORDER_TYPE_PC_PERKS,productNumber))).replace("$","");
+			driver.clickByAction(By.xpath(String.format(addToCartDDLoc,TestConstants.ORDER_TYPE_PC_PERKS,productNumber)));
+		}
+		else if(orderType.equals(TestConstants.ORDER_TYPE_CRP)&& driver.isElementPresent(By.xpath(String.format(productPriceThroughProductNumberLoc,TestConstants.ORDER_TYPE_CRP,productNumber)))){
+			priceToAssert = driver.getText(By.xpath(String.format(productPriceThroughProductNumberLoc,"Add to CRP",productNumber))).replace("$","");
+			driver.clickByAction(By.xpath(String.format(addToCartDDLoc,"Add to CRP",productNumber)));
+		}
+		logger.info("Add To Cart clicked, order type is "+orderType);
+		return priceToAssert;
+	}
+
+	
+	/***
 	 * This method validates that default filter has been applied
 	 * 
 	 * @param

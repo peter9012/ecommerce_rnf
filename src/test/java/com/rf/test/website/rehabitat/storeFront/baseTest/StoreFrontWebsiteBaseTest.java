@@ -62,6 +62,8 @@ public class StoreFrontWebsiteBaseTest extends RFBaseTest {
 	protected String CVV = null;
 	protected String timeStamp=null;
 	protected String randomWords = null;
+	protected String validProductName = null;
+	protected String validProductId = null;
 
 	protected String updatedAddressLine1 = null;
 	protected String updatedAddressLine2 = null;
@@ -162,6 +164,8 @@ public class StoreFrontWebsiteBaseTest extends RFBaseTest {
 			updatedCity = TestConstants.SECOND_CITY_US;
 			updatedPostalCode = TestConstants.SECOND_POSTAL_CODE_US;
 			stateAbbreviation = TestConstants.STATE_US_ABBREVIATION;
+			validProductName = TestConstants.VALID_PRODUCT_NAME_US;
+			validProductId = TestConstants.VALID_PRODUCT_ID_US;
 		}
 		else if(countryName.equalsIgnoreCase("ca")){
 			addressLine1 = TestConstants.ADDRESS_LINE_1_CA;
@@ -174,6 +178,8 @@ public class StoreFrontWebsiteBaseTest extends RFBaseTest {
 			updatedCity = TestConstants.SECOND_CITY_CA;
 			updatedPostalCode = TestConstants.SECOND_POSTAL_CODE_CA;
 			stateAbbreviation = TestConstants.STATE_CA_ABBREVIATION;
+			validProductName = TestConstants.VALID_PRODUCT_NAME_CA;
+			validProductId = TestConstants.VALID_PRODUCT_ID_CA;
 		}
 	}
 
@@ -330,11 +336,11 @@ public class StoreFrontWebsiteBaseTest extends RFBaseTest {
 		return suiteName;
 	}
 
-//	public void setUpPreRequisites() throws Exception {
-//		userPropertyFile.loadProps(userProps);
-//		driver.loadApplication();
-//		driver.setDBConnectionString();
-//	}
+	//	public void setUpPreRequisites() throws Exception {
+	//		userPropertyFile.loadProps(userProps);
+	//		driver.loadApplication();
+	//		driver.setDBConnectionString();
+	//	}
 
 	@BeforeMethod(alwaysRun=true)
 	public void beforeMethod() throws Exception{

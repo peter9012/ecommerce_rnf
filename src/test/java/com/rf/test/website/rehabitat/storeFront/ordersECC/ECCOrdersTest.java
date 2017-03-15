@@ -47,9 +47,10 @@ public class ECCOrdersTest extends StoreFrontWebsiteBaseTest{
 		sfCartPage.clickRodanAndFieldsLogo();
 		sfShopSkinCarePage = sfHomePage.clickAllProducts();
 		cardType = getCardType();
-		productNumber = sfShopSkinCarePage.getProductNumToSelectForCard(TestConstants.USER_TYPE_CONSULTANT,cardType, TestConstants.PRODUCT_NUMBER);
-		productName = sfShopSkinCarePage.getProductName(productNumber);
-		sfShopSkinCarePage.addProductToCart(productNumber, TestConstants.ORDER_TYPE_ADHOC);
+		/*productNumber = sfShopSkinCarePage.getProductNumToSelectForCard(TestConstants.USER_TYPE_CONSULTANT,cardType, TestConstants.PRODUCT_NUMBER);
+		productName = sfShopSkinCarePage.getProductName(productNumber);*/
+		productName = validProductName;
+		sfShopSkinCarePage.addProductToCart(TestConstants.PRODUCT_NUMBER, TestConstants.ORDER_TYPE_ADHOC,validProductId);
 		sfShopSkinCarePage.checkoutTheCartFromPopUp();
 		itemQty = sfCartPage.getQuantityOfProductFromCart("1");
 		sfCheckoutPage=sfCartPage.checkoutTheCart();
@@ -87,9 +88,11 @@ public class ECCOrdersTest extends StoreFrontWebsiteBaseTest{
 		sfCartPage.clickRodanAndFieldsLogo();
 		sfShopSkinCarePage = sfHomePage.clickAllProducts();
 		cardType = getCardType();
-		productNumber = sfShopSkinCarePage.getProductNumToSelectForCard(TestConstants.USER_TYPE_PC,cardType, TestConstants.PRODUCT_NUMBER);
+		/*productNumber = sfShopSkinCarePage.getProductNumToSelectForCard(TestConstants.USER_TYPE_PC,cardType, TestConstants.PRODUCT_NUMBER);
 		productName = sfShopSkinCarePage.getProductName(productNumber);
-		sfShopSkinCarePage.addProductToCart(productNumber, TestConstants.ORDER_TYPE_ADHOC);
+		sfShopSkinCarePage.addProductToCart(productNumber, TestConstants.ORDER_TYPE_ADHOC);*/
+		productName = validProductName;
+		sfShopSkinCarePage.addProductToCart(TestConstants.PRODUCT_NUMBER, TestConstants.ORDER_TYPE_ENROLLMENT,validProductId);
 		sfShopSkinCarePage.checkoutTheCartFromPopUp();
 		itemQty = sfCartPage.getQuantityOfProductFromCart("1");
 		sfCheckoutPage=sfCartPage.checkoutTheCart();
@@ -126,9 +129,10 @@ public class ECCOrdersTest extends StoreFrontWebsiteBaseTest{
 		sfCartPage.clickRodanAndFieldsLogo();
 		sfShopSkinCarePage = sfHomePage.clickAllProducts();
 		cardType = getCardType();
-		productNumber = sfShopSkinCarePage.getProductNumToSelectForCard(TestConstants.USER_TYPE_RC,cardType, TestConstants.PRODUCT_NUMBER);
-		productName = sfShopSkinCarePage.getProductName(productNumber);
-		sfShopSkinCarePage.addProductToCart(productNumber, TestConstants.ORDER_TYPE_ENROLLMENT);
+		/*productNumber = sfShopSkinCarePage.getProductNumToSelectForCard(TestConstants.USER_TYPE_RC,cardType, TestConstants.PRODUCT_NUMBER);
+		productName = sfShopSkinCarePage.getProductName(productNumber);*/
+		productName = validProductName;
+		sfShopSkinCarePage.addProductToCart(TestConstants.PRODUCT_NUMBER, TestConstants.ORDER_TYPE_ENROLLMENT,validProductId);
 		sfShopSkinCarePage.checkoutTheCartFromPopUp();
 		itemQty = sfCartPage.getQuantityOfProductFromCart("1");
 		sfCheckoutPage=sfCartPage.checkoutTheCart();
@@ -230,25 +234,27 @@ public class ECCOrdersTest extends StoreFrontWebsiteBaseTest{
 				cardsListForFixedSelection.remove(0);
 			}
 		}
-		return cardsListForRandomSelection.get(CommonUtils.getRandomNum(0,3));
+		/*return cardsListForRandomSelection.get(CommonUtils.getRandomNum(0,3));*/
+		return cardsListForRandomSelection.get(CommonUtils.getRandomNum(0,cardsListForRandomSelection.size()-1));
 	}
 
 	public void setAllCardsAndSelectionCount(){
 		String visaCard = TestConstants.CARD_TYPE_VISA;
-		String amexCard = TestConstants.CARD_TYPE_AMEX;
+		//	String amexCard = TestConstants.CARD_TYPE_AMEX;
 		String masterCard = TestConstants.CARD_TYPE_MASTER_CARD;
 		String discoverCard = TestConstants.CARD_TYPE_DISCOVER;
 		cardsListForFixedSelection = new ArrayList<String>();
 		cardsListForRandomSelection = new ArrayList<String>();
 		cardsListForFixedSelection.add(visaCard);
-		cardsListForFixedSelection.add(amexCard);
+		//	cardsListForFixedSelection.add(amexCard);
 		cardsListForFixedSelection.add(masterCard);
 		cardsListForFixedSelection.add(discoverCard);
 		cardsListForRandomSelection.add(visaCard);
-		cardsListForRandomSelection.add(amexCard);
+		//	cardsListForRandomSelection.add(amexCard);
 		cardsListForRandomSelection.add(masterCard);
 		cardsListForRandomSelection.add(discoverCard);
-		fixedSelectionCountForAllCards = var/4;
+		fixedSelectionCountForAllCards = var/3;
+		//	fixedSelectionCountForAllCards = var/4;
 		fixedSelectionCountToReset = fixedSelectionCountForAllCards;
 	}
 

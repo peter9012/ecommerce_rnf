@@ -616,7 +616,7 @@ public class ConsultantEnrollmentTest extends StoreFrontWebsiteBaseTest{
 	 * Description : This method Validates consultant enrollment with existing prefix.
 	 *     
 	 */
-	@Test(enabled=false)
+	@Test(enabled=true)
 	public void testConsultantEnrollmentWithExistingPrefix_469(){
 		timeStamp = CommonUtils.getCurrentTimeStamp();
 		randomWords = CommonUtils.getRandomWord(5);		
@@ -722,7 +722,7 @@ public class ConsultantEnrollmentTest extends StoreFrontWebsiteBaseTest{
 		sfHomePage.selectConsentFormChkBox();
 		sfHomePage.clickBecomeAConsultant();
 		s_assert.assertTrue(sfHomePage.isEnrollemntSuccessfulMsgDisplayed(), "Expected 'ENROLLMENT SUCCESSFUL' msg has NOT displayed"); 
-		sfHomePage.addFirstProductForCRPCheckout();
+		sfHomePage.addFirstProductForCRPCheckout(validProductName);
 		sfCheckoutPage = sfHomePage.checkoutCRPBag();
 		sfCheckoutPage.clickSaveButton();
 		sfCheckoutPage.clickShippingDetailsNextbutton();
@@ -732,7 +732,7 @@ public class ConsultantEnrollmentTest extends StoreFrontWebsiteBaseTest{
 		sfCheckoutPage.clickConfirmAutoshipOrderButton();
 		s_assert.assertTrue(sfCheckoutPage.isCRPOrderConfirmedSuccessMsgAppeared(),"CRP Order confirmed success messge is not appeared");
 		sfCheckoutPage.clickRodanAndFieldsLogo();
-		consultantWithPulseAndWithCRP=email;
+		consultantWithPulseAndWithCRP="testEmail@gspann.com";
 		pwsPrefix=prefix;
 		userPropertyFile.loadProps(userProps);
 		setUsers("consultantWithPulseAndWithCRP", consultantWithPulseAndWithCRP);
@@ -816,7 +816,7 @@ public class ConsultantEnrollmentTest extends StoreFrontWebsiteBaseTest{
 		sfHomePage.selectConsentFormChkBox();
 		sfHomePage.clickBecomeAConsultant();
 		s_assert.assertTrue(sfHomePage.isEnrollemntSuccessfulMsgDisplayed(), "Expected 'ENROLLMENT SUCCESSFUL' msg has NOT displayed"); 
-		sfHomePage.addFirstProductForCRPCheckout();
+		sfHomePage.addFirstProductForCRPCheckout(validProductName);
 		sfCheckoutPage = sfHomePage.checkoutCRPBag();
 		sfCheckoutPage.clickSaveButton();
 		sfCheckoutPage.clickShippingDetailsNextbutton();

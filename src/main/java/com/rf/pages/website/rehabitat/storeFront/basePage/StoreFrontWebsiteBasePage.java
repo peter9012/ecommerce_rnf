@@ -47,7 +47,7 @@ public class StoreFrontWebsiteBasePage extends RFBasePage {
 
 	protected final By TOTAL_CATEGORY_NAME_LOC = By.xpath("//div[@id='product-facet']//descendant::ul[2]/li//input[contains(@id,'ID')]");
 	private final By SELECT_AND_CONTINUE_FIRST_SPONSER_LOC = By.xpath(
-			   "//div[@id='findConsultantResultArea']/descendant::div[contains(@class,'consultant-box')][1]//input[@id='consultantUid']");
+			"//div[@id='findConsultantResultArea']/descendant::div[contains(@class,'consultant-box')][1]//input[@id='consultantUid']");
 	private final By ADDRESS_NON_DELIVERABLE_WARNING_MSG_LOC = By.xpath("//div[@id='cboxLoadedContent']/h3");
 	private final By EDIT_ADDRESS_BTN_ON_ADDRESS_SUGGESTION_POPUP_LOC = By.xpath("//div[@id='cboxLoadedContent']//button[@id='closePopupForEditAddress']");
 	private final By YES_BUTTON_ON_ADDRESS_SUGGESTION_MODAL_LOC  =  By.xpath("//div[@id='cboxContent']//button[@id='suggestedAddress']");
@@ -4032,41 +4032,58 @@ public class StoreFrontWebsiteBasePage extends RFBasePage {
 		logger.info("Total Price of Items in Cart : " + totalPrice);
 		return String.valueOf(totalPrice);
 	}
-	
+
 	/***
-	  * This method selects the first sponsor name in the search result and
-	  * return sponser email.
-	  * 
-	  * @param sponsor
-	  * @return
-	  * 
-	  */
-	 public String selectAndReturnFirstSponsorFromList() {
-	  String sponserName = driver.findElement(SELECT_AND_CONTINUE_FIRST_SPONSER_LOC).getAttribute("value");
-	  driver.clickByJS(RFWebsiteDriver.driver, SELECT_AND_CONTINUE_FIRST_SPONSER_LOC);
-	  logger.info("Clicked on 'Select And Continue' button for first result");
-	  logger.info("selected first sponser name is " + sponserName);
-	  driver.pauseExecutionFor(2000);
-	  return sponserName;
-	 }
+	 * This method selects the first sponsor name in the search result and
+	 * return sponser email.
+	 * 
+	 * @param sponsor
+	 * @return
+	 * 
+	 */
+	public String selectAndReturnFirstSponsorFromList() {
+		String sponserName = driver.findElement(SELECT_AND_CONTINUE_FIRST_SPONSER_LOC).getAttribute("value");
+		driver.clickByJS(RFWebsiteDriver.driver, SELECT_AND_CONTINUE_FIRST_SPONSER_LOC);
+		logger.info("Clicked on 'Select And Continue' button for first result");
+		logger.info("selected first sponser name is " + sponserName);
+		driver.pauseExecutionFor(2000);
+		return sponserName;
+	}
 
 
 	/***
-	  * This method selects and return the sponsor name in the search result.
-	  * 
-	  * @param sponsor
-	  * @return
-	  * 
-	  */
-	 public String selectAndReturnSponsorFromList(String sponserNumber) {
-	  driver.pauseExecutionFor(2000);
-	  String sponserName = driver.findElement(By.xpath(String.format(selectAndContinueSponserLoc, sponserNumber)))
-	    .getAttribute("value");
-	  driver.clickByJS(RFWebsiteDriver.driver,By.xpath(String.format(selectAndContinueSponserLoc, sponserNumber)));
-	  logger.info("Clicked on 'Select And Continue' button for" + sponserNumber + " result");
-	  logger.info("selected sponser name is " + sponserName);
-	  driver.pauseExecutionFor(2000);
-	  return sponserName;
-	 }
+	 * This method selects and return the sponsor name in the search result.
+	 * 
+	 * @param sponsor
+	 * @return
+	 * 
+	 */
+	public String selectAndReturnSponsorFromList(String sponserNumber) {
+		driver.pauseExecutionFor(2000);
+		String sponserName = driver.findElement(By.xpath(String.format(selectAndContinueSponserLoc, sponserNumber)))
+				.getAttribute("value");
+		driver.clickByJS(RFWebsiteDriver.driver,By.xpath(String.format(selectAndContinueSponserLoc, sponserNumber)));
+		logger.info("Clicked on 'Select And Continue' button for" + sponserNumber + " result");
+		logger.info("selected sponser name is " + sponserName);
+		driver.pauseExecutionFor(2000);
+		return sponserName;
+	}
+
+	/***
+	 * This method enter search text in search textfield and click enter
+	 * 
+	 * @param String textToSearch
+	 * @return store front Home page object
+	 * 
+	 */
+	public StoreFrontShopSkinCarePage searchEntityAndHitEnter(String textToSearch){
+		driver.type(SEARCH_BOX, textToSearch);
+		Actions action = new Actions(RFWebsiteDriver.driver);
+		action.sendKeys(Keys.ENTER);
+		action.perform();
+		logger.info("Hit enter for searching entity");
+		driver.pauseExecutionFor(5000);
+		return new StoreFrontShopSkinCarePage(driver);
+	}
 
 }

@@ -23,6 +23,7 @@ public class StoreFrontHomePage extends StoreFrontWebsiteBasePage{
 	private static final Logger logger = LogManager
 			.getLogger(StoreFrontHomePage.class.getName());
 
+	private final By SHOW_MORE_BTN_LOC = By.xpath("//a[contains(text(),'Show More')]");
 	private final By ENROLL_NOW_BUTTON_LOC = By.xpath("//a[text()='Enroll Now']");
 	private final By FIRST_EVENT_CALENDAR_LOC = By.xpath("//h3[contains(text(),'Presentations')]/following::a[text()='EVENT CALENDER'][1]");
 	private final By VISIT_THE_BLOG_LOC = By.xpath("//a[text()='VISIT THE BLOG']");
@@ -83,6 +84,7 @@ public class StoreFrontHomePage extends StoreFrontWebsiteBasePage{
 	private final By MEET_THE_DOCTORS_TXT_LOC = By.xpath("//h1[contains(text(),'Meet the Doctors')]");
 	private final By CONTINUE_SHOPPING_CRP_BTN_LOC = By.xpath("//button[contains(text(),'Continue')]");
 
+	private String addToCRPBtnForSpecificProductLoc = "//h3[normalize-space(text())='%s']/ancestor::div[1]/following::span[contains(text(),'Add to CRP')][1]";
 	private String appliedFilterNameLoc = "//div[@id='applied_filters']/descendant::li[contains(text(),'%s')]";
 	private String specificProductAddToCRPBtnLoc = "//div[@id='product_category']/following-sibling::div/descendant::span[text()='Add to CRP'][%s]";
 	private String viewDetailsLinkLoc = "//div[contains(@class,'enrollmentKit-wrapper')]/descendant::a[contains(text(),'View Details')][%s]";
@@ -878,23 +880,6 @@ public class StoreFrontHomePage extends StoreFrontWebsiteBasePage{
 	}
 
 	/***
-	 * This method enter search text in search textfield and click enter
-	 * 
-	 * @param String textToSearch
-	 * @return store front Home page object
-	 * 
-	 */
-	public StoreFrontShopSkinCarePage searchEntityAndHitEnter(String textToSearch){
-		driver.type(SEARCH_BOX, textToSearch);
-		Actions action = new Actions(RFWebsiteDriver.driver);
-		action.sendKeys(Keys.ENTER);
-		action.perform();
-		logger.info("Hit enter for searching entity");
-		driver.pauseExecutionFor(5000);
-		return new StoreFrontShopSkinCarePage(driver);
-	}
-
-	/***
 	 * This method validates the search result products with that of search entity
 	 * 
 	 * @param String productName
@@ -973,18 +958,38 @@ public class StoreFrontHomePage extends StoreFrontWebsiteBasePage{
 	 * @return store front home page object
 	 * 
 	 */
-	public StoreFrontHomePage addFirstProductForCRPCheckout(){
-		driver.clickByJS(RFWebsiteDriver.driver, FIRST_PRODUCT_ADD_TO_CRP_BTN_LOC);
-		logger.info("Clicked Add to CRP button of First Product");
+	public StoreFrontHomePage addFirstProductForCRPCheckout(String productName){
+		clickShowMoreButton();
+		driver.clickByJS(RFWebsiteDriver.driver,By.xpath(String.format(addToCRPBtnForSpecificProductLoc, productName)));
+		logger.info("Clicked Add to CRP button of Product : " + productName);
 		driver.pauseExecutionFor(2000);
 		while(driver.isElementPresent(CRP_CHECKOUT_BTN_LOC)==false){
 			driver.clickByJS(RFWebsiteDriver.driver, CONTINUE_SHOPPING_CRP_BTN_LOC);
 			driver.pauseExecutionFor(1000);
-			driver.clickByJS(RFWebsiteDriver.driver, FIRST_PRODUCT_ADD_TO_CRP_BTN_LOC);
-			logger.info("Clicked Add to CRP button of First Product");
+			driver.clickByJS(RFWebsiteDriver.driver,By.xpath(String.format(addToCRPBtnForSpecificProductLoc, productName)));
+			logger.info("Clicked Add to CRP button of Product : " + productName);
 		}
 		return this;
 	}
+
+	/***
+	 * This method clicked on Show More button
+	 * 
+	 * @param
+	 * @return store front home page object
+	 * 
+	 */
+	public StoreFrontHomePage clickShowMoreButton(){
+		if(driver.isElementVisible(SHOW_MORE_BTN_LOC)){
+			driver.clickByJS(RFWebsiteDriver.driver,SHOW_MORE_BTN_LOC);
+			logger.info("Clicked on Show More Button on Cons Enrollment Successful Page");
+		}
+		else{
+			logger.info("Show More Button is not Visible on Page");
+		}
+		return this;
+	}
+
 
 	/***
 	 * This method clicked the checkout button of CRP bag

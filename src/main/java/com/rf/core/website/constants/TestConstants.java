@@ -28,7 +28,11 @@ public class TestConstants {
 	public static final String ORDER_TYPE_PC_PERKS = "Add to PC Perks";
 	public static final String ORDER_TYPE_CRP= "Add to CRP";
 	public static final String ORDER_TYPE_ENROLLMENT = "Enrollment";
-	public static final String PRODUCT_NUMBER = "2";
+	public static final String VALID_PRODUCT_ID_US = "UNRJ001";
+	public static final String VALID_PRODUCT_ID_CA = "AARG001-01";
+	public static final String VALID_PRODUCT_NAME_US = "UNBLEMISH Regimen for Acne";
+	public static final String VALID_PRODUCT_NAME_CA = "REDEFINE Regimen";
+	public static final String PRODUCT_NUMBER = "1";
 	public static final String PRODUCT_NUMBER_PC_AUTOSHIP = "3";
 	//	public static final String OTHER_PRODUCT_NUMBER = "3";
 	public static final String PC_FIRST_NAME = "autopc";
@@ -188,7 +192,7 @@ public class TestConstants {
 	public static final String AUTOSHIP_DELIVERY_ADDRESS_UPDATION_MSG = "Delivery Address has been Updated for your Cart.";
 	public static final String ERROR_MSG_EXISTING_PREFIX = "Subscription Prefix not available";
 	public static final String CANCELLED_CRP_ORDER_SUCCESS_MESSAGE = "Your CRP Order has been canceled.";
-	
+
 	public static final String ECC_ORDER_TYPE_CONSULTANT_ADHOC = "ConsultantAdhocOrder";
 	public static final String ECC_ORDER_TYPE_PC_ADHOC = "PCAdhocOrder";
 	public static final String ECC_ORDER_TYPE_RC_ADHOC = "RCAdhocOrder";

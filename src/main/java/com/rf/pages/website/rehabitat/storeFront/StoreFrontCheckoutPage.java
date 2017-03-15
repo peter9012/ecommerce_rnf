@@ -167,7 +167,8 @@ public class StoreFrontCheckoutPage extends StoreFrontWebsiteBasePage{
 	private final By EDIT_LINK_OF_BILLING_PROFILE_LOC=By.xpath("//div[contains(text(),'Billing')]/following::a[1]");
 	private final By EDIT_LINK_OF_SHIPPING_SECTION_LOC=By.xpath("//div[@class='checkout-shipping']//a[1]");
 	private final By SEARCHED_SELECTED_SPONSOR_LOC = By.xpath("//div[@class='customerid']/preceding::span[@id='selectd-consultant'][1]");
-
+	private final By SHIPPING_CHARGES_LOC = By.xpath("//div[@class='shipping']/span");
+	
 	private String useThisAddressBtnInAddressBookLoc = "//div[@id='addressbook']/descendant::form[@id='useShipAddressFromBook'][%s]//button";
 	private String profileNameFromAddressBookLoc = "//div[@id='addressbook']/descendant::strong[%s]";
 	private String useThisPaymentDetailsBtnInSavedCardLoc = "//div[@id='savedpaymentsbody']/descendant::button[contains(text(),'Use these payment details')][%s]";
@@ -1884,4 +1885,17 @@ public class StoreFrontCheckoutPage extends StoreFrontWebsiteBasePage{
 		return driver.isElementPresent(SEARCHED_SELECTED_SPONSOR_LOC);
 	}
 
+
+	/***
+	   This method get the charges acc to their label name at order review page 
+	 * 
+	 * @param label name 
+	 * @return charges
+	 * 
+	 */
+	public String getShippingChragesAtCheckoutPage(){
+		String charge=driver.getText(SHIPPING_CHARGES_LOC);
+		logger.info("Shipping charges at order review page is"+charge);
+		return charge;
+	}
 }

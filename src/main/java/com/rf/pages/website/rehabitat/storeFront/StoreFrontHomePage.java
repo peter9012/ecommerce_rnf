@@ -802,7 +802,7 @@ public class StoreFrontHomePage extends StoreFrontWebsiteBasePage{
 	 */
 	public StoreFrontHomePage enterPrefix(String prefix){
 		logger.info("Prefix is "+prefix);
-		driver.type(PREFIX_FIELD_LOC, prefix);
+		driver.type(PREFIX_FIELD_LOC, prefix+"\t");
 		return this;
 	}
 
@@ -811,6 +811,7 @@ public class StoreFrontHomePage extends StoreFrontWebsiteBasePage{
 	 * @return
 	 */
 	public boolean isPrefixAvailable(){
+		driver.pauseExecutionFor(2000);
 		return driver.isElementVisible(PREFIX_AVAILABLE_LOC);
 	}
 
@@ -1048,7 +1049,7 @@ public class StoreFrontHomePage extends StoreFrontWebsiteBasePage{
 	public boolean isFilterAppliedAndRemovedSuccessfully(String filterName){
 		return driver.isElementPresent(By.xpath(String.format(appliedFilterNameLoc,filterName)));
 	}
-	
+
 	/***
 	 * This method select the country from toggle button
 	 * 
@@ -1066,7 +1067,7 @@ public class StoreFrontHomePage extends StoreFrontWebsiteBasePage{
 		}
 		return this;
 	}
-	
+
 	/***
 	 * This method select the country from toggle button
 	 * 

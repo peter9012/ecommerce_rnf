@@ -24,6 +24,7 @@ public class StoreFrontCheckoutPage extends StoreFrontWebsiteBasePage{
 	private static final Logger logger = LogManager
 			.getLogger(StoreFrontCheckoutPage.class.getName());
 
+	private final By SPONSOR_NAME_ACCOUNT_INFO_LOC = By.xpath("//span[@id='selectd-consultant']");
 	// private final By TERMS_AND_CONDITIONS_CHCKBOX_FOR_CONSULTANT_CRP_LOC = By.xpath("//a[contains(text(),'Consultant Replenishment Program Terms & Conditions')]/ancestor::label[1]/preceding-sibling::input[1]");
 	private final By TERMS_AND_CONDITIONS_CHCKBOX_FOR_AUTOSHIP_LOC = By.xpath("//a[contains(text(),'Terms & Conditions')]/ancestor::label[1]/preceding-sibling::input[@id][1]");
 	//	private final By TERMS_AND_CONDITIONS_CHCKBOX_FOR_AUTOSHIP_LOC = By.xpath("//a[contains(text(),'Terms & Conditions')]/ancestor::label[1]/preceding-sibling::input[1]");
@@ -145,7 +146,6 @@ public class StoreFrontCheckoutPage extends StoreFrontWebsiteBasePage{
 	private final By EXP_YEAR_DD_AFTER_EDIT_PROFILE_LOC= By.xpath("//div[@id='account-billing-container']//select[@id='ExpiryYear']");
 	private final By EXP_YEAR_AFTER_EDIT_PROFILE_LOC= By.xpath("//div[@id='account-billing-container']//select[@id='ExpiryYear']//option[11]");
 	private final By CVV_AFTER_EDIT_PROFILE_LOC= By.xpath("//div[@id='account-billing-container']//input[@id='card_cvNumber']");
-	private final By SPONSOR_NAME_ACCOUNT_INFO_LOC = By.xpath("//input[@id='consultantUid']/preceding::span[@id='selectd-consultant'][1]");
 	private final By NOT_YOUR_CONSULTAN_LINK_LOC = By.id("not-your-autoSponsor");
 	private final By CLOSE_BTN_OF_POPUP_LOC = By.id("close_popup");
 	private final By USE_SAVED_CARD_BTN_LOC = By.xpath("//button[contains(text(),'Use a saved card')]");

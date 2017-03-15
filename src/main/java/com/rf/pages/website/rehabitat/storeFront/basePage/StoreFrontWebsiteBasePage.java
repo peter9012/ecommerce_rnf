@@ -45,6 +45,9 @@ public class StoreFrontWebsiteBasePage extends RFBasePage {
 		this.driver = driver;
 	}
 
+	private final By TOTAL_CATEGORY_NAME_LOC = By.xpath("//div[@id='product-facet']//descendant::ul[2]/li//input[contains(@id,'ID')]");
+	private final By SELECT_AND_CONTINUE_FIRST_SPONSER_LOC = By.xpath(
+			   "//div[@id='findConsultantResultArea']/descendant::div[contains(@class,'consultant-box')][1]//input[@id='consultantUid']");
 	private final By ADDRESS_NON_DELIVERABLE_WARNING_MSG_LOC = By.xpath("//div[@id='cboxLoadedContent']/h3");
 	private final By EDIT_ADDRESS_BTN_ON_ADDRESS_SUGGESTION_POPUP_LOC = By.xpath("//div[@id='cboxLoadedContent']//button[@id='closePopupForEditAddress']");
 	private final By YES_BUTTON_ON_ADDRESS_SUGGESTION_MODAL_LOC  =  By.xpath("//div[@id='cboxContent']//button[@id='suggestedAddress']");
@@ -230,8 +233,6 @@ public class StoreFrontWebsiteBasePage extends RFBasePage {
 	private final By PC_TERMS_AND_CONDITIONS_LINK_LOC = By.xpath("//a[contains(text(),'PC Perks Terms & Conditions')]");
 	private final By POLICIES_AND_PROCEDURES_CHK_BOX_PC_LOC = By.xpath("//input[@id='Terms2']");
 	private final By TERMS_AND_CONDITIONS_CHK_BOX_PC_LOC = By.xpath("//input[@id='Terms1']");
-	private final By SELECT_AND_CONTINUE_FIRST_SPONSER_LOC = By.xpath(
-			"//div[@id='findConsultantResultArea']/descendant::div[contains(@class,'consultant-box')][1]//span[@id='selectd-consultant']");
 	protected final By CART_PRODUCT_LOC = By
 			.xpath("//ul[contains(@class,'item-list cart')]/li[@class='item-list-item']");
 	private final By EDIT_LINK_NEXT_TO_MAIN_ACCOUNT_LOC = By
@@ -297,6 +298,8 @@ public class StoreFrontWebsiteBasePage extends RFBasePage {
 	private final By MEET_OUR_COMMUNITY_LOC = By.xpath(topNavigationLoc + "//a[contains(@title,'MEET OUR')]");
 	private final By EEROR_PAGE_LOC = By.xpath("//b[contains(text(),'Status code')]");
 
+	private String randomCategoryNameLoc = "//input[@id='%s']/..";
+	private String selectAndContinueSponserLoc = "//div[@id='findConsultantResultArea']/descendant::div[contains(@class,'consultant-box')][%s]//input[@id='consultantUid']";
 	protected String priceOfProductLoc = "//div[contains(@class,'product__listing')]/descendant::span[@id='retail'][contains(text(),'$')][%s]";
 	private String productNameAllItemsInCartLoc = "//span[@class='item-name' and contains(text(),%s)]";
 	protected String addToCartButtonLoc = "//div[contains(@class,'product__listing')]/descendant::*[contains(text(),'Add to bag')][%s]";
@@ -310,7 +313,6 @@ public class StoreFrontWebsiteBasePage extends RFBasePage {
 	protected String mandatoryFieldErrorMsgOfAddressForNewBillingProfileLoc = "//div[@id='billingAddressForm']//label[contains(@id,'%s-error') and contains(text(),'This field is required.')]";
 	private String productNameInAllItemsInCartLoc = "//span[@class='item-name' and contains(text(),'%s')]";
 	private String productQuantityInAllItemsLoc = "//span[@class='item-name' and contains(text(),'%s')]/following::div//div[@class='qty']//input[contains(@id,'quantity')]";
-	private String selectAndContinueSponserLoc = "//div[@id='findConsultantResultArea']/descendant::div[contains(@class,'consultant-box')][%s]//span[@id='selectd-consultant']";
 	private String pageHeaderLoc = "//div[@class='page-container']//*[contains(text(),'%s')]";
 	private String disclaimerPageLinkLoc = "//a[contains(text(),'%s')]";
 	private String pressRoomTabsLoc = "//ul[@class='tabs']//li/a[contains(text(),'%s')]";
@@ -2710,43 +2712,6 @@ public class StoreFrontWebsiteBasePage extends RFBasePage {
 	}
 
 	/***
-	 * This method selects the first sponsor name in the search result and
-	 * return sponser email.
-	 * 
-	 * @param sponsor
-	 * @return
-	 * 
-	 */
-	public String selectAndReturnFirstSponsorFromList() {
-		String sponserName = driver.findElement(SELECT_AND_CONTINUE_FIRST_SPONSER_LOC).getText();
-		driver.clickByJS(RFWebsiteDriver.driver, SELECT_AND_CONTINUE_FIRST_SPONSER_LOC);
-		logger.info("Clicked on 'Select And Continue' button for first result");
-		logger.info("selected first sponser name is " + sponserName);
-		driver.pauseExecutionFor(2000);
-		return sponserName;
-	}
-
-	/***
-	 * This method selects and return the sponsor name in the search result.
-	 * 
-	 * @param sponsor
-	 * @return
-	 * 
-	 */
-	public String selectAndReturnSponsorFromList(String sponserNumber) {
-		driver.pauseExecutionFor(2000);
-		String sponserName = driver.findElement(By.xpath(String.format(selectAndContinueSponserLoc, sponserNumber)))
-				.getText();
-		driver.clickByJS(RFWebsiteDriver.driver,By.xpath(String.format(selectAndContinueSponserLoc, sponserNumber)));
-		// driver.click(By.xpath(String.format(selectAndContinueSponserLoc,
-		// sponserNumber)));
-		logger.info("Clicked on 'Select And Continue' button for" + sponserNumber + " result");
-		logger.info("selected sponser name is " + sponserName);
-		driver.pauseExecutionFor(2000);
-		return sponserName;
-	}
-
-	/***
 	 * This method verifies if change sponser link present on account info page
 	 * displayed or not
 	 * 
@@ -4067,5 +4032,41 @@ public class StoreFrontWebsiteBasePage extends RFBasePage {
 		logger.info("Total Price of Items in Cart : " + totalPrice);
 		return String.valueOf(totalPrice);
 	}
+	
+	/***
+	  * This method selects the first sponsor name in the search result and
+	  * return sponser email.
+	  * 
+	  * @param sponsor
+	  * @return
+	  * 
+	  */
+	 public String selectAndReturnFirstSponsorFromList() {
+	  String sponserName = driver.findElement(SELECT_AND_CONTINUE_FIRST_SPONSER_LOC).getAttribute("value");
+	  driver.clickByJS(RFWebsiteDriver.driver, SELECT_AND_CONTINUE_FIRST_SPONSER_LOC);
+	  logger.info("Clicked on 'Select And Continue' button for first result");
+	  logger.info("selected first sponser name is " + sponserName);
+	  driver.pauseExecutionFor(2000);
+	  return sponserName;
+	 }
+
+
+	/***
+	  * This method selects and return the sponsor name in the search result.
+	  * 
+	  * @param sponsor
+	  * @return
+	  * 
+	  */
+	 public String selectAndReturnSponsorFromList(String sponserNumber) {
+	  driver.pauseExecutionFor(2000);
+	  String sponserName = driver.findElement(By.xpath(String.format(selectAndContinueSponserLoc, sponserNumber)))
+	    .getAttribute("value");
+	  driver.clickByJS(RFWebsiteDriver.driver,By.xpath(String.format(selectAndContinueSponserLoc, sponserNumber)));
+	  logger.info("Clicked on 'Select And Continue' button for" + sponserNumber + " result");
+	  logger.info("selected sponser name is " + sponserName);
+	  driver.pauseExecutionFor(2000);
+	  return sponserName;
+	 }
 
 }

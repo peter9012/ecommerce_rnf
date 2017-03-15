@@ -705,35 +705,38 @@ public class StoreFrontShopSkinCarePage extends StoreFrontWebsiteBasePage{
 	 */
 	public String refineProductByCategoryAndReturnCategoryName(){
 		String categoryName = null;
+		driver.click(REFINE_PRODUCT_CATEGORY_FILTER_DD_LOC);
+		ArrayList<String> categoryNameList = new ArrayList<String>();
+		List<WebElement> totalCategories = driver.findElements(TOTAL_CATEGORY_NAME_LOC);
+		for(WebElement category : totalCategories){
+			String catLabel = null;
+			catLabel = category.getAttribute("id").trim();
+			categoryNameList.add(catLabel);
+		}
 		while(true){
-			driver.click(REFINE_PRODUCT_CATEGORY_FILTER_DD_LOC);
-			logger.info("Refine category filter dropdown clicked");
-			int randomNum = CommonUtils.getRandomNum(4,12);
-			logger.info("Random selected category is "+(randomNum-1));
-			categoryName=driver.findElement(By.xpath(String.format(randomCategoryName,randomNum))).getText().trim();
-			driver.clickByJS(RFWebsiteDriver.driver,By.xpath(String.format(randomProductCategoryCheckbox,randomNum)));
-			//driver.click(By.xpath(String.format(randomProductCategoryCheckbox,randomNum)));
-			logger.info("Product category selected is "+categoryName);
+			System.out.println("in while cond");
+			int randomNumberForCategory = CommonUtils.getRandomNum(0,(categoryNameList.size()-1));
+			categoryName = categoryNameList.get(randomNumberForCategory);
+			driver.clickByJS(RFWebsiteDriver.driver,By.xpath(String.format(randomCategoryNameLoc,categoryName)));
 			driver.waitForPageLoad();
 			driver.waitForLoadingImageToDisappear();
 			driver.pauseExecutionFor(5000);
 			int totalProducts = driver.findElements(TOTAL_PRODUCTS_LOC).size();
-			if(totalProducts>=3)
+			if(totalProducts>=3){
+				System.out.println("in if cond");
 				break;
+			}
 			else{
+				System.out.println("in else cond");
+				categoryNameList.remove(randomNumberForCategory);
 				driver.click(REFINE_PRODUCT_CATEGORY_FILTER_DD_LOC);
-				categoryName=driver.findElement(By.xpath(String.format(randomCategoryName,randomNum))).getText().trim();
-				driver.click(By.xpath(String.format(randomProductCategoryCheckbox,randomNum)));
-				driver.waitForPageLoad();
-				driver.waitForLoadingImageToDisappear();
-				logger.info("Category"+categoryName+" is deselected");
-				logger.info("Required product count not present for category"+categoryName);
+				driver.clickByJS(RFWebsiteDriver.driver,By.xpath(String.format(randomCategoryNameLoc,categoryName)));
 				continue;
 			}
 		}
 		return categoryName;
 	}
-
+		
 	/***
 	 * This method select sort by price filter Low to High via JS click.
 	 * 

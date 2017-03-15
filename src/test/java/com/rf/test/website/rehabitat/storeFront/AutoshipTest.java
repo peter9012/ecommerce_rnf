@@ -424,7 +424,7 @@ public class AutoshipTest extends StoreFrontWebsiteBaseTest{
 		profileLastName = sfCheckoutPage.getLastName(cardName);
 		defaultBillingProfileName = sfCheckoutPage.getDefaultBillingProfileName();
 		s_assert.assertTrue(defaultBillingProfileName.contains(profileLastName),"New Billing Profile Details do not get updated. Expected Profile Name : "+ cardName + ". Actual : " + defaultBillingProfileName);
-		sfCheckoutPage.selectTermsAndConditionsCheckBoxForAutoshipOrder();
+		//sfCheckoutPage.selectTermsAndConditionsCheckBoxForAutoshipOrder();
 		//		sfCheckoutPage.selectCheckboxForPoliciesAndProcedures();
 		sfCheckoutPage.clickConfirmAutoshipOrderButton();
 		sfCheckoutPage.clickOnAutoshipCartLink();
@@ -652,7 +652,7 @@ public class AutoshipTest extends StoreFrontWebsiteBaseTest{
 
 		// Confirming order
 		//		sfCheckoutPage.selectCheckboxForPoliciesAndProcedures();
-		sfCheckoutPage.selectTermsAndConditionsCheckBoxForAutoshipOrder();
+		//sfCheckoutPage.selectTermsAndConditionsCheckBoxForAutoshipOrder();
 		sfCheckoutPage.clickConfirmAutoshipOrderButton();
 
 		// Navigate again to Autoship checkout to verify billing profile for future autoship.
@@ -1271,7 +1271,7 @@ public class AutoshipTest extends StoreFrontWebsiteBaseTest{
 		sfCheckoutPage.clickAddNewBillingProfileButton();
 		sfCheckoutPage.enterUserBillingDetails(cardType,cardNumber,cardName,CVV);
 		sfCheckoutPage.clickBillingDetailsNextbutton();
-		sfCheckoutPage.selectTermsAndConditionsCheckBoxForAutoshipOrder();
+		//sfCheckoutPage.selectTermsAndConditionsCheckBoxForAutoshipOrder();
 		//  sfCheckoutPage.selectIAcknowledgeChkBox();
 		sfCheckoutPage.clickConfirmAutoshipOrderButton();
 		sfCheckoutPage.clickAutoshipLink();

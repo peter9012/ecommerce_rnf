@@ -426,6 +426,61 @@ public class ConsultantEnrollmentTest extends StoreFrontWebsiteBaseTest{
 	}
 
 	/***
+	 * qTest : TC-490 Consultant Enrollment- Page 2- Quebec Disclaimer-Present Under kit selection
+	 * 
+	 * Description : This test validates Quebec Disclaimer under kit selection
+	 * is present or not for CA
+	 *     
+	 */
+	@Test
+	public void testQuebecDisclaimerPresentUnderKitSelection_490(){
+		if(country.equalsIgnoreCase("ca")){
+			timeStamp = CommonUtils.getCurrentTimeStamp();
+			randomWords = CommonUtils.getRandomWord(5);		
+			lastName = TestConstants.LAST_NAME+randomWords;
+			email = firstName+"cons"+timeStamp+TestConstants.EMAIL_SUFFIX;
+			String DisclaimerForQuebec = "Residents of Quebec are not eligible to enroll as Consultants";
+			String socialInsuranceNumber = String.valueOf(CommonUtils.getRandomNum(100000000, 999999999));
+			String emailID = firstName+timeStamp+TestConstants.EMAIL_SUFFIX;
+			sfHomePage.clickEnrollNow();
+			sfHomePage.searchSponsor(TestConstants.SPONSOR);
+			s_assert.assertTrue(sfHomePage.isSponsorResultDisplayed(),"No result found after searching the sponsor with name "+TestConstants.SPONSOR);
+			sfHomePage.selectFirstSponsorFromList();
+			sfHomePage.enterConsultantEnrollmentDetails(firstName, lastName, emailID, password, socialInsuranceNumber);
+			sfHomePage.clickNextButton();
+			s_assert.assertTrue(sfHomePage.isTextVisible(DisclaimerForQuebec), "Disclaimer for Quebec is not visible under kit selection page");
+			s_assert.assertAll();
+		}
+	}
+
+	/***
+	 * qTest : TC-491 Consultant Enrollment- Page 2- Quebec Disclaimer-Not Present Under kit selection
+	 * 
+	 * Description : This test validates Quebec Disclaimer under kit selection should not present for US
+	 *     
+	 */
+	@Test
+	public void testQuebecDisclaimerPresentUnderKitSelection_491(){
+		if(country.equalsIgnoreCase("us")){
+			timeStamp = CommonUtils.getCurrentTimeStamp();
+			randomWords = CommonUtils.getRandomWord(5);		
+			lastName = TestConstants.LAST_NAME+randomWords;
+			email = firstName+"cons"+timeStamp+TestConstants.EMAIL_SUFFIX;
+			String DisclaimerForQuebec = "Residents of Quebec are not eligible to enroll as Consultants";
+			String socialInsuranceNumber = String.valueOf(CommonUtils.getRandomNum(100000000, 999999999));
+			String emailID = firstName+timeStamp+TestConstants.EMAIL_SUFFIX;
+			sfHomePage.clickEnrollNow();
+			sfHomePage.searchSponsor(TestConstants.SPONSOR);
+			s_assert.assertTrue(sfHomePage.isSponsorResultDisplayed(),"No result found after searching the sponsor with name "+TestConstants.SPONSOR);
+			sfHomePage.selectFirstSponsorFromList();
+			sfHomePage.enterConsultantEnrollmentDetails(firstName, lastName, emailID, password, socialInsuranceNumber);
+			sfHomePage.clickNextButton();
+			s_assert.assertFalse(sfHomePage.isTextVisible(DisclaimerForQuebec), "Disclaimer for Quebec is not visible under kit selection page");
+			s_assert.assertAll();
+		}
+	}
+
+	/***
 	 * qTest : TC-493 Consultant Enrollment- Page 2- North Dakota Checkbox-Unchecked
 	 * 
 	 * Description : This test validates that complete checkout process for consultant

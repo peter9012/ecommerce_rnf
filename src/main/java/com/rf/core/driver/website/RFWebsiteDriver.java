@@ -622,6 +622,7 @@ public class RFWebsiteDriver implements RFDriver,WebDriver {
 	}
 
 	public void moveToElementByJS(By locator) {
+		waitForElementPresent(locator, 5);
 		String strJavaScript = "var element = arguments[0];"
 				+ "var mouseEventObj = document.createEvent('MouseEvents');"
 				+ "mouseEventObj.initEvent( 'mouseover', true, true );"

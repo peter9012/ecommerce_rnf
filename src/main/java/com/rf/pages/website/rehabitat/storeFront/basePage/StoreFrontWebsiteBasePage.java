@@ -338,8 +338,12 @@ public class StoreFrontWebsiteBasePage extends RFBasePage {
 	private String productNameOfAnItemLoc = "//div[@class='orderConfirmationInfo']/descendant::p[%s]";
 	private String topNavigationSublinksWithTextLoc = topNavigationLoc + "//a[contains(text(),'%s')]";
 	private String topNavigationSublinksWithTitleLoc = topNavigationLoc + "//*[contains(@title,'%s')]";
-
+	private String quantityTBForSpecificProductLoc = "//span[normalize-space(text())='%s']//following::input[contains(@id,'quantity') and not(@readonly)][1]";
+	private String updateLinkForSpecificProductLoc = "//span[normalize-space(text())='%s']//following::input[contains(@id,'quantity') and not(@readonly)][1]/following::input[@value='update'][1]";
+	
 	private String RFO_DB = null;
+	private static String productName = null;
+	 
 
 	/***
 	 * This method do the mouseHover on desired webElement
@@ -2377,21 +2381,6 @@ public class StoreFrontWebsiteBasePage extends RFBasePage {
 		return driver.getText(PRODUCT_NAME_ON_CHECKOUT_POPUP_LOC);
 	}
 
-	/**
-	 * This method click on the checkOut Button on the popup on the cart.
-	 * 
-	 * @return
-	 */
-	public StoreFrontCartPage checkoutTheCartFromPopUp() {
-		driver.pauseExecutionFor(5000);
-		driver.quickWaitForElementPresent(CHECKOUT_BUTTON_POPUP_LOC);
-		driver.click(CHECKOUT_BUTTON_POPUP_LOC);
-		logger.info("Clicked on checkout button on the popup");
-		driver.waitForPageLoad();
-		driver.waitForLoadingImageToDisappear();
-		return new StoreFrontCartPage(driver);
-	}
-
 	/***
 	 * This method validates the search results text
 	 * 
@@ -2732,37 +2721,6 @@ public class StoreFrontWebsiteBasePage extends RFBasePage {
 		quantity = "" + Integer.toString((Integer.parseInt(quantity) + 1));
 		logger.info("Updated quantity is " + quantity);
 		return quantity;
-	}
-
-	/***
-	 * This method enter product quantity
-	 * 
-	 * @param itemNumber,
-	 *            quantity
-	 * @return store front Cart page object
-	 * 
-	 */
-	public StoreFrontWebsiteBasePage enterQuantityOfProductAtCart(String itemNumber, String quantity) {
-		if (itemNumber.equalsIgnoreCase("1")) {
-			driver.type(QUANTITY_OF_FIRST_PRODUCT_LOC, quantity);
-		}
-		logger.info("In cart" + itemNumber + " 's qunatity updated as " + quantity);
-		return this;
-	}
-
-	/***
-	 * This method click on update link
-	 * 
-	 * @param itemNumber
-	 * @return store front Cart page object
-	 * 
-	 */
-	public StoreFrontWebsiteBasePage clickOnUpdateLinkThroughItemNumber(String itemNumber) {
-		if (itemNumber.equalsIgnoreCase("1")) {
-			driver.click(UPDATE_LINK_OF_FIRST_PRODUCT_LOC);
-		}
-		logger.info("Update link of " + itemNumber + " is clicked");
-		return this;
 	}
 
 	/***
@@ -4085,5 +4043,49 @@ public class StoreFrontWebsiteBasePage extends RFBasePage {
 		driver.pauseExecutionFor(5000);
 		return new StoreFrontShopSkinCarePage(driver);
 	}
+	
+	/**
+	  * This method click on the checkOut Button on the popup on the cart.
+	  * 
+	  * @return
+	  */
+	 public StoreFrontCartPage checkoutTheCartFromPopUp() {
+	  driver.pauseExecutionFor(5000);
+	  driver.quickWaitForElementPresent(CHECKOUT_BUTTON_POPUP_LOC);
+	  productName = getProductNameFromCheckoutPopup();
+	  driver.click(CHECKOUT_BUTTON_POPUP_LOC);
+	  logger.info("Clicked on checkout button on the popup");
+	  driver.waitForPageLoad();
+	  driver.waitForLoadingImageToDisappear();
+	  return new StoreFrontCartPage(driver);
+	 }
+
+
+	/***
+	  * This method enter product quantity
+	  * 
+	  * @param itemNumber,
+	  *            quantity
+	  * @return store front Cart page object
+	  * 
+	  */
+	 public StoreFrontWebsiteBasePage enterQuantityOfProductAtCart(String itemNumber, String quantity) {
+	  driver.type(By.xpath(String.format(quantityTBForSpecificProductLoc,productName)), quantity);
+	  logger.info("In cart" + productName + " 's quantity updated as " + quantity);
+	  return this;
+	 }
+
+	 /***
+	  * This method click on update link
+	  * 
+	  * @param itemNumber
+	  * @return store front Cart page object
+	  * 
+	  */
+	 public StoreFrontWebsiteBasePage clickOnUpdateLinkThroughItemNumber(String itemNumber) {
+	  driver.click(By.xpath(String.format(updateLinkForSpecificProductLoc,productName)));
+	  logger.info("Update link of " + productName + " is clicked");
+	  return this;
+	 }
 
 }

@@ -2,10 +2,14 @@ package com.rf.pages.website.rehabitat.storeFront;
 
 import org.openqa.selenium.By;
 import org.openqa.selenium.NoSuchElementException;
+import org.openqa.selenium.WebElement;
 import org.openqa.selenium.interactions.Actions;
 
 import com.rf.core.driver.website.RFWebsiteDriver;
 import com.rf.pages.website.rehabitat.storeFront.basePage.StoreFrontWebsiteBasePage;
+
+import java.util.List;
+
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
@@ -14,6 +18,7 @@ public class StoreFrontCartPage extends StoreFrontWebsiteBasePage{
 		super(driver);		
 	}
 
+	private final By REMOVE_LINK_FOR_PRODUCTS_IN_CART_LOC = By.xpath("//button[contains(@id,'removeEntry')]");
 	private static final Logger logger = LogManager
 			.getLogger(StoreFrontCartPage.class.getName());
 	private final By ORDER_TOTAL_LOC = By.xpath("//td[contains(text(),'Order Total')]/following::td[1]");
@@ -185,24 +190,6 @@ public class StoreFrontCartPage extends StoreFrontWebsiteBasePage{
 			logger.info("No products are present in adhoc cart.");
 		}
 		return totalProducts;
-	}
-	/***
-	 * This method removes all product from cart
-	 * 
-	 * @param itemNumber
-	 * @return store front Cart page object 
-	 * 
-	 */
-	public StoreFrontCartPage removeAllProductsFromCart(){
-		while(true){
-			if(driver.isElementPresent(By.xpath(String.format(removeLinkForProductOnCartLoc, "0")))){
-				driver.click(By.xpath(String.format(removeLinkForProductOnCartLoc, "0")));
-				logger.info("Remove link clicked");
-			}else{
-				break;
-			}
-		}
-		return this;
 	}
 
 	/***
@@ -462,6 +449,24 @@ public class StoreFrontCartPage extends StoreFrontWebsiteBasePage{
 		productName = driver.getText(By.xpath(String.format(productNameInCartLoc, itemNumber))).trim();
 		logger.info("product name of "+itemNumber+" is "+productName);
 		return productName;
+	}
+
+	/***
+	 * This method removes all product from cart
+	 * 
+	 * @param itemNumber
+	 * @return store front Cart page object 
+	 * 
+	 */
+	public StoreFrontCartPage removeAllProductsFromCart(){
+		int totalLinksPresent = driver.findElements(REMOVE_LINK_FOR_PRODUCTS_IN_CART_LOC).size();
+		for(int i = 1;i<=totalLinksPresent;i++){
+			List<WebElement> removeLinksForAllProducts = null;
+			removeLinksForAllProducts = driver.findElements(REMOVE_LINK_FOR_PRODUCTS_IN_CART_LOC);
+			removeLinksForAllProducts.get(0).click();
+			logger.info("Remove link clicked");
+		}
+		return this;
 	}
 }
 

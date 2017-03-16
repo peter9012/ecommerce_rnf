@@ -694,7 +694,7 @@ public class ConsultantEnrollmentTest extends StoreFrontWebsiteBaseTest{
 	public void testConsultantEnrollmentWithPulseAndCRP(){
 		navigateToStoreFrontBaseURL();
 		timeStamp = CommonUtils.getCurrentTimeStamp();
-		randomWords = CommonUtils.getRandomWord(5);		
+		randomWords = CommonUtils.getRandomWord(5);  
 		lastName = TestConstants.LAST_NAME+randomWords;
 		email = firstName+"conswpwcrp"+timeStamp+TestConstants.EMAIL_SUFFIX;
 		String socialInsuranceNumber = String.valueOf(CommonUtils.getRandomNum(100000000, 999999999));
@@ -728,17 +728,16 @@ public class ConsultantEnrollmentTest extends StoreFrontWebsiteBaseTest{
 		sfCheckoutPage.clickShippingDetailsNextbutton();
 		sfCheckoutPage.clickBillingDetailsNextbutton();
 		sfCheckoutPage.selectTermsAndConditionsCheckBoxForAutoshipOrder();
-		//		sfCheckoutPage.selectCheckboxForPoliciesAndProcedures();
+		//  sfCheckoutPage.selectCheckboxForPoliciesAndProcedures();
 		sfCheckoutPage.clickConfirmAutoshipOrderButton();
 		s_assert.assertTrue(sfCheckoutPage.isCRPOrderConfirmedSuccessMsgAppeared(),"CRP Order confirmed success messge is not appeared");
 		sfCheckoutPage.clickRodanAndFieldsLogo();
-		consultantWithPulseAndWithCRP="testEmail@gspann.com";
+		consultantWithPulseAndWithCRP=email;
 		pwsPrefix=prefix;
 		userPropertyFile.loadProps(userProps);
 		setUsers("consultantWithPulseAndWithCRP", consultantWithPulseAndWithCRP);
 		setUsers("pwsPrefix", pwsPrefix);
-		s_assert.assertAll();		
-
+		s_assert.assertAll();  
 	}
 
 	@Test(enabled=true, groups={"users"})

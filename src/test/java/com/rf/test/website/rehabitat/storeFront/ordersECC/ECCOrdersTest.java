@@ -16,7 +16,7 @@ import com.rf.test.website.rehabitat.storeFront.baseTest.StoreFrontWebsiteBaseTe
 
 public class ECCOrdersTest extends StoreFrontWebsiteBaseTest{
 
-	private static final int var=4;
+	private static final int var=15;
 	private static int consOrdercounter=0;
 	private static int pcOrdercounter=0;
 	private static int rcOrdercounter=0;
@@ -92,7 +92,7 @@ public class ECCOrdersTest extends StoreFrontWebsiteBaseTest{
 		productName = sfShopSkinCarePage.getProductName(productNumber);
 		sfShopSkinCarePage.addProductToCart(productNumber, TestConstants.ORDER_TYPE_ADHOC);*/
 		productName = validProductName;
-		sfShopSkinCarePage.addProductToCart(TestConstants.PRODUCT_NUMBER, TestConstants.ORDER_TYPE_ENROLLMENT,validProductId);
+		sfShopSkinCarePage.addProductToCart(TestConstants.PRODUCT_NUMBER, TestConstants.ORDER_TYPE_ADHOC,validProductId);
 		sfShopSkinCarePage.checkoutTheCartFromPopUp();
 		itemQty = sfCartPage.getQuantityOfProductFromCart("1");
 		sfCheckoutPage=sfCartPage.checkoutTheCart();

@@ -485,7 +485,7 @@ public class StoreFrontWebsiteBasePage extends RFBasePage {
 	 * 
 	 */
 	public StoreFrontHomePage clickRodanAndFieldsLogo() {
-		driver.pauseExecutionFor(3000);
+		driver.pauseExecutionFor(1000);
 		driver.waitForElementPresent(RODAN_AND_FIELDS_IMAGE_LOC);
 		if (driver.isElementPresent(RODAN_AND_FIELDS_IMAGE_LOC)) {
 			driver.clickByJS(RFWebsiteDriver.driver, RODAN_AND_FIELDS_IMAGE_LOC);
@@ -519,12 +519,12 @@ public class StoreFrontWebsiteBasePage extends RFBasePage {
 	 * 
 	 */
 	public StoreFrontWebsiteBasePage searchSponsor(String sponsor) {
-		driver.pauseExecutionFor(2000);
+		//driver.pauseExecutionFor(2000);
 		driver.type(SPONSOR_SEARCH_FIELD_LOC, sponsor);
 		logger.info("Entered sponsor as " + sponsor);
 		driver.click(SEARCH_SPONSOR_LOC);
 		logger.info("Clicked on 'Search' button");
-		driver.pauseExecutionFor(2000);
+	//	driver.pauseExecutionFor(2000);
 		return this;
 	}
 
@@ -536,7 +536,7 @@ public class StoreFrontWebsiteBasePage extends RFBasePage {
 	 * 
 	 */
 	public void selectFirstSponsorFromList() {
-		driver.pauseExecutionFor(2000);
+		//driver.pauseExecutionFor(2000);
 		driver.click(SELECT_AND_CONTINUE_LOC);
 		logger.info("Clicked on 'Select And Continue' button for first result");
 	}
@@ -1052,15 +1052,10 @@ public class StoreFrontWebsiteBasePage extends RFBasePage {
 	 * 
 	 */
 	public StoreFrontWebsiteBasePage clickWelcomeDropdown() {
-		//		driver.pauseExecutionFor(2000);
-		//		if (driver.isElementPresent(SET_UP_CRP_POPUP_CLOSE_LOC)) {
-		//			driver.click(SET_UP_CRP_POPUP_CLOSE_LOC);
-		//			logger.info("JOIN CRP banner closed");
-		//		}
 		driver.pauseExecutionFor(1000);
 		driver.clickByJS(RFWebsiteDriver.driver, WELCOME_DROPDOWN_LOC);
 		logger.info("Welcome dropdown clicked");
-		driver.pauseExecutionFor(2000);
+		//driver.pauseExecutionFor(2000);
 		return this;
 	}
 
@@ -1669,13 +1664,13 @@ public class StoreFrontWebsiteBasePage extends RFBasePage {
 			String CVV) {
 		String javascript = "document.getElementById('card_accountNumber').value=" + cardNumber + ";"
 				+ "document.getElementById('card_accountNumber').innerHTML=" + cardNumber + ";";
-		driver.pauseExecutionFor(2000);
+		//driver.pauseExecutionFor(2000);
 		driver.quickWaitForElementPresent(CARD_NUMBER_LOC);
 		((JavascriptExecutor) RFWebsiteDriver.driver).executeScript(javascript);
 		logger.info("Entered card number as" + cardNumber);
 		driver.pauseExecutionFor(1000);
 		driver.click(CARD_NUMBER_LOC);
-		driver.pauseExecutionFor(1000);
+		driver.pauseExecutionFor(2000);
 		Actions actions = new Actions(RFWebsiteDriver.driver);
 		WebElement nameOnCardElement = driver.findElement(NAME_ON_CARD_LOC);
 		actions.click(nameOnCardElement).sendKeys(nameOnCardElement, nameOnCard).build().perform();
@@ -1695,11 +1690,11 @@ public class StoreFrontWebsiteBasePage extends RFBasePage {
 		driver.type(EXP_MONTH_DD_LOC, "12");
 		driver.type(EXP_YEAR_DD_LOC, "2025");
 		driver.type(CVV_LOC, CVV);
-		driver.pauseExecutionFor(1000);
+		//driver.pauseExecutionFor(1000);
 		logger.info("Entered CVV as" + CVV);
-		driver.pauseExecutionFor(1000);
+		//driver.pauseExecutionFor(1000);
 		driver.waitForTokenizing();
-		driver.waitForPageLoad();		
+		//driver.waitForPageLoad();		
 		return this;
 	}
 
@@ -1776,7 +1771,7 @@ public class StoreFrontWebsiteBasePage extends RFBasePage {
 	 * 
 	 */
 	public StoreFrontWebsiteBasePage selectPoliciesAndProceduresChkBox() {
-		driver.pauseExecutionFor(3000);
+		driver.pauseExecutionFor(1000);
 		try{
 			driver.turnOffImplicitWaits(2);
 			driver.clickByJS(RFWebsiteDriver.driver, POLICIES_AND_PROCEDURES_CHK_BOX_LOC);
@@ -1800,10 +1795,9 @@ public class StoreFrontWebsiteBasePage extends RFBasePage {
 	 * 
 	 */
 	public StoreFrontWebsiteBasePage selectIAcknowledgeChkBox() {
-		driver.pauseExecutionFor(3000);
+		driver.pauseExecutionFor(2000);
 		driver.clickByJS(RFWebsiteDriver.driver,I_ACKNOWLEDGE_CHK_BOX_LOC);
 		logger.info("I acknowledge checkbox selected");
-		driver.pauseExecutionFor(1000);
 		return this;
 	}
 
@@ -1854,7 +1848,7 @@ public class StoreFrontWebsiteBasePage extends RFBasePage {
 		driver.pauseExecutionFor(1000);
 		driver.clickByJS(RFWebsiteDriver.driver, PC_TERMS_AND_CONDITIONS_CHK_BOX_LOC);
 		logger.info("PC Terms & condition checkbox selected");
-		driver.pauseExecutionFor(2000);
+		//driver.pauseExecutionFor(2000);
 		return this;
 	}
 
@@ -1866,9 +1860,9 @@ public class StoreFrontWebsiteBasePage extends RFBasePage {
 	 * 
 	 */
 	public StoreFrontWebsiteBasePage selectConsentFormChkBox() {
+		driver.pauseExecutionFor(2000);
 		driver.clickByJS(RFWebsiteDriver.driver, E_SIGN_CONSENT_FORM_CHK_BOX_LOC);
 		logger.info("E Sign Consent Form checkbox selected");
-		driver.pauseExecutionFor(2000);
 		return this;
 	}
 
@@ -1880,7 +1874,7 @@ public class StoreFrontWebsiteBasePage extends RFBasePage {
 	 */
 	public boolean isEnrollemntSuccessfulMsgDisplayed() {
 		driver.pauseExecutionFor(2000);
-		driver.waitForElementPresent(ENROLLMENT_SUCCESSFUL_MSG_LOC,20);
+		driver.waitForElementPresent(ENROLLMENT_SUCCESSFUL_MSG_LOC,10);
 		return driver.isElementPresent(ENROLLMENT_SUCCESSFUL_MSG_LOC);
 	}
 
@@ -2789,7 +2783,7 @@ public class StoreFrontWebsiteBasePage extends RFBasePage {
 	 */
 	public StoreFrontWebsiteBasePage clickPlaceOrderButton() {
 		clickBecomeAConsultant();
-		driver.pauseExecutionFor(2000);
+		driver.pauseExecutionFor(1000);
 		driver.waitForPageLoad();
 		return this;
 	}
@@ -2823,11 +2817,14 @@ public class StoreFrontWebsiteBasePage extends RFBasePage {
 	public void clickUseAsEnteredButtonOnPopUp() {
 		try{
 			driver.turnOffImplicitWaits(3);
-			driver.click(USE_AS_ENTERED_BUTTON_LOC);
+			driver.click(USE_AS_ENTERED_BUTTON_LOC,3);
 			driver.waitForElementToBeInVisible(USE_AS_ENTERED_BUTTON_LOC, 50);
 			//driver.pauseExecutionFor(40000); // UI is slow, will be removed
 			logger.info("'Used as entered' button clicked");
 		}catch(Exception e){
+			
+		}
+		finally{
 			driver.turnOnImplicitWaits();
 		}
 	}
@@ -4040,7 +4037,7 @@ public class StoreFrontWebsiteBasePage extends RFBasePage {
 		action.sendKeys(Keys.ENTER);
 		action.perform();
 		logger.info("Hit enter for searching entity");
-		driver.pauseExecutionFor(5000);
+//		driver.pauseExecutionFor(1000);
 		return new StoreFrontShopSkinCarePage(driver);
 	}
 	
@@ -4050,13 +4047,13 @@ public class StoreFrontWebsiteBasePage extends RFBasePage {
 	  * @return
 	  */
 	 public StoreFrontCartPage checkoutTheCartFromPopUp() {
-	  driver.pauseExecutionFor(5000);
+	  driver.pauseExecutionFor(1000);
 	  driver.quickWaitForElementPresent(CHECKOUT_BUTTON_POPUP_LOC);
 	  productName = getProductNameFromCheckoutPopup();
 	  driver.click(CHECKOUT_BUTTON_POPUP_LOC);
 	  logger.info("Clicked on checkout button on the popup");
 	  driver.waitForPageLoad();
-	  driver.waitForLoadingImageToDisappear();
+	 // driver.waitForLoadingImageToDisappear();
 	  return new StoreFrontCartPage(driver);
 	 }
 

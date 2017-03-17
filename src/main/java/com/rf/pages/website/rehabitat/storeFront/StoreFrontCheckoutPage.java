@@ -218,7 +218,7 @@ public class StoreFrontCheckoutPage extends StoreFrontWebsiteBasePage{
 	}
 
 	public void clickCreateAccountButton(String userType){
-		driver.pauseExecutionFor(3000);
+		//driver.pauseExecutionFor(3000);
 		driver.clickByJS(RFWebsiteDriver.driver,CREATE_ACCOUNT_BUTTON_LOC);
 		logger.info("clicked on 'Create Account' button");
 		driver.pauseExecutionFor(1000);
@@ -240,7 +240,7 @@ public class StoreFrontCheckoutPage extends StoreFrontWebsiteBasePage{
 		//			driver.waitForElementNotPresent(CREATE_ACCOUNT_BUTTON_LOC,250);
 		//		}
 		driver.waitForURLNotHaving("/login",250);
-		driver.pauseExecutionFor(1000);//taking too long on UI and tests failing so intentionally adding for smtime,will be  removed later
+		//driver.pauseExecutionFor(1000);//taking too long on UI and tests failing so intentionally adding for smtime,will be  removed later
 		driver.waitForPageLoad();
 	}
 

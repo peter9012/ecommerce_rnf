@@ -692,7 +692,6 @@ public class ConsultantEnrollmentTest extends StoreFrontWebsiteBaseTest{
 
 	@Test(enabled=true, groups={"users"})
 	public void testConsultantEnrollmentWithPulseAndCRP(){
-		navigateToStoreFrontBaseURL();
 		timeStamp = CommonUtils.getCurrentTimeStamp();
 		randomWords = CommonUtils.getRandomWord(5);  
 		lastName = TestConstants.LAST_NAME+randomWords;

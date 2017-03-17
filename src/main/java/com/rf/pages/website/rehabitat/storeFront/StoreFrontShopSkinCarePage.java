@@ -988,7 +988,7 @@ public class StoreFrontShopSkinCarePage extends StoreFrontWebsiteBasePage{
 	 */
 	public String addProductToCart(String productNumber,String orderType,String product){
 		String priceToAssert = null;
-		driver.pauseExecutionFor(3000);
+		//driver.pauseExecutionFor(3000);
 		driver.waitForElementPresent(By.xpath(String.format(addToCartButtonLoc, productNumber)), 15);
 		clickSearchIcon();
 		searchEntityAndHitEnter(product);

@@ -489,16 +489,21 @@ public class StoreFrontAboutMePage extends StoreFrontWebsiteBasePage{
 	 * 
 	 */ 
 	public StoreFrontAboutMePage typeContentOfSelectedQuestion(int num, String msg, int questionNumber){
+		driver.pauseExecutionFor(1000);
 		if(questionNumber==1){
 			driver.switchToFrame(FRAME1_LOC);
+			logger.info("switched to frame");
 			Actions actions = new Actions(RFWebsiteDriver.driver);
 			actions.click(driver.findElement(QUESTION_CONTENT_LOC)).sendKeys(driver.findElement(QUESTION_CONTENT_LOC), msg,(Integer.toString(num))).build().perform();
+			logger.info("Question No 1 is edited");
 			driver.switchTo().defaultContent();
 		}
 		else if (questionNumber==2) {
 			driver.switchToFrame(FRAME2_LOC);
+			logger.info("switched to frame");
 			Actions actions = new Actions(RFWebsiteDriver.driver);
 			actions.click(driver.findElement(QUESTION_CONTENT_LOC)).sendKeys(driver.findElement(QUESTION_CONTENT_LOC), msg,(Integer.toString(num))).build().perform();
+			logger.info("Question No 2 is edited");
 			driver.switchTo().defaultContent();
 		}
 		return this;

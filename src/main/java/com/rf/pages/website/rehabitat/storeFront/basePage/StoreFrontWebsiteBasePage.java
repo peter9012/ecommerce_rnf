@@ -763,6 +763,7 @@ public class StoreFrontWebsiteBasePage extends RFBasePage {
 	public StoreFrontWebsiteBasePage loginToStoreFront(String username, String password, boolean closeCRPReminder) {
 		clickLoginIcon();
 		driver.pauseExecutionFor(1000);
+		driver.quickWaitForElementPresent(USERNAME_TXTFLD_LOC, 3);
 		driver.type(USERNAME_TXTFLD_LOC, username);
 		logger.info("username entered as " + username);
 		driver.type(PASSWORD_TXTFLD_LOC, password);

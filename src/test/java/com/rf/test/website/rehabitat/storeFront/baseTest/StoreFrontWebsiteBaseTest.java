@@ -62,6 +62,8 @@ public class StoreFrontWebsiteBaseTest extends RFBaseTest {
 	protected String CVV = null;
 	protected String timeStamp=null;
 	protected String randomWords = null;
+	protected String validProductName = null;
+	protected String validProductId = null;
 
 	protected String updatedAddressLine1 = null;
 	protected String updatedAddressLine2 = null;
@@ -121,13 +123,13 @@ public class StoreFrontWebsiteBaseTest extends RFBaseTest {
 	 *             for the tests
 	 */
 	@BeforeSuite(alwaysRun=true)
-	public void setUp(ITestContext context) throws Exception {
+	public void setUp() throws Exception {
 		userPropertyFile.loadProps(userProps);
 		driver.loadApplication();
 		driver.setDBConnectionString();
 	}
 
-	@BeforeMethod(alwaysRun=true)
+	/*@BeforeMethod(alwaysRun=true)
 	public void beforeMethod(){
 		s_assert = new SoftAssert();
 		setStoreFrontPassword(driver.getStoreFrontUserPassword());
@@ -138,7 +140,7 @@ public class StoreFrontWebsiteBaseTest extends RFBaseTest {
 			sfHomePage.logout();
 			navigateToStoreFrontBaseURL();
 		}			
-	}
+	}*/
 
 	@BeforeClass(alwaysRun=true)
 	public void setAddressDetailsAsPerCountry(){
@@ -162,6 +164,8 @@ public class StoreFrontWebsiteBaseTest extends RFBaseTest {
 			updatedCity = TestConstants.SECOND_CITY_US;
 			updatedPostalCode = TestConstants.SECOND_POSTAL_CODE_US;
 			stateAbbreviation = TestConstants.STATE_US_ABBREVIATION;
+			validProductName = TestConstants.VALID_PRODUCT_NAME_US;
+			validProductId = TestConstants.VALID_PRODUCT_ID_US;
 		}
 		else if(countryName.equalsIgnoreCase("ca")){
 			addressLine1 = TestConstants.ADDRESS_LINE_1_CA;
@@ -174,6 +178,8 @@ public class StoreFrontWebsiteBaseTest extends RFBaseTest {
 			updatedCity = TestConstants.SECOND_CITY_CA;
 			updatedPostalCode = TestConstants.SECOND_POSTAL_CODE_CA;
 			stateAbbreviation = TestConstants.STATE_CA_ABBREVIATION;
+			validProductName = TestConstants.VALID_PRODUCT_NAME_CA;
+			validProductId = TestConstants.VALID_PRODUCT_ID_CA;
 		}
 	}
 
@@ -328,6 +334,29 @@ public class StoreFrontWebsiteBaseTest extends RFBaseTest {
 	public static String getSuiteName(ITestContext context){
 		String suiteName = context.getCurrentXmlTest().getSuite().getName();
 		return suiteName;
+	}
+
+	//	public void setUpPreRequisites() throws Exception {
+	//		userPropertyFile.loadProps(userProps);
+	//		driver.loadApplication();
+	//		driver.setDBConnectionString();
+	//	}
+
+	@BeforeMethod(alwaysRun=true)
+	public void beforeMethod() throws Exception{
+		s_assert = new SoftAssert();
+		if(sfHomePage.isErrorPagePresent()){
+			driver.quit();
+			setUp();
+		}
+		setStoreFrontPassword(driver.getStoreFrontUserPassword());
+		checkAndCloseMoreThanOneWindows();
+		navigateToStoreFrontBaseURL();
+		if(sfHomePage.isWelcomeUserElementDisplayed()==true){
+			sfHomePage.clickWelcomeDropdown();
+			sfHomePage.logout();
+			navigateToStoreFrontBaseURL();
+		}   
 	}
 
 }

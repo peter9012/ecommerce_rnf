@@ -1,6 +1,7 @@
 package com.rf.pages.website.rehabitat.storeFront;
 
 import org.openqa.selenium.By;
+import org.openqa.selenium.JavascriptExecutor;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.ui.Select;
 
@@ -22,7 +23,7 @@ public class StoreFrontOrdersPage extends StoreFrontWebsiteBasePage{
 			.getLogger(StoreFrontOrdersPage.class.getName());
 
 
-	private final By PULSE_ORDER_ITEM_ON_ORDER_DETAIL_PAGE_LOC = By.xpath("//p[contains(text(),'PULSE Pro One Month FREE Trial')]");
+	private final By PULSE_ORDER_ITEM_ON_ORDER_DETAIL_PAGE_LOC = By.xpath("//p[contains(text(),'Pulse Monthly Subscription')]");
 	private final By FIRST_ORDER_STATUS_IN_AUTOSHIP_ORDER_HISTORY_LOC = By.xpath("//div[contains(text(),'PENDING AUTOSHIP ORDERS')]/following-sibling::div//tbody//a[contains(text(),'Edit')]/../preceding-sibling::td[@class='status']");
 	private final By FIRST_ORDER_NUMBER_UNDER_ORDER_HISTORY_LOC = By.xpath("//div[@id='orderHistoryContentArea']//tr[2]//td[2]/a");
 	private final By FIRST_ACTIONS_DD_UNDER_ORDER_HISTORY_LOC = By.xpath("//div[@id='orderHistoryContentArea']//tr[2]//div[contains(text(),'Actions')]");
@@ -58,7 +59,7 @@ public class StoreFrontOrdersPage extends StoreFrontWebsiteBasePage{
 	private final By ORDER_TYPE_FROM_ORDER_DETAILS_LOC = By.xpath("//span[@class='orderLabel' and contains(text(),'Type')]/following-sibling::span[@class='orderValue'][1]");
 
 	private String productNameLoc = "//p[contains(text(),'%s')]";
-	private String productQuantityLoc = "//p[contains(text(),'%s')]/../following::div[@class='orderQty']";
+	private String productQuantityLoc = "//p[contains(text(),'%s')]/../following::div[@class='orderQty'][text()]";
 	private String orderNumberLoc = "//a[contains(text(),'%s')]";
 	private String optionsLinkUnderReturnOrderSectionLoc = "//div[contains(text(),'RETURN ORDERS AND CREDITS')]/../../descendant::a[contains(text(),'%s')]";
 	private String headerTitleInOrderHistorySection = "//div[@id='orderHistoryContentArea']//th[contains(text(),'%s')]";
@@ -267,7 +268,10 @@ public class StoreFrontOrdersPage extends StoreFrontWebsiteBasePage{
 	 * 
 	 */
 	public StoreFrontOrdersPage navigateBackToOrdersPage(){
-		driver.navigate().back();
+		//JavascriptExecutor js = (JavascriptExecutor) RFWebsiteDriver.driver;
+		//js.executeScript("window.alert = function(){ return true;}");
+		((JavascriptExecutor)RFWebsiteDriver.driver).executeScript("history.back");
+		  ((JavascriptExecutor)RFWebsiteDriver.driver).executeScript("history.go(-1)");
 		logger.info("Navigated back to Orders Page");
 		return this;
 	}
@@ -758,7 +762,7 @@ public class StoreFrontOrdersPage extends StoreFrontWebsiteBasePage{
 		driver.quickWaitForElementPresent(CONFIRM_AUTOSHIP_ORDER_BTN_LOC);
 		driver.clickByJS(RFWebsiteDriver.driver,CONFIRM_AUTOSHIP_ORDER_BTN_LOC);
 		logger.info("CONFIRM button from the popup clicked");
-		driver.pauseExecutionFor(5000);// the functionality taking time, so deliberately added
+		driver.pauseExecutionFor(15000);// the functionality taking time, so deliberately added
 		driver.waitForPageLoad();
 	}
 

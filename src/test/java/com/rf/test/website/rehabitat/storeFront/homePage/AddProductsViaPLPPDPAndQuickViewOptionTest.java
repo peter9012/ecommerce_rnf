@@ -33,7 +33,6 @@ public class AddProductsViaPLPPDPAndQuickViewOptionTest extends StoreFrontWebsit
 		s_assert.assertAll();
 	}
 
-
 	/***
 	 * qTest : TC-114 Add Product to cart from PDP
 	 * Description : This test validates the product added to cart from 
@@ -55,7 +54,7 @@ public class AddProductsViaPLPPDPAndQuickViewOptionTest extends StoreFrontWebsit
 		s_assert.assertTrue(currentURL.contains(category_redefine), "Expected URL should contain "+category_redefine+" but actual on UI is"+currentURL);
 		sfProductDetailPage = sfShopSkinCarePage.clickNameOfProduct(TestConstants.PRODUCT_NUMBER);
 		productName = sfProductDetailPage.getProductNameFromProductDetailsPage();
-		sfProductDetailPage.clickOnAddToCartButton();
+		sfProductDetailPage.addProductToCartFromProductDetailPageAfterLogin(TestConstants.ORDER_TYPE_ADHOC);
 		productNameOnCheckoutPopup = sfProductDetailPage.getProductNameFromCheckoutPopup();
 		s_assert.assertTrue(sfProductDetailPage.isAddedToYourShoppingCartHeadlinePresentOnCheckoutPopup(),"Added to ypur shopping cart header is not present on checkout popup");
 		s_assert.assertTrue(productNameOnCheckoutPopup.contains(productName),"Name of Product added to Bag does not matches with the product name on checkout popup. Expeced : " + productName + ". Actual : " + productNameOnCheckoutPopup);

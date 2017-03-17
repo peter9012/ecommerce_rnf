@@ -3,6 +3,8 @@ package com.rf.pages.website.rehabitat.storeFront;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.openqa.selenium.By;
+import org.openqa.selenium.Keys;
+import org.openqa.selenium.interactions.Actions;
 import org.openqa.selenium.support.ui.Select;
 
 import com.rf.core.driver.website.RFWebsiteDriver;
@@ -41,9 +43,16 @@ public class StoreFrontAboutMePage extends StoreFrontWebsiteBasePage{
 	private final By INSTAGRAM_LOC=By.id("instagramUrl");
 	public final By SAVE_BUTTON_LOC=By.xpath("//input[@value='Save']");
 	public final By CANCEL_BUTTON_LOC=By.xpath("//input[@value='Cancel']");
+	private final By FRAME1_LOC=By.xpath("//div[@id='cke_1_contents']//iframe");
+	private final By FRAME2_LOC=By.xpath("//div[@id='cke_question_2']//iframe");
+	private final By QUESTION_CONTENT_LOC=By.xpath("//p[1]");
+	private final By RF_BUSINESS_CONTENT_JOIN_ABOUT_ME_PAGE_LOC=By.xpath("//p[contains(text(),'Rodan + Fields has brought confidence, freedom')]");
+	//private final By QUESTION2_ON_ABOUTME_PAGE_LOC=By.xpath("//h2[contains(text(),'What I love most about Rodan and Fields')]/following::p[1]");
 
+	private final String resetToDefaultLinkLoc="//h2[contains(text(),'%s')]//a";
 	private String quesOnAboutMePageLoc = "//form[@id='aboutmeFormData']//h2[contains(text(),'%s')]";
 	private String answerOnAboutMePageLoc = "//form[@id='aboutmeFormData']//h2[contains(text(),'%s')]/following-sibling::p";
+	private String question2OnAboutMePageLoc="//h2[contains(text(),'What I love most about Rodan and Fields')]/following::p[contains(text(),'%s')]";
 
 	/***
 	 * This method click Personalize my profile button
@@ -470,5 +479,82 @@ public class StoreFrontAboutMePage extends StoreFrontWebsiteBasePage{
 	public StoreFrontAboutMePage clickCancelButtonAboutMePage(){
 		driver.click(CANCEL_BUTTON_LOC);
 		return this;
+	}
+
+	/***
+	 * This method remove content of 'WHAT I LOVE MOST ABOUT R+F PRODUCTS(FOR PWS)' question on about me page
+	 * 
+	 * @param question name
+	 * @return StoreFrontAboutMePage obj
+	 * 
+	 */ 
+	public StoreFrontAboutMePage typeContentOfSelectedQuestion(int num, String msg, int questionNumber){
+		if(questionNumber==1){
+			driver.switchToFrame(FRAME1_LOC);
+			Actions actions = new Actions(RFWebsiteDriver.driver);
+			actions.click(driver.findElement(QUESTION_CONTENT_LOC)).sendKeys(driver.findElement(QUESTION_CONTENT_LOC), msg,(Integer.toString(num))).build().perform();
+			driver.switchTo().defaultContent();
+		}
+		else if (questionNumber==2) {
+			driver.switchToFrame(FRAME2_LOC);
+			Actions actions = new Actions(RFWebsiteDriver.driver);
+			actions.click(driver.findElement(QUESTION_CONTENT_LOC)).sendKeys(driver.findElement(QUESTION_CONTENT_LOC), msg,(Integer.toString(num))).build().perform();
+			driver.switchTo().defaultContent();
+		}
+		return this;
+	}
+
+	/***
+	 * This method return the content of WHAT I LOVE MOST ABOUT MY R+F BUSINESS(ONLY SHOWS UP ON JOIN PWS)
+	 * 
+	 * @param
+	 * @return content
+	 * 
+	 */ 
+	public String getContentOfRFBusinessQuestion(){
+		String content=null;
+		driver.switchToFrame(FRAME1_LOC);
+		Actions actions = new Actions(RFWebsiteDriver.driver);
+		//String selectAll = Keys.chord(Keys.CONTROL, "a");
+		actions.keyDown(Keys.CONTROL).sendKeys(String.valueOf('\u0061')).perform();
+		content=driver.findElement(QUESTION_CONTENT_LOC).getText();
+		driver.switchTo().defaultContent();
+		return content;
+	}
+
+	/***
+	 * This method click 'Reset To Default' Link in about me page
+	 * 
+	 * @param question name
+	 * @return StoreFrontAboutMePage obj
+	 * 
+	 */ 
+	public StoreFrontAboutMePage clickResetToDefaultLink(String questionName){
+		driver.click(By.xpath(String.format(resetToDefaultLinkLoc, questionName)));
+		logger.info("clicked on 'reset to default' link of question "+questionName);
+		driver.pauseExecutionFor(3000);
+		return this;
+	}
+
+	/***
+	 * This method return the content of WHAT I LOVE MOST ABOUT MY R+F BUSINESS(ONLY SHOWS UP ON JOIN PWS) from JOIN About ME Page
+	 * 
+	 * @param
+	 * @return question content
+	 * 
+	 */ 
+	public String getRFBusinessQuestionContentFromJoinAboutMePage(){
+		return driver.getText(RF_BUSINESS_CONTENT_JOIN_ABOUT_ME_PAGE_LOC);
+	}
+
+	/***
+	 * This method return the content of WHAT I LOVE MOST ABOUT RODAN AND FIELDS(FOR PWS) From About Me Page(PWS)
+	 * 
+	 * @param message
+	 * @return question content
+	 * 
+	 */
+	public String getWhatILoveMostAbtRFQuestionContentFromAboutMePage(String message){
+		return driver.getText(By.xpath(String.format(question2OnAboutMePageLoc, message)));
 	}
 }

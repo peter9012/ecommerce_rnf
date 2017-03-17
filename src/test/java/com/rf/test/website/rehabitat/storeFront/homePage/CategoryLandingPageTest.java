@@ -100,7 +100,7 @@ public class CategoryLandingPageTest extends StoreFrontWebsiteBaseTest{
 	 */
 	@Test(enabled=true)
 	public void testEnhancementsCategoryLandingPage_96(){
-		String category_Enhancements = "ENHANCEMENTS";
+		String category_Enhancements = "ENHANCEMENT";
 		String currentURL = null;
 		sfHomePage.clickCategoryLink(category_Enhancements);
 		currentURL = sfHomePage.getCurrentURL().toUpperCase();
@@ -119,7 +119,7 @@ public class CategoryLandingPageTest extends StoreFrontWebsiteBaseTest{
 	public void testAllProductsLandingPage_95(){
 		String currentURL = null;
 		String allProducts = "shopskincare";
-		
+
 		sfShopSkinCarePage = sfHomePage.clickAllProducts();
 		currentURL = sfHomePage.getCurrentURL().toLowerCase();
 		s_assert.assertTrue(currentURL.contains(allProducts), "Expected URL should contain "+allProducts+" but actual on UI is"+currentURL);

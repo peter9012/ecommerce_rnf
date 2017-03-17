@@ -523,7 +523,7 @@ public class OrdersTest extends StoreFrontWebsiteBaseTest{
 		String text_Shipping = "Shipping";
 		String text_GrandTotal = "GRAND TOTAL";
 		String text_Delivery = "Delivery";
-		String text_OrderTotal = "Order Total";
+		String text_OrderTotal = "Total";
 		String productSVValue = null;
 		String yourPrice = null;
 		String shippingProfileFromOrderConfirmationPage = null;
@@ -546,7 +546,7 @@ public class OrdersTest extends StoreFrontWebsiteBaseTest{
 		sfShopSkinCarePage = sfHomePage.clickAllProducts();
 		//productSVValue = sfShopSkinCarePage.getProductRetailAndSVPrice(TestConstants.PRODUCT_NUMBER);
 		//yourPrice = sfShopSkinCarePage.getYourPriceOfAProduct(TestConstants.PRODUCT_NUMBER);
-		sfShopSkinCarePage.addProductToCart(TestConstants.PRODUCT_NUMBER, TestConstants.ORDER_TYPE_ADHOC);;
+		sfShopSkinCarePage.addProductToCart(TestConstants.PRODUCT_NUMBER, TestConstants.ORDER_TYPE_ADHOC, validProductId);
 		sfShopSkinCarePage.checkoutTheCartFromPopUp();
 		productName = sfCartPage.getProductName("1");
 		productQuantity = sfCartPage.getQuantityOfProductFromCart("1");
@@ -563,7 +563,7 @@ public class OrdersTest extends StoreFrontWebsiteBaseTest{
 		sfCheckoutPage.getCardDetailsFromBillingInfo(billingProfileLastName);
 		ccfourDigits = sfCheckoutPage.getLastFourDigitsOfCardNumberInBillingDetails();
 		ccExpiryDate = sfCheckoutPage.getExpiryDateOfCardNumberInBillingDetails();
-		shippingCharges = sfCheckoutPage.getChargesAccordingToLabelAtOrderReviewPage(text_Delivery);
+		shippingCharges = sfCheckoutPage.getShippingChragesAtCheckoutPage();
 		orderTotal = sfCheckoutPage.getChargesAccordingToLabelAtOrderReviewPage(text_OrderTotal);
 		subTotal = sfCheckoutPage.getChargesAccordingToLabelAtOrderReviewPage(text_Subtotal);
 		sfCheckoutPage.selectPCTermsAndConditionsChkBox();
@@ -652,7 +652,7 @@ public class OrdersTest extends StoreFrontWebsiteBaseTest{
 		String prefix = pwsPrefix();
 		sfHomePage.navigateToUrl(homePageURL + "/pws/" + prefix);
 		sfShopSkinCarePage = sfHomePage.clickAllProducts();
-		sfShopSkinCarePage.addProductToCart(TestConstants.PRODUCT_NUMBER, TestConstants.ORDER_TYPE_ENROLLMENT);
+		sfShopSkinCarePage.addProductToCart(TestConstants.PRODUCT_NUMBER, TestConstants.ORDER_TYPE_ENROLLMENT, validProductId);
 		sfCartPage = sfShopSkinCarePage.checkoutTheCartFromPopUp();
 		sfCheckoutPage = sfCartPage.checkoutTheCart();
 		sfCheckoutPage.fillNewUserDetails(TestConstants.USER_TYPE_PC,firstName, lastName, emailID, password);
@@ -1022,7 +1022,7 @@ public class OrdersTest extends StoreFrontWebsiteBaseTest{
 		String sponsorName = "RF Corporate";
 		String sponsorNameFromUI = null;
 		sfShopSkinCarePage = sfHomePage.clickAllProducts();
-		sfShopSkinCarePage.addProductToCart(TestConstants.PRODUCT_NUMBER, TestConstants.ORDER_TYPE_ENROLLMENT);;
+		sfShopSkinCarePage.addProductToCart(TestConstants.PRODUCT_NUMBER, TestConstants.ORDER_TYPE_ENROLLMENT, validProductId);
 		sfCartPage = sfShopSkinCarePage.checkoutTheCartFromPopUp();
 		sfCheckoutPage = sfCartPage.checkoutTheCart();
 		sfCheckoutPage.fillNewUserDetails(TestConstants.USER_TYPE_PC,firstName, lastName, emailID, password);
@@ -1242,9 +1242,7 @@ public class OrdersTest extends StoreFrontWebsiteBaseTest{
 		String text_Shipping = "Shipping";
 		String text_GrandTotal = "GRAND TOTAL";
 		String text_Delivery = "Delivery";
-		String text_OrderTotal = "Order Total";
-		String productSVValue = null;
-		String yourPrice = null;
+		String text_OrderTotal = "Total";
 		String orderStatus= null;
 		String shippingProfileFromOrderConfirmationPage = null;
 		String shippingMethodFromOrderConfirmationPage = null;
@@ -1255,9 +1253,6 @@ public class OrdersTest extends StoreFrontWebsiteBaseTest{
 		String shippingChargeAtOrderConfirmationPage = null;
 		String subTotalAtOrderConfirmationPage = null;
 		String productQtyAtOrderDetailsPage = null;
-		String productSVAtOrderDetailsPage = null;
-		String productUnitPriceAtOrderDetailsPage = null;
-		String productNameAtOrderDetailsPage = null;
 
 		//sfHomePage.loginToStoreFront(consultantWithPulseAndWithCRP(), password,true);
 		sfHomePage.loginToStoreFront(consultantWithPulseAndWithCRP(), password,true);
@@ -1265,9 +1260,7 @@ public class OrdersTest extends StoreFrontWebsiteBaseTest{
 		sfCartPage.removeAllProductsFromCart();
 		sfCartPage.clickRodanAndFieldsLogo();
 		sfShopSkinCarePage = sfHomePage.clickAllProducts();
-		productSVValue = sfShopSkinCarePage.getProductRetailAndSVPrice(TestConstants.PRODUCT_NUMBER);
-		//yourPrice = sfShopSkinCarePage.getYourPriceOfAProduct(TestConstants.PRODUCT_NUMBER);
-		sfShopSkinCarePage.addProductToCart(TestConstants.PRODUCT_NUMBER, TestConstants.ORDER_TYPE_ADHOC);;
+		sfShopSkinCarePage.addProductToCart(TestConstants.PRODUCT_NUMBER, TestConstants.ORDER_TYPE_ADHOC, validProductId);
 		sfShopSkinCarePage.checkoutTheCartFromPopUp();
 		productName = sfCartPage.getProductName("1");
 		productQuantity = sfCartPage.getQuantityOfProductFromCart("1");
@@ -1277,14 +1270,14 @@ public class OrdersTest extends StoreFrontWebsiteBaseTest{
 		shippingProfile = sfCheckoutPage.getDefaultShippingAddressNameAtCheckoutPage();
 		sfCheckoutPage.clickShippingDetailsNextbutton();
 		sfCheckoutPage.clickAddNewBillingProfileButton();
-		sfCheckoutPage.enterUserBillingDetails(TestConstants.CARD_TYPE, TestConstants.CARD_NUMBER, TestConstants.CARD_NAME, TestConstants.CVV);
+		sfCheckoutPage.enterUserBillingDetails(cardType, cardNumber, cardName, CVV);
 		sfCheckoutPage.clickBillingDetailsNextbutton();
 		billingProfileName = sfCheckoutPage.getBillingProfileName();
 		billingProfileLastName = sfCheckoutPage.getLastName(billingProfileName);
 		sfCheckoutPage.getCardDetailsFromBillingInfo(billingProfileLastName);
 		ccfourDigits = sfCheckoutPage.getLastFourDigitsOfCardNumberInBillingDetails();
 		ccExpiryDate = sfCheckoutPage.getExpiryDateOfCardNumberInBillingDetails();
-		shippingCharges = sfCheckoutPage.getChargesAccordingToLabelAtOrderReviewPage(text_Delivery);
+		shippingCharges = sfCheckoutPage.getShippingChragesAtCheckoutPage();
 		orderTotal = sfCheckoutPage.getChargesAccordingToLabelAtOrderReviewPage(text_OrderTotal);
 		subTotal = sfCheckoutPage.getChargesAccordingToLabelAtOrderReviewPage(text_Subtotal);
 		sfCheckoutPage.selectPCTermsAndConditionsChkBox();
@@ -1415,7 +1408,7 @@ public class OrdersTest extends StoreFrontWebsiteBaseTest{
 		String sponsorName = "RF Corporate";
 		String sponsorNameFromUI = null;
 		sfShopSkinCarePage = sfHomePage.clickAllProducts();
-		sfShopSkinCarePage.addProductToCart(TestConstants.PRODUCT_NUMBER, TestConstants.ORDER_TYPE_ENROLLMENT);;
+		sfShopSkinCarePage.addProductToCart(TestConstants.PRODUCT_NUMBER, TestConstants.ORDER_TYPE_ENROLLMENT, validProductId);
 		sfCartPage = sfShopSkinCarePage.checkoutTheCartFromPopUp();
 		sfCheckoutPage = sfCartPage.checkoutTheCart();
 		sfCheckoutPage.fillNewUserDetails(TestConstants.USER_TYPE_RC,firstName, lastName, emailID, password);

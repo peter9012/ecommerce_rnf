@@ -45,7 +45,11 @@ public class StoreFrontWebsiteBasePage extends RFBasePage {
 		this.driver = driver;
 	}
 
+
 	private final By ADD_MORE_ITEMS_BTN_LOC = By.xpath("//div[@class='container']/descendant::button[contains(text(),'Add More Items')][2]");
+	protected final By TOTAL_CATEGORY_NAME_LOC = By.xpath("//div[@id='product-facet']//descendant::ul[2]/li//input[contains(@id,'ID')]");
+	private final By SELECT_AND_CONTINUE_FIRST_SPONSER_LOC = By.xpath(
+			"//div[@id='findConsultantResultArea']/descendant::div[contains(@class,'consultant-box')][1]//input[@id='consultantUid']");
 	private final By ADDRESS_NON_DELIVERABLE_WARNING_MSG_LOC = By.xpath("//div[@id='cboxLoadedContent']/h3");
 	private final By EDIT_ADDRESS_BTN_ON_ADDRESS_SUGGESTION_POPUP_LOC = By.xpath("//div[@id='cboxLoadedContent']//button[@id='closePopupForEditAddress']");
 	private final By YES_BUTTON_ON_ADDRESS_SUGGESTION_MODAL_LOC  =  By.xpath("//div[@id='cboxContent']//button[@id='suggestedAddress']");
@@ -168,7 +172,7 @@ public class StoreFrontWebsiteBasePage extends RFBasePage {
 	private final By I_ACKNOWLEDGE_PC_CHK_BOX_LOC = By.xpath("//input[@id='Terms2']");
 	private final By BILLING_NEXT_BUTTON_LOC = By.id("cmdSubmit");
 	private final By BECOME_A_CONSULTANT_BTN_LOC = By.id("placeOrder");
-	private final By ENROLLMENT_SUCCESSFUL_MSG_LOC = By.xpath("//*[contains(text(),'ENROLLMENT SUCCESSFUL')]");
+	private final By ENROLLMENT_SUCCESSFUL_MSG_LOC = By.xpath("//*[contains(text(),'ENROLLMENT SUCCESSFUL') or contains(text(),'Step One is complete. Your order number is')]");
 	private final By REMOVE_LINK_LOC = By.xpath("//a[contains(text(),'REMOVE')]");
 	private final By CONSULTANT_ONLY_PRODUCTS_LINK_LOC = By
 			.xpath("//div[@class='navbar-inverse']//a[@title='CONSULTANT ONLY']");
@@ -234,8 +238,6 @@ public class StoreFrontWebsiteBasePage extends RFBasePage {
 	private final By PC_TERMS_AND_CONDITIONS_LINK_LOC = By.xpath("//a[contains(text(),'PC Perks Terms & Conditions')]");
 	private final By POLICIES_AND_PROCEDURES_CHK_BOX_PC_LOC = By.xpath("//input[@id='Terms2']");
 	private final By TERMS_AND_CONDITIONS_CHK_BOX_PC_LOC = By.xpath("//input[@id='Terms1']");
-	private final By SELECT_AND_CONTINUE_FIRST_SPONSER_LOC = By.xpath(
-			"//div[@id='findConsultantResultArea']/descendant::div[contains(@class,'consultant-box')][1]//span[@id='selectd-consultant']");
 	protected final By CART_PRODUCT_LOC = By
 			.xpath("//ul[contains(@class,'item-list cart')]/li[@class='item-list-item']");
 	private final By EDIT_LINK_NEXT_TO_MAIN_ACCOUNT_LOC = By
@@ -300,7 +302,10 @@ public class StoreFrontWebsiteBasePage extends RFBasePage {
 	protected final By SHOP_BY_PRICE_FILTER_OPTION_HIGH_TO_LOW_LOC = By.xpath("//select[@id='sortOptions1']/descendant::option[2]");
 	private final By WHY_RF_LOC = By.xpath(topNavigationLoc + "//a[contains(@title,'WHY')]");
 	private final By MEET_OUR_COMMUNITY_LOC = By.xpath(topNavigationLoc + "//a[contains(@title,'MEET OUR')]");
+	private final By EEROR_PAGE_LOC = By.xpath("//b[contains(text(),'Status code')]");
 
+	protected String randomCategoryNameLoc = "//input[@id='%s']/..";
+	private String selectAndContinueSponserLoc = "//div[@id='findConsultantResultArea']/descendant::div[contains(@class,'consultant-box')][%s]//input[@id='consultantUid']";
 	protected String priceOfProductLoc = "//div[contains(@class,'product__listing')]/descendant::span[@id='retail'][contains(text(),'$')][%s]";
 	private String productNameAllItemsInCartLoc = "//span[@class='item-name' and contains(text(),%s)]";
 	protected String addToCartButtonLoc = "//div[contains(@class,'product__listing')]/descendant::*[contains(text(),'Add to bag')][%s]";
@@ -315,7 +320,6 @@ public class StoreFrontWebsiteBasePage extends RFBasePage {
 	protected String mandatoryFieldErrorMsgOfAddressForNewBillingProfileLoc = "//div[@id='billingAddressForm']//label[contains(@id,'%s-error') and contains(text(),'This field is required.')]";
 	private String productNameInAllItemsInCartLoc = "//span[@class='item-name' and contains(text(),'%s')]";
 	private String productQuantityInAllItemsLoc = "//span[@class='item-name' and contains(text(),'%s')]/following::div//div[@class='qty']//input[contains(@id,'quantity')]";
-	private String selectAndContinueSponserLoc = "//div[@id='findConsultantResultArea']/descendant::div[contains(@class,'consultant-box')][%s]//span[@id='selectd-consultant']";
 	private String pageHeaderLoc = "//div[@class='page-container']//*[contains(text(),'%s')]";
 	private String disclaimerPageLinkLoc = "//a[contains(text(),'%s')]";
 	private String pressRoomTabsLoc = "//ul[@class='tabs']//li/a[contains(text(),'%s')]";
@@ -329,7 +333,7 @@ public class StoreFrontWebsiteBasePage extends RFBasePage {
 	private String navigationPageNumberLoc = "//ul[@class='pagination']//a[contains(text(),'%s')]";
 	private String subLinkUnderAboutRFLoc = topNavigationLoc + "//a[@title='%s']/following::a[text()='%s'][1]";
 	private String footerLinkLoc = "//div[@class='footer-sections']//a[text()='%s']";
-	private String countryOptionsInToggleButtonLoc = "//div[@class='wSelect-options-holder']//div[contains(text(),'%s')]";
+	protected String countryOptionsInToggleButtonLoc = "//div[@class='wSelect-options-holder']//div[contains(text(),'%s')]";
 	private String socialMediaLinkAtFooterLoc = "//a[contains(@class,'%s')]";
 	private String sponsorEmptyFieldValidationOnPopUpLoc = "//label[@id='sponsor.%s-error'][contains(text(),'%s')]";
 	private String sponsorInvalidFieldValidationOnPopUpLoc = "//label[@id='sponsor.%s-error'][contains(text(),'%s')]";
@@ -485,6 +489,7 @@ public class StoreFrontWebsiteBasePage extends RFBasePage {
 	 * 
 	 */
 	public StoreFrontHomePage clickRodanAndFieldsLogo() {
+		driver.pauseExecutionFor(3000);
 		driver.waitForElementPresent(RODAN_AND_FIELDS_IMAGE_LOC);
 		if (driver.isElementPresent(RODAN_AND_FIELDS_IMAGE_LOC)) {
 			driver.clickByJS(RFWebsiteDriver.driver, RODAN_AND_FIELDS_IMAGE_LOC);
@@ -703,7 +708,7 @@ public class StoreFrontWebsiteBasePage extends RFBasePage {
 	 * 
 	 */
 	public StoreFrontWebsiteBasePage clickSearchIcon() {
-		driver.click(SEARCH_ICON_LOC);
+		driver.clickByJS(SEARCH_ICON_LOC);
 		logger.info("clicked on Search Icon");
 		return this;
 	}
@@ -2724,49 +2729,13 @@ public class StoreFrontWebsiteBasePage extends RFBasePage {
 	}
 
 	/***
-	 * This method selects the first sponsor name in the search result and
-	 * return sponser email.
-	 * 
-	 * @param sponsor
-	 * @return
-	 * 
-	 */
-	public String selectAndReturnFirstSponsorFromList() {
-		String sponserName = driver.findElement(SELECT_AND_CONTINUE_FIRST_SPONSER_LOC).getText();
-		driver.clickByJS(RFWebsiteDriver.driver, SELECT_AND_CONTINUE_FIRST_SPONSER_LOC);
-		logger.info("Clicked on 'Select And Continue' button for first result");
-		logger.info("selected first sponser name is " + sponserName);
-		driver.pauseExecutionFor(2000);
-		return sponserName;
-	}
-
-	/***
-	 * This method selects and return the sponsor name in the search result.
-	 * 
-	 * @param sponsor
-	 * @return
-	 * 
-	 */
-	public String selectAndReturnSponsorFromList(String sponserNumber) {
-		driver.pauseExecutionFor(2000);
-		String sponserName = driver.findElement(By.xpath(String.format(selectAndContinueSponserLoc, sponserNumber)))
-				.getText();
-		driver.clickByJS(RFWebsiteDriver.driver,By.xpath(String.format(selectAndContinueSponserLoc, sponserNumber)));
-		// driver.click(By.xpath(String.format(selectAndContinueSponserLoc,
-		// sponserNumber)));
-		logger.info("Clicked on 'Select And Continue' button for" + sponserNumber + " result");
-		logger.info("selected sponser name is " + sponserName);
-		driver.pauseExecutionFor(2000);
-		return sponserName;
-	}
-
-	/***
 	 * This method verifies if change sponser link present on account info page
 	 * displayed or not
 	 * 
 	 * @return
 	 */
 	public boolean isChangeSponserLinkDisplayed() {
+		driver.pauseExecutionFor(2000);
 		return driver.isElementVisible(REMOVE_LINK_LOC);
 	}
 
@@ -3928,7 +3897,7 @@ public class StoreFrontWebsiteBasePage extends RFBasePage {
 	 * 
 	 */
 	public boolean isOrderPlacedSuccessfully(){
-		driver.quickWaitForElementPresent(CONFIRMATION_MSG_OF_PLACED_ORDER_LOC);
+		driver.waitForElementPresent(CONFIRMATION_MSG_OF_PLACED_ORDER_LOC);
 		//		String confirmationText= driver.getText(CONFIRMATION_MSG_OF_PLACED_ORDER_LOC);
 		if(driver.isElementPresent(CONFIRMATION_MSG_OF_PLACED_ORDER_LOC)){
 			return true;
@@ -4051,6 +4020,7 @@ public class StoreFrontWebsiteBasePage extends RFBasePage {
 	public String getProductNumberIncrementedByOne(String productNumber){
 		return Integer.toString(Integer.parseInt(productNumber)+1);
 	}
+
 	
 	////////////////
 	
@@ -4065,6 +4035,109 @@ public class StoreFrontWebsiteBasePage extends RFBasePage {
 		driver.get(driver.getCurrentUrl().replace("?clear=true","")+"/All-Skincare/c/shopskincare");
 		logger.info("clicked on 'All Products'");
 		driver.waitForPageLoad();
+		productPriceFilterHighToLow();
 		return new StoreFrontShopSkinCarePage(driver);
 	}
+
+	/***
+	 * This method validate the error page is present ot not 
+	 * 
+	 * @param
+	 * @return String
+	 * 
+	 */
+	public boolean isErrorPagePresent(){
+		return driver.isElementPresent(EEROR_PAGE_LOC);
+	}
+
+	/***
+	 * This method get total of all products in mini cart
+	 * 
+	 * @param countryName
+	 * @return String total
+	 * 
+	 */
+	public String gettotalofItemsInMiniCart(String countryName){
+		List<WebElement> prices = driver.findElements(TOTAL_PRICE_OF_ITEMS_IN_MINI_CART_LOC);
+		float totalPrice = 0;
+		if(countryName.equalsIgnoreCase("us")){
+			for(WebElement productPrice : prices){
+				float price = Float.parseFloat(productPrice.getText().replace("$", "").trim());
+				totalPrice = totalPrice + price;
+			}
+		}else if(countryName.equalsIgnoreCase("ca")){
+			for(WebElement productPrice : prices){
+				float price = Float.parseFloat(productPrice.getText().replace("CAD$", "").trim());
+				totalPrice = totalPrice + price;
+			}
+		}
+		logger.info("Total Price of Items in Cart : " + totalPrice);
+		return String.valueOf(totalPrice);
+	}
+
+	/***
+	 * This method selects the first sponsor name in the search result and
+	 * return sponser email.
+	 * 
+	 * @param sponsor
+	 * @return
+	 * 
+	 */
+	public String selectAndReturnFirstSponsorFromList() {
+		String sponserName = driver.findElement(SELECT_AND_CONTINUE_FIRST_SPONSER_LOC).getAttribute("value");
+		driver.clickByJS(RFWebsiteDriver.driver, SELECT_AND_CONTINUE_FIRST_SPONSER_LOC);
+		logger.info("Clicked on 'Select And Continue' button for first result");
+		logger.info("selected first sponser name is " + sponserName);
+		driver.pauseExecutionFor(2000);
+		return sponserName;
+	}
+
+
+	/***
+	 * This method selects and return the sponsor name in the search result.
+	 * 
+	 * @param sponsor
+	 * @return
+	 * 
+	 */
+	public String selectAndReturnSponsorFromList(String sponserNumber) {
+		driver.pauseExecutionFor(2000);
+		String sponserName = driver.findElement(By.xpath(String.format(selectAndContinueSponserLoc, sponserNumber)))
+				.getAttribute("value");
+		driver.clickByJS(RFWebsiteDriver.driver,By.xpath(String.format(selectAndContinueSponserLoc, sponserNumber)));
+		logger.info("Clicked on 'Select And Continue' button for" + sponserNumber + " result");
+		logger.info("selected sponser name is " + sponserName);
+		driver.pauseExecutionFor(2000);
+		return sponserName;
+	}
+
+	/***
+	 * This method enter search text in search textfield and click enter
+	 * 
+	 * @param String textToSearch
+	 * @return store front Home page object
+	 * @throws AWTException 
+	 * 
+	 */
+	public StoreFrontShopSkinCarePage searchEntityAndHitEnter(String textToSearch){
+		driver.pauseExecutionFor(2000);
+		driver.type(SEARCH_BOX, textToSearch);
+////		Actions action = new Actions(RFWebsiteDriver.driver);
+////		action.sendKeys(Keys.ENTER);
+//		Robot robot = null;
+//		try {
+//			robot = new Robot();
+//		} catch (AWTException e) {
+//			// TODO Auto-generated catch block
+//			e.printStackTrace();
+//		}
+//		robot.keyPress(KeyEvent.VK_ENTER);
+//		robot.keyRelease(KeyEvent.VK_ENTER);
+		
+		driver.findElement(SEARCH_BOX).sendKeys(Keys.ENTER);
+		logger.info("Hit enter for searching entity");
+		driver.pauseExecutionFor(5000);
+		return new StoreFrontShopSkinCarePage(driver);
+	}
+
 }

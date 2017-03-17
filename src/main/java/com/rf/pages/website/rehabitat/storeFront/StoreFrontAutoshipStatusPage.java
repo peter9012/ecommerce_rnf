@@ -382,7 +382,7 @@ public class StoreFrontAutoshipStatusPage extends StoreFrontWebsiteBasePage{
 		driver.pauseExecutionFor(2000);
 		return this;
 	}
-	
+
 	public StoreFrontAutoshipStatusPage clickYesChangeMyAutoshipDateBtn(){
 		driver.click(YES_CHANGE_MY_AUTOSHIP_DATE_BTN_LOC);
 		logger.info("clicked on 'Yes Change My autoship date button'");
@@ -519,19 +519,6 @@ public class StoreFrontAutoshipStatusPage extends StoreFrontWebsiteBasePage{
 	}
 
 	/***
-	 * This method click on confirm cancel CRP button on 
-	 * autoship status page
-	 * @param
-	 * @return store front autoship status page object
-	 * 
-	 */
-	public StoreFrontAutoshipCartPage clickCancelCRPButton(){
-		driver.click(CANCEL_CRP_BUTTON_LOC);
-		logger.info("Cancel CRP button clicked on autoship status page");
-		return new StoreFrontAutoshipCartPage(driver);
-	}
-
-	/***
 	 * This method get the success message for actions performed
 	 *
 	 * @param
@@ -629,6 +616,19 @@ public class StoreFrontAutoshipStatusPage extends StoreFrontWebsiteBasePage{
 			logger.info("Pulse cancellation popup not present");
 		}
 		return pulsePopup;
+	}
+
+	/***
+	 * This method click on confirm cancel CRP button on 
+	 * autoship status page
+	 * @param
+	 * @return store front autoship status page object
+	 * 
+	 */
+	public StoreFrontAutoshipCartPage clickCancelCRPButton(){
+		driver.clickByJS(RFWebsiteDriver.driver,CANCEL_CRP_BUTTON_LOC);
+		logger.info("Cancel CRP button clicked on autoship status page");
+		return new StoreFrontAutoshipCartPage(driver);
 	}
 
 }

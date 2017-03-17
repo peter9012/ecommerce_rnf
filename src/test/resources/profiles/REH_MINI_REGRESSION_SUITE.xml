@@ -19,12 +19,12 @@
 			<class name="com.rf.test.website.rehabitat.storeFront.PCEnrollmentTest">
 				<methods>
 					<include name="testPCEnrollmentWithoutSponsor"></include>
-					<include name="testPCEnrollmentWithPWSSponsor"></include>
+					<include name="testPCEnrollmentWithPWSSponsor_452"></include>
 				</methods>
 			</class>
 			<class name="com.rf.test.website.rehabitat.storeFront.RCEnrollmentTest">
 				<methods>
-					<include name="testRCEnrollmentWithOrderWithoutSponsor"></include>
+					<include name="testRCEnrollmentWithOrderWithoutSponsor_550"></include>
 					<include name="testRCEnrollmentWithSponsor"></include>
 				</methods>
 			</class>
@@ -82,7 +82,8 @@
 			</class>
 			<class name="com.rf.test.website.rehabitat.storeFront.AboutMeTest">
 				<methods>
-					<include name="testPersonalizingPWSAboutMePageSaveChanges_579"></include>
+					<include name="testConsultantAddsTheContentOnTheQuestions_614"></include>
+					<include name="testPersonalizingPWSAboutMePageSaveChanges_579"></include>					
 				</methods>
 			</class>
 		</classes>

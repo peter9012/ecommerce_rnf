@@ -10,24 +10,41 @@
 		<classes>
 			<class name="com.rf.test.website.rehabitat.storeFront.PCEnrollmentTest">
 				<methods>
-				<include name="testPCEnrollment_452"></include>
-				<include name="testPCEnrollmentTCCheckboxNotSelected_481"></include>
-				<include name="testPCEnrollmentSelectSponsor_495"></include>
-				<include name="testAutoAssignConsultantPcEnrollment_573"></include>
-				<include name="testUpdateSponserDuringPCEnrollment_574"></include>
-				<include name="testUpdateSponserAfterPCEnrollment_575"></include>
-				<include name="testPCRegisteringFromPWSWillHaveDefaultsponsor_496"></include>
-				<include name="testPCEnrollmentWithPWSSponsor"></include>
+					<include name="testPCIncompleteEnrollment_451"></include>
+					<include name="testPCEnrollmentTCCheckboxSelected_480"></include>
+					<include name="testPCEnrollmentTCCheckboxNotSelected_481"></include>
+					<include name="testPCEnrollmentSelectSponsor_495"></include>
+					<include name="testAutoAssignConsultantPcEnrollment_573"></include>
+					<include name="testUpdateSponserDuringPCEnrollment_574"></include>
+					<include name="testUpdateSponserAfterPCEnrollment_575"></include>
+					<include name="testPCRegisteringFromPWSWillHaveDefaultsponsor_496"></include>
+					<include name="testPCEnrollmentWithPWSSponsor_452"></include>
+					<include name="testPCEnrollmentWithoutSponsor"></include>
 				</methods>
 			</class>
-			<class name="com.rf.test.website.rehabitat.storeFront.UserRegistrationTest">
+			<class name="com.rf.test.website.rehabitat.storeFront.RCEnrollmentTest">
+<<<<<<< HEAD
+				<groups>
+					<run>
+						<exclude name="users" />
+					</run>
+				</groups>
+			</class>
+			<!-- <class
+				name="com.rf.test.website.rehabitat.storeFront.UserRegistrationTest">
+			</class> -->
+=======
 				<methods>
-				<include name="testRCEnrollmentFromPWSSite_551"></include>
-				<include name="testRCEnrollmentWithoutOrder"></include>
-				<include name="testRCEnrollmentWithOrderWithoutSponsor_550"></include>
-				<include name="testRCEnrollmentWithSponsor"></include>
+					<include name="testRCEnrollmentFromPWSSite_551"></include>
+					<include name="testRCEnrollmentWithOrderWithoutSponsor_550"></include>
+					<include name="testRCEnrollmentWithSponsor"></include>
 				</methods>
+<<<<<<< HEAD
 			</class>			
+>>>>>>> 52972a3d47bc602c0f4558ecd6b9f40eff901021
+=======
+			</class>
+>>>>>>> 58dcae2dccfaa7df789107d450cb7b1668fd581a
 		</classes>
 	</test>
 </suite>

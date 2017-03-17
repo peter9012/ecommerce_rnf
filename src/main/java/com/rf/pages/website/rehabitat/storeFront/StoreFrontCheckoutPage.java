@@ -24,6 +24,7 @@ public class StoreFrontCheckoutPage extends StoreFrontWebsiteBasePage{
 	private static final Logger logger = LogManager
 			.getLogger(StoreFrontCheckoutPage.class.getName());
 
+	private final By SPONSOR_NAME_ACCOUNT_INFO_LOC = By.xpath("//span[@id='selectd-consultant']");
 	// private final By TERMS_AND_CONDITIONS_CHCKBOX_FOR_CONSULTANT_CRP_LOC = By.xpath("//a[contains(text(),'Consultant Replenishment Program Terms & Conditions')]/ancestor::label[1]/preceding-sibling::input[1]");
 	private final By TERMS_AND_CONDITIONS_CHCKBOX_FOR_AUTOSHIP_LOC = By.xpath("//a[contains(text(),'Terms & Conditions')]/ancestor::label[1]/preceding-sibling::input[@id][1]");
 	//	private final By TERMS_AND_CONDITIONS_CHCKBOX_FOR_AUTOSHIP_LOC = By.xpath("//a[contains(text(),'Terms & Conditions')]/ancestor::label[1]/preceding-sibling::input[1]");
@@ -145,7 +146,6 @@ public class StoreFrontCheckoutPage extends StoreFrontWebsiteBasePage{
 	private final By EXP_YEAR_DD_AFTER_EDIT_PROFILE_LOC= By.xpath("//div[@id='account-billing-container']//select[@id='ExpiryYear']");
 	private final By EXP_YEAR_AFTER_EDIT_PROFILE_LOC= By.xpath("//div[@id='account-billing-container']//select[@id='ExpiryYear']//option[11]");
 	private final By CVV_AFTER_EDIT_PROFILE_LOC= By.xpath("//div[@id='account-billing-container']//input[@id='card_cvNumber']");
-	private final By SPONSOR_NAME_ACCOUNT_INFO_LOC = By.xpath("//input[@id='consultantUid']/preceding::span[@id='selectd-consultant'][1]");
 	private final By NOT_YOUR_CONSULTAN_LINK_LOC = By.id("not-your-autoSponsor");
 	private final By CLOSE_BTN_OF_POPUP_LOC = By.id("close_popup");
 	private final By USE_SAVED_CARD_BTN_LOC = By.xpath("//button[contains(text(),'Use a saved card')]");
@@ -166,7 +166,9 @@ public class StoreFrontCheckoutPage extends StoreFrontWebsiteBasePage{
 	//private final By TERMS_AND_CONDITIONS_CHCKBOX_FOR_CONSULTANT_CRP_LOC = By.xpath("//a[contains(text(),'Consultant Replenishment Program Terms & Conditions')]/ancestor::label[1]/preceding-sibling::input[1]");
 	private final By EDIT_LINK_OF_BILLING_PROFILE_LOC=By.xpath("//div[contains(text(),'Billing')]/following::a[1]");
 	private final By EDIT_LINK_OF_SHIPPING_SECTION_LOC=By.xpath("//div[@class='checkout-shipping']//a[1]");
-
+	private final By SEARCHED_SELECTED_SPONSOR_LOC = By.xpath("//div[@class='customerid']/preceding::span[@id='selectd-consultant'][1]");
+	private final By SHIPPING_CHARGES_LOC = By.xpath("//div[@class='shipping']/span");
+	
 	private String useThisAddressBtnInAddressBookLoc = "//div[@id='addressbook']/descendant::form[@id='useShipAddressFromBook'][%s]//button";
 	private String profileNameFromAddressBookLoc = "//div[@id='addressbook']/descendant::strong[%s]";
 	private String useThisPaymentDetailsBtnInSavedCardLoc = "//div[@id='savedpaymentsbody']/descendant::button[contains(text(),'Use these payment details')][%s]";
@@ -252,7 +254,7 @@ public class StoreFrontCheckoutPage extends StoreFrontWebsiteBasePage{
 	 * 
 	 */
 	public StoreFrontCheckoutPage clickAddNewShippingAddressButton(){
-		driver.click(ADD_NEW_SHIPPING_ADDRESS_BUTTON_LOC);
+		driver.clickByJS(RFWebsiteDriver.driver,ADD_NEW_SHIPPING_ADDRESS_BUTTON_LOC);
 		logger.info("Add new shipping address button clicked");
 		driver.pauseExecutionFor(2000);
 		return this;
@@ -1103,7 +1105,7 @@ public class StoreFrontCheckoutPage extends StoreFrontWebsiteBasePage{
 		return isMandatoryFieldMsgPresentForTheField("firstName") &&
 				isMandatoryFieldMsgPresentForTheField("line1") &&
 				isMandatoryFieldMsgPresentForTheField("townCity") &&
-				isMandatoryFieldMsgPresentForTheField("region") &&
+				//				isMandatoryFieldMsgPresentForTheField("region") &&
 				isMandatoryFieldMsgPresentForTheField("postcode") &&
 				isMandatoryFieldMsgPresentForTheField("phone");
 	}
@@ -1783,6 +1785,7 @@ public class StoreFrontCheckoutPage extends StoreFrontWebsiteBasePage{
 	 * @return boolean
 	 */
 	public boolean isSponsorSelected(){
+		driver.pauseExecutionFor(2000);
 		return driver.isElementVisible(SELECTED_SPONSOR_LOC);
 	}
 
@@ -1890,4 +1893,27 @@ public class StoreFrontCheckoutPage extends StoreFrontWebsiteBasePage{
 		return this;
 	}
 
+	/**
+	 * This method verify the sponsor is selected or not
+	 * 
+	 * @param 
+	 * @return boolean
+	 */
+	public boolean isSearchedSponsorSelected(){
+		return driver.isElementPresent(SEARCHED_SELECTED_SPONSOR_LOC);
+	}
+
+
+	/***
+	   This method get the charges acc to their label name at order review page 
+	 * 
+	 * @param label name 
+	 * @return charges
+	 * 
+	 */
+	public String getShippingChragesAtCheckoutPage(){
+		String charge=driver.getText(SHIPPING_CHARGES_LOC);
+		logger.info("Shipping charges at order review page is"+charge);
+		return charge;
+	}
 }

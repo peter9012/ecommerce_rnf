@@ -23,6 +23,7 @@ public class StoreFrontHomePage extends StoreFrontWebsiteBasePage{
 	private static final Logger logger = LogManager
 			.getLogger(StoreFrontHomePage.class.getName());
 
+	private final By SHOW_MORE_BTN_LOC = By.xpath("//a[contains(text(),'Show More')]");
 	private final By ENROLL_NOW_BUTTON_LOC = By.xpath("//a[text()='Enroll Now']");
 	private final By FIRST_EVENT_CALENDAR_LOC = By.xpath("//h3[contains(text(),'Presentations')]/following::a[text()='EVENT CALENDER'][1]");
 	private final By VISIT_THE_BLOG_LOC = By.xpath("//a[text()='VISIT THE BLOG']");
@@ -46,7 +47,7 @@ public class StoreFrontHomePage extends StoreFrontWebsiteBasePage{
 	private final By PASSWORD_FOR_REGISTRATION_LOC = By.id("register.pwd");
 	private final By CONFIRM_PASSWORD_FOR_REGISTRATION_LOC = By.id("register.checkPwd");
 	private final By SSN_FOR_REGISTRATION_LOC = By.id("register.socialSecurity");
-	private final By NEXT_BUTTON_LOC = By.id("consultant-next-button");
+	private final By NEXT_BUTTON_LOC = By.xpath("//input[@id='consultant-next-button'][not(@disabled)]");
 	private final By ADD_TO_CART_FIRST_PRODUCT_LOC = By.xpath("//div[@id='product_listing']/descendant::button[text()='Add to cart'][1]");
 	private final By ADD_TO_BAG_OF_FIRST_PRODUCT = By.xpath("//div[@id='product_listing']/descendant::span[text()='Add to Bag'][1]");
 	private final By SHOP_BY_PRICE_FILTER_LOC = By.xpath("//input[@id='$0-$49.99ID']/preceding::span[contains(@class,'glyphicon')][1]/..");
@@ -76,13 +77,14 @@ public class StoreFrontHomePage extends StoreFrontWebsiteBasePage{
 	private final By LOGIN_OR_REGISTER_TXT_LOC = By.xpath("//h1[contains(text(),'LOG IN OR REGISTER') or contains(text(),'Log in') or contains(text(),'Log in or create an account')]");
 	private final By EMAIL_AVAILABLE_MSG_LOC = By.xpath("//div[@class='emailbox-available']//div[contains(text(),'Available')]");
 	private final By SPONSOR_NAME_LINK_LOC = By.xpath("//div[contains(@class,'findAConsultant')]/a[contains(@href,'/pws/') and contains(@href,'about-me')]");
-	private final By FIRST_PRODUCT_ADD_TO_CRP_BTN_LOC = By.xpath("//div[@id='product_category']/following-sibling::div/descendant::span[text()='Add to CRP'][2]");
+	private final By FIRST_PRODUCT_ADD_TO_CRP_BTN_LOC = By.xpath("//div[@id='product_category']/following-sibling::div/descendant::span[text()='Add to CRP'][4]");
 	private final By CRP_CHECKOUT_BTN_LOC = By.xpath("//button[contains(text(),'Next')]");
 	private final By SET_UP_CRP_BTN_LOC = By.xpath("//a[contains(text(),'JOIN CRP')]");
 	private final By PRODUCT_SEARCH_AUTOSUGGESTION_LOC = By.xpath("//div[@class='name']");
 	private final By MEET_THE_DOCTORS_TXT_LOC = By.xpath("//h1[contains(text(),'Meet the Doctors')]");
 	private final By CONTINUE_SHOPPING_CRP_BTN_LOC = By.xpath("//button[contains(text(),'Continue')]");
 
+	private String addToCRPBtnForSpecificProductLoc = "//h3[normalize-space(text())='%s']/ancestor::div[1]/following::span[contains(text(),'Add to CRP')][1]";
 	private String appliedFilterNameLoc = "//div[@id='applied_filters']/descendant::li[contains(text(),'%s')]";
 	private String specificProductAddToCRPBtnLoc = "//div[@id='product_category']/following-sibling::div/descendant::span[text()='Add to CRP'][%s]";
 	private String viewDetailsLinkLoc = "//div[contains(@class,'enrollmentKit-wrapper')]/descendant::a[contains(text(),'View Details')][%s]";
@@ -351,7 +353,7 @@ public class StoreFrontHomePage extends StoreFrontWebsiteBasePage{
 		
 		return this;
 	}
-	
+
 	/***
 	 * This method click the next button after selecting sponsor
 	 * 
@@ -426,7 +428,8 @@ public class StoreFrontHomePage extends StoreFrontWebsiteBasePage{
 	 * @return boolean
 	 */
 	public boolean isNextButtonEnabledBeforeSelectingKit(){
-		return driver.findElement(NEXT_BUTTON_LOC).isEnabled();
+		driver.pauseExecutionFor(2000);
+		return driver.isElementPresent(NEXT_BUTTON_LOC);
 	}
 
 	/***
@@ -798,7 +801,7 @@ public class StoreFrontHomePage extends StoreFrontWebsiteBasePage{
 	 */
 	public StoreFrontHomePage enterPrefix(String prefix){
 		logger.info("Prefix is "+prefix);
-		driver.type(PREFIX_FIELD_LOC, prefix);
+		driver.type(PREFIX_FIELD_LOC, prefix+"\t");
 		return this;
 	}
 
@@ -807,6 +810,7 @@ public class StoreFrontHomePage extends StoreFrontWebsiteBasePage{
 	 * @return
 	 */
 	public boolean isPrefixAvailable(){
+		driver.pauseExecutionFor(2000);
 		return driver.isElementVisible(PREFIX_AVAILABLE_LOC);
 	}
 
@@ -874,23 +878,6 @@ public class StoreFrontHomePage extends StoreFrontWebsiteBasePage{
 	}
 
 	/***
-	 * This method enter search text in search textfield and click enter
-	 * 
-	 * @param String textToSearch
-	 * @return store front Home page object
-	 * 
-	 */
-	public StoreFrontShopSkinCarePage searchEntityAndHitEnter(String textToSearch){
-		driver.type(SEARCH_BOX, textToSearch);
-		Actions action = new Actions(RFWebsiteDriver.driver);
-		action.sendKeys(Keys.ENTER);
-		action.perform();
-		logger.info("Hit enter for searching entity");
-		driver.pauseExecutionFor(5000);
-		return new StoreFrontShopSkinCarePage(driver);
-	}
-
-	/***
 	 * This method validates the search result products with that of search entity
 	 * 
 	 * @param String productName
@@ -901,8 +888,8 @@ public class StoreFrontHomePage extends StoreFrontWebsiteBasePage{
 		List<WebElement> searchResultsProducts = driver.findElements(SEARCH_RESULT_PRODUCTS_LOC);
 		for(WebElement product : searchResultsProducts){
 			String productName = null;
-			productName = product.getText().trim();
-			if(productName.contains(expectedProductName)){
+			productName = product.getText().trim().toLowerCase();
+			if(productName.contains(expectedProductName.toLowerCase())){
 				logger.info("Expected product name found in search list");
 				return true;
 			}
@@ -969,18 +956,38 @@ public class StoreFrontHomePage extends StoreFrontWebsiteBasePage{
 	 * @return store front home page object
 	 * 
 	 */
-	public StoreFrontHomePage addFirstProductForCRPCheckout(){
-		driver.clickByJS(RFWebsiteDriver.driver, FIRST_PRODUCT_ADD_TO_CRP_BTN_LOC);
-		logger.info("Clicked Add to CRP button of First Product");
+	public StoreFrontHomePage addFirstProductForCRPCheckout(String productName){
+		clickShowMoreButton();
+		driver.clickByJS(RFWebsiteDriver.driver,By.xpath(String.format(addToCRPBtnForSpecificProductLoc, productName)));
+		logger.info("Clicked Add to CRP button of Product : " + productName);
 		driver.pauseExecutionFor(2000);
 		while(driver.isElementPresent(CRP_CHECKOUT_BTN_LOC)==false){
 			driver.clickByJS(RFWebsiteDriver.driver, CONTINUE_SHOPPING_CRP_BTN_LOC);
 			driver.pauseExecutionFor(1000);
-			driver.clickByJS(RFWebsiteDriver.driver, FIRST_PRODUCT_ADD_TO_CRP_BTN_LOC);
-			logger.info("Clicked Add to CRP button of First Product");
+			driver.clickByJS(RFWebsiteDriver.driver,By.xpath(String.format(addToCRPBtnForSpecificProductLoc, productName)));
+			logger.info("Clicked Add to CRP button of Product : " + productName);
 		}
 		return this;
 	}
+
+	/***
+	 * This method clicked on Show More button
+	 * 
+	 * @param
+	 * @return store front home page object
+	 * 
+	 */
+	public StoreFrontHomePage clickShowMoreButton(){
+		if(driver.isElementVisible(SHOW_MORE_BTN_LOC)){
+			driver.clickByJS(RFWebsiteDriver.driver,SHOW_MORE_BTN_LOC);
+			logger.info("Clicked on Show More Button on Cons Enrollment Successful Page");
+		}
+		else{
+			logger.info("Show More Button is not Visible on Page");
+		}
+		return this;
+	}
+
 
 	/***
 	 * This method clicked the checkout button of CRP bag
@@ -1033,16 +1040,81 @@ public class StoreFrontHomePage extends StoreFrontWebsiteBasePage{
 		logger.info("Clicked Add to CRP button of Product Number : " + productNum);
 		return this;
 	}
-	
+
 	/***
-	  * This method verify the first filter option under shop by price filter
-	  * is applied or removed successfully or not
-	  * 
-	  * @param filter name
-	  * @return boolean value.
-	  * 
-	  */
-	 public boolean isFilterAppliedAndRemovedSuccessfully(String filterName){
-	  return driver.isElementPresent(By.xpath(String.format(appliedFilterNameLoc,filterName)));
-	 }
+	 * This method verify the first filter option under shop by price filter
+	 * is applied or removed successfully or not
+	 * 
+	 * @param filter name
+	 * @return boolean value.
+	 * 
+	 */
+	public boolean isFilterAppliedAndRemovedSuccessfully(String filterName){
+		return driver.isElementPresent(By.xpath(String.format(appliedFilterNameLoc,filterName)));
+	}
+
+	/***
+	 * This method select the country from toggle button
+	 * 
+	 * @param country
+	 *            name
+	 * @return store front website base page object
+	 * 
+	 */
+	public StoreFrontHomePage selectUSCountryFromToggleButton(String countryName) {
+
+		if(!countryName.equalsIgnoreCase("us")){
+			clickToggleButtonOfCountry();
+			driver.click(By.xpath(String.format(countryOptionsInToggleButtonLoc, "USA")));
+			logger.info("Country " + countryName + " is Selected");
+		}
+		return this;
+	}
+
+	/***
+	 * This method select the country from toggle button
+	 * 
+	 * @param country
+	 *            name
+	 * @return store front website base page object
+	 * 
+	 */
+	public StoreFrontHomePage selectDefaultCountryFromToggleButton(String countryName) {
+		if(countryName.equalsIgnoreCase("us")){
+			clickToggleButtonOfCountry();
+			driver.click(By.xpath(String.format(countryOptionsInToggleButtonLoc, "USA")));
+			logger.info("Country " + countryName + " is Selected");
+		}else if(countryName.equalsIgnoreCase("ca")){
+			clickToggleButtonOfCountry();
+			driver.click(By.xpath(String.format(countryOptionsInToggleButtonLoc, "CAN")));
+			logger.info("Country " + countryName + " is Selected");
+		}else if(countryName.equalsIgnoreCase("au")){
+			clickToggleButtonOfCountry();
+			driver.click(By.xpath(String.format(countryOptionsInToggleButtonLoc, "AUS")));
+			logger.info("Country " + countryName + " is Selected");
+		}
+
+		return this;
+	}
+
+	/***
+	 * This method get the different country name
+	 * 
+	 * @param country name
+	 * @return country name
+	 */
+
+	public String getDifferentCountryName(String defaultCountryName){
+		String countryName=null;
+		if(defaultCountryName.equalsIgnoreCase("us")){
+			countryName="ca";
+		}else if(defaultCountryName.equalsIgnoreCase("ca")){
+			countryName="us";
+		} else if(defaultCountryName.equalsIgnoreCase("au")){
+			countryName="ca";
+		}
+		return countryName;
+	}
+
+
 }

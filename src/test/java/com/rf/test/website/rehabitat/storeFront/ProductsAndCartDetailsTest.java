@@ -730,7 +730,7 @@ public class ProductsAndCartDetailsTest extends StoreFrontWebsiteBaseTest{
 		productNameOnPDP = sfProductDetailPage.getProductNameFromProductDetailsPage();
 		s_assert.assertTrue(productNameOnPDP.contains(productName),"Expected first product name is:"+productName+" But Actual on product details page is:"+productNameOnPDP);
 		sfShopSkinCarePage = sfProductDetailPage.clickAllProducts();
-		sfShopSkinCarePage.clickNameOfProduct(TestConstants.PRODUCT_NUMBER + 1);
+		sfShopSkinCarePage.clickNameOfProduct(sfShopSkinCarePage.updateQuantityByOne(TestConstants.PRODUCT_NUMBER));
 		recentlyViewedProduct = sfProductDetailPage.clickRecentlyViewedProductNameAndReturnProductName();
 		productNameOnPDP = sfProductDetailPage.getProductNameFromProductDetailsPage();
 		s_assert.assertTrue(productNameOnPDP.toLowerCase().contains(recentlyViewedProduct.toLowerCase()),"Expected recently viewed product name is:"+recentlyViewedProduct+" But actual product name on PDP is:" +productNameOnPDP);

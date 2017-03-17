@@ -425,7 +425,7 @@ public class AutoshipTest extends StoreFrontWebsiteBaseTest{
 		profileLastName = sfCheckoutPage.getLastName(cardName);
 		defaultBillingProfileName = sfCheckoutPage.getDefaultBillingProfileName();
 		s_assert.assertTrue(defaultBillingProfileName.contains(profileLastName),"New Billing Profile Details do not get updated. Expected Profile Name : "+ cardName + ". Actual : " + defaultBillingProfileName);
-		sfCheckoutPage.selectTermsAndConditionsCheckBoxForAutoshipOrder();
+		//sfCheckoutPage.selectTermsAndConditionsCheckBoxForAutoshipOrder();
 		//		sfCheckoutPage.selectCheckboxForPoliciesAndProcedures();
 		sfCheckoutPage.clickConfirmAutoshipOrderButton();
 		sfCheckoutPage.clickOnAutoshipCartLink();
@@ -458,6 +458,7 @@ public class AutoshipTest extends StoreFrontWebsiteBaseTest{
 		s_assert.assertAll();
 	}
 
+
 	/***
 	 * qTest : TC-449 Consultant Autoship Status- Cancel CRP
 	 * Description : This test validates the Cancel CRP functionality for Consulatnt user.
@@ -472,13 +473,13 @@ public class AutoshipTest extends StoreFrontWebsiteBaseTest{
 		sfAutoshipStatusPage = sfHomePage.navigateToAutoshipStatusPage();
 		if(sfAutoshipStatusPage.isEnrollIntoCRPButtonPresent()){
 			sfAutoshipStatusPage.clickEnrollInCRPButton();
-			sfHomePage.addFirstProductForCRPCheckout();
+			sfHomePage.addFirstProductForCRPCheckout(validProductName);
 			sfCheckoutPage = sfHomePage.checkoutCRPBag();
 			sfCheckoutPage.clickSaveButton();
 			sfCheckoutPage.clickShippingDetailsNextbutton();
 			sfCheckoutPage.clickBillingDetailsNextbutton();
 			sfCheckoutPage.selectTermsAndConditionsCheckBoxForAutoshipOrder();
-			//		sfCheckoutPage.selectCheckboxForPoliciesAndProcedures();
+			//  sfCheckoutPage.selectCheckboxForPoliciesAndProcedures();
 			sfCheckoutPage.clickConfirmAutoshipOrderButton();
 			s_assert.assertTrue(sfCheckoutPage.isCRPOrderConfirmedSuccessMsgAppeared(),"CRP Order confirmed success messge is not appeared");
 			sfCheckoutPage.clickRodanAndFieldsLogo();
@@ -487,8 +488,8 @@ public class AutoshipTest extends StoreFrontWebsiteBaseTest{
 			s_assert.assertTrue(sfAutoshipStatusPage.getCurrentCRPStatus().contains("Enrolled"),"Consultant does not get enrolled in CRP");
 			sfCheckoutPage.clickRodanAndFieldsLogo();
 		}
-		sfCheckoutPage.clickWelcomeDropdown();
-		sfCheckoutPage.navigateToAutoshipStatusPage();
+		sfAutoshipStatusPage.clickWelcomeDropdown();
+		sfAutoshipStatusPage.navigateToAutoshipStatusPage();
 		s_assert.assertTrue(sfAutoshipStatusPage.getCurrentCRPStatus().contains("Enrolled"),"Consultant is not enrolled into CRP yet");
 		sfAutoshipStatusPage.clickCancelCRPLink();
 		sfAutoshipStatusPage.clickCancelCRPButton();
@@ -496,13 +497,13 @@ public class AutoshipTest extends StoreFrontWebsiteBaseTest{
 		s_assert.assertTrue(sfAutoshipStatusPage.isEnrollIntoCRPButtonPresent(),"Enroll in CRP Button is not present After cancelling CRP for consulatnt");
 		// Enrolling Consultant in CRP
 		sfAutoshipStatusPage.clickEnrollInCRPButton();
-		sfHomePage.addFirstProductForCRPCheckout();
+		sfHomePage.addFirstProductForCRPCheckout(validProductName);
 		sfCheckoutPage = sfHomePage.checkoutCRPBag();
 		sfCheckoutPage.clickSaveButton();
 		sfCheckoutPage.clickShippingDetailsNextbutton();
 		sfCheckoutPage.clickBillingDetailsNextbutton();
 		sfCheckoutPage.selectTermsAndConditionsCheckBoxForAutoshipOrder();
-		//		sfCheckoutPage.selectCheckboxForPoliciesAndProcedures();
+		//  sfCheckoutPage.selectCheckboxForPoliciesAndProcedures();
 		sfCheckoutPage.clickConfirmAutoshipOrderButton();
 		s_assert.assertTrue(sfCheckoutPage.isCRPOrderConfirmedSuccessMsgAppeared(),"CRP Order confirmed success messge is not appeared");
 		sfCheckoutPage.clickRodanAndFieldsLogo();
@@ -547,7 +548,7 @@ public class AutoshipTest extends StoreFrontWebsiteBaseTest{
 		sfHomePage.clickRodanAndFieldsLogo();
 		// Click Set up CRP from Banner
 		sfHomePage.clickSetUpCRP();
-		sfHomePage.addFirstProductForCRPCheckout();
+		sfHomePage.addFirstProductForCRPCheckout(validProductName);
 		sfCheckoutPage = sfHomePage.checkoutCRPBag();
 		sfCheckoutPage.clickSaveButton();
 		sfCheckoutPage.clickShippingDetailsNextbutton();
@@ -652,7 +653,7 @@ public class AutoshipTest extends StoreFrontWebsiteBaseTest{
 
 		// Confirming order
 		//		sfCheckoutPage.selectCheckboxForPoliciesAndProcedures();
-		sfCheckoutPage.selectTermsAndConditionsCheckBoxForAutoshipOrder();
+		//sfCheckoutPage.selectTermsAndConditionsCheckBoxForAutoshipOrder();
 		sfCheckoutPage.clickConfirmAutoshipOrderButton();
 
 		// Navigate again to Autoship checkout to verify billing profile for future autoship.
@@ -946,15 +947,16 @@ public class AutoshipTest extends StoreFrontWebsiteBaseTest{
 	@Test(enabled=true)
 	public void testPCAutoshipCartMaintenanceAndThreshold_406(){
 		String thresholdMessage = null;
-		String expectedThresholdMessage = "please add minimum worth of $80 products excluding enrollment fee".toLowerCase();
 
 		// Login As PC
 		sfHomePage.loginToStoreFront(pcUserWithPWSSponsor(), password,true);
 		sfAutoshipCartPage = sfHomePage.clickAutoshipLink();
 		thresholdMessage = sfAutoshipCartPage.getThresholdMessageWhileRemovingProductFromAutoshipCart().toLowerCase();
+		String expectedThresholdMessage = sfAutoshipCartPage.getExpectedThresholdMsgForPCAutoshipCart(country);
 		s_assert.assertTrue(thresholdMessage.contains(expectedThresholdMessage), "Expected threshold message is"+expectedThresholdMessage+" for Min SV but actual on UI is "+thresholdMessage);
 		s_assert.assertAll();
 	}
+
 	/***
 	 * qTest : TC-421 Update Autoship- Add a billing address to new Profile - PC
 	 * Description : This test adds and validates new Autoship billing profile with new billing address for PC user.
@@ -1227,7 +1229,7 @@ public class AutoshipTest extends StoreFrontWebsiteBaseTest{
 		sfHomePage.clickRodanAndFieldsLogo();
 		//Enroll consultant in CRP
 		sfHomePage.clickSetUpCRP();
-		sfHomePage.addFirstProductForCRPCheckout();
+		sfHomePage.addFirstProductForCRPCheckout(validProductName);
 		sfCheckoutPage = sfHomePage.checkoutCRPBag();
 		sfCheckoutPage.clickSaveButton();
 		sfCheckoutPage.clickShippingDetailsNextbutton();
@@ -1270,7 +1272,7 @@ public class AutoshipTest extends StoreFrontWebsiteBaseTest{
 		sfCheckoutPage.clickAddNewBillingProfileButton();
 		sfCheckoutPage.enterUserBillingDetails(cardType,cardNumber,cardName,CVV);
 		sfCheckoutPage.clickBillingDetailsNextbutton();
-		sfCheckoutPage.selectTermsAndConditionsCheckBoxForAutoshipOrder();
+		//sfCheckoutPage.selectTermsAndConditionsCheckBoxForAutoshipOrder();
 		//  sfCheckoutPage.selectIAcknowledgeChkBox();
 		sfCheckoutPage.clickConfirmAutoshipOrderButton();
 		sfCheckoutPage.clickAutoshipLink();

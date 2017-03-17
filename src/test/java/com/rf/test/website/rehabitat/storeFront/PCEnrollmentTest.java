@@ -10,52 +10,6 @@ import com.rf.test.website.rehabitat.storeFront.baseTest.StoreFrontWebsiteBaseTe
 
 public class PCEnrollmentTest extends StoreFrontWebsiteBaseTest{
 
-
-	/***
-	 * qTest : TC-452 PC User Enrollment/Checkout - Complete Enrollment
-	 * Description : This test is for successfully enrolling a PC user
-	 * 
-	 *     
-	 */
-	@Test(enabled=true)
-	public void testPCEnrollment_452(){
-		timeStamp = CommonUtils.getCurrentTimeStamp();
-		randomWords = CommonUtils.getRandomWord(5);		
-		lastName = TestConstants.LAST_NAME+randomWords;
-		email = firstName+"pc"+timeStamp+TestConstants.EMAIL_SUFFIX;
-		sfCartPage = new StoreFrontCartPage(driver);
-		sfShopSkinCarePage = new StoreFrontShopSkinCarePage(driver);
-		sfHomePage.clickLoginIcon();
-		sfCheckoutPage=sfHomePage.clickSignUpNowLink();
-		sfCheckoutPage.fillNewUserDetails(TestConstants.USER_TYPE_PC, firstName, lastName, email, password);
-		sfCheckoutPage.clickCreateAccountButton(TestConstants.USER_TYPE_PC);
-		//s_assert.assertTrue(sfCartPage.isPcOneTimeFeeMsgDisplayed(),"PC one time joining fee msg has not displayed");
-		sfCartPage.clickAddMoreItemsBtn();
-		sfShopSkinCarePage=sfCartPage.clickAllProducts();// this is a temporary patch
-		sfShopSkinCarePage.addProductToCart(TestConstants.PRODUCT_NUMBER, TestConstants.ORDER_TYPE_ENROLLMENT);;
-		sfCartPage = sfShopSkinCarePage.checkoutTheCartFromPopUp();
-		sfCartPage.enterQuantityOfProductAtCart("1", "2");
-		sfCartPage.clickOnUpdateLinkThroughItemNumber("1");
-		sfCartPage.clickCheckoutBtn();
-		sfCheckoutPage.clickContinueWithoutConsultantLink();
-		sfCheckoutPage.clickSaveButton();
-		sfCheckoutPage.enterShippingDetails(firstName+" "+lastName, addressLine1, addressLine2, city, state, postalCode, phoneNumber);
-		sfCheckoutPage.clickShippingDetailsNextbutton();
-		sfCheckoutPage.enterUserBillingDetails(cardType, cardNumber, cardName, CVV);
-		//		sfCheckoutPage.checkUseMyDeliveryAddressChkBox();
-		sfCheckoutPage.clickBillingDetailsNextbutton();
-		if(sfCheckoutPage.hasTokenizationFailed()==true){
-			sfCheckoutPage.enterUserBillingDetails(cardType, cardNumber, cardName, CVV);
-			sfCheckoutPage.clickBillingDetailsNextbutton();
-		}
-		sfCheckoutPage.selectIAcknowledgePCChkBox();
-		sfCheckoutPage.selectPCTermsAndConditionsChkBox();
-		sfCheckoutPage.clickPlaceOrderButton();
-		sfCheckoutPage.clickRodanAndFieldsLogo();
-		s_assert.assertTrue(sfHomePage.hasPCEnrolledSuccessfully(), "PC has not been enrolled successfully");
-		s_assert.assertAll();
-	}
-
 	/***
 	 * qTest : TC-451 PC User Enrollment/Checkout - Incomplete Enrollment
 	 * Description : This test is for incomplete enrollment of  a PC user
@@ -116,10 +70,10 @@ public class PCEnrollmentTest extends StoreFrontWebsiteBaseTest{
 		sfCheckoutPage.clickCreateAccountButton(TestConstants.USER_TYPE_PC);
 		s_assert.assertTrue(sfCartPage.isPcOneTimeFeeMsgDisplayed(),"PC one time joining fee msg has not displayed");
 		sfCartPage.clickAddMoreItemsBtn();
-		sfShopSkinCarePage.addProductToCart(TestConstants.PRODUCT_NUMBER, TestConstants.ORDER_TYPE_ENROLLMENT);;
+		sfShopSkinCarePage.addProductToCart(TestConstants.PRODUCT_NUMBER, TestConstants.ORDER_TYPE_ENROLLMENT,validProductId);
 		sfCartPage = sfShopSkinCarePage.checkoutTheCartFromPopUp();
-		sfCartPage.enterQuantityOfProductAtCart("1", "10");
-		sfCartPage.clickOnUpdateLinkThroughItemNumber("1");
+		//sfCartPage.enterQuantityOfProductAtCart("1", "10");
+		//sfCartPage.clickOnUpdateLinkThroughItemNumber("1");
 		sfCartPage.clickCheckoutBtn();
 		sfCheckoutPage.clickContinueWithoutConsultantLink();
 		sfCheckoutPage.clickSaveButton();
@@ -152,7 +106,7 @@ public class PCEnrollmentTest extends StoreFrontWebsiteBaseTest{
 		String existingConsultant = TestConstants.SPONSOR;
 		sfCartPage = new StoreFrontCartPage(driver);
 		sfShopSkinCarePage = sfHomePage.clickAllProducts();
-		sfShopSkinCarePage.addProductToCart(TestConstants.PRODUCT_NUMBER, TestConstants.ORDER_TYPE_ENROLLMENT);;
+		sfShopSkinCarePage.addProductToCart(TestConstants.PRODUCT_NUMBER, TestConstants.ORDER_TYPE_ENROLLMENT);
 		sfShopSkinCarePage.checkoutTheCartFromPopUp();
 		sfCheckoutPage=sfShopSkinCarePage.checkoutTheCart();
 		sfCheckoutPage.fillNewUserDetails(TestConstants.USER_TYPE_PC, firstName, lastName, email, password);
@@ -179,10 +133,10 @@ public class PCEnrollmentTest extends StoreFrontWebsiteBaseTest{
 	 * 
 	 *     
 	 */
-	@Test(enabled=false)
+	@Test(enabled=true)
 	public void testAutoAssignConsultantPcEnrollment_573(){
 		timeStamp = CommonUtils.getCurrentTimeStamp();
-		randomWords = CommonUtils.getRandomWord(5);		
+		randomWords = CommonUtils.getRandomWord(5);  
 		lastName = TestConstants.LAST_NAME+randomWords;
 		email = firstName+"pc"+timeStamp+TestConstants.EMAIL_SUFFIX;
 		String sponserName = TestConstants.SPONSOR;
@@ -194,8 +148,10 @@ public class PCEnrollmentTest extends StoreFrontWebsiteBaseTest{
 		sfCheckoutPage.fillNewUserDetails(TestConstants.USER_TYPE_PC, firstName, lastName, email, password);
 		sfCheckoutPage.clickCreateAccountButton(TestConstants.USER_TYPE_PC);
 		sfCartPage.clickAddMoreItemsBtn();
-		sfShopSkinCarePage.addProductToCart(TestConstants.PRODUCT_NUMBER, TestConstants.ORDER_TYPE_ENROLLMENT);;
+		sfShopSkinCarePage.addProductToCart(TestConstants.PRODUCT_NUMBER, TestConstants.ORDER_TYPE_ENROLLMENT,validProductId);
 		sfCartPage = sfShopSkinCarePage.checkoutTheCartFromPopUp();
+		//sfCartPage.enterQuantityOfProductAtCart("1", "2");
+		//sfCartPage.clickOnUpdateLinkThroughItemNumber("1");
 		sfCartPage.clickCheckoutBtn();
 		//Choose sponsor and main account fields are autofilled.
 		sfCheckoutPage.searchForConsultant(sponserName);
@@ -222,17 +178,17 @@ public class PCEnrollmentTest extends StoreFrontWebsiteBaseTest{
 		s_assert.assertTrue(sponserNameAfterEnrollment.trim().toLowerCase().contains(sponserName.trim().toLowerCase()),"Sponser name is not same as provided during enrollment");
 		s_assert.assertAll();
 	}
-
+	
 	/***
 	 * qTest : TC-574 Choose a Consultant- Auto-Assign (Checkout) - Change sponsor
 	 * Description : This test validates the re-assigned sponsor to PC after enrollment
 	 * 
 	 *     
 	 */
-	@Test(enabled=false)
+	@Test(enabled=true)
 	public void testUpdateSponserDuringPCEnrollment_574(){
 		timeStamp = CommonUtils.getCurrentTimeStamp();
-		randomWords = CommonUtils.getRandomWord(5);		
+		randomWords = CommonUtils.getRandomWord(5);  
 		lastName = TestConstants.LAST_NAME+randomWords;
 		email = firstName+"pc"+timeStamp+TestConstants.EMAIL_SUFFIX;
 		String sponserName = TestConstants.SPONSOR;
@@ -247,8 +203,10 @@ public class PCEnrollmentTest extends StoreFrontWebsiteBaseTest{
 		sfCheckoutPage.clickCreateAccountButton(TestConstants.USER_TYPE_PC);
 		s_assert.assertTrue(sfCartPage.isPcOneTimeFeeMsgDisplayed(),"PC one time joining fee msg has not displayed");
 		sfCartPage.clickAddMoreItemsBtn();
-		sfShopSkinCarePage.addProductToCart(TestConstants.PRODUCT_NUMBER, TestConstants.ORDER_TYPE_ENROLLMENT);;
+		sfShopSkinCarePage.addProductToCart(TestConstants.PRODUCT_NUMBER, TestConstants.ORDER_TYPE_ENROLLMENT,validProductId);
 		sfCartPage = sfShopSkinCarePage.checkoutTheCartFromPopUp();
+//		sfCartPage.enterQuantityOfProductAtCart("1", "2");
+//		sfCartPage.clickOnUpdateLinkThroughItemNumber("1");
 		sfCartPage.clickCheckoutBtn();
 		//Choose sponser and main account fields are autofilled.
 		sfCheckoutPage.searchForConsultant(existingConsultant);
@@ -270,24 +228,23 @@ public class PCEnrollmentTest extends StoreFrontWebsiteBaseTest{
 		s_assert.assertTrue(sfHomePage.hasPCEnrolledSuccessfully(), "PC has not been enrolled successfully");
 		//Verify the sponser details while placing order.
 		sfShopSkinCarePage = sfHomePage.clickAllProducts();
-		sfShopSkinCarePage.addProductToCart(TestConstants.PRODUCT_NUMBER, TestConstants.ORDER_TYPE_ADHOC);;
+		sfShopSkinCarePage.addProductToCart(TestConstants.PRODUCT_NUMBER, TestConstants.ORDER_TYPE_ADHOC);
 		sfCartPage = sfShopSkinCarePage.checkoutTheCartFromPopUp();
 		sfCheckoutPage = sfCartPage.checkoutTheCart();
 		sponserNameAfterEnrollment = sfCheckoutPage.getSponsorNameFromAccountInfo();
 		s_assert.assertTrue(sponserNameAfterEnrollment.toLowerCase().contains(secondSponser.toLowerCase()),"Second sponser name is not same as provided during enrollment");
 		s_assert.assertAll();
 	}
-
 	/***
 	 * qTest : TC-575 Choose a Consultant- Auto-Assign (Checkout) - Second time
 	 * Description : This test validates the re-assigned sponsor to PC after enrollment
 	 * 
 	 *     
 	 */
-	@Test(enabled=false)
+	@Test(enabled=true)
 	public void testUpdateSponserAfterPCEnrollment_575(){
 		timeStamp = CommonUtils.getCurrentTimeStamp();
-		randomWords = CommonUtils.getRandomWord(5);		
+		randomWords = CommonUtils.getRandomWord(5);  
 		lastName = TestConstants.LAST_NAME+randomWords;
 		email = firstName+"pc"+timeStamp+TestConstants.EMAIL_SUFFIX;
 		String sponserName = null;
@@ -301,8 +258,10 @@ public class PCEnrollmentTest extends StoreFrontWebsiteBaseTest{
 		sfCheckoutPage.clickCreateAccountButton(TestConstants.USER_TYPE_PC);
 		s_assert.assertTrue(sfCartPage.isPcOneTimeFeeMsgDisplayed(),"PC one time joining fee msg has not displayed");
 		sfCartPage.clickAddMoreItemsBtn();
-		sfShopSkinCarePage.addProductToCart(TestConstants.PRODUCT_NUMBER, TestConstants.ORDER_TYPE_ENROLLMENT);;
+		sfShopSkinCarePage.addProductToCart(TestConstants.PRODUCT_NUMBER, TestConstants.ORDER_TYPE_ENROLLMENT,validProductId);
 		sfCartPage = sfShopSkinCarePage.checkoutTheCartFromPopUp();
+//		sfCartPage.enterQuantityOfProductAtCart("1", "2");
+//		sfCartPage.clickOnUpdateLinkThroughItemNumber("1");
 		sfCartPage.clickCheckoutBtn();
 		//Choose sponser and main account fields are autofilled.
 		sfCheckoutPage.searchForConsultant(existingConsultant);
@@ -324,12 +283,12 @@ public class PCEnrollmentTest extends StoreFrontWebsiteBaseTest{
 		s_assert.assertTrue(sfHomePage.hasPCEnrolledSuccessfully(), "PC has not been enrolled successfully");
 		//Try to update sponser at main account info.
 		sfShopSkinCarePage = sfHomePage.clickAllProducts();
-		sfShopSkinCarePage.addProductToCart(TestConstants.PRODUCT_NUMBER, TestConstants.ORDER_TYPE_ADHOC);;
+		sfShopSkinCarePage.addProductToCart(TestConstants.PRODUCT_NUMBER, TestConstants.ORDER_TYPE_ADHOC);
 		sfCartPage = sfShopSkinCarePage.checkoutTheCartFromPopUp();
-		sfCheckoutPage = sfCartPage.clickCheckoutBtn();
+		sfCheckoutPage = sfCartPage.checkoutTheCart();
 		sfCheckoutPage.clickSaveButton();
 		sfCheckoutPage.editMainAccountInfo();
-		s_assert.assertTrue(sfCheckoutPage.isChangeSponserLinkDisplayed(),"Change sponser link is present on account info page.");
+		s_assert.assertFalse(sfCheckoutPage.isChangeSponserLinkDisplayed(),"Change sponser link is present on account info page.");
 		s_assert.assertAll();
 	}
 
@@ -340,7 +299,7 @@ public class PCEnrollmentTest extends StoreFrontWebsiteBaseTest{
 	 */
 	@Test(enabled=true)
 	public void testPCRegisteringFromPWSWillHaveDefaultsponsor_496(){
-		String allProduct = "ALL PRODUCTS";
+		//	String allProduct = "ALL PRODUCTS";
 		firstName=TestConstants.PC_FIRST_NAME;
 		timeStamp = CommonUtils.getCurrentTimeStamp();
 		randomWords = CommonUtils.getRandomWord(5);  
@@ -350,7 +309,7 @@ public class PCEnrollmentTest extends StoreFrontWebsiteBaseTest{
 		String prefix = pwsPrefix();
 		sfHomePage.navigateToUrl(homePageURL + "/pws/" + prefix);
 		sfShopSkinCarePage = sfHomePage.clickAllProducts();
-		sfShopSkinCarePage.addProductToCart(TestConstants.PRODUCT_NUMBER, TestConstants.ORDER_TYPE_ENROLLMENT);;
+		sfShopSkinCarePage.addProductToCart(TestConstants.PRODUCT_NUMBER, TestConstants.ORDER_TYPE_ADHOC);
 		sfCartPage = sfShopSkinCarePage.checkoutTheCartFromPopUp();
 		sfCheckoutPage=sfCartPage.checkoutTheCart();
 		sfCheckoutPage.fillNewUserDetails(TestConstants.USER_TYPE_PC, firstName, lastName, email, password);
@@ -360,14 +319,18 @@ public class PCEnrollmentTest extends StoreFrontWebsiteBaseTest{
 		sfCheckoutPage.clickRemoveLink();
 		sfCheckoutPage.searchSponsor(TestConstants.SPONSOR);
 		sfHomePage.selectFirstSponsorFromList();
-		s_assert.assertTrue(sfCheckoutPage.isSponsorSelected(), "Searched sponsor is not selected");
+		s_assert.assertTrue(sfCheckoutPage.isSearchedSponsorSelected(), "Searched sponsor is not selected");
 		s_assert.assertAll();
 	}
 
-	//------------------------TEST USERS CREATION SCRIPTS--------------------------------------------------------------------------------------------------------------------------------
-
-	@Test(enabled=true,groups="users")
-	public void testPCEnrollmentWithPWSSponsor(){
+	/***
+	 * qTest : TC-452 PC User Enrollment/Checkout - Complete Enrollment
+	 * Description : This test is for successfully enrolling a PC user
+	 * 
+	 *     
+	 */
+	@Test(enabled=true)
+	public void testPCEnrollmentWithPWSSponsor_452(){
 		timeStamp = CommonUtils.getCurrentTimeStamp();
 		randomWords = CommonUtils.getRandomWord(5);		
 		lastName = TestConstants.LAST_NAME+randomWords;
@@ -378,12 +341,12 @@ public class PCEnrollmentTest extends StoreFrontWebsiteBaseTest{
 		sfCheckoutPage=sfHomePage.clickSignUpNowLink();
 		sfCheckoutPage.fillNewUserDetails(TestConstants.USER_TYPE_PC, firstName, lastName, email, password);
 		sfCheckoutPage.clickCreateAccountButton(TestConstants.USER_TYPE_PC);
-		s_assert.assertTrue(sfCartPage.isPcOneTimeFeeMsgDisplayed(),"PC one time joining fee msg has not displayed");
+		//		s_assert.assertTrue(sfCartPage.isPcOneTimeFeeMsgDisplayed(),"PC one time joining fee msg has not displayed");
 		sfCartPage.clickAddMoreItemsBtn();
-		sfShopSkinCarePage.addProductToCart(TestConstants.PRODUCT_NUMBER, TestConstants.ORDER_TYPE_ENROLLMENT);;
+		sfShopSkinCarePage.addProductToCart(TestConstants.PRODUCT_NUMBER, TestConstants.ORDER_TYPE_ENROLLMENT,validProductId);
 		sfCartPage = sfShopSkinCarePage.checkoutTheCartFromPopUp();
-		sfCartPage.enterQuantityOfProductAtCart("1", "2");
-		sfCartPage.clickOnUpdateLinkThroughItemNumber("1");
+//		sfCartPage.enterQuantityOfProductAtCart("1", "2");
+//		sfCartPage.clickOnUpdateLinkThroughItemNumber("1");
 		sfCartPage.clickCheckoutBtn();
 		sfCartPage.searchSponsor(TestConstants.SPONSOR);
 		sfHomePage.selectFirstSponsorFromList();
@@ -392,6 +355,10 @@ public class PCEnrollmentTest extends StoreFrontWebsiteBaseTest{
 		sfCheckoutPage.clickShippingDetailsNextbutton();
 		sfCheckoutPage.enterUserBillingDetails(cardType, cardNumber, cardName, CVV);
 		sfCheckoutPage.clickBillingDetailsNextbutton();
+		if(sfCheckoutPage.hasTokenizationFailed()==true){
+			sfCheckoutPage.enterUserBillingDetails(cardType, cardNumber, cardName, CVV);
+			sfCheckoutPage.clickBillingDetailsNextbutton();
+		}
 		sfCheckoutPage.selectIAcknowledgePCChkBox();
 		sfCheckoutPage.selectPCTermsAndConditionsChkBox();
 		sfCheckoutPage.clickPlaceOrderButton();
@@ -406,7 +373,7 @@ public class PCEnrollmentTest extends StoreFrontWebsiteBaseTest{
 		System.out.println(email);
 	}
 
-	@Test(enabled=true,groups="users")
+	@Test(enabled=true)
 	public void testPCEnrollmentWithoutSponsor(){
 		timeStamp = CommonUtils.getCurrentTimeStamp();
 		randomWords = CommonUtils.getRandomWord(5);		
@@ -421,10 +388,10 @@ public class PCEnrollmentTest extends StoreFrontWebsiteBaseTest{
 		s_assert.assertTrue(sfCartPage.isPcOneTimeFeeMsgDisplayed(),"PC one time joining fee msg has not displayed");
 		sfCartPage.clickAddMoreItemsBtn();
 		//sfShopSkinCarePage=sfCartPage.clickAllProducts();// this is a temporary patch
-		sfShopSkinCarePage.addProductToCart(TestConstants.PRODUCT_NUMBER, TestConstants.ORDER_TYPE_ENROLLMENT);;
+		sfShopSkinCarePage.addProductToCart(TestConstants.PRODUCT_NUMBER, TestConstants.ORDER_TYPE_ENROLLMENT,validProductId);
 		sfCartPage = sfShopSkinCarePage.checkoutTheCartFromPopUp();
-		sfCartPage.enterQuantityOfProductAtCart("1", "2");
-		sfCartPage.clickOnUpdateLinkThroughItemNumber("1");
+//		sfCartPage.enterQuantityOfProductAtCart("1", "2");
+//		sfCartPage.clickOnUpdateLinkThroughItemNumber("1");
 		sfCartPage.clickCheckoutBtn();
 		sfCheckoutPage.clickContinueWithoutConsultantLink();
 		sfCheckoutPage.clickSaveButton();
@@ -444,41 +411,6 @@ public class PCEnrollmentTest extends StoreFrontWebsiteBaseTest{
 		s_assert.assertAll();
 	}
 
-	//	@Test(enabled=true,groups="users")
-	//	public void testPCEnrollmentWithoutPWSSponsor(){
-	//		timeStamp = CommonUtils.getCurrentTimeStamp();
-	//		randomWords = CommonUtils.getRandomWord(5);		
-	//		lastName = TestConstants.LAST_NAME+randomWords;
-	//		email = firstName+"WOPWSSponsor"+timeStamp+TestConstants.EMAIL_SUFFIX;
-	//		sfCartPage = new StoreFrontCartPage(driver);
-	//		sfShopSkinCarePage = new StoreFrontShopSkinCarePage(driver);
-	//		sfHomePage.clickLoginIcon();
-	//		sfCheckoutPage=sfHomePage.clickSignUpNowLink();
-	//		sfCheckoutPage.fillNewUserDetails(TestConstants.USER_TYPE_PC, firstName, lastName, email, password);
-	//		sfCheckoutPage.clickCreateAccountButton(TestConstants.USER_TYPE_PC);
-	//		s_assert.assertTrue(sfCartPage.isPcOneTimeFeeMsgDisplayed(),"PC one time joining fee msg has not displayed");
-	//		sfCartPage.clickAddMoreItemsBtn();
-	//		sfShopSkinCarePage.addProductToCart(TestConstants.PRODUCT_NUMBER, TestConstants.ORDER_TYPE_ADHOC);;
-	//		sfCartPage = sfShopSkinCarePage.checkoutTheCartFromPopUp();
-	//		sfCartPage.enterQuantityOfProductAtCart("1", "2");
-	//		sfCartPage.clickOnUpdateLinkThroughItemNumber("1");
-	//		sfCartPage.clickCheckoutBtn();
-	//		sfCartPage.searchSponsor(TestConstants.SPONSOR);
-	//		sfHomePage.selectFirstSponsorFromList();
-	//		sfCheckoutPage.clickSaveButton();
-	//		sfCheckoutPage.enterShippingDetails(firstName+" "+lastName, addressLine1, addressLine2, city, state, postalCode, phoneNumber);
-	//		sfCheckoutPage.clickShippingDetailsNextbutton();
-	//		sfCheckoutPage.enterUserBillingDetails(cardType, cardNumber, cardName, CVV);
-	//		sfCheckoutPage.clickBillingDetailsNextbutton();
-	//		sfCheckoutPage.selectIAcknowledgePCChkBox();
-	//		sfCheckoutPage.selectPCTermsAndConditionsChkBox();
-	//		sfCheckoutPage.clickPlaceOrderButton();
-	//		sfCheckoutPage.clickRodanAndFieldsLogo();
-	//		s_assert.assertTrue(sfHomePage.hasPCEnrolledSuccessfully(), "PC has not been enrolled successfully");
-	//		s_assert.assertAll();
-	//		pcUserWithoutPWSSponsor = email;
-	//	}
-
 	//For PC_EMAIL_HAVING_SINGLE_BILLING_PROFILE
 	@Test(enabled=true,groups="users")
 	public void testPCEnrollmentHavingSingleBillingProfile(){
@@ -495,18 +427,16 @@ public class PCEnrollmentTest extends StoreFrontWebsiteBaseTest{
 		sfCheckoutPage.clickCreateAccountButton(TestConstants.USER_TYPE_PC);
 		s_assert.assertTrue(sfCartPage.isPcOneTimeFeeMsgDisplayed(),"PC one time joining fee msg has not displayed");
 		sfCartPage.clickAddMoreItemsBtn();
-		//sfShopSkinCarePage=sfCartPage.clickAllProducts();// this is a temporary patch
-		sfShopSkinCarePage.addProductToCart(TestConstants.PRODUCT_NUMBER, TestConstants.ORDER_TYPE_ENROLLMENT);
+		sfShopSkinCarePage.addProductToCart(TestConstants.PRODUCT_NUMBER, TestConstants.ORDER_TYPE_ENROLLMENT,validProductId);
 		sfCartPage = sfShopSkinCarePage.checkoutTheCartFromPopUp();
-		sfCartPage.enterQuantityOfProductAtCart("1", "2");
-		sfCartPage.clickOnUpdateLinkThroughItemNumber("1");
+//		sfCartPage.enterQuantityOfProductAtCart("1", "2");
+//		sfCartPage.clickOnUpdateLinkThroughItemNumber("1");
 		sfCartPage.clickCheckoutBtn();
 		sfCheckoutPage.clickContinueWithoutConsultantLink();
 		sfCheckoutPage.clickSaveButton();
 		sfCheckoutPage.enterShippingDetails(firstName+" "+lastName, addressLine1, addressLine2, city, state, postalCode, phoneNumber);
 		sfCheckoutPage.clickShippingDetailsNextbutton();
 		sfCheckoutPage.enterUserBillingDetails(cardType, cardNumber, cardName, CVV);
-		//		sfCheckoutPage.checkUseMyDeliveryAddressChkBox();
 		sfCheckoutPage.clickBillingDetailsNextbutton();
 		sfCheckoutPage.selectIAcknowledgePCChkBox();
 		sfCheckoutPage.selectPCTermsAndConditionsChkBox();

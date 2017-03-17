@@ -918,15 +918,15 @@ public class MyAccountTest extends StoreFrontWebsiteBaseTest{
 		sfHomePage.clickWelcomeDropdown();
 		sfAutoshipStatusPage = sfHomePage.navigateToPCPerksStatusPage();
 		s_assert.assertTrue(sfAutoshipStatusPage.isPCPerksAutoshipStatusPagePresent(),"PC Perks status page is not present.");
-		currentNextBillShipDate = sfAutoshipStatusPage.getNextBillAndShipDateFromAutoship();
+		currentNextBillShipDate = sfAutoshipStatusPage.getNextBillAndShipDateFromAutoship().trim().toLowerCase();
 		sfAutoshipCartPage = sfAutoshipStatusPage.viewDetailsOfAutoship();
 		//Verify autoship cart page.
 		currentURL = sfAutoshipCartPage.getCurrentURL().toLowerCase();
 		s_assert.assertTrue(currentURL.contains(autoshipCart), "Expected URL should contain"+autoshipCart+" but actual on UI is"+currentURL);
 		//Verify autoship items at autoship cart page.
 		s_assert.assertTrue(sfAutoshipCartPage.isAutoshipItemsPresentOnCartPage(),"There are no autoship items present on autoship cart page.");
-		billShipDateFromAutoshipCart = sfAutoshipCartPage.getBillAndShipDateFromAutoshipCartPage();
-		s_assert.assertTrue(billShipDateFromAutoshipCart.equalsIgnoreCase(currentNextBillShipDate),"Expected next autoship bill ship date on autoship cart page "+currentNextBillShipDate+" but actual in UI"+billShipDateFromAutoshipCart);
+		billShipDateFromAutoshipCart = sfAutoshipCartPage.getBillAndShipDateFromAutoshipCartPage().trim().toLowerCase();
+		s_assert.assertTrue(currentNextBillShipDate.contains(billShipDateFromAutoshipCart),"Expected next autoship bill ship date on autoship cart page "+currentNextBillShipDate+" but actual in UI"+billShipDateFromAutoshipCart);
 		s_assert.assertAll();
 	}
 

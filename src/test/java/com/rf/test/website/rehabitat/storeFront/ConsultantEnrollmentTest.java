@@ -75,8 +75,8 @@ public class ConsultantEnrollmentTest extends StoreFrontWebsiteBaseTest{
 		sfHomePage.selectConsentFormChkBox();
 		sfHomePage.clickBecomeAConsultant();
 		s_assert.assertTrue(sfHomePage.isEnrollemntSuccessfulMsgDisplayed(), "Expected 'ENROLLMENT SUCCESSFUL' msg has NOT displayed"); 
-//		sfHomePage.clickRodanAndFieldsLogo();
-//		s_assert.assertTrue(sfHomePage.isWelcomeUserElementDisplayed(), "Welcome user locator has not displayed after consultant enrollment");
+		//		sfHomePage.clickRodanAndFieldsLogo();
+		//		s_assert.assertTrue(sfHomePage.isWelcomeUserElementDisplayed(), "Welcome user locator has not displayed after consultant enrollment");
 		s_assert.assertAll();
 	}
 
@@ -85,12 +85,12 @@ public class ConsultantEnrollmentTest extends StoreFrontWebsiteBaseTest{
 	 * 
 	 * Description : This test validates the Request for a Sponsor functionality during
 	 * consultant enrollment
-	 * 				
+	 *     
 	 */
 	@Test(enabled=true)
 	public void testRequestSponsorConsultantEnrollment_261(){
 		timeStamp = CommonUtils.getCurrentTimeStamp();
-		randomWords = CommonUtils.getRandomWord(5);		
+		randomWords = CommonUtils.getRandomWord(5);  
 		lastName = TestConstants.LAST_NAME+randomWords;
 		email = firstName+"cons"+timeStamp+TestConstants.EMAIL_SUFFIX;
 		String fieldName;
@@ -105,15 +105,15 @@ public class ConsultantEnrollmentTest extends StoreFrontWebsiteBaseTest{
 		s_assert.assertTrue(sfHomePage.isEmptyFieldValidationForSponsorOnPopupDisplayed(fieldName),"empty field validation is not displayed for "+fieldName);
 		fieldName = "zipcode";
 		s_assert.assertTrue(sfHomePage.isEmptyFieldValidationForSponsorOnPopupDisplayed(fieldName),"empty field validation is not displayed for "+fieldName);
-		sfHomePage.enterDetailsInRequiredConsultantSponsorPopUp("", "", "", TestConstants.SPONSOR_ZIP_CODE_US);
+		sfHomePage.enterDetailsInRequiredConsultantSponsorPopUp("", "", "", postalCode);
 		s_assert.assertTrue(sfHomePage.isSubmitBtnOnSponsorPopUpDisabled(),"Submit button is not disabled");
-		sfHomePage.enterDetailsInRequiredConsultantSponsorPopUp(TestConstants.SPONSOR_FIRST_NAME, TestConstants.SPONSOR_LAST_NAME, TestConstants.SPONSOR_EMAIL, TestConstants.SPONSOR_INVALID_ZIP_CODE_US);
+		sfHomePage.enterDetailsInRequiredConsultantSponsorPopUp(TestConstants.SPONSOR_FIRST_NAME, TestConstants.SPONSOR_LAST_NAME, TestConstants.SPONSOR_EMAIL, TestConstants.INVALID_POSTAL_CODE);
 		fieldName = "zipcode";
 		s_assert.assertTrue(sfHomePage.isInvalidFieldValidationForSponsorOnPopupDisplayed(fieldName),"invalid field validation is not displayed for "+fieldName);
-		sfHomePage.enterDetailsInRequiredConsultantSponsorPopUp(TestConstants.SPONSOR_FIRST_NAME, TestConstants.SPONSOR_LAST_NAME, TestConstants.SPONSOR_INVALID_EMAIL, TestConstants.SPONSOR_ZIP_CODE_US);
+		sfHomePage.enterDetailsInRequiredConsultantSponsorPopUp(TestConstants.SPONSOR_FIRST_NAME, TestConstants.SPONSOR_LAST_NAME, TestConstants.SPONSOR_INVALID_EMAIL, postalCode);
 		fieldName = "email";
 		s_assert.assertTrue(sfHomePage.isInvalidFieldValidationForSponsorOnPopupDisplayed(fieldName),"invalid field validation is not displayed for "+fieldName);
-		sfHomePage.enterDetailsInRequiredConsultantSponsorPopUp(TestConstants.SPONSOR_FIRST_NAME, TestConstants.SPONSOR_LAST_NAME, TestConstants.SPONSOR_EMAIL, TestConstants.SPONSOR_ZIP_CODE_US);
+		sfHomePage.enterDetailsInRequiredConsultantSponsorPopUp(TestConstants.SPONSOR_FIRST_NAME, TestConstants.SPONSOR_LAST_NAME, TestConstants.SPONSOR_EMAIL, postalCode);
 		sfHomePage.clickSubmitBtnOnRequiredConsultantSponsorPopUp();
 		s_assert.assertTrue(sfHomePage.isThanksMessageAfterSponsorRequestPresent(),"Thank msg not displayed after sponsor request submit");
 		sfHomePage.clickBackToHomePageBtn();
@@ -316,7 +316,7 @@ public class ConsultantEnrollmentTest extends StoreFrontWebsiteBaseTest{
 		String policiesAndProceduresPdfUrl = null;
 		String pulseProTCUrl = null;
 		String crpTCPdfUrl = null;
-		
+
 		String socialInsuranceNumber = String.valueOf(CommonUtils.getRandomNum(100000000, 999999999));
 		if(country.equalsIgnoreCase("us")){
 			policiesAndProceduresPdfUrl = "Policies_Procedures_USA.pdf";
@@ -419,6 +419,61 @@ public class ConsultantEnrollmentTest extends StoreFrontWebsiteBaseTest{
 			s_assert.assertTrue(sfHomePage.isEnrollemntSuccessfulMsgDisplayed(), "Expected 'ENROLLMENT SUCCESSFUL' msg has NOT displayed"); 
 			sfHomePage.clickRodanAndFieldsLogo();
 			s_assert.assertTrue(sfHomePage.isWelcomeUserElementDisplayed(), "Welcome user locator has not displayed after consultant enrollment");
+			s_assert.assertAll();
+		}
+	}
+
+	/***
+	 * qTest : TC-490 Consultant Enrollment- Page 2- Quebec Disclaimer-Present Under kit selection
+	 * 
+	 * Description : This test validates Quebec Disclaimer under kit selection
+	 * is present or not for CA
+	 *     
+	 */
+	@Test
+	public void testQuebecDisclaimerPresentUnderKitSelection_490(){
+		if(country.equalsIgnoreCase("ca")){
+			timeStamp = CommonUtils.getCurrentTimeStamp();
+			randomWords = CommonUtils.getRandomWord(5);		
+			lastName = TestConstants.LAST_NAME+randomWords;
+			email = firstName+"cons"+timeStamp+TestConstants.EMAIL_SUFFIX;
+			String DisclaimerForQuebec = "Residents of Quebec are not eligible to enroll as Consultants";
+			String socialInsuranceNumber = String.valueOf(CommonUtils.getRandomNum(100000000, 999999999));
+			String emailID = firstName+timeStamp+TestConstants.EMAIL_SUFFIX;
+			sfHomePage.clickEnrollNow();
+			sfHomePage.searchSponsor(TestConstants.SPONSOR);
+			s_assert.assertTrue(sfHomePage.isSponsorResultDisplayed(),"No result found after searching the sponsor with name "+TestConstants.SPONSOR);
+			sfHomePage.selectFirstSponsorFromList();
+			sfHomePage.enterConsultantEnrollmentDetails(firstName, lastName, emailID, password, socialInsuranceNumber);
+			sfHomePage.clickNextButton();
+			s_assert.assertTrue(sfHomePage.isTextVisible(DisclaimerForQuebec), "Disclaimer for Quebec is not visible under kit selection page");
+			s_assert.assertAll();
+		}
+	}
+
+	/***
+	 * qTest : TC-491 Consultant Enrollment- Page 2- Quebec Disclaimer-Not Present Under kit selection
+	 * 
+	 * Description : This test validates Quebec Disclaimer under kit selection should not present for US
+	 *     
+	 */
+	@Test
+	public void testQuebecDisclaimerPresentUnderKitSelection_491(){
+		if(country.equalsIgnoreCase("us")){
+			timeStamp = CommonUtils.getCurrentTimeStamp();
+			randomWords = CommonUtils.getRandomWord(5);		
+			lastName = TestConstants.LAST_NAME+randomWords;
+			email = firstName+"cons"+timeStamp+TestConstants.EMAIL_SUFFIX;
+			String DisclaimerForQuebec = "Residents of Quebec are not eligible to enroll as Consultants";
+			String socialInsuranceNumber = String.valueOf(CommonUtils.getRandomNum(100000000, 999999999));
+			String emailID = firstName+timeStamp+TestConstants.EMAIL_SUFFIX;
+			sfHomePage.clickEnrollNow();
+			sfHomePage.searchSponsor(TestConstants.SPONSOR);
+			s_assert.assertTrue(sfHomePage.isSponsorResultDisplayed(),"No result found after searching the sponsor with name "+TestConstants.SPONSOR);
+			sfHomePage.selectFirstSponsorFromList();
+			sfHomePage.enterConsultantEnrollmentDetails(firstName, lastName, emailID, password, socialInsuranceNumber);
+			sfHomePage.clickNextButton();
+			s_assert.assertFalse(sfHomePage.isTextVisible(DisclaimerForQuebec), "Disclaimer for Quebec is not visible under kit selection page");
 			s_assert.assertAll();
 		}
 	}
@@ -559,7 +614,7 @@ public class ConsultantEnrollmentTest extends StoreFrontWebsiteBaseTest{
 	 * Description : This method Validates consultant enrollment with existing prefix.
 	 *     
 	 */
-	@Test(enabled=false)
+	@Test(enabled=true)
 	public void testConsultantEnrollmentWithExistingPrefix_469(){
 		timeStamp = CommonUtils.getCurrentTimeStamp();
 		randomWords = CommonUtils.getRandomWord(5);		
@@ -665,7 +720,7 @@ public class ConsultantEnrollmentTest extends StoreFrontWebsiteBaseTest{
 		sfHomePage.selectConsentFormChkBox();
 		sfHomePage.clickBecomeAConsultant();
 		s_assert.assertTrue(sfHomePage.isEnrollemntSuccessfulMsgDisplayed(), "Expected 'ENROLLMENT SUCCESSFUL' msg has NOT displayed"); 
-		sfHomePage.addFirstProductForCRPCheckout();
+		sfHomePage.addFirstProductForCRPCheckout(validProductName);
 		sfCheckoutPage = sfHomePage.checkoutCRPBag();
 		sfCheckoutPage.clickSaveButton();
 		sfCheckoutPage.clickShippingDetailsNextbutton();
@@ -759,7 +814,7 @@ public class ConsultantEnrollmentTest extends StoreFrontWebsiteBaseTest{
 		sfHomePage.selectConsentFormChkBox();
 		sfHomePage.clickBecomeAConsultant();
 		s_assert.assertTrue(sfHomePage.isEnrollemntSuccessfulMsgDisplayed(), "Expected 'ENROLLMENT SUCCESSFUL' msg has NOT displayed"); 
-		sfHomePage.addFirstProductForCRPCheckout();
+		sfHomePage.addFirstProductForCRPCheckout(validProductName);
 		sfCheckoutPage = sfHomePage.checkoutCRPBag();
 		sfCheckoutPage.clickSaveButton();
 		sfCheckoutPage.clickShippingDetailsNextbutton();

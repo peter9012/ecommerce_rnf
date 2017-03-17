@@ -17,13 +17,13 @@
 			<class
 				name="com.rf.test.website.rehabitat.storeFront.PCEnrollmentTest">
 				<methods>
-					<include name="testPCEnrollment_452"></include>
+					<include name="testPCEnrollmentWithPWSSponsor_452"></include>
 				</methods>
 			</class>
 			<class
 				name="com.rf.test.website.rehabitat.storeFront.RCEnrollmentTest">
 				<methods>
-					<include name="testRCEnrollmentWithoutSponsor_550"></include>
+					<include name="testRCEnrollmentWithOrderWithoutSponsor_550"></include>
 				</methods>
 			</class>
 		</classes>

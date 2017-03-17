@@ -11,8 +11,11 @@ import com.rf.core.driver.website.RFWebsiteDriver;
 import com.rf.core.utils.CommonUtils;
 import com.rf.core.website.constants.TestConstants;
 import com.rf.pages.website.rehabitat.storeFront.basePage.StoreFrontWebsiteBasePage;
-
 import org.apache.commons.lang3.StringEscapeUtils;
+
+import java.awt.AWTException;
+import java.util.ArrayList;
+import java.util.List;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
@@ -24,6 +27,9 @@ public class StoreFrontShopSkinCarePage extends StoreFrontWebsiteBasePage{
 	private static final Logger logger = LogManager
 			.getLogger(StoreFrontShopSkinCarePage.class.getName());
 
+	private final By YOUR_PRICE_FOR_ALL_PRODUCTS_LOC = By.xpath("//div[@id='product_listing']/descendant::span[contains(@id,'cust_price') and contains(text(),'$')]");
+	private final By RETAIL_PRICE_FOR_ALL_PRODUCTS_LOC = By.xpath("//div[@id='product_listing']/descendant::span[contains(@id,'retail') and contains(text(),'$')]");
+	private final By PAGINATION_NEXT_ARROW_LOC = By.xpath("//li[@class='pagination-next']/a");
 	private final By SHOP_BY_PRICE_FILTER_SELECTED_OPTION_LOC = By.xpath("//select[@id='sortOptions1']/option[@selected]");
 	private final By PRODUCT_QTY_ON_CHECKOUT_POPUP_LOC = By.xpath("//div[@id='cboxLoadedContent']//div[@class='qty']");
 	private final By QTY_TF_ON_QUICK_VIEW_POPUP_LOC = By.xpath("//input[@id='qty']");
@@ -702,35 +708,38 @@ public class StoreFrontShopSkinCarePage extends StoreFrontWebsiteBasePage{
 	 */
 	public String refineProductByCategoryAndReturnCategoryName(){
 		String categoryName = null;
+		driver.click(REFINE_PRODUCT_CATEGORY_FILTER_DD_LOC);
+		ArrayList<String> categoryNameList = new ArrayList<String>();
+		List<WebElement> totalCategories = driver.findElements(TOTAL_CATEGORY_NAME_LOC);
+		for(WebElement category : totalCategories){
+			String catLabel = null;
+			catLabel = category.getAttribute("id").trim();
+			categoryNameList.add(catLabel);
+		}
 		while(true){
-			driver.click(REFINE_PRODUCT_CATEGORY_FILTER_DD_LOC);
-			logger.info("Refine category filter dropdown clicked");
-			int randomNum = CommonUtils.getRandomNum(4,12);
-			logger.info("Random selected category is "+(randomNum-1));
-			categoryName=driver.findElement(By.xpath(String.format(randomCategoryName,randomNum))).getText().trim();
-			driver.clickByJS(RFWebsiteDriver.driver,By.xpath(String.format(randomProductCategoryCheckbox,randomNum)));
-			//driver.click(By.xpath(String.format(randomProductCategoryCheckbox,randomNum)));
-			logger.info("Product category selected is "+categoryName);
+			System.out.println("in while cond");
+			int randomNumberForCategory = CommonUtils.getRandomNum(0,(categoryNameList.size()-1));
+			categoryName = categoryNameList.get(randomNumberForCategory);
+			driver.clickByJS(RFWebsiteDriver.driver,By.xpath(String.format(randomCategoryNameLoc,categoryName)));
 			driver.waitForPageLoad();
 			driver.waitForLoadingImageToDisappear();
 			driver.pauseExecutionFor(5000);
 			int totalProducts = driver.findElements(TOTAL_PRODUCTS_LOC).size();
-			if(totalProducts>=3)
+			if(totalProducts>=3){
+				System.out.println("in if cond");
 				break;
+			}
 			else{
+				System.out.println("in else cond");
+				categoryNameList.remove(randomNumberForCategory);
 				driver.click(REFINE_PRODUCT_CATEGORY_FILTER_DD_LOC);
-				categoryName=driver.findElement(By.xpath(String.format(randomCategoryName,randomNum))).getText().trim();
-				driver.click(By.xpath(String.format(randomProductCategoryCheckbox,randomNum)));
-				driver.waitForPageLoad();
-				driver.waitForLoadingImageToDisappear();
-				logger.info("Category"+categoryName+" is deselected");
-				logger.info("Required product count not present for category"+categoryName);
+				driver.clickByJS(RFWebsiteDriver.driver,By.xpath(String.format(randomCategoryNameLoc,categoryName)));
 				continue;
 			}
 		}
 		return categoryName;
 	}
-
+		
 	/***
 	 * This method select sort by price filter Low to High via JS click.
 	 * 
@@ -962,20 +971,57 @@ public class StoreFrontShopSkinCarePage extends StoreFrontWebsiteBasePage{
 		}
 		else if(orderType.equals(TestConstants.ORDER_TYPE_ADHOC)&& driver.isElementPresent(By.xpath(String.format(productPriceThroughProductNumberLoc,TestConstants.ORDER_TYPE_ADHOC,productNumber)))){
 			priceToAssert = driver.getText(By.xpath(String.format(productPriceThroughProductNumberLoc,TestConstants.ORDER_TYPE_ADHOC,productNumber))).replace("$","");
-			driver.clickByAction(By.xpath(String.format(addToCartDDLoc,TestConstants.ORDER_TYPE_ADHOC,productNumber)));
+			driver.clickByJS(By.xpath(String.format(addToCartDDLoc,TestConstants.ORDER_TYPE_ADHOC,productNumber)));
 		}
 		else if(orderType.equals(TestConstants.ORDER_TYPE_PC_PERKS)&& driver.isElementPresent(By.xpath(String.format(productPriceThroughProductNumberLoc,TestConstants.ORDER_TYPE_PC_PERKS,productNumber)))){
 			priceToAssert = driver.getText(By.xpath(String.format(productPriceThroughProductNumberLoc,TestConstants.ORDER_TYPE_PC_PERKS,productNumber))).replace("$","");
-			driver.clickByAction(By.xpath(String.format(addToCartDDLoc,TestConstants.ORDER_TYPE_PC_PERKS,productNumber)));
+			driver.clickByJS(By.xpath(String.format(addToCartDDLoc,TestConstants.ORDER_TYPE_PC_PERKS,productNumber)));
 		}
 		else if(orderType.equals(TestConstants.ORDER_TYPE_CRP)&& driver.isElementPresent(By.xpath(String.format(productPriceThroughProductNumberLoc,TestConstants.ORDER_TYPE_CRP,productNumber)))){
 			priceToAssert = driver.getText(By.xpath(String.format(productPriceThroughProductNumberLoc,"Add to CRP",productNumber))).replace("$","");
-			driver.clickByAction(By.xpath(String.format(addToCartDDLoc,"Add to CRP",productNumber)));
+			driver.clickByJS(By.xpath(String.format(addToCartDDLoc,"Add to CRP",productNumber)));
 		}
 		logger.info("Add To Cart clicked, order type is "+orderType);
 		return priceToAssert;
 	}
 
+	/***
+	 * This method adds the product to the cart(adhoc/autoship/PC perks as specified)
+	 * 
+	 * @param
+	 * @return string price
+	 * @throws AWTException 
+	 * 
+	 */
+	public String addProductToCart(String productNumber,String orderType,String product){
+		String priceToAssert = null;
+		driver.pauseExecutionFor(5000);
+		driver.waitForElementPresent(By.xpath(String.format(addToCartButtonLoc, productNumber)), 15);
+		clickSearchIcon();
+		searchEntityAndHitEnter(product);
+		driver.pauseExecutionFor(2000);
+		driver.moveToElementByJS(By.xpath(String.format(addToCartButtonWithFormLoc, productNumber)));
+		driver.clickByJS( By.xpath(String.format(addToCartButtonWithFormLoc, productNumber)));
+		if(orderType.equals(TestConstants.ORDER_TYPE_ENROLLMENT)){
+			logger.info("Adding product for Enrollment");
+		}
+		else if(orderType.equals(TestConstants.ORDER_TYPE_ADHOC)&& driver.isElementPresent(By.xpath(String.format(productPriceThroughProductNumberLoc,TestConstants.ORDER_TYPE_ADHOC,productNumber)))){
+			priceToAssert = driver.getText(By.xpath(String.format(productPriceThroughProductNumberLoc,TestConstants.ORDER_TYPE_ADHOC,productNumber))).replace("$","");
+			driver.clickByJS(By.xpath(String.format(addToCartDDLoc,TestConstants.ORDER_TYPE_ADHOC,productNumber)));
+		}
+		else if(orderType.equals(TestConstants.ORDER_TYPE_PC_PERKS)&& driver.isElementPresent(By.xpath(String.format(productPriceThroughProductNumberLoc,TestConstants.ORDER_TYPE_PC_PERKS,productNumber)))){
+			priceToAssert = driver.getText(By.xpath(String.format(productPriceThroughProductNumberLoc,TestConstants.ORDER_TYPE_PC_PERKS,productNumber))).replace("$","");
+			driver.clickByJS(By.xpath(String.format(addToCartDDLoc,TestConstants.ORDER_TYPE_PC_PERKS,productNumber)));
+		}
+		else if(orderType.equals(TestConstants.ORDER_TYPE_CRP)&& driver.isElementPresent(By.xpath(String.format(productPriceThroughProductNumberLoc,TestConstants.ORDER_TYPE_CRP,productNumber)))){
+			priceToAssert = driver.getText(By.xpath(String.format(productPriceThroughProductNumberLoc,"Add to CRP",productNumber))).replace("$","");
+			driver.clickByJS(By.xpath(String.format(addToCartDDLoc,"Add to CRP",productNumber)));
+		}
+		logger.info("Add To Cart clicked, order type is "+orderType);
+		return priceToAssert;
+	}
+
+	
 	/***
 	 * This method validates that default filter has been applied
 	 * 
@@ -1004,5 +1050,48 @@ public class StoreFrontShopSkinCarePage extends StoreFrontWebsiteBasePage{
 		return this;
 	}
 		
+
+	public String getProductNumToSelectForCard(String userType, String cardType,String defaultProdNumber){
+		if(!cardType.equals(TestConstants.CARD_TYPE_AMEX)){
+			return defaultProdNumber;
+		}
+		else{
+			return getProductIndexWithPriceInRange(63,70,userType);
+		}
+	}
+
+
+	private List<WebElement> getProductsPriceForUserType(String userType){
+		List<WebElement> productsPrice = null;
+		if(userType.equals(TestConstants.USER_TYPE_RC)){
+			productsPrice = driver.findElements(RETAIL_PRICE_FOR_ALL_PRODUCTS_LOC);
+		}
+		else{
+			productsPrice = driver.findElements(YOUR_PRICE_FOR_ALL_PRODUCTS_LOC);
+		}
+		return productsPrice;
+	}
+
+	private String getProductIndexWithPriceInRange(int minRange,int maxRange,String userType){
+		while(true){
+			int counter = 1;
+			for(WebElement prodPrice : getProductsPriceForUserType(userType)){
+				int price = Integer.valueOf(prodPrice.getText().replace(".00","").replaceAll("[^-?0-9]+","").trim());
+				if(minRange <= price &&  price <= maxRange){
+					return Integer.toString(counter);
+				}
+				counter++;
+			}
+			if(driver.isElementPresent(PAGINATION_NEXT_ARROW_LOC)){
+				driver.click(PAGINATION_NEXT_ARROW_LOC);
+				logger.info("Pagination Next Link Clicked");
+			}
+			else{
+				break;
+			}
+		}
+		logger.info("No Product Found for the Selected Range on All Products Page");
+		return null;
+	}
 
 }

@@ -418,5 +418,22 @@ public class ExcelUtil {
 			e1.printStackTrace();
 		}
 	}
-}
 
+	public static void setHeadingsInTheExcel(List<String> columnHeadings){
+		XSSFCell cell = null;
+		int col = 0;
+		int rowId = 0;
+		consSheet.createRow(rowId);
+		pcSheet.createRow(rowId);
+		rcSheet.createRow(rowId);
+		for(String heading : columnHeadings){
+			cell = consSheet.getRow(rowId).createCell(col);
+			cell.setCellValue(heading);
+			cell = pcSheet.getRow(rowId).createCell(col);
+			cell.setCellValue(heading);
+			cell = rcSheet.getRow(rowId).createCell(col);
+			cell.setCellValue(heading);
+			col++;
+		}
+	}
+}

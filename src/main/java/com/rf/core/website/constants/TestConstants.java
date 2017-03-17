@@ -28,7 +28,11 @@ public class TestConstants {
 	public static final String ORDER_TYPE_PC_PERKS = "Add to PC Perks";
 	public static final String ORDER_TYPE_CRP= "Add to CRP";
 	public static final String ORDER_TYPE_ENROLLMENT = "Enrollment";
-	public static final String PRODUCT_NUMBER = "2";
+	public static final String VALID_PRODUCT_ID_US = "UNRJ001";
+	public static final String VALID_PRODUCT_ID_CA = "AARG001-01";
+	public static final String VALID_PRODUCT_NAME_US = "UNBLEMISH Regimen for Acne";
+	public static final String VALID_PRODUCT_NAME_CA = "REDEFINE Regimen";
+	public static final String PRODUCT_NUMBER = "1";
 	public static final String PRODUCT_NUMBER_PC_AUTOSHIP = "3";
 	//	public static final String OTHER_PRODUCT_NUMBER = "3";
 	public static final String PC_FIRST_NAME = "autopc";
@@ -63,7 +67,7 @@ public class TestConstants {
 	public static final String LOW_PRICE_FILTER_US="$0-$49.99";
 	public static final String MID_PRICE_FILTER_US="$50-$199.99";
 	public static final String HIGH_PRICE_FILTER_US="$200-$499.99";
-	
+
 	// Order page Details
 	public static final String TITLE_OF_ORDER_DETAILS_PAGE = "Order Details | Rodan and Fields";
 
@@ -81,19 +85,19 @@ public class TestConstants {
 	public static final String CITY_ND_US = "Bismarck";
 	public static final String POSTAL_CODE_ND_US = "58503";
 	public static final String STATE_ND_US = "North Dakota";
-	
+
 	//Canada
 	public static final String ADDRESS_LINE_1_CA = "5940 Macleod Trail SW Suite 500";
 	public static final String ADDRESS_LINE_2_CA = "";
 	public static final String CITY_CA = "Calgary";
 	public static final String POSTAL_CODE_CA = "T2H 2G4";
 	public static final String STATE_CA = "Alberta";
-	
+
 	public static final String SECOND_ADDRESS_LINE_1_CA = "60 Patterson Blvd SW";
 	public static final String SECOND_ADDRESS_LINE_2_CA = "";
 	public static final String SECOND_CITY_CA = "Calgary";
 	public static final String SECOND_POSTAL_CODE_CA = "T3H 2E1";
-	public static final String STATE_CA_ABBREVIATION = "CA-AB";
+	public static final String STATE_CA_ABBREVIATION = "AB";
 
 	public static final String FIRST_NAME_BILLING_ADDRESS = "BAFirstname";
 	public static final String LAST_NAME_BILLING_ADDRESS = "BALastname";
@@ -145,6 +149,7 @@ public class TestConstants {
 	public static final String CARD_LASTNAME = "lauto";
 	public static final String CARD_NAME = "auto"+" "+CARD_LASTNAME;
 	public static final String CVV = "123";
+	public static final String CVV_AMEX = "1234";
 	public static final String CARD_NUMBER_2 = "5424180279791773";
 	public static final String CARD_NUMBER_MORE_THAN_16_DIGIT = "47474747474747474";
 	public static final String CARD_NUMBER_LESS_THAN_16_DIGIT = "474747474747474";
@@ -176,9 +181,7 @@ public class TestConstants {
 	public static final String PHONE_NUMBER_MANDATORY_MSG = "Please specify a valid phone number.";
 	public static final String MORE_THAN_200_CHARS = "This is the test message This is the test message This is the test message This is the test message "+
 			"This is the test message This is the test message This is the test message This is the test message T";
-	public static final String CANCELLED_CRP_ORDER_SUCCESS_MESSAGE = "Your CRP Order has been canceled.";
 	public static final String PRODUCT_CATEGORY_REDEFINE = "REDEFINE";
-
 	public static final String SECOND_ADDRESS_LINE_1_US = "1625 Sixth Street";
 	public static final String SECOND_ADDRESS_LINE_2_US = "211";
 	public static final String SECOND_CITY_US = "Concord";
@@ -188,9 +191,27 @@ public class TestConstants {
 	public static final String DEFAULT_SHIPPING_ADDRESS_UPDATION_MSG = "Your default address was updated.";
 	public static final String AUTOSHIP_DELIVERY_ADDRESS_UPDATION_MSG = "Delivery Address has been Updated for your Cart.";
 	public static final String ERROR_MSG_EXISTING_PREFIX = "Subscription Prefix not available";
-	
+	public static final String CANCELLED_CRP_ORDER_SUCCESS_MESSAGE = "Your CRP Order has been canceled.";
+
 	public static final String ECC_ORDER_TYPE_CONSULTANT_ADHOC = "ConsultantAdhocOrder";
 	public static final String ECC_ORDER_TYPE_PC_ADHOC = "PCAdhocOrder";
 	public static final String ECC_ORDER_TYPE_RC_ADHOC = "RCAdhocOrder";
-	
+
+	public static final String USER_EMAIL_HEADING = "USER_EMAIL";
+	public static final String ORDER_NUMBER_HEADING = "ORDER_NUMBER";
+	public static final String PRODUCT_NAME_HEADING = "PRODUCT_NAME";
+	public static final String ITEM_QTY_HEADING = "ITEM_QTY";
+	public static final String CARD_TYPE_HEADING = "CARD_TYPE";
+	public static final String ORDER_DATE_HEADING = "ORDER_DATE";
+	public static final String TOTAL_PRICE_HEADING = "TOTAL_PRICE";
+	public static final String ORDER_STATUS_HEADING = "ORDER_STATUS";
+	public static final String CARD_TYPE_VISA = "Visa";
+	public static final String CARD_TYPE_AMEX = "Amex";
+	public static final String CARD_TYPE_MASTER_CARD = "MasterCard";
+	public static final String CARD_TYPE_DISCOVER = "Discover";
+	public static final String CARD_NUMBER_VISA = "4012000077777777";
+	public static final String CARD_NUMBER_AMEX = "373953192351004";
+	public static final String CARD_NUMBER_MASTERCARD = "5424180279791773";
+	public static final String CARD_NUMBER_DISCOVER = "6011000991200035";
+
 }

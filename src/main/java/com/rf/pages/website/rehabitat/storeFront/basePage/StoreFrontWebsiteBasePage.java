@@ -762,6 +762,7 @@ public class StoreFrontWebsiteBasePage extends RFBasePage {
 
 	public StoreFrontWebsiteBasePage loginToStoreFront(String username, String password, boolean closeCRPReminder) {
 		clickLoginIcon();
+		driver.pauseExecutionFor(1000);
 		driver.type(USERNAME_TXTFLD_LOC, username);
 		logger.info("username entered as " + username);
 		driver.type(PASSWORD_TXTFLD_LOC, password);
@@ -2819,7 +2820,7 @@ public class StoreFrontWebsiteBasePage extends RFBasePage {
 			driver.turnOffImplicitWaits(3);
 			driver.click(USE_AS_ENTERED_BUTTON_LOC,3);
 			driver.waitForElementToBeInVisible(USE_AS_ENTERED_BUTTON_LOC, 50);
-			//driver.pauseExecutionFor(40000); // UI is slow, will be removed
+			driver.pauseExecutionFor(5000); // UI is slow, will be removed
 			logger.info("'Used as entered' button clicked");
 		}catch(Exception e){
 			

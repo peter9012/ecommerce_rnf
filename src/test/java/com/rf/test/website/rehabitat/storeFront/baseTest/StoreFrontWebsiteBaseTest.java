@@ -129,19 +129,6 @@ public class StoreFrontWebsiteBaseTest extends RFBaseTest {
 		driver.setDBConnectionString();
 	}
 
-	/*@BeforeMethod(alwaysRun=true)
-	public void beforeMethod(){
-		s_assert = new SoftAssert();
-		setStoreFrontPassword(driver.getStoreFrontUserPassword());
-		checkAndCloseMoreThanOneWindows();
-		navigateToStoreFrontBaseURL();
-		if(sfHomePage.isWelcomeUserElementDisplayed()==true){
-			sfHomePage.clickWelcomeDropdown();
-			sfHomePage.logout();
-			navigateToStoreFrontBaseURL();
-		}			
-	}*/
-
 	@BeforeClass(alwaysRun=true)
 	public void setAddressDetailsAsPerCountry(){
 		setCountry();
@@ -183,23 +170,6 @@ public class StoreFrontWebsiteBaseTest extends RFBaseTest {
 		}
 	}
 
-	//	@AfterGroups(alwaysRun=true,groups="users")
-	//	public void afterGroup() throws IOException{
-	//		logger.info("After Group");
-	//		userPropertyFile.loadProps(userProps);
-	//		setUsers("consultantWithPulseAndWithCRP", consultantWithPulseAndWithCRP);
-	//		setUsers("pwsPrefix", pwsPrefix);
-	//		setUsers("consultantWithoutPulseAndWithoutCRP", consultantWithoutPulseAndWithoutCRP);
-	//		//setUsers("consultantWithPulseAndWithCRPForCancellation", consultantWithPulseAndWithCRPForCancellation);
-	//		//		setUsers("consultantHavingSponsorWithoutPWS", consultantHavingSponsorWithoutPWS);
-	//		setUsers("pcUserWithPWSSponsor", pcUserWithPWSSponsor);
-	//		//		setUsers("pcUserWithoutSponsor", pcUserWithoutSponsor);
-	//		//		setUsers("pcUserWithoutPWSSponsor", pcUserWithoutPWSSponsor);
-	//		//		setUsers("pcUserHavingSingleBillingProfile", pcUserHavingSingleBillingProfile);
-	//		setUsers("rcWithOrder", rcWithOrder);
-	//		//		setUsers("rcWithoutOrder", rcWithoutOrder);
-	//	}
-
 	public void setUsers(String key,String value){
 		if(value!=null)
 			userPropertyFile.setAndWriteProperty(key, value,userProps);
@@ -238,7 +208,7 @@ public class StoreFrontWebsiteBaseTest extends RFBaseTest {
 		driver.get(driver.getURL()+"/"+country.toUpperCase());
 		logger.info("Navigated to base URL");
 		driver.waitForPageLoad();
-		driver.pauseExecutionFor(2000);
+	//	driver.pauseExecutionFor(2000);
 	}
 
 	public void navigateToStoreFrontBaseURLWithoutCountry(){
@@ -335,12 +305,6 @@ public class StoreFrontWebsiteBaseTest extends RFBaseTest {
 		String suiteName = context.getCurrentXmlTest().getSuite().getName();
 		return suiteName;
 	}
-
-	//	public void setUpPreRequisites() throws Exception {
-	//		userPropertyFile.loadProps(userProps);
-	//		driver.loadApplication();
-	//		driver.setDBConnectionString();
-	//	}
 
 	@BeforeMethod(alwaysRun=true)
 	public void beforeMethod() throws Exception{

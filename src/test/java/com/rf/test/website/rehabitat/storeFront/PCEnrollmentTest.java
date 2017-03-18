@@ -205,8 +205,7 @@ public class PCEnrollmentTest extends StoreFrontWebsiteBaseTest{
 		sfCartPage.clickAddMoreItemsBtn();
 		sfShopSkinCarePage.addProductToCart(TestConstants.PRODUCT_NUMBER, TestConstants.ORDER_TYPE_ENROLLMENT,validProductId);
 		sfCartPage = sfShopSkinCarePage.checkoutTheCartFromPopUp();
-//		sfCartPage.enterQuantityOfProductAtCart("1", "2");
-//		sfCartPage.clickOnUpdateLinkThroughItemNumber("1");
+
 		sfCartPage.clickCheckoutBtn();
 		//Choose sponser and main account fields are autofilled.
 		sfCheckoutPage.searchForConsultant(existingConsultant);
@@ -260,8 +259,6 @@ public class PCEnrollmentTest extends StoreFrontWebsiteBaseTest{
 		sfCartPage.clickAddMoreItemsBtn();
 		sfShopSkinCarePage.addProductToCart(TestConstants.PRODUCT_NUMBER, TestConstants.ORDER_TYPE_ENROLLMENT,validProductId);
 		sfCartPage = sfShopSkinCarePage.checkoutTheCartFromPopUp();
-//		sfCartPage.enterQuantityOfProductAtCart("1", "2");
-//		sfCartPage.clickOnUpdateLinkThroughItemNumber("1");
 		sfCartPage.clickCheckoutBtn();
 		//Choose sponser and main account fields are autofilled.
 		sfCheckoutPage.searchForConsultant(existingConsultant);
@@ -345,8 +342,7 @@ public class PCEnrollmentTest extends StoreFrontWebsiteBaseTest{
 		sfCartPage.clickAddMoreItemsBtn();
 		sfShopSkinCarePage.addProductToCart(TestConstants.PRODUCT_NUMBER, TestConstants.ORDER_TYPE_ENROLLMENT,validProductId);
 		sfCartPage = sfShopSkinCarePage.checkoutTheCartFromPopUp();
-//		sfCartPage.enterQuantityOfProductAtCart("1", "2");
-//		sfCartPage.clickOnUpdateLinkThroughItemNumber("1");
+
 		sfCartPage.clickCheckoutBtn();
 		sfCartPage.searchSponsor(TestConstants.SPONSOR);
 		sfHomePage.selectFirstSponsorFromList();
@@ -390,8 +386,10 @@ public class PCEnrollmentTest extends StoreFrontWebsiteBaseTest{
 		//sfShopSkinCarePage=sfCartPage.clickAllProducts();// this is a temporary patch
 		sfShopSkinCarePage.addProductToCart(TestConstants.PRODUCT_NUMBER, TestConstants.ORDER_TYPE_ENROLLMENT,validProductId);
 		sfCartPage = sfShopSkinCarePage.checkoutTheCartFromPopUp();
-//		sfCartPage.enterQuantityOfProductAtCart("1", "2");
-//		sfCartPage.clickOnUpdateLinkThroughItemNumber("1");
+
+		//sfCartPage.enterQuantityOfProductAtCart("1", "2");
+		//sfCartPage.clickOnUpdateLinkThroughItemNumber("1");
+
 		sfCartPage.clickCheckoutBtn();
 		sfCheckoutPage.clickContinueWithoutConsultantLink();
 		sfCheckoutPage.clickSaveButton();
@@ -429,8 +427,10 @@ public class PCEnrollmentTest extends StoreFrontWebsiteBaseTest{
 		sfCartPage.clickAddMoreItemsBtn();
 		sfShopSkinCarePage.addProductToCart(TestConstants.PRODUCT_NUMBER, TestConstants.ORDER_TYPE_ENROLLMENT,validProductId);
 		sfCartPage = sfShopSkinCarePage.checkoutTheCartFromPopUp();
-//		sfCartPage.enterQuantityOfProductAtCart("1", "2");
-//		sfCartPage.clickOnUpdateLinkThroughItemNumber("1");
+
+		//sfCartPage.enterQuantityOfProductAtCart("1", "2");
+		//sfCartPage.clickOnUpdateLinkThroughItemNumber("1");
+
 		sfCartPage.clickCheckoutBtn();
 		sfCheckoutPage.clickContinueWithoutConsultantLink();
 		sfCheckoutPage.clickSaveButton();

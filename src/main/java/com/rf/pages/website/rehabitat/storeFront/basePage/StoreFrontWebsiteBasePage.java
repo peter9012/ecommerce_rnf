@@ -210,11 +210,11 @@ public class StoreFrontWebsiteBasePage extends RFBasePage {
 	protected final By AUTOSHIP_TEXT_LOC = By.xpath("//span[text()='Auto-ship']");
 	private final By PRODUCT_NAME_ON_CHECKOUT_POPUP_LOC = By
 			.xpath("//div[@class='add-to-cart-item']//div[@class='details']/a[@class='name']");
-//	protected final By CHECKOUT_BUTTON_POPUP_LOC = By
-//			.xpath("//div[@id='addToCartLayer']/a[contains(text(),'Checkout')]");
+	//	protected final By CHECKOUT_BUTTON_POPUP_LOC = By
+	//			.xpath("//div[@id='addToCartLayer']/a[contains(text(),'Checkout')]");
 	protected final By CHECKOUT_BUTTON_POPUP_LOC = By
 			.xpath("//a[contains(text(),'Checkout')]");
-	
+
 	private final By AUTOSHIP_CART_LINK_LOC = By
 			.xpath("//span[text()='Auto-ship']/ancestor::a[contains(@class,'auto-ship-cart')]");
 	private final By RETURN_AUTHORIZATION_FORM_LINK = By
@@ -345,8 +345,12 @@ public class StoreFrontWebsiteBasePage extends RFBasePage {
 	private String productNameOfAnItemLoc = "//div[@class='orderConfirmationInfo']/descendant::p[%s]";
 	private String topNavigationSublinksWithTextLoc = topNavigationLoc + "//a[contains(text(),'%s')]";
 	private String topNavigationSublinksWithTitleLoc = topNavigationLoc + "//*[contains(@title,'%s')]";
+	private String quantityTBForSpecificProductLoc = "//span[normalize-space(text())='%s']//following::input[contains(@id,'quantity') and not(@readonly)][1]";
+	private String updateLinkForSpecificProductLoc = "//span[normalize-space(text())='%s']//following::input[contains(@id,'quantity') and not(@readonly)][1]/following::input[@value='update'][1]";
 
 	private String RFO_DB = null;
+	private static String productName = null;
+
 
 	/***
 	 * This method do the mouseHover on desired webElement
@@ -465,6 +469,7 @@ public class StoreFrontWebsiteBasePage extends RFBasePage {
 	 * 
 	 */
 	public String getCurrentURL() {
+		driver.pauseExecutionFor(3000);
 		String currentURL = driver.getCurrentUrl();
 		logger.info("Current URL is " + currentURL);
 		return currentURL;
@@ -489,7 +494,7 @@ public class StoreFrontWebsiteBasePage extends RFBasePage {
 	 * 
 	 */
 	public StoreFrontHomePage clickRodanAndFieldsLogo() {
-		driver.pauseExecutionFor(3000);
+		driver.pauseExecutionFor(1000);
 		driver.waitForElementPresent(RODAN_AND_FIELDS_IMAGE_LOC);
 		if (driver.isElementPresent(RODAN_AND_FIELDS_IMAGE_LOC)) {
 			driver.clickByJS(RFWebsiteDriver.driver, RODAN_AND_FIELDS_IMAGE_LOC);
@@ -524,12 +529,12 @@ public class StoreFrontWebsiteBasePage extends RFBasePage {
 	 * 
 	 */
 	public StoreFrontWebsiteBasePage searchSponsor(String sponsor) {
-		driver.pauseExecutionFor(2000);
+		//driver.pauseExecutionFor(2000);
 		driver.type(SPONSOR_SEARCH_FIELD_LOC, sponsor);
 		logger.info("Entered sponsor as " + sponsor);
 		driver.click(SEARCH_SPONSOR_LOC);
 		logger.info("Clicked on 'Search' button");
-		driver.pauseExecutionFor(2000);
+		//	driver.pauseExecutionFor(2000);
 		return this;
 	}
 
@@ -541,6 +546,7 @@ public class StoreFrontWebsiteBasePage extends RFBasePage {
 	 * 
 	 */
 	public void selectFirstSponsorFromList() {
+
 		driver.pauseExecutionFor(2000);
 		driver.clickByJS(RFWebsiteDriver.driver, SELECT_AND_CONTINUE_LOC);
 		logger.info("Clicked on 'Select And Continue' button for first result");
@@ -1057,15 +1063,10 @@ public class StoreFrontWebsiteBasePage extends RFBasePage {
 	 * 
 	 */
 	public StoreFrontWebsiteBasePage clickWelcomeDropdown() {
-		//		driver.pauseExecutionFor(2000);
-		//		if (driver.isElementPresent(SET_UP_CRP_POPUP_CLOSE_LOC)) {
-		//			driver.click(SET_UP_CRP_POPUP_CLOSE_LOC);
-		//			logger.info("JOIN CRP banner closed");
-		//		}
 		driver.pauseExecutionFor(1000);
 		driver.clickByJS(RFWebsiteDriver.driver, WELCOME_DROPDOWN_LOC);
 		logger.info("Welcome dropdown clicked");
-		driver.pauseExecutionFor(2000);
+		//driver.pauseExecutionFor(2000);
 		return this;
 	}
 
@@ -1688,27 +1689,27 @@ public class StoreFrontWebsiteBasePage extends RFBasePage {
 		driver.type(NAME_ON_CARD_LOC, nameOnCard);
 		//actions.click(nameOnCardElement).sendKeys(nameOnCardElement, nameOnCard).build().perform();
 		logger.info("Entered card name as" + nameOnCard);
-		  //  driver.click(EXP_MONTH_DD_LOC);
-		  //  driver.pauseExecutionFor(1000);
-		  //  logger.info("Exp month dropdown clicked");
-		  //  driver.click(EXP_MONTH_LOC);
-		  //  driver.pauseExecutionFor(1000);
-		  //  logger.info("Exp month selected");
-		  //  driver.click(EXP_YEAR_DD_LOC);
-		  //  driver.pauseExecutionFor(1000);
-		  //  logger.info("Exp year dropdown clicked");
-		  //  driver.click(EXP_YEAR_LOC);
-		  //  driver.pauseExecutionFor(1000);
-		  //  logger.info("Exp year selected");
-		  driver.type(EXP_MONTH_DD_LOC, "12");
-		  driver.type(EXP_YEAR_DD_LOC, "2025");
-		  driver.type(CVV_LOC, CVV);
-		  driver.pauseExecutionFor(1000);
-		  logger.info("Entered CVV as" + CVV);
-		  driver.pauseExecutionFor(1000);
-		  driver.waitForTokenizing();
-		  driver.waitForPageLoad();  
-		  return this;
+		//  driver.click(EXP_MONTH_DD_LOC);
+		//  driver.pauseExecutionFor(1000);
+		//  logger.info("Exp month dropdown clicked");
+		//  driver.click(EXP_MONTH_LOC);
+		//  driver.pauseExecutionFor(1000);
+		//  logger.info("Exp month selected");
+		//  driver.click(EXP_YEAR_DD_LOC);
+		//  driver.pauseExecutionFor(1000);
+		//  logger.info("Exp year dropdown clicked");
+		//  driver.click(EXP_YEAR_LOC);
+		//  driver.pauseExecutionFor(1000);
+		//  logger.info("Exp year selected");
+		driver.type(EXP_MONTH_DD_LOC, "12");
+		driver.type(EXP_YEAR_DD_LOC, "2025");
+		driver.type(CVV_LOC, CVV);
+		driver.pauseExecutionFor(1000);
+		logger.info("Entered CVV as" + CVV);
+		driver.pauseExecutionFor(1000);
+		driver.waitForTokenizing();
+		driver.waitForPageLoad();  
+		return this;
 	}
 
 	/***
@@ -1771,7 +1772,7 @@ public class StoreFrontWebsiteBasePage extends RFBasePage {
 	 */
 	public StoreFrontWebsiteBasePage clickBillingDetailsNextbutton() {
 		driver.pauseExecutionFor(5000);
-		driver.clickByJS(RFWebsiteDriver.driver, BILLING_NEXT_BUTTON_LOC);
+		driver.clickByJS(BILLING_NEXT_BUTTON_LOC);
 		driver.pauseExecutionFor(1000);
 		logger.info("Next button clicked of billing details");
 		driver.waitForPageLoad();
@@ -1786,7 +1787,7 @@ public class StoreFrontWebsiteBasePage extends RFBasePage {
 	 * 
 	 */
 	public StoreFrontWebsiteBasePage selectPoliciesAndProceduresChkBox() {
-		driver.pauseExecutionFor(3000);
+		driver.pauseExecutionFor(1000);
 		try{
 			driver.turnOffImplicitWaits(2);
 			driver.clickByJS(RFWebsiteDriver.driver, POLICIES_AND_PROCEDURES_CHK_BOX_LOC);
@@ -1810,10 +1811,9 @@ public class StoreFrontWebsiteBasePage extends RFBasePage {
 	 * 
 	 */
 	public StoreFrontWebsiteBasePage selectIAcknowledgeChkBox() {
-		driver.pauseExecutionFor(3000);
+		driver.pauseExecutionFor(2000);
 		driver.clickByJS(RFWebsiteDriver.driver,I_ACKNOWLEDGE_CHK_BOX_LOC);
 		logger.info("I acknowledge checkbox selected");
-		driver.pauseExecutionFor(1000);
 		return this;
 	}
 
@@ -1866,7 +1866,7 @@ public class StoreFrontWebsiteBasePage extends RFBasePage {
 		driver.pauseExecutionFor(1000);
 		driver.clickByJS(RFWebsiteDriver.driver, PC_TERMS_AND_CONDITIONS_CHK_BOX_LOC);
 		logger.info("PC Terms & condition checkbox selected");
-		driver.pauseExecutionFor(2000);
+		//driver.pauseExecutionFor(2000);
 		return this;
 	}
 
@@ -1878,9 +1878,9 @@ public class StoreFrontWebsiteBasePage extends RFBasePage {
 	 * 
 	 */
 	public StoreFrontWebsiteBasePage selectConsentFormChkBox() {
+		driver.pauseExecutionFor(2000);
 		driver.clickByJS(RFWebsiteDriver.driver, E_SIGN_CONSENT_FORM_CHK_BOX_LOC);
 		logger.info("E Sign Consent Form checkbox selected");
-		driver.pauseExecutionFor(2000);
 		return this;
 	}
 
@@ -1892,7 +1892,7 @@ public class StoreFrontWebsiteBasePage extends RFBasePage {
 	 */
 	public boolean isEnrollemntSuccessfulMsgDisplayed() {
 		driver.pauseExecutionFor(2000);
-		driver.waitForElementPresent(ENROLLMENT_SUCCESSFUL_MSG_LOC,20);
+		driver.waitForElementPresent(ENROLLMENT_SUCCESSFUL_MSG_LOC,10);
 		return driver.isElementPresent(ENROLLMENT_SUCCESSFUL_MSG_LOC);
 	}
 
@@ -2002,7 +2002,8 @@ public class StoreFrontWebsiteBasePage extends RFBasePage {
 	 * 
 	 */
 	public StoreFrontWebsiteBasePage navigateToBackPage() {
-		driver.navigate().back();
+		((JavascriptExecutor)RFWebsiteDriver.driver).executeScript("history.back");
+		((JavascriptExecutor)RFWebsiteDriver.driver).executeScript("history.go(-1)");
 		driver.waitForPageLoad();
 		return this;
 	}
@@ -2393,21 +2394,26 @@ public class StoreFrontWebsiteBasePage extends RFBasePage {
 		return driver.getText(PRODUCT_NAME_ON_CHECKOUT_POPUP_LOC);
 	}
 
+
+
 	/**
 	 * This method click on the checkOut Button on the popup on the cart.
 	 * 
 	 * @return
 	 */
 	public StoreFrontCartPage checkoutTheCartFromPopUp() {
-		//driver.pauseExecutionFor(5000);
+		driver.pauseExecutionFor(1000);
 		driver.quickWaitForElementPresent(CHECKOUT_BUTTON_POPUP_LOC);
-		driver.clickByJS(RFWebsiteDriver.driver,CHECKOUT_BUTTON_POPUP_LOC);
-		//driver.findElement(CHECKOUT_BUTTON_POPUP_LOC).submit();
+		productName = getProductNameFromCheckoutPopup();
+		driver.click(CHECKOUT_BUTTON_POPUP_LOC);
 		logger.info("Clicked on checkout button on the popup");
 		driver.waitForPageLoad();
-		driver.waitForLoadingImageToDisappear();
+		// driver.waitForLoadingImageToDisappear();
 		return new StoreFrontCartPage(driver);
 	}
+
+
+
 
 	/***
 	 * This method validates the search results text
@@ -2712,6 +2718,7 @@ public class StoreFrontWebsiteBasePage extends RFBasePage {
 		driver.clickByJS(RFWebsiteDriver.driver, CARD_TYPE_DD_LOC);
 		driver.type(CARD_NUMBER_LOC, cardNumber + "\t");
 		logger.info("Entered card number as" + cardNumber);
+		driver.type(EXP_MONTH_DD_LOC, "12");
 		driver.pauseExecutionFor(2000);
 		return this;
 	}
@@ -2753,39 +2760,7 @@ public class StoreFrontWebsiteBasePage extends RFBasePage {
 	}
 
 	/***
-	 * This method enter product quantity
-	 * 
-	 * @param itemNumber,
-	 *            quantity
-	 * @return store front Cart page object
-	 * 
-	 */
-	public StoreFrontWebsiteBasePage enterQuantityOfProductAtCart(String itemNumber, String quantity) {
-		driver.pauseExecutionFor(10000);
-		driver.waitForElementPresent(QUANTITY_OF_FIRST_PRODUCT_LOC);
-		if (itemNumber.equalsIgnoreCase("1")) {
-			driver.type(QUANTITY_OF_FIRST_PRODUCT_LOC, quantity);
-		}
-		logger.info("In cart" + itemNumber + " 's qunatity updated as " + quantity);
-		return this;
-	}
 
-	/***
-	 * This method click on update link
-	 * 
-	 * @param itemNumber
-	 * @return store front Cart page object
-	 * 
-	 */
-	public StoreFrontWebsiteBasePage clickOnUpdateLinkThroughItemNumber(String itemNumber) {
-		if (itemNumber.equalsIgnoreCase("1")) {
-			driver.click(UPDATE_LINK_OF_FIRST_PRODUCT_LOC);
-		}
-		logger.info("Update link of " + itemNumber + " is clicked");
-		return this;
-	}
-
-	/***
 	 * This method get product quantity for specific product
 	 * 
 	 * @param productName
@@ -2851,7 +2826,7 @@ public class StoreFrontWebsiteBasePage extends RFBasePage {
 	 */
 	public StoreFrontWebsiteBasePage clickPlaceOrderButton() {
 		clickBecomeAConsultant();
-		driver.pauseExecutionFor(2000);
+		driver.pauseExecutionFor(1000);
 		driver.waitForPageLoad();
 		driver.pauseExecutionFor(10000);
 		return this;
@@ -2886,11 +2861,14 @@ public class StoreFrontWebsiteBasePage extends RFBasePage {
 	public void clickUseAsEnteredButtonOnPopUp() {
 		try{
 			driver.turnOffImplicitWaits(3);
-			driver.click(USE_AS_ENTERED_BUTTON_LOC);
+			driver.click(USE_AS_ENTERED_BUTTON_LOC,3);
 			driver.waitForElementToBeInVisible(USE_AS_ENTERED_BUTTON_LOC, 50);
 			//driver.pauseExecutionFor(40000); // UI is slow, will be removed
 			logger.info("'Used as entered' button clicked");
 		}catch(Exception e){
+
+		}
+		finally{
 			driver.turnOnImplicitWaits();
 		}
 	}
@@ -3471,6 +3449,7 @@ public class StoreFrontWebsiteBasePage extends RFBasePage {
 	 * 
 	 */
 	public String getActionSuccessMsg(){
+		driver.pauseExecutionFor(2000);
 		logger.info(driver.getText(ACTION_SUCCESS_MSG_LOC));
 		return driver.getText(ACTION_SUCCESS_MSG_LOC);
 	}
@@ -4021,9 +4000,9 @@ public class StoreFrontWebsiteBasePage extends RFBasePage {
 		return Integer.toString(Integer.parseInt(productNumber)+1);
 	}
 
-	
+
 	////////////////
-	
+
 	/***
 	 * This method clicks on the All products link from Top Navigation
 	 * 
@@ -4122,22 +4101,52 @@ public class StoreFrontWebsiteBasePage extends RFBasePage {
 	public StoreFrontShopSkinCarePage searchEntityAndHitEnter(String textToSearch){
 		driver.pauseExecutionFor(2000);
 		driver.type(SEARCH_BOX, textToSearch);
-////		Actions action = new Actions(RFWebsiteDriver.driver);
-////		action.sendKeys(Keys.ENTER);
-//		Robot robot = null;
-//		try {
-//			robot = new Robot();
-//		} catch (AWTException e) {
-//			// TODO Auto-generated catch block
-//			e.printStackTrace();
-//		}
-//		robot.keyPress(KeyEvent.VK_ENTER);
-//		robot.keyRelease(KeyEvent.VK_ENTER);
-		
+		////		Actions action = new Actions(RFWebsiteDriver.driver);
+		////		action.sendKeys(Keys.ENTER);
+		//		Robot robot = null;
+		//		try {
+		//			robot = new Robot();
+		//		} catch (AWTException e) {
+		//			// TODO Auto-generated catch block
+		//			e.printStackTrace();
+		//		}
+		//		robot.keyPress(KeyEvent.VK_ENTER);
+		//		robot.keyRelease(KeyEvent.VK_ENTER);
+
 		driver.findElement(SEARCH_BOX).sendKeys(Keys.ENTER);
 		logger.info("Hit enter for searching entity");
-		driver.pauseExecutionFor(5000);
+		//		driver.pauseExecutionFor(1000);
 		return new StoreFrontShopSkinCarePage(driver);
 	}
+
+
+	/***
+	 * This method enter product quantity
+	 * 
+	 * @param itemNumber,
+	 *            quantity
+	 * @return store front Cart page object
+	 * 
+	 */
+	public StoreFrontWebsiteBasePage enterQuantityOfProductAtCart(String itemNumber, String quantity) {
+		driver.type(By.xpath(String.format(quantityTBForSpecificProductLoc,productName)), quantity);
+		logger.info("In cart" + productName + " 's quantity updated as " + quantity);
+		return this;
+	}
+
+	/***
+	 * This method click on update link
+	 * 
+	 * @param itemNumber
+	 * @return store front Cart page object
+	 * 
+	 */
+	public StoreFrontWebsiteBasePage clickOnUpdateLinkThroughItemNumber(String itemNumber) {
+		//driver.click(By.xpath(String.format(updateLinkForSpecificProductLoc,productName)));
+		driver.clickByJS(By.xpath(String.format(updateLinkForSpecificProductLoc,productName)));
+		logger.info("Update link of " + productName + " is clicked");
+		return this;
+	}
+
 
 }

@@ -1,7 +1,6 @@
 package com.rf.test.website.rehabitat.storeFront;
 
 import java.awt.AWTException;
-
 import org.testng.annotations.Test;
 
 import com.rf.core.utils.CommonUtils;

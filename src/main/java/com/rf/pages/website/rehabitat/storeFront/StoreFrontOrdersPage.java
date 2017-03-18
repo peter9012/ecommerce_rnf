@@ -171,6 +171,7 @@ public class StoreFrontOrdersPage extends StoreFrontWebsiteBasePage{
 	 * 
 	 */
 	public String getConfirmationMsgOfReportProblem(){
+		driver.pauseExecutionFor(2000);
 		String msg = driver.findElement(CONFIRMATION_MSG_OF_REPORT_PROBLEM).getText();
 		logger.info("Confirmation message is "+msg);
 		return msg;

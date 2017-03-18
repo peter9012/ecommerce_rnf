@@ -142,6 +142,7 @@ public class StoreFrontShippingInfoPage extends StoreFrontWebsiteBasePage{
 	 * 
 	 */
 	public String getAddressUpdateSuccessMsg(){
+		driver.pauseExecutionFor(2000);
 		return driver.getText(ACTION_SUCCESS_MSG_LOC);
 	}
 
@@ -274,6 +275,7 @@ public class StoreFrontShippingInfoPage extends StoreFrontWebsiteBasePage{
 		driver.click(LEAVE_AS_IS_BUTTON_ON_UPDATE_AUTOSHIP_MODAL_LOC);
 		logger.info("Clicked 'Leave As Is' Button on update Autoship modal");
 		driver.waitForPageLoad();
+		driver.pauseExecutionFor(2000);
 		return this;
 	}
 
@@ -287,6 +289,7 @@ public class StoreFrontShippingInfoPage extends StoreFrontWebsiteBasePage{
 	public StoreFrontCheckoutPage clickUpdateMyAutoshipBtnOnUpdateAutoshipModal(){
 		driver.click(UPDATE_MY_AUTOSHIP_BUTTON_ON_UPDATE_AUTOSHIP_MODAL_LOC);
 		logger.info("Clicked 'Update my autoship' Button on update AutoShip modal");
+		driver.pauseExecutionFor(2000);
 		return new StoreFrontCheckoutPage(driver);
 	}
 

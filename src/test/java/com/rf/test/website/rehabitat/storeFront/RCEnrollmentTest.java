@@ -67,6 +67,10 @@ public class RCEnrollmentTest extends StoreFrontWebsiteBaseTest{
 		sfCheckoutPage.clickShippingDetailsNextbutton();
 		sfCheckoutPage.enterUserBillingDetails(cardType, cardNumber, cardName, CVV);
 		sfCheckoutPage.clickBillingDetailsNextbutton();
+		if(sfCheckoutPage.hasTokenizationFailed()==true){
+			sfCheckoutPage.enterUserBillingDetails(cardType, cardNumber, cardName, CVV);
+			sfCheckoutPage.clickBillingDetailsNextbutton();
+		}
 		sfCheckoutPage.selectTermsAndConditionsChkBox();
 		sfCheckoutPage.clickPlaceOrderButton();
 		s_assert.assertTrue(sfCheckoutPage.isOrderPlacedSuccessfully(), "Adhoc order is not placed successfully by RC");
@@ -76,7 +80,7 @@ public class RCEnrollmentTest extends StoreFrontWebsiteBaseTest{
 		s_assert.assertAll();
 	}
 
-	@Test
+	@Test(invocationCount=30)
 	public void testRCEnrollmentWithSponsor(){
 		timeStamp = CommonUtils.getCurrentTimeStamp();
 		email = firstName+"rc"+timeStamp+TestConstants.EMAIL_SUFFIX;
@@ -101,6 +105,10 @@ public class RCEnrollmentTest extends StoreFrontWebsiteBaseTest{
 		sfCheckoutPage.clickShippingDetailsNextbutton();
 		sfCheckoutPage.enterUserBillingDetails(cardType, cardNumber, cardName, CVV);
 		sfCheckoutPage.clickBillingDetailsNextbutton();
+		if(sfCheckoutPage.hasTokenizationFailed()==true){
+			sfCheckoutPage.enterUserBillingDetails(cardType, cardNumber, cardName, CVV);
+			sfCheckoutPage.clickBillingDetailsNextbutton();
+		}
 		sfCheckoutPage.selectTermsAndConditionsChkBox();
 		sfCheckoutPage.clickPlaceOrderButton();
 		s_assert.assertTrue(sfCheckoutPage.isOrderPlacedSuccessfully(), "Adhoc order is not placed successfully by PC");

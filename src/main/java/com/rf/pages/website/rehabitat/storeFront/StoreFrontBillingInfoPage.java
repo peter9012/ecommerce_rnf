@@ -217,6 +217,7 @@ public class StoreFrontBillingInfoPage extends StoreFrontWebsiteBasePage{
 	 * 
 	 */
 	public String getBillingAddressForSpecificBillingProfile(String profile){
+		driver.pauseExecutionFor(2000);
 		List<WebElement> addressElements = driver.findElements(By.xpath(String.format(billingAddressForSpecificBillingProfileLoc, profile)));
 		String addressString = "";
 		for(WebElement element : addressElements){
@@ -379,8 +380,10 @@ public class StoreFrontBillingInfoPage extends StoreFrontWebsiteBasePage{
 	 * 
 	 */
 	public StoreFrontBillingInfoPage clickAddNewBillingProfileLink(){
+		driver.pauseExecutionFor(2000);
 		driver.clickByJS(RFWebsiteDriver.driver,ADD_NEW_BILLING_PROFILE_LOC);
 		logger.info("Add New Billing Profile link clicked");
+		driver.pauseExecutionFor(2000);
 		return this;
 	}
 
@@ -405,6 +408,7 @@ public class StoreFrontBillingInfoPage extends StoreFrontWebsiteBasePage{
 	 * 
 	 */
 	public StoreFrontBillingInfoPage clickAddNewBillingAddressLink(){
+		driver.pauseExecutionFor(2000);
 		driver.clickByJS(RFWebsiteDriver.driver,ADD_NEW_BILLING_ADDRESS_LINK_LOC);
 		logger.info("Add New Billing Address link clicked");
 		return this;
@@ -566,6 +570,7 @@ public class StoreFrontBillingInfoPage extends StoreFrontWebsiteBasePage{
 	public StoreFrontBillingInfoPage clickBillingProfileEditLink(String profile){
 		driver.clickByJS(RFWebsiteDriver.driver,By.xpath(String.format(editLinkForSpecificBillingProfileLoc,profile)));
 		logger.info("Edit Link Clicked for Billing Profile : " + profile);
+		driver.pauseExecutionFor(2000);
 		return this;
 	}
 

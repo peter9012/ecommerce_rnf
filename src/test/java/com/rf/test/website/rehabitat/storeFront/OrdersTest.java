@@ -1545,7 +1545,6 @@ public class OrdersTest extends StoreFrontWebsiteBaseTest{
 		s_assert.assertAll();
 	}
 
-	//PC Adhoc Order
 	@Test
 	public void testPlacedAnAdhocOrderFromPC(){
 		sfHomePage.loginToStoreFront(pcUserWithPWSSponsor(), password,true);
@@ -1553,7 +1552,7 @@ public class OrdersTest extends StoreFrontWebsiteBaseTest{
 		sfCartPage.removeAllProductsFromCart();
 		sfCartPage.clickRodanAndFieldsLogo();
 		sfShopSkinCarePage = sfHomePage.clickAllProducts();
-		sfShopSkinCarePage.addProductToCart(TestConstants.PRODUCT_NUMBER, TestConstants.ORDER_TYPE_ADHOC);;
+		sfShopSkinCarePage.addProductToCart(TestConstants.PRODUCT_NUMBER, TestConstants.ORDER_TYPE_ADHOC, validProductId);;
 		sfShopSkinCarePage.checkoutTheCartFromPopUp();
 		sfCheckoutPage=sfCartPage.checkoutTheCart();
 		sfCheckoutPage.clickSaveButton();
@@ -1575,7 +1574,7 @@ public class OrdersTest extends StoreFrontWebsiteBaseTest{
 		sfCartPage.removeAllProductsFromCart();
 		sfCartPage.clickRodanAndFieldsLogo();
 		sfShopSkinCarePage = sfHomePage.clickAllProducts();
-		sfShopSkinCarePage.addProductToCart(TestConstants.PRODUCT_NUMBER, TestConstants.ORDER_TYPE_ENROLLMENT);
+		sfShopSkinCarePage.addProductToCart(TestConstants.PRODUCT_NUMBER, TestConstants.ORDER_TYPE_ENROLLMENT, validProductId);
 		sfShopSkinCarePage.checkoutTheCartFromPopUp();
 		sfCheckoutPage=sfCartPage.checkoutTheCart();
 		sfCheckoutPage.clickContinueWithoutConsultantLink();

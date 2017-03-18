@@ -1,7 +1,6 @@
 package com.rf.test.website.rehabitat.storeFront.shippingProfile;
 
 import org.testng.annotations.Test;
-
 import com.rf.core.utils.CommonUtils;
 import com.rf.core.website.constants.TestConstants;
 import com.rf.pages.website.rehabitat.storeFront.StoreFrontCartPage;
@@ -208,7 +207,7 @@ public class AddAndDeleteShippingTest extends StoreFrontWebsiteBaseTest{
 		sfCartPage.clickAddMoreItemsBtn();
 		sfShopSkinCarePage.addProductToCart(TestConstants.PRODUCT_NUMBER, TestConstants.ORDER_TYPE_ENROLLMENT);
 		sfCartPage = sfShopSkinCarePage.checkoutTheCartFromPopUp();
-		sfCartPage.enterQuantityOfProductAtCart("1", "2");
+		sfCartPage.enterQuantityOfProductAtCart("1", "3");
 		sfCartPage.clickOnUpdateLinkThroughItemNumber("1");
 		sfCartPage.clickCheckoutBtn();
 		sfCheckoutPage.clickContinueWithoutConsultantLink();
@@ -420,7 +419,7 @@ public class AddAndDeleteShippingTest extends StoreFrontWebsiteBaseTest{
 		randomWords = CommonUtils.getRandomWord(5);
 		lastName = TestConstants.LAST_NAME + randomWords;
 		String autoShipShippingProfileLastName = null;
-		String checkoutPageText = "Account Info";
+		String checkoutPageText = "Account Details";
 		String currentURL = null;
 		
 		//Login as Cons
@@ -441,7 +440,7 @@ public class AddAndDeleteShippingTest extends StoreFrontWebsiteBaseTest{
 		sfShippingInfoPage.clickDeleteLinkForShippingProfile(autoShipShippingProfileLastName);
 		sfShippingInfoPage.clickUpdateMyAutoshipOnDeleteAddressAndUpdateShippingAddressForAutoshipPopup();
 		currentURL = sfShippingInfoPage.getCurrentURL();
-		s_assert.assertTrue(currentURL.contains("checkout") && sfShippingInfoPage.isTextPresent(checkoutPageText),"User is not redirecting to checkout page after clicked on update my autoship button");
+		s_assert.assertTrue(currentURL.contains("checkout")&& sfShippingInfoPage.isTextPresent(checkoutPageText) ,"User is not redirecting to checkout page after clicked on update my autoship button");
 		s_assert.assertAll();
 	}
 
@@ -469,7 +468,7 @@ public class AddAndDeleteShippingTest extends StoreFrontWebsiteBaseTest{
 		sfShopSkinCarePage = sfCartPage.clickAddMoreItemsBtn();
 		sfShopSkinCarePage.addProductToCart(TestConstants.PRODUCT_NUMBER, TestConstants.ORDER_TYPE_ENROLLMENT);
 		sfCartPage = sfShopSkinCarePage.checkoutTheCartFromPopUp();
-		sfCartPage.enterQuantityOfProductAtCart("1", "2");
+		sfCartPage.enterQuantityOfProductAtCart("1", "3");
 		sfCartPage.clickOnUpdateLinkThroughItemNumber("1");
 		sfCartPage.clickCheckoutBtn();
 		sfCheckoutPage.clickContinueWithoutConsultantLink();

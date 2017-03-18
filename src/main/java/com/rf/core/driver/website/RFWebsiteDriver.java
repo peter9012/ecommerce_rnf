@@ -55,7 +55,9 @@ import com.rf.core.utils.PropertyFile;
 public class RFWebsiteDriver implements RFDriver,WebDriver {
 	public static WebDriver driver; // added static and changed visibility from public to private
 	private PropertyFile propertyFile;
-	private static int DEFAULT_TIMEOUT = 50;
+
+	private static int DEFAULT_TIMEOUT = 15;
+
 	private static int DEFAULT_TIMEOUT_CSCOCKPIT = 70;
 	String browser = null;
 	String dbIP = null;
@@ -197,7 +199,7 @@ public class RFWebsiteDriver implements RFDriver,WebDriver {
 	 * @return
 	 */
 	public boolean isElementPresent(By locator) {
-		turnOffImplicitWaits(3);
+		turnOffImplicitWaits(2);
 		try{
 			if (driver.findElements(locator).size() > 0) {
 				return true;
@@ -216,7 +218,7 @@ public class RFWebsiteDriver implements RFDriver,WebDriver {
 
 	public void waitForElementPresent(By locator) {
 		logger.info("wait started for "+locator);
-		int timeout = 30;
+		int timeout = 10;
 		turnOffImplicitWaits(1);
 		boolean isElementFound = false;
 		for(int i=1;i<=timeout;i++){		
@@ -227,15 +229,15 @@ public class RFWebsiteDriver implements RFDriver,WebDriver {
 					continue;
 				}else{
 					logger.info("wait over,element found");
-					isElementFound =true;
-					turnOnImplicitWaits();
-					pauseExecutionFor(1000);
+					isElementFound =true;					
+					//pauseExecutionFor(1000);
 					break;
 				}			
 			}catch(Exception e){
 				continue;
 			}
 		}
+		turnOnImplicitWaits();
 		if(isElementFound ==false)
 			logger.info("ELEMENT NOT FOUND");		
 	}
@@ -253,21 +255,43 @@ public class RFWebsiteDriver implements RFDriver,WebDriver {
 				}else{
 					logger.info("wait over,element found");
 					isElementFound =true;
-					turnOnImplicitWaits();
 					pauseExecutionFor(1000);
 					break;
 				}			
 			}catch(Exception e){
 				continue;
+			}finally{
+				turnOnImplicitWaits();
 			}
 		}
+		if(isElementFound ==false)
+			logger.info("ELEMENT NOT FOUND");		
+	}
+	
+	public void waitForElementIsPresent(By locator, int timeout) {
+		logger.info("wait started for "+locator);
+		turnOffImplicitWaits(1);
+		boolean isElementFound = false;
+		for(int i=1;i<=timeout;i++){	
+			Dimension d =driver.findElement(locator).getSize();
+			if(d.getWidth()>0 && d.getHeight()>0){
+				isElementFound =true;
+				logger.info("wait over,element found");
+				break;
+			}
+			else{
+				logger.info("waiting...");
+				pauseExecutionFor(1000);				
+			}			
+		}
+		turnOnImplicitWaits();
 		if(isElementFound ==false)
 			logger.info("ELEMENT NOT FOUND");		
 	}
 
 	public void quickWaitForElementPresent(By locator){
 		logger.info("quick wait started for "+locator);
-		int timeout = 5;
+		int timeout = 2;
 		turnOffImplicitWaits(3);
 		for(int i=1;i<=timeout;i++){
 			try{
@@ -352,7 +376,7 @@ public class RFWebsiteDriver implements RFDriver,WebDriver {
 	}
 
 	public void waitForLoadingImageToDisappear(){
-		int DEFAULT_TIMEOUT = 10;
+		//int DEFAULT_TIMEOUT = 10;
 		turnOffImplicitWaits(1);
 		//		By locator = By.xpath("//div[@id='blockUIBody']");
 		By locator = By.xpath("//html[@class='loader']");
@@ -486,7 +510,7 @@ public class RFWebsiteDriver implements RFDriver,WebDriver {
 	}
 
 	public void waitForTokenizing() {
-		int timeout = 5;
+		int timeout = 2;
 		turnOffImplicitWaits(1);
 		boolean isElementFound = false;
 		for(int i=1;i<=timeout;i++){  
@@ -494,18 +518,19 @@ public class RFWebsiteDriver implements RFDriver,WebDriver {
 				if(driver.findElements(By.xpath("//*[@id='card_accountNumber'][@style='']")).size()==0){
 					pauseExecutionFor(1000);
 					logger.info("waiting...");
-					continue;
+					//continue;
 				}else{
 					logger.info("wait over,element found");
 					isElementFound =true;
-					turnOnImplicitWaits();
 					pauseExecutionFor(1000);
 					break;
 				}   
 			}catch(Exception e){
 				continue;
 			}
+			
 		}
+			turnOnImplicitWaits();
 		if(isElementFound ==false)
 			logger.info("ELEMENT NOT FOUND");  
 	}
@@ -638,6 +663,7 @@ public class RFWebsiteDriver implements RFDriver,WebDriver {
 	}
 
 	public void moveToElementByJS(By locator) {
+		waitForElementPresent(locator, 5);
 		String strJavaScript = "var element = arguments[0];"
 				+ "var mouseEventObj = document.createEvent('MouseEvents');"
 				+ "mouseEventObj.initEvent( 'mouseover', true, true );"
@@ -696,6 +722,18 @@ public class RFWebsiteDriver implements RFDriver,WebDriver {
 		}
 		turnOnImplicitWaits();
 	}
+	
+	public void click(By locator,int timeout) {		
+		waitForElementToBeClickable(locator, timeout);
+		//movetToElementJavascript(locator);
+		turnOffImplicitWaits(1);
+		try{
+			findElement(locator).click();			
+		}catch(Exception e){
+			retryingFindClick(locator);
+		}
+		turnOnImplicitWaits();
+	}
 
 	public void clickByAction(By locator) {
 		Actions build = new Actions(driver);
@@ -705,9 +743,6 @@ public class RFWebsiteDriver implements RFDriver,WebDriver {
 	}
 
 	public void type(By locator, String input) {
-		/*		driver.manage().timeouts().implicitlyWait(5, TimeUnit.SECONDS);
-		 */		
-		// quickWaitForElementPresent(locator);
 		try{
 			//clickByJS(driver, findElement(locator));
 			findElement(locator).clear();
@@ -1068,7 +1103,7 @@ public class RFWebsiteDriver implements RFDriver,WebDriver {
 	//	}
 
 	public void turnOnImplicitWaits() {
-		driver.manage().timeouts().implicitlyWait(20, TimeUnit.SECONDS);
+		driver.manage().timeouts().implicitlyWait(DEFAULT_TIMEOUT, TimeUnit.SECONDS);
 	}
 
 	public void turnOffImplicitWaits(int time) {

@@ -10,8 +10,8 @@ public class TestConstants {
 	public static final String ABOUT_ME = "About Me";
 	public static final String BECOME_A_CONSULTANT = "Become A Consultant";
 	public static final String SHOP_SKINCARE = "Shop Skincare";
-	public static final String SPONSOR = "purush";
-	//public static final String SPONSOR = "purush@consult2.com";
+	//public static final String SPONSOR = "purush";
+	public static final String SPONSOR = "purush@consult2.com";
 	public static final String SPONSOR_PREFIX = "purushb2b2";
 	public static final String SPONSOR_3_CHARS = "tes";
 	public static final String SPONSOR_FIRST_NAME = "Purush";
@@ -141,9 +141,9 @@ public class TestConstants {
 	public static final String DPO_POSTAL_CODE_US = "09498-9997";
 	public static final String DPO_STATE_US = "AP Armed Forces";
 
-	public static final String SHIPPING_METHOD_UPS_2DAY = "UPS 2 Days";
-	public static final String SHIPPING_METHOD_UPS_GROUND = "UPS Ground";
-	public static final String SHIPPING_METHOD_UPS_OVERNIGHT = "UPS Overnight";
+	public static final String SHIPPING_METHOD_UPS_2DAY = "2-Day";
+	public static final String SHIPPING_METHOD_UPS_GROUND = "Ground";
+	public static final String SHIPPING_METHOD_UPS_OVERNIGHT = "Overnight";
 	public static final String CARD_TYPE = "Visa";
 	public static final String CARD_NUMBER = "4012000077777777";
 	public static final String CARD_LASTNAME = "lauto";

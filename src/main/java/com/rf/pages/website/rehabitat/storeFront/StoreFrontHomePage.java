@@ -335,7 +335,7 @@ public class StoreFrontHomePage extends StoreFrontWebsiteBasePage{
 	 * 
 	 */
 	public StoreFrontHomePage clickNextButton(){
-		driver.pauseExecutionFor(2000);
+		//driver.pauseExecutionFor(2000);
 		driver.quickWaitForElementPresent(NEXT_BUTTON_LOC);
 		driver.click(NEXT_BUTTON_LOC);
 		logger.info("Next button clicked");
@@ -500,7 +500,7 @@ public class StoreFrontHomePage extends StoreFrontWebsiteBasePage{
 	 * @return boolean
 	 */
 	public boolean isWelcomeUserElementDisplayed(){
-		driver.quickWaitForElementPresent(WELCOME_DROPDOWN_LOC,2);
+		//driver.quickWaitForElementPresent(WELCOME_DROPDOWN_LOC,2);
 		return driver.isElementPresent(WELCOME_DROPDOWN_LOC);
 	}
 

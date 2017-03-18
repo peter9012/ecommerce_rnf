@@ -24,11 +24,11 @@ public class StoreFrontCheckoutPage extends StoreFrontWebsiteBasePage{
 	private static final Logger logger = LogManager
 			.getLogger(StoreFrontCheckoutPage.class.getName());
 
-	private final By SPONSOR_NAME_ACCOUNT_INFO_LOC = By.xpath("//span[@id='selectd-consultant']");
+	private final By SPONSOR_NAME_ACCOUNT_INFO_LOC = By.xpath("//span[@id='selectd-consultant'][text()]");
 	// private final By TERMS_AND_CONDITIONS_CHCKBOX_FOR_CONSULTANT_CRP_LOC = By.xpath("//a[contains(text(),'Consultant Replenishment Program Terms & Conditions')]/ancestor::label[1]/preceding-sibling::input[1]");
 	private final By TERMS_AND_CONDITIONS_CHCKBOX_FOR_AUTOSHIP_LOC = By.xpath("//a[contains(text(),'Terms & Conditions')]/ancestor::label[1]/preceding-sibling::input[@id][1]");
 	//	private final By TERMS_AND_CONDITIONS_CHCKBOX_FOR_AUTOSHIP_LOC = By.xpath("//a[contains(text(),'Terms & Conditions')]/ancestor::label[1]/preceding-sibling::input[1]");
-	private final By EDIT_LINK_OF_SHIPPING_ADDRESS_LOC=By.xpath("//div[contains(text(),'Shipping')]/following::a[@class='editIcon'][1]");
+	private final By EDIT_LINK_OF_SHIPPING_ADDRESS_LOC=By.xpath("//div[contains(text(),'Shipping')]/following::a[contains(@class,'edit_shipping_address')][1]");
 	private final By DELIVERY_AT_ORDER_REVIEW_PAGE_LOC = By.xpath("//div[contains(text(),'Order Summary')]/following::p[contains(text(),'Delivery')]/following::span[1]");
 	private final By FIRST_NAME_LOC = By.id("first-name");
 	private final By LAST_NAME_LOC = By.id("last-name");
@@ -218,8 +218,10 @@ public class StoreFrontCheckoutPage extends StoreFrontWebsiteBasePage{
 	}
 
 	public void clickCreateAccountButton(String userType){
-		driver.pauseExecutionFor(3000);
-		driver.click(CREATE_ACCOUNT_BUTTON_LOC);
+
+		//driver.pauseExecutionFor(3000);
+		driver.clickByJS(RFWebsiteDriver.driver,CREATE_ACCOUNT_BUTTON_LOC);
+
 		logger.info("clicked on 'Create Account' button");
 		driver.pauseExecutionFor(1000);
 
@@ -242,7 +244,7 @@ public class StoreFrontCheckoutPage extends StoreFrontWebsiteBasePage{
 		//			driver.waitForElementNotPresent(CREATE_ACCOUNT_BUTTON_LOC,250);
 		//		}
 		driver.waitForURLNotHaving("/login",250);
-		driver.pauseExecutionFor(1000);//taking too long on UI and tests failing so intentionally adding for smtime,will be  removed later
+		//driver.pauseExecutionFor(1000);//taking too long on UI and tests failing so intentionally adding for smtime,will be  removed later
 		driver.waitForPageLoad();
 	}
 
@@ -1485,6 +1487,7 @@ public class StoreFrontCheckoutPage extends StoreFrontWebsiteBasePage{
 	 * 
 	 */
 	public String getSponsorNameFromAccountInfo(){
+		driver.waitForElementPresent(SPONSOR_NAME_ACCOUNT_INFO_LOC);
 		String sponsorName = driver.getText(SPONSOR_NAME_ACCOUNT_INFO_LOC);
 		logger.info("Sponsor selected as "+sponsorName);
 		return sponsorName;
@@ -1887,6 +1890,7 @@ public class StoreFrontCheckoutPage extends StoreFrontWebsiteBasePage{
 		if(driver.isElementVisible(EDIT_LINK_OF_SHIPPING_SECTION_LOC)){
 			driver.click(EDIT_LINK_OF_SHIPPING_SECTION_LOC);
 		}else{
+			driver.pauseExecutionFor(2000);
 			driver.click(EDIT_LINK_OF_SHIPPING_ADDRESS_LOC);
 		}
 		logger.info("Clicked on Edit link of Shipping Address");

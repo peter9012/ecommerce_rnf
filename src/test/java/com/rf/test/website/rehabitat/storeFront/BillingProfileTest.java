@@ -589,8 +589,8 @@ public class BillingProfileTest extends StoreFrontWebsiteBaseTest{
 		sfBillingInfoPage = sfHomePage.navigateToBillingInfoPage();
 		// Adding a New Profile with Specific Address 1
 		sfBillingInfoPage.clickAddNewBillingProfileLink();
-		sfBillingInfoPage.enterUserBillingDetails(cardType, cardNumber,cardName, CVV);
 		sfBillingInfoPage.clickAddNewBillingAddressLink();
+		sfBillingInfoPage.enterUserBillingDetails(cardType, cardNumber,cardName, CVV);
 		sfBillingInfoPage.enterConsultantAddressDetails(firstName, lastName, addressLine1, addressLine2, city, state, postalCode, phoneNumber);
 		sfBillingInfoPage.clickBillingDetailsNextbutton();
 		sfBillingInfoPage.clickUseAsEnteredButtonOnPopUp();

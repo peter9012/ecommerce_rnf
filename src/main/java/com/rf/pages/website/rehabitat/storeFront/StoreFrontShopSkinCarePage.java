@@ -937,15 +937,15 @@ public class StoreFrontShopSkinCarePage extends StoreFrontWebsiteBasePage{
 	//	driver.clickByAction(ADD_TO_CART_BTN_ON_QUICK_VIEW_POPUP_LOC);
 		if(orderType.equals(TestConstants.ORDER_TYPE_ADHOC)&& driver.isElementVisible(By.xpath(String.format(productPriceOnQuickViewPopupThroughOrderTypeLoc,TestConstants.ORDER_TYPE_ADHOC)))){
 			priceToAssert = driver.getText(By.xpath(String.format(productPriceOnQuickViewPopupThroughOrderTypeLoc,TestConstants.ORDER_TYPE_ADHOC))).replace("$","");
-			driver.clickByAction(By.xpath(String.format(productPriceOnQuickViewPopupThroughOrderTypeLoc,TestConstants.ORDER_TYPE_ADHOC)));
+			driver.clickByJS(RFWebsiteDriver.driver,By.xpath(String.format(productPriceOnQuickViewPopupThroughOrderTypeLoc,TestConstants.ORDER_TYPE_ADHOC)));
 		}
 		else if(orderType.equals(TestConstants.ORDER_TYPE_PC_PERKS)&& driver.isElementVisible(By.xpath(String.format(productPriceOnQuickViewPopupThroughOrderTypeLoc,TestConstants.ORDER_TYPE_PC_PERKS)))){
 			priceToAssert = driver.getText(By.xpath(String.format(productPriceOnQuickViewPopupThroughOrderTypeLoc,TestConstants.ORDER_TYPE_PC_PERKS))).replace("$","");
-			driver.clickByAction(By.xpath(String.format(productPriceOnQuickViewPopupThroughOrderTypeLoc,TestConstants.ORDER_TYPE_PC_PERKS)));
+			driver.clickByJS(RFWebsiteDriver.driver,By.xpath(String.format(productPriceOnQuickViewPopupThroughOrderTypeLoc,TestConstants.ORDER_TYPE_PC_PERKS)));
 		}
 		else if(orderType.equals(TestConstants.ORDER_TYPE_CRP)&& driver.isElementVisible(By.xpath(String.format(productPriceOnQuickViewPopupThroughOrderTypeLoc,TestConstants.ORDER_TYPE_CRP)))){
 			priceToAssert = driver.getText(By.xpath(String.format(productPriceOnQuickViewPopupThroughOrderTypeLoc,"Add to CRP"))).replace("$","");
-			driver.clickByAction(By.xpath(String.format(productPriceOnQuickViewPopupThroughOrderTypeLoc,"Add to CRP")));
+			driver.clickByJS(RFWebsiteDriver.driver,By.xpath(String.format(productPriceOnQuickViewPopupThroughOrderTypeLoc,"Add to CRP")));
 		}
 		logger.info("Add To Cart clicked, order type is "+orderType);
 		return priceToAssert;
@@ -971,6 +971,7 @@ public class StoreFrontShopSkinCarePage extends StoreFrontWebsiteBasePage{
 		}
 		else if(orderType.equals(TestConstants.ORDER_TYPE_ADHOC)&& driver.isElementPresent(By.xpath(String.format(productPriceThroughProductNumberLoc,TestConstants.ORDER_TYPE_ADHOC,productNumber)))){
 			priceToAssert = driver.getText(By.xpath(String.format(productPriceThroughProductNumberLoc,TestConstants.ORDER_TYPE_ADHOC,productNumber))).replace("$","");
+
 			driver.clickByJS(By.xpath(String.format(addToCartDDLoc,TestConstants.ORDER_TYPE_ADHOC,productNumber)));
 		}
 		else if(orderType.equals(TestConstants.ORDER_TYPE_PC_PERKS)&& driver.isElementPresent(By.xpath(String.format(productPriceThroughProductNumberLoc,TestConstants.ORDER_TYPE_PC_PERKS,productNumber)))){
@@ -980,6 +981,7 @@ public class StoreFrontShopSkinCarePage extends StoreFrontWebsiteBasePage{
 		else if(orderType.equals(TestConstants.ORDER_TYPE_CRP)&& driver.isElementPresent(By.xpath(String.format(productPriceThroughProductNumberLoc,TestConstants.ORDER_TYPE_CRP,productNumber)))){
 			priceToAssert = driver.getText(By.xpath(String.format(productPriceThroughProductNumberLoc,"Add to CRP",productNumber))).replace("$","");
 			driver.clickByJS(By.xpath(String.format(addToCartDDLoc,"Add to CRP",productNumber)));
+
 		}
 		logger.info("Add To Cart clicked, order type is "+orderType);
 		return priceToAssert;
@@ -995,7 +997,9 @@ public class StoreFrontShopSkinCarePage extends StoreFrontWebsiteBasePage{
 	 */
 	public String addProductToCart(String productNumber,String orderType,String product){
 		String priceToAssert = null;
+
 		driver.pauseExecutionFor(5000);
+
 		driver.waitForElementPresent(By.xpath(String.format(addToCartButtonLoc, productNumber)), 15);
 		clickSearchIcon();
 		searchEntityAndHitEnter(product);
@@ -1007,6 +1011,7 @@ public class StoreFrontShopSkinCarePage extends StoreFrontWebsiteBasePage{
 		}
 		else if(orderType.equals(TestConstants.ORDER_TYPE_ADHOC)&& driver.isElementPresent(By.xpath(String.format(productPriceThroughProductNumberLoc,TestConstants.ORDER_TYPE_ADHOC,productNumber)))){
 			priceToAssert = driver.getText(By.xpath(String.format(productPriceThroughProductNumberLoc,TestConstants.ORDER_TYPE_ADHOC,productNumber))).replace("$","");
+
 			driver.clickByJS(By.xpath(String.format(addToCartDDLoc,TestConstants.ORDER_TYPE_ADHOC,productNumber)));
 		}
 		else if(orderType.equals(TestConstants.ORDER_TYPE_PC_PERKS)&& driver.isElementPresent(By.xpath(String.format(productPriceThroughProductNumberLoc,TestConstants.ORDER_TYPE_PC_PERKS,productNumber)))){
@@ -1016,6 +1021,7 @@ public class StoreFrontShopSkinCarePage extends StoreFrontWebsiteBasePage{
 		else if(orderType.equals(TestConstants.ORDER_TYPE_CRP)&& driver.isElementPresent(By.xpath(String.format(productPriceThroughProductNumberLoc,TestConstants.ORDER_TYPE_CRP,productNumber)))){
 			priceToAssert = driver.getText(By.xpath(String.format(productPriceThroughProductNumberLoc,"Add to CRP",productNumber))).replace("$","");
 			driver.clickByJS(By.xpath(String.format(addToCartDDLoc,"Add to CRP",productNumber)));
+
 		}
 		logger.info("Add To Cart clicked, order type is "+orderType);
 		return priceToAssert;

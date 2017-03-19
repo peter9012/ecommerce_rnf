@@ -242,7 +242,7 @@ public class ConsultantEnrollmentTest extends StoreFrontWebsiteBaseTest{
 	 * State and valid billing address selected.
 	 *     
 	 */
-	@Test(enabled=false)//Needs fix
+	@Test(enabled=true)//Needs fix
 	public void testNortDakotaConsultantEnrollmentValidBillingAddress_485(){
 		timeStamp = CommonUtils.getCurrentTimeStamp();
 		randomWords = CommonUtils.getRandomWord(5);		

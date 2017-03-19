@@ -455,6 +455,7 @@ public class StoreFrontHomePage extends StoreFrontWebsiteBasePage{
 	 * 
 	 */
 	public StoreFrontHomePage chooseProductFromKitPage(){
+		driver.waitForElementPresent(PERSONAL_RESULTS_KIT_PAGE_LOC);
 		driver.clickByJS(RFWebsiteDriver.driver, PERSONAL_RESULTS_KIT_PAGE_LOC);
 		logger.info("selected the personal result kit");
 		return this;

@@ -29,9 +29,9 @@ public class TestConstants {
 	public static final String ORDER_TYPE_CRP= "Add to CRP";
 	public static final String ORDER_TYPE_ENROLLMENT = "Enrollment";
 	public static final String VALID_PRODUCT_ID_US = "UNRJ001";
-	public static final String VALID_PRODUCT_ID_CA = "AARG001-01";
 	public static final String VALID_PRODUCT_NAME_US = "UNBLEMISH Regimen for Acne";
-	public static final String VALID_PRODUCT_NAME_CA = "REDEFINE Regimen";
+	public static final String VALID_PRODUCT_ID_CA = "UNRJ001-01";
+	public static final String VALID_PRODUCT_NAME_CA = "UNBLEMISH Regimen";
 	public static final String PRODUCT_NUMBER = "1";
 	public static final String PRODUCT_NUMBER_PC_AUTOSHIP = "3";
 	//	public static final String OTHER_PRODUCT_NUMBER = "3";

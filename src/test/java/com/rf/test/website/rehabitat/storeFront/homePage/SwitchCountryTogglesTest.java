@@ -12,7 +12,7 @@ public class SwitchCountryTogglesTest extends StoreFrontWebsiteBaseTest{
 	 * Description : This test switch the countries from toggle button and verify
 	 *     
 	 */
-	@Test(enabled=true)
+	@Test(enabled=false)
 	public void testOnTheUSWebsiteSwitchCountriesUsingToggleSelector_2(){
 		String country_CA = "CAN";
 		String country_AU ="AUS";

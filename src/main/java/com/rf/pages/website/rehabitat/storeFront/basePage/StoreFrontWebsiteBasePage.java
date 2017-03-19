@@ -3909,7 +3909,14 @@ public class StoreFrontWebsiteBasePage extends RFBasePage {
 	 * 
 	 */
 	public String getAddressNonDeliverableWarningMsg(){
-		return driver.getText(ADDRESS_NON_DELIVERABLE_WARNING_MSG_LOC).trim();
+		String errorMessage = null;
+		try{
+			errorMessage = driver.getText(ADDRESS_NON_DELIVERABLE_WARNING_MSG_LOC).trim();
+		}catch(Exception e){
+			errorMessage = driver.getText(ERROR_MESSAGE_FOR_POSTAL_CODE_LOC);
+		}
+		logger.info("Error message is "+errorMessage);
+		return errorMessage;
 	}
 
 	/***
@@ -3920,8 +3927,10 @@ public class StoreFrontWebsiteBasePage extends RFBasePage {
 	 * 
 	 */
 	public StoreFrontWebsiteBasePage clickEditAddressBtnOnAddressSuggestionPopup(){
-		driver.click(EDIT_ADDRESS_BTN_ON_ADDRESS_SUGGESTION_POPUP_LOC);
-		logger.info("clicked on Edit Address button from Address Suggestion Popup");
+		if(driver.isElementPresent(EDIT_ADDRESS_BTN_ON_ADDRESS_SUGGESTION_POPUP_LOC)){
+			driver.click(EDIT_ADDRESS_BTN_ON_ADDRESS_SUGGESTION_POPUP_LOC);
+			logger.info("clicked on Edit Address button from Address Suggestion Popup");
+		}
 		driver.pauseExecutionFor(3000);
 		return this;
 	}

@@ -305,6 +305,7 @@ public class OrdersTest extends StoreFrontWebsiteBaseTest{
 		sfCartPage = sfShopSkinCarePage.checkoutTheCartFromPopUp();
 		sfCheckoutPage = sfCartPage.checkoutTheCart();
 		sfCheckoutPage.clickSaveButton();
+		sfCheckoutPage.selectShippingMethod(TestConstants.SHIPPING_METHOD_UPS_GROUND);
 		shippingMethodWithCost = sfCheckoutPage.getSelectedShippingMethodName();
 		s_assert.assertTrue(shippingMethodWithCost.contains("$0") && shippingMethodWithCost.contains(shippingMethodName), "Expected shipping method name is "+shippingMethodName+" and shipping cost should contain $0 but actual on UI is "+shippingMethodWithCost);
 		s_assert.assertAll();
@@ -418,7 +419,7 @@ public class OrdersTest extends StoreFrontWebsiteBaseTest{
 		// enter invalid address
 		sfCheckoutPage.enterEditBillingAddressDetailsAtCheckout(firstName, lastName, invalidAddressLine1, addressLine2, city, state, invalidPostalCode, phoneNumber);
 		sfCheckoutPage.clickSavePaymentButton();
-		errorMessage = "Address entered may not be a deliverable address";
+		errorMessage = sfCheckoutPage.getErrorMessageForInvalidAddress(country);
 		errorMessageFromUI = sfCheckoutPage.getAddressNonDeliverableWarningMsg();
 		s_assert.assertTrue(errorMessageFromUI.contains(errorMessage), "Expected error message for invalid address details is "+errorMessage+" But actual on UI is "+errorMessage);
 		sfCheckoutPage.clickEditAddressBtnOnAddressSuggestionPopup();
@@ -471,7 +472,7 @@ public class OrdersTest extends StoreFrontWebsiteBaseTest{
 		s_assert.assertTrue(sfCheckoutPage.isErrorMessagePresentForState(), "Error message is not present for state field");
 		sfCheckoutPage.enterShippingDetails(firstName+" "+lastName, invalidAddressLine1, addressLine2, city, state, invalidPostalCode, phoneNumber);
 		sfCheckoutPage.clickBillingDetailsNextbutton();
-		errorMessage = "Address entered may not be a deliverable address";
+		errorMessage = sfCheckoutPage.getErrorMessageForInvalidAddress(country);
 		errorMessageFromUI = sfCheckoutPage.getAddressNonDeliverableWarningMsg();
 		s_assert.assertTrue(errorMessageFromUI.contains(errorMessage), "Expected error message for invalid address details is "+errorMessage+" But actual on UI is "+errorMessage);
 		sfCheckoutPage.clickEditAddressBtnOnAddressSuggestionPopup();
@@ -1313,29 +1314,29 @@ public class OrdersTest extends StoreFrontWebsiteBaseTest{
 	}
 
 	/***
-	  * qTest : TC-477 Retail User Checkout- Choose a Consultant - multiple search
-	  * Description : This test case  search sponsor multiple times and validate the last selected sponsor
-	  * 
-	  */
-	 @Test(enabled=true)
-	 public void testRetailUserCheckoutChooseAConsultantMultipleSearch_477(){
-	  String sponsorID = consultantWithPulseAndWithCRP().toLowerCase();
-	  sfHomePage.loginToStoreFront(rcWithOrderWithoutSponsor(), password,true);
-	  sfShopSkinCarePage = sfHomePage.clickAllProducts();
-	  sfShopSkinCarePage.addProductToCart(TestConstants.PRODUCT_NUMBER, TestConstants.ORDER_TYPE_ENROLLMENT);
-	  sfCartPage = sfShopSkinCarePage.checkoutTheCartFromPopUp();
-	  sfCheckoutPage = sfCartPage.checkoutTheCart();
-	  sfCheckoutPage.searchSponsor(TestConstants.SPONSOR);
-	  s_assert.assertTrue(sfHomePage.isSponsorResultDisplayed(),"No result found after searching the sponsor with name "+TestConstants.SPONSOR);
-	  sfCheckoutPage.selectFirstSponsorFromList();
-	  sfCheckoutPage.clickRemoveLink();
-	  sfCheckoutPage.searchSponsor(sponsorID);
-	  s_assert.assertTrue(sfHomePage.isSponsorResultDisplayed(),"No result found after searching the sponsor with name "+sponsorID);
-	  sfCheckoutPage.selectFirstSponsorFromList();
-	  s_assert.assertTrue(sfCheckoutPage.isSponsorDetailsPresentInSelectedSponsor(sponsorID), "Sponsor ID is not selected");
-	  s_assert.assertAll();
-	 }
-	 
+	 * qTest : TC-477 Retail User Checkout- Choose a Consultant - multiple search
+	 * Description : This test case  search sponsor multiple times and validate the last selected sponsor
+	 * 
+	 */
+	@Test(enabled=true)
+	public void testRetailUserCheckoutChooseAConsultantMultipleSearch_477(){
+		String sponsorID = consultantWithPulseAndWithCRP().toLowerCase();
+		sfHomePage.loginToStoreFront(rcWithOrderWithoutSponsor(), password,true);
+		sfShopSkinCarePage = sfHomePage.clickAllProducts();
+		sfShopSkinCarePage.addProductToCart(TestConstants.PRODUCT_NUMBER, TestConstants.ORDER_TYPE_ENROLLMENT);
+		sfCartPage = sfShopSkinCarePage.checkoutTheCartFromPopUp();
+		sfCheckoutPage = sfCartPage.checkoutTheCart();
+		sfCheckoutPage.searchSponsor(TestConstants.SPONSOR);
+		s_assert.assertTrue(sfHomePage.isSponsorResultDisplayed(),"No result found after searching the sponsor with name "+TestConstants.SPONSOR);
+		sfCheckoutPage.selectFirstSponsorFromList();
+		sfCheckoutPage.clickRemoveLink();
+		sfCheckoutPage.searchSponsor(sponsorID);
+		s_assert.assertTrue(sfHomePage.isSponsorResultDisplayed(),"No result found after searching the sponsor with name "+sponsorID);
+		sfCheckoutPage.selectFirstSponsorFromList();
+		s_assert.assertTrue(sfCheckoutPage.isSponsorDetailsPresentInSelectedSponsor(sponsorID), "Sponsor ID is not selected");
+		s_assert.assertAll();
+	}
+
 	/***
 	 * qTest : TC-313 Ship Method-PC - Existing PC changes Shipping Method
 	 * Description : This test case change the all shipping method and verify their charges

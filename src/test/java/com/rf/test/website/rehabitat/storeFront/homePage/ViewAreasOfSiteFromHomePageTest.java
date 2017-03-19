@@ -226,10 +226,11 @@ public class ViewAreasOfSiteFromHomePageTest extends StoreFrontWebsiteBaseTest{
 	 * click on login link
 	 *     
 	 */
-	@Test(enabled=true) //TODO search via search button
+	@Test(enabled=false) //TODO search via search button
 	public void testSearchConsultantOnlyProductByAnonymousRCPCUser_5(){
 		sfHomePage.mouseHoverOn(TestConstants.SHOP_SKINCARE);
 		s_assert.assertFalse(sfHomePage.isConsultantOnlyProductsLinkDisplayed(), "Consultant Only Link should NOT be present for anonymous user");
+		navigateToStoreFrontBaseURL();
 		sfHomePage.loginToStoreFront(pcUserWithPWSSponsor(), password,true);
 		sfHomePage.mouseHoverOn(TestConstants.SHOP_SKINCARE);
 		s_assert.assertFalse(sfHomePage.isConsultantOnlyProductsLinkDisplayed(), "Consultant Only Link should NOT be present for PC user");

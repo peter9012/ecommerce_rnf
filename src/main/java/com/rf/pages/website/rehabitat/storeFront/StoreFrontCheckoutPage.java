@@ -1910,4 +1910,20 @@ public class StoreFrontCheckoutPage extends StoreFrontWebsiteBasePage{
 	public boolean isSponsorDetailsPresentInSelectedSponsor(String sponsorEmail){
 		return driver.isElementPresent(By.xpath(String.format(sponsorDetailsInSelectedSponsor, sponsorEmail)));
 	}
+
+	/***
+	 * This method return the error message
+	 * 
+	 * @param country
+	 * @return error message
+	 * 
+	 */
+	public String getErrorMessageForInvalidAddress(String country){
+		String errorMessage = null;
+		if(country.equalsIgnoreCase("us"))
+			errorMessage = "Address entered may not be a deliverable address";
+		else
+			errorMessage = "Please enter valid postal code";
+		return errorMessage;
+	}
 }

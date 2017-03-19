@@ -715,7 +715,6 @@ public class StoreFrontShopSkinCarePage extends StoreFrontWebsiteBasePage{
 			categoryNameList.add(catLabel);
 		}
 		while(true){
-			System.out.println("in while cond");
 			int randomNumberForCategory = CommonUtils.getRandomNum(0,(categoryNameList.size()-1));
 			categoryName = categoryNameList.get(randomNumberForCategory);
 			driver.clickByJS(RFWebsiteDriver.driver,By.xpath(String.format(randomCategoryNameLoc,categoryName)));
@@ -724,20 +723,18 @@ public class StoreFrontShopSkinCarePage extends StoreFrontWebsiteBasePage{
 			driver.pauseExecutionFor(5000);
 			int totalProducts = driver.findElements(TOTAL_PRODUCTS_LOC).size();
 			if(totalProducts>=3){
-				System.out.println("in if cond");
 				break;
 			}
 			else{
-				System.out.println("in else cond");
 				categoryNameList.remove(randomNumberForCategory);
 				driver.click(REFINE_PRODUCT_CATEGORY_FILTER_DD_LOC);
 				driver.clickByJS(RFWebsiteDriver.driver,By.xpath(String.format(randomCategoryNameLoc,categoryName)));
 				continue;
 			}
 		}
-		return categoryName;
+		return categoryName.replaceAll("ID", "").trim();
 	}
-		
+
 	/***
 	 * This method select sort by price filter Low to High via JS click.
 	 * 
@@ -1013,7 +1010,7 @@ public class StoreFrontShopSkinCarePage extends StoreFrontWebsiteBasePage{
 		return priceToAssert;
 	}
 
-	
+
 	/***
 	 * This method validates that default filter has been applied
 	 * 

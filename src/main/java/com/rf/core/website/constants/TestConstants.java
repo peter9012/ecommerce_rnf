@@ -141,9 +141,9 @@ public class TestConstants {
 	public static final String DPO_POSTAL_CODE_US = "09498-9997";
 	public static final String DPO_STATE_US = "AP Armed Forces";
 
-	public static final String SHIPPING_METHOD_UPS_2DAY = "UPS 2 Days";
-	public static final String SHIPPING_METHOD_UPS_GROUND = "UPS Ground";
-	public static final String SHIPPING_METHOD_UPS_OVERNIGHT = "UPS Overnight";
+	public static final String SHIPPING_METHOD_UPS_2DAY = "2-Day";
+	public static final String SHIPPING_METHOD_UPS_GROUND = "Ground";
+	public static final String SHIPPING_METHOD_UPS_OVERNIGHT = "Overnight";
 	public static final String CARD_TYPE = "Visa";
 	public static final String CARD_NUMBER = "4012000077777777";
 	public static final String CARD_LASTNAME = "lauto";

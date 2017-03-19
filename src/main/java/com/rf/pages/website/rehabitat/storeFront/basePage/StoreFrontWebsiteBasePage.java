@@ -227,7 +227,7 @@ public class StoreFrontWebsiteBasePage extends RFBasePage {
 			.xpath("//div[@class='cart-container']/descendant::button[contains(text(),'Add More Items')][2]");
 	private final By ADD_MORE_ITEMS_BTN_PC_AUTOSHIP_CART_LOC = By
 			.xpath("//div[@class='cart-container']/descendant::button[contains(text(),'Add More Items')]");
-	private final By PC_ONE_TIME_FEE_MSG_LOC = By.xpath("//span[contains(text(),'ONE-TIME ENROLLMENT FEE')]");
+	private final By PC_ONE_TIME_FEE_MSG_LOC = By.xpath("//span[contains(text(),'One-Time Enrollment Fee') or contains(text(),'ONE-TIME ENROLLMENT FEE')]");
 	private final By PDF_VIEWER_LOC = By.xpath("//*[@id='viewer']");
 	private final By CRP_AUTOSHIP_CART_HEADER_LOC = By.xpath("//h3[contains(text(),'YOUR NEXT AUTOSHIP CART')]");
 	private final By PC_TERMS_AND_CONDITIONS_LINK_LOC = By.xpath("//a[contains(text(),'PC Perks Terms & Conditions')]");

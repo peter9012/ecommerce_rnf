@@ -206,7 +206,7 @@ public class AddAndDeleteShippingTest extends StoreFrontWebsiteBaseTest{
 		sfCheckoutPage.clickCreateAccountButton(TestConstants.USER_TYPE_PC);
 		s_assert.assertTrue(sfCartPage.isPcOneTimeFeeMsgDisplayed(),"PC one time joining fee msg has not displayed");
 		sfCartPage.clickAddMoreItemsBtn();
-		sfShopSkinCarePage.addProductToCart(TestConstants.PRODUCT_NUMBER, TestConstants.ORDER_TYPE_ENROLLMENT);
+		sfShopSkinCarePage.addProductToCart(TestConstants.PRODUCT_NUMBER, TestConstants.ORDER_TYPE_ENROLLMENT,validProductId);
 		sfCartPage = sfShopSkinCarePage.checkoutTheCartFromPopUp();
 		sfCartPage.enterQuantityOfProductAtCart("1", "2");
 		sfCartPage.clickOnUpdateLinkThroughItemNumber("1");
@@ -467,7 +467,7 @@ public class AddAndDeleteShippingTest extends StoreFrontWebsiteBaseTest{
 		sfCheckoutPage.clickCreateAccountButton(TestConstants.USER_TYPE_PC);
 		s_assert.assertTrue(sfCartPage.isPcOneTimeFeeMsgDisplayed(),"PC one time joining fee msg has not displayed");
 		sfShopSkinCarePage = sfCartPage.clickAddMoreItemsBtn();
-		sfShopSkinCarePage.addProductToCart(TestConstants.PRODUCT_NUMBER, TestConstants.ORDER_TYPE_ENROLLMENT);
+		sfShopSkinCarePage.addProductToCart(TestConstants.PRODUCT_NUMBER, TestConstants.ORDER_TYPE_ENROLLMENT,validProductId);
 		sfCartPage = sfShopSkinCarePage.checkoutTheCartFromPopUp();
 		sfCartPage.enterQuantityOfProductAtCart("1", "2");
 		sfCartPage.clickOnUpdateLinkThroughItemNumber("1");

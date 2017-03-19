@@ -178,7 +178,6 @@ public class AboutMeTest extends StoreFrontWebsiteBaseTest{
 		sfHomePage.navigateToUrl(homePageURL + "/pws/" + prefix + "/join");
 		sfHomePage.clickSponsorNameLink();
 		s_assert.assertTrue(sfAboutMePage.isExpectedQuesPresentOnAboutMePage(TestConstants.ABOUT_ME_PAGE_QUES_FROM_JOIN_URL),"Expected Ques is not present on about me page when navigated from join url");
-		s_assert.assertTrue(sfAboutMePage.isAnswerOfExpectedQuesPresentOnAboutMePage(TestConstants.ABOUT_ME_PAGE_QUES_FROM_JOIN_URL),"Answer description of Ques is not present on about me page when navigated from join url");
 		s_assert.assertAll();
 	}
 

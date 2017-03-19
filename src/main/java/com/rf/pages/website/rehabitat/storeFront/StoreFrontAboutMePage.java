@@ -51,7 +51,7 @@ public class StoreFrontAboutMePage extends StoreFrontWebsiteBasePage{
 
 	private final String resetToDefaultLinkLoc="//h2[contains(text(),'%s')]//a";
 	private String quesOnAboutMePageLoc = "//form[@id='aboutmeFormData']//h2[contains(text(),'%s')]";
-	private String answerOnAboutMePageLoc = "//form[@id='aboutmeFormData']//h2[contains(text(),'%s')]/following-sibling::p";
+	private String answerOnAboutMePageLoc = "//form[@id='aboutmeFormData']//h2[contains(text(),'%s')]/following-sibling::p[text()][1]";
 	private String question2OnAboutMePageLoc="//h2[contains(text(),'What I love most about Rodan and Fields')]/following::p[contains(text(),'%s')]";
 
 	/***
@@ -99,7 +99,8 @@ public class StoreFrontAboutMePage extends StoreFrontWebsiteBasePage{
 	 * 
 	 */
 	public boolean isAnswerOfExpectedQuesPresentOnAboutMePage(String ques){
-		return driver.isElementVisible(By.xpath(String.format(answerOnAboutMePageLoc,ques)));
+		driver.quickWaitForElementPresent(By.xpath(String.format(answerOnAboutMePageLoc,ques)), 2);
+		return driver.isElementPresent(By.xpath(String.format(answerOnAboutMePageLoc,ques)));
 
 	}
 

@@ -14,7 +14,7 @@ public class ViewAreasOfSiteFromHomePageTest extends StoreFrontWebsiteBaseTest{
 	 * Mini cart, social media icon at footer
 	 *     
 	 */
-	@Test(enabled=true)
+	@Test(enabled=false)
 	public void testHomePageNavigateAndViewAreaOfTheSite_4(){
 		String category_Unblemish = "UNBLEMISH";
 		String category_Featured = "FEATURED";

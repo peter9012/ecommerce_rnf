@@ -1312,33 +1312,30 @@ public class OrdersTest extends StoreFrontWebsiteBaseTest{
 
 	}
 
-
 	/***
-	 * qTest : TC-477 Retail User Checkout- Choose a Consultant - multiple search
-	 * Description : This test case  search sponsor multiple times and validate the last selected sponsor
-	 * 
-	 */
-	@Test(enabled=true)
-	public void testRetailUserCheckoutChooseAConsultantMultipleSearch_477(){
-		String sponsorID = consultantWithPulseAndWithCRP().toLowerCase();
-		String sponsorFromUI = null;
-		sfHomePage.loginToStoreFront(rcWithOrderWithoutSponsor(), password,true);
-		sfShopSkinCarePage = sfHomePage.clickAllProducts();
-		sfShopSkinCarePage.addProductToCart(TestConstants.PRODUCT_NUMBER, TestConstants.ORDER_TYPE_ENROLLMENT);
-		sfCartPage = sfShopSkinCarePage.checkoutTheCartFromPopUp();
-		sfCheckoutPage = sfCartPage.checkoutTheCart();
-		sfCheckoutPage.searchSponsor(TestConstants.SPONSOR);
-		s_assert.assertTrue(sfHomePage.isSponsorResultDisplayed(),"No result found after searching the sponsor with name "+TestConstants.SPONSOR);
-		sfCheckoutPage.selectFirstSponsorFromList();
-		sfCheckoutPage.clickRemoveLink();
-		sfCheckoutPage.searchSponsor(sponsorID);
-		s_assert.assertTrue(sfHomePage.isSponsorResultDisplayed(),"No result found after searching the sponsor with name "+sponsorID);
-		sfCheckoutPage.selectFirstSponsorFromList();
-		sponsorFromUI = sfCheckoutPage.getSponsorNameFromAccountInfo().toLowerCase();
-		s_assert.assertTrue(sponsorFromUI.contains(sponsorID), "Expected sponsor email is "+sponsorID+" but actual on UI is"+sponsorFromUI);
-		s_assert.assertAll();
-	}
-
+	  * qTest : TC-477 Retail User Checkout- Choose a Consultant - multiple search
+	  * Description : This test case  search sponsor multiple times and validate the last selected sponsor
+	  * 
+	  */
+	 @Test(enabled=true)
+	 public void testRetailUserCheckoutChooseAConsultantMultipleSearch_477(){
+	  String sponsorID = consultantWithPulseAndWithCRP().toLowerCase();
+	  sfHomePage.loginToStoreFront(rcWithOrderWithoutSponsor(), password,true);
+	  sfShopSkinCarePage = sfHomePage.clickAllProducts();
+	  sfShopSkinCarePage.addProductToCart(TestConstants.PRODUCT_NUMBER, TestConstants.ORDER_TYPE_ENROLLMENT);
+	  sfCartPage = sfShopSkinCarePage.checkoutTheCartFromPopUp();
+	  sfCheckoutPage = sfCartPage.checkoutTheCart();
+	  sfCheckoutPage.searchSponsor(TestConstants.SPONSOR);
+	  s_assert.assertTrue(sfHomePage.isSponsorResultDisplayed(),"No result found after searching the sponsor with name "+TestConstants.SPONSOR);
+	  sfCheckoutPage.selectFirstSponsorFromList();
+	  sfCheckoutPage.clickRemoveLink();
+	  sfCheckoutPage.searchSponsor(sponsorID);
+	  s_assert.assertTrue(sfHomePage.isSponsorResultDisplayed(),"No result found after searching the sponsor with name "+sponsorID);
+	  sfCheckoutPage.selectFirstSponsorFromList();
+	  s_assert.assertTrue(sfCheckoutPage.isSponsorDetailsPresentInSelectedSponsor(sponsorID), "Sponsor ID is not selected");
+	  s_assert.assertAll();
+	 }
+	 
 	/***
 	 * qTest : TC-313 Ship Method-PC - Existing PC changes Shipping Method
 	 * Description : This test case change the all shipping method and verify their charges
@@ -1358,6 +1355,7 @@ public class OrdersTest extends StoreFrontWebsiteBaseTest{
 		sfCartPage = sfShopSkinCarePage.checkoutTheCartFromPopUp();
 		sfCheckoutPage = sfCartPage.checkoutTheCart();
 		sfCheckoutPage.clickSaveButton();
+		sfCheckoutPage.selectShippingMethod(TestConstants.SHIPPING_METHOD_UPS_GROUND);
 		shippingMethodWithCost = sfCheckoutPage.getSelectedShippingMethodName();
 		sfCheckoutPage.clickNextbuttonOfShippingDetails();
 		deliveryCharge = sfCheckoutPage.getDeliveryChargesAtOrderReviewPage().toLowerCase();
@@ -1523,6 +1521,7 @@ public class OrdersTest extends StoreFrontWebsiteBaseTest{
 		s_assert.assertFalse(sfCartPage.isErrorMessagePresentForThreshold(errorMessage), "Threshold message is present for a product more than 90$");
 		sfCheckoutPage=sfCartPage.checkoutTheCart();
 		sfCheckoutPage.clickSaveButton();
+		sfCheckoutPage.selectShippingMethod(TestConstants.SHIPPING_METHOD_UPS_GROUND);
 		sfCheckoutPage.clickShippingDetailsNextbutton();
 		sfCheckoutPage.clickBillingDetailsNextbutton();
 		deliveryCharges = sfCheckoutPage.getDeliveryChargesAtOrderReviewPage().toLowerCase();

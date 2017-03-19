@@ -1041,7 +1041,7 @@ public class MyAccountTest extends StoreFrontWebsiteBaseTest{
 		String expectedErrorMsgForPrefix = TestConstants.ERROR_MSG_EXISTING_PREFIX;
 		//Subscribe to pulse with a new prefix.
 		sfCheckoutPage = new StoreFrontCheckoutPage(driver);
-		sfHomePage.loginToStoreFront(consultantWithPulseAndWithCRPForCancellation(),password,true);
+		sfHomePage.loginToStoreFront(consultantWithoutPulseAndWithoutCRP(),password,true);
 		sfHomePage.clickWelcomeDropdown();
 		sfAutoshipStatusPage = sfHomePage.navigateToAutoshipStatusPage();
 		sfAutoshipStatusPage.clickSubscribeToPulseBtn();
@@ -1148,7 +1148,7 @@ public class MyAccountTest extends StoreFrontWebsiteBaseTest{
 		String autoSuggestedPrefixName = null;
 		//Subscribe to pulse with a new prefix.
 		sfCheckoutPage = new StoreFrontCheckoutPage(driver);
-		sfHomePage.loginToStoreFront(consultantWithPulseAndWithCRPForCancellation(),password,true);
+		sfHomePage.loginToStoreFront(consultantWithoutPulseAndWithoutCRP(),password,true);
 		sfHomePage.clickWelcomeDropdown();
 		sfAutoshipStatusPage = sfHomePage.navigateToAutoshipStatusPage();
 		sfAutoshipStatusPage.clickSubscribeToPulseBtn();

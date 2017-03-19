@@ -340,10 +340,10 @@ public class StoreFrontWebsiteBasePage extends RFBasePage {
 	private String topNavigationSublinksWithTitleLoc = topNavigationLoc + "//*[contains(@title,'%s')]";
 	private String quantityTBForSpecificProductLoc = "//span[normalize-space(text())='%s']//following::input[contains(@id,'quantity') and not(@readonly)][1]";
 	private String updateLinkForSpecificProductLoc = "//span[normalize-space(text())='%s']//following::input[contains(@id,'quantity') and not(@readonly)][1]/following::input[@value='update'][1]";
-	
+
 	private String RFO_DB = null;
 	private static String productName = null;
-	 
+
 
 	/***
 	 * This method do the mouseHover on desired webElement
@@ -524,7 +524,7 @@ public class StoreFrontWebsiteBasePage extends RFBasePage {
 		logger.info("Entered sponsor as " + sponsor);
 		driver.click(SEARCH_SPONSOR_LOC);
 		logger.info("Clicked on 'Search' button");
-	//	driver.pauseExecutionFor(2000);
+		//	driver.pauseExecutionFor(2000);
 		return this;
 	}
 
@@ -2824,7 +2824,7 @@ public class StoreFrontWebsiteBasePage extends RFBasePage {
 			driver.pauseExecutionFor(5000); // UI is slow, will be removed
 			logger.info("'Used as entered' button clicked");
 		}catch(Exception e){
-			
+
 		}
 		finally{
 			driver.turnOnImplicitWaits();
@@ -2920,6 +2920,7 @@ public class StoreFrontWebsiteBasePage extends RFBasePage {
 	 * @return
 	 */
 	public StoreFrontCheckoutPage clickConfirmSubscription() {
+		driver.pauseExecutionFor(3000);
 		driver.clickByJS(RFWebsiteDriver.driver, CONFIRM_PULSE_SUBSCRIPTION_BTN_LOC);
 		logger.info("confirm sibscription btn clicked");
 		driver.pauseExecutionFor(2000);
@@ -4039,52 +4040,52 @@ public class StoreFrontWebsiteBasePage extends RFBasePage {
 		action.sendKeys(Keys.ENTER);
 		action.perform();
 		logger.info("Hit enter for searching entity");
-//		driver.pauseExecutionFor(1000);
+		//		driver.pauseExecutionFor(1000);
 		return new StoreFrontShopSkinCarePage(driver);
 	}
-	
+
 	/**
-	  * This method click on the checkOut Button on the popup on the cart.
-	  * 
-	  * @return
-	  */
-	 public StoreFrontCartPage checkoutTheCartFromPopUp() {
-	  driver.pauseExecutionFor(1000);
-	  driver.quickWaitForElementPresent(CHECKOUT_BUTTON_POPUP_LOC);
-	  productName = getProductNameFromCheckoutPopup();
-	  driver.click(CHECKOUT_BUTTON_POPUP_LOC);
-	  logger.info("Clicked on checkout button on the popup");
-	  driver.waitForPageLoad();
-	 // driver.waitForLoadingImageToDisappear();
-	  return new StoreFrontCartPage(driver);
-	 }
+	 * This method click on the checkOut Button on the popup on the cart.
+	 * 
+	 * @return
+	 */
+	public StoreFrontCartPage checkoutTheCartFromPopUp() {
+		driver.pauseExecutionFor(1000);
+		driver.quickWaitForElementPresent(CHECKOUT_BUTTON_POPUP_LOC);
+		productName = getProductNameFromCheckoutPopup();
+		driver.click(CHECKOUT_BUTTON_POPUP_LOC);
+		logger.info("Clicked on checkout button on the popup");
+		driver.waitForPageLoad();
+		// driver.waitForLoadingImageToDisappear();
+		return new StoreFrontCartPage(driver);
+	}
 
 
 	/***
-	  * This method enter product quantity
-	  * 
-	  * @param itemNumber,
-	  *            quantity
-	  * @return store front Cart page object
-	  * 
-	  */
-	 public StoreFrontWebsiteBasePage enterQuantityOfProductAtCart(String itemNumber, String quantity) {
-	  driver.type(By.xpath(String.format(quantityTBForSpecificProductLoc,productName)), quantity);
-	  logger.info("In cart" + productName + " 's quantity updated as " + quantity);
-	  return this;
-	 }
+	 * This method enter product quantity
+	 * 
+	 * @param itemNumber,
+	 *            quantity
+	 * @return store front Cart page object
+	 * 
+	 */
+	public StoreFrontWebsiteBasePage enterQuantityOfProductAtCart(String itemNumber, String quantity) {
+		driver.type(By.xpath(String.format(quantityTBForSpecificProductLoc,productName)), quantity);
+		logger.info("In cart" + productName + " 's quantity updated as " + quantity);
+		return this;
+	}
 
-	 /***
-	  * This method click on update link
-	  * 
-	  * @param itemNumber
-	  * @return store front Cart page object
-	  * 
-	  */
-	 public StoreFrontWebsiteBasePage clickOnUpdateLinkThroughItemNumber(String itemNumber) {
-	  driver.click(By.xpath(String.format(updateLinkForSpecificProductLoc,productName)));
-	  logger.info("Update link of " + productName + " is clicked");
-	  return this;
-	 }
+	/***
+	 * This method click on update link
+	 * 
+	 * @param itemNumber
+	 * @return store front Cart page object
+	 * 
+	 */
+	public StoreFrontWebsiteBasePage clickOnUpdateLinkThroughItemNumber(String itemNumber) {
+		driver.click(By.xpath(String.format(updateLinkForSpecificProductLoc,productName)));
+		logger.info("Update link of " + productName + " is clicked");
+		return this;
+	}
 
 }

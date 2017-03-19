@@ -1085,15 +1085,15 @@ public class StoreFrontHomePage extends StoreFrontWebsiteBasePage{
 	public StoreFrontHomePage selectDefaultCountryFromToggleButton(String countryName) {
 		if(countryName.equalsIgnoreCase("us")){
 			clickToggleButtonOfCountry();
-			driver.click(By.xpath(String.format(countryOptionsInToggleButtonLoc, "USA")));
+			driver.clickByJS(RFWebsiteDriver.driver,By.xpath(String.format(countryOptionsInToggleButtonLoc, "USA")));
 			logger.info("Country " + countryName + " is Selected");
 		}else if(countryName.equalsIgnoreCase("ca")){
 			clickToggleButtonOfCountry();
-			driver.click(By.xpath(String.format(countryOptionsInToggleButtonLoc, "CAN")));
+			driver.clickByJS(RFWebsiteDriver.driver,By.xpath(String.format(countryOptionsInToggleButtonLoc, "CAN")));
 			logger.info("Country " + countryName + " is Selected");
 		}else if(countryName.equalsIgnoreCase("au")){
 			clickToggleButtonOfCountry();
-			driver.click(By.xpath(String.format(countryOptionsInToggleButtonLoc, "AUS")));
+			driver.clickByJS(RFWebsiteDriver.driver,By.xpath(String.format(countryOptionsInToggleButtonLoc, "AUS")));
 			logger.info("Country " + countryName + " is Selected");
 		}
 

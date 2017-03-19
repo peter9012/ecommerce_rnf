@@ -29,7 +29,7 @@ public class StoreFrontCheckoutPage extends StoreFrontWebsiteBasePage{
 	private final By TERMS_AND_CONDITIONS_CHCKBOX_FOR_AUTOSHIP_LOC = By.xpath("//a[contains(text(),'Terms & Conditions')]/ancestor::label[1]/preceding-sibling::input[@id][1]");
 	//	private final By TERMS_AND_CONDITIONS_CHCKBOX_FOR_AUTOSHIP_LOC = By.xpath("//a[contains(text(),'Terms & Conditions')]/ancestor::label[1]/preceding-sibling::input[1]");
 	private final By EDIT_LINK_OF_SHIPPING_ADDRESS_LOC=By.xpath("//div[contains(text(),'Shipping')]/following::a[@class='editIcon'][1]");
-	private final By DELIVERY_AT_ORDER_REVIEW_PAGE_LOC = By.xpath("//div[contains(text(),'Order Summary')]/following::p[contains(text(),'Delivery')]/following::span[1]");
+	private final By DELIVERY_AT_ORDER_REVIEW_PAGE_LOC = By.xpath("//p[contains(text(),'Shipping') or contains(text(),'Delivery')]/following-sibling::span[1]");
 	private final By FIRST_NAME_LOC = By.id("first-name");
 	private final By LAST_NAME_LOC = By.id("last-name");
 	private final By EMAIL_LOC = By.id("email-account");
@@ -168,7 +168,8 @@ public class StoreFrontCheckoutPage extends StoreFrontWebsiteBasePage{
 	private final By EDIT_LINK_OF_SHIPPING_SECTION_LOC=By.xpath("//div[@class='checkout-shipping']//a[1]");
 	private final By SEARCHED_SELECTED_SPONSOR_LOC = By.xpath("//div[@class='customerid']/preceding::span[@id='selectd-consultant'][1]");
 	private final By SHIPPING_CHARGES_LOC = By.xpath("//div[@class='shipping']/span");
-	
+
+	private String sponsorDetailsInSelectedSponsor= "//span[@id='selectd-consultant'][contains(text(),'%s')]";
 	private String useThisAddressBtnInAddressBookLoc = "//div[@id='addressbook']/descendant::form[@id='useShipAddressFromBook'][%s]//button";
 	private String profileNameFromAddressBookLoc = "//div[@id='addressbook']/descendant::strong[%s]";
 	private String useThisPaymentDetailsBtnInSavedCardLoc = "//div[@id='savedpaymentsbody']/descendant::button[contains(text(),'Use these payment details')][%s]";
@@ -432,7 +433,7 @@ public class StoreFrontCheckoutPage extends StoreFrontWebsiteBasePage{
 	 * 
 	 */
 	public StoreFrontCheckoutPage selectShippingMethod(String methodName){
-		driver.click(By.xpath(String.format(shippingMethodLoc, methodName)));
+		driver.clickByJS(RFWebsiteDriver.driver, By.xpath(String.format(shippingMethodLoc, methodName)));
 		logger.info("Shipping method select as "+methodName);
 		return this;
 	}
@@ -1897,5 +1898,16 @@ public class StoreFrontCheckoutPage extends StoreFrontWebsiteBasePage{
 		String charge=driver.getText(SHIPPING_CHARGES_LOC);
 		logger.info("Shipping charges at order review page is"+charge);
 		return charge;
+	}
+
+	/***
+	 * This method verify the selected sponsor's details
+	 * 
+	 * @param sponsore email
+	 * @return boolean value
+	 * 
+	 */
+	public boolean isSponsorDetailsPresentInSelectedSponsor(String sponsorEmail){
+		return driver.isElementPresent(By.xpath(String.format(sponsorDetailsInSelectedSponsor, sponsorEmail)));
 	}
 }

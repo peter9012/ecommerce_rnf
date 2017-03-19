@@ -112,7 +112,7 @@ public class MiniCartTest extends StoreFrontWebsiteBaseTest{
 	 * 
 	 *     
 	 */
-	@Test(enabled=true)
+	@Test(enabled=false)
 	public void testAnonymousUserAddsProductsToTheCartForAdhocOrder_563(){
 		String productName = null;
 		String productNameOnCheckoutPopup = null;
@@ -122,7 +122,7 @@ public class MiniCartTest extends StoreFrontWebsiteBaseTest{
 		sfCartPage.clickWelcomeDropdown();
 		sfCartPage.logout();
 		sfShopSkinCarePage = sfHomePage.clickAllProducts();
-		productName = sfShopSkinCarePage.getProductNameFromAllProductPage("2");
+		productName = sfShopSkinCarePage.getProductNameFromAllProductPage(TestConstants.PRODUCT_NUMBER);
 		sfShopSkinCarePage.addProductToCart(TestConstants.PRODUCT_NUMBER, TestConstants.ORDER_TYPE_ENROLLMENT);
 		productNameOnCheckoutPopup = sfShopSkinCarePage.getProductNameFromCheckoutPopup();
 		s_assert.assertTrue(sfShopSkinCarePage.isAddedToYourShoppingCartHeadlinePresentOnCheckoutPopup(),"Added to ypur shopping cart header is not present on checkout popup");
@@ -156,7 +156,7 @@ public class MiniCartTest extends StoreFrontWebsiteBaseTest{
 		sfCartPage.clickWelcomeDropdown();
 		sfCartPage.logout();
 		sfShopSkinCarePage = sfHomePage.clickAllProducts();
-		productName = sfShopSkinCarePage.getProductNameFromAllProductPage("2");
+		productName = sfShopSkinCarePage.getProductNameFromAllProductPage(TestConstants.PRODUCT_NUMBER);
 		sfShopSkinCarePage.addProductToCart(TestConstants.PRODUCT_NUMBER, TestConstants.ORDER_TYPE_ENROLLMENT);
 		productNameOnCheckoutPopup = sfShopSkinCarePage.getProductNameFromCheckoutPopup();
 		s_assert.assertTrue(sfShopSkinCarePage.isAddedToYourShoppingCartHeadlinePresentOnCheckoutPopup(),"Added to ypur shopping cart header is not present on checkout popup");
@@ -180,7 +180,6 @@ public class MiniCartTest extends StoreFrontWebsiteBaseTest{
 		s_assert.assertTrue(sfCartPage.isProductAddedToCartPresentOnCartPage(productNameAddedByUser),"Product added to cart : "+productNameToAddByUser+" as valid user is not present on the cart page");
 		s_assert.assertAll();
 	}
-
 
 	/***
 	 * qTest : TC-372 Mini Cart- Autoship - not visible to consultant not enrolled in CRP
@@ -297,7 +296,7 @@ public class MiniCartTest extends StoreFrontWebsiteBaseTest{
 	 * Description : This test validates product name, quantity ,subtotal, no of item
 	 * In mini cart    
 	 */
-	@Test(enabled=true)
+	@Test(enabled=false)
 	public void testViewMiniShippingBag_147(){
 		String firstProductName = null;
 		String secondProductName= null;

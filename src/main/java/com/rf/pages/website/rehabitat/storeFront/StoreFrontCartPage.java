@@ -21,7 +21,7 @@ public class StoreFrontCartPage extends StoreFrontWebsiteBasePage{
 	private final By REMOVE_LINK_FOR_PRODUCTS_IN_CART_LOC = By.xpath("//button[contains(@id,'removeEntry')]");
 	private static final Logger logger = LogManager
 			.getLogger(StoreFrontCartPage.class.getName());
-	private final By ORDER_TOTAL_LOC = By.xpath("//td[contains(text(),'Order Total')]/following::td[1]");
+	private final By ORDER_TOTAL_LOC = By.xpath("//td[contains(text(),'Total')]/following::td[1]");
 	private final By CHECKOUT_BTN_LOC = By.xpath("//div[@class='cart-container']/descendant::button[contains(text(),'Checkout')][2]");
 	private final By FIRST_ITEM_CODE_LOC = By.xpath("//ul[contains(@class,'cart__list')]/descendant::li[@class='item-list-item'][1]//div[@class='item-code']");
 	private final By FIRST_ITEM_PRODUCT_NAME_LOC = By.xpath("//ul[contains(@class,'cart__list')]/descendant::li[@class='item-list-item'][1]//span[@class='item-name']");

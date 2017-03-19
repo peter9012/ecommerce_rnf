@@ -82,7 +82,7 @@ public class FooterSectionTest extends StoreFrontWebsiteBaseTest{
 	 * 
 	 * Description : This test validates satisfaction guarantee link on all pages except checkout page. 
 	 */
-	@Test(enabled=true)
+	@Test(enabled=false)
 	public void testVerifySatisfactionGuaranteeLinkOnAllPagesExceptCheckout_98(){
 		String currentWindowID = null;
 		String currentURL = null;
@@ -152,7 +152,7 @@ public class FooterSectionTest extends StoreFrontWebsiteBaseTest{
 	 * Description : This test validates "Terms and Conditions" link within the the Privacy Policy page
 	 * 
 	 */ 
-	@Test(enabled=true) 
+	@Test(enabled=false) 
 	public void testVerifyTermsAndConditionsLinkWithinThePrivacyPolicyPage_24(){
 		String privacyPolicy = "Privacy Policy";
 		String pageHeaderPrivacyPolicy="PRIVACY POLICY";
@@ -229,7 +229,7 @@ public class FooterSectionTest extends StoreFrontWebsiteBaseTest{
 	 * Description : This test validates the links in the Disclaimer page
 	 * 
 	 */ 
-	@Test(enabled=true) 
+	@Test(enabled=false) 
 	public void testVerifyTheLinksInTheDisclaimerPage_26(){
 		String policyUrl = null;
 		String incomeDisclosureUrl = null;

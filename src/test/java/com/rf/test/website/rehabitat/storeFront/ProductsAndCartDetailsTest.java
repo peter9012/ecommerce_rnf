@@ -310,7 +310,7 @@ public class ProductsAndCartDetailsTest extends StoreFrontWebsiteBaseTest{
 	 * Description : This test validates PC Perks Terms and Conditions Link for PC User
 	 * 
 	 */
-	@Test(enabled=true)
+	@Test(enabled=false)
 	public void testCartPagePCPerksTermsAndConditionsPCUser_222(){
 		String currentWindowID = null; 
 		String currentURL = null;
@@ -333,7 +333,7 @@ public class ProductsAndCartDetailsTest extends StoreFrontWebsiteBaseTest{
 	 * Description : This test validates PC Perks Terms and Conditions Link for PC User
 	 * 
 	 */
-	@Test(enabled=true)
+	@Test(enabled=false)
 	public void testCartPagePCPerksTermsAndConditionsPCUser_221(){
 		String currentWindowID = null; 
 		String currentURL = null;
@@ -986,7 +986,7 @@ public class ProductsAndCartDetailsTest extends StoreFrontWebsiteBaseTest{
 	 * Description : This test validates PC Perks Terms and Conditions Link for Anonymous user
 	 * 
 	 */
-	@Test(enabled=true)
+	@Test(enabled=false)
 	public void testCartPagePCPerksTermsAndConditionsAnonymousUser_220(){
 		String currentWindowID = null; 
 		String currentURL = null;

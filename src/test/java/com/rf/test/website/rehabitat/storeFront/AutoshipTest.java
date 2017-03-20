@@ -673,49 +673,24 @@ public class AutoshipTest extends StoreFrontWebsiteBaseTest{
 	 */
 	@Test(enabled=true)
 	public void testUpdateAutoshipCartOrderSummary_326(){
-		int totalNoOfItemBeforeAdd = 0;
-		int totalNoOfItemAfterAdd = 0;
-		int totalNoOfItemAfterRemove = 0;
-		int totalNoOfProducts = 0;
-		int productnumber = 0;
-		String productQuantity = null;
-		String productQuantityToUpdate = null;
+		String incrementedQty = null;
+		String updatedQty = null;
 
-		// Loginin As Cons
+		// Login As Cons
 		sfHomePage.loginToStoreFront(consultantWithPulseAndWithCRP(), password,true);
-		sfAutoshipCartPage = sfHomePage.clickOnAutoshipCartLink();
-		totalNoOfItemBeforeAdd = sfAutoshipCartPage.getTotalNumberOfItemsFromCart();
-		sfShopSkinCarePage = sfAutoshipCartPage.clickAddMoreItemsBtn();
-		sfShopSkinCarePage.refineProductByCategory(TestConstants.CONSULTANT_CRP_AUTOSHIP_PRODUCT_CATEGORY);
-		totalNoOfProducts = sfShopSkinCarePage.getTotalNoOfProduct();
-		productnumber = CommonUtils.getRandomNum(1, totalNoOfProducts);
-		sfShopSkinCarePage.addProductToCart(""+productnumber, TestConstants.ORDER_TYPE_CRP);
-		sfShopSkinCarePage.checkoutTheCartFromPopUp();
-		totalNoOfItemAfterAdd =  sfAutoshipCartPage.getTotalNumberOfItemsFromCart();
-		while(true){
-			if(totalNoOfItemBeforeAdd==totalNoOfItemAfterAdd){
-				sfAutoshipCartPage.clickAddMoreItemsBtn();
-				sfShopSkinCarePage.refineProductByCategory(TestConstants.CONSULTANT_CRP_AUTOSHIP_PRODUCT_CATEGORY);
-				productnumber = CommonUtils.getRandomNum(1, totalNoOfProducts);
-				sfShopSkinCarePage.addProductToCart(""+productnumber, TestConstants.ORDER_TYPE_CRP);
-				sfShopSkinCarePage.checkoutTheCartFromPopUp();
-				totalNoOfItemAfterAdd =  sfAutoshipCartPage.getTotalNumberOfItemsFromCart();
-				continue;
-			}else{
-				break;
-			}
-		}
-		totalNoOfItemAfterAdd =  sfAutoshipCartPage.getTotalNumberOfItemsFromCart();
-		s_assert.assertTrue(totalNoOfItemAfterAdd>totalNoOfItemBeforeAdd, "Added item from PDP is not present into cart");
-		productQuantity = sfAutoshipCartPage.getProductQuantityFromAutoshipCart("2");
-		productQuantityToUpdate = sfAutoshipCartPage.updateQuantityByOne(productQuantity).trim();
-		sfAutoshipCartPage.enterProductQuantityAtAutoshipCart("2", productQuantityToUpdate);
-		sfAutoshipCartPage.updateQuantityAtAutoshipCart("2");
-		productQuantity = sfAutoshipCartPage.getProductQuantityFromAutoshipCart("2").trim();
-		s_assert.assertTrue(productQuantity.equals(productQuantityToUpdate), "Product quantity is not updated successfully");
-		sfAutoshipCartPage.removeAnItemFromAutoshipCart("2");
-		totalNoOfItemAfterRemove =  sfAutoshipCartPage.getTotalNumberOfItemsFromCart();
-		s_assert.assertTrue(totalNoOfItemAfterRemove==totalNoOfItemBeforeAdd, "Added item from PDP is not present into cart");
+		sfShopSkinCarePage = sfHomePage.clickAllProducts();
+		/*sfShopSkinCarePage.addProductToCart(TestConstants.PRODUCT_NUMBER,TestConstants.ORDER_TYPE_CRP,validProductId);
+	  sfAutoshipCartPage = sfShopSkinCarePage.checkoutTheCartFromPopUpForAutoship();
+	  sfAutoshipCartPage.removeProductFromAutoshipCart(validProductName);
+	  s_assert.assertFalse(sfAutoshipCartPage.isProductPresentInAutoShipCart(validProductName),"Product : " + validProductName + "is still present in AutoShip Cart");
+	  sfAutoshipCartPage.clickAddMoreItemsBtn();*/
+		sfShopSkinCarePage.addProductToCart(TestConstants.PRODUCT_NUMBER,TestConstants.ORDER_TYPE_CRP,validProductId);
+		sfAutoshipCartPage = sfShopSkinCarePage.checkoutTheCartFromPopUpForAutoship();
+		s_assert.assertTrue(sfAutoshipCartPage.isProductPresentInAutoShipCart(validProductName),"Product : " + validProductName + "is not present in AutoShip Cart");
+		incrementedQty = sfAutoshipCartPage.updateQuantityByOne(sfAutoshipCartPage.getQtyOfProductFromAutoShipCart(validProductName));
+		sfAutoshipCartPage.updateQtyForProductInAutoShipCart(validProductName,incrementedQty);
+		updatedQty = sfAutoshipCartPage.getQtyOfProductFromAutoShipCart(validProductName);
+		s_assert.assertTrue(updatedQty.equals(incrementedQty),"Actual Quantity of Product : " + validProductName + " : "  + updatedQty + "  does not match with the Expceted Quantity : " + incrementedQty + " at AutoShip Cart");
 		s_assert.assertAll();
 	}
 

@@ -635,6 +635,7 @@ public class StoreFrontWebsiteBasePage extends RFBasePage {
 				logger.info("Switched to child window");
 			}
 		}
+		driver.pauseExecutionFor(2000);
 		return this;
 	}
 
@@ -778,16 +779,19 @@ public class StoreFrontWebsiteBasePage extends RFBasePage {
 			driver.clickByJS(RFWebsiteDriver.driver,CONTINUE_BTN_NEW_POLICIES_PROCEDURES_POPUP_LOC);
 
 		}
-		if (closeCRPReminder == true && (driver.isElementVisible(SET_UP_CRP_POPUP_CLOSE_LOC))) {
-			driver.click(SET_UP_CRP_POPUP_CLOSE_LOC);
-		}
+
 		if(driver.isElementPresent(OKTA_IMG_LOC)){
 			driver.get(driver.getURL()+"/"+driver.getCountry().toUpperCase());
 			driver.waitForPageLoad();
 		}
 
+		if (closeCRPReminder == true && (driver.isElementVisible(SET_UP_CRP_POPUP_CLOSE_LOC))) {
+			driver.click(SET_UP_CRP_POPUP_CLOSE_LOC);
+		}
+
 		return this;
 	}
+
 	/***
 	 * This method clicks on the login icon,enter the username and
 	 * password,check the Remember Me checkbox and click on 'LOG IN' button
@@ -2361,7 +2365,6 @@ public class StoreFrontWebsiteBasePage extends RFBasePage {
 	 * @return StoreFrontWebsiteBasePage
 	 * 
 	 */
-
 	public StoreFrontWebsiteBasePage loginToStoreFrontExcludingClickOnLoginIcon(String username, String password) {
 		driver.type(USERNAME_TXTFLD_LOC, username);
 		logger.info("username entered as " + username);
@@ -2369,6 +2372,10 @@ public class StoreFrontWebsiteBasePage extends RFBasePage {
 		logger.info("password entered as  " + password);
 		driver.click(LOGIN_BTN_LOC);
 		logger.info("login button clicked");
+		if(driver.isElementPresent(OKTA_IMG_LOC)){
+			driver.get(driver.getURL()+"/"+driver.getCountry().toUpperCase());
+			driver.waitForPageLoad();
+		}
 		return this;
 	}
 
@@ -3545,7 +3552,7 @@ public class StoreFrontWebsiteBasePage extends RFBasePage {
 	 * 
 	 */
 	public boolean isAddressFieldPresentAsExpectedOnUI(String billingAddressOnUI, String addressField) {
-		return billingAddressOnUI.contains(addressField);
+		return billingAddressOnUI.toLowerCase().contains(addressField.toLowerCase().trim());
 	}
 
 	/***

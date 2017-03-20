@@ -206,13 +206,13 @@ public class ProductsAndCartDetailsTest extends StoreFrontWebsiteBaseTest{
 	public void testQuickViewAddToCart_342(){
 		sfShopSkinCarePage=sfHomePage.clickAllProducts();
 		sfShopSkinCarePage.clickOnFirstProductQuickViewButtonAndReturnProductName();
-		s_assert.assertTrue(sfShopSkinCarePage.isProductImageQuickViewPopupDisplayed(),"Expected product Image Quick view popup not displayed");
+		s_assert.assertTrue(sfShopSkinCarePage.isProductImageQuickViewPopupDisplayed(),"Expected product Image Quick view popup is not displayed");
 		sfShopSkinCarePage.closeQuickViewOptionPopup();
-		s_assert.assertFalse(sfShopSkinCarePage.isProductImageQuickViewPopupDisplayed(),"Expected product Image Quick view popup is not closed");
+		s_assert.assertFalse(sfShopSkinCarePage.isProductImageQuickViewPopupDisplayed(),"Product Image Quick view popup is not closed");
 		sfShopSkinCarePage.clickOnFirstProductQuickViewButtonAndReturnProductName();
-		s_assert.assertTrue(sfShopSkinCarePage.isProductImageQuickViewPopupDisplayed(),"Expected product Image Quick view popup not displayed after clicking on product again");
+		s_assert.assertTrue(sfShopSkinCarePage.isProductImageQuickViewPopupDisplayed(),"Expected product Image Quick view popup is not displayed after clicking on product again");
 		sfShopSkinCarePage.pressEscapeFromQuickViewPopup();
-		s_assert.assertFalse(sfShopSkinCarePage.isProductImageQuickViewPopupDisplayed(),"Expected product Image Quick view popup not displayed after clicking outside of quick view popup");
+		s_assert.assertFalse(sfShopSkinCarePage.isProductImageQuickViewPopupDisplayed(),"Product Image Quick view popup is not closed after clicking outside of quick view popup");
 		sfShopSkinCarePage.clickOnFirstProductQuickViewButtonAndReturnProductName();
 		sfShopSkinCarePage.clickAddToCartFromQuickViewPopup();
 		s_assert.assertAll();
@@ -1108,8 +1108,6 @@ public class ProductsAndCartDetailsTest extends StoreFrontWebsiteBaseTest{
 	 */
 	@Test(enabled=true)
 	public void testAddMultipleProductsToCartAfterLogin_69(){
-		String usertype = "Consultant";
-		String pcUsertype = TestConstants.USER_TYPE_PC;
 		String itemInAdhocCart= "1";
 		String noOfItemFromUI = null;   
 		//Verify anonymous user cart page product.
@@ -1125,14 +1123,12 @@ public class ProductsAndCartDetailsTest extends StoreFrontWebsiteBaseTest{
 		//Adhoc cart
 		sfHomePage.loginToStoreFront(consultantWithPulseAndWithCRP(), password,true);
 		sfShopSkinCarePage=sfHomePage.clickAllProducts();
-		sfShopSkinCarePage.refineProductByCategory(TestConstants.CONSULTANT_CRP_AUTOSHIP_PRODUCT_CATEGORY);
-		sfShopSkinCarePage.addProductToCart(TestConstants.PRODUCT_NUMBER, TestConstants.ORDER_TYPE_ADHOC);
+		sfShopSkinCarePage.addProductToCart(TestConstants.PRODUCT_NUMBER, TestConstants.ORDER_TYPE_ADHOC,validProductId);
 		sfCartPage = sfShopSkinCarePage.checkoutTheCartFromPopUp();
 		sfCartPage.clickAddMoreItemsBtn();
 		s_assert.assertTrue(sfShopSkinCarePage.isProductsDisplayedOnPage(),"All product page not present after clicking continue shopping on adhoc cart of consultant.");
 		//Autoship cart.
-		sfShopSkinCarePage.refineProductByCategory(TestConstants.CONSULTANT_CRP_AUTOSHIP_PRODUCT_CATEGORY);
-		sfShopSkinCarePage.addProductToCart(TestConstants.PRODUCT_NUMBER, TestConstants.ORDER_TYPE_CRP);
+		sfShopSkinCarePage.addProductToCart(TestConstants.PRODUCT_NUMBER, TestConstants.ORDER_TYPE_CRP,validProductId);
 		sfCartPage = sfShopSkinCarePage.checkoutTheCartFromPopUp();
 		sfCartPage.clickAddMoreItemsBtn();
 		s_assert.assertTrue(sfShopSkinCarePage.isProductsDisplayedOnPage(),"All product page not present after clicking continue shopping on autoship cart of consultant.");
@@ -1144,16 +1140,14 @@ public class ProductsAndCartDetailsTest extends StoreFrontWebsiteBaseTest{
 		//PC adhoc cart
 		sfHomePage.loginToStoreFront(pcUserWithPWSSponsor(),password,true);
 		sfShopSkinCarePage=sfHomePage.clickAllProducts();
-		sfShopSkinCarePage.refineProductByCategory(TestConstants.PC_PERKS_AUTOSHIP_PRODUCT_CATEGORY);
-		sfShopSkinCarePage.addProductToCart(TestConstants.PRODUCT_NUMBER, TestConstants.ORDER_TYPE_ADHOC);
+		sfShopSkinCarePage.addProductToCart(TestConstants.PRODUCT_NUMBER, TestConstants.ORDER_TYPE_ADHOC,validProductId);
 		sfCartPage = sfShopSkinCarePage.checkoutTheCartFromPopUp();
 		sfCartPage.clickAddMoreItemsBtn();
 		s_assert.assertTrue(sfShopSkinCarePage.isProductsDisplayedOnPage(),"All product page not present after clicking continue shopping on adhoc cart of PC.");
 		sfShopSkinCarePage.clickRodanAndFieldsLogo();
 		//PC Autoship Cart
 		sfShopSkinCarePage.clickAllProducts();
-		sfShopSkinCarePage.refineProductByCategory(TestConstants.PC_PERKS_AUTOSHIP_PRODUCT_CATEGORY);
-		sfShopSkinCarePage.addProductToCart(TestConstants.PRODUCT_NUMBER, TestConstants.ORDER_TYPE_PC_PERKS);
+		sfShopSkinCarePage.addProductToCart(TestConstants.PRODUCT_NUMBER, TestConstants.ORDER_TYPE_PC_PERKS,validProductId);
 		sfCartPage = sfShopSkinCarePage.checkoutTheCartFromPopUp();
 		sfCartPage.clickAddMoreItemsBtn();
 		s_assert.assertTrue(sfShopSkinCarePage.isProductsDisplayedOnPage(),"All product page not present after clicking continue shopping on autoship cart of consultant.");
@@ -1165,7 +1159,7 @@ public class ProductsAndCartDetailsTest extends StoreFrontWebsiteBaseTest{
 		//RC adhoc cart
 		sfHomePage.loginToStoreFront(rcWithOrderWithoutSponsor(),password,true);
 		sfShopSkinCarePage=sfHomePage.clickAllProducts();
-		sfShopSkinCarePage.addProductToCart(TestConstants.PRODUCT_NUMBER, TestConstants.ORDER_TYPE_ENROLLMENT);
+		sfShopSkinCarePage.addProductToCart(TestConstants.PRODUCT_NUMBER, TestConstants.ORDER_TYPE_ENROLLMENT,validProductId);
 		sfCartPage = sfShopSkinCarePage.checkoutTheCartFromPopUp();
 		sfCartPage.clickAddMoreItemsBtn();
 		s_assert.assertTrue(sfShopSkinCarePage.isProductsDisplayedOnPage(),"All product page not present after clicking continue shopping on RC adhoc cart.");

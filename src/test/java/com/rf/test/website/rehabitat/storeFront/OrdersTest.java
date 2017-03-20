@@ -1195,7 +1195,7 @@ public class OrdersTest extends StoreFrontWebsiteBaseTest{
 	 */
 	@Test(enabled=true)
 	public void testOrderHistoryReturnOrderReturnDoNotExist_517(){
-		String noReturnOrderMessage = "You have no Return orders";
+		String noReturnOrderMessage = "No Return Orders Found";
 		sfHomePage.loginToStoreFront(consultantWithPulseAndWithCRP(),password,true);
 		sfHomePage.clickWelcomeDropdown();
 		sfOrdersPage = sfHomePage.navigateToOrdersPage();

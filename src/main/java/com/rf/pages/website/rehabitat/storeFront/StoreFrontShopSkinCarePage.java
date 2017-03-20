@@ -247,6 +247,7 @@ public class StoreFrontShopSkinCarePage extends StoreFrontWebsiteBasePage{
 		driver.click(CLOSE_QUICK_VIEW_OPTION_POPUP_LOC);
 		return this;
 	}
+
 	/***
 	 * This method validates Image of product in quick view popup.
 	 * 
@@ -255,9 +256,10 @@ public class StoreFrontShopSkinCarePage extends StoreFrontWebsiteBasePage{
 	 * 
 	 */
 	public boolean isProductImageQuickViewPopupDisplayed(){
-		driver.waitForElementPresent(PRODUCT_IMAGE_QUICK_VIEW_POPUP_LOC);
+		driver.pauseExecutionFor(3000);
 		return driver.findElement(PRODUCT_IMAGE_QUICK_VIEW_POPUP_LOC).isDisplayed();
 	}
+
 	/***
 	 * This method validates presence of checkout popup.
 	 * 

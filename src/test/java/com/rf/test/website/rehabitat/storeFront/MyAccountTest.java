@@ -589,13 +589,12 @@ public class MyAccountTest extends StoreFrontWebsiteBaseTest{
 	 * 
 	 * Description : This test validate Check My pulse page from welcome DD.
 	 * 
-	 * 				
 	 */
 	@Test(enabled=true) //Not auto loggedIn in pulse.
 	public void testVerifyCheckMyPulsePage_357(){
 		String currentURL = null;
 		String currentWindowID = null;
-		String urlToAssert = "myrfpulse";
+		String urlToAssert = "pulse";
 		//Login as consultant user.
 		sfHomePage.loginToStoreFront(consultantWithPulseAndWithCRP(),password,true);
 		sfHomePage.clickWelcomeDropdown();
@@ -987,13 +986,13 @@ public class MyAccountTest extends StoreFrontWebsiteBaseTest{
 	 * 
 	 * Description : This test validate pulse link functionality on order page.
 	 * 
-	 * 				
+	 *     
 	 */
 	@Test(enabled=true)//Not auto loggedIn in pulse.
 	public void testVerifyPulseLinkOnOrderPage_360(){
 		String currentURL = null;
 		String currentWindowID = null;
-		String urlToAssert = "myrfpulse";
+		String urlToAssert = "pulse";
 		//Login as consultant user.
 		sfHomePage.loginToStoreFront(consultantWithPulseAndWithCRP(),password,true);
 		sfHomePage.clickWelcomeDropdown();
@@ -1028,7 +1027,7 @@ public class MyAccountTest extends StoreFrontWebsiteBaseTest{
 
 	/***
 	 * qtest: TC-369 Consultant Autoship Status- Subscribe to Pulse (Using some other Prefix less than 180 days)
-	   Description: This method re-enroll consultant in pulse with existing autosuggested prefix and other consultant prefix.
+	    Description: This method re-enroll consultant in pulse with existing autosuggested prefix and other consultant prefix.
 	 *
 	 */ 
 	@Test(enabled=true)//Accepting inactive prefix less than 180 days.
@@ -1043,6 +1042,9 @@ public class MyAccountTest extends StoreFrontWebsiteBaseTest{
 		sfHomePage.loginToStoreFront(consultantWithPulseAndWithCRPForCancellation(),password,true);
 		sfHomePage.clickWelcomeDropdown();
 		sfAutoshipStatusPage = sfHomePage.navigateToAutoshipStatusPage();
+		if(sfAutoshipStatusPage.isSubscribeToPulseBtnDisplayed()==false){
+			sfAutoshipStatusPage.clickCancelPulseSubscription().clickConfirmSubscription();
+		}
 		sfAutoshipStatusPage.clickSubscribeToPulseBtn();
 		sfAutoshipStatusPage.enterAvailablePrefix(otherUserPrefix);
 		errorMessage = sfAutoshipStatusPage.getErrorMessageForExistingPrefixName();
@@ -1056,11 +1058,6 @@ public class MyAccountTest extends StoreFrontWebsiteBaseTest{
 		sfCheckoutPage.closePopUp();
 		sfCheckoutPage.selectTermsAndConditionsCheckBoxForAutoshipOrder().clickPlaceOrderButton();
 		s_assert.assertTrue(sfCheckoutPage.isOrderPlacedSuccessfully(),"Order is Not placed successfully");
-		//Cancel the pulse of user.
-		sfHomePage.clickWelcomeDropdown();
-		sfAutoshipStatusPage = sfHomePage.navigateToAutoshipStatusPage();
-		sfAutoshipStatusPage.clickCancelPulseSubscription().clickConfirmSubscription();
-		s_assert.assertTrue(sfAutoshipStatusPage.isSubscribeToPulseBtnDisplayed(), "Pulse subscription is NOT cancelled");
 		s_assert.assertAll();
 	}
 
@@ -1138,9 +1135,9 @@ public class MyAccountTest extends StoreFrontWebsiteBaseTest{
 
 	/***
 	 * qtest: TC-278 Consultant Autoship Status- Subscribe to Pulse (Re-Enrollment within 180 days)
-	  Description: This method re-enroll consultant in pulse with new prefix and existing autosuggested prefix .
+	   Description: This method re-enroll consultant in pulse with new prefix and existing autosuggested prefix .
 	 *
-	 */	
+	 */ 
 	@Test(enabled=true)
 	public void testReEnnrollmentInPulseWithin180DaysOfExistingAutoSuggestedPrefix_278(){
 		String prefix = firstName + CommonUtils.getCurrentTimeStamp();
@@ -1150,13 +1147,16 @@ public class MyAccountTest extends StoreFrontWebsiteBaseTest{
 		sfHomePage.loginToStoreFront(consultantWithPulseAndWithCRPForCancellation(),password,true);
 		sfHomePage.clickWelcomeDropdown();
 		sfAutoshipStatusPage = sfHomePage.navigateToAutoshipStatusPage();
+		if(sfAutoshipStatusPage.isSubscribeToPulseBtnDisplayed()==false){
+			sfAutoshipStatusPage.clickCancelPulseSubscription().clickConfirmSubscription();
+		}
 		sfAutoshipStatusPage.clickSubscribeToPulseBtn();
 		autoSuggestedPrefixName = sfAutoshipStatusPage.getAvailablePrefixName();
 		sfAutoshipStatusPage.enterAvailablePrefix(prefix);
 		sfCheckoutPage = sfAutoshipStatusPage.clickConfirmSubscription();
 		sfCheckoutPage.clickSaveButton();
-		//	sfCheckoutPage.clickUseSavedCardBtnOnly();
-		//	sfCheckoutPage.clickUseThesePaymentDetailsAndReturnBillingProfileName("1");
+		// sfCheckoutPage.clickUseSavedCardBtnOnly();
+		// sfCheckoutPage.clickUseThesePaymentDetailsAndReturnBillingProfileName("1");
 		sfCheckoutPage.clickBillingDetailsNextbutton().clickPlaceOrderButton();
 		s_assert.assertTrue(sfCheckoutPage.isPopUpForTermsAndConditionsCheckboxDisplayed(), "validation popup for terms and conditions not displayed");
 		sfCheckoutPage.closePopUp();
@@ -1177,11 +1177,6 @@ public class MyAccountTest extends StoreFrontWebsiteBaseTest{
 		sfCheckoutPage.closePopUp();
 		sfCheckoutPage.selectTermsAndConditionsCheckBoxForAutoshipOrder().clickPlaceOrderButton();
 		s_assert.assertTrue(sfCheckoutPage.isOrderPlacedSuccessfully(),"Order is Not placed successfully");
-		//Cancel the pulse of user.
-		sfHomePage.clickWelcomeDropdown();
-		sfAutoshipStatusPage = sfHomePage.navigateToAutoshipStatusPage();
-		sfAutoshipStatusPage.clickCancelPulseSubscription().clickConfirmSubscription();
-		s_assert.assertTrue(sfAutoshipStatusPage.isSubscribeToPulseBtnDisplayed(), "Pulse subscription is NOT cancelled");
 		s_assert.assertAll();
 	}
 
@@ -1293,19 +1288,20 @@ public class MyAccountTest extends StoreFrontWebsiteBaseTest{
 		s_assert.assertFalse(sfHomePage.isEditPWSLinkPresentInWelcomeDD(),"Edit PWS link is present for user not subscribed to pulse.");
 		s_assert.assertAll();
 	}
+
 	/***
 	 * qTest : TC-361 View Pulse autoship status and next bill date from Autoship status page in my account
 	 * 
 	 * Description : This test validate pulse autoship status and next bill ship date
 	 * from autoship status page.
-	 * 				
+	 *     
 	 */
 	@Test(enabled=true) //Not auto loggedIn in pulse.
 	public void testVerifyPulseStatusAndNextBillShipDate_361(){
 		String currentURL = null;
 		String currentWindowID = null;
 		String currentPulseStatus = null;
-		String urlToAssert = "myrfpulse";
+		String urlToAssert = "pulse";
 		//Login as consultant user.
 		sfHomePage.loginToStoreFront(consultantWithPulseAndWithCRP(),password,true);
 		sfHomePage.clickWelcomeDropdown();

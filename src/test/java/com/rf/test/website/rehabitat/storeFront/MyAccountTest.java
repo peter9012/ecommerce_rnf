@@ -104,7 +104,7 @@ public class MyAccountTest extends StoreFrontWebsiteBaseTest{
 	 * 
 	 *     
 	 */
-	@Test(enabled=true)
+	@Test(enabled=false)
 	public void testEmailIDFormatErrorValidation_249(){
 		String emailAddressWithoutAtAndDot = "autocon12mailinatorcom";
 		String emailAddressWithoutAt = "autocon12mailinator.com";
@@ -160,7 +160,7 @@ public class MyAccountTest extends StoreFrontWebsiteBaseTest{
 		s_assert.assertTrue(sfAccountInfoPage.isValidationMsgPresentForParticularField("city", expectedValidationErrorMsg),"city field empty field validation msg has not displayed");
 		s_assert.assertTrue(sfAccountInfoPage.isValidationMsgPresentForParticularField("postal", expectedValidationErrorMsg),"postal code field empty field validation msg has not displayed");
 		s_assert.assertTrue(sfAccountInfoPage.isValidationMsgPresentForParticularField("phone", expectedValidationErrorMsg),"phone number field empty field validation msg has not displayed");
-		s_assert.assertTrue(sfAccountInfoPage.isValidationMsgPresentForParticularField("email", expectedValidationErrorMsg),"email field empty field validation msg has not displayed");
+		//s_assert.assertTrue(sfAccountInfoPage.isValidationMsgPresentForParticularField("email", expectedValidationErrorMsg),"email field empty field validation msg has not displayed");
 		s_assert.assertAll();
 	}
 
@@ -351,11 +351,11 @@ public class MyAccountTest extends StoreFrontWebsiteBaseTest{
 		sfAccountInfoPage.saveAccountInfo();
 		s_assert.assertTrue(sfAccountInfoPage.isValidationMsgPresentForParticularField("phone", expectedValidationErrorMsg),"'This field is required.' msg not displayed for Consultant phone number");
 		sfAccountInfoPage.enterFields("phone", phoneNumber);
-		sfAccountInfoPage.clearFields("email");
-		sfAccountInfoPage.saveAccountInfo();
-		s_assert.assertTrue(sfAccountInfoPage.isValidationMsgPresentForParticularField("email", expectedValidationErrorMsg),"'This field is required.' msg not displayed for Consultant email address");
-		sfAccountInfoPage.enterFields("email", emailAddress);
-		s_assert.assertTrue(sfAccountInfoPage.isValidationMsgPresentForParticularField("email", expectedEmailValidationErrorMsg),"Please enter a valid email address. msg not displayed for Consultant");
+		//		sfAccountInfoPage.clearFields("email");
+		//		sfAccountInfoPage.saveAccountInfo();
+		//		s_assert.assertTrue(sfAccountInfoPage.isValidationMsgPresentForParticularField("email", expectedValidationErrorMsg),"'This field is required.' msg not displayed for Consultant email address");
+		//		sfAccountInfoPage.enterFields("email", emailAddress);
+		//		s_assert.assertTrue(sfAccountInfoPage.isValidationMsgPresentForParticularField("email", expectedEmailValidationErrorMsg),"Please enter a valid email address. msg not displayed for Consultant");
 		sfAccountInfoPage.clickWelcomeDropdown();
 		sfAccountInfoPage.logout();
 
@@ -389,11 +389,11 @@ public class MyAccountTest extends StoreFrontWebsiteBaseTest{
 		sfAccountInfoPage.saveAccountInfo();
 		s_assert.assertTrue(sfAccountInfoPage.isValidationMsgPresentForParticularField("phone", expectedValidationErrorMsg),"'This field is required.' msg not displayed for PC phone number");
 		sfAccountInfoPage.enterFields("phone", phoneNumber);
-		sfAccountInfoPage.clearFields("email");
-		sfAccountInfoPage.saveAccountInfo();
-		s_assert.assertTrue(sfAccountInfoPage.isValidationMsgPresentForParticularField("email", expectedValidationErrorMsg),"'This field is required.' msg not displayed for PC email address");
-		sfAccountInfoPage.enterFields("email", emailAddress);
-		s_assert.assertTrue(sfAccountInfoPage.isValidationMsgPresentForParticularField("email", expectedEmailValidationErrorMsg),"Please enter a valid email address. msg not displayed for PC");
+		//		sfAccountInfoPage.clearFields("email");
+		//		sfAccountInfoPage.saveAccountInfo();
+		//		s_assert.assertTrue(sfAccountInfoPage.isValidationMsgPresentForParticularField("email", expectedValidationErrorMsg),"'This field is required.' msg not displayed for PC email address");
+		//		sfAccountInfoPage.enterFields("email", emailAddress);
+		//		s_assert.assertTrue(sfAccountInfoPage.isValidationMsgPresentForParticularField("email", expectedEmailValidationErrorMsg),"Please enter a valid email address. msg not displayed for PC");
 		sfAccountInfoPage.clickWelcomeDropdown();
 		sfAccountInfoPage.logout();
 
@@ -427,12 +427,11 @@ public class MyAccountTest extends StoreFrontWebsiteBaseTest{
 		sfAccountInfoPage.saveAccountInfo();
 		s_assert.assertTrue(sfAccountInfoPage.isValidationMsgPresentForParticularField("phone", expectedValidationErrorMsg),"'This field is required.' msg not displayed for RC phone number");
 		sfAccountInfoPage.enterFields("phone", phoneNumber);
-		sfAccountInfoPage.clearFields("email");
-		sfAccountInfoPage.saveAccountInfo();
-		s_assert.assertTrue(sfAccountInfoPage.isValidationMsgPresentForParticularField("email", expectedValidationErrorMsg),"'This field is required.' msg not displayed for RC email address");
-		sfAccountInfoPage.enterFields("email", emailAddress);
-		s_assert.assertTrue(sfAccountInfoPage.isValidationMsgPresentForParticularField("email", expectedEmailValidationErrorMsg),"Please enter a valid email address. msg not displayed for RC");
-
+		//		sfAccountInfoPage.clearFields("email");
+		//		sfAccountInfoPage.saveAccountInfo();
+		//		s_assert.assertTrue(sfAccountInfoPage.isValidationMsgPresentForParticularField("email", expectedValidationErrorMsg),"'This field is required.' msg not displayed for RC email address");
+		//		sfAccountInfoPage.enterFields("email", emailAddress);
+		//		s_assert.assertTrue(sfAccountInfoPage.isValidationMsgPresentForParticularField("email", expectedEmailValidationErrorMsg),"Please enter a valid email address. msg not displayed for RC");
 		s_assert.assertAll();
 	}
 
@@ -470,10 +469,10 @@ public class MyAccountTest extends StoreFrontWebsiteBaseTest{
 		s_assert.assertTrue(sfAccountInfoPage.isValidationMsgPresentForParticularField("city", expectedValidationErrorMsg),"'This field is required.' for city");
 		s_assert.assertTrue(sfAccountInfoPage.isValidationMsgPresentForParticularField("postal", expectedValidationErrorMsg),"'This field is required.' for postal code");
 		s_assert.assertTrue(sfAccountInfoPage.isValidationMsgPresentForParticularField("phone", expectedValidationErrorMsg),"'This field is required.' for phone number");
-		s_assert.assertTrue(sfAccountInfoPage.isValidationMsgPresentForParticularField("email", expectedValidationErrorMsg),"'This field is required.' for email address");
+		//s_assert.assertTrue(sfAccountInfoPage.isValidationMsgPresentForParticularField("email", expectedValidationErrorMsg),"'This field is required.' for email address");
 		//Enter main account info with invalid postal code
 		sfAccountInfoPage.enterMainAccountInfo(firstName, lastName, addressLine1, city, state, postalCode, phoneNumber);
-		sfAccountInfoPage.enterFields("email", emailAddress);
+		//sfAccountInfoPage.enterFields("email", emailAddress);
 		sfAccountInfoPage.clearFields("postalCode");
 		sfAccountInfoPage.enterFields("postalCode", invalidPostalCode);
 		sfAccountInfoPage.saveAccountInfo();
@@ -1041,7 +1040,7 @@ public class MyAccountTest extends StoreFrontWebsiteBaseTest{
 		String expectedErrorMsgForPrefix = TestConstants.ERROR_MSG_EXISTING_PREFIX;
 		//Subscribe to pulse with a new prefix.
 		sfCheckoutPage = new StoreFrontCheckoutPage(driver);
-		sfHomePage.loginToStoreFront(consultantWithoutPulseAndWithoutCRP(),password,true);
+		sfHomePage.loginToStoreFront(consultantWithPulseAndWithCRPForCancellation(),password,true);
 		sfHomePage.clickWelcomeDropdown();
 		sfAutoshipStatusPage = sfHomePage.navigateToAutoshipStatusPage();
 		sfAutoshipStatusPage.clickSubscribeToPulseBtn();
@@ -1148,7 +1147,7 @@ public class MyAccountTest extends StoreFrontWebsiteBaseTest{
 		String autoSuggestedPrefixName = null;
 		//Subscribe to pulse with a new prefix.
 		sfCheckoutPage = new StoreFrontCheckoutPage(driver);
-		sfHomePage.loginToStoreFront(consultantWithoutPulseAndWithoutCRP(),password,true);
+		sfHomePage.loginToStoreFront(consultantWithPulseAndWithCRPForCancellation(),password,true);
 		sfHomePage.clickWelcomeDropdown();
 		sfAutoshipStatusPage = sfHomePage.navigateToAutoshipStatusPage();
 		sfAutoshipStatusPage.clickSubscribeToPulseBtn();

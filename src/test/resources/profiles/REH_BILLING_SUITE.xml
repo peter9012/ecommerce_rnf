@@ -9,7 +9,27 @@
 	<test name="storeFrontBillingTest">
 		<classes>
 			<class name="com.rf.test.website.rehabitat.storeFront.BillingProfileTest">
-			</class>			
+				<methods>
+					<include name="testBillingInformation_505"></include>
+					<include name="testAddNewBillingAddressToNewlyCreatedBillingProfile_386"></include>
+					<include
+						name="testBillingInformationDefaultPaymentProfilesMultipleProfiles_475"></include>
+					<include name="testBillingProfileSelectAnBillingAddressNewProfile_426"></include>
+					<include
+						name="testBillingProfileSelectAnBillingAddressBlankDropdown_428"></include>
+					<include
+						name="testBillingProfileSelectAnBillingAddressExistingProfile_427"></include>
+					<include
+						name="testBillingInformationDefaultPaymentProfilesSingleProfile_474"></include>
+					<include name="testEditABillingProfile_527"></include>
+					<include name="testAddNewBillingAddressToExistingBillingProfile_385"></include>
+					<include name="testTokenizationMyAccount_453"></include>
+					<include name="testTokenizationCheckout_454"></include>
+					<include name="testAddEditBillingProfileAtAdhocCartForConsultant_429"></include>
+					<include name="testAddEditBillingProfileAtAdhocCartForPC_431"></include>
+					<include name="testAddEditBillingProfileAtAdhocCartForRC_430"></include>
+				</methods>
+			</class>
 		</classes>
 	</test>
 </suite>		

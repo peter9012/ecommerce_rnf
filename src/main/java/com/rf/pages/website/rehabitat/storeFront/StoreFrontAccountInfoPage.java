@@ -270,8 +270,8 @@ public class StoreFrontAccountInfoPage extends StoreFrontWebsiteBasePage{
 		logger.info("Postal code field clear");
 		driver.findElement(MAIN_PHONE_NUMBER_LOC).clear();
 		logger.info("Main phone number field clear");
-		driver.findElement(EMAIL_LOC).clear();
-		logger.info("Email field clear");
+		//  driver.findElement(EMAIL_LOC).clear();
+		//  logger.info("Email field clear");
 		driver.pauseExecutionFor(2000);
 		return this;
 	}
@@ -465,8 +465,8 @@ public class StoreFrontAccountInfoPage extends StoreFrontWebsiteBasePage{
 		logger.info("Entered Phone number  as "+phoneNumber);
 		driver.type(PHONE_NUMBER_2_LOC, phoneNumber2);
 		logger.info("Entered Phone number 2 as "+phoneNumber2);
-		driver.type(EMAIL_LOC, email);
-		logger.info("Entered email as "+email);
+		//  driver.type(EMAIL_LOC, email);
+		//  logger.info("Entered email as "+email);
 		Select dayOfBirthDD = new Select(driver.findElement(DAY_OF_BIRTH_LOC));
 		Select monthOfBirthDD = new Select(driver.findElement(MONTH_OF_BIRTH_LOC));
 		Select yearOfBirthDD = new Select(driver.findElement(YEAR_OF_BIRTH_LOC));

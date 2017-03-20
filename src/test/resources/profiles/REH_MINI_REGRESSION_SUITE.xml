@@ -12,7 +12,7 @@
 				name="com.rf.test.website.rehabitat.storeFront.ConsultantEnrollmentTest">
 				<methods>
 					<include name="testConsultantEnrollmentWithPulseAndCRP_231"></include>
-					<include name="testConsultantEnrollmentWithoutCRPAndWithoutPulse"></include>
+					<include name="testConsultantEnrollmentWithoutCRPAndWithoutPulse_468"></include>
 					<include name="testConsultantEnrollmentPersonalBusinessPortfolio_290"></include>
 				</methods>
 			</class>

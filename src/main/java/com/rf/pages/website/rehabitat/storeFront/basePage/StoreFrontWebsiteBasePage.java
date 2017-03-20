@@ -45,6 +45,7 @@ public class StoreFrontWebsiteBasePage extends RFBasePage {
 		this.driver = driver;
 	}
 
+	private final By OKTA_IMG_LOC = By.xpath("//img[contains(@alt,'Okta')]");
 	protected final By TOTAL_CATEGORY_NAME_LOC = By.xpath("//div[@id='product-facet']//descendant::ul[2]/li//input[contains(@id,'ID')]");
 	private final By SELECT_AND_CONTINUE_FIRST_SPONSER_LOC = By.xpath(
 			"//div[@id='findConsultantResultArea']/descendant::div[contains(@class,'consultant-box')][1]//input[@id='consultantUid']");
@@ -780,9 +781,13 @@ public class StoreFrontWebsiteBasePage extends RFBasePage {
 		if (closeCRPReminder == true && (driver.isElementVisible(SET_UP_CRP_POPUP_CLOSE_LOC))) {
 			driver.click(SET_UP_CRP_POPUP_CLOSE_LOC);
 		}
+		if(driver.isElementPresent(OKTA_IMG_LOC)){
+			driver.get(driver.getURL()+"/"+driver.getCountry().toUpperCase());
+			driver.waitForPageLoad();
+		}
+
 		return this;
 	}
-
 	/***
 	 * This method clicks on the login icon,enter the username and
 	 * password,check the Remember Me checkbox and click on 'LOG IN' button

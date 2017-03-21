@@ -1636,19 +1636,19 @@ public class AutoshipTest extends StoreFrontWebsiteBaseTest{
 	 */
 	@Test
 	public void testPlaceConsultantAutoshipOrderAndVerifyDateAndStatus(){
-		String orderNumber = null;
+		String totalForActiveAutoShip = null;
+		String totalForPlacedOrder = null;
 		sfHomePage.loginToStoreFront(consultantWithPulseAndWithCRP(), password,true);
 		sfHomePage.clickWelcomeDropdown();
 		sfOrdersPage = sfHomePage.navigateToOrdersPage();
 		s_assert.assertTrue(sfOrdersPage.getAutoshipStatus("2").equalsIgnoreCase("active"),"Autoship status is not ACTIVE");
+		totalForActiveAutoShip = sfOrdersPage.getGrandTotalOfActiveAutoShip();
 		sfOrdersPage.clickRunAutoshipOrder("2");
-		s_assert.assertTrue(sfOrdersPage.isOrderPlacedSuccessfully(),"Order not placed. Thank you message is not displayed");
-		s_assert.assertTrue(sfOrdersPage.isTextPresent("Order #"),"Order Number is not present on the confirmation page");
-		orderNumber = sfOrdersPage.getOrderNumberAfterCheckout();
-		sfOrdersPage.clickWelcomeDropdown();
-		sfOrdersPage = sfOrdersPage.navigateToOrdersPage();
-		sfOrdersPage.clickOrderNumber(orderNumber);
-		s_assert.assertTrue(sfOrdersPage.getOrderTypeFromOrderDetailsTemplate().contains("consultant autoship"),"expected status of autoship order is incorrect");
+		s_assert.assertTrue(sfOrdersPage.getAutoShipPlacedOrderMsg().contains("Your order process has been started."),"AutoShip Placed Order Msg is not dispalyed");
+		totalForPlacedOrder = sfOrdersPage.getDetailForOrderFromOrderHistory("1","Grand Total");
+		sfOrdersPage.clickOrderNumberFromOrderHistory("1");
+		s_assert.assertTrue(totalForActiveAutoShip.equals(totalForPlacedOrder),"Grand Total for AutoShip Placed Order is not found as Expected. Expected : "+totalForActiveAutoShip+". Actual : "+totalForPlacedOrder);
+		s_assert.assertTrue(sfOrdersPage.getOrderTypeFromOrderDetailsTemplate().contains("consultant autoship"),"Expected status of autoship order is incorrect");
 		s_assert.assertAll();
 	}
 
@@ -1657,19 +1657,19 @@ public class AutoshipTest extends StoreFrontWebsiteBaseTest{
 	 */
 	@Test
 	public void testPlacePCAutoshipOrderAndVerifyDateAndStatus(){
-		String orderNumber = null;
+		String totalForActiveAutoShip = null;
+		String totalForPlacedOrder = null;
 		sfHomePage.loginToStoreFront(pcUserWithPWSSponsor(), password,true);
 		sfHomePage.clickWelcomeDropdown();
 		sfOrdersPage = sfHomePage.navigateToOrdersPage();
 		s_assert.assertTrue(sfOrdersPage.getAutoshipStatus("1").equalsIgnoreCase("active"),"Autoship status is not ACTIVE");
+		totalForActiveAutoShip = sfOrdersPage.getGrandTotalOfActiveAutoShip();
 		sfOrdersPage.clickRunAutoshipOrder("1");
-		s_assert.assertTrue(sfOrdersPage.isOrderPlacedSuccessfully(),"Order not placed. Thank you message is not displayed");
-		s_assert.assertTrue(sfOrdersPage.isTextPresent("Order #"),"Order Number is not present on the confirmation page");
-		orderNumber = sfOrdersPage.getOrderNumberAfterCheckout();
-		sfOrdersPage.clickWelcomeDropdown();
-		sfOrdersPage = sfOrdersPage.navigateToOrdersPage();
-		sfOrdersPage.clickOrderNumber(orderNumber);
-		s_assert.assertTrue(sfOrdersPage.getOrderTypeFromOrderDetailsTemplate().contains("pc autoship"),"expected status of autoship order is incorrect");
+		s_assert.assertTrue(sfOrdersPage.getAutoShipPlacedOrderMsg().contains("Your order process has been started."),"AutoShip Placed Order Msg is not dispalyed");
+		totalForPlacedOrder = sfOrdersPage.getDetailForOrderFromOrderHistory("1","Grand Total");
+		sfOrdersPage.clickOrderNumberFromOrderHistory("1");
+		s_assert.assertTrue(totalForActiveAutoShip.equals(totalForPlacedOrder),"Grand Total for AutoShip Placed Order is not found as Expected. Expected : "+totalForActiveAutoShip+". Actual : "+totalForPlacedOrder);
+		s_assert.assertTrue(sfOrdersPage.getOrderTypeFromOrderDetailsTemplate().contains("pc autoship"),"Expected status of autoship order is incorrect");
 		s_assert.assertAll();
 	}
 

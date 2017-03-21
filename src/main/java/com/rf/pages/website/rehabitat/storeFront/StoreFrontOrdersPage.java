@@ -56,7 +56,9 @@ public class StoreFrontOrdersPage extends StoreFrontWebsiteBasePage{
 	private final By PULSE_LINK_ORDER_PAGE = By.xpath("//div[@class='account-orderhistory']//a[text()='Pulse']");
 	private final By CONFIRM_AUTOSHIP_ORDER_BTN_LOC = By.xpath("//input[@id='asmrunnowconfirmsubmit']");
 	private final By ORDER_TYPE_FROM_ORDER_DETAILS_LOC = By.xpath("//span[@class='orderLabel' and contains(text(),'Type')]/following-sibling::span[@class='orderValue'][1]");
-
+	private final By AUTOSHIP_PLACED_ORDER_MSG = By.xpath("//span[@id='placeorderCronjobStartedMessage']");
+	private final By GRAND_TOTAL_OF_ACTIVE_AUTOSHIP_LOC = By.xpath("//a[contains(text(),'Run Now')]/ancestor::td[1]/preceding-sibling::td[contains(text(),'Grand Total')]/following::td[1]");
+	
 	private String productNameLoc = "//p[contains(text(),'%s')]";
 	private String productQuantityLoc = "//p[contains(text(),'%s')]/following::div[@class='orderTotal' and not(contains(text(),'$0'))]/preceding::div[@class='orderQty'][1]";
 	private String orderNumberLoc = "//a[contains(text(),'%s')]";
@@ -71,6 +73,8 @@ public class StoreFrontOrdersPage extends StoreFrontWebsiteBasePage{
 	private String autoshipStatusLoc = "//div[@class='account-section']/descendant::div[@class='account-orderhistory'][1]//tr[@class='responsive-table-item'][%s]//td[@class='status'][1]";
 	private String autoshipOrderRunNowLoc = "//div[@class='account-section']/descendant::div[@class='account-orderhistory'][1]//tr[@class='responsive-table-item'][%s]//a[text()='Run Now']";
 	private String orderDetailsForOrderNumberLoc = "//a[contains(text(),'%s')]/ancestor::td[1]/following-sibling::td[contains(text(),'%s')]/following-sibling::td[1]";
+	private String orderNumLoc = "//div[contains(text(),'ORDER HISTORY')]/following::td[contains(text(),'Order Number')][%s]/following-sibling::td[1]/a";
+	private String orderDetailForSpecificOrderSeqLoc = "//div[contains(text(),'ORDER HISTORY')]/following::td[contains(text(),'%s')][%s]/following-sibling::td[1]";
 
 	/***
 	 * This method get first order number from order history 
@@ -779,5 +783,53 @@ public class StoreFrontOrdersPage extends StoreFrontWebsiteBasePage{
 		logger.info(detailToFetch + " for Order number : " + orderNum + " is : " + value);
 		return value;
 	}
+	
+	 /***
+	  * This method return the grand total of Active AutoShip
+	  * @param 
+	  * @return String grandTotal
+	  */
+	 public String getGrandTotalOfActiveAutoShip(){
+	  String grandTotal = null;
+	  grandTotal = driver.getText(GRAND_TOTAL_OF_ACTIVE_AUTOSHIP_LOC).trim();
+	  logger.info("Grand Total of Active CRP : "+grandTotal);
+	  return grandTotal;
+	 }
+	 
+	 /***
+	  * This method return the Autoship Placed Order Success Msg
+	  * @param 
+	  * @return String Success Msg
+	  */
+	 public String getAutoShipPlacedOrderMsg(){
+	  String successMsg = null;
+	  driver.pauseExecutionFor(5000);
+	  successMsg =  driver.getText(AUTOSHIP_PLACED_ORDER_MSG).trim();
+	  driver.pauseExecutionFor(60000); // Sleep and Refresh for Autoship Order to be visible in Orders History
+	  driver.navigate().refresh();
+	  return successMsg;
+	 }
+	 
+	 /***
+	  * This method return the Autoship Placed Order Success Msg
+	  * @param 
+	  * @return String Success Msg
+	  */
+	 public StoreFrontOrdersPage clickOrderNumberFromOrderHistory(String orderNum){
+	  driver.clickByJS(RFWebsiteDriver.driver,By.xpath(String.format(orderNumLoc,orderNum)));
+	  logger.info("Clicked on Order Number : " + orderNum + " from Orders History");
+	  return this;
+	 }
+	 
+	 /***
+	  * This method return the order detail corresponding to order Sequence Number 
+	  * @param String orderSeqNum, String detailToFetch
+	  * @return String
+	  */
+	 public String getDetailForOrderFromOrderHistory(String orderSeqNum, String detailToFetch){
+	  String value = driver.getText(By.xpath(String.format(orderDetailForSpecificOrderSeqLoc,detailToFetch,orderSeqNum))).trim();
+	  logger.info(detailToFetch + " for Order number : " + orderSeqNum + " is : " + value);
+	  return value;
+	 }
 }
 

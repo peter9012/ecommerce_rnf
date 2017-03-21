@@ -40,48 +40,6 @@ public class ConsultantEnrollmentTest extends StoreFrontWebsiteBaseTest{
 		s_assert.assertAll();
 	}
 
-	//	/***
-	//	 * qTest : TC-231 Consultant Enrollment- Checkout
-	//	 * 
-	//	 * Description : This test validates that complete checkout process for consultant
-	//	 * enrollment
-	//	 *     
-	//	 */
-	//	@Test(enabled=true)
-	//	public void testConsultantEnrollment_231(){
-	//		timeStamp = CommonUtils.getCurrentTimeStamp();
-	//		randomWords = CommonUtils.getRandomWord(5);		
-	//		lastName = TestConstants.LAST_NAME+randomWords;
-	//		email = firstName+"cons"+timeStamp+TestConstants.EMAIL_SUFFIX;
-	//		String socialInsuranceNumber = String.valueOf(CommonUtils.getRandomNum(100000000, 999999999));
-	//		sfHomePage.clickEnrollNow();
-	//		sfHomePage.searchSponsor(TestConstants.SPONSOR);
-	//		sfHomePage.selectFirstSponsorFromList();
-	//		sfHomePage.enterConsultantEnrollmentDetails(firstName, lastName, email, password, socialInsuranceNumber);
-	//		sfHomePage.clickNextButtonConsAccountDetails();
-	//		sfHomePage.chooseProductFromKitPage();
-	//		sfHomePage.clickNextButton();
-	//		sfHomePage.clickSaveButton();
-	//		sfHomePage.enterConsultantShippingDetails(firstName, lastName, addressLine1, addressLine2 ,city, state, postalCode, phoneNumber);
-	//		sfHomePage.clickShippingDetailsNextbutton();
-	//		sfHomePage.enterUserBillingDetails(cardType, cardNumber, cardName, CVV);
-	//		//sfHomePage.selectBillingAddressFromDD();
-	//		//sfHomePage.checkUseMyDeliveryAddressChkBox();
-	//		sfHomePage.clickBillingDetailsNextbutton();
-	//		if(sfHomePage.hasTokenizationFailed()==true){
-	//			sfHomePage.enterUserBillingDetails(cardType, cardNumber, cardName, CVV);
-	//			sfHomePage.clickBillingDetailsNextbutton();
-	//		}
-	//		sfHomePage.selectPoliciesAndProceduresChkBox();
-	//		sfHomePage.selectIAcknowledgeChkBox();
-	//		sfHomePage.selectTermsAndConditionsChkBox();
-	//		sfHomePage.selectConsentFormChkBox();
-	//		sfHomePage.clickBecomeAConsultant();
-	//		s_assert.assertTrue(sfHomePage.isEnrollemntSuccessfulMsgDisplayed(), "Expected 'ENROLLMENT SUCCESSFUL' msg has NOT displayed"); 
-	//		//		sfHomePage.clickRodanAndFieldsLogo();
-	//		//		s_assert.assertTrue(sfHomePage.isWelcomeUserElementDisplayed(), "Welcome user locator has not displayed after consultant enrollment");
-	//		s_assert.assertAll();
-	//	}
 
 	/***
 	 * qTest : TC-261 Request a Sponsor during consultant enrollment

@@ -493,8 +493,8 @@ public class StoreFrontAboutMePage extends StoreFrontWebsiteBasePage{
 		driver.pauseExecutionFor(1000);
 		if(questionNumber==1){
 			driver.switchToFrame(FRAME1_LOC);
-			logger.info("switched to frame");
-			driver.pauseExecutionFor(1000);
+			logger.info("switched to frame Ques1");
+			driver.pauseExecutionFor(2000);
 			Actions actions = new Actions(RFWebsiteDriver.driver);
 			actions.click(driver.findElement(QUESTION_CONTENT_LOC)).sendKeys(driver.findElement(QUESTION_CONTENT_LOC), msg,(Integer.toString(num))).build().perform();
 			logger.info("Question No 1 is edited");
@@ -502,8 +502,8 @@ public class StoreFrontAboutMePage extends StoreFrontWebsiteBasePage{
 		}
 		else if (questionNumber==2) {
 			driver.switchToFrame(FRAME2_LOC);
-			logger.info("switched to frame");
-			driver.pauseExecutionFor(1000);
+			logger.info("switched to frame Ques2");
+			driver.pauseExecutionFor(2000);
 			Actions actions = new Actions(RFWebsiteDriver.driver);
 			actions.click(driver.findElement(QUESTION_CONTENT_LOC)).sendKeys(driver.findElement(QUESTION_CONTENT_LOC), msg,(Integer.toString(num))).build().perform();
 			logger.info("Question No 2 is edited");
@@ -522,9 +522,11 @@ public class StoreFrontAboutMePage extends StoreFrontWebsiteBasePage{
 	public String getContentOfRFBusinessQuestion(){
 		String content=null;
 		driver.switchToFrame(FRAME1_LOC);
-		Actions actions = new Actions(RFWebsiteDriver.driver);
+		driver.pauseExecutionFor(2000);
+		logger.info("Switched to frame");
+		//Actions actions = new Actions(RFWebsiteDriver.driver);
 		//String selectAll = Keys.chord(Keys.CONTROL, "a");
-		actions.keyDown(Keys.CONTROL).sendKeys(String.valueOf('\u0061')).perform();
+		//actions.keyDown(Keys.CONTROL).sendKeys(String.valueOf('\u0061')).perform();
 		content=driver.findElement(QUESTION_CONTENT_LOC).getText();
 		driver.switchTo().defaultContent();
 		return content;

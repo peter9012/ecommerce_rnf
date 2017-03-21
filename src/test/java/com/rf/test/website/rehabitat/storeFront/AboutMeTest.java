@@ -134,24 +134,24 @@ public class AboutMeTest extends StoreFrontWebsiteBaseTest{
 		s_assert.assertTrue(currentURL.contains(urlToAssert),"Expected URL should contain "+urlToAssert+" but actual on UI is "+currentURL);
 		sfHomePage.clickWelcomeDropdown();
 		sfHomePage.logout();
-		// For PC
-		sfHomePage.clickRodanAndFieldsLogo();
-		sfHomePage.loginToStoreFront(pcUserWithPWSSponsor(),password,true);
-		sfHomePage.clickSponsorNameLink();
-		currentURL = sfAboutMePage.getCurrentURL();
-		s_assert.assertTrue(sfAboutMePage.isContactMeHeaderPresentOnAboutMePage(),"Contact me header is not present on the about me page of sponsor");
-		s_assert.assertTrue(currentURL.contains(urlToAssert),"Expected URL should contain "+urlToAssert+" but actual on UI is "+currentURL);
-		sfHomePage.clickWelcomeDropdown();
-		sfHomePage.logout();
-		// For RC
-		sfHomePage.clickRodanAndFieldsLogo();
-		sfHomePage.loginToStoreFront(rcWithOrderWithoutSponsor(),password,true);
-		sfHomePage.clickSponsorNameLink();
-		currentURL = sfAboutMePage.getCurrentURL();
-		s_assert.assertTrue(sfAboutMePage.isContactMeHeaderPresentOnAboutMePage(),"Contact me header is not present on the about me page of sponsor");
-		s_assert.assertTrue(currentURL.contains(urlToAssert),"Expected URL should contain "+urlToAssert+" but actual on UI is "+currentURL);
-		sfHomePage.clickWelcomeDropdown();
-		sfHomePage.logout();
+		if(country.equalsIgnoreCase("us")){
+			// For PC
+			sfHomePage.clickRodanAndFieldsLogo();
+			sfHomePage.loginToStoreFront(pcUserWithPWSSponsor(),password,true);
+			sfHomePage.clickSponsorNameLink();
+			currentURL = sfAboutMePage.getCurrentURL();
+			s_assert.assertTrue(sfAboutMePage.isContactMeHeaderPresentOnAboutMePage(),"Contact me header is not present on the about me page of sponsor");
+			s_assert.assertTrue(currentURL.contains(urlToAssert),"Expected URL should contain "+urlToAssert+" but actual on UI is "+currentURL);
+			sfHomePage.clickWelcomeDropdown();
+			sfHomePage.logout();
+			// For RC
+			sfHomePage.clickRodanAndFieldsLogo();
+			sfHomePage.loginToStoreFront(rcWithOrderWithoutSponsor(),password,true);
+			sfHomePage.clickSponsorNameLink();
+			currentURL = sfAboutMePage.getCurrentURL();
+			s_assert.assertTrue(sfAboutMePage.isContactMeHeaderPresentOnAboutMePage(),"Contact me header is not present on the about me page of sponsor");
+			s_assert.assertTrue(currentURL.contains(urlToAssert),"Expected URL should contain "+urlToAssert+" but actual on UI is "+currentURL);
+		}
 		s_assert.assertAll();
 	}
 

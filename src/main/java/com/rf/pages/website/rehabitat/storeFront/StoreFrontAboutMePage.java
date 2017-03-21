@@ -542,7 +542,7 @@ public class StoreFrontAboutMePage extends StoreFrontWebsiteBasePage{
 	 * 
 	 */ 
 	public StoreFrontAboutMePage clickResetToDefaultLink(String questionName){
-		driver.click(By.xpath(String.format(resetToDefaultLinkLoc, questionName)));
+		driver.clickByJS(RFWebsiteDriver.driver, By.xpath(String.format(resetToDefaultLinkLoc, questionName)));
 		logger.info("clicked on 'reset to default' link of question "+questionName);
 		driver.pauseExecutionFor(3000);
 		return this;

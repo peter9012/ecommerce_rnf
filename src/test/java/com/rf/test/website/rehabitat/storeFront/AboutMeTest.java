@@ -593,7 +593,6 @@ public class AboutMeTest extends StoreFrontWebsiteBaseTest{
 		sfAboutMePage.typeContentOfSelectedQuestion(randomNum,testMsg,1);
 		//sfAboutMePage.clickSaveButtonAboutMePage();
 		content=sfAboutMePage.getContentOfRFBusinessQuestion();
-		System.out.println("content= "+content);
 		s_assert.assertTrue(content.contains(testMsg+randomNum),"Expected Content is not Added in First Question");
 		sfAboutMePage.clickResetToDefaultLink(questionName);
 		content=sfAboutMePage.getContentOfRFBusinessQuestion();

@@ -467,6 +467,7 @@ public class StoreFrontAboutMePage extends StoreFrontWebsiteBasePage{
 	 */ 
 	public StoreFrontAboutMePage clickSaveButtonAboutMePage(){
 		driver.click(SAVE_BUTTON_LOC);
+		driver.waitForPageLoad();
 		return this;
 	}
 
@@ -528,6 +529,7 @@ public class StoreFrontAboutMePage extends StoreFrontWebsiteBasePage{
 		//String selectAll = Keys.chord(Keys.CONTROL, "a");
 		//actions.keyDown(Keys.CONTROL).sendKeys(String.valueOf('\u0061')).perform();
 		content=driver.findElement(QUESTION_CONTENT_LOC).getText();
+		logger.info("content fetched is "+content);
 		driver.switchTo().defaultContent();
 		return content;
 	}

@@ -591,7 +591,9 @@ public class AboutMeTest extends StoreFrontWebsiteBaseTest{
 		s_assert.assertTrue(sfAboutMePage.isSubmissionGuidelinesDisplayed() && currentURL.contains(aboutMeEdit),"Expected user should redirected to: "+aboutMeEdit +" Page after click on 'personalize My profile' button but actual user is redirected to "+currentURL);
 		randomNum=CommonUtils.getRandomNum(100, 10000);
 		sfAboutMePage.typeContentOfSelectedQuestion(randomNum,testMsg,1);
+		//sfAboutMePage.clickSaveButtonAboutMePage();
 		content=sfAboutMePage.getContentOfRFBusinessQuestion();
+		System.out.println("content= "+content);
 		s_assert.assertTrue(content.contains(testMsg+randomNum),"Expected Content is not Added in First Question");
 		sfAboutMePage.clickResetToDefaultLink(questionName);
 		content=sfAboutMePage.getContentOfRFBusinessQuestion();

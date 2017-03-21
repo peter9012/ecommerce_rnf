@@ -40,6 +40,7 @@ public class TestListner implements ITestListener {
 	public void onTestFailure(ITestResult tr) {
 		if (tr.getStatus() == ITestResult.FAILURE){
 			logger.info("[TEST HAS FAILED-------- Test case " + tr.getMethod().getMethodName()+" has failed]");
+			logger.info(tr.getThrowable());
 			try {
 				RFWebsiteDriver.takeSnapShotAndRetPath(RFWebsiteDriver.driver, tr.getMethod().getMethodName());
 			} catch (Exception e) {

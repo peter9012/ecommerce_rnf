@@ -24,6 +24,7 @@ public class StoreFrontCheckoutPage extends StoreFrontWebsiteBasePage{
 	private static final Logger logger = LogManager
 			.getLogger(StoreFrontCheckoutPage.class.getName());
 
+	private final By ESTIMATED_TAX_LOC  = By.xpath("//p[contains(text(),'Estimated tax')]/following-sibling::span[1]");
 	private final By SPONSOR_NAME_ACCOUNT_INFO_LOC = By.xpath("//span[@id='selectd-consultant']");
 	// private final By TERMS_AND_CONDITIONS_CHCKBOX_FOR_CONSULTANT_CRP_LOC = By.xpath("//a[contains(text(),'Consultant Replenishment Program Terms & Conditions')]/ancestor::label[1]/preceding-sibling::input[1]");
 	private final By TERMS_AND_CONDITIONS_CHCKBOX_FOR_AUTOSHIP_LOC = By.xpath("//a[contains(text(),'Terms & Conditions')]/ancestor::label[1]/preceding-sibling::input[@id][1]");
@@ -1925,5 +1926,18 @@ public class StoreFrontCheckoutPage extends StoreFrontWebsiteBasePage{
 		else
 			errorMessage = "Please enter valid postal code";
 		return errorMessage;
+	}
+
+	/***
+	 * This method return the estimated tax of the Order
+	 * 
+	 * @param
+	 * @return String estimatedTax
+	 * 
+	 */
+	public String getEstimatedTaxForTheOrder(){
+		String estimatedTax = null;
+		estimatedTax = driver.getText(ESTIMATED_TAX_LOC).split("\\$")[1].trim();
+		return estimatedTax;
 	}
 }

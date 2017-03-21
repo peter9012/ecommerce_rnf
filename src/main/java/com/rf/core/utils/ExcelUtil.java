@@ -300,32 +300,6 @@ public class ExcelUtil {
 		return map;
 	}
 
-	public static void createNewSheetInECCOrdersExcelFile(String path){
-		int index=0;
-		openFile(path);
-		if(workbook.getSheet(TestConstants.ECC_ORDER_TYPE_CONSULTANT_ADHOC)!=null){
-			index = workbook.getSheetIndex(TestConstants.ECC_ORDER_TYPE_CONSULTANT_ADHOC);
-			workbook.removeSheetAt(index);	
-		}
-		if(workbook.getSheet(TestConstants.ECC_ORDER_TYPE_PC_ADHOC)!=null){
-			index = workbook.getSheetIndex(TestConstants.ECC_ORDER_TYPE_PC_ADHOC);
-			workbook.removeSheetAt(index);	
-		}
-		if(workbook.getSheet(TestConstants.ECC_ORDER_TYPE_RC_ADHOC)!=null){
-			index = workbook.getSheetIndex(TestConstants.ECC_ORDER_TYPE_RC_ADHOC);
-			workbook.removeSheetAt(index);	
-		}
-		consSheet = workbook.createSheet(TestConstants.ECC_ORDER_TYPE_CONSULTANT_ADHOC);
-		pcSheet = workbook.createSheet(TestConstants.ECC_ORDER_TYPE_PC_ADHOC);
-		rcSheet = workbook.createSheet(TestConstants.ECC_ORDER_TYPE_RC_ADHOC);
-		try {
-			fileOut = CommonUtils.getFileOutputStream(path);
-		} catch (IOException e1) {
-			// TODO Auto-generated catch block
-			e1.printStackTrace();
-		}
-	}
-
 	public static void setOrderValuesInECCExcelFile(String path,String sheetName, int colId, int rowId,String newVal){
 		if(sheetName.equalsIgnoreCase(TestConstants.ECC_ORDER_TYPE_CONSULTANT_ADHOC)){
 			consSheet.createRow(rowId);
@@ -360,7 +334,7 @@ public class ExcelUtil {
 		}
 	}
 
-	public static void setOrderDetailsInECCExcelFile(String path,String sheetName, int rowId, List<String> orderDetails){
+	public static void setOrderDetailsInECCExcelFile(String sheetName, int rowId, List<String> orderDetails){
 		XSSFCell cell = null;
 		int col = 0;
 		if(sheetName.equalsIgnoreCase(TestConstants.ECC_ORDER_TYPE_CONSULTANT_ADHOC)){
@@ -434,6 +408,35 @@ public class ExcelUtil {
 			cell = rcSheet.getRow(rowId).createCell(col);
 			cell.setCellValue(heading);
 			col++;
+		}
+	}
+
+	public static void createNewSheetInECCOrdersExcelFile(String path){
+		int index=0;
+		openFile(path);
+		String consSheetName = TestConstants.ECC_ORDER_TYPE_CONSULTANT_ADHOC;
+		String pcSheetName = TestConstants.ECC_ORDER_TYPE_PC_ADHOC;
+		String rcSheetName = TestConstants.ECC_ORDER_TYPE_RC_ADHOC;
+		if(workbook.getSheet(consSheetName)!=null){
+			index = workbook.getSheetIndex(consSheetName);
+			workbook.removeSheetAt(index); 
+		}
+		if(workbook.getSheet(pcSheetName)!=null){
+			index = workbook.getSheetIndex(pcSheetName);
+			workbook.removeSheetAt(index); 
+		}
+		if(workbook.getSheet(rcSheetName)!=null){
+			index = workbook.getSheetIndex(rcSheetName);
+			workbook.removeSheetAt(index); 
+		}
+		consSheet = workbook.createSheet(consSheetName);
+		pcSheet = workbook.createSheet(pcSheetName);
+		rcSheet = workbook.createSheet(rcSheetName);
+		try {
+			fileOut = CommonUtils.getFileOutputStream(path);
+		} catch (IOException e1) {
+			// TODO Auto-generated catch block
+			e1.printStackTrace();
 		}
 	}
 }

@@ -192,7 +192,8 @@ public class TestConstants {
 	public static final String AUTOSHIP_DELIVERY_ADDRESS_UPDATION_MSG = "Delivery Address has been Updated for your Cart.";
 	public static final String ERROR_MSG_EXISTING_PREFIX = "Subscription Prefix not available";
 	public static final String CANCELLED_CRP_ORDER_SUCCESS_MESSAGE = "Your CRP Order has been cancel";
-
+	public static final String TAX_HEADING = "TAX";
+	
 	public static final String ECC_ORDER_TYPE_CONSULTANT_ADHOC = "ConsultantAdhocOrder";
 	public static final String ECC_ORDER_TYPE_PC_ADHOC = "PCAdhocOrder";
 	public static final String ECC_ORDER_TYPE_RC_ADHOC = "RCAdhocOrder";

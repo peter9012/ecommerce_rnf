@@ -273,7 +273,7 @@ public class StoreFrontWebsiteBasePage extends RFBasePage {
 	private final By BILLING_PROFILE_DETAILS_ORDER_REVIEW_PAGE_LOC = By.xpath("//*[@id='default-payment-method']/ul");
 	protected final By POPUP_FOR_TERMS_AND_CONDITIONS_LOC = By.id("city_popup");// moved
 	private final By BILLING_ADDRESS_OTHER_THAN_ND_POPUP_TEXT_LOC = By.xpath("//*[@id='city_popup']//h3");
-	private final By CHOOSE_A_KIT_OPTION_ON_POPUP_LOC = By.xpath("//a[text()='Choose a kit']");
+	private final By CHOOSE_A_KIT_OPTION_ON_POPUP_LOC = By.xpath("//a[contains(text(),'Choose')]");
 	private final By SHIPPING_SECTION_LOC = By.xpath("//div[@class='checkout-shipping']");
 	private final By BILLING_SECTION_LOC = By.xpath("//div[@class='checkout-paymentmethod']");
 	private final By LEARN_MORE_LINK_LOC = By.xpath("//a[contains(text(),'Learn more')]");

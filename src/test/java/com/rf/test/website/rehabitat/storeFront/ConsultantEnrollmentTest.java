@@ -201,7 +201,7 @@ public class ConsultantEnrollmentTest extends StoreFrontWebsiteBaseTest{
 	 * State and valid billing address selected.
 	 *     
 	 */
-	@Test(enabled=true)//Needs fix
+	@Test(enabled=true)
 	public void testNortDakotaConsultantEnrollmentValidBillingAddress_485(){
 		if(country.equalsIgnoreCase("us")){
 			timeStamp = CommonUtils.getCurrentTimeStamp();
@@ -609,46 +609,36 @@ public class ConsultantEnrollmentTest extends StoreFrontWebsiteBaseTest{
 	 * State and empty billing address selected.
 	 *     
 	 */
-	@Test(enabled=false)//test needs update
+	@Test(enabled=true)
 	public void testNortDakotaConsultantEnrollmentEmptyBillingAddress_486(){
-		timeStamp = CommonUtils.getCurrentTimeStamp();
-		randomWords = CommonUtils.getRandomWord(5);		
-		lastName = TestConstants.LAST_NAME+randomWords;
-		email = firstName+"cons"+timeStamp+TestConstants.EMAIL_SUFFIX;
-		String socialInsuranceNumber = String.valueOf(CommonUtils.getRandomNum(100000000, 999999999));
-		String firstName = TestConstants.FIRST_NAME;
-		String lastName = TestConstants.LAST_NAME;
-		String emailID = TestConstants.FIRST_NAME+timeStamp+TestConstants.EMAIL_SUFFIX;
-		String addressLine1 = TestConstants.ADDRESS_LINE_1_US;
-		String addressLine2 = TestConstants.ADDRESS_LINE_2_US;
-		String city = TestConstants.CITY_US;
-		String state = TestConstants.STATE_US;
-		String postalCode = TestConstants.POSTAL_CODE_US;
-		String phoneNumber = TestConstants.PHONE_NUMBER;
-		String cardType = TestConstants.CARD_TYPE;
-		String cardNumber = TestConstants.CARD_NUMBER;
-		String cardName = TestConstants.CARD_NAME;
-		String CVV = TestConstants.CVV;
-		sfHomePage.clickEnrollNow();
-		sfHomePage.searchSponsor(TestConstants.SPONSOR);
-		s_assert.assertTrue(sfHomePage.isSponsorResultDisplayed(),"No result found after searching the sponsor with name "+TestConstants.SPONSOR);
-		sfHomePage.selectFirstSponsorFromList();
-		sfHomePage.enterConsultantEnrollmentDetails(firstName, lastName, emailID, password, socialInsuranceNumber);
-		sfHomePage.clickNextButton();
-		sfHomePage.selectNorthDakotaCheckBoxOnKitPage();
-		sfHomePage.clickNextButton();
-		sfHomePage.clickSaveButton();
-		sfHomePage.enterConsultantShippingDetails(firstName, lastName, addressLine1, addressLine2 ,city, state, postalCode, phoneNumber);
-		sfHomePage.clickUseAsEnteredButtonOnPopUp();
-		sfHomePage.clickShippingDetailsNextbutton();
-		sfHomePage.enterUserBillingDetails(cardType, cardNumber, cardName, CVV);
-		sfHomePage.checkUseMyDeliveryAddressChkBox();
-		sfHomePage.enterConsultantAddressDetails(firstName, lastName, addressLine1, city, state);
-		s_assert.assertTrue(sfHomePage.isPopUpForBillingAddressOtherThanNorthDakotaPresent(),"Error Popup for ND billing address is not present");
-		sfHomePage.selectChooseAKitOptionOnPopup();
-		//Verify user is redirected to kit selection page.
-		s_assert.assertTrue(sfHomePage.areAllKitsDisabled(), "Kit section is not disbaled ab=fter selecting North Dakota Checkbox");
-		s_assert.assertAll();
+		if(country.equalsIgnoreCase("us")){
+			timeStamp = CommonUtils.getCurrentTimeStamp();
+			randomWords = CommonUtils.getRandomWord(5);  
+			lastName = TestConstants.LAST_NAME+randomWords;
+			email = firstName+"cons"+timeStamp+TestConstants.EMAIL_SUFFIX;
+			String socialInsuranceNumber = String.valueOf(CommonUtils.getRandomNum(100000000, 999999999));
+			String emailID = firstName+timeStamp+TestConstants.EMAIL_SUFFIX;
+			sfHomePage.clickEnrollNow();
+			sfHomePage.searchSponsor(TestConstants.SPONSOR);
+			s_assert.assertTrue(sfHomePage.isSponsorResultDisplayed(),"No result found after searching the sponsor with name "+TestConstants.SPONSOR);
+			sfHomePage.selectFirstSponsorFromList();
+			sfHomePage.enterConsultantEnrollmentDetails(firstName, lastName, emailID, password, socialInsuranceNumber);
+			sfHomePage.clickNextButton();
+			sfHomePage.selectNorthDakotaCheckBoxOnKitPage();
+			sfHomePage.clickNextButton();
+			sfHomePage.clickSaveButton();
+			sfHomePage.enterConsultantShippingDetails(firstName, lastName, addressLine1, addressLine2 ,city, state, postalCode, phoneNumber);
+			sfHomePage.clickUseAsEnteredButtonOnPopUp();
+			sfHomePage.clickShippingDetailsNextbutton();
+			sfHomePage.enterUserBillingDetails(cardType, cardNumber, cardName, CVV);
+			sfHomePage.checkUseMyDeliveryAddressChkBox();
+			sfHomePage.enterConsultantAddressDetails(firstName, lastName, addressLine1, city, state);
+			s_assert.assertTrue(sfHomePage.isPopUpForBillingAddressOtherThanNorthDakotaPresent(),"Error Popup for ND billing address is not present");
+			sfHomePage.selectChooseAKitOptionOnPopup();
+			//Verify user is redirected to kit selection page.
+			s_assert.assertTrue(sfHomePage.areAllKitsDisabled(), "Kit section is not disbaled ab=fter selecting North Dakota Checkbox");
+			s_assert.assertAll();
+		}
 	}
 
 	/***

@@ -394,6 +394,7 @@ public class StoreFrontShopSkinCarePage extends StoreFrontWebsiteBasePage{
 	 */
 	public StoreFrontShopSkinCarePage clickOnQuickViewLinkForProduct(String productNum){
 		driver.waitForElementPresent(By.xpath(String.format(quickViewForSpecificProductLoc, productNum)));
+		driver.pauseExecutionFor(2000);
 		driver.click(By.xpath(String.format(quickViewForSpecificProductLoc, productNum)));
 		logger.info("Clicked on quick view for product number : " + productNum);
 		driver.waitForLoadingImageToDisappear();

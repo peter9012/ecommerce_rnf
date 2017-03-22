@@ -10,6 +10,14 @@
 		<classes>
 			<class
 				name="com.rf.test.website.rehabitat.storeFront.shippingProfile.AddAndDeleteShippingTest">
+				<methods>
+					<exclude name="testAddEditShippingAddressFromMyAccountForConsultant"></exclude>
+					<exclude name="testAddEditShippingAddressFromMyAccountForPC"></exclude>
+					<exclude name="testAddEditShippingAddressFromMyAccountForRC"></exclude>
+					<exclude name="testAddEditShippingProfileAtAdhocCartForConsultant"></exclude>
+					<exclude name="testAddEditShippingProfileAtAdhocCartForPC"></exclude>
+					<exclude name="testAddEditShippingProfileAtAdhocCartForRC"></exclude>
+				</methods>
 			</class>
 		</classes>
 	</test>

@@ -16,7 +16,7 @@ import com.rf.test.website.rehabitat.storeFront.baseTest.StoreFrontWebsiteBaseTe
 
 public class ECCOrdersTest extends StoreFrontWebsiteBaseTest{
 
-	private static final int var=2;
+	private static final int var=8;
 	private static int consOrdercounter=0;
 	private static int pcOrdercounter=0;
 	private static int rcOrdercounter=0;

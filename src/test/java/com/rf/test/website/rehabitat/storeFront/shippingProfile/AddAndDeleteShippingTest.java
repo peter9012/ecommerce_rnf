@@ -217,6 +217,10 @@ public class AddAndDeleteShippingTest extends StoreFrontWebsiteBaseTest{
 		sfCheckoutPage.clickShippingDetailsNextbutton();
 		sfCheckoutPage.enterUserBillingDetails(cardType,cardNumber,cardName,CVV);
 		sfCheckoutPage.clickBillingDetailsNextbutton();
+		if(sfCheckoutPage.hasTokenizationFailed()==true){
+			sfCheckoutPage.enterUserBillingDetails(cardType, cardNumber, cardName, CVV);
+			sfCheckoutPage.clickBillingDetailsNextbutton();
+		}
 		sfCheckoutPage.selectIAcknowledgePCChkBox();
 		sfCheckoutPage.selectPCTermsAndConditionsChkBox();
 		sfCheckoutPage.clickPlaceOrderButton();
@@ -478,6 +482,10 @@ public class AddAndDeleteShippingTest extends StoreFrontWebsiteBaseTest{
 		sfCheckoutPage.clickShippingDetailsNextbutton();
 		sfCheckoutPage.enterUserBillingDetails(cardType,cardNumber,cardName,CVV);
 		sfCheckoutPage.clickBillingDetailsNextbutton();
+		if(sfCheckoutPage.hasTokenizationFailed()==true){
+			sfCheckoutPage.enterUserBillingDetails(cardType, cardNumber, cardName, CVV);
+			sfCheckoutPage.clickBillingDetailsNextbutton();
+		}
 		sfCheckoutPage.selectIAcknowledgePCChkBox();
 		sfCheckoutPage.selectPCTermsAndConditionsChkBox();
 		sfCheckoutPage.clickPlaceOrderButton();

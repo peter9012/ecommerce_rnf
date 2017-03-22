@@ -82,6 +82,10 @@ public class PCEnrollmentTest extends StoreFrontWebsiteBaseTest{
 		sfCheckoutPage.enterUserBillingDetails(cardType, cardNumber, cardName, CVV);
 		//sfCheckoutPage.checkUseMyDeliveryAddressChkBox();
 		sfCheckoutPage.clickBillingDetailsNextbutton();
+		if(sfCheckoutPage.hasTokenizationFailed()==true){
+			sfCheckoutPage.enterUserBillingDetails(cardType, cardNumber, cardName, CVV);
+			sfCheckoutPage.clickBillingDetailsNextbutton();
+		}
 		sfCheckoutPage.clickPlaceOrderButton();
 		s_assert.assertTrue(sfCheckoutPage.isPopUpForTermsAndConditionsCheckboxDisplayed(), "Pop up has not been displayed after NOT selecting the T&C checkboxes");
 		s_assert.assertAll();
@@ -164,6 +168,10 @@ public class PCEnrollmentTest extends StoreFrontWebsiteBaseTest{
 		sfCheckoutPage.enterUserBillingDetails(cardType, cardNumber, cardName, CVV);
 		//sfCheckoutPage.checkUseMyDeliveryAddressChkBox();
 		sfCheckoutPage.clickBillingDetailsNextbutton();
+		if(sfCheckoutPage.hasTokenizationFailed()==true){
+			sfCheckoutPage.enterUserBillingDetails(cardType, cardNumber, cardName, CVV);
+			sfCheckoutPage.clickBillingDetailsNextbutton();
+		}
 		sfCheckoutPage.selectTermsAndConditionsChkBox();
 		sfCheckoutPage.selectPoliciesAndProceduresChkBox();
 		sfCheckoutPage.clickPlaceOrderButton();
@@ -220,6 +228,10 @@ public class PCEnrollmentTest extends StoreFrontWebsiteBaseTest{
 		sfCheckoutPage.clickShippingDetailsNextbutton();
 		sfCheckoutPage.enterUserBillingDetails(cardType, cardNumber, cardName, CVV);
 		sfCheckoutPage.clickBillingDetailsNextbutton();
+		if(sfCheckoutPage.hasTokenizationFailed()==true){
+			sfCheckoutPage.enterUserBillingDetails(cardType, cardNumber, cardName, CVV);
+			sfCheckoutPage.clickBillingDetailsNextbutton();
+		}
 		sfCheckoutPage.selectTermsAndConditionsChkBox();
 		sfCheckoutPage.selectPoliciesAndProceduresChkBox();
 		sfCheckoutPage.clickPlaceOrderButton();
@@ -275,6 +287,10 @@ public class PCEnrollmentTest extends StoreFrontWebsiteBaseTest{
 		sfCheckoutPage.clickShippingDetailsNextbutton();
 		sfCheckoutPage.enterUserBillingDetails(cardType, cardNumber, cardName, CVV);
 		sfCheckoutPage.clickBillingDetailsNextbutton();
+		if(sfCheckoutPage.hasTokenizationFailed()==true){
+			sfCheckoutPage.enterUserBillingDetails(cardType, cardNumber, cardName, CVV);
+			sfCheckoutPage.clickBillingDetailsNextbutton();
+		}
 		sfCheckoutPage.selectTermsAndConditionsChkBox();
 		sfCheckoutPage.selectPoliciesAndProceduresChkBox();
 		sfCheckoutPage.clickPlaceOrderButton();
@@ -399,6 +415,10 @@ public class PCEnrollmentTest extends StoreFrontWebsiteBaseTest{
 		sfCheckoutPage.enterUserBillingDetails(cardType, cardNumber, cardName, CVV);
 		//		sfCheckoutPage.checkUseMyDeliveryAddressChkBox();
 		sfCheckoutPage.clickBillingDetailsNextbutton();
+		if(sfCheckoutPage.hasTokenizationFailed()==true){
+			sfCheckoutPage.enterUserBillingDetails(cardType, cardNumber, cardName, CVV);
+			sfCheckoutPage.clickBillingDetailsNextbutton();
+		}
 		sfCheckoutPage.selectIAcknowledgePCChkBox();
 		sfCheckoutPage.selectPCTermsAndConditionsChkBox();
 		sfCheckoutPage.clickPlaceOrderButton();
@@ -437,6 +457,10 @@ public class PCEnrollmentTest extends StoreFrontWebsiteBaseTest{
 		sfCheckoutPage.clickShippingDetailsNextbutton();
 		sfCheckoutPage.enterUserBillingDetails(cardType, cardNumber, cardName, CVV);
 		sfCheckoutPage.clickBillingDetailsNextbutton();
+		if(sfCheckoutPage.hasTokenizationFailed()==true){
+			sfCheckoutPage.enterUserBillingDetails(cardType, cardNumber, cardName, CVV);
+			sfCheckoutPage.clickBillingDetailsNextbutton();
+		}
 		sfCheckoutPage.selectIAcknowledgePCChkBox();
 		sfCheckoutPage.selectPCTermsAndConditionsChkBox();
 		sfCheckoutPage.clickPlaceOrderButton();

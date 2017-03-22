@@ -220,6 +220,10 @@ public class OrdersTest extends StoreFrontWebsiteBaseTest{
 		sfCheckoutPage.clickAddNewBillingProfileButton();
 		sfCheckoutPage.enterUserBillingDetails(cardType, cardNumber, cardName, CVV);
 		sfCheckoutPage.clickBillingDetailsNextbutton();
+		if(sfCheckoutPage.hasTokenizationFailed()==true){
+			sfCheckoutPage.enterUserBillingDetails(cardType, cardNumber, cardName, CVV);
+			sfCheckoutPage.clickBillingDetailsNextbutton();
+		}
 		sfCheckoutPage.clickEditLinkOfBillingProfile();
 		sfCheckoutPage.clickAddNewBillingProfileButton();
 		sfCheckoutPage.enterUserCreditCardNumber(cardNumberLessThan16Digit);
@@ -667,6 +671,10 @@ public class OrdersTest extends StoreFrontWebsiteBaseTest{
 		sfCheckoutPage.clickUseAsEnteredButtonOnPopUp();
 		sfCheckoutPage.enterUserBillingDetails(cardType, cardNumber, cardName, CVV);
 		sfCheckoutPage.clickBillingDetailsNextbutton();
+		if(sfCheckoutPage.hasTokenizationFailed()==true){
+			sfCheckoutPage.enterUserBillingDetails(cardType, cardNumber, cardName, CVV);
+			sfCheckoutPage.clickBillingDetailsNextbutton();
+		}
 		sfCheckoutPage.selectIAcknowledgePCChkBox();
 		sfCheckoutPage.selectPCTermsAndConditionsChkBox();
 		sfCheckoutPage.clickPlaceOrderButton();
@@ -1033,6 +1041,10 @@ public class OrdersTest extends StoreFrontWebsiteBaseTest{
 		sfCheckoutPage.clickUseAsEnteredButtonOnPopUp();
 		sfCheckoutPage.enterUserBillingDetails(cardType, cardNumber, cardName, CVV);
 		sfCheckoutPage.clickBillingDetailsNextbutton();
+		if(sfCheckoutPage.hasTokenizationFailed()==true){
+			sfCheckoutPage.enterUserBillingDetails(cardType, cardNumber, cardName, CVV);
+			sfCheckoutPage.clickBillingDetailsNextbutton();
+		}
 		sfCheckoutPage.selectIAcknowledgePCChkBox();
 		sfCheckoutPage.selectPCTermsAndConditionsChkBox();
 		sfCheckoutPage.clickPlaceOrderButton();
@@ -1258,6 +1270,10 @@ public class OrdersTest extends StoreFrontWebsiteBaseTest{
 		sfCheckoutPage.clickAddNewBillingProfileButton();
 		sfCheckoutPage.enterUserBillingDetails(cardType, cardNumber, cardName, CVV);
 		sfCheckoutPage.clickBillingDetailsNextbutton();
+		if(sfCheckoutPage.hasTokenizationFailed()==true){
+			sfCheckoutPage.enterUserBillingDetails(cardType, cardNumber, cardName, CVV);
+			sfCheckoutPage.clickBillingDetailsNextbutton();
+		}
 		billingProfileName = sfCheckoutPage.getBillingProfileName();
 		billingProfileLastName = sfCheckoutPage.getLastName(billingProfileName);
 		sfCheckoutPage.getCardDetailsFromBillingInfo(billingProfileLastName);
@@ -1416,6 +1432,10 @@ public class OrdersTest extends StoreFrontWebsiteBaseTest{
 		sfCheckoutPage.clickUseAsEnteredButtonOnPopUp();
 		sfCheckoutPage.enterUserBillingDetails(cardType, cardNumber, cardName, CVV);
 		sfCheckoutPage.clickBillingDetailsNextbutton();
+		if(sfCheckoutPage.hasTokenizationFailed()==true){
+			sfCheckoutPage.enterUserBillingDetails(cardType, cardNumber, cardName, CVV);
+			sfCheckoutPage.clickBillingDetailsNextbutton();
+		}
 		sfCheckoutPage.selectTermsAndConditionsChkBox();
 		sfCheckoutPage.clickPlaceOrderButton();
 		sfHomePage= sfCheckoutPage.clickRodanAndFieldsLogo();
@@ -1667,6 +1687,10 @@ public class OrdersTest extends StoreFrontWebsiteBaseTest{
 		sfCheckoutPage.clickAddNewBillingProfileButton();
 		sfCheckoutPage.enterUserBillingDetails(cardType, cardNumber, cardName, CVV);
 		sfCheckoutPage.clickBillingDetailsNextbutton();
+		if(sfCheckoutPage.hasTokenizationFailed()==true){
+			sfCheckoutPage.enterUserBillingDetails(cardType, cardNumber, cardName, CVV);
+			sfCheckoutPage.clickBillingDetailsNextbutton();
+		}
 		billingProfileName = sfCheckoutPage.getBillingProfileName();
 		billingProfileLastName = sfCheckoutPage.getLastName(billingProfileName);
 		sfCheckoutPage.getCardDetailsFromBillingInfo(billingProfileLastName);
@@ -1725,6 +1749,10 @@ public class OrdersTest extends StoreFrontWebsiteBaseTest{
 		sfCheckoutPage.clickAddNewBillingProfileButton();
 		sfCheckoutPage.enterUserBillingDetails(cardType, cardNumber, cardName, CVV);
 		sfCheckoutPage.clickBillingDetailsNextbutton();
+		if(sfCheckoutPage.hasTokenizationFailed()==true){
+			sfCheckoutPage.enterUserBillingDetails(cardType, cardNumber, cardName, CVV);
+			sfCheckoutPage.clickBillingDetailsNextbutton();
+		}
 		sfCheckoutPage.selectPCTermsAndConditionsChkBox();
 		sfCheckoutPage.clickPlaceOrderButton();
 		s_assert.assertTrue(sfCheckoutPage.isOrderPlacedSuccessfully(),"Order not placed. Thank you message is not displayed");

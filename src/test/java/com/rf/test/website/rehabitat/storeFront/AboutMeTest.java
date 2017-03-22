@@ -93,6 +93,10 @@ public class AboutMeTest extends StoreFrontWebsiteBaseTest{
 		sfHomePage.clickShippingDetailsNextbutton();
 		sfHomePage.enterUserBillingDetails(cardType, cardNumber, cardName, CVV);
 		sfHomePage.clickBillingDetailsNextbutton();
+		if(sfHomePage.hasTokenizationFailed()==true){
+			sfHomePage.enterUserBillingDetails(cardType, cardNumber, cardName, CVV);
+			sfHomePage.clickBillingDetailsNextbutton();
+		}
 		sfHomePage.selectPoliciesAndProceduresChkBox();
 		sfHomePage.selectIAcknowledgeChkBox();
 		sfHomePage.selectTermsAndConditionsChkBox();

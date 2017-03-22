@@ -41,7 +41,6 @@ public class MiniCartTest extends StoreFrontWebsiteBaseTest{
 		s_assert.assertAll();
 	}
 
-
 	/***
 	 * qTest : TC-148 PC user Adds items to their cart and view logo,username, account drop down and mini cart (shouldn't have top navigation)
 	 * Description : This test validates R+F logo, welcome dropdown,autoship link, mini cart icon & top navigation bar 

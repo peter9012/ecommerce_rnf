@@ -38,7 +38,7 @@ public class ECCOrdersTest extends StoreFrontWebsiteBaseTest{
 	private static final String FILE_PATH=System.getProperty("user.dir")+"\\src\\test\\resources\\ordersECC\\";
 	private static final String FILE_NAME_US = "ordersECC_US.xlsx";
 	private static final String FILE_NAME_CA = "ordersECC_CA.xlsx";
-	
+
 
 	// Place an adhoc order from consultant
 	@Test(priority=1,invocationCount=var)
@@ -66,6 +66,10 @@ public class ECCOrdersTest extends StoreFrontWebsiteBaseTest{
 		CVV = cardDetails.get("cardCVV");
 		sfCheckoutPage.enterUserBillingDetails(cardType, cardNumber, cardName, CVV);
 		sfCheckoutPage.clickBillingDetailsNextbutton();
+		if(sfCheckoutPage.hasTokenizationFailed()==true){
+			sfCheckoutPage.enterUserBillingDetails(cardType, cardNumber, cardName, CVV);
+			sfCheckoutPage.clickBillingDetailsNextbutton();
+		}
 		tax = sfCheckoutPage.getEstimatedTaxForTheOrder();
 		sfCheckoutPage.selectPCTermsAndConditionsChkBox();
 		sfCheckoutPage.clickPlaceOrderButton();
@@ -109,6 +113,10 @@ public class ECCOrdersTest extends StoreFrontWebsiteBaseTest{
 		CVV = cardDetails.get("cardCVV");
 		sfCheckoutPage.enterUserBillingDetails(cardType, cardNumber, cardName, CVV);
 		sfCheckoutPage.clickBillingDetailsNextbutton();
+		if(sfCheckoutPage.hasTokenizationFailed()==true){
+			sfCheckoutPage.enterUserBillingDetails(cardType, cardNumber, cardName, CVV);
+			sfCheckoutPage.clickBillingDetailsNextbutton();
+		}
 		tax = sfCheckoutPage.getEstimatedTaxForTheOrder();
 		sfCheckoutPage.selectPCTermsAndConditionsChkBox();
 		sfCheckoutPage.clickPlaceOrderButton();
@@ -151,6 +159,10 @@ public class ECCOrdersTest extends StoreFrontWebsiteBaseTest{
 		CVV = cardDetails.get("cardCVV");
 		sfCheckoutPage.enterUserBillingDetails(cardType, cardNumber, cardName, CVV);
 		sfCheckoutPage.clickBillingDetailsNextbutton();
+		if(sfCheckoutPage.hasTokenizationFailed()==true){
+			sfCheckoutPage.enterUserBillingDetails(cardType, cardNumber, cardName, CVV);
+			sfCheckoutPage.clickBillingDetailsNextbutton();
+		}
 		tax = sfCheckoutPage.getEstimatedTaxForTheOrder();
 		sfCheckoutPage.selectPCTermsAndConditionsChkBox();
 		sfCheckoutPage.clickPlaceOrderButton();
@@ -275,7 +287,7 @@ public class ECCOrdersTest extends StoreFrontWebsiteBaseTest{
 		}
 		return cardDetails;
 	}
-	
+
 	public String getFilePathAsPerCountry(String country){
 		String filePath = null;
 		if(country.equalsIgnoreCase("us")){
@@ -286,7 +298,7 @@ public class ECCOrdersTest extends StoreFrontWebsiteBaseTest{
 		}
 		return filePath;
 	}
-	
+
 	public void setValueInTheExcel(String orderType, int counter, List<String> orderDetails){
 		if(orderType.equalsIgnoreCase(TestConstants.ECC_ORDER_TYPE_CONSULTANT_ADHOC)&& orderNumber!=null){
 			ExcelUtil.setOrderDetailsInECCExcelFile(TestConstants.ECC_ORDER_TYPE_CONSULTANT_ADHOC,counter, orderDetails);

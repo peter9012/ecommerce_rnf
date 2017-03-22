@@ -420,6 +420,10 @@ public class AutoshipTest extends StoreFrontWebsiteBaseTest{
 		sfCheckoutPage.clickAddNewBillingProfileButton();
 		sfCheckoutPage.enterUserBillingDetails(cardType,cardNumber,cardName,CVV);
 		sfCheckoutPage.clickBillingDetailsNextbutton();
+		if(sfCheckoutPage.hasTokenizationFailed()==true){
+			sfCheckoutPage.enterUserBillingDetails(cardType, cardNumber, cardName, CVV);
+			sfCheckoutPage.clickBillingDetailsNextbutton();
+		}
 		profileLastName = sfCheckoutPage.getLastName(cardName);
 		defaultBillingProfileName = sfCheckoutPage.getDefaultBillingProfileName();
 		s_assert.assertTrue(defaultBillingProfileName.contains(profileLastName),"New Billing Profile Details do not get updated. Expected Profile Name : "+ cardName + ". Actual : " + defaultBillingProfileName);
@@ -537,6 +541,10 @@ public class AutoshipTest extends StoreFrontWebsiteBaseTest{
 		sfHomePage.clickShippingDetailsNextbutton();
 		sfHomePage.enterUserBillingDetails(cardType, cardNumber, cardName, CVV);
 		sfHomePage.clickBillingDetailsNextbutton();
+		if(sfHomePage.hasTokenizationFailed()==true){
+			sfHomePage.enterUserBillingDetails(cardType, cardNumber, cardName, CVV);
+			sfHomePage.clickBillingDetailsNextbutton();
+		}
 		sfHomePage.selectPoliciesAndProceduresChkBox();
 		sfHomePage.selectIAcknowledgeChkBox();
 		sfHomePage.selectTermsAndConditionsChkBox();
@@ -1147,6 +1155,10 @@ public class AutoshipTest extends StoreFrontWebsiteBaseTest{
 		sfCheckoutPage.clickShippingDetailsNextbutton();
 		sfCheckoutPage.enterUserBillingDetails(cardType,cardNumber,cardName,CVV);
 		sfCheckoutPage.clickBillingDetailsNextbutton();
+		if(sfCheckoutPage.hasTokenizationFailed()==true){
+			sfCheckoutPage.enterUserBillingDetails(cardType, cardNumber, cardName, CVV);
+			sfCheckoutPage.clickBillingDetailsNextbutton();
+		}
 		sfCheckoutPage.selectIAcknowledgePCChkBox();
 		sfCheckoutPage.selectPCTermsAndConditionsChkBox();
 		sfCheckoutPage.clickPlaceOrderButton();
@@ -1185,6 +1197,10 @@ public class AutoshipTest extends StoreFrontWebsiteBaseTest{
 		sfHomePage.clickShippingDetailsNextbutton();
 		sfHomePage.enterUserBillingDetails(cardType, cardNumber, cardName, CVV);
 		sfHomePage.clickBillingDetailsNextbutton();
+		if(sfCheckoutPage.hasTokenizationFailed()==true){
+			sfCheckoutPage.enterUserBillingDetails(cardType, cardNumber, cardName, CVV);
+			sfCheckoutPage.clickBillingDetailsNextbutton();
+		}
 		sfHomePage.selectPoliciesAndProceduresChkBox();
 		sfHomePage.selectIAcknowledgeChkBox();
 		sfHomePage.selectTermsAndConditionsChkBox();
@@ -1237,6 +1253,10 @@ public class AutoshipTest extends StoreFrontWebsiteBaseTest{
 		sfCheckoutPage.clickAddNewBillingProfileButton();
 		sfCheckoutPage.enterUserBillingDetails(cardType,cardNumber,cardName,CVV);
 		sfCheckoutPage.clickBillingDetailsNextbutton();
+		if(sfCheckoutPage.hasTokenizationFailed()==true){
+			sfCheckoutPage.enterUserBillingDetails(cardType, cardNumber, cardName, CVV);
+			sfCheckoutPage.clickBillingDetailsNextbutton();
+		}
 		//sfCheckoutPage.selectTermsAndConditionsCheckBoxForAutoshipOrder();
 		//  sfCheckoutPage.selectIAcknowledgeChkBox();
 		sfCheckoutPage.clickConfirmAutoshipOrderButton();

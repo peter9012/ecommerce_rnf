@@ -1508,7 +1508,10 @@ public class StoreFrontWebsiteBasePage extends RFBasePage {
 	 * @return store front base page object
 	 */
 	public StoreFrontWebsiteBasePage clickIDontHaveSponsorCheckBox() {
+		driver.pauseExecutionFor(1000);
+		driver.waitForElementPresent(I_DONT_HAVE_SPONSOR_CHKBOX_LOC, 5);
 		driver.click(I_DONT_HAVE_SPONSOR_CHKBOX_LOC);
+		driver.pauseExecutionFor(1000);
 		logger.info("'I dont have sponsor checkbox' clicked");
 		return this;
 	}

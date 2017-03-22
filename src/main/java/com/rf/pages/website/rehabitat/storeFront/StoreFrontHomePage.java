@@ -84,7 +84,7 @@ public class StoreFrontHomePage extends StoreFrontWebsiteBasePage{
 	private final By MEET_THE_DOCTORS_TXT_LOC = By.xpath("//h1[contains(text(),'Meet the Doctors')]");
 	private final By CONTINUE_SHOPPING_CRP_BTN_LOC = By.xpath("//button[contains(text(),'Continue')]");
 
-	private String addToCRPBtnForSpecificProductLoc = "//h3[normalize-space(text())='%s']/ancestor::div[1]/following::span[contains(text(),'Add to CRP')][1]";
+	private String addToCRPBtnForSpecificProductLoc = "//a[contains(@href,'%s')]/following::h3[contains(normalize-space(text()),'%s')]/following::span[contains(text(),'Add to CRP')][1]";
 	private String appliedFilterNameLoc = "//div[@id='applied_filters']/descendant::li[contains(text(),'%s')]";
 	private String specificProductAddToCRPBtnLoc = "//div[@id='product_category']/following-sibling::div/descendant::span[text()='Add to CRP'][%s]";
 	private String viewDetailsLinkLoc = "//div[contains(@class,'enrollmentKit-wrapper')]/descendant::a[contains(text(),'View Details')][%s]";
@@ -317,13 +317,15 @@ public class StoreFrontHomePage extends StoreFrontWebsiteBasePage{
 		logger.info("Entered password as "+password);
 		driver.type(CONFIRM_PASSWORD_FOR_REGISTRATION_LOC, password);
 		logger.info("Entered confirm password as "+password);
-		driver.type(SSN_FOR_REGISTRATION_LOC, SSN);
-		logger.info("Entered SSN  as "+SSN);
-		driver.findElement(SSN_FOR_REGISTRATION_LOC).sendKeys(Keys.TAB);
-		driver.pauseExecutionFor(1000);
-		//The following is a patch to make next buuton enabled
-		driver.type(FIRST_NAME_FOR_REGISTRATION_LOC, firstName);
-		logger.info("Entered first name as "+firstName);
+		if(driver.getCountry().equalsIgnoreCase("au")==false){
+			driver.type(SSN_FOR_REGISTRATION_LOC, SSN);
+			logger.info("Entered SSN  as "+SSN);	
+			driver.findElement(SSN_FOR_REGISTRATION_LOC).sendKeys(Keys.TAB);
+			driver.pauseExecutionFor(1000);
+			//The following is a patch to make next buuton enabled
+			driver.type(FIRST_NAME_FOR_REGISTRATION_LOC, firstName);
+			logger.info("Entered first name as "+firstName);
+		}				
 		return this;
 	}
 
@@ -959,9 +961,9 @@ public class StoreFrontHomePage extends StoreFrontWebsiteBasePage{
 	 * @return store front home page object
 	 * 
 	 */
-	public StoreFrontHomePage addFirstProductForCRPCheckout(String productName){
+	public StoreFrontHomePage addFirstProductForCRPCheckout(String productName,String productId){
 		clickShowMoreButton();
-		driver.clickByJS(RFWebsiteDriver.driver,By.xpath(String.format(addToCRPBtnForSpecificProductLoc, productName)));
+		driver.clickByJS(RFWebsiteDriver.driver,By.xpath(String.format(addToCRPBtnForSpecificProductLoc,productId, productName)));
 		logger.info("Clicked Add to CRP button of Product : " + productName);
 		driver.pauseExecutionFor(2000);
 		while(driver.isElementPresent(CRP_CHECKOUT_BTN_LOC)==false){

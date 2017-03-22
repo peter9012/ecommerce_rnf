@@ -32,6 +32,8 @@ public class TestConstants {
 	public static final String VALID_PRODUCT_NAME_US = "UNBLEMISH Regimen for Acne";
 	public static final String VALID_PRODUCT_ID_CA = "UNRJ001-01";
 	public static final String VALID_PRODUCT_NAME_CA = "UNBLEMISH Regimen";
+	public static final String VALID_PRODUCT_NAME_AU = "REDEFINE AMP MD System";
+	public static final String VALID_PRODUCT_ID_AU = "AAAPS01-02";
 	public static final String PRODUCT_NUMBER = "1";
 	public static final String PRODUCT_NUMBER_PC_AUTOSHIP = "3";
 	//	public static final String OTHER_PRODUCT_NUMBER = "3";
@@ -98,6 +100,19 @@ public class TestConstants {
 	public static final String SECOND_CITY_CA = "Calgary";
 	public static final String SECOND_POSTAL_CODE_CA = "T3H 2E1";
 	public static final String STATE_CA_ABBREVIATION = "AB";
+
+	//Australia
+	public static final String ADDRESS_LINE_1_AU = "6 Norton Street";
+	public static final String ADDRESS_LINE_2_AU = "";
+	public static final String CITY_AU = "BALGOWLAH";
+	public static final String POSTAL_CODE_AU = "2093";
+	public static final String STATE_AU = "New South Wales";
+
+//	public static final String SECOND_ADDRESS_LINE_1_AU = "60 Patterson Blvd SW";
+//	public static final String SECOND_ADDRESS_LINE_2_AU = "";
+//	public static final String SECOND_CITY_AU = "Calgary";
+//	public static final String SECOND_POSTAL_CODE_AU = "T3H 2E1";
+	public static final String STATE_AU_ABBREVIATION = "AU-NSW";
 
 	public static final String FIRST_NAME_BILLING_ADDRESS = "BAFirstname";
 	public static final String LAST_NAME_BILLING_ADDRESS = "BALastname";
@@ -193,7 +208,7 @@ public class TestConstants {
 	public static final String ERROR_MSG_EXISTING_PREFIX = "Subscription Prefix not available";
 	public static final String CANCELLED_CRP_ORDER_SUCCESS_MESSAGE = "Your CRP Order has been cancel";
 	public static final String TAX_HEADING = "TAX";
-	
+
 	public static final String ECC_ORDER_TYPE_CONSULTANT_ADHOC = "ConsultantAdhocOrder";
 	public static final String ECC_ORDER_TYPE_PC_ADHOC = "PCAdhocOrder";
 	public static final String ECC_ORDER_TYPE_RC_ADHOC = "RCAdhocOrder";

@@ -475,7 +475,7 @@ public class AutoshipTest extends StoreFrontWebsiteBaseTest{
 		sfAutoshipStatusPage = sfHomePage.navigateToAutoshipStatusPage();
 		if(sfAutoshipStatusPage.isEnrollIntoCRPButtonPresent()){
 			sfAutoshipStatusPage.clickEnrollInCRPButton();
-			sfHomePage.addFirstProductForCRPCheckout(validProductName);
+			sfHomePage.addFirstProductForCRPCheckout(validProductName,validProductId);
 			sfCheckoutPage = sfHomePage.checkoutCRPBag();
 			sfCheckoutPage.clickSaveButton();
 			sfCheckoutPage.clickShippingDetailsNextbutton();
@@ -499,7 +499,7 @@ public class AutoshipTest extends StoreFrontWebsiteBaseTest{
 		s_assert.assertTrue(sfAutoshipStatusPage.isEnrollIntoCRPButtonPresent(),"Enroll in CRP Button is not present After cancelling CRP for consulatnt");
 		// Enrolling Consultant in CRP
 		sfAutoshipStatusPage.clickEnrollInCRPButton();
-		sfHomePage.addFirstProductForCRPCheckout(validProductName);
+		sfHomePage.addFirstProductForCRPCheckout(validProductName,validProductId);
 		sfCheckoutPage = sfHomePage.checkoutCRPBag();
 		sfCheckoutPage.clickSaveButton();
 		sfCheckoutPage.clickShippingDetailsNextbutton();
@@ -554,7 +554,7 @@ public class AutoshipTest extends StoreFrontWebsiteBaseTest{
 		sfHomePage.clickRodanAndFieldsLogo();
 		// Click Set up CRP from Banner
 		sfHomePage.clickSetUpCRP();
-		sfHomePage.addFirstProductForCRPCheckout(validProductName);
+		sfHomePage.addFirstProductForCRPCheckout(validProductName,validProductId);
 		sfCheckoutPage = sfHomePage.checkoutCRPBag();
 		sfCheckoutPage.clickSaveButton();
 		sfCheckoutPage.clickShippingDetailsNextbutton();
@@ -1210,7 +1210,7 @@ public class AutoshipTest extends StoreFrontWebsiteBaseTest{
 		sfHomePage.clickRodanAndFieldsLogo();
 		//Enroll consultant in CRP
 		sfHomePage.clickSetUpCRP();
-		sfHomePage.addFirstProductForCRPCheckout(validProductName);
+		sfHomePage.addFirstProductForCRPCheckout(validProductName,validProductId);
 		sfCheckoutPage = sfHomePage.checkoutCRPBag();
 		sfCheckoutPage.clickSaveButton();
 		sfCheckoutPage.clickShippingDetailsNextbutton();

@@ -679,7 +679,7 @@ public class ConsultantEnrollmentTest extends StoreFrontWebsiteBaseTest{
 		sfHomePage.selectConsentFormChkBox();
 		sfHomePage.clickBecomeAConsultant();
 		s_assert.assertTrue(sfHomePage.isEnrollemntSuccessfulMsgDisplayed(), "Expected 'ENROLLMENT SUCCESSFUL' msg has NOT displayed"); 
-		sfHomePage.addFirstProductForCRPCheckout(validProductName);
+		sfHomePage.addFirstProductForCRPCheckout(validProductName,validProductId);
 		sfCheckoutPage = sfHomePage.checkoutCRPBag();
 		sfCheckoutPage.clickSaveButton();
 		sfCheckoutPage.clickShippingDetailsNextbutton();
@@ -783,7 +783,7 @@ public class ConsultantEnrollmentTest extends StoreFrontWebsiteBaseTest{
 		sfHomePage.selectConsentFormChkBox();
 		sfHomePage.clickBecomeAConsultant();
 		s_assert.assertTrue(sfHomePage.isEnrollemntSuccessfulMsgDisplayed(), "Expected 'ENROLLMENT SUCCESSFUL' msg has NOT displayed"); 
-		sfHomePage.addFirstProductForCRPCheckout(validProductName);
+		sfHomePage.addFirstProductForCRPCheckout(validProductName,validProductId);
 		sfCheckoutPage = sfHomePage.checkoutCRPBag();
 		sfCheckoutPage.clickSaveButton();
 		sfCheckoutPage.clickShippingDetailsNextbutton();

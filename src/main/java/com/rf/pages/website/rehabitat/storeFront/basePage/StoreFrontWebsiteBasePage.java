@@ -1787,6 +1787,7 @@ public class StoreFrontWebsiteBasePage extends RFBasePage {
 	public StoreFrontWebsiteBasePage selectPoliciesAndProceduresChkBox() {
 		driver.pauseExecutionFor(1000);
 		try{
+			driver.quickWaitForElementPresent(POLICIES_AND_PROCEDURES_CHK_BOX_LOC, 5);
 			driver.turnOffImplicitWaits(2);
 			driver.clickByJS(RFWebsiteDriver.driver, POLICIES_AND_PROCEDURES_CHK_BOX_LOC);
 			logger.info("policies and procedures for consultant selected");

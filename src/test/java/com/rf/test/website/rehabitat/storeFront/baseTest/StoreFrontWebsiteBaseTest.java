@@ -168,6 +168,20 @@ public class StoreFrontWebsiteBaseTest extends RFBaseTest {
 			validProductName = TestConstants.VALID_PRODUCT_NAME_CA;
 			validProductId = TestConstants.VALID_PRODUCT_ID_CA;
 		}
+		else if(countryName.equalsIgnoreCase("au")){
+			addressLine1 = TestConstants.ADDRESS_LINE_1_AU;
+			addressLine2 = TestConstants.ADDRESS_LINE_2_AU;
+			city = TestConstants.CITY_AU;
+			state = TestConstants.STATE_AU;
+			postalCode = TestConstants.POSTAL_CODE_AU;
+//			updatedAddressLine1 = TestConstants.SECOND_ADDRESS_LINE_1_AU;
+//			updatedAddressLine2 = TestConstants.SECOND_ADDRESS_LINE_2_AU;
+//			updatedCity = TestConstants.SECOND_CITY_AU;
+//			updatedPostalCode = TestConstants.SECOND_POSTAL_CODE_AU;
+			stateAbbreviation = TestConstants.STATE_AU_ABBREVIATION;
+			validProductName = TestConstants.VALID_PRODUCT_NAME_AU;
+			validProductId = TestConstants.VALID_PRODUCT_ID_AU;
+		}
 	}
 
 	public void setUsers(String key,String value){

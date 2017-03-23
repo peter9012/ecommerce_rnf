@@ -16,7 +16,7 @@ import com.rf.test.website.rehabitat.storeFront.baseTest.StoreFrontWebsiteBaseTe
 
 public class ECCOrdersTest extends StoreFrontWebsiteBaseTest{
 
-	private static final int var=8;
+	private static final int var=3;
 	private static int consOrdercounter=0;
 	private static int pcOrdercounter=0;
 	private static int rcOrdercounter=0;
@@ -38,7 +38,6 @@ public class ECCOrdersTest extends StoreFrontWebsiteBaseTest{
 	private static final String FILE_PATH=System.getProperty("user.dir")+"\\src\\test\\resources\\ordersECC\\";
 	private static final String FILE_NAME_US = "ordersECC_US.xlsx";
 	private static final String FILE_NAME_CA = "ordersECC_CA.xlsx";
-
 
 	// Place an adhoc order from consultant
 	@Test(priority=1,invocationCount=var)

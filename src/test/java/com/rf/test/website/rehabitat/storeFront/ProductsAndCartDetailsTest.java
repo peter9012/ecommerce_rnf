@@ -557,7 +557,7 @@ public class ProductsAndCartDetailsTest extends StoreFrontWebsiteBaseTest{
 		sfShopSkinCarePage=sfHomePage.clickAllProducts();
 		String consultantPrice=sfShopSkinCarePage.getProductPrice(TestConstants.PRODUCT_NUMBER);
 		String retailAndSvPrice=sfShopSkinCarePage.getProductRetailAndSVPrice(TestConstants.PRODUCT_NUMBER);
-		s_assert.assertTrue(consultantPrice.contains("$") && consultantPrice.contains("Your Price:") && retailAndSvPrice.contains("Retail:") && retailAndSvPrice.contains("$") && retailAndSvPrice.contains("QV"),"Expected price should contain '$' , 'Retail', 'Your Price' and 'QV'");
+		s_assert.assertTrue(consultantPrice.contains("$") && consultantPrice.contains("Your Price:") && retailAndSvPrice.contains("Retail Price:") && retailAndSvPrice.contains("$") && retailAndSvPrice.contains("QV"),"Expected price should contain '$' , 'Retail', 'Your Price' and 'QV'");
 		s_assert.assertAll();
 	}
 
@@ -572,7 +572,7 @@ public class ProductsAndCartDetailsTest extends StoreFrontWebsiteBaseTest{
 		sfShopSkinCarePage=sfHomePage.clickAllProducts();
 		String consultantPrice=sfShopSkinCarePage.getProductPrice(TestConstants.PRODUCT_NUMBER);
 		String retailAndSvPrice=sfShopSkinCarePage.getProductRetailAndSVPrice(TestConstants.PRODUCT_NUMBER);
-		s_assert.assertTrue(consultantPrice.contains("$") && consultantPrice.contains("Your Price:") && retailAndSvPrice.contains("Retail:"),"Expected price should contain '$' ,'Your Price' and 'Retail'");
+		s_assert.assertTrue(consultantPrice.contains("$") && consultantPrice.contains("Your Price:") && retailAndSvPrice.contains("Retail Price:"),"Expected price should contain '$' ,'Your Price' and 'Retail'");
 		s_assert.assertAll();
 	}
 

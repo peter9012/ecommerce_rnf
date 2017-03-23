@@ -3960,9 +3960,9 @@ public class StoreFrontWebsiteBasePage extends RFBasePage {
 	 */
 	public StoreFrontProductDetailPage clickNameOfProductOnAllProductPage(String productNumber){
 		String productName = driver.findElement(By.xpath(String.format(productNameLinkLoc, productNumber))).getText();
-		//		driver.moveToElement(By.xpath(String.format(productNameLinkOnAllProductPageLoc, productNumber)));
+		//  driver.moveToElement(By.xpath(String.format(productNameLinkOnAllProductPageLoc, productNumber)));
 		if(driver.isElementVisible(By.xpath(String.format(productNameLinkLoc, productNumber)))){
-			driver.click(By.xpath(String.format(productNameLinkLoc, productNumber)));
+			driver.clickByJS(RFWebsiteDriver.driver,By.xpath(String.format(productNameLinkLoc, productNumber)));
 		}
 		logger.info("product name "+productName+ "Clicked");
 		driver.waitForPageLoad();

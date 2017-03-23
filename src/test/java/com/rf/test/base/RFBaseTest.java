@@ -195,7 +195,7 @@ public class RFBaseTest{
 			userProps=testUsers_PPD_CA_propertes;
 		}
 		else  if(propertyFileName.toLowerCase().contains("qa2") && propertyFileName.toLowerCase().contains("au")){
-			userProps=testUsers_PPD_CA_propertes;
+			userProps=testUsers_QA2_AU_propertes;
 		}
 		logger.info("testUsers are loaded from "+userProps);
 	}

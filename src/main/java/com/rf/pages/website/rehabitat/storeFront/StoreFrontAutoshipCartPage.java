@@ -25,9 +25,9 @@ public class StoreFrontAutoshipCartPage extends StoreFrontWebsiteBasePage{
 	private final By CRP_THRESHOLD_MSG_LOC = By.xpath("//div[@class='global-alerts']/div");
 	private final By SUBSCRIBE_TO_PULSE_BTN_LOC = By.id("confirmsubmitsubs");
 
-	private String removeLinkForProductInAutoshipCartLoc = "//span[normalize-space(text())='%s']/following::input[@id='autoship_remove'][1]";
-	private String qtyTBForProductInAutoshipCartLoc = "//span[normalize-space(text())='%s']/following::input[@name='qty' and not(@disabled)][1]";
-	private String updatedQtyLinkForProductInAutoshipCartLoc = "//span[normalize-space(text())='%s']/following::input[@value='Update Qty'][1]";
+	private String removeLinkForProductInAutoshipCartLoc = "//span[contains(normalize-space(text()),'%s')]/following::input[@id='autoship_remove'][1]";
+	private String qtyTBForProductInAutoshipCartLoc = "//span[contains(normalize-space(text()),'%s')]/following::input[@name='qty' and not(@disabled)][1]";
+	private String updatedQtyLinkForProductInAutoshipCartLoc = "//span[contains(normalize-space(text()),'%s')]/following::input[@value='Update Qty'][1]";
 	private String quantityOfSpecificItemInCartLoc = "//ul[contains(@class,'item-list')]/descendant::input[contains(@class,'quantity-input')][%s]";
 	private String updateQuantityLinkForSpecificItemLoc  = "//ul[contains(@class,'item-list')]/descendant::input[contains(@value,'Update Qty')][%s]";
 	private String productQuantityLoc = "//li[@class='item-list-item'][%s]//input[@name='qty']";
@@ -35,6 +35,7 @@ public class StoreFrontAutoshipCartPage extends StoreFrontWebsiteBasePage{
 	private String removeLinkOfAnItemAtAutoshipCartLoc = "//li[@class='item-list-item'][%s]//input[@id='autoship_remove'] ";
 	private String productQuantityInAutoshipCartLoc = "//span[@class='item-name' and contains(text(),'%s')]/following::input[@name='qty'][1]";
 	private String socialMediaIconLoc = "//div[@class='container']//a[contains(@href,'%s')]";
+
 
 	/***
 	 * This method click on learn more about pulse link.
@@ -290,6 +291,9 @@ public class StoreFrontAutoshipCartPage extends StoreFrontWebsiteBasePage{
 		}
 		else if(country.equalsIgnoreCase("ca")){
 			thresholdMsg = "please add minimum worth of cad$90 products excluding enrollment fee";
+		}
+		else if(country.equalsIgnoreCase("au")){
+			thresholdMsg = "please add minimum worth of aud$90 products excluding enrollment fee";
 		}
 		return thresholdMsg;
 	}

@@ -87,7 +87,7 @@ public class AddAndDeleteShippingTest extends StoreFrontWebsiteBaseTest{
 	 * 
 	 *     
 	 */
-	@Test (enabled=false) //AU test
+	@Test (enabled=true) //AU test
 	public void testAddingAShipAddressDefaultCountryAUSite_176(){
 		if(country.equalsIgnoreCase("au")){
 			String expectedCountryName = "australia";

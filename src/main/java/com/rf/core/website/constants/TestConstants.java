@@ -108,10 +108,10 @@ public class TestConstants {
 	public static final String POSTAL_CODE_AU = "2093";
 	public static final String STATE_AU = "New South Wales";
 
-//	public static final String SECOND_ADDRESS_LINE_1_AU = "60 Patterson Blvd SW";
-//	public static final String SECOND_ADDRESS_LINE_2_AU = "";
-//	public static final String SECOND_CITY_AU = "Calgary";
-//	public static final String SECOND_POSTAL_CODE_AU = "T3H 2E1";
+	public static final String SECOND_ADDRESS_LINE_1_AU = "43 Noalimba Avenue";
+	public static final String SECOND_ADDRESS_LINE_2_AU = "";
+	public static final String SECOND_CITY_AU = "Wollun";
+	public static final String SECOND_POSTAL_CODE_AU = "2354";
 	public static final String STATE_AU_ABBREVIATION = "AU-NSW";
 
 	public static final String FIRST_NAME_BILLING_ADDRESS = "BAFirstname";

@@ -460,7 +460,6 @@ public class AutoshipTest extends StoreFrontWebsiteBaseTest{
 		s_assert.assertAll();
 	}
 
-
 	/***
 	 * qTest : TC-449 Consultant Autoship Status- Cancel CRP
 	 * Description : This test validates the Cancel CRP functionality for Consulatnt user.
@@ -487,12 +486,12 @@ public class AutoshipTest extends StoreFrontWebsiteBaseTest{
 			sfCheckoutPage.clickRodanAndFieldsLogo();
 			sfCheckoutPage.clickWelcomeDropdown();
 			sfCheckoutPage.navigateToAutoshipStatusPage();
-			s_assert.assertTrue(sfAutoshipStatusPage.getCurrentCRPStatus().contains("Enrolled"),"Consultant does not get enrolled in CRP");
+			s_assert.assertTrue(sfAutoshipStatusPage.getCurrentCRPStatus().contains("Enrol"),"Consultant does not get enrolled in CRP");
 			sfCheckoutPage.clickRodanAndFieldsLogo();
+			sfAutoshipStatusPage.clickWelcomeDropdown();
+			sfAutoshipStatusPage.navigateToAutoshipStatusPage();
 		}
-		sfAutoshipStatusPage.clickWelcomeDropdown();
-		sfAutoshipStatusPage.navigateToAutoshipStatusPage();
-		s_assert.assertTrue(sfAutoshipStatusPage.getCurrentCRPStatus().contains("Enrolled"),"Consultant is not enrolled into CRP yet");
+		s_assert.assertTrue(sfAutoshipStatusPage.getCurrentCRPStatus().contains("Enrol"),"Consultant is not enrolled into CRP yet");
 		sfAutoshipStatusPage.clickCancelCRPLink();
 		sfAutoshipStatusPage.clickCancelCRPButton();
 		s_assert.assertTrue(sfAutoshipStatusPage.getActionSucccessMsgOnAutoshipStatusPage().contains(TestConstants.CANCELLED_CRP_ORDER_SUCCESS_MESSAGE),"Cancelled CRP Order Success Message is not present as expected");
@@ -511,7 +510,7 @@ public class AutoshipTest extends StoreFrontWebsiteBaseTest{
 		sfCheckoutPage.clickRodanAndFieldsLogo();
 		sfHomePage.clickWelcomeDropdown();
 		sfCheckoutPage.navigateToAutoshipStatusPage();
-		s_assert.assertTrue(sfAutoshipStatusPage.getCurrentCRPStatus().contains("Enrolled"),"Consultant does not get enrolled in CRP");
+		s_assert.assertTrue(sfAutoshipStatusPage.getCurrentCRPStatus().contains("Enrol"),"Consultant does not get enrolled in CRP");
 		s_assert.assertAll();
 	}
 
@@ -773,7 +772,7 @@ public class AutoshipTest extends StoreFrontWebsiteBaseTest{
 		sfAutoshipStatusPage = sfHomePage.navigateToAutoshipStatusPage();
 		s_assert.assertTrue(sfAutoshipStatusPage.isTextVisible(currentPulseStatus), currentPulseStatus+" tag is not present for pulse");
 		currentPulseStatus = sfAutoshipStatusPage.getCurrentPulseStatus();
-		s_assert.assertTrue(sfAutoshipStatusPage.getCurrentCRPStatus().contains("Enrolled"),"Consultant is not enrolled into CRP yet");
+		s_assert.assertTrue(sfAutoshipStatusPage.getCurrentCRPStatus().contains("Enrol"),"Consultant is not enrolled into CRP yet");
 		s_assert.assertTrue(currentPulseStatus.contains("ACTIVE"),"Consultant is not enrolled into Pulse yet expected 'ACTIVE' and Actual"+currentPulseStatus);
 		s_assert.assertTrue(sfAutoshipStatusPage.isTextVisible(nextBillAndShipDate), nextBillAndShipDate+" tag is not present for pulse");
 		s_assert.assertAll();

@@ -571,6 +571,10 @@ public class BillingProfileTest extends StoreFrontWebsiteBaseTest{
 		sfCheckoutPage.checkUseMyDeliveryAddressChkBox();
 		sfCheckoutPage.enterConsultantAddressDetails(firstName, lastName, addressLine1, addressLine2, city, state, postalCode, phoneNumber);
 		sfCheckoutPage.clickBillingDetailsNextbutton();
+		if(sfCheckoutPage.hasTokenizationFailed()==true){
+			sfCheckoutPage.enterUserBillingDetails(cardType, cardNumber, cardName, CVV);
+			sfCheckoutPage.clickBillingDetailsNextbutton();
+		}
 		sfCheckoutPage.clickUseAsEnteredButtonOnPopUp();
 		cardLastName = sfCheckoutPage.getLastName(cardName); 
 		s_assert.assertTrue(sfCheckoutPage.isNewBillingDetailsVisibleOnUI(cardLastName),"New Billing Details do not get updated as Default Billing details on Checkout Page");

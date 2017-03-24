@@ -537,9 +537,9 @@ public class StoreFrontWebsiteBasePage extends RFBasePage {
 	 * 
 	 */
 	public void selectFirstSponsorFromList() {
-		//driver.pauseExecutionFor(2000);
 		driver.click(SELECT_AND_CONTINUE_LOC);
 		logger.info("Clicked on 'Select And Continue' button for first result");
+		driver.pauseExecutionFor(2000);
 	}
 
 	/***
@@ -777,7 +777,6 @@ public class StoreFrontWebsiteBasePage extends RFBasePage {
 			driver.clickByJS(RFWebsiteDriver.driver,ACCEPT_RDBTN_NEW_POLICIES_PROCEDURES_POPUP_LOC);
 			driver.pauseExecutionFor(1000);
 			driver.clickByJS(RFWebsiteDriver.driver,CONTINUE_BTN_NEW_POLICIES_PROCEDURES_POPUP_LOC);
-
 		}
 
 		if(driver.isElementPresent(OKTA_IMG_LOC)){

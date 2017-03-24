@@ -34,7 +34,7 @@ public class RCEnrollmentTest extends StoreFrontWebsiteBaseTest{
 		sfCheckoutPage.clickCreateAccountButton(TestConstants.USER_TYPE_RC);
 		s_assert.assertTrue(sfHomePage.isWelcomeUserElementDisplayed(), "RC has not been enrolled successfully");
 		currentURL = sfHomePage.getCurrentURL().toLowerCase();
-		s_assert.assertTrue(currentURL.toLowerCase().contains(pwsURL.toLowerCase()), "Expected URL should contain"+pwsURL+"but actual on UI is"+currentURL);
+		s_assert.assertTrue(currentURL.toLowerCase().contains("pws"), "Expected URL should contain"+pwsURL+"but actual on UI is"+currentURL);
 		s_assert.assertAll();
 	}
 

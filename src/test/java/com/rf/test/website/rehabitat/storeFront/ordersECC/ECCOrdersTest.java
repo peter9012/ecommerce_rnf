@@ -16,7 +16,7 @@ import com.rf.test.website.rehabitat.storeFront.baseTest.StoreFrontWebsiteBaseTe
 
 public class ECCOrdersTest extends StoreFrontWebsiteBaseTest{
 
-	private static final int var=1;
+	private static final int var=3;
 	private static int consOrdercounter=0;
 	private static int pcOrdercounter=0;
 	private static int rcOrdercounter=0;
@@ -82,7 +82,6 @@ public class ECCOrdersTest extends StoreFrontWebsiteBaseTest{
 		orderDate = sfOrdersPage.getValueForOrderFromOrderHistory(orderNumber, "Order Date");
 		consOrdercounter++;
 		setValueInTheExcel(TestConstants.ECC_ORDER_TYPE_CONSULTANT_ADHOC, consOrdercounter, setOrderDetails());
-
 	}
 
 	//PC Adhoc Order

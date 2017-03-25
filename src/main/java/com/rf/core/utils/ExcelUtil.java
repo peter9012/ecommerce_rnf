@@ -412,23 +412,15 @@ public class ExcelUtil {
 	}
 
 	public static void createNewSheetInECCOrdersExcelFile(String path){
-		int index=0;
+		try {
+			createNewExcelFile(path);
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
 		openFile(path);
 		String consSheetName = TestConstants.ECC_ORDER_TYPE_CONSULTANT_ADHOC;
 		String pcSheetName = TestConstants.ECC_ORDER_TYPE_PC_ADHOC;
 		String rcSheetName = TestConstants.ECC_ORDER_TYPE_RC_ADHOC;
-		if(workbook.getSheet(consSheetName)!=null){
-			index = workbook.getSheetIndex(consSheetName);
-			workbook.removeSheetAt(index); 
-		}
-		if(workbook.getSheet(pcSheetName)!=null){
-			index = workbook.getSheetIndex(pcSheetName);
-			workbook.removeSheetAt(index); 
-		}
-		if(workbook.getSheet(rcSheetName)!=null){
-			index = workbook.getSheetIndex(rcSheetName);
-			workbook.removeSheetAt(index); 
-		}
 		consSheet = workbook.createSheet(consSheetName);
 		pcSheet = workbook.createSheet(pcSheetName);
 		rcSheet = workbook.createSheet(rcSheetName);
@@ -437,6 +429,23 @@ public class ExcelUtil {
 		} catch (IOException e1) {
 			// TODO Auto-generated catch block
 			e1.printStackTrace();
+		}
+	}
+
+	public static void createNewExcelFile(String path) throws IOException{
+		File file = new File(path);
+		if(file.exists()){
+			file.delete();
+		}
+		file.createNewFile();  
+		try {
+			fileOut = new FileOutputStream(file);
+			workbook = new XSSFWorkbook();
+			workbook.createSheet("Sheet1");
+			workbook.write(fileOut);
+			fileOut.close();
+		} catch (Exception e) {
+			e.printStackTrace();
 		}
 	}
 }

@@ -43,9 +43,9 @@ public class CategoryResultsPageTest extends StoreFrontWebsiteBaseTest{
 		sfHomePage.navigateToShopSkinCareSubLinks(unblemishLinkUnderShopSkincare, sublinkNameUnderShopSkincare);
 		currentURL = sfHomePage.getCurrentURL().toLowerCase();
 		s_assert.assertTrue(currentURL.contains(expectedURLForUnblemishResults), "Expected URL should contain" +expectedURLForUnblemishResults+ ". but actual on UI is"+currentURL);
-		
+
 		//Verify the functionality on PWS site.
-		sfHomePage.navigateToUrl(sfHomePage.getBaseUrl()+"/" +sfHomePage.getCountry() +"/pws/" + prefix);
+		sfHomePage.navigateToUrl(sfHomePage.getCurrentURL() + "/pws/" + prefix);
 		//Verify FAQ page for soothe regimen.
 		sfHomePage.navigateToShopSkinCareSubLinks(sootheLinkUnderShopSkincare, sublinkNameUnderShopSkincare);
 		currentURL = sfHomePage.getCurrentURL().toLowerCase();

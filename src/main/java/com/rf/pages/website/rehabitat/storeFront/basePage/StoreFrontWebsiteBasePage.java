@@ -123,7 +123,7 @@ public class StoreFrontWebsiteBasePage extends RFBasePage {
 	private final By LOGOUT_LOC = By.xpath("//a[text()='Sign Out']");
 	private final By WELCOME_DD_EDIT_CRP_LOC = By.xpath("//a[text()='Edit CRP']");
 	private final By WELCOME_DD_CHECK_MY_PULSE_LOC = By.xpath("//a[text()='Check My Pulse']");
-	private final By I_DONT_HAVE_SPONSOR_CHKBOX_LOC = By.xpath("//label[text()='I DO NOT HAVE A SPONSOR']");
+	private final By I_DONT_HAVE_SPONSOR_CHKBOX_LOC = By.xpath("//label[contains(text(),'HAVE A SPONSOR')]");
 	private final By SUBMIT_BTN_ON_REQUIRED_SPONSOR_POPUP_LOC = By.id("consultant-sponsor-submit");
 	private final By SPONSOR_FIRST_NAME_LOC = By
 			.xpath("//div[@class='enroll-page']/descendant::input[@id='sponsor.firstName'][1]");
@@ -2388,7 +2388,7 @@ public class StoreFrontWebsiteBasePage extends RFBasePage {
 	 * @return String - productName
 	 */
 	public String getProductNameFromCheckoutPopup() {
-		driver.pauseExecutionFor(2000);
+		driver.pauseExecutionFor(5000);
 		return driver.getText(PRODUCT_NAME_ON_CHECKOUT_POPUP_LOC);
 	}
 

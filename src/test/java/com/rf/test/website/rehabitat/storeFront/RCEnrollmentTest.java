@@ -20,7 +20,7 @@ public class RCEnrollmentTest extends StoreFrontWebsiteBaseTest{
 	public void testRCEnrollmentFromPWSSite_551(){
 		String prefix = pwsPrefix();
 		String currentURL = null;
-		String pwsURL=sfHomePage.getBaseUrl()+"/" +sfHomePage.getCountry() +"/pws/" + prefix;
+		String pwsURL=sfHomePage.getCurrentURL() + "/pws/" + prefix;
 		timeStamp = CommonUtils.getCurrentTimeStamp();
 		email = firstName+"rc"+timeStamp+TestConstants.EMAIL_SUFFIX;
 		randomWords = CommonUtils.getRandomWord(5);		

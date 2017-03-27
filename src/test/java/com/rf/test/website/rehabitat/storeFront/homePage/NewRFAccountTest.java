@@ -20,7 +20,7 @@ public class NewRFAccountTest extends StoreFrontWebsiteBaseTest{
 		sfHomePage.clickSignUpNowLink();
 		s_assert.assertTrue(sfHomePage.isLoginOrRegisterPageDisplayed(),"Login or register page not present on corp site.");
 		//Verify the functionality on PWS site.
-		sfHomePage.navigateToUrl(sfHomePage.getBaseUrl()+"/" +sfHomePage.getCountry() +"/pws/" + prefix);
+		sfHomePage.navigateToUrl(sfHomePage.getCurrentURL() + "/pws/" + prefix);
 		sfHomePage.clickLoginIcon();
 		sfHomePage.clickSignUpNowLink();
 		s_assert.assertTrue(sfHomePage.isLoginOrRegisterPageDisplayed(),"Login or register page not present on PWS site.");

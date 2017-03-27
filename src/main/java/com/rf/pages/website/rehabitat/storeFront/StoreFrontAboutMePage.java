@@ -41,10 +41,10 @@ public class StoreFrontAboutMePage extends StoreFrontWebsiteBasePage{
 	private final By TWITTER_LOC=By.id("twiiterUrl");
 	private final By PINTEREST_LOC=By.id("pinterestUrl");
 	private final By INSTAGRAM_LOC=By.id("instagramUrl");
-	public final By SAVE_BUTTON_LOC=By.xpath("//input[@value='Save']");
-	public final By CANCEL_BUTTON_LOC=By.xpath("//input[@value='Cancel']");
-	private final By FRAME1_LOC=By.xpath("//div[@id='cke_1_contents']//iframe");
-	private final By FRAME2_LOC=By.xpath("//div[@id='cke_question_2']//iframe");
+	private final By SAVE_BUTTON_LOC=By.xpath("//input[@value='Save']");
+	private final By CANCEL_BUTTON_LOC=By.xpath("//input[@value='Cancel']");
+	private final By FRAME1_LOC=By.xpath("//h2[contains(text(),'WHAT I LOVE MOST ABOUT MY R+F BUSINESS')]/following::iframe[1]");
+	private final By FRAME2_LOC=By.xpath("//h2[contains(text(),'What I love most about Rodan and Fields(FOR PWS)')]/following::iframe[1]");
 	private final By QUESTION_CONTENT_LOC=By.xpath("//p[1]");
 	private final By RF_BUSINESS_CONTENT_JOIN_ABOUT_ME_PAGE_LOC=By.xpath("//p[contains(text(),'Rodan + Fields has brought confidence, freedom')]");
 	//private final By QUESTION2_ON_ABOUTME_PAGE_LOC=By.xpath("//h2[contains(text(),'What I love most about Rodan and Fields')]/following::p[1]");

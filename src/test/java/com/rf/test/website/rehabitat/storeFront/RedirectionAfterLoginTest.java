@@ -62,7 +62,7 @@ public class RedirectionAfterLoginTest extends StoreFrontWebsiteBaseTest{
 	public void testPCUserEnrollrdUnderSponsorWithPWSAndLogsInFromDifferentSponsorPWS_531(){
 		String currentURL = null;
 		String prefix = pwsPrefix();
-		sfHomePage.navigateToUrl(sfHomePage.getBaseUrl()+"/" +sfHomePage.getCountry() +"/pws/" + prefix);
+		sfHomePage.navigateToUrl(sfHomePage.getCurrentURL() + "/pws/" + prefix);
 		currentURL = sfHomePage.getCurrentURL();
 		s_assert.assertTrue(currentURL.contains(prefix),"Current url should contain for "+prefix+" but actual on UI is "+currentURL);
 		sfHomePage.loginToStoreFront(pcUserWithPWSSponsor(),  password,true);
@@ -70,7 +70,7 @@ public class RedirectionAfterLoginTest extends StoreFrontWebsiteBaseTest{
 		s_assert.assertFalse(currentURL.contains(prefix),"Current url should  not contain "+prefix+" but after login actual on UI is "+currentURL);
 		s_assert.assertAll();
 	}
-
+	
 	/***
 	 * qTest : TC-532 Consultnat with PWS and logs in from different sponsor PWS
 	 * Description : This test validate prefix of consultant after login from different sponsor PWS

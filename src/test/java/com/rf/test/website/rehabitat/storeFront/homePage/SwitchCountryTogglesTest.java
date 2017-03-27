@@ -58,11 +58,11 @@ public class SwitchCountryTogglesTest extends StoreFrontWebsiteBaseTest{
 		sfHomePage.selectDefaultCountryFromToggleButton(country);
 		s_assert.assertAll();
 	}
+
 	/***
 	 * qTest : TC-1 Accessing RF URL Should Defaults User To US Country
 	 * 
 	 * Description : This test validates default corporate URL redirects to US country. 
-	 * 
 	 *     
 	 */
 	@Test(enabled=true)
@@ -73,7 +73,7 @@ public class SwitchCountryTogglesTest extends StoreFrontWebsiteBaseTest{
 		navigateToStoreFrontBaseURLWithoutCountry();
 		currentURL = sfHomePage.getCurrentURL().toLowerCase();
 		s_assert.assertTrue(currentURL.contains(corpURL), "Expected corp URL should contain" +corpURL+" but actual on UI is"+currentURL);
-		sfHomePage.navigateToUrl(sfHomePage.getBaseUrl()+"/" +sfHomePage.getCountry().toUpperCase() +"/pws/" + prefix);
+		sfHomePage.navigateToUrl(sfHomePage.getCurrentURL() + "/pws/" + prefix);
 		//Verify corp url redirects to US site.
 		currentURL = sfHomePage.getCurrentURL().toLowerCase();
 		s_assert.assertTrue(currentURL.contains(corpURL.toLowerCase()), "Expected PWS URL should contain" +corpURL+" but actual on UI is"+currentURL);

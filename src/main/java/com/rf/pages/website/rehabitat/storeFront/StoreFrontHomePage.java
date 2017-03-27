@@ -55,6 +55,7 @@ public class StoreFrontHomePage extends StoreFrontWebsiteBasePage{
 	private final By SHOP_BY_PRICE_FILTER_OPTION_0_TO_49$_AFTER_CHECKED_LOC = By.xpath("//input[@id='$0-$49.99ID'][@checked = 'checked']");
 	private final By SHOP_BY_PRICE_FILTER_OPTION_200_TO_499$_LOC = By.xpath("//input[@id='$200-$499.99ID']/..");
 	private final By SHOP_BY_PRICE_FILTER_OPTION_200_TO_499$_AFTER_CHECKED_LOC = By.xpath("//input[@id='$200-$499.99ID'][@checked = 'checked']");
+	private final By SHOP_BY_PRICE_FILTER_OPTION_500_TO_10000$_LOC = By.xpath("//input[@id='$500-$10000ID']/..");
 	private final By WELCOME_USER_LOC = By.xpath("//div[@class='loginBlock']/div");
 	private final By CONFIRMATION_MSG_OF_CONSULTANT_ENROLLMENT_LOC = By.xpath("//div[@class='global-alerts']/div");
 	private final By POLICIES_AND_PROCEDURES_LINK_LOC = By.xpath("//a[contains(text(),'Rodan+Fields Policies and Procedure')]");
@@ -643,6 +644,9 @@ public class StoreFrontHomePage extends StoreFrontWebsiteBasePage{
 	public StoreFrontHomePage selectSecondOptionInShopByPriceFilter(){
 		driver.clickByJS(RFWebsiteDriver.driver, SHOP_BY_PRICE_FILTER_LOC);
 		logger.info("Shop by price dropdown clicked");
+	if(driver.getCountry().equalsIgnoreCase("au"))
+		driver.clickByJS(RFWebsiteDriver.driver, SHOP_BY_PRICE_FILTER_OPTION_200_TO_499$_LOC);
+		else
 		driver.clickByJS(RFWebsiteDriver.driver, SHOP_BY_PRICE_FILTER_OPTION_50_TO_199$_LOC);
 		logger.info("Second option under shop by price filter selected");
 		return this;
@@ -657,6 +661,9 @@ public class StoreFrontHomePage extends StoreFrontWebsiteBasePage{
 	 * 
 	 */
 	public boolean isShopByPriceSecondFilterChecked(){
+		if(driver.getCountry().equalsIgnoreCase("au"))
+			return driver.isElementPresent(SHOP_BY_PRICE_FILTER_OPTION_200_TO_499$_AFTER_CHECKED_LOC);
+		else
 		return driver.isElementPresent(SHOP_BY_PRICE_FILTER_OPTION_50_TO_199$_AFTER_CHECKED_LOC);
 	}
 
@@ -670,7 +677,10 @@ public class StoreFrontHomePage extends StoreFrontWebsiteBasePage{
 	public StoreFrontHomePage selectThirdOptionInShopByPriceFilter(){
 		driver.clickByJS(RFWebsiteDriver.driver, SHOP_BY_PRICE_FILTER_LOC);
 		logger.info("Shop by price dropdown clicked");
-		driver.clickByJS(RFWebsiteDriver.driver, SHOP_BY_PRICE_FILTER_OPTION_200_TO_499$_LOC);
+		if(driver.getCountry().equalsIgnoreCase("au"))
+			driver.clickByJS(RFWebsiteDriver.driver, SHOP_BY_PRICE_FILTER_OPTION_500_TO_10000$_LOC);
+		else
+			driver.clickByJS(RFWebsiteDriver.driver, SHOP_BY_PRICE_FILTER_OPTION_200_TO_499$_LOC);
 		logger.info("Third option under shop by price filter selected");
 		return this;
 	}

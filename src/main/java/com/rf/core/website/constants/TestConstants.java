@@ -69,6 +69,7 @@ public class TestConstants {
 	public static final String LOW_PRICE_FILTER_US="$0-$49.99";
 	public static final String MID_PRICE_FILTER_US="$50-$199.99";
 	public static final String HIGH_PRICE_FILTER_US="$200-$499.99";
+	public static final String HIGHEST_PRICE_FILTER="$500-$10000";
 
 	// Order page Details
 	public static final String TITLE_OF_ORDER_DETAILS_PAGE = "Order Details | Rodan and Fields";

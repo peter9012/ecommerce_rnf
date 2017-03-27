@@ -648,7 +648,7 @@ public class ConsultantEnrollmentTest extends StoreFrontWebsiteBaseTest{
 	 * enrollment
 	 *     
 	 */
-	@Test(enabled=true)
+	@Test(invocationCount=2)
 	public void testConsultantEnrollmentWithPulseAndCRP_231(){
 		timeStamp = CommonUtils.getCurrentTimeStamp();
 		randomWords = CommonUtils.getRandomWord(5);  
@@ -694,7 +694,8 @@ public class ConsultantEnrollmentTest extends StoreFrontWebsiteBaseTest{
 		userPropertyFile.loadProps(userProps);
 		setUsers("consultantWithPulseAndWithCRP", consultantWithPulseAndWithCRP);
 		setUsers("pwsPrefix", pwsPrefix);
-		s_assert.assertAll();  
+		s_assert.assertAll(); 
+		System.out.println(email);
 	}
 
 	/***

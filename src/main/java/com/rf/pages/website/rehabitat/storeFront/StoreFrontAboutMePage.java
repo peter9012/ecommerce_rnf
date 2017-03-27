@@ -41,17 +41,17 @@ public class StoreFrontAboutMePage extends StoreFrontWebsiteBasePage{
 	private final By TWITTER_LOC=By.id("twiiterUrl");
 	private final By PINTEREST_LOC=By.id("pinterestUrl");
 	private final By INSTAGRAM_LOC=By.id("instagramUrl");
-	public final By SAVE_BUTTON_LOC=By.xpath("//input[@value='Save']");
-	public final By CANCEL_BUTTON_LOC=By.xpath("//input[@value='Cancel']");
-	private final By FRAME1_LOC=By.xpath("//div[@id='cke_1_contents']//iframe");
-	private final By FRAME2_LOC=By.xpath("//div[@id='cke_question_2']//iframe");
+	private final By SAVE_BUTTON_LOC=By.xpath("//input[@value='Save']");
+	private final By CANCEL_BUTTON_LOC=By.xpath("//input[@value='Cancel']");
+	private final By FRAME1_LOC=By.xpath("//h2[contains(text(),'WHAT I LOVE MOST ABOUT MY R+F BUSINESS')]/following::iframe[1]");
+	private final By FRAME2_LOC=By.xpath("//h2[contains(text(),'What I love most about Rodan and Fields(FOR PWS)')]/following::iframe[1]");
 	private final By QUESTION_CONTENT_LOC=By.xpath("//p[1]");
 	private final By RF_BUSINESS_CONTENT_JOIN_ABOUT_ME_PAGE_LOC=By.xpath("//p[contains(text(),'Rodan + Fields has brought confidence, freedom')]");
 	//private final By QUESTION2_ON_ABOUTME_PAGE_LOC=By.xpath("//h2[contains(text(),'What I love most about Rodan and Fields')]/following::p[1]");
 
 	private final String resetToDefaultLinkLoc="//h2[contains(text(),'%s')]//a";
 	private String quesOnAboutMePageLoc = "//form[@id='aboutmeFormData']//h2[contains(text(),'%s')]";
-	private String answerOnAboutMePageLoc = "//form[@id='aboutmeFormData']//h2[contains(text(),'%s')]/following-sibling::p";
+	private String answerOnAboutMePageLoc = "//form[@id='aboutmeFormData']//h2[contains(text(),'%s')]/following-sibling::p[text()][1]";
 	private String question2OnAboutMePageLoc="//h2[contains(text(),'What I love most about Rodan and Fields')]/following::p[contains(text(),'%s')]";
 
 	/***
@@ -99,7 +99,8 @@ public class StoreFrontAboutMePage extends StoreFrontWebsiteBasePage{
 	 * 
 	 */
 	public boolean isAnswerOfExpectedQuesPresentOnAboutMePage(String ques){
-		return driver.isElementVisible(By.xpath(String.format(answerOnAboutMePageLoc,ques)));
+		driver.quickWaitForElementPresent(By.xpath(String.format(answerOnAboutMePageLoc,ques)), 2);
+		return driver.isElementPresent(By.xpath(String.format(answerOnAboutMePageLoc,ques)));
 
 	}
 
@@ -466,6 +467,7 @@ public class StoreFrontAboutMePage extends StoreFrontWebsiteBasePage{
 	 */ 
 	public StoreFrontAboutMePage clickSaveButtonAboutMePage(){
 		driver.click(SAVE_BUTTON_LOC);
+		driver.waitForPageLoad();
 		return this;
 	}
 
@@ -489,16 +491,23 @@ public class StoreFrontAboutMePage extends StoreFrontWebsiteBasePage{
 	 * 
 	 */ 
 	public StoreFrontAboutMePage typeContentOfSelectedQuestion(int num, String msg, int questionNumber){
+		driver.pauseExecutionFor(1000);
 		if(questionNumber==1){
 			driver.switchToFrame(FRAME1_LOC);
+			logger.info("switched to frame Ques1");
+			driver.pauseExecutionFor(2000);
 			Actions actions = new Actions(RFWebsiteDriver.driver);
 			actions.click(driver.findElement(QUESTION_CONTENT_LOC)).sendKeys(driver.findElement(QUESTION_CONTENT_LOC), msg,(Integer.toString(num))).build().perform();
+			logger.info("Question No 1 is edited");
 			driver.switchTo().defaultContent();
 		}
 		else if (questionNumber==2) {
 			driver.switchToFrame(FRAME2_LOC);
+			logger.info("switched to frame Ques2");
+			driver.pauseExecutionFor(2000);
 			Actions actions = new Actions(RFWebsiteDriver.driver);
 			actions.click(driver.findElement(QUESTION_CONTENT_LOC)).sendKeys(driver.findElement(QUESTION_CONTENT_LOC), msg,(Integer.toString(num))).build().perform();
+			logger.info("Question No 2 is edited");
 			driver.switchTo().defaultContent();
 		}
 		return this;
@@ -514,10 +523,13 @@ public class StoreFrontAboutMePage extends StoreFrontWebsiteBasePage{
 	public String getContentOfRFBusinessQuestion(){
 		String content=null;
 		driver.switchToFrame(FRAME1_LOC);
-		Actions actions = new Actions(RFWebsiteDriver.driver);
+		driver.pauseExecutionFor(2000);
+		logger.info("Switched to frame");
+		//Actions actions = new Actions(RFWebsiteDriver.driver);
 		//String selectAll = Keys.chord(Keys.CONTROL, "a");
-		actions.keyDown(Keys.CONTROL).sendKeys(String.valueOf('\u0061')).perform();
+		//actions.keyDown(Keys.CONTROL).sendKeys(String.valueOf('\u0061')).perform();
 		content=driver.findElement(QUESTION_CONTENT_LOC).getText();
+		logger.info("content fetched is "+content);
 		driver.switchTo().defaultContent();
 		return content;
 	}
@@ -530,7 +542,7 @@ public class StoreFrontAboutMePage extends StoreFrontWebsiteBasePage{
 	 * 
 	 */ 
 	public StoreFrontAboutMePage clickResetToDefaultLink(String questionName){
-		driver.click(By.xpath(String.format(resetToDefaultLinkLoc, questionName)));
+		driver.clickByJS(RFWebsiteDriver.driver, By.xpath(String.format(resetToDefaultLinkLoc, questionName)));
 		logger.info("clicked on 'reset to default' link of question "+questionName);
 		driver.pauseExecutionFor(3000);
 		return this;

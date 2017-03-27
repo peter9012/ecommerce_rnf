@@ -240,8 +240,7 @@ public class AutoshipTest extends StoreFrontWebsiteBaseTest{
 		s_assert.assertTrue(currentURL.contains(textToAssertInURL), "Expected URL should contain "+textToAssertInURL+" on Autoship cart page but actual on UI is "+currentURL);
 		subtotalAtAutoshipCart = sfAutoshipCartPage.getSubtotalofItemsAtCart();
 		sfShopSkinCarePage = sfAutoshipCartPage.clickAddMoreItemsBtn();
-		sfShopSkinCarePage.refineProductByCategory(TestConstants.PC_PERKS_AUTOSHIP_PRODUCT_CATEGORY);
-		sfShopSkinCarePage.addProductToCart(TestConstants.PRODUCT_NUMBER, TestConstants.ORDER_TYPE_PC_PERKS);
+		sfShopSkinCarePage.addProductToCart(TestConstants.PRODUCT_NUMBER, TestConstants.ORDER_TYPE_PC_PERKS,validProductId);
 		sfShopSkinCarePage.checkoutTheCartFromPopUp();
 		newSubtotalAtAutoshipCart= sfAutoshipCartPage.getSubtotalofItemsAtCart();
 		s_assert.assertTrue(newSubtotalAtAutoshipCart>subtotalAtAutoshipCart,"Product is not been added to PC Autoship cart page.");
@@ -421,6 +420,10 @@ public class AutoshipTest extends StoreFrontWebsiteBaseTest{
 		sfCheckoutPage.clickAddNewBillingProfileButton();
 		sfCheckoutPage.enterUserBillingDetails(cardType,cardNumber,cardName,CVV);
 		sfCheckoutPage.clickBillingDetailsNextbutton();
+		if(sfCheckoutPage.hasTokenizationFailed()==true){
+			sfCheckoutPage.enterUserBillingDetails(cardType, cardNumber, cardName, CVV);
+			sfCheckoutPage.clickBillingDetailsNextbutton();
+		}
 		profileLastName = sfCheckoutPage.getLastName(cardName);
 		defaultBillingProfileName = sfCheckoutPage.getDefaultBillingProfileName();
 		s_assert.assertTrue(defaultBillingProfileName.contains(profileLastName),"New Billing Profile Details do not get updated. Expected Profile Name : "+ cardName + ". Actual : " + defaultBillingProfileName);
@@ -457,7 +460,6 @@ public class AutoshipTest extends StoreFrontWebsiteBaseTest{
 		s_assert.assertAll();
 	}
 
-
 	/***
 	 * qTest : TC-449 Consultant Autoship Status- Cancel CRP
 	 * Description : This test validates the Cancel CRP functionality for Consulatnt user.
@@ -472,7 +474,7 @@ public class AutoshipTest extends StoreFrontWebsiteBaseTest{
 		sfAutoshipStatusPage = sfHomePage.navigateToAutoshipStatusPage();
 		if(sfAutoshipStatusPage.isEnrollIntoCRPButtonPresent()){
 			sfAutoshipStatusPage.clickEnrollInCRPButton();
-			sfHomePage.addFirstProductForCRPCheckout(validProductName);
+			sfHomePage.addFirstProductForCRPCheckout(validProductName,validProductId);
 			sfCheckoutPage = sfHomePage.checkoutCRPBag();
 			sfCheckoutPage.clickSaveButton();
 			sfCheckoutPage.clickShippingDetailsNextbutton();
@@ -484,19 +486,19 @@ public class AutoshipTest extends StoreFrontWebsiteBaseTest{
 			sfCheckoutPage.clickRodanAndFieldsLogo();
 			sfCheckoutPage.clickWelcomeDropdown();
 			sfCheckoutPage.navigateToAutoshipStatusPage();
-			s_assert.assertTrue(sfAutoshipStatusPage.getCurrentCRPStatus().contains("Enrolled"),"Consultant does not get enrolled in CRP");
+			s_assert.assertTrue(sfAutoshipStatusPage.getCurrentCRPStatus().contains("Enrol"),"Consultant does not get enrolled in CRP");
 			sfCheckoutPage.clickRodanAndFieldsLogo();
+			sfAutoshipStatusPage.clickWelcomeDropdown();
+			sfAutoshipStatusPage.navigateToAutoshipStatusPage();
 		}
-		sfAutoshipStatusPage.clickWelcomeDropdown();
-		sfAutoshipStatusPage.navigateToAutoshipStatusPage();
-		s_assert.assertTrue(sfAutoshipStatusPage.getCurrentCRPStatus().contains("Enrolled"),"Consultant is not enrolled into CRP yet");
+		s_assert.assertTrue(sfAutoshipStatusPage.getCurrentCRPStatus().contains("Enrol"),"Consultant is not enrolled into CRP yet");
 		sfAutoshipStatusPage.clickCancelCRPLink();
 		sfAutoshipStatusPage.clickCancelCRPButton();
 		s_assert.assertTrue(sfAutoshipStatusPage.getActionSucccessMsgOnAutoshipStatusPage().contains(TestConstants.CANCELLED_CRP_ORDER_SUCCESS_MESSAGE),"Cancelled CRP Order Success Message is not present as expected");
 		s_assert.assertTrue(sfAutoshipStatusPage.isEnrollIntoCRPButtonPresent(),"Enroll in CRP Button is not present After cancelling CRP for consulatnt");
 		// Enrolling Consultant in CRP
 		sfAutoshipStatusPage.clickEnrollInCRPButton();
-		sfHomePage.addFirstProductForCRPCheckout(validProductName);
+		sfHomePage.addFirstProductForCRPCheckout(validProductName,validProductId);
 		sfCheckoutPage = sfHomePage.checkoutCRPBag();
 		sfCheckoutPage.clickSaveButton();
 		sfCheckoutPage.clickShippingDetailsNextbutton();
@@ -508,7 +510,7 @@ public class AutoshipTest extends StoreFrontWebsiteBaseTest{
 		sfCheckoutPage.clickRodanAndFieldsLogo();
 		sfHomePage.clickWelcomeDropdown();
 		sfCheckoutPage.navigateToAutoshipStatusPage();
-		s_assert.assertTrue(sfAutoshipStatusPage.getCurrentCRPStatus().contains("Enrolled"),"Consultant does not get enrolled in CRP");
+		s_assert.assertTrue(sfAutoshipStatusPage.getCurrentCRPStatus().contains("Enrol"),"Consultant does not get enrolled in CRP");
 		s_assert.assertAll();
 	}
 
@@ -538,6 +540,10 @@ public class AutoshipTest extends StoreFrontWebsiteBaseTest{
 		sfHomePage.clickShippingDetailsNextbutton();
 		sfHomePage.enterUserBillingDetails(cardType, cardNumber, cardName, CVV);
 		sfHomePage.clickBillingDetailsNextbutton();
+		if(sfHomePage.hasTokenizationFailed()==true){
+			sfHomePage.enterUserBillingDetails(cardType, cardNumber, cardName, CVV);
+			sfHomePage.clickBillingDetailsNextbutton();
+		}
 		sfHomePage.selectPoliciesAndProceduresChkBox();
 		sfHomePage.selectIAcknowledgeChkBox();
 		sfHomePage.selectTermsAndConditionsChkBox();
@@ -547,7 +553,7 @@ public class AutoshipTest extends StoreFrontWebsiteBaseTest{
 		sfHomePage.clickRodanAndFieldsLogo();
 		// Click Set up CRP from Banner
 		sfHomePage.clickSetUpCRP();
-		sfHomePage.addFirstProductForCRPCheckout(validProductName);
+		sfHomePage.addFirstProductForCRPCheckout(validProductName,validProductId);
 		sfCheckoutPage = sfHomePage.checkoutCRPBag();
 		sfCheckoutPage.clickSaveButton();
 		sfCheckoutPage.clickShippingDetailsNextbutton();
@@ -674,49 +680,24 @@ public class AutoshipTest extends StoreFrontWebsiteBaseTest{
 	 */
 	@Test(enabled=true)
 	public void testUpdateAutoshipCartOrderSummary_326(){
-		int totalNoOfItemBeforeAdd = 0;
-		int totalNoOfItemAfterAdd = 0;
-		int totalNoOfItemAfterRemove = 0;
-		int totalNoOfProducts = 0;
-		int productnumber = 0;
-		String productQuantity = null;
-		String productQuantityToUpdate = null;
+		String incrementedQty = null;
+		String updatedQty = null;
 
-		// Loginin As Cons
+		// Login As Cons
 		sfHomePage.loginToStoreFront(consultantWithPulseAndWithCRP(), password,true);
-		sfAutoshipCartPage = sfHomePage.clickOnAutoshipCartLink();
-		totalNoOfItemBeforeAdd = sfAutoshipCartPage.getTotalNumberOfItemsFromCart();
-		sfShopSkinCarePage = sfAutoshipCartPage.clickAddMoreItemsBtn();
-		sfShopSkinCarePage.refineProductByCategory(TestConstants.CONSULTANT_CRP_AUTOSHIP_PRODUCT_CATEGORY);
-		totalNoOfProducts = sfShopSkinCarePage.getTotalNoOfProduct();
-		productnumber = CommonUtils.getRandomNum(1, totalNoOfProducts);
-		sfShopSkinCarePage.addProductToCart(""+productnumber, TestConstants.ORDER_TYPE_CRP);
-		sfShopSkinCarePage.checkoutTheCartFromPopUp();
-		totalNoOfItemAfterAdd =  sfAutoshipCartPage.getTotalNumberOfItemsFromCart();
-		while(true){
-			if(totalNoOfItemBeforeAdd==totalNoOfItemAfterAdd){
-				sfAutoshipCartPage.clickAddMoreItemsBtn();
-				sfShopSkinCarePage.refineProductByCategory(TestConstants.CONSULTANT_CRP_AUTOSHIP_PRODUCT_CATEGORY);
-				productnumber = CommonUtils.getRandomNum(1, totalNoOfProducts);
-				sfShopSkinCarePage.addProductToCart(""+productnumber, TestConstants.ORDER_TYPE_CRP);
-				sfShopSkinCarePage.checkoutTheCartFromPopUp();
-				totalNoOfItemAfterAdd =  sfAutoshipCartPage.getTotalNumberOfItemsFromCart();
-				continue;
-			}else{
-				break;
-			}
-		}
-		totalNoOfItemAfterAdd =  sfAutoshipCartPage.getTotalNumberOfItemsFromCart();
-		s_assert.assertTrue(totalNoOfItemAfterAdd>totalNoOfItemBeforeAdd, "Added item from PDP is not present into cart");
-		productQuantity = sfAutoshipCartPage.getProductQuantityFromAutoshipCart("2");
-		productQuantityToUpdate = sfAutoshipCartPage.updateQuantityByOne(productQuantity).trim();
-		sfAutoshipCartPage.enterProductQuantityAtAutoshipCart("2", productQuantityToUpdate);
-		sfAutoshipCartPage.updateQuantityAtAutoshipCart("2");
-		productQuantity = sfAutoshipCartPage.getProductQuantityFromAutoshipCart("2").trim();
-		s_assert.assertTrue(productQuantity.equals(productQuantityToUpdate), "Product quantity is not updated successfully");
-		sfAutoshipCartPage.removeAnItemFromAutoshipCart("2");
-		totalNoOfItemAfterRemove =  sfAutoshipCartPage.getTotalNumberOfItemsFromCart();
-		s_assert.assertTrue(totalNoOfItemAfterRemove==totalNoOfItemBeforeAdd, "Added item from PDP is not present into cart");
+		sfShopSkinCarePage = sfHomePage.clickAllProducts();
+		/*sfShopSkinCarePage.addProductToCart(TestConstants.PRODUCT_NUMBER,TestConstants.ORDER_TYPE_CRP,validProductId);
+	  sfAutoshipCartPage = sfShopSkinCarePage.checkoutTheCartFromPopUpForAutoship();
+	  sfAutoshipCartPage.removeProductFromAutoshipCart(validProductName);
+	  s_assert.assertFalse(sfAutoshipCartPage.isProductPresentInAutoShipCart(validProductName),"Product : " + validProductName + "is still present in AutoShip Cart");
+	  sfAutoshipCartPage.clickAddMoreItemsBtn();*/
+		sfShopSkinCarePage.addProductToCart(TestConstants.PRODUCT_NUMBER,TestConstants.ORDER_TYPE_CRP,validProductId);
+		sfAutoshipCartPage = sfShopSkinCarePage.checkoutTheCartFromPopUpForAutoship();
+		s_assert.assertTrue(sfAutoshipCartPage.isProductPresentInAutoShipCart(validProductName),"Product : " + validProductName + "is not present in AutoShip Cart");
+		incrementedQty = sfAutoshipCartPage.updateQuantityByOne(sfAutoshipCartPage.getQtyOfProductFromAutoShipCart(validProductName));
+		sfAutoshipCartPage.updateQtyForProductInAutoShipCart(validProductName,incrementedQty);
+		updatedQty = sfAutoshipCartPage.getQtyOfProductFromAutoShipCart(validProductName);
+		s_assert.assertTrue(updatedQty.equals(incrementedQty),"Actual Quantity of Product : " + validProductName + " : "  + updatedQty + "  does not match with the Expceted Quantity : " + incrementedQty + " at AutoShip Cart");
 		s_assert.assertAll();
 	}
 
@@ -791,7 +772,7 @@ public class AutoshipTest extends StoreFrontWebsiteBaseTest{
 		sfAutoshipStatusPage = sfHomePage.navigateToAutoshipStatusPage();
 		s_assert.assertTrue(sfAutoshipStatusPage.isTextVisible(currentPulseStatus), currentPulseStatus+" tag is not present for pulse");
 		currentPulseStatus = sfAutoshipStatusPage.getCurrentPulseStatus();
-		s_assert.assertTrue(sfAutoshipStatusPage.getCurrentCRPStatus().contains("Enrolled"),"Consultant is not enrolled into CRP yet");
+		s_assert.assertTrue(sfAutoshipStatusPage.getCurrentCRPStatus().contains("Enrol"),"Consultant is not enrolled into CRP yet");
 		s_assert.assertTrue(currentPulseStatus.contains("ACTIVE"),"Consultant is not enrolled into Pulse yet expected 'ACTIVE' and Actual"+currentPulseStatus);
 		s_assert.assertTrue(sfAutoshipStatusPage.isTextVisible(nextBillAndShipDate), nextBillAndShipDate+" tag is not present for pulse");
 		s_assert.assertAll();
@@ -822,7 +803,6 @@ public class AutoshipTest extends StoreFrontWebsiteBaseTest{
 	 */
 	@Test(enabled=true)
 	public void testAddToAutoshipCartConsultant_396(){
-		String productName = null;
 		String productQuantity = null;
 		String updatedQuantity = null;
 		String updatedQuantityFromUI = null;
@@ -830,52 +810,49 @@ public class AutoshipTest extends StoreFrontWebsiteBaseTest{
 
 		// Login As Cons
 		sfHomePage.loginToStoreFront(consultantWithPulseAndWithCRP(), password,true);
-		sfShopSkinCarePage = sfHomePage.clickAllProductsCRP();
-		sfShopSkinCarePage.refineProductByCategory(TestConstants.CONSULTANT_CRP_AUTOSHIP_PRODUCT_CATEGORY);
-		productName = sfShopSkinCarePage.getProductNameFromAllProductPage(TestConstants.PRODUCT_NUMBER);
-		sfAutoshipCartPage = sfShopSkinCarePage.clickAutoshipLink();
-		if(sfAutoshipCartPage.isProductAddedToCartPresentOnCartPage(productName)){
-			productQuantity = sfAutoshipCartPage.getQuantityOfSpecificProductFromAutoshipCart(productName).trim(); 
+		sfAutoshipCartPage = sfHomePage.clickAutoshipLink();
+		if(sfAutoshipCartPage.isProductPresentInAutoShipCart(validProductName)){
+			productQuantity = sfAutoshipCartPage.getQtyOfProductFromAutoShipCart(validProductName); 
 			isProductPresent = true;
 		}
 		sfAutoshipCartPage.clickRodanAndFieldsLogo();
-		sfAutoshipCartPage.clickAllProductsCRP();
-		sfShopSkinCarePage.refineProductByCategory(TestConstants.CONSULTANT_CRP_AUTOSHIP_PRODUCT_CATEGORY);
-		sfShopSkinCarePage.addProductToCart(TestConstants.PRODUCT_NUMBER, TestConstants.ORDER_TYPE_CRP);
+		sfShopSkinCarePage = sfAutoshipCartPage.clickAllProducts();
+		sfShopSkinCarePage.addProductToCart(TestConstants.PRODUCT_NUMBER, TestConstants.ORDER_TYPE_CRP,validProductId);
 		s_assert.assertTrue(sfShopSkinCarePage.isCheckoutPopupDisplayed(),"Expected checkout popup is not displayed while adding product from PLP");
 		sfShopSkinCarePage.checkoutTheCartFromPopUp();
 		if(isProductPresent){
 			updatedQuantity = sfAutoshipCartPage.updateQuantityByOne(productQuantity).trim();
-			updatedQuantityFromUI = sfAutoshipCartPage.getQuantityOfSpecificProductFromAutoshipCart(productName).trim();
+			updatedQuantityFromUI = sfAutoshipCartPage.getQtyOfProductFromAutoShipCart(validProductName);
 			s_assert.assertTrue(updatedQuantityFromUI.equals(updatedQuantity), "Added item from PLP is not present into cart");
 		}else{
-			updatedQuantityFromUI = sfAutoshipCartPage.getQuantityOfSpecificProductFromAutoshipCart(productName).trim();
-			s_assert.assertTrue(sfAutoshipCartPage.isProductAddedToCartPresentOnCartPage(productName), "Added item from PLP is not present into cart");
+			updatedQuantityFromUI = sfAutoshipCartPage.getQtyOfProductFromAutoShipCart(validProductName);
+			s_assert.assertTrue(sfAutoshipCartPage.isProductPresentInAutoShipCart(validProductName), "Added item from PLP is not present into cart");
 		}
 		sfAutoshipCartPage.clickRodanAndFieldsLogo();
-		sfAutoshipCartPage.clickAllProductsCRP();
-		sfShopSkinCarePage.refineProductByCategory(TestConstants.CONSULTANT_CRP_AUTOSHIP_PRODUCT_CATEGORY);
+		sfAutoshipCartPage.clickAllProducts();
+		sfAutoshipCartPage.clickSearchIcon();
+		sfShopSkinCarePage.searchEntityAndHitEnter(validProductId);
 		sfShopSkinCarePage.clickOnQuickViewLinkForProduct(TestConstants.PRODUCT_NUMBER);
 		sfShopSkinCarePage.addProductToCartFromQuickViewPopup(TestConstants.ORDER_TYPE_CRP);
 		s_assert.assertTrue(sfShopSkinCarePage.isCheckoutPopupDisplayed(),"Expected checkout popup is not displayed while adding product from Quick View popup");
 		sfShopSkinCarePage.checkoutTheCartFromPopUp();
-		updatedQuantity = sfAutoshipCartPage.updateQuantityByOne(updatedQuantityFromUI).trim();
-		updatedQuantityFromUI = sfAutoshipCartPage.getQuantityOfSpecificProductFromAutoshipCart(productName).trim();
+		updatedQuantity = sfAutoshipCartPage.updateQuantityByOne(updatedQuantityFromUI);
+		updatedQuantityFromUI = sfAutoshipCartPage.getQtyOfProductFromAutoShipCart(validProductName);
 		s_assert.assertTrue(updatedQuantityFromUI.equals(updatedQuantity), "Added item from quick view popup is not present into cart. Expected Quantity : " + updatedQuantity + ". Actual Quantity : " + updatedQuantityFromUI);
 		//From product page
 		sfAutoshipCartPage.clickRodanAndFieldsLogo();
-		sfAutoshipCartPage.clickAllProductsCRP();
-		sfShopSkinCarePage.refineProductByCategory(TestConstants.CONSULTANT_CRP_AUTOSHIP_PRODUCT_CATEGORY);
+		sfAutoshipCartPage.clickAllProducts();
+		sfAutoshipCartPage.clickSearchIcon();
+		sfShopSkinCarePage.searchEntityAndHitEnter(validProductId);
 		sfProductDetailPage = sfShopSkinCarePage.clickNameOfProductOnAllProductPage(TestConstants.PRODUCT_NUMBER);
 		sfProductDetailPage.addProductToCartFromProductDetailPageAfterLogin(TestConstants.ORDER_TYPE_CRP);
 		s_assert.assertTrue(sfProductDetailPage.isCheckoutPopupDisplayed(),"Expected checkout popup is not displayed while adding product from Quick View popup");
 		sfProductDetailPage.checkoutTheCartFromPopUp();
-		updatedQuantity = sfAutoshipCartPage.updateQuantityByOne(updatedQuantityFromUI).trim();
-		updatedQuantityFromUI = sfAutoshipCartPage.getQuantityOfSpecificProductFromAutoshipCart(productName).trim();
+		updatedQuantity = sfAutoshipCartPage.updateQuantityByOne(updatedQuantityFromUI);
+		updatedQuantityFromUI = sfAutoshipCartPage.getQtyOfProductFromAutoShipCart(validProductName);
 		s_assert.assertTrue(updatedQuantityFromUI.equals(updatedQuantity), "Added item from PDP is not present into cart.  Expected Quantity : " + updatedQuantity + ". Actual Quantity : " + updatedQuantityFromUI);
 		s_assert.assertAll();
 	}
-
 	/***
 	 * qTest : TC-397 Add to Autoship Cart - PC
 	 * Description : This test add a new product in to cart through PLP, Quick View Popup, PDP
@@ -884,56 +861,53 @@ public class AutoshipTest extends StoreFrontWebsiteBaseTest{
 	 */
 	@Test(enabled=true)
 	public void testAddToAutoshipCartPC_397(){
-		String productName = null;
 		String productQuantity = null;
 		String updatedQuantity = null;
 		String updatedQuantityFromUI = null;
 		boolean isProductPresent = false;
 
-		// Login As PC
+		// Login As Cons
 		sfHomePage.loginToStoreFront(pcUserWithPWSSponsor(), password,true);
-		sfShopSkinCarePage = sfHomePage.clickAllProductsCRP();
-		sfShopSkinCarePage.refineProductByCategory(TestConstants.PC_PERKS_AUTOSHIP_PRODUCT_CATEGORY);
-		productName = sfShopSkinCarePage.getProductNameFromAllProductPage(TestConstants.PRODUCT_NUMBER_PC_AUTOSHIP);
-		sfAutoshipCartPage = sfShopSkinCarePage.clickAutoshipLink();
-		if(sfAutoshipCartPage.isProductAddedToCartPresentOnCartPage(productName)){
-			productQuantity = sfAutoshipCartPage.getQuantityOfSpecificProductFromAutoshipCart(productName).trim(); 
+		sfAutoshipCartPage = sfHomePage.clickAutoshipLink();
+		if(sfAutoshipCartPage.isProductPresentInAutoShipCart(validProductName)){
+			productQuantity = sfAutoshipCartPage.getQtyOfProductFromAutoShipCart(validProductName); 
 			isProductPresent = true;
 		}
 		sfAutoshipCartPage.clickRodanAndFieldsLogo();
-		sfAutoshipCartPage.clickAllProductsCRP();
-		sfShopSkinCarePage.refineProductByCategory(TestConstants.PC_PERKS_AUTOSHIP_PRODUCT_CATEGORY);
-		sfShopSkinCarePage.addProductToCart(TestConstants.PRODUCT_NUMBER_PC_AUTOSHIP, TestConstants.ORDER_TYPE_PC_PERKS);
+		sfShopSkinCarePage = sfAutoshipCartPage.clickAllProducts();
+		sfShopSkinCarePage.addProductToCart(TestConstants.PRODUCT_NUMBER, TestConstants.ORDER_TYPE_PC_PERKS,validProductId);
 		s_assert.assertTrue(sfShopSkinCarePage.isCheckoutPopupDisplayed(),"Expected checkout popup is not displayed while adding product from PLP");
 		sfShopSkinCarePage.checkoutTheCartFromPopUp();
 		if(isProductPresent){
 			updatedQuantity = sfAutoshipCartPage.updateQuantityByOne(productQuantity).trim();
-			updatedQuantityFromUI = sfAutoshipCartPage.getQuantityOfSpecificProductFromAutoshipCart(productName).trim();
+			updatedQuantityFromUI = sfAutoshipCartPage.getQtyOfProductFromAutoShipCart(validProductName);
 			s_assert.assertTrue(updatedQuantityFromUI.equals(updatedQuantity), "Added item from PLP is not present into cart");
 		}else{
-			updatedQuantityFromUI = sfAutoshipCartPage.getQuantityOfSpecificProductFromAutoshipCart(productName).trim();
-			s_assert.assertTrue(sfAutoshipCartPage.isProductAddedToCartPresentOnCartPage(productName), "Added item from PLP is not present into cart");
+			updatedQuantityFromUI = sfAutoshipCartPage.getQtyOfProductFromAutoShipCart(validProductName);
+			s_assert.assertTrue(sfAutoshipCartPage.isProductPresentInAutoShipCart(validProductName), "Added item from PLP is not present into cart");
 		}
 		sfAutoshipCartPage.clickRodanAndFieldsLogo();
-		sfAutoshipCartPage.clickAllProductsCRP();
-		sfShopSkinCarePage.refineProductByCategory(TestConstants.PC_PERKS_AUTOSHIP_PRODUCT_CATEGORY);
-		sfShopSkinCarePage.clickOnQuickViewLinkForProduct(TestConstants.PRODUCT_NUMBER_PC_AUTOSHIP);
+		sfAutoshipCartPage.clickAllProducts();
+		sfAutoshipCartPage.clickSearchIcon();
+		sfShopSkinCarePage.searchEntityAndHitEnter(validProductId);
+		sfShopSkinCarePage.clickOnQuickViewLinkForProduct(TestConstants.PRODUCT_NUMBER);
 		sfShopSkinCarePage.addProductToCartFromQuickViewPopup(TestConstants.ORDER_TYPE_PC_PERKS);
 		s_assert.assertTrue(sfShopSkinCarePage.isCheckoutPopupDisplayed(),"Expected checkout popup is not displayed while adding product from Quick View popup");
 		sfShopSkinCarePage.checkoutTheCartFromPopUp();
-		updatedQuantity = sfAutoshipCartPage.updateQuantityByOne(updatedQuantityFromUI).trim();
-		updatedQuantityFromUI = sfAutoshipCartPage.getQuantityOfSpecificProductFromAutoshipCart(productName).trim();
+		updatedQuantity = sfAutoshipCartPage.updateQuantityByOne(updatedQuantityFromUI);
+		updatedQuantityFromUI = sfAutoshipCartPage.getQtyOfProductFromAutoShipCart(validProductName);
 		s_assert.assertTrue(updatedQuantityFromUI.equals(updatedQuantity), "Added item from quick view popup is not present into cart. Expected Quantity : " + updatedQuantity + ". Actual Quantity : " + updatedQuantityFromUI);
 		//From product page
 		sfAutoshipCartPage.clickRodanAndFieldsLogo();
-		sfAutoshipCartPage.clickAllProductsCRP();
-		sfShopSkinCarePage.refineProductByCategory(TestConstants.PC_PERKS_AUTOSHIP_PRODUCT_CATEGORY);
-		sfProductDetailPage = sfShopSkinCarePage.clickNameOfProductOnAllProductPage(TestConstants.PRODUCT_NUMBER_PC_AUTOSHIP);
+		sfAutoshipCartPage.clickAllProducts();
+		sfAutoshipCartPage.clickSearchIcon();
+		sfShopSkinCarePage.searchEntityAndHitEnter(validProductId);
+		sfProductDetailPage = sfShopSkinCarePage.clickNameOfProductOnAllProductPage(TestConstants.PRODUCT_NUMBER);
 		sfProductDetailPage.addProductToCartFromProductDetailPageAfterLogin(TestConstants.ORDER_TYPE_PC_PERKS);
 		s_assert.assertTrue(sfProductDetailPage.isCheckoutPopupDisplayed(),"Expected checkout popup is not displayed while adding product from Quick View popup");
 		sfProductDetailPage.checkoutTheCartFromPopUp();
-		updatedQuantity = sfAutoshipCartPage.updateQuantityByOne(updatedQuantityFromUI).trim();
-		updatedQuantityFromUI = sfAutoshipCartPage.getQuantityOfSpecificProductFromAutoshipCart(productName).trim();
+		updatedQuantity = sfAutoshipCartPage.updateQuantityByOne(updatedQuantityFromUI);
+		updatedQuantityFromUI = sfAutoshipCartPage.getQtyOfProductFromAutoShipCart(validProductName);
 		s_assert.assertTrue(updatedQuantityFromUI.equals(updatedQuantity), "Added item from PDP is not present into cart.  Expected Quantity : " + updatedQuantity + ". Actual Quantity : " + updatedQuantityFromUI);
 		s_assert.assertAll();
 	}
@@ -1022,8 +996,7 @@ public class AutoshipTest extends StoreFrontWebsiteBaseTest{
 		// Login as Cons
 		sfHomePage.loginToStoreFront(consultantWithoutPulseAndWithoutCRP(), password,true);
 		sfShopSkinCarePage = sfHomePage.clickAllProducts();
-		sfShopSkinCarePage.refineProductByCategory(TestConstants.CONSULTANT_CRP_AUTOSHIP_PRODUCT_CATEGORY);
-		sfShopSkinCarePage.addProductToCart(productNumber, orderType);
+		sfShopSkinCarePage.addProductToCart(productNumber, orderType,validProductId);
 		// Add to CRP From Category Page
 		s_assert.assertTrue(sfShopSkinCarePage.isEnrollNowPopupIsDisplayed(),"Enroll now popup does not get displayed after Clicking Add to CRP Button from Category Page");
 		sfShopSkinCarePage.clickOptionFromEnrollNowPopup("No");
@@ -1181,6 +1154,10 @@ public class AutoshipTest extends StoreFrontWebsiteBaseTest{
 		sfCheckoutPage.clickShippingDetailsNextbutton();
 		sfCheckoutPage.enterUserBillingDetails(cardType,cardNumber,cardName,CVV);
 		sfCheckoutPage.clickBillingDetailsNextbutton();
+		if(sfCheckoutPage.hasTokenizationFailed()==true){
+			sfCheckoutPage.enterUserBillingDetails(cardType, cardNumber, cardName, CVV);
+			sfCheckoutPage.clickBillingDetailsNextbutton();
+		}
 		sfCheckoutPage.selectIAcknowledgePCChkBox();
 		sfCheckoutPage.selectPCTermsAndConditionsChkBox();
 		sfCheckoutPage.clickPlaceOrderButton();
@@ -1219,6 +1196,10 @@ public class AutoshipTest extends StoreFrontWebsiteBaseTest{
 		sfHomePage.clickShippingDetailsNextbutton();
 		sfHomePage.enterUserBillingDetails(cardType, cardNumber, cardName, CVV);
 		sfHomePage.clickBillingDetailsNextbutton();
+		if(sfHomePage.hasTokenizationFailed()==true){
+			sfHomePage.enterUserBillingDetails(cardType, cardNumber, cardName, CVV);
+			sfHomePage.clickBillingDetailsNextbutton();
+		}
 		sfHomePage.selectPoliciesAndProceduresChkBox();
 		sfHomePage.selectIAcknowledgeChkBox();
 		sfHomePage.selectTermsAndConditionsChkBox();
@@ -1228,7 +1209,7 @@ public class AutoshipTest extends StoreFrontWebsiteBaseTest{
 		sfHomePage.clickRodanAndFieldsLogo();
 		//Enroll consultant in CRP
 		sfHomePage.clickSetUpCRP();
-		sfHomePage.addFirstProductForCRPCheckout(validProductName);
+		sfHomePage.addFirstProductForCRPCheckout(validProductName,validProductId);
 		sfCheckoutPage = sfHomePage.checkoutCRPBag();
 		sfCheckoutPage.clickSaveButton();
 		sfCheckoutPage.clickShippingDetailsNextbutton();
@@ -1271,6 +1252,10 @@ public class AutoshipTest extends StoreFrontWebsiteBaseTest{
 		sfCheckoutPage.clickAddNewBillingProfileButton();
 		sfCheckoutPage.enterUserBillingDetails(cardType,cardNumber,cardName,CVV);
 		sfCheckoutPage.clickBillingDetailsNextbutton();
+		if(sfCheckoutPage.hasTokenizationFailed()==true){
+			sfCheckoutPage.enterUserBillingDetails(cardType, cardNumber, cardName, CVV);
+			sfCheckoutPage.clickBillingDetailsNextbutton();
+		}
 		//sfCheckoutPage.selectTermsAndConditionsCheckBoxForAutoshipOrder();
 		//  sfCheckoutPage.selectIAcknowledgeChkBox();
 		sfCheckoutPage.clickConfirmAutoshipOrderButton();
@@ -1600,34 +1585,30 @@ public class AutoshipTest extends StoreFrontWebsiteBaseTest{
 	 */
 	@Test(enabled=true)
 	public void testAddToAutoshipCartConsultant(){
-		String productName = null;
 		String productQuantity = null;
 		String updatedQuantity = null;
 		String updatedQuantityFromUI = null;
 		boolean isProductPresent = false;
-		//sfHomePage.loginToStoreFront(TestConstants.CONSULTANT_EMAIL_WITH_CRP_AND_PULSE, password,true);
-		sfHomePage.loginToStoreFront(consultantWithPulseAndWithCRP(), password,true);
-		sfShopSkinCarePage = sfHomePage.clickAllProductsCRP();
-		sfShopSkinCarePage.refineProductByCategory(TestConstants.CONSULTANT_CRP_AUTOSHIP_PRODUCT_CATEGORY);
-		productName = sfShopSkinCarePage.getProductNameFromAllProductPage(TestConstants.PRODUCT_NUMBER);
-		sfAutoshipCartPage = sfShopSkinCarePage.clickAutoshipLink();
-		if(sfAutoshipCartPage.isProductAddedToCartPresentOnCartPage(productName)){
-			productQuantity = sfAutoshipCartPage.getQuantityOfSpecificProductFromAutoshipCart(productName).trim(); 
+
+		sfHomePage.loginToStoreFront(consultantWithPulseAndWithCRP(),password,true);
+
+		sfAutoshipCartPage = sfHomePage.clickAutoshipLink();
+		if(sfAutoshipCartPage.isProductPresentInAutoShipCart(validProductName)){
+			productQuantity = sfAutoshipCartPage.getQtyOfProductFromAutoShipCart(validProductName); 
 			isProductPresent = true;
 		}
 		sfAutoshipCartPage.clickRodanAndFieldsLogo();
-		sfAutoshipCartPage.clickAllProductsCRP();
-		sfShopSkinCarePage.refineProductByCategory(TestConstants.CONSULTANT_CRP_AUTOSHIP_PRODUCT_CATEGORY);
-		sfShopSkinCarePage.addProductToCart(TestConstants.PRODUCT_NUMBER, TestConstants.ORDER_TYPE_CRP);
+		sfShopSkinCarePage = sfAutoshipCartPage.clickAllProducts();
+		sfShopSkinCarePage.addProductToCart(TestConstants.PRODUCT_NUMBER, TestConstants.ORDER_TYPE_CRP,validProductId);
 		s_assert.assertTrue(sfShopSkinCarePage.isCheckoutPopupDisplayed(),"Expected checkout popup is not displayed while adding product from PLP");
 		sfShopSkinCarePage.checkoutTheCartFromPopUp();
 		if(isProductPresent){
-			updatedQuantity = sfAutoshipCartPage.updateQuantityByOne(productQuantity).trim();
-			updatedQuantityFromUI = sfAutoshipCartPage.getQuantityOfSpecificProductFromAutoshipCart(productName).trim();
+			updatedQuantity = sfAutoshipCartPage.updateQuantityByOne(productQuantity);
+			updatedQuantityFromUI = sfAutoshipCartPage.getQtyOfProductFromAutoShipCart(validProductName);
 			s_assert.assertTrue(updatedQuantityFromUI.equals(updatedQuantity), "Added item from PLP is not present into cart");
 		}else{
-			updatedQuantityFromUI = sfAutoshipCartPage.getQuantityOfSpecificProductFromAutoshipCart(productName).trim();
-			s_assert.assertTrue(sfAutoshipCartPage.isProductAddedToCartPresentOnCartPage(productName), "Added item from PLP is not present into cart");
+			updatedQuantityFromUI = sfAutoshipCartPage.getQtyOfProductFromAutoShipCart(validProductName);
+			s_assert.assertTrue(sfAutoshipCartPage.isProductPresentInAutoShipCart(validProductName), "Added item from PLP is not present into cart");
 		}
 		s_assert.assertAll();
 	}
@@ -1639,34 +1620,28 @@ public class AutoshipTest extends StoreFrontWebsiteBaseTest{
 	 */
 	@Test(enabled=true)
 	public void testAddToAutoshipCartPC(){
-		String productName = null;
 		String productQuantity = null;
 		String updatedQuantity = null;
 		String updatedQuantityFromUI = null;
 		boolean isProductPresent = false;
-		//sfHomePage.loginToStoreFront(TestConstants.PC_EMAIL_HAVING_AUTOSHIP, password,true);
 		sfHomePage.loginToStoreFront(pcUserWithPWSSponsor(), password,true);
-		sfShopSkinCarePage = sfHomePage.clickAllProductsCRP();
-		sfShopSkinCarePage.refineProductByCategory(TestConstants.PC_PERKS_AUTOSHIP_PRODUCT_CATEGORY);
-		productName = sfShopSkinCarePage.getProductNameFromAllProductPage(TestConstants.PRODUCT_NUMBER_PC_AUTOSHIP);
-		sfAutoshipCartPage = sfShopSkinCarePage.clickAutoshipLink();
-		if(sfAutoshipCartPage.isProductAddedToCartPresentOnCartPage(productName)){
-			productQuantity = sfAutoshipCartPage.getQuantityOfSpecificProductFromAutoshipCart(productName).trim(); 
+		sfAutoshipCartPage = sfHomePage.clickAutoshipLink();
+		if(sfAutoshipCartPage.isProductAddedToCartPresentOnCartPage(validProductName)){
+			productQuantity = sfAutoshipCartPage.getQtyOfProductFromAutoShipCart(validProductName); 
 			isProductPresent = true;
 		}
 		sfAutoshipCartPage.clickRodanAndFieldsLogo();
-		sfAutoshipCartPage.clickAllProductsCRP();
-		sfShopSkinCarePage.refineProductByCategory(TestConstants.PC_PERKS_AUTOSHIP_PRODUCT_CATEGORY);
-		sfShopSkinCarePage.addProductToCart(TestConstants.PRODUCT_NUMBER_PC_AUTOSHIP, TestConstants.ORDER_TYPE_PC_PERKS);
+		sfShopSkinCarePage = sfAutoshipCartPage.clickAllProducts();
+		sfShopSkinCarePage.addProductToCart(TestConstants.PRODUCT_NUMBER, TestConstants.ORDER_TYPE_PC_PERKS,validProductId);
 		s_assert.assertTrue(sfShopSkinCarePage.isCheckoutPopupDisplayed(),"Expected checkout popup is not displayed while adding product from PLP");
 		sfShopSkinCarePage.checkoutTheCartFromPopUp();
 		if(isProductPresent){
 			updatedQuantity = sfAutoshipCartPage.updateQuantityByOne(productQuantity).trim();
-			updatedQuantityFromUI = sfAutoshipCartPage.getQuantityOfSpecificProductFromAutoshipCart(productName).trim();
+			updatedQuantityFromUI = sfAutoshipCartPage.getQtyOfProductFromAutoShipCart(validProductName);
 			s_assert.assertTrue(updatedQuantityFromUI.equals(updatedQuantity), "Added item from PLP is not present into cart");
 		}else{
-			updatedQuantityFromUI = sfAutoshipCartPage.getQuantityOfSpecificProductFromAutoshipCart(productName).trim();
-			s_assert.assertTrue(sfAutoshipCartPage.isProductAddedToCartPresentOnCartPage(productName), "Added item from PLP is not present into cart");
+			updatedQuantityFromUI = sfAutoshipCartPage.getQtyOfProductFromAutoShipCart(validProductName);
+			s_assert.assertTrue(sfAutoshipCartPage.isProductPresentInAutoShipCart(validProductName), "Added item from PLP is not present into cart");
 		}
 		s_assert.assertAll();
 	}
@@ -1676,19 +1651,19 @@ public class AutoshipTest extends StoreFrontWebsiteBaseTest{
 	 */
 	@Test
 	public void testPlaceConsultantAutoshipOrderAndVerifyDateAndStatus(){
-		String orderNumber = null;
+		String totalForActiveAutoShip = null;
+		String totalForPlacedOrder = null;
 		sfHomePage.loginToStoreFront(consultantWithPulseAndWithCRP(), password,true);
 		sfHomePage.clickWelcomeDropdown();
 		sfOrdersPage = sfHomePage.navigateToOrdersPage();
 		s_assert.assertTrue(sfOrdersPage.getAutoshipStatus("2").equalsIgnoreCase("active"),"Autoship status is not ACTIVE");
+		totalForActiveAutoShip = sfOrdersPage.getGrandTotalOfActiveAutoShip();
 		sfOrdersPage.clickRunAutoshipOrder("2");
-		s_assert.assertTrue(sfOrdersPage.isOrderPlacedSuccessfully(),"Order not placed. Thank you message is not displayed");
-		s_assert.assertTrue(sfOrdersPage.isTextPresent("Order #"),"Order Number is not present on the confirmation page");
-		orderNumber = sfOrdersPage.getOrderNumberAfterCheckout();
-		sfOrdersPage.clickWelcomeDropdown();
-		sfOrdersPage = sfOrdersPage.navigateToOrdersPage();
-		sfOrdersPage.clickOrderNumber(orderNumber);
-		s_assert.assertTrue(sfOrdersPage.getOrderTypeFromOrderDetailsTemplate().contains("consultant autoship"),"expected status of autoship order is incorrect");
+		s_assert.assertTrue(sfOrdersPage.getAutoShipPlacedOrderMsg().contains("Your order process has been started."),"AutoShip Placed Order Msg is not dispalyed");
+		totalForPlacedOrder = sfOrdersPage.getDetailForOrderFromOrderHistory("1","Grand Total");
+		sfOrdersPage.clickOrderNumberFromOrderHistory("1");
+		s_assert.assertTrue(totalForActiveAutoShip.equals(totalForPlacedOrder),"Grand Total for AutoShip Placed Order is not found as Expected. Expected : "+totalForActiveAutoShip+". Actual : "+totalForPlacedOrder);
+		s_assert.assertTrue(sfOrdersPage.getOrderTypeFromOrderDetailsTemplate().contains("consultant autoship"),"Expected status of autoship order is incorrect");
 		s_assert.assertAll();
 	}
 
@@ -1697,19 +1672,19 @@ public class AutoshipTest extends StoreFrontWebsiteBaseTest{
 	 */
 	@Test
 	public void testPlacePCAutoshipOrderAndVerifyDateAndStatus(){
-		String orderNumber = null;
+		String totalForActiveAutoShip = null;
+		String totalForPlacedOrder = null;
 		sfHomePage.loginToStoreFront(pcUserWithPWSSponsor(), password,true);
 		sfHomePage.clickWelcomeDropdown();
 		sfOrdersPage = sfHomePage.navigateToOrdersPage();
 		s_assert.assertTrue(sfOrdersPage.getAutoshipStatus("1").equalsIgnoreCase("active"),"Autoship status is not ACTIVE");
+		totalForActiveAutoShip = sfOrdersPage.getGrandTotalOfActiveAutoShip();
 		sfOrdersPage.clickRunAutoshipOrder("1");
-		s_assert.assertTrue(sfOrdersPage.isOrderPlacedSuccessfully(),"Order not placed. Thank you message is not displayed");
-		s_assert.assertTrue(sfOrdersPage.isTextPresent("Order #"),"Order Number is not present on the confirmation page");
-		orderNumber = sfOrdersPage.getOrderNumberAfterCheckout();
-		sfOrdersPage.clickWelcomeDropdown();
-		sfOrdersPage = sfOrdersPage.navigateToOrdersPage();
-		sfOrdersPage.clickOrderNumber(orderNumber);
-		s_assert.assertTrue(sfOrdersPage.getOrderTypeFromOrderDetailsTemplate().contains("pc autoship"),"expected status of autoship order is incorrect");
+		s_assert.assertTrue(sfOrdersPage.getAutoShipPlacedOrderMsg().contains("Your order process has been started."),"AutoShip Placed Order Msg is not dispalyed");
+		totalForPlacedOrder = sfOrdersPage.getDetailForOrderFromOrderHistory("1","Grand Total");
+		sfOrdersPage.clickOrderNumberFromOrderHistory("1");
+		s_assert.assertTrue(totalForActiveAutoShip.equals(totalForPlacedOrder),"Grand Total for AutoShip Placed Order is not found as Expected. Expected : "+totalForActiveAutoShip+". Actual : "+totalForPlacedOrder);
+		s_assert.assertTrue(sfOrdersPage.getOrderTypeFromOrderDetailsTemplate().contains("pc autoship"),"Expected status of autoship order is incorrect");
 		s_assert.assertAll();
 	}
 

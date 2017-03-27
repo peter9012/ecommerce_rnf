@@ -104,13 +104,12 @@ public class SuccessfulUserLoginTest extends StoreFrontWebsiteBaseTest{
 	@Test(enabled=true)
 	public void testUserloginFromPWS_28(){
 		String prefix = pwsPrefix();
-		sfHomePage.navigateToUrl(sfHomePage.getBaseUrl()+"/" +sfHomePage.getCountry() +"/pws/" + prefix);
+		sfHomePage.navigateToUrl(sfHomePage.getCurrentURL() + "/pws/" + prefix);
 		sfHomePage.loginToStoreFront(consultantWithPulseAndWithCRP(),  password,true);
 		s_assert.assertTrue(sfHomePage.isWelcomeUserElementDisplayed(),"user is NOT successfully logged in");
 		s_assert.assertTrue(sfHomePage.getCurrentURL().contains(prefix),"User is not on PWS site after login");
 		s_assert.assertAll();
 	}
-
 	/***
 	 * qTest : TC-352 As a PC, RC, and consultant user, I will be able to access login from the Consultant Site homepage
 	 * 

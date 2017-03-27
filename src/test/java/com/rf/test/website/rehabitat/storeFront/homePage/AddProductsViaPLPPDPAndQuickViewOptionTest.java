@@ -109,7 +109,7 @@ public class AddProductsViaPLPPDPAndQuickViewOptionTest extends StoreFrontWebsit
 		String updatedQuantityFromUI = null;
 		boolean isProductPresent = false;
 		String prefix = pwsPrefix();
-		sfHomePage.navigateToUrl(sfHomePage.getBaseUrl()+"/" +sfHomePage.getCountry() +"/pws/" + prefix);
+		sfHomePage.navigateToUrl(sfHomePage.getCurrentURL() + "/pws/" + prefix);
 		sfHomePage.loginToStoreFront(consultantWithPulseAndWithCRP(),  password,true);
 		sfShopSkinCarePage = sfHomePage.clickAllProducts();
 		sfShopSkinCarePage.refineProductByCategory(TestConstants.CONSULTANT_CRP_AUTOSHIP_PRODUCT_CATEGORY);
@@ -134,4 +134,6 @@ public class AddProductsViaPLPPDPAndQuickViewOptionTest extends StoreFrontWebsit
 		}
 		s_assert.assertAll();
 	}
+
+
 }

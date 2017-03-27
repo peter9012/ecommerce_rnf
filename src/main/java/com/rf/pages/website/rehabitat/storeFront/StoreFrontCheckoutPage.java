@@ -24,12 +24,15 @@ public class StoreFrontCheckoutPage extends StoreFrontWebsiteBasePage{
 	private static final Logger logger = LogManager
 			.getLogger(StoreFrontCheckoutPage.class.getName());
 
+
 	private final By SPONSOR_NAME_ACCOUNT_INFO_LOC = By.xpath("//span[@id='selectd-consultant'][text()]");
+	private final By ESTIMATED_TAX_LOC  = By.xpath("//p[contains(text(),'Estimated tax')]/following-sibling::span[1]");
 	// private final By TERMS_AND_CONDITIONS_CHCKBOX_FOR_CONSULTANT_CRP_LOC = By.xpath("//a[contains(text(),'Consultant Replenishment Program Terms & Conditions')]/ancestor::label[1]/preceding-sibling::input[1]");
-	private final By TERMS_AND_CONDITIONS_CHCKBOX_FOR_AUTOSHIP_LOC = By.xpath("//a[contains(text(),'Terms & Conditions')]/ancestor::label[1]/preceding-sibling::input[@id][1]");
+	private final By TERMS_AND_CONDITIONS_CHCKBOX_FOR_AUTOSHIP_LOC = By.xpath("//a[contains(text(),'Terms & Conditions') or contains(text(),'terms and conditions')]/ancestor::label[1]/preceding-sibling::input[@id][1]");
 	//	private final By TERMS_AND_CONDITIONS_CHCKBOX_FOR_AUTOSHIP_LOC = By.xpath("//a[contains(text(),'Terms & Conditions')]/ancestor::label[1]/preceding-sibling::input[1]");
-	private final By EDIT_LINK_OF_SHIPPING_ADDRESS_LOC=By.xpath("//div[contains(text(),'Shipping')]/following::a[contains(@class,'edit_shipping_address')][1]");
-	private final By DELIVERY_AT_ORDER_REVIEW_PAGE_LOC = By.xpath("//div[contains(text(),'Order Summary')]/following::p[contains(text(),'Delivery')]/following::span[1]");
+
+	private final By EDIT_LINK_OF_SHIPPING_ADDRESS_LOC=By.xpath("//div[contains(text(),'Shipping')]/following::a[@class='editIcon'][1]");
+	private final By DELIVERY_AT_ORDER_REVIEW_PAGE_LOC = By.xpath("//p[contains(text(),'Shipping') or contains(text(),'Delivery')]/following-sibling::span[1]");
 	private final By FIRST_NAME_LOC = By.id("first-name");
 	private final By LAST_NAME_LOC = By.id("last-name");
 	private final By EMAIL_LOC = By.id("email-account");
@@ -168,7 +171,8 @@ public class StoreFrontCheckoutPage extends StoreFrontWebsiteBasePage{
 	private final By EDIT_LINK_OF_SHIPPING_SECTION_LOC=By.xpath("//div[@class='checkout-shipping']//a[1]");
 	private final By SEARCHED_SELECTED_SPONSOR_LOC = By.xpath("//div[@class='customerid']/preceding::span[@id='selectd-consultant'][1]");
 	private final By SHIPPING_CHARGES_LOC = By.xpath("//div[@class='shipping']/span");
-	
+
+	private String sponsorDetailsInSelectedSponsor= "//span[@id='selectd-consultant'][contains(text(),'%s')]";
 	private String useThisAddressBtnInAddressBookLoc = "//div[@id='addressbook']/descendant::form[@id='useShipAddressFromBook'][%s]//button";
 	private String profileNameFromAddressBookLoc = "//div[@id='addressbook']/descendant::strong[%s]";
 	private String useThisPaymentDetailsBtnInSavedCardLoc = "//div[@id='savedpaymentsbody']/descendant::button[contains(text(),'Use these payment details')][%s]";
@@ -435,8 +439,9 @@ public class StoreFrontCheckoutPage extends StoreFrontWebsiteBasePage{
 	 * 
 	 */
 	public StoreFrontCheckoutPage selectShippingMethod(String methodName){
-		driver.click(By.xpath(String.format(shippingMethodLoc, methodName)));
+		driver.clickByJS(RFWebsiteDriver.driver, By.xpath(String.format(shippingMethodLoc, methodName)));
 		logger.info("Shipping method select as "+methodName);
+		driver.pauseExecutionFor(2000);
 		return this;
 	}
 
@@ -449,6 +454,7 @@ public class StoreFrontCheckoutPage extends StoreFrontWebsiteBasePage{
 	 */
 	public String getSelectedShippingMethodName(){
 		driver.pauseExecutionFor(5000);
+		driver.waitForElementToBeVisible(SELECTED_SHIPPING_METHOD_LOC, 15);
 		String methodName = driver.findElement(SELECTED_SHIPPING_METHOD_LOC).getText();
 		logger.info("Selected shipping method name is "+methodName);
 		return methodName;
@@ -1688,7 +1694,7 @@ public class StoreFrontCheckoutPage extends StoreFrontWebsiteBasePage{
 	 * 
 	 */
 	public StoreFrontCheckoutPage selectTermsAndConditionsCheckBoxForAutoshipOrder(){
-		driver.clickByJS(RFWebsiteDriver.driver,TERMS_AND_CONDITIONS_CHCKBOX_FOR_AUTOSHIP_LOC);
+		driver.clickByJS(TERMS_AND_CONDITIONS_CHCKBOX_FOR_AUTOSHIP_LOC);
 		logger.info("Clicked Terms and conditions checkbox for Autoship checkout");
 		return this;
 	}
@@ -1887,8 +1893,9 @@ public class StoreFrontCheckoutPage extends StoreFrontWebsiteBasePage{
 	 * 
 	 */
 	public StoreFrontCheckoutPage clickEditLinkOfShippingAddress(){
+		driver.pauseExecutionFor(2000);
 		if(driver.isElementVisible(EDIT_LINK_OF_SHIPPING_SECTION_LOC)){
-			driver.click(EDIT_LINK_OF_SHIPPING_SECTION_LOC);
+			driver.clickByJS(EDIT_LINK_OF_SHIPPING_SECTION_LOC);
 		}else{
 			driver.pauseExecutionFor(2000);
 			driver.click(EDIT_LINK_OF_SHIPPING_ADDRESS_LOC);
@@ -1919,5 +1926,45 @@ public class StoreFrontCheckoutPage extends StoreFrontWebsiteBasePage{
 		String charge=driver.getText(SHIPPING_CHARGES_LOC);
 		logger.info("Shipping charges at order review page is"+charge);
 		return charge;
+	}
+
+	/***
+	 * This method verify the selected sponsor's details
+	 * 
+	 * @param sponsore email
+	 * @return boolean value
+	 * 
+	 */
+	public boolean isSponsorDetailsPresentInSelectedSponsor(String sponsorEmail){
+		return driver.isElementPresent(By.xpath(String.format(sponsorDetailsInSelectedSponsor, sponsorEmail)));
+	}
+
+	/***
+	 * This method return the error message
+	 * 
+	 * @param country
+	 * @return error message
+	 * 
+	 */
+	public String getErrorMessageForInvalidAddress(String country){
+		String errorMessage = null;
+		if(country.equalsIgnoreCase("us"))
+			errorMessage = "Address entered may not be a deliverable address";
+		else
+			errorMessage = "Please enter valid postal code";
+		return errorMessage;
+	}
+
+	/***
+	 * This method return the estimated tax of the Order
+	 * 
+	 * @param
+	 * @return String estimatedTax
+	 * 
+	 */
+	public String getEstimatedTaxForTheOrder(){
+		String estimatedTax = null;
+		estimatedTax = driver.getText(ESTIMATED_TAX_LOC).split("\\$")[1].trim();
+		return estimatedTax;
 	}
 }

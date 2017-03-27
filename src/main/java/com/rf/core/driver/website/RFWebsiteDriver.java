@@ -1,5 +1,8 @@
 package com.rf.core.driver.website;
 
+import java.awt.AWTException;
+import java.awt.Robot;
+import java.awt.event.KeyEvent;
 import java.io.File;
 
 import org.openqa.selenium.Dimension;
@@ -914,8 +917,15 @@ public class RFWebsiteDriver implements RFDriver,WebDriver {
 	 * 
 	 */
 	public void pressEscapeKey(){
-		Actions actions = new Actions(driver);
-		actions.sendKeys(Keys.ESCAPE).build().perform();;
+		Robot robot = null;
+		try {
+			robot = new Robot();
+		} catch (AWTException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		robot.keyPress(KeyEvent.VK_ESCAPE);
+		robot.keyRelease(KeyEvent.VK_ESCAPE);
 	}
 
 	/**
@@ -1216,6 +1226,12 @@ public class RFWebsiteDriver implements RFDriver,WebDriver {
 	public void switchToFrame(By by){
 		WebElement element= driver.findElement(by);
 		driver.switchTo().frame(element);
+	}
+	
+	public void typeByJS(By by, String input) {
+        WebElement element = driver.findElement(by);
+        JavascriptExecutor executor = (JavascriptExecutor)RFWebsiteDriver.driver;
+        executor.executeScript("arguments[0].value="+input+";", element);
 	}
 }
 

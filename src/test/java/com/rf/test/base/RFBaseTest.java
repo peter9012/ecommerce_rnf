@@ -34,6 +34,7 @@ public class RFBaseTest{
 	public String defaultProps = "defaultenv.properties";
 	public String testUsers_QA2_US_propertes = "testUsers_QA2_US.properties";
 	public String testUsers_QA2_CA_propertes = "testUsers_QA2_CA.properties";
+	public String testUsers_QA2_AU_propertes = "testUsers_QA2_AU.properties";
 	public String testUsers_QA1_US_propertes = "testUsers_QA1_US.properties";
 	public String testUsers_PROD_US_propertes = "testUsers_PROD_US.properties";
 	public String testUsers_PPD_US_propertes = "testUsers_PPD_US.properties";
@@ -192,6 +193,9 @@ public class RFBaseTest{
 		}
 		else  if(propertyFileName.toLowerCase().contains("ppd") && propertyFileName.toLowerCase().contains("ca")){
 			userProps=testUsers_PPD_CA_propertes;
+		}
+		else  if(propertyFileName.toLowerCase().contains("qa2") && propertyFileName.toLowerCase().contains("au")){
+			userProps=testUsers_QA2_AU_propertes;
 		}
 		logger.info("testUsers are loaded from "+userProps);
 	}

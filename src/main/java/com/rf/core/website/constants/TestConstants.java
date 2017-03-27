@@ -29,9 +29,11 @@ public class TestConstants {
 	public static final String ORDER_TYPE_CRP= "Add to CRP";
 	public static final String ORDER_TYPE_ENROLLMENT = "Enrollment";
 	public static final String VALID_PRODUCT_ID_US = "UNRJ001";
-	public static final String VALID_PRODUCT_ID_CA = "AARG001-01";
 	public static final String VALID_PRODUCT_NAME_US = "UNBLEMISH Regimen for Acne";
-	public static final String VALID_PRODUCT_NAME_CA = "REDEFINE Regimen";
+	public static final String VALID_PRODUCT_ID_CA = "UNRJ001-01";
+	public static final String VALID_PRODUCT_NAME_CA = "UNBLEMISH Regimen";
+	public static final String VALID_PRODUCT_NAME_AU = "REDEFINE AMP MD System";
+	public static final String VALID_PRODUCT_ID_AU = "AAAPS01-02";
 	public static final String PRODUCT_NUMBER = "1";
 	public static final String PRODUCT_NUMBER_PC_AUTOSHIP = "3";
 	//	public static final String OTHER_PRODUCT_NUMBER = "3";
@@ -63,10 +65,11 @@ public class TestConstants {
 	public static final String PASSWORD_RECOVERY_SUBMIT_SUCCESS_MESSAGE = "Password reset instructions have been sent to your email address. Please contact customer support if you require additional assistance";
 	public static final String PASSWORD_RECOVERY_SUBMIT_EMAIL_NOT_REGISTERED_MESSAGE = "You do not have an account with us. Please create your account";
 	public static final String NON_DELIVERABLE_ADDRESS_MSG = "Address entered may not be a deliverable address";
-	public static final String PROMOTION_OVERLAY_MSG = "Your favourite Rodan + Fields� products automatically delivered to your doorstep";
+	public static final String PROMOTION_OVERLAY_MSG = "products automatically delivered to your doorstep";
 	public static final String LOW_PRICE_FILTER_US="$0-$49.99";
 	public static final String MID_PRICE_FILTER_US="$50-$199.99";
 	public static final String HIGH_PRICE_FILTER_US="$200-$499.99";
+	public static final String HIGHEST_PRICE_FILTER="$500-$10000";
 
 	// Order page Details
 	public static final String TITLE_OF_ORDER_DETAILS_PAGE = "Order Details | Rodan and Fields";
@@ -98,6 +101,19 @@ public class TestConstants {
 	public static final String SECOND_CITY_CA = "Calgary";
 	public static final String SECOND_POSTAL_CODE_CA = "T3H 2E1";
 	public static final String STATE_CA_ABBREVIATION = "AB";
+
+	//Australia
+	public static final String ADDRESS_LINE_1_AU = "6 Norton Street";
+	public static final String ADDRESS_LINE_2_AU = "";
+	public static final String CITY_AU = "BALGOWLAH";
+	public static final String POSTAL_CODE_AU = "2093";
+	public static final String STATE_AU = "New South Wales";
+
+	public static final String SECOND_ADDRESS_LINE_1_AU = "43 Noalimba Avenue";
+	public static final String SECOND_ADDRESS_LINE_2_AU = "";
+	public static final String SECOND_CITY_AU = "Wollun";
+	public static final String SECOND_POSTAL_CODE_AU = "2354";
+	public static final String STATE_AU_ABBREVIATION = "AU-NSW";
 
 	public static final String FIRST_NAME_BILLING_ADDRESS = "BAFirstname";
 	public static final String LAST_NAME_BILLING_ADDRESS = "BALastname";
@@ -191,7 +207,8 @@ public class TestConstants {
 	public static final String DEFAULT_SHIPPING_ADDRESS_UPDATION_MSG = "Your default address was updated.";
 	public static final String AUTOSHIP_DELIVERY_ADDRESS_UPDATION_MSG = "Delivery Address has been Updated for your Cart.";
 	public static final String ERROR_MSG_EXISTING_PREFIX = "Subscription Prefix not available";
-	public static final String CANCELLED_CRP_ORDER_SUCCESS_MESSAGE = "Your CRP Order has been canceled.";
+	public static final String CANCELLED_CRP_ORDER_SUCCESS_MESSAGE = "Your CRP Order has been cancel";
+	public static final String TAX_HEADING = "TAX";
 
 	public static final String ECC_ORDER_TYPE_CONSULTANT_ADHOC = "ConsultantAdhocOrder";
 	public static final String ECC_ORDER_TYPE_PC_ADHOC = "PCAdhocOrder";

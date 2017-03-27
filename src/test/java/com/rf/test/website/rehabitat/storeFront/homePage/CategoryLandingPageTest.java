@@ -133,7 +133,7 @@ public class CategoryLandingPageTest extends StoreFrontWebsiteBaseTest{
 	 * and add to bag button is present or not 
 	 *     
 	 */
-	@Test(enabled=true)
+	@Test(enabled=false)
 	public void testFeaturedCategoryLandingPage_97(){
 		String category_Featured = "FEATURED";
 		String currentURL = null;

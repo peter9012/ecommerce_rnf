@@ -21,6 +21,8 @@ public class StoreFrontBillingInfoPage extends StoreFrontWebsiteBasePage{
 	private static final Logger logger = LogManager
 			.getLogger(StoreFrontBillingInfoPage.class.getName());
 
+	private final By CANCEL_ADD_NEW_BILLING_ADDRESS_LOC = By.xpath("//div[@id='checkoutEditBillingAddressForm']//a[@class='cancel-add-new-billing-address']");
+	private final By CANCEL_BTN_FOR_EXISTING_PROFILE_LOC = By.xpath("//div[@id='checkoutEditBillingAddressForm']//button[contains(text(),'Cancel')]");
 	private final By ADD_NEW_BILLING_PROFILE_LOC = By.xpath("//a[@class='add-new-billing-profile']");
 	private final By SAVE_BUTTON_FOR_BILLING_DETAILS_LOC = By.xpath("//button[@id='save-account-payment-Details']");
 	private final By ADD_NEW_BILLING_INFO_HEADER_LOC = By.xpath("//form[@id='accountPaymentDetailsForm']//h3[contains(text(),'ADD NEW BILLING INFO')]");
@@ -596,6 +598,34 @@ public class StoreFrontBillingInfoPage extends StoreFrontWebsiteBasePage{
 		return driver.isElementVisible(BILLING_ADDRESS_FORM_FOR_EXISTING_PROFILE_LOC);
 	}
 
+	/***
+	 * This method clicked on Cancel Add New Billing Address Link
+	 * 
+	 * @param
+	 * @return store front billing info page object
+	 * 
+	 */
+	public StoreFrontBillingInfoPage clickCancelAddNewBillingAddressLink(){
+		driver.clickByJS(RFWebsiteDriver.driver,CANCEL_ADD_NEW_BILLING_ADDRESS_LOC);
+		logger.info("Clicked on Cancel Add New Billing Address Link");
+		return this;
+	}
+
+
+
+
+	/***
+	 * This method clicked on Cancel Button for Existing Billing Profile
+	 * 
+	 * @param
+	 * @return store front billing info page object
+	 * 
+	 */
+	public StoreFrontBillingInfoPage clickCancelButtonForExistingProfile(){
+		driver.clickByJS(RFWebsiteDriver.driver,CANCEL_BTN_FOR_EXISTING_PROFILE_LOC);
+		logger.info("Clicked on Cancel Btn for updating Existing Billing Profile");
+		return this;
+	}
 
 }
 

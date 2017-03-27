@@ -151,7 +151,7 @@ public class TopNavigationTest extends StoreFrontWebsiteBaseTest{
 	 *  
 	 *     
 	 */
-	@Test(enabled=true)
+	@Test(enabled=false)
 	public void testAboutRFExecutiveTeam_76(){
 		String currentURL = null;
 		String teamMemberName = null;
@@ -221,7 +221,7 @@ public class TopNavigationTest extends StoreFrontWebsiteBaseTest{
 	 *  
 	 *     
 	 */
-	@Test(enabled=true)
+	@Test(enabled=false)
 	public void testVerifyFeaturedProductSectionUnderShopSkinCare_347(){
 		String category="FEATURED";
 

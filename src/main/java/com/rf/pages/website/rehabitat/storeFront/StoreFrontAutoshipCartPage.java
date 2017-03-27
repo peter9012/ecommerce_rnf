@@ -24,14 +24,18 @@ public class StoreFrontAutoshipCartPage extends StoreFrontWebsiteBasePage{
 	private final By NEXT_BILL_SHIP_DATE_ON_AUTOSHIP_CART_PAGE_LOC = By.xpath("//td[text()='Ship & Bill Date']/following::td[1]");
 	private final By CRP_THRESHOLD_MSG_LOC = By.xpath("//div[@class='global-alerts']/div");
 	private final By SUBSCRIBE_TO_PULSE_BTN_LOC = By.id("confirmsubmitsubs");
-	private String quantityOfSpecificItemInCartLoc = "//ul[contains(@class,'item-list')]/descendant::input[contains(@class,'quantity-input')][%s]";
 
+	private String removeLinkForProductInAutoshipCartLoc = "//span[contains(normalize-space(text()),'%s')]/following::input[@id='autoship_remove'][1]";
+	private String qtyTBForProductInAutoshipCartLoc = "//span[contains(normalize-space(text()),'%s')]/following::input[@name='qty' and not(@disabled)][1]";
+	private String updatedQtyLinkForProductInAutoshipCartLoc = "//span[contains(normalize-space(text()),'%s')]/following::input[@value='Update Qty'][1]";
+	private String quantityOfSpecificItemInCartLoc = "//ul[contains(@class,'item-list')]/descendant::input[contains(@class,'quantity-input')][%s]";
 	private String updateQuantityLinkForSpecificItemLoc  = "//ul[contains(@class,'item-list')]/descendant::input[contains(@value,'Update Qty')][%s]";
 	private String productQuantityLoc = "//li[@class='item-list-item'][%s]//input[@name='qty']";
 	private String productUpdateQuantityLinkLoc = "//li[@class='item-list-item'][%s]//input[@value='Update Qty']";
 	private String removeLinkOfAnItemAtAutoshipCartLoc = "//li[@class='item-list-item'][%s]//input[@id='autoship_remove'] ";
 	private String productQuantityInAutoshipCartLoc = "//span[@class='item-name' and contains(text(),'%s')]/following::input[@name='qty'][1]";
 	private String socialMediaIconLoc = "//div[@class='container']//a[contains(@href,'%s')]";
+
 
 	/***
 	 * This method click on learn more about pulse link.
@@ -288,7 +292,64 @@ public class StoreFrontAutoshipCartPage extends StoreFrontWebsiteBasePage{
 		else if(country.equalsIgnoreCase("ca")){
 			thresholdMsg = "please add minimum worth of cad$90 products excluding enrollment fee";
 		}
+		else if(country.equalsIgnoreCase("au")){
+			thresholdMsg = "please add minimum worth of aud$90 products excluding enrollment fee";
+		}
 		return thresholdMsg;
+	}
+
+	/***
+	 * This method click on the remove link of Specific Product from AutoShip Cart 
+	 * 
+	 * @param String productName
+	 * @return StorefrontAutoshipCartPage
+	 * 
+	 */
+	public StoreFrontAutoshipCartPage removeProductFromAutoshipCart(String productName){
+		driver.clickByJS(RFWebsiteDriver.driver,By.xpath(String.format(removeLinkForProductInAutoshipCartLoc,productName)));
+		logger.info("Clicked on Remove link for Product : " + productName + " from AutoShip Cart");
+		return this;
+
+	}
+
+
+	/***
+	 * This method verify the presence of Specific Product in AutoShip Cart.
+	 * 
+	 * @param String productName
+	 * @return boolean
+	 * 
+	 */
+	public boolean isProductPresentInAutoShipCart(String productName){
+		return driver.isElementVisible(By.xpath(String.format(updatedQtyLinkForProductInAutoshipCartLoc,productName)));
+
+	}
+
+	/***
+	 * This method verify the presence of Specific Product in AutoShip Cart.
+	 * 
+	 * @param String productName
+	 * @return StoreFrontAutoshipCartPage object
+	 * 
+	 */
+	public StoreFrontAutoshipCartPage updateQtyForProductInAutoShipCart(String productName,String quantity){
+		driver.type(By.xpath(String.format(qtyTBForProductInAutoshipCartLoc,productName)),quantity);
+		logger.info("Entered Quantity for Product : " + productName + " is " + quantity);
+		driver.clickByJS(RFWebsiteDriver.driver,By.xpath(String.format(updatedQtyLinkForProductInAutoshipCartLoc,productName)));
+		logger.info("Clicked on Update Qty link for Product : " + productName);
+		return this;
+	}
+
+	/***
+	 * This method get the quantity of Specific Product in AutoShip Cart.
+	 * 
+	 * @param String productName
+	 * @return String quantity
+	 * 
+	 */
+	public String getQtyOfProductFromAutoShipCart(String productName){
+		return driver.getAttribute(By.xpath(String.format(qtyTBForProductInAutoshipCartLoc,productName)),"value").trim();
+
 	}
 
 }

@@ -28,7 +28,7 @@ public class AccessLinkToCreateNewRFAccountTest extends StoreFrontWebsiteBaseTes
 	@Test(enabled=true)
 	public void testAccessALinkToCreateANewRFAccountFromComSite_16(){
 		String prefix = pwsPrefix();
-		sfHomePage.navigateToUrl(sfHomePage.getBaseUrl()+"/" +sfHomePage.getCountry() +"/pws/" + prefix);
+		sfHomePage.navigateToUrl(sfHomePage.getCurrentURL() + "/pws/" + prefix);
 		sfHomePage.clickLoginIcon();
 		sfHomePage.clickSignUpNowLink();
 		s_assert.assertTrue(sfHomePage.isLoginOrRegisterPageDisplayed()&& sfHomePage.getCurrentURL().contains("/login"), "'Login Or Register' page has not displayed");

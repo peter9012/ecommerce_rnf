@@ -45,7 +45,7 @@ public class CategoryFAQPageTest extends StoreFrontWebsiteBaseTest{
 		s_assert.assertTrue(currentURL.contains(expectedURLForUnblemishFAQ), "Expected URL should contain" +expectedURLForUnblemishFAQ+ ". but actual on UI is"+currentURL);
 
 		//Verify the functionality on PWS site.
-		sfHomePage.navigateToUrl(sfHomePage.getBaseUrl()+"/" +sfHomePage.getCountry() +"/pws/" + prefix);
+		sfHomePage.navigateToUrl(sfHomePage.getCurrentURL() + "/pws/" + prefix);
 		//Verify FAQ page for soothe regimen.
 		sfHomePage.navigateToShopSkinCareSubLinks(sootheLinkUnderShopSkincare, sublinkNameUnderShopSkincare);
 		currentURL = sfHomePage.getCurrentURL().toLowerCase();
@@ -64,4 +64,5 @@ public class CategoryFAQPageTest extends StoreFrontWebsiteBaseTest{
 		s_assert.assertTrue(currentURL.contains(expectedURLForUnblemishFAQ), "Expected URL should contain" +expectedURLForUnblemishFAQ+ ". but actual on UI is"+currentURL);
 		s_assert.assertAll();
 	}
+
 }

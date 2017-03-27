@@ -16,7 +16,7 @@ import com.rf.test.website.rehabitat.storeFront.baseTest.StoreFrontWebsiteBaseTe
 
 public class ECCOrdersTest extends StoreFrontWebsiteBaseTest{
 
-	private static final int var=12;
+	private static final int var=3;
 	private static int consOrdercounter=0;
 	private static int pcOrdercounter=0;
 	private static int rcOrdercounter=0;
@@ -32,9 +32,12 @@ public class ECCOrdersTest extends StoreFrontWebsiteBaseTest{
 	private int fixedSelectionCountToReset;
 	private int cardSelectionCounter = 0;
 	private String userEmail = null;
+	private String tax = null;
 	Map<String,String> cardDetails = null;
 
-	private static final String FILE_PATH=System.getProperty("user.dir")+"\\src\\test\\resources\\ordersECC\\ordersECC.xlsx";
+	private static final String FILE_PATH=System.getProperty("user.dir")+"\\src\\test\\resources\\ordersECC\\";
+	private static final String FILE_NAME_US = "ordersECC_US.xlsx";
+	private static final String FILE_NAME_CA = "ordersECC_CA.xlsx";
 
 	// Place an adhoc order from consultant
 	@Test(priority=1,invocationCount=var)
@@ -62,6 +65,11 @@ public class ECCOrdersTest extends StoreFrontWebsiteBaseTest{
 		CVV = cardDetails.get("cardCVV");
 		sfCheckoutPage.enterUserBillingDetails(cardType, cardNumber, cardName, CVV);
 		sfCheckoutPage.clickBillingDetailsNextbutton();
+		if(sfCheckoutPage.hasTokenizationFailed()==true){
+			sfCheckoutPage.enterUserBillingDetails(cardType, cardNumber, cardName, CVV);
+			sfCheckoutPage.clickBillingDetailsNextbutton();
+		}
+		tax = sfCheckoutPage.getEstimatedTaxForTheOrder();
 		sfCheckoutPage.selectPCTermsAndConditionsChkBox();
 		sfCheckoutPage.clickPlaceOrderButton();
 		s_assert.assertTrue(sfCheckoutPage.isOrderPlacedSuccessfully(),"Order not placed. Thank you message is not displayed");
@@ -74,7 +82,6 @@ public class ECCOrdersTest extends StoreFrontWebsiteBaseTest{
 		orderDate = sfOrdersPage.getValueForOrderFromOrderHistory(orderNumber, "Order Date");
 		consOrdercounter++;
 		setValueInTheExcel(TestConstants.ECC_ORDER_TYPE_CONSULTANT_ADHOC, consOrdercounter, setOrderDetails());
-
 	}
 
 	//PC Adhoc Order
@@ -104,6 +111,11 @@ public class ECCOrdersTest extends StoreFrontWebsiteBaseTest{
 		CVV = cardDetails.get("cardCVV");
 		sfCheckoutPage.enterUserBillingDetails(cardType, cardNumber, cardName, CVV);
 		sfCheckoutPage.clickBillingDetailsNextbutton();
+		if(sfCheckoutPage.hasTokenizationFailed()==true){
+			sfCheckoutPage.enterUserBillingDetails(cardType, cardNumber, cardName, CVV);
+			sfCheckoutPage.clickBillingDetailsNextbutton();
+		}
+		tax = sfCheckoutPage.getEstimatedTaxForTheOrder();
 		sfCheckoutPage.selectPCTermsAndConditionsChkBox();
 		sfCheckoutPage.clickPlaceOrderButton();
 		s_assert.assertTrue(sfCheckoutPage.isOrderPlacedSuccessfully(),"Order not placed. Thank you message is not displayed");
@@ -145,6 +157,11 @@ public class ECCOrdersTest extends StoreFrontWebsiteBaseTest{
 		CVV = cardDetails.get("cardCVV");
 		sfCheckoutPage.enterUserBillingDetails(cardType, cardNumber, cardName, CVV);
 		sfCheckoutPage.clickBillingDetailsNextbutton();
+		if(sfCheckoutPage.hasTokenizationFailed()==true){
+			sfCheckoutPage.enterUserBillingDetails(cardType, cardNumber, cardName, CVV);
+			sfCheckoutPage.clickBillingDetailsNextbutton();
+		}
+		tax = sfCheckoutPage.getEstimatedTaxForTheOrder();
 		sfCheckoutPage.selectPCTermsAndConditionsChkBox();
 		sfCheckoutPage.clickPlaceOrderButton();
 		s_assert.assertTrue(sfCheckoutPage.isOrderPlacedSuccessfully(),"Order not placed. Thank you message is not displayed");
@@ -161,7 +178,7 @@ public class ECCOrdersTest extends StoreFrontWebsiteBaseTest{
 
 	@BeforeClass
 	public void createExcelSheets(){
-		ExcelUtil.createNewSheetInECCOrdersExcelFile(FILE_PATH,country);
+		ExcelUtil.createNewSheetInECCOrdersExcelFile(getFilePathAsPerCountry(country));
 		ExcelUtil.setHeadingsInTheExcel(setColumnHeadings());
 	}
 
@@ -179,20 +196,9 @@ public class ECCOrdersTest extends StoreFrontWebsiteBaseTest{
 		orderDetails.add(cardType);
 		orderDetails.add(orderDate);
 		orderDetails.add(totalPrice);
+		orderDetails.add(tax);
 		orderDetails.add(orderStatus);
 		return orderDetails;
-	}
-
-	public void setValueInTheExcel(String orderType, int counter, List<String> orderDetails){
-		if(orderType.equalsIgnoreCase(TestConstants.ECC_ORDER_TYPE_CONSULTANT_ADHOC)&& orderNumber!=null){
-			ExcelUtil.setOrderDetailsInECCExcelFile(FILE_PATH, TestConstants.ECC_ORDER_TYPE_CONSULTANT_ADHOC,counter, orderDetails);
-		}
-		if(orderType.equalsIgnoreCase(TestConstants.ECC_ORDER_TYPE_PC_ADHOC)&& orderNumber!=null){
-			ExcelUtil.setOrderDetailsInECCExcelFile(FILE_PATH,TestConstants.ECC_ORDER_TYPE_PC_ADHOC, counter, orderDetails);
-		}
-		if(orderType.equalsIgnoreCase(TestConstants.ECC_ORDER_TYPE_RC_ADHOC)&& orderNumber!=null){
-			ExcelUtil.setOrderDetailsInECCExcelFile(FILE_PATH,TestConstants.ECC_ORDER_TYPE_RC_ADHOC, counter, orderDetails);
-		}
 	}
 
 	public List<String> setColumnHeadings(){
@@ -204,6 +210,7 @@ public class ECCOrdersTest extends StoreFrontWebsiteBaseTest{
 		columnHeadings.add(TestConstants.CARD_TYPE_HEADING);
 		columnHeadings.add(TestConstants.ORDER_DATE_HEADING);
 		columnHeadings.add(TestConstants.TOTAL_PRICE_HEADING);
+		columnHeadings.add(TestConstants.TAX_HEADING);
 		columnHeadings.add(TestConstants.ORDER_STATUS_HEADING);
 		return columnHeadings;
 	}
@@ -277,6 +284,29 @@ public class ECCOrdersTest extends StoreFrontWebsiteBaseTest{
 			cardDetails.put("cardCVV",TestConstants.CVV);
 		}
 		return cardDetails;
+	}
+
+	public String getFilePathAsPerCountry(String country){
+		String filePath = null;
+		if(country.equalsIgnoreCase("us")){
+			filePath = FILE_PATH+FILE_NAME_US;
+		}
+		if(country.equalsIgnoreCase("ca")){
+			filePath = FILE_PATH+FILE_NAME_CA;
+		}
+		return filePath;
+	}
+
+	public void setValueInTheExcel(String orderType, int counter, List<String> orderDetails){
+		if(orderType.equalsIgnoreCase(TestConstants.ECC_ORDER_TYPE_CONSULTANT_ADHOC)&& orderNumber!=null){
+			ExcelUtil.setOrderDetailsInECCExcelFile(TestConstants.ECC_ORDER_TYPE_CONSULTANT_ADHOC,counter, orderDetails);
+		}
+		if(orderType.equalsIgnoreCase(TestConstants.ECC_ORDER_TYPE_PC_ADHOC)&& orderNumber!=null){
+			ExcelUtil.setOrderDetailsInECCExcelFile(TestConstants.ECC_ORDER_TYPE_PC_ADHOC, counter, orderDetails);
+		}
+		if(orderType.equalsIgnoreCase(TestConstants.ECC_ORDER_TYPE_RC_ADHOC)&& orderNumber!=null){
+			ExcelUtil.setOrderDetailsInECCExcelFile(TestConstants.ECC_ORDER_TYPE_RC_ADHOC, counter, orderDetails);
+		}
 	}
 
 }

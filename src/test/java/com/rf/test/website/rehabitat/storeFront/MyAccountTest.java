@@ -1,6 +1,7 @@
 package com.rf.test.website.rehabitat.storeFront;
 
 import java.awt.AWTException;
+
 import org.testng.annotations.Test;
 
 import com.rf.core.utils.CommonUtils;
@@ -103,7 +104,7 @@ public class MyAccountTest extends StoreFrontWebsiteBaseTest{
 	 * 
 	 *     
 	 */
-	@Test(enabled=true)
+	@Test(enabled=false)
 	public void testEmailIDFormatErrorValidation_249(){
 		String emailAddressWithoutAtAndDot = "autocon12mailinatorcom";
 		String emailAddressWithoutAt = "autocon12mailinator.com";
@@ -159,7 +160,7 @@ public class MyAccountTest extends StoreFrontWebsiteBaseTest{
 		s_assert.assertTrue(sfAccountInfoPage.isValidationMsgPresentForParticularField("city", expectedValidationErrorMsg),"city field empty field validation msg has not displayed");
 		s_assert.assertTrue(sfAccountInfoPage.isValidationMsgPresentForParticularField("postal", expectedValidationErrorMsg),"postal code field empty field validation msg has not displayed");
 		s_assert.assertTrue(sfAccountInfoPage.isValidationMsgPresentForParticularField("phone", expectedValidationErrorMsg),"phone number field empty field validation msg has not displayed");
-		s_assert.assertTrue(sfAccountInfoPage.isValidationMsgPresentForParticularField("email", expectedValidationErrorMsg),"email field empty field validation msg has not displayed");
+		//s_assert.assertTrue(sfAccountInfoPage.isValidationMsgPresentForParticularField("email", expectedValidationErrorMsg),"email field empty field validation msg has not displayed");
 		s_assert.assertAll();
 	}
 
@@ -350,11 +351,11 @@ public class MyAccountTest extends StoreFrontWebsiteBaseTest{
 		sfAccountInfoPage.saveAccountInfo();
 		s_assert.assertTrue(sfAccountInfoPage.isValidationMsgPresentForParticularField("phone", expectedValidationErrorMsg),"'This field is required.' msg not displayed for Consultant phone number");
 		sfAccountInfoPage.enterFields("phone", phoneNumber);
-		sfAccountInfoPage.clearFields("email");
-		sfAccountInfoPage.saveAccountInfo();
-		s_assert.assertTrue(sfAccountInfoPage.isValidationMsgPresentForParticularField("email", expectedValidationErrorMsg),"'This field is required.' msg not displayed for Consultant email address");
-		sfAccountInfoPage.enterFields("email", emailAddress);
-		s_assert.assertTrue(sfAccountInfoPage.isValidationMsgPresentForParticularField("email", expectedEmailValidationErrorMsg),"Please enter a valid email address. msg not displayed for Consultant");
+		//		sfAccountInfoPage.clearFields("email");
+		//		sfAccountInfoPage.saveAccountInfo();
+		//		s_assert.assertTrue(sfAccountInfoPage.isValidationMsgPresentForParticularField("email", expectedValidationErrorMsg),"'This field is required.' msg not displayed for Consultant email address");
+		//		sfAccountInfoPage.enterFields("email", emailAddress);
+		//		s_assert.assertTrue(sfAccountInfoPage.isValidationMsgPresentForParticularField("email", expectedEmailValidationErrorMsg),"Please enter a valid email address. msg not displayed for Consultant");
 		sfAccountInfoPage.clickWelcomeDropdown();
 		sfAccountInfoPage.logout();
 
@@ -388,11 +389,11 @@ public class MyAccountTest extends StoreFrontWebsiteBaseTest{
 		sfAccountInfoPage.saveAccountInfo();
 		s_assert.assertTrue(sfAccountInfoPage.isValidationMsgPresentForParticularField("phone", expectedValidationErrorMsg),"'This field is required.' msg not displayed for PC phone number");
 		sfAccountInfoPage.enterFields("phone", phoneNumber);
-		sfAccountInfoPage.clearFields("email");
-		sfAccountInfoPage.saveAccountInfo();
-		s_assert.assertTrue(sfAccountInfoPage.isValidationMsgPresentForParticularField("email", expectedValidationErrorMsg),"'This field is required.' msg not displayed for PC email address");
-		sfAccountInfoPage.enterFields("email", emailAddress);
-		s_assert.assertTrue(sfAccountInfoPage.isValidationMsgPresentForParticularField("email", expectedEmailValidationErrorMsg),"Please enter a valid email address. msg not displayed for PC");
+		//		sfAccountInfoPage.clearFields("email");
+		//		sfAccountInfoPage.saveAccountInfo();
+		//		s_assert.assertTrue(sfAccountInfoPage.isValidationMsgPresentForParticularField("email", expectedValidationErrorMsg),"'This field is required.' msg not displayed for PC email address");
+		//		sfAccountInfoPage.enterFields("email", emailAddress);
+		//		s_assert.assertTrue(sfAccountInfoPage.isValidationMsgPresentForParticularField("email", expectedEmailValidationErrorMsg),"Please enter a valid email address. msg not displayed for PC");
 		sfAccountInfoPage.clickWelcomeDropdown();
 		sfAccountInfoPage.logout();
 
@@ -426,12 +427,11 @@ public class MyAccountTest extends StoreFrontWebsiteBaseTest{
 		sfAccountInfoPage.saveAccountInfo();
 		s_assert.assertTrue(sfAccountInfoPage.isValidationMsgPresentForParticularField("phone", expectedValidationErrorMsg),"'This field is required.' msg not displayed for RC phone number");
 		sfAccountInfoPage.enterFields("phone", phoneNumber);
-		sfAccountInfoPage.clearFields("email");
-		sfAccountInfoPage.saveAccountInfo();
-		s_assert.assertTrue(sfAccountInfoPage.isValidationMsgPresentForParticularField("email", expectedValidationErrorMsg),"'This field is required.' msg not displayed for RC email address");
-		sfAccountInfoPage.enterFields("email", emailAddress);
-		s_assert.assertTrue(sfAccountInfoPage.isValidationMsgPresentForParticularField("email", expectedEmailValidationErrorMsg),"Please enter a valid email address. msg not displayed for RC");
-
+		//		sfAccountInfoPage.clearFields("email");
+		//		sfAccountInfoPage.saveAccountInfo();
+		//		s_assert.assertTrue(sfAccountInfoPage.isValidationMsgPresentForParticularField("email", expectedValidationErrorMsg),"'This field is required.' msg not displayed for RC email address");
+		//		sfAccountInfoPage.enterFields("email", emailAddress);
+		//		s_assert.assertTrue(sfAccountInfoPage.isValidationMsgPresentForParticularField("email", expectedEmailValidationErrorMsg),"Please enter a valid email address. msg not displayed for RC");
 		s_assert.assertAll();
 	}
 
@@ -469,10 +469,10 @@ public class MyAccountTest extends StoreFrontWebsiteBaseTest{
 		s_assert.assertTrue(sfAccountInfoPage.isValidationMsgPresentForParticularField("city", expectedValidationErrorMsg),"'This field is required.' for city");
 		s_assert.assertTrue(sfAccountInfoPage.isValidationMsgPresentForParticularField("postal", expectedValidationErrorMsg),"'This field is required.' for postal code");
 		s_assert.assertTrue(sfAccountInfoPage.isValidationMsgPresentForParticularField("phone", expectedValidationErrorMsg),"'This field is required.' for phone number");
-		s_assert.assertTrue(sfAccountInfoPage.isValidationMsgPresentForParticularField("email", expectedValidationErrorMsg),"'This field is required.' for email address");
+		//s_assert.assertTrue(sfAccountInfoPage.isValidationMsgPresentForParticularField("email", expectedValidationErrorMsg),"'This field is required.' for email address");
 		//Enter main account info with invalid postal code
 		sfAccountInfoPage.enterMainAccountInfo(firstName, lastName, addressLine1, city, state, postalCode, phoneNumber);
-		sfAccountInfoPage.enterFields("email", emailAddress);
+		//sfAccountInfoPage.enterFields("email", emailAddress);
 		sfAccountInfoPage.clearFields("postalCode");
 		sfAccountInfoPage.enterFields("postalCode", invalidPostalCode);
 		sfAccountInfoPage.saveAccountInfo();
@@ -589,13 +589,12 @@ public class MyAccountTest extends StoreFrontWebsiteBaseTest{
 	 * 
 	 * Description : This test validate Check My pulse page from welcome DD.
 	 * 
-	 * 				
 	 */
 	@Test(enabled=true) //Not auto loggedIn in pulse.
 	public void testVerifyCheckMyPulsePage_357(){
 		String currentURL = null;
 		String currentWindowID = null;
-		String urlToAssert = "myrfpulse";
+		String urlToAssert = "pulse";
 		//Login as consultant user.
 		sfHomePage.loginToStoreFront(consultantWithPulseAndWithCRP(),password,true);
 		sfHomePage.clickWelcomeDropdown();
@@ -987,13 +986,13 @@ public class MyAccountTest extends StoreFrontWebsiteBaseTest{
 	 * 
 	 * Description : This test validate pulse link functionality on order page.
 	 * 
-	 * 				
+	 *     
 	 */
 	@Test(enabled=true)//Not auto loggedIn in pulse.
 	public void testVerifyPulseLinkOnOrderPage_360(){
 		String currentURL = null;
 		String currentWindowID = null;
-		String urlToAssert = "myrfpulse";
+		String urlToAssert = "pulse";
 		//Login as consultant user.
 		sfHomePage.loginToStoreFront(consultantWithPulseAndWithCRP(),password,true);
 		sfHomePage.clickWelcomeDropdown();
@@ -1028,10 +1027,10 @@ public class MyAccountTest extends StoreFrontWebsiteBaseTest{
 
 	/***
 	 * qtest: TC-369 Consultant Autoship Status- Subscribe to Pulse (Using some other Prefix less than 180 days)
-	   Description: This method re-enroll consultant in pulse with existing autosuggested prefix and other consultant prefix.
+	    Description: This method re-enroll consultant in pulse with existing autosuggested prefix and other consultant prefix.
 	 *
 	 */ 
-	@Test(enabled=true)//Accepting inactive prefix less than 180 days.
+	@Test(enabled=false)//Needs fix
 	public void testReEnnrollmentInPulseWithin180DaysWithOtherUserPrefix_369(){
 		String otherUserPrefix = pwsPrefix();
 		timeStamp = CommonUtils.getCurrentTimeStamp();
@@ -1043,6 +1042,9 @@ public class MyAccountTest extends StoreFrontWebsiteBaseTest{
 		sfHomePage.loginToStoreFront(consultantWithPulseAndWithCRPForCancellation(),password,true);
 		sfHomePage.clickWelcomeDropdown();
 		sfAutoshipStatusPage = sfHomePage.navigateToAutoshipStatusPage();
+		if(sfAutoshipStatusPage.isSubscribeToPulseBtnDisplayed()==false){
+			sfAutoshipStatusPage.clickCancelPulseSubscription().clickConfirmSubscription();
+		}
 		sfAutoshipStatusPage.clickSubscribeToPulseBtn();
 		sfAutoshipStatusPage.enterAvailablePrefix(otherUserPrefix);
 		errorMessage = sfAutoshipStatusPage.getErrorMessageForExistingPrefixName();
@@ -1056,11 +1058,6 @@ public class MyAccountTest extends StoreFrontWebsiteBaseTest{
 		sfCheckoutPage.closePopUp();
 		sfCheckoutPage.selectTermsAndConditionsCheckBoxForAutoshipOrder().clickPlaceOrderButton();
 		s_assert.assertTrue(sfCheckoutPage.isOrderPlacedSuccessfully(),"Order is Not placed successfully");
-		//Cancel the pulse of user.
-		sfHomePage.clickWelcomeDropdown();
-		sfAutoshipStatusPage = sfHomePage.navigateToAutoshipStatusPage();
-		sfAutoshipStatusPage.clickCancelPulseSubscription().clickConfirmSubscription();
-		s_assert.assertTrue(sfAutoshipStatusPage.isSubscribeToPulseBtnDisplayed(), "Pulse subscription is NOT cancelled");
 		s_assert.assertAll();
 	}
 
@@ -1138,9 +1135,9 @@ public class MyAccountTest extends StoreFrontWebsiteBaseTest{
 
 	/***
 	 * qtest: TC-278 Consultant Autoship Status- Subscribe to Pulse (Re-Enrollment within 180 days)
-	  Description: This method re-enroll consultant in pulse with new prefix and existing autosuggested prefix .
+	   Description: This method re-enroll consultant in pulse with new prefix and existing autosuggested prefix .
 	 *
-	 */	
+	 */ 
 	@Test(enabled=true)
 	public void testReEnnrollmentInPulseWithin180DaysOfExistingAutoSuggestedPrefix_278(){
 		String prefix = firstName + CommonUtils.getCurrentTimeStamp();
@@ -1150,13 +1147,16 @@ public class MyAccountTest extends StoreFrontWebsiteBaseTest{
 		sfHomePage.loginToStoreFront(consultantWithPulseAndWithCRPForCancellation(),password,true);
 		sfHomePage.clickWelcomeDropdown();
 		sfAutoshipStatusPage = sfHomePage.navigateToAutoshipStatusPage();
+		if(sfAutoshipStatusPage.isSubscribeToPulseBtnDisplayed()==false){
+			sfAutoshipStatusPage.clickCancelPulseSubscription().clickConfirmSubscription();
+		}
 		sfAutoshipStatusPage.clickSubscribeToPulseBtn();
 		autoSuggestedPrefixName = sfAutoshipStatusPage.getAvailablePrefixName();
 		sfAutoshipStatusPage.enterAvailablePrefix(prefix);
 		sfCheckoutPage = sfAutoshipStatusPage.clickConfirmSubscription();
 		sfCheckoutPage.clickSaveButton();
-		//	sfCheckoutPage.clickUseSavedCardBtnOnly();
-		//	sfCheckoutPage.clickUseThesePaymentDetailsAndReturnBillingProfileName("1");
+		// sfCheckoutPage.clickUseSavedCardBtnOnly();
+		// sfCheckoutPage.clickUseThesePaymentDetailsAndReturnBillingProfileName("1");
 		sfCheckoutPage.clickBillingDetailsNextbutton().clickPlaceOrderButton();
 		s_assert.assertTrue(sfCheckoutPage.isPopUpForTermsAndConditionsCheckboxDisplayed(), "validation popup for terms and conditions not displayed");
 		sfCheckoutPage.closePopUp();
@@ -1177,11 +1177,6 @@ public class MyAccountTest extends StoreFrontWebsiteBaseTest{
 		sfCheckoutPage.closePopUp();
 		sfCheckoutPage.selectTermsAndConditionsCheckBoxForAutoshipOrder().clickPlaceOrderButton();
 		s_assert.assertTrue(sfCheckoutPage.isOrderPlacedSuccessfully(),"Order is Not placed successfully");
-		//Cancel the pulse of user.
-		sfHomePage.clickWelcomeDropdown();
-		sfAutoshipStatusPage = sfHomePage.navigateToAutoshipStatusPage();
-		sfAutoshipStatusPage.clickCancelPulseSubscription().clickConfirmSubscription();
-		s_assert.assertTrue(sfAutoshipStatusPage.isSubscribeToPulseBtnDisplayed(), "Pulse subscription is NOT cancelled");
 		s_assert.assertAll();
 	}
 
@@ -1282,6 +1277,10 @@ public class MyAccountTest extends StoreFrontWebsiteBaseTest{
 		sfHomePage.clickShippingDetailsNextbutton();
 		sfHomePage.enterUserBillingDetails(cardType, cardNumber, cardName, CVV);
 		sfHomePage.clickBillingDetailsNextbutton();
+		if(sfHomePage.hasTokenizationFailed()==true){
+			sfHomePage.enterUserBillingDetails(cardType, cardNumber, cardName, CVV);
+			sfHomePage.clickBillingDetailsNextbutton();
+		}
 		sfHomePage.selectPoliciesAndProceduresChkBox();
 		sfHomePage.selectIAcknowledgeChkBox();
 		sfHomePage.selectTermsAndConditionsChkBox();
@@ -1293,19 +1292,20 @@ public class MyAccountTest extends StoreFrontWebsiteBaseTest{
 		s_assert.assertFalse(sfHomePage.isEditPWSLinkPresentInWelcomeDD(),"Edit PWS link is present for user not subscribed to pulse.");
 		s_assert.assertAll();
 	}
+
 	/***
 	 * qTest : TC-361 View Pulse autoship status and next bill date from Autoship status page in my account
 	 * 
 	 * Description : This test validate pulse autoship status and next bill ship date
 	 * from autoship status page.
-	 * 				
+	 *     
 	 */
 	@Test(enabled=true) //Not auto loggedIn in pulse.
 	public void testVerifyPulseStatusAndNextBillShipDate_361(){
 		String currentURL = null;
 		String currentWindowID = null;
 		String currentPulseStatus = null;
-		String urlToAssert = "myrfpulse";
+		String urlToAssert = "pulse";
 		//Login as consultant user.
 		sfHomePage.loginToStoreFront(consultantWithPulseAndWithCRP(),password,true);
 		sfHomePage.clickWelcomeDropdown();
@@ -1426,6 +1426,7 @@ public class MyAccountTest extends StoreFrontWebsiteBaseTest{
 		sfAccountInfoPage = sfCheckoutPage.navigateToAccountInfoPage();
 		firstNameAccountInfo = sfAccountInfoPage.getFirstNameFromAccountInfo();
 		lastNameAccountInfo = sfAccountInfoPage.getLastNameFromAccountInfo();
+		
 		//verify first and last name on account info page.
 		s_assert.assertTrue(firstNameAccountInfo.equalsIgnoreCase(updatedFirstName.trim()),"Updated first name is not present on account info page.");
 		s_assert.assertTrue(lastNameAccountInfo.equalsIgnoreCase(updatedLastName.trim()),"Updated Last name is not present on account info page.");
@@ -1452,7 +1453,7 @@ public class MyAccountTest extends StoreFrontWebsiteBaseTest{
 	 *     
 	 */
 	@Test(enabled=true)
-	public void testOrderHistory_387(){
+	public void testOrderHistory_387() {
 		String orderNumberTitle = "Order Number";
 		String orderDateTitle = "Order Date";
 		String grandTotalTitle = "Grand Total";

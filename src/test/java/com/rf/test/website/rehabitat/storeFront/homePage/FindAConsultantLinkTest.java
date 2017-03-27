@@ -28,7 +28,6 @@ public class FindAConsultantLinkTest extends StoreFrontWebsiteBaseTest{
 		s_assert.assertAll();
 	}
 	
-
 	/***
 	 * qTest : TC-8 BIZ and Com sites shouldn’t have "Find a consultant" link on the header of the home page
 	 * Description : This test validates that the 'Find a Consultant' link not present
@@ -38,7 +37,7 @@ public class FindAConsultantLinkTest extends StoreFrontWebsiteBaseTest{
 	@Test(enabled=true)
 	public void testPWSSitesShouldNotHaveFindAConsultantLinkOnTheHomePage_8(){
 		String prefix = pwsPrefix();
-		sfHomePage.navigateToUrl(sfHomePage.getBaseUrl()+"/" +sfHomePage.getCountry() +"/pws/" + prefix);
+		sfHomePage.navigateToUrl(sfHomePage.getBaseUrl()+"/" +country.toUpperCase()+"/pws/" + prefix);
 		s_assert.assertFalse(sfHomePage.isFindAConsultantLinkOnHomePagePresent(),"'Find a consultant' link is present on home page of PWS site");
 		s_assert.assertAll();
 	}

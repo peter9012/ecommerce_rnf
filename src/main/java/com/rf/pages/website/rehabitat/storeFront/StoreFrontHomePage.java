@@ -55,6 +55,7 @@ public class StoreFrontHomePage extends StoreFrontWebsiteBasePage{
 	private final By SHOP_BY_PRICE_FILTER_OPTION_0_TO_49$_AFTER_CHECKED_LOC = By.xpath("//input[@id='$0-$49.99ID'][@checked = 'checked']");
 	private final By SHOP_BY_PRICE_FILTER_OPTION_200_TO_499$_LOC = By.xpath("//input[@id='$200-$499.99ID']/..");
 	private final By SHOP_BY_PRICE_FILTER_OPTION_200_TO_499$_AFTER_CHECKED_LOC = By.xpath("//input[@id='$200-$499.99ID'][@checked = 'checked']");
+	private final By SHOP_BY_PRICE_FILTER_OPTION_500_TO_10000$_LOC = By.xpath("//input[@id='$500-$10000ID']/..");
 	private final By WELCOME_USER_LOC = By.xpath("//div[@class='loginBlock']/div");
 	private final By CONFIRMATION_MSG_OF_CONSULTANT_ENROLLMENT_LOC = By.xpath("//div[@class='global-alerts']/div");
 	private final By POLICIES_AND_PROCEDURES_LINK_LOC = By.xpath("//a[contains(text(),'Rodan+Fields Policies and Procedure')]");
@@ -84,7 +85,7 @@ public class StoreFrontHomePage extends StoreFrontWebsiteBasePage{
 	private final By MEET_THE_DOCTORS_TXT_LOC = By.xpath("//h1[contains(text(),'Meet the Doctors')]");
 	private final By CONTINUE_SHOPPING_CRP_BTN_LOC = By.xpath("//button[contains(text(),'Continue')]");
 
-	private String addToCRPBtnForSpecificProductLoc = "//h3[normalize-space(text())='%s']/ancestor::div[1]/following::span[contains(text(),'Add to CRP')][1]";
+	private String addToCRPBtnForSpecificProductLoc = "//a[contains(@href,'%s')]/following::h3[contains(normalize-space(text()),'%s')]/following::span[contains(text(),'Add to CRP')][1]";
 	private String appliedFilterNameLoc = "//div[@id='applied_filters']/descendant::li[contains(text(),'%s')]";
 	private String specificProductAddToCRPBtnLoc = "//div[@id='product_category']/following-sibling::div/descendant::span[text()='Add to CRP'][%s]";
 	private String viewDetailsLinkLoc = "//div[contains(@class,'enrollmentKit-wrapper')]/descendant::a[contains(text(),'View Details')][%s]";
@@ -317,13 +318,15 @@ public class StoreFrontHomePage extends StoreFrontWebsiteBasePage{
 		logger.info("Entered password as "+password);
 		driver.type(CONFIRM_PASSWORD_FOR_REGISTRATION_LOC, password);
 		logger.info("Entered confirm password as "+password);
-		driver.type(SSN_FOR_REGISTRATION_LOC, SSN);
-		logger.info("Entered SSN  as "+SSN);
-		driver.findElement(SSN_FOR_REGISTRATION_LOC).sendKeys(Keys.TAB);
-		driver.pauseExecutionFor(1000);
-		//The following is a patch to make next buuton enabled
-		driver.type(FIRST_NAME_FOR_REGISTRATION_LOC, firstName);
-		logger.info("Entered first name as "+firstName);
+		if(driver.getCountry().equalsIgnoreCase("au")==false){
+			driver.type(SSN_FOR_REGISTRATION_LOC, SSN);
+			logger.info("Entered SSN  as "+SSN);	
+			driver.findElement(SSN_FOR_REGISTRATION_LOC).sendKeys(Keys.TAB);
+			driver.pauseExecutionFor(1000);
+			//The following is a patch to make next buuton enabled
+			driver.type(FIRST_NAME_FOR_REGISTRATION_LOC, firstName);
+			logger.info("Entered first name as "+firstName);
+		}				
 		return this;
 	}
 
@@ -452,6 +455,7 @@ public class StoreFrontHomePage extends StoreFrontWebsiteBasePage{
 	 * 
 	 */
 	public StoreFrontHomePage chooseProductFromKitPage(){
+		driver.waitForElementPresent(PERSONAL_RESULTS_KIT_PAGE_LOC);
 		driver.clickByJS(RFWebsiteDriver.driver, PERSONAL_RESULTS_KIT_PAGE_LOC);
 		logger.info("selected the personal result kit");
 		return this;
@@ -637,6 +641,9 @@ public class StoreFrontHomePage extends StoreFrontWebsiteBasePage{
 	public StoreFrontHomePage selectSecondOptionInShopByPriceFilter(){
 		driver.clickByJS(RFWebsiteDriver.driver, SHOP_BY_PRICE_FILTER_LOC);
 		logger.info("Shop by price dropdown clicked");
+	if(driver.getCountry().equalsIgnoreCase("au"))
+		driver.clickByJS(RFWebsiteDriver.driver, SHOP_BY_PRICE_FILTER_OPTION_200_TO_499$_LOC);
+		else
 		driver.clickByJS(RFWebsiteDriver.driver, SHOP_BY_PRICE_FILTER_OPTION_50_TO_199$_LOC);
 		logger.info("Second option under shop by price filter selected");
 		return this;
@@ -651,6 +658,9 @@ public class StoreFrontHomePage extends StoreFrontWebsiteBasePage{
 	 * 
 	 */
 	public boolean isShopByPriceSecondFilterChecked(){
+		if(driver.getCountry().equalsIgnoreCase("au"))
+			return driver.isElementPresent(SHOP_BY_PRICE_FILTER_OPTION_200_TO_499$_AFTER_CHECKED_LOC);
+		else
 		return driver.isElementPresent(SHOP_BY_PRICE_FILTER_OPTION_50_TO_199$_AFTER_CHECKED_LOC);
 	}
 
@@ -664,7 +674,10 @@ public class StoreFrontHomePage extends StoreFrontWebsiteBasePage{
 	public StoreFrontHomePage selectThirdOptionInShopByPriceFilter(){
 		driver.clickByJS(RFWebsiteDriver.driver, SHOP_BY_PRICE_FILTER_LOC);
 		logger.info("Shop by price dropdown clicked");
-		driver.clickByJS(RFWebsiteDriver.driver, SHOP_BY_PRICE_FILTER_OPTION_200_TO_499$_LOC);
+		if(driver.getCountry().equalsIgnoreCase("au"))
+			driver.clickByJS(RFWebsiteDriver.driver, SHOP_BY_PRICE_FILTER_OPTION_500_TO_10000$_LOC);
+		else
+			driver.clickByJS(RFWebsiteDriver.driver, SHOP_BY_PRICE_FILTER_OPTION_200_TO_499$_LOC);
 		logger.info("Third option under shop by price filter selected");
 		return this;
 	}
@@ -852,10 +865,11 @@ public class StoreFrontHomePage extends StoreFrontWebsiteBasePage{
 
 	public StoreFrontShopSkinCarePage clickOnCategoryFromShopSkinCare(String catTitle){
 		mouseHoverOn(TestConstants.SHOP_SKINCARE);
-		driver.click(By.xpath(String.format(categoryUnderShopSkinCareLoc, catTitle)));
+		driver.clickByJS(By.xpath(String.format(categoryUnderShopSkinCareLoc, catTitle)));
 		logger.info("clicked on " + catTitle);
 		return new StoreFrontShopSkinCarePage(driver);
 	}
+
 
 	/***
 	 * This method verifies search text box is displayed or not
@@ -956,9 +970,9 @@ public class StoreFrontHomePage extends StoreFrontWebsiteBasePage{
 	 * @return store front home page object
 	 * 
 	 */
-	public StoreFrontHomePage addFirstProductForCRPCheckout(String productName){
+	public StoreFrontHomePage addFirstProductForCRPCheckout(String productName,String productId){
 		clickShowMoreButton();
-		driver.clickByJS(RFWebsiteDriver.driver,By.xpath(String.format(addToCRPBtnForSpecificProductLoc, productName)));
+		driver.clickByJS(RFWebsiteDriver.driver,By.xpath(String.format(addToCRPBtnForSpecificProductLoc,productId, productName)));
 		logger.info("Clicked Add to CRP button of Product : " + productName);
 		driver.pauseExecutionFor(2000);
 		while(driver.isElementPresent(CRP_CHECKOUT_BTN_LOC)==false){
@@ -1082,15 +1096,15 @@ public class StoreFrontHomePage extends StoreFrontWebsiteBasePage{
 	public StoreFrontHomePage selectDefaultCountryFromToggleButton(String countryName) {
 		if(countryName.equalsIgnoreCase("us")){
 			clickToggleButtonOfCountry();
-			driver.click(By.xpath(String.format(countryOptionsInToggleButtonLoc, "USA")));
+			driver.clickByJS(RFWebsiteDriver.driver,By.xpath(String.format(countryOptionsInToggleButtonLoc, "USA")));
 			logger.info("Country " + countryName + " is Selected");
 		}else if(countryName.equalsIgnoreCase("ca")){
 			clickToggleButtonOfCountry();
-			driver.click(By.xpath(String.format(countryOptionsInToggleButtonLoc, "CAN")));
+			driver.clickByJS(RFWebsiteDriver.driver,By.xpath(String.format(countryOptionsInToggleButtonLoc, "CAN")));
 			logger.info("Country " + countryName + " is Selected");
 		}else if(countryName.equalsIgnoreCase("au")){
 			clickToggleButtonOfCountry();
-			driver.click(By.xpath(String.format(countryOptionsInToggleButtonLoc, "AUS")));
+			driver.clickByJS(RFWebsiteDriver.driver,By.xpath(String.format(countryOptionsInToggleButtonLoc, "AUS")));
 			logger.info("Country " + countryName + " is Selected");
 		}
 

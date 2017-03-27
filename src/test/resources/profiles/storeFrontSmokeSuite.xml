@@ -11,7 +11,7 @@
 			<class
 				name="com.rf.test.website.rehabitat.storeFront.ConsultantEnrollmentTest">
 				<methods>
-					<include name="testConsultantEnrollment_231"></include>
+					<include name="testConsultantEnrollmentWithPulseAndCRP_231"></include>
 				</methods>
 			</class>
 		</classes>

@@ -13,7 +13,7 @@ public class FeatureProductTest extends StoreFrontWebsiteBaseTest{
 	 * 
 	 *     
 	 */
-	@Test(enabled=true)
+	@Test(enabled=false)
 	public void testVerifyFeaturedProductCategoryUnderShopSkincareOnCorpComAndBizSite_81(){
 		String prefix = pwsPrefix();
 		String currentURL = null;

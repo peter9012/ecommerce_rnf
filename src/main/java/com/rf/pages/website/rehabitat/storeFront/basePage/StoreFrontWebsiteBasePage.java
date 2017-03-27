@@ -47,6 +47,7 @@ public class StoreFrontWebsiteBasePage extends RFBasePage {
 
 
 	private final By ADD_MORE_ITEMS_BTN_LOC = By.xpath("//div[@class='container']/descendant::button[contains(text(),'Add More Items')][2]");
+	private final By OKTA_IMG_LOC = By.xpath("//img[contains(@alt,'Okta')]");
 	protected final By TOTAL_CATEGORY_NAME_LOC = By.xpath("//div[@id='product-facet']//descendant::ul[2]/li//input[contains(@id,'ID')]");
 	private final By SELECT_AND_CONTINUE_FIRST_SPONSER_LOC = By.xpath(
 			"//div[@id='findConsultantResultArea']/descendant::div[contains(@class,'consultant-box')][1]//input[@id='consultantUid']");
@@ -124,7 +125,7 @@ public class StoreFrontWebsiteBasePage extends RFBasePage {
 	private final By LOGOUT_LOC = By.xpath("//a[text()='Sign Out']");
 	private final By WELCOME_DD_EDIT_CRP_LOC = By.xpath("//a[text()='Edit CRP']");
 	private final By WELCOME_DD_CHECK_MY_PULSE_LOC = By.xpath("//a[text()='Check My Pulse']");
-	private final By I_DONT_HAVE_SPONSOR_CHKBOX_LOC = By.xpath("//label[text()='I DO NOT HAVE A SPONSOR']");
+	private final By I_DONT_HAVE_SPONSOR_CHKBOX_LOC = By.xpath("//label[contains(text(),'HAVE A SPONSOR')]");
 	private final By SUBMIT_BTN_ON_REQUIRED_SPONSOR_POPUP_LOC = By.id("consultant-sponsor-submit");
 	private final By SPONSOR_FIRST_NAME_LOC = By
 			.xpath("//div[@class='enroll-page']/descendant::input[@id='sponsor.firstName'][1]");
@@ -232,7 +233,7 @@ public class StoreFrontWebsiteBasePage extends RFBasePage {
 			.xpath("//div[@class='cart-container']/descendant::button[contains(text(),'Add More Items')][2]");
 	private final By ADD_MORE_ITEMS_BTN_PC_AUTOSHIP_CART_LOC = By
 			.xpath("//div[@class='cart-container']/descendant::button[contains(text(),'Add More Items')]");
-	private final By PC_ONE_TIME_FEE_MSG_LOC = By.xpath("//span[contains(text(),'ONE-TIME ENROLLMENT FEE')]");
+	private final By PC_ONE_TIME_FEE_MSG_LOC = By.xpath("//span[contains(text(),'One-Time Enrollment Fee') or contains(text(),'ONE-TIME ENROLLMENT FEE')]");
 	private final By PDF_VIEWER_LOC = By.xpath("//*[@id='viewer']");
 	private final By CRP_AUTOSHIP_CART_HEADER_LOC = By.xpath("//h3[contains(text(),'YOUR NEXT AUTOSHIP CART')]");
 	private final By PC_TERMS_AND_CONDITIONS_LINK_LOC = By.xpath("//a[contains(text(),'PC Perks Terms & Conditions')]");
@@ -277,7 +278,7 @@ public class StoreFrontWebsiteBasePage extends RFBasePage {
 	private final By BILLING_PROFILE_DETAILS_ORDER_REVIEW_PAGE_LOC = By.xpath("//*[@id='default-payment-method']/ul");
 	protected final By POPUP_FOR_TERMS_AND_CONDITIONS_LOC = By.id("city_popup");// moved
 	private final By BILLING_ADDRESS_OTHER_THAN_ND_POPUP_TEXT_LOC = By.xpath("//*[@id='city_popup']//h3");
-	private final By CHOOSE_A_KIT_OPTION_ON_POPUP_LOC = By.xpath("//a[text()='Choose a kit']");
+	private final By CHOOSE_A_KIT_OPTION_ON_POPUP_LOC = By.xpath("//a[contains(text(),'Choose')]");
 	private final By SHIPPING_SECTION_LOC = By.xpath("//div[@class='checkout-shipping']");
 	private final By BILLING_SECTION_LOC = By.xpath("//div[@class='checkout-paymentmethod']");
 	private final By LEARN_MORE_LINK_LOC = By.xpath("//a[contains(text(),'Learn more')]");
@@ -469,7 +470,7 @@ public class StoreFrontWebsiteBasePage extends RFBasePage {
 	 * 
 	 */
 	public String getCurrentURL() {
-		driver.pauseExecutionFor(3000);
+		driver.pauseExecutionFor(4000);
 		String currentURL = driver.getCurrentUrl();
 		logger.info("Current URL is " + currentURL);
 		return currentURL;
@@ -546,10 +547,10 @@ public class StoreFrontWebsiteBasePage extends RFBasePage {
 	 * 
 	 */
 	public void selectFirstSponsorFromList() {
-
 		driver.pauseExecutionFor(2000);
-		driver.clickByJS(RFWebsiteDriver.driver, SELECT_AND_CONTINUE_LOC);
+		driver.click(SELECT_AND_CONTINUE_LOC);
 		logger.info("Clicked on 'Select And Continue' button for first result");
+		driver.pauseExecutionFor(2000);
 	}
 
 	/***
@@ -645,6 +646,7 @@ public class StoreFrontWebsiteBasePage extends RFBasePage {
 				logger.info("Switched to child window");
 			}
 		}
+		driver.pauseExecutionFor(2000);
 		return this;
 	}
 
@@ -714,6 +716,7 @@ public class StoreFrontWebsiteBasePage extends RFBasePage {
 	 * 
 	 */
 	public StoreFrontWebsiteBasePage clickSearchIcon() {
+		driver.pauseExecutionFor(3000);
 		driver.clickByJS(SEARCH_ICON_LOC);
 		logger.info("clicked on Search Icon");
 		return this;
@@ -773,6 +776,7 @@ public class StoreFrontWebsiteBasePage extends RFBasePage {
 
 	public StoreFrontWebsiteBasePage loginToStoreFront(String username, String password, boolean closeCRPReminder) {
 		clickLoginIcon();
+		driver.quickWaitForElementPresent(USERNAME_TXTFLD_LOC, 3);
 		driver.type(USERNAME_TXTFLD_LOC, username);
 		logger.info("username entered as " + username);
 		driver.type(PASSWORD_TXTFLD_LOC, password);
@@ -784,11 +788,17 @@ public class StoreFrontWebsiteBasePage extends RFBasePage {
 			driver.clickByJS(RFWebsiteDriver.driver,ACCEPT_RDBTN_NEW_POLICIES_PROCEDURES_POPUP_LOC);
 			driver.pauseExecutionFor(1000);
 			driver.clickByJS(RFWebsiteDriver.driver,CONTINUE_BTN_NEW_POLICIES_PROCEDURES_POPUP_LOC);
-
 		}
+
+		if(driver.isElementPresent(OKTA_IMG_LOC)){
+			driver.get(driver.getURL()+"/"+driver.getCountry().toUpperCase());
+			driver.waitForPageLoad();
+		}
+
 		if (closeCRPReminder == true && (driver.isElementVisible(SET_UP_CRP_POPUP_CLOSE_LOC))) {
 			driver.click(SET_UP_CRP_POPUP_CLOSE_LOC);
 		}
+		driver.pauseExecutionFor(3000);
 		return this;
 	}
 
@@ -1223,6 +1233,7 @@ public class StoreFrontWebsiteBasePage extends RFBasePage {
 		driver.click(EDIT_LINK_NEXT_TO_MAIN_ACCOUNT_LOC);
 		logger.info("Edit link clicked next to main account info");
 		driver.waitForPageLoad();
+		driver.pauseExecutionFor(2000);
 		return this;
 	}
 
@@ -1402,9 +1413,8 @@ public class StoreFrontWebsiteBasePage extends RFBasePage {
 	 */
 	public StoreFrontWebsiteBasePage navigateToShopSkincareLinkInNewTab(String linkName) throws AWTException {
 		mouseHoverOn(TestConstants.SHOP_SKINCARE);
-		WebElement element = driver.findElement(By.xpath(String.format(topNavigationSublinksWithTextLoc, linkName)));
-		Actions action = new Actions(RFWebsiteDriver.driver);
-		action.contextClick(element).build().perform();
+		//ebElement element = driver.findElement(By.xpath(String.format(topNavigationSublinksWithTextLoc, linkName)));
+		driver.clickByJS(By.xpath(String.format(topNavigationSublinksWithTextLoc, linkName)));
 		logger.info("Right click performed on webelement");
 		driver.pauseExecutionFor(2000);
 		Robot robot = new Robot();
@@ -1510,7 +1520,10 @@ public class StoreFrontWebsiteBasePage extends RFBasePage {
 	 * @return store front base page object
 	 */
 	public StoreFrontWebsiteBasePage clickIDontHaveSponsorCheckBox() {
+		driver.pauseExecutionFor(1000);
+		driver.waitForElementPresent(I_DONT_HAVE_SPONSOR_CHKBOX_LOC, 5);
 		driver.click(I_DONT_HAVE_SPONSOR_CHKBOX_LOC);
+		driver.pauseExecutionFor(1000);
 		logger.info("'I dont have sponsor checkbox' clicked");
 		return this;
 	}
@@ -1789,6 +1802,7 @@ public class StoreFrontWebsiteBasePage extends RFBasePage {
 	public StoreFrontWebsiteBasePage selectPoliciesAndProceduresChkBox() {
 		driver.pauseExecutionFor(1000);
 		try{
+			driver.quickWaitForElementPresent(POLICIES_AND_PROCEDURES_CHK_BOX_LOC, 5);
 			driver.turnOffImplicitWaits(2);
 			driver.clickByJS(RFWebsiteDriver.driver, POLICIES_AND_PROCEDURES_CHK_BOX_LOC);
 			logger.info("policies and procedures for consultant selected");
@@ -2075,10 +2089,11 @@ public class StoreFrontWebsiteBasePage extends RFBasePage {
 	 * 
 	 */
 	public String clickOnFirstProductQuickViewButtonAndReturnProductName() {
+		driver.pauseExecutionFor(3000);
 		driver.waitForElementPresent(FIRST_PRODUCT_NAME_LOC);
 		String productName = driver.findElement(FIRST_PRODUCT_NAME_LOC).getText();
 		driver.waitForElementPresent(FIRST_PRODUCT_IMAGE_LOC);
-		driver.click(FIRST_PRODUCT_IMAGE_LOC);
+		driver.clickByJS(RFWebsiteDriver.driver,FIRST_PRODUCT_IMAGE_LOC);
 		return productName.split("\\.")[0];
 	}
 
@@ -2373,7 +2388,6 @@ public class StoreFrontWebsiteBasePage extends RFBasePage {
 	 * @return StoreFrontWebsiteBasePage
 	 * 
 	 */
-
 	public StoreFrontWebsiteBasePage loginToStoreFrontExcludingClickOnLoginIcon(String username, String password) {
 		driver.type(USERNAME_TXTFLD_LOC, username);
 		logger.info("username entered as " + username);
@@ -2381,6 +2395,10 @@ public class StoreFrontWebsiteBasePage extends RFBasePage {
 		logger.info("password entered as  " + password);
 		driver.click(LOGIN_BTN_LOC);
 		logger.info("login button clicked");
+		if(driver.isElementPresent(OKTA_IMG_LOC)){
+			driver.get(driver.getURL()+"/"+driver.getCountry().toUpperCase());
+			driver.waitForPageLoad();
+		}
 		return this;
 	}
 
@@ -2390,7 +2408,7 @@ public class StoreFrontWebsiteBasePage extends RFBasePage {
 	 * @return String - productName
 	 */
 	public String getProductNameFromCheckoutPopup() {
-		driver.pauseExecutionFor(2000);
+		driver.pauseExecutionFor(5000);
 		return driver.getText(PRODUCT_NAME_ON_CHECKOUT_POPUP_LOC);
 	}
 
@@ -2411,8 +2429,6 @@ public class StoreFrontWebsiteBasePage extends RFBasePage {
 		// driver.waitForLoadingImageToDisappear();
 		return new StoreFrontCartPage(driver);
 	}
-
-
 
 
 	/***
@@ -2839,7 +2855,8 @@ public class StoreFrontWebsiteBasePage extends RFBasePage {
 	 * @return store front Base page object
 	 */
 	public StoreFrontWebsiteBasePage clickBecomeAConsultant() {
-		driver.clickByJS(RFWebsiteDriver.driver, BECOME_A_CONSULTANT_BTN_LOC);
+		driver.pauseExecutionFor(2000);
+		driver.click(BECOME_A_CONSULTANT_BTN_LOC);
 		// driver.click(BECOME_A_CONSULTANT_BTN_LOC);
 		logger.info("Become a consultant button clicked");
 		driver.waitForPageLoad();
@@ -2863,7 +2880,7 @@ public class StoreFrontWebsiteBasePage extends RFBasePage {
 			driver.turnOffImplicitWaits(3);
 			driver.click(USE_AS_ENTERED_BUTTON_LOC,3);
 			driver.waitForElementToBeInVisible(USE_AS_ENTERED_BUTTON_LOC, 50);
-			//driver.pauseExecutionFor(40000); // UI is slow, will be removed
+			driver.pauseExecutionFor(5000); // UI is slow, will be removed
 			logger.info("'Used as entered' button clicked");
 		}catch(Exception e){
 
@@ -2962,6 +2979,7 @@ public class StoreFrontWebsiteBasePage extends RFBasePage {
 	 * @return
 	 */
 	public StoreFrontCheckoutPage clickConfirmSubscription() {
+		driver.pauseExecutionFor(3000);
 		driver.clickByJS(RFWebsiteDriver.driver, CONFIRM_PULSE_SUBSCRIPTION_BTN_LOC);
 		logger.info("confirm sibscription btn clicked");
 		driver.pauseExecutionFor(2000);
@@ -3378,6 +3396,7 @@ public class StoreFrontWebsiteBasePage extends RFBasePage {
 	 * @return
 	 */
 	public StoreFrontAutoshipCartPage checkoutTheCartFromPopUpForAutoship() {
+		driver.pauseExecutionFor(3000);
 		driver.click(CHECKOUT_BUTTON_POPUP_LOC);
 		logger.info("Clicked on checkout button on the popup");
 		driver.waitForPageLoad();
@@ -3582,7 +3601,7 @@ public class StoreFrontWebsiteBasePage extends RFBasePage {
 	 * 
 	 */
 	public boolean isAddressFieldPresentAsExpectedOnUI(String billingAddressOnUI, String addressField) {
-		return billingAddressOnUI.contains(addressField);
+		return billingAddressOnUI.toLowerCase().contains(addressField.toLowerCase().trim());
 	}
 
 	/***
@@ -3876,6 +3895,7 @@ public class StoreFrontWebsiteBasePage extends RFBasePage {
 	 * 
 	 */
 	public boolean isOrderPlacedSuccessfully(){
+		driver.pauseExecutionFor(2000);
 		driver.waitForElementPresent(CONFIRMATION_MSG_OF_PLACED_ORDER_LOC);
 		//		String confirmationText= driver.getText(CONFIRMATION_MSG_OF_PLACED_ORDER_LOC);
 		if(driver.isElementPresent(CONFIRMATION_MSG_OF_PLACED_ORDER_LOC)){
@@ -3905,7 +3925,8 @@ public class StoreFrontWebsiteBasePage extends RFBasePage {
 	 * 
 	 */
 	public StoreFrontWebsiteBasePage productPriceFilterHighToLow(){
-		driver.click(SORT_FILTER_DD_LOC);
+		driver.waitForElementPresent(SORT_FILTER_DD_LOC);
+		driver.clickByJS(SORT_FILTER_DD_LOC);
 		logger.info("Sort filter dropdown clicked");
 		driver.click(SHOP_BY_PRICE_FILTER_OPTION_HIGH_TO_LOW_LOC);
 		logger.info("Price filter 'HIGH TO LOW' selected");
@@ -3954,7 +3975,14 @@ public class StoreFrontWebsiteBasePage extends RFBasePage {
 	 * 
 	 */
 	public String getAddressNonDeliverableWarningMsg(){
-		return driver.getText(ADDRESS_NON_DELIVERABLE_WARNING_MSG_LOC).trim();
+		String errorMessage = null;
+		try{
+			errorMessage = driver.getText(ADDRESS_NON_DELIVERABLE_WARNING_MSG_LOC).trim();
+		}catch(Exception e){
+			errorMessage = driver.getText(ERROR_MESSAGE_FOR_POSTAL_CODE_LOC);
+		}
+		logger.info("Error message is "+errorMessage);
+		return errorMessage;
 	}
 
 	/***
@@ -3965,8 +3993,10 @@ public class StoreFrontWebsiteBasePage extends RFBasePage {
 	 * 
 	 */
 	public StoreFrontWebsiteBasePage clickEditAddressBtnOnAddressSuggestionPopup(){
-		driver.click(EDIT_ADDRESS_BTN_ON_ADDRESS_SUGGESTION_POPUP_LOC);
-		logger.info("clicked on Edit Address button from Address Suggestion Popup");
+		if(driver.isElementPresent(EDIT_ADDRESS_BTN_ON_ADDRESS_SUGGESTION_POPUP_LOC)){
+			driver.click(EDIT_ADDRESS_BTN_ON_ADDRESS_SUGGESTION_POPUP_LOC);
+			logger.info("clicked on Edit Address button from Address Suggestion Popup");
+		}
 		driver.pauseExecutionFor(3000);
 		return this;
 	}
@@ -3980,9 +4010,9 @@ public class StoreFrontWebsiteBasePage extends RFBasePage {
 	 */
 	public StoreFrontProductDetailPage clickNameOfProductOnAllProductPage(String productNumber){
 		String productName = driver.findElement(By.xpath(String.format(productNameLinkLoc, productNumber))).getText();
-		//		driver.moveToElement(By.xpath(String.format(productNameLinkOnAllProductPageLoc, productNumber)));
+		//  driver.moveToElement(By.xpath(String.format(productNameLinkOnAllProductPageLoc, productNumber)));
 		if(driver.isElementVisible(By.xpath(String.format(productNameLinkLoc, productNumber)))){
-			driver.click(By.xpath(String.format(productNameLinkLoc, productNumber)));
+			driver.clickByJS(RFWebsiteDriver.driver,By.xpath(String.format(productNameLinkLoc, productNumber)));
 		}
 		logger.info("product name "+productName+ "Clicked");
 		driver.waitForPageLoad();
@@ -4011,6 +4041,7 @@ public class StoreFrontWebsiteBasePage extends RFBasePage {
 	 * 
 	 */
 	public StoreFrontShopSkinCarePage clickAllProducts(){
+		driver.pauseExecutionFor(5000);
 		driver.get(driver.getCurrentUrl().replace("?clear=true","")+"/All-Skincare/c/shopskincare");
 		logger.info("clicked on 'All Products'");
 		driver.waitForPageLoad();

@@ -648,7 +648,7 @@ public class ConsultantEnrollmentTest extends StoreFrontWebsiteBaseTest{
 	 * enrollment
 	 *     
 	 */
-	@Test(invocationCount=2)
+	@Test(enabled=true)
 	public void testConsultantEnrollmentWithPulseAndCRP_231(){
 		timeStamp = CommonUtils.getCurrentTimeStamp();
 		randomWords = CommonUtils.getRandomWord(5);  

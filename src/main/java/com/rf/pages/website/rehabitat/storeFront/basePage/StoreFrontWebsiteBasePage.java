@@ -1706,7 +1706,7 @@ public class StoreFrontWebsiteBasePage extends RFBasePage {
 		//driver.pauseExecutionFor(1000);
 		logger.info("Entered CVV as" + CVV);
 		//driver.pauseExecutionFor(1000);
-		driver.waitForTokenizing();
+		//driver.waitForTokenizing();
 		//driver.waitForPageLoad();		
 		return this;
 	}

@@ -1,11 +1,15 @@
 package com.rf.test.website.rehabitat.storeFront;
 
+import org.testng.annotations.Listeners;
 import org.testng.annotations.Test;
 
 import com.rf.core.utils.CommonUtils;
 import com.rf.core.website.constants.TestConstants;
 import com.rf.test.website.rehabitat.storeFront.baseTest.StoreFrontWebsiteBaseTest;
 
+@Listeners({org.uncommons.reportng.HTMLReporter.class,
+	        org.uncommons.reportng.JUnitXMLReporter.class,
+	        com.rf.core.listeners.TestListner.class})
 public class OrdersTest extends StoreFrontWebsiteBaseTest{
 
 	/***
@@ -1734,7 +1738,9 @@ public class OrdersTest extends StoreFrontWebsiteBaseTest{
 		//s_assert.assertTrue(productUnitPriceAtOrderDetailsPage.contains(yourPrice),"Product unit price is not matching. Expected is:"+yourPrice+"But found is "+productUnitPriceAtOrderDetailsPage);
 		s_assert.assertAll();
 	}
+	
 	// Placed an adhoc order from consultant
+	@Test
 	public void testPlacedAnAdhocOrderFromConsultant(){
 		sfHomePage.loginToStoreFront(consultantWithPulseAndWithCRP(), password,true);
 		sfCartPage = sfHomePage.clickMiniCartBagLink();

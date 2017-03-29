@@ -23,6 +23,7 @@ public class StoreFrontHomePage extends StoreFrontWebsiteBasePage{
 	private static final Logger logger = LogManager
 			.getLogger(StoreFrontHomePage.class.getName());
 
+	private final By PERSONAL_RESULTS_KIT_REDEFINE_REGIMEN_LOC = By.xpath("//div[@class='owl-item active']//label[normalize-space(text())='Personal Results Kit - REDEFINE']/preceding-sibling::input[1]");
 	private final By SHOW_MORE_BTN_LOC = By.xpath("//a[contains(text(),'Show More')]");
 	private final By ENROLL_NOW_BUTTON_LOC = By.xpath("//a[text()='Enroll Now']");
 	private final By FIRST_EVENT_CALENDAR_LOC = By.xpath("//h3[contains(text(),'Presentations')]/following::a[text()='EVENT CALENDER'][1]");
@@ -460,7 +461,11 @@ public class StoreFrontHomePage extends StoreFrontWebsiteBasePage{
 	public StoreFrontHomePage chooseProductFromKitPage(){
 		driver.waitForElementPresent(PERSONAL_RESULTS_KIT_PAGE_LOC);
 		driver.clickByJS(RFWebsiteDriver.driver, PERSONAL_RESULTS_KIT_PAGE_LOC);
-		logger.info("selected the personal result kit");
+		logger.info("Selected the Personal Result Kit");
+		driver.pauseExecutionFor(2000);
+		driver.waitForElementPresent(PERSONAL_RESULTS_KIT_REDEFINE_REGIMEN_LOC);
+		driver.clickByJS(RFWebsiteDriver.driver, PERSONAL_RESULTS_KIT_REDEFINE_REGIMEN_LOC);
+		logger.info("Selected the Personal Result Kit Redefine Regimen");
 		return this;
 	}
 
@@ -644,10 +649,10 @@ public class StoreFrontHomePage extends StoreFrontWebsiteBasePage{
 	public StoreFrontHomePage selectSecondOptionInShopByPriceFilter(){
 		driver.clickByJS(RFWebsiteDriver.driver, SHOP_BY_PRICE_FILTER_LOC);
 		logger.info("Shop by price dropdown clicked");
-	if(driver.getCountry().equalsIgnoreCase("au"))
-		driver.clickByJS(RFWebsiteDriver.driver, SHOP_BY_PRICE_FILTER_OPTION_200_TO_499$_LOC);
+		if(driver.getCountry().equalsIgnoreCase("au"))
+			driver.clickByJS(RFWebsiteDriver.driver, SHOP_BY_PRICE_FILTER_OPTION_200_TO_499$_LOC);
 		else
-		driver.clickByJS(RFWebsiteDriver.driver, SHOP_BY_PRICE_FILTER_OPTION_50_TO_199$_LOC);
+			driver.clickByJS(RFWebsiteDriver.driver, SHOP_BY_PRICE_FILTER_OPTION_50_TO_199$_LOC);
 		logger.info("Second option under shop by price filter selected");
 		return this;
 	}
@@ -664,7 +669,7 @@ public class StoreFrontHomePage extends StoreFrontWebsiteBasePage{
 		if(driver.getCountry().equalsIgnoreCase("au"))
 			return driver.isElementPresent(SHOP_BY_PRICE_FILTER_OPTION_200_TO_499$_AFTER_CHECKED_LOC);
 		else
-		return driver.isElementPresent(SHOP_BY_PRICE_FILTER_OPTION_50_TO_199$_AFTER_CHECKED_LOC);
+			return driver.isElementPresent(SHOP_BY_PRICE_FILTER_OPTION_50_TO_199$_AFTER_CHECKED_LOC);
 	}
 
 	/***
@@ -1130,6 +1135,5 @@ public class StoreFrontHomePage extends StoreFrontWebsiteBasePage{
 		}
 		return countryName;
 	}
-
 
 }

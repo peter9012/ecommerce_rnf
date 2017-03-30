@@ -9,9 +9,26 @@
 	<test name="storeFrontProductAndCartDetailsTest_2">
 		<classes>
 			<class
+				name="com.rf.test.website.rehabitat.storeFront.ConsultantEnrollmentTest">
+				<methods>
+					<include name="testConsultantEnrollmentWithPulseAndCRP_231"></include>
+				</methods>
+			</class>
+			<class name="com.rf.test.website.rehabitat.storeFront.PCEnrollmentTest">
+				<methods>
+					<include name="testPCEnrollmentWithPWSSponsor_452"></include>
+				</methods>
+			</class>
+			<class name="com.rf.test.website.rehabitat.storeFront.RCEnrollmentTest">
+				<methods>
+					<include name="testRCEnrollmentWithOrderWithoutSponsor_550"></include>
+				</methods>
+			</class>
+			<class
 				name="com.rf.test.website.rehabitat.storeFront.ProductsAndCartDetailsTest">
 				<methods>
-					<include name="testCartPagePCPerksPromotionMessageLinkConsultantUser_168"></include>
+					<include
+						name="testCartPagePCPerksPromotionMessageLinkConsultantUser_168"></include>
 					<include name="testProductPricingPC_503"></include>
 					<include name="testProductPricingConsultant_504"></include>
 					<include name="testProductDetailsPageProductImages_337"></include>
@@ -26,7 +43,8 @@
 					<include name="testCartPageCheckoutCTAAnonymousCreateAccount_500"></include>
 					<include name="testCartPagePCPerksTermsAndConditionsAnonymousUser_220"></include>
 					<include name="testCartPageRetailUserAdHocCart_162"></include>
-					<include name="testProceedToCheckoutConfirmationAlertForAdhocOrdersConsultant_602"></include>
+					<include
+						name="testProceedToCheckoutConfirmationAlertForAdhocOrdersConsultant_602"></include>
 					<include name="testPCPerksInformationOverlay_169"></include>
 					<include name="testAddMultipleProductsToCartAfterLogin_69"></include>
 					<include name="testSortAndUnsortProductBaseOnPriceFilterApplied_63"></include>

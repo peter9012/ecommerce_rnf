@@ -177,6 +177,10 @@ public class RFWebsiteDriver implements RFDriver,WebDriver {
 		return environment;
 	}
 
+	public String getDBNameRFO(){
+		return propertyFile.getProperty("databaseNameRFO");
+	}
+
 	/**
 	 * @param locator
 	 * @return

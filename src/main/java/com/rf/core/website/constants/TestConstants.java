@@ -230,5 +230,7 @@ public class TestConstants {
 	public static final String CARD_NUMBER_AMEX = "373953192351004";
 	public static final String CARD_NUMBER_MASTERCARD = "5424180279791773";
 	public static final String CARD_NUMBER_DISCOVER = "6011000991200035";
+	
+	public static final String INTEGRATION_LAG_IN_MS ="";
 
 }

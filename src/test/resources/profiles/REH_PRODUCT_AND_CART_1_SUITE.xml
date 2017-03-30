@@ -9,11 +9,28 @@
 	<test name="storeFrontProductAndCartDetailsTest_1">
 		<classes>
 			<class
+				name="com.rf.test.website.rehabitat.storeFront.ConsultantEnrollmentTest">
+				<methods>
+					<include name="testConsultantEnrollmentWithPulseAndCRP_231"></include>
+				</methods>
+			</class>
+			<class name="com.rf.test.website.rehabitat.storeFront.PCEnrollmentTest">
+				<methods>
+					<include name="testPCEnrollmentWithPWSSponsor_452"></include>
+				</methods>
+			</class>
+			<class name="com.rf.test.website.rehabitat.storeFront.RCEnrollmentTest">
+				<methods>
+					<include name="testRCEnrollmentWithOrderWithoutSponsor_550"></include>
+				</methods>
+			</class>
+			<class
 				name="com.rf.test.website.rehabitat.storeFront.ProductsAndCartDetailsTest">
 				<methods>
 					<include name="testSortAndUnsortProductBaseOnPriceFilter_62"></include>
 					<include name="testVerifyProductDetailPageAndTabsOnProductDetailPage_64"></include>
-					<include name="testVerifyProductDetailPageAndRecentlyViewTabsOnProductDetailPage_65"></include>
+					<include
+						name="testVerifyProductDetailPageAndRecentlyViewTabsOnProductDetailPage_65"></include>
 					<include name="testVerifyLinksUnderWelcomeDD_66"></include>
 					<include name="testQuickViewAddToCart_342"></include>
 					<include name="testAddToCart_339"></include>
@@ -35,7 +52,8 @@
 					<include name="testFeaturedProductsCategoryLandingPage_160"></include>
 					<include name="testCartPagePCPerksPromotionMessageLinkAnonymousUser_165"></include>
 					<include name="testCartPagePCPerksPromotionMessageLinkRetailUser_166"></include>
-					<include name="testCartPagePCPerksPromotionMessageLinkPreferredCustomer_167"></include>
+					<include
+						name="testCartPagePCPerksPromotionMessageLinkPreferredCustomer_167"></include>
 				</methods>
 			</class>
 		</classes>

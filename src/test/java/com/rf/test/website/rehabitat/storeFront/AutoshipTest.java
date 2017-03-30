@@ -1,5 +1,7 @@
 package com.rf.test.website.rehabitat.storeFront;
 
+import java.util.TimeZone;
+
 import org.testng.annotations.Test;
 
 import com.rf.core.utils.CommonUtils;
@@ -1537,17 +1539,15 @@ public class AutoshipTest extends StoreFrontWebsiteBaseTest{
 	@Test
 	public void testPlacedAnAutoshipOrderForConsultant(){
 		String currentURL = null;
-		//sfHomePage.loginToStoreFront(TestConstants.CONSULTANT_EMAIL_WITH_CRP_AND_PULSE, password,true);
+
 		sfHomePage.loginToStoreFront(consultantWithPulseAndWithCRP(), password,true);
-		sfShopSkinCarePage = sfHomePage.clickAllProductsCRP();
-		sfShopSkinCarePage.refineProductByCategory(TestConstants.CONSULTANT_CRP_AUTOSHIP_PRODUCT_CATEGORY);
-		sfShopSkinCarePage.addProductToCart(TestConstants.PRODUCT_NUMBER, TestConstants.ORDER_TYPE_CRP);
+		sfShopSkinCarePage = sfHomePage.clickAllProducts();
+		sfShopSkinCarePage.addProductToCart(TestConstants.PRODUCT_NUMBER, TestConstants.ORDER_TYPE_CRP,validProductId);
 		sfAutoshipCartPage = sfShopSkinCarePage.checkoutTheCartFromPopUpForAutoship();
 		sfCheckoutPage = sfAutoshipCartPage.clickOnCRPCheckoutButton();
 		sfCheckoutPage.clickSaveButton();
 		sfCheckoutPage.clickShippingDetailsNextbutton();
 		sfCheckoutPage.clickBillingDetailsNextbutton();
-		sfCheckoutPage.selectTermsAndConditionsCheckBoxForAutoshipOrder();
 		sfCheckoutPage.clickConfirmAutoshipOrderButton();
 		currentURL = sfAutoshipCartPage.getCurrentURL().toLowerCase();
 		s_assert.assertTrue(currentURL.contains("/orders"), "Expected URL should contain '/orders' but actual on UI is "+currentURL);
@@ -1651,19 +1651,37 @@ public class AutoshipTest extends StoreFrontWebsiteBaseTest{
 	 */
 	@Test
 	public void testPlaceConsultantAutoshipOrderAndVerifyDateAndStatus(){
+		int monthOfCurrentDate = 0;
+		int monthOfnextBillAndShipDate = 0;
 		String totalForActiveAutoShip = null;
 		String totalForPlacedOrder = null;
+		String nextBillAndShipDate = null;
+		String monthFromCurrentDate = null;
+		String currentDate = null;
+		String monthFromnextBillAndShipDate = null;
+		boolean isNextbillAndShipDateFromNextMonth = false;
 		sfHomePage.loginToStoreFront(consultantWithPulseAndWithCRP(), password,true);
 		sfHomePage.clickWelcomeDropdown();
 		sfOrdersPage = sfHomePage.navigateToOrdersPage();
 		s_assert.assertTrue(sfOrdersPage.getAutoshipStatus("2").equalsIgnoreCase("active"),"Autoship status is not ACTIVE");
-		totalForActiveAutoShip = sfOrdersPage.getGrandTotalOfActiveAutoShip();
-		sfOrdersPage.clickRunAutoshipOrder("2");
-		s_assert.assertTrue(sfOrdersPage.getAutoShipPlacedOrderMsg().contains("Your order process has been started."),"AutoShip Placed Order Msg is not dispalyed");
-		totalForPlacedOrder = sfOrdersPage.getDetailForOrderFromOrderHistory("1","Grand Total");
-		sfOrdersPage.clickOrderNumberFromOrderHistory("1");
-		s_assert.assertTrue(totalForActiveAutoShip.equals(totalForPlacedOrder),"Grand Total for AutoShip Placed Order is not found as Expected. Expected : "+totalForActiveAutoShip+". Actual : "+totalForPlacedOrder);
-		s_assert.assertTrue(sfOrdersPage.getOrderTypeFromOrderDetailsTemplate().contains("consultant autoship"),"Expected status of autoship order is incorrect");
+		currentDate = CommonUtils.getCurrentDate("MMM.dd.YYYY", TimeZone.getTimeZone("PST"));
+		monthFromCurrentDate = sfOrdersPage.getMonthFromDate(currentDate);
+		nextBillAndShipDate = sfOrdersPage.getNextBillAndShipDateFromOrderDetailPage();
+		monthFromnextBillAndShipDate = sfOrdersPage.getMonthFromDate(nextBillAndShipDate);
+		monthOfCurrentDate = CommonUtils.convertMonthInToDigitFormat(monthFromCurrentDate);
+		monthOfnextBillAndShipDate = CommonUtils.convertMonthInToDigitFormat(monthFromnextBillAndShipDate);
+		isNextbillAndShipDateFromNextMonth = sfOrdersPage.isDateFromNextMonth(monthOfCurrentDate, monthOfnextBillAndShipDate);
+		if(isNextbillAndShipDateFromNextMonth){
+			s_assert.assertFalse(sfOrdersPage.isRunNowLinkPresent("2"),"Run now link is present for next month's schedule date");
+		}else{
+			totalForActiveAutoShip = sfOrdersPage.getGrandTotalOfActiveAutoShip();
+			sfOrdersPage.clickRunAutoshipOrder("2");
+			s_assert.assertTrue(sfOrdersPage.getAutoShipPlacedOrderMsg().contains("Your order process has been started."),"AutoShip Placed Order Msg is not dispalyed");
+			totalForPlacedOrder = sfOrdersPage.getDetailForOrderFromOrderHistory("1","Grand Total");
+			sfOrdersPage.clickOrderNumberFromOrderHistory("1");
+			s_assert.assertTrue(totalForActiveAutoShip.equals(totalForPlacedOrder),"Grand Total for AutoShip Placed Order is not found as Expected. Expected : "+totalForActiveAutoShip+". Actual : "+totalForPlacedOrder);
+			s_assert.assertTrue(sfOrdersPage.getOrderTypeFromOrderDetailsTemplate().contains("consultant autoship"),"Expected status of autoship order is incorrect");
+		}
 		s_assert.assertAll();
 	}
 
@@ -1672,19 +1690,37 @@ public class AutoshipTest extends StoreFrontWebsiteBaseTest{
 	 */
 	@Test
 	public void testPlacePCAutoshipOrderAndVerifyDateAndStatus(){
+		int monthOfCurrentDate = 0;
+		int monthOfnextBillAndShipDate = 0;
 		String totalForActiveAutoShip = null;
 		String totalForPlacedOrder = null;
+		String nextBillAndShipDate = null;
+		String monthFromCurrentDate = null;
+		String currentDate = null;
+		String monthFromnextBillAndShipDate = null;
+		boolean isNextbillAndShipDateFromNextMonth = false;
 		sfHomePage.loginToStoreFront(pcUserWithPWSSponsor(), password,true);
 		sfHomePage.clickWelcomeDropdown();
 		sfOrdersPage = sfHomePage.navigateToOrdersPage();
 		s_assert.assertTrue(sfOrdersPage.getAutoshipStatus("1").equalsIgnoreCase("active"),"Autoship status is not ACTIVE");
-		totalForActiveAutoShip = sfOrdersPage.getGrandTotalOfActiveAutoShip();
-		sfOrdersPage.clickRunAutoshipOrder("1");
-		s_assert.assertTrue(sfOrdersPage.getAutoShipPlacedOrderMsg().contains("Your order process has been started."),"AutoShip Placed Order Msg is not dispalyed");
-		totalForPlacedOrder = sfOrdersPage.getDetailForOrderFromOrderHistory("1","Grand Total");
-		sfOrdersPage.clickOrderNumberFromOrderHistory("1");
-		s_assert.assertTrue(totalForActiveAutoShip.equals(totalForPlacedOrder),"Grand Total for AutoShip Placed Order is not found as Expected. Expected : "+totalForActiveAutoShip+". Actual : "+totalForPlacedOrder);
-		s_assert.assertTrue(sfOrdersPage.getOrderTypeFromOrderDetailsTemplate().contains("pc autoship"),"Expected status of autoship order is incorrect");
+		currentDate = CommonUtils.getCurrentDate("MMM.dd.YYYY", TimeZone.getTimeZone("PST"));
+		monthFromCurrentDate = sfOrdersPage.getMonthFromDate(currentDate);
+		nextBillAndShipDate = sfOrdersPage.getNextBillAndShipDateFromOrderDetailPage();
+		monthFromnextBillAndShipDate = sfOrdersPage.getMonthFromDate(nextBillAndShipDate);
+		monthOfCurrentDate = CommonUtils.convertMonthInToDigitFormat(monthFromCurrentDate);
+		monthOfnextBillAndShipDate = CommonUtils.convertMonthInToDigitFormat(monthFromnextBillAndShipDate);
+		isNextbillAndShipDateFromNextMonth = sfOrdersPage.isDateFromNextMonth(monthOfCurrentDate, monthOfnextBillAndShipDate);
+		if(isNextbillAndShipDateFromNextMonth){
+			s_assert.assertFalse(sfOrdersPage.isRunNowLinkPresent("2"),"Run now link is present for next month's schedule date");
+		}else{
+			totalForActiveAutoShip = sfOrdersPage.getGrandTotalOfActiveAutoShip();
+			sfOrdersPage.clickRunAutoshipOrder("1");
+			s_assert.assertTrue(sfOrdersPage.getAutoShipPlacedOrderMsg().contains("Your order process has been started."),"AutoShip Placed Order Msg is not dispalyed");
+			totalForPlacedOrder = sfOrdersPage.getDetailForOrderFromOrderHistory("1","Grand Total");
+			sfOrdersPage.clickOrderNumberFromOrderHistory("1");
+			s_assert.assertTrue(totalForActiveAutoShip.equals(totalForPlacedOrder),"Grand Total for AutoShip Placed Order is not found as Expected. Expected : "+totalForActiveAutoShip+". Actual : "+totalForPlacedOrder);
+			s_assert.assertTrue(sfOrdersPage.getOrderTypeFromOrderDetailsTemplate().contains("pc autoship"),"Expected status of autoship order is incorrect");
+		}
 		s_assert.assertAll();
 	}
 

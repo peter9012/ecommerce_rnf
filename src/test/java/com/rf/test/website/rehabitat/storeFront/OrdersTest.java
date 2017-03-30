@@ -12,6 +12,8 @@ import com.rf.test.website.rehabitat.storeFront.baseTest.StoreFrontWebsiteBaseTe
 	        com.rf.core.listeners.TestListner.class})
 public class OrdersTest extends StoreFrontWebsiteBaseTest{
 
+	private String productName = null;
+	
 	/***
 	 * qTest : TC-180 Order History- Link to Order details
 	 * Description : This test validates Details link under Actions drop down
@@ -1747,7 +1749,8 @@ public class OrdersTest extends StoreFrontWebsiteBaseTest{
 		sfCartPage.removeAllProductsFromCart();
 		sfCartPage.clickRodanAndFieldsLogo();
 		sfShopSkinCarePage = sfHomePage.clickAllProducts();
-		sfShopSkinCarePage.addProductToCart(TestConstants.PRODUCT_NUMBER, TestConstants.ORDER_TYPE_ADHOC);
+		productName = validProductName;
+		sfShopSkinCarePage.addProductToCart(TestConstants.PRODUCT_NUMBER, TestConstants.ORDER_TYPE_ADHOC,validProductId);
 		sfShopSkinCarePage.checkoutTheCartFromPopUp();
 		sfCheckoutPage=sfCartPage.checkoutTheCart();
 		sfCheckoutPage.clickSaveButton();

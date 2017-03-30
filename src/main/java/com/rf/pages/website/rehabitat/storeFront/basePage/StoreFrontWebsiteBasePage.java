@@ -4111,5 +4111,9 @@ public class StoreFrontWebsiteBasePage extends RFBasePage {
 		logger.info("Update link of " + productName + " is clicked");
 		return this;
 	}
+	
+	public void pauseExecutionFor(int lTimeInMilliSeconds){
+		driver.pauseExecutionFor(lTimeInMilliSeconds);
+	}
 
 }

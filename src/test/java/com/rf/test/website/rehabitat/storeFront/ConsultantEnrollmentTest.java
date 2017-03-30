@@ -694,7 +694,8 @@ public class ConsultantEnrollmentTest extends StoreFrontWebsiteBaseTest{
 		userPropertyFile.loadProps(userProps);
 		setUsers("consultantWithPulseAndWithCRP", consultantWithPulseAndWithCRP);
 		setUsers("pwsPrefix", pwsPrefix);
-		s_assert.assertAll();  
+		s_assert.assertAll(); 
+		System.out.println(email);
 	}
 
 	/***

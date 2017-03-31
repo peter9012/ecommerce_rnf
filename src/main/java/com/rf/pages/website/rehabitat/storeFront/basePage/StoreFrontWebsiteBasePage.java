@@ -326,7 +326,7 @@ public class StoreFrontWebsiteBasePage extends RFBasePage {
 	private String activePageLoc = "//span[contains(text(),'%s')]/parent::li";
 	private String navigationPageNumberLoc = "//ul[@class='pagination']//a[contains(text(),'%s')]";
 	private String subLinkUnderAboutRFLoc = topNavigationLoc + "//a[@title='%s']/following::a[text()='%s'][1]";
-	private String footerLinkLoc = "//div[@class='footer-sections']//a[text()='%s']";
+	private String footerLinkLoc = "//div[@class='footer-sections']//a[contains(text(),'%s')]";
 	protected String countryOptionsInToggleButtonLoc = "//div[@class='wSelect-options-holder']//div[contains(text(),'%s')]";
 	private String socialMediaLinkAtFooterLoc = "//a[contains(@class,'%s')]";
 	private String sponsorEmptyFieldValidationOnPopUpLoc = "//label[@id='sponsor.%s-error'][contains(text(),'%s')]";

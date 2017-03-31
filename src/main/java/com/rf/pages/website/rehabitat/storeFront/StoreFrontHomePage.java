@@ -240,7 +240,7 @@ public class StoreFrontHomePage extends StoreFrontWebsiteBasePage{
 	 */
 	public boolean isMeetTheDoctorsPagePresent(){
 		String meetTheDoctorsURL = "meet-the-doctors";
-		return driver.isElementPresent(MEET_THE_DOCTORS_TXT_LOC)&& driver.getCurrentUrl().contains(meetTheDoctorsURL);
+		return driver.getCurrentUrl().contains(meetTheDoctorsURL);
 	}
 
 	/***
@@ -462,10 +462,11 @@ public class StoreFrontHomePage extends StoreFrontWebsiteBasePage{
 		driver.waitForElementPresent(PERSONAL_RESULTS_KIT_PAGE_LOC);
 		driver.clickByJS(RFWebsiteDriver.driver, PERSONAL_RESULTS_KIT_PAGE_LOC);
 		logger.info("Selected the Personal Result Kit");
-		driver.pauseExecutionFor(2000);
+		driver.pauseExecutionFor(3000);
 		driver.waitForElementPresent(PERSONAL_RESULTS_KIT_REDEFINE_REGIMEN_LOC);
 		driver.clickByJS(RFWebsiteDriver.driver, PERSONAL_RESULTS_KIT_REDEFINE_REGIMEN_LOC);
 		logger.info("Selected the Personal Result Kit Redefine Regimen");
+		driver.pauseExecutionFor(5000);
 		return this;
 	}
 

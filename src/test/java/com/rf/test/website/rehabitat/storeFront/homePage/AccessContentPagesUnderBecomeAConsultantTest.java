@@ -29,7 +29,7 @@ public class AccessContentPagesUnderBecomeAConsultantTest extends StoreFrontWebs
 		s_assert.assertTrue(sfHomePage.isTopNavigationSublinkDisplayed(becomeAConsultantLink,enrollNowLink), enrollNowLink+" link is not present under become a consultant section");
 		//Verify links are redirecting to specific content page
 		meetOurCommunityLink = "meet-our-community";
-		whyRFLink = "why-rf";
+		whyRFLink = "why";
 		events = "events";
 		programsAndIncentivesLink = "programs-incentives";
 		enrollNowLink = "consultant-registration";

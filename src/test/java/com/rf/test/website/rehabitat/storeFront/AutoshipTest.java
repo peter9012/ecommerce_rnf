@@ -788,13 +788,14 @@ public class AutoshipTest extends StoreFrontWebsiteBaseTest{
 	@Test(enabled=true)
 	public void testCartPageTotalSVAndAdditionalSV_336(){
 		String thresholdMessage = null;
-		String expectedThresholdMessage = "Your Total SV value should be equal to or greater than the threshold 100";
+		String expectedThresholdMessage = "Your Total SV value should be equal to or greater than the threshold";
 		sfHomePage.loginToStoreFront(consultantWithPulseAndWithCRP(),  password,true);
 		sfAutoshipCartPage = sfHomePage.clickAutoshipLink();
 		thresholdMessage = sfAutoshipCartPage.getThresholdMessageWhileRemovingProductFromAutoshipCart();
 		s_assert.assertTrue(thresholdMessage.contains(expectedThresholdMessage), "Expected threshold message - " + expectedThresholdMessage + " .Actual : " + thresholdMessage);
 		s_assert.assertAll();
 	}
+	
 
 	/***
 	 * qTest : TC-396 Add to Autoship Cart - Consultant

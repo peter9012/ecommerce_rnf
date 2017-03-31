@@ -32,7 +32,7 @@ public class AccessContentPagesUnderAboutRFSectionTest extends StoreFrontWebsite
 		//Who we are link
 		sfHomePage.clickWhoWeAreLink();
 		currentURL = sfHomePage.getCurrentURL().toLowerCase();
-		s_assert.assertTrue(currentURL.contains(whoWeAreLink), "Expected URL should contain "+whoWeAreLink+" but actual on UI is"+currentURL);
+		s_assert.assertTrue(currentURL.contains(whoWeAreLink)||currentURL.contains("about-rodan-fields"), "Expected URL should contain "+whoWeAreLink+" but actual on UI is"+currentURL);
 		sfHomePage.clickRodanAndFieldsLogo();
 		//Executive team link
 		sfHomePage.clickExecutiveTeam();
@@ -47,7 +47,7 @@ public class AccessContentPagesUnderAboutRFSectionTest extends StoreFrontWebsite
 		//Meet the doctors link
 		sfHomePage.clickGivingBackLink();
 		currentURL = sfHomePage.getCurrentURL().toLowerCase();
-		s_assert.assertTrue(currentURL.contains(givingBackLink), "Expected URL should contain "+givingBackLink+" but actual on UI is"+currentURL);
+		s_assert.assertTrue(currentURL.contains(givingBackLink)||currentURL.contains("pfc-foundation"), "Expected URL should contain "+givingBackLink+" but actual on UI is"+currentURL);
 		s_assert.assertAll();
 	}
 }

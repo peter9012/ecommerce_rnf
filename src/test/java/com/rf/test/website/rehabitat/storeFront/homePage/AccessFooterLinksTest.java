@@ -21,7 +21,7 @@ public class AccessFooterLinksTest extends StoreFrontWebsiteBaseTest{
 		String careers = "Careers";
 		String pressRoom = "Press Room";
 		//String directSellingAssociation= "Direct Selling Association";
-		String termsAndConditions = "Terms & Condition";
+		String termsAndConditions = "Terms";
 		String PrivacyPolicy = "Privacy Policy";
 		String prefix = pwsPrefix();
 		homePageURL = sfHomePage.getCurrentURL();
@@ -59,15 +59,15 @@ public class AccessFooterLinksTest extends StoreFrontWebsiteBaseTest{
 		String satisfactionGuarantee = "Satisfaction Guarantee";
 		String contactUS = "Contact Us";
 		String careers = "Careers";
-		String pressRoom = "Press Room";
+		String pressRoom = "Press";
 		//String directSellingAssociation= "Direct Selling Association";
-		String termsAndConditions = "Terms & Condition";
+		String termsAndConditions = "Terms";
 		String PrivacyPolicy = "Privacy Policy";
 		String disclaimerURL = "disclaimer";
 		String satisfactionGuaranteeURL = "satisfaction-guarantee";
 		String contactUsURL = "contact";
 		String careersURL = "careers";
-		String pressroomURL = "press-room";
+		String pressroomURL = "press";
 		String directSellingAssociationURL = "who-we-are";
 		String termsAndConditionURL = "terms-conditions";
 		String privacyPolicyURL = "privacy-policy";

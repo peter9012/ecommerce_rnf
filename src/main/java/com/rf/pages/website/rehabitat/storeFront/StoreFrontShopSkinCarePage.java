@@ -34,7 +34,7 @@ public class StoreFrontShopSkinCarePage extends StoreFrontWebsiteBasePage{
 	private final By ADD_TO_CART_BTN_ON_QUICK_VIEW_POPUP_LOC = By.xpath("//div[@id='myModal' and contains(@style,'display')]//button[contains(text(),'Add to bag')]");
 	private final By CHECKOUT_BUTTON_POPUP_LOC = By.xpath("//a[contains(text(),'Checkout')]");
 	private final By SHOP_BY_PRICE_FILTER_OPTION_LOW_TO_HIGH_LOC = By.xpath("//select[@id='sortOptions1']/descendant::option[3]");
-	private final By REFINE_PRODUCT_CATEGORY_FILTER_DD_LOC = By.xpath("//div[@id='product-facet']/descendant::div[text()[normalize-space()='Shop by Category']]");
+	private final By REFINE_PRODUCT_CATEGORY_FILTER_DD_LOC = By.xpath("//div[@id='product-facet']/descendant::div[text()[normalize-space()='Shop by Category'] or text()[normalize-space()='Shop by category']]");
 	private final By ADD_TO_CART_BUTTON_FROM_QUICK_VIEW_POPUP_LOC=By.xpath("//div[@class='addToCartBtn-wrapper']/button");
 	private final By CLOSE_QUICK_VIEW_OPTION_POPUP_LOC=By.xpath("//button[@class='close']");
 	private final By PRODUCT_IMAGE_QUICK_VIEW_POPUP_LOC=By.xpath(".//*[@id='myModal']//div[@class='quick-view-popup']");
@@ -1040,6 +1040,7 @@ public class StoreFrontShopSkinCarePage extends StoreFrontWebsiteBasePage{
 	 * @return StoreFrontShopSkinCarePage Object
 	 */
 	public StoreFrontShopSkinCarePage enterQuantityonQuickViewPopup(String qty){
+		driver.pauseExecutionFor(2000);
 		driver.type(QTY_TF_ON_QUICK_VIEW_POPUP_LOC,qty);
 		return this;
 	}

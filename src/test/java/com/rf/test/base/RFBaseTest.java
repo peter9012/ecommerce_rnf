@@ -37,6 +37,7 @@ public class RFBaseTest{
 	public String testUsers_QA2_AU_propertes = "testUsers_QA2_AU.properties";
 	public String testUsers_QA1_US_propertes = "testUsers_QA1_US.properties";
 	public String testUsers_PROD_US_propertes = "testUsers_PROD_US.properties";
+	public String testUsers_PROD_CA_propertes = "testUsers_PROD_CA.properties";
 	public String testUsers_PPD_US_propertes = "testUsers_PPD_US.properties";
 	public String testUsers_PPD_CA_propertes = "testUsers_PPD_CA.properties";
 	public String testUsers_DEV1_US_propertes = "testUsers_DEV1_US.properties";
@@ -187,6 +188,9 @@ public class RFBaseTest{
 		}
 		else  if(propertyFileName.toLowerCase().contains("prod") && propertyFileName.toLowerCase().contains("us")){
 			userProps=testUsers_PROD_US_propertes;
+		}
+		else  if(propertyFileName.toLowerCase().contains("prod") && propertyFileName.toLowerCase().contains("ca")){
+			userProps=testUsers_PROD_CA_propertes;
 		}
 		else  if(propertyFileName.toLowerCase().contains("ppd") && propertyFileName.toLowerCase().contains("us")){
 			userProps=testUsers_PPD_US_propertes;

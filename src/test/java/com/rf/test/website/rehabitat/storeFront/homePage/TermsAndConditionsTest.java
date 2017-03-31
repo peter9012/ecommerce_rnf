@@ -14,7 +14,7 @@ public class TermsAndConditionsTest extends StoreFrontWebsiteBaseTest{
 	 */
 	@Test(enabled=true) 
 	public void testVerifyTermsAndConditionsLinkInFooter_20(){
-		String termsAndConditions = "Terms & Condition";
+		String termsAndConditions = "Terms";
 		String currentURL = null;
 		String termsAndConditionURL = "terms-conditions";
 		//Verify and validate terms and conditions link in footer section.
@@ -32,7 +32,7 @@ public class TermsAndConditionsTest extends StoreFrontWebsiteBaseTest{
 	 */
 	@Test(enabled=true) 
 	public void testVerifyPrivacyPolicyLinkFromTermsAndConditionsPage_21(){
-		String termsAndConditions = "Terms & Condition";
+		String termsAndConditions = "Terms";
 		String PrivacyPolicy = "Privacy Policy";
 		String currentURL = null;
 		String termsAndConditionURL = "terms-conditions";

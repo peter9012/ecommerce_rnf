@@ -795,7 +795,7 @@ public class AutoshipTest extends StoreFrontWebsiteBaseTest{
 		s_assert.assertTrue(thresholdMessage.contains(expectedThresholdMessage), "Expected threshold message - " + expectedThresholdMessage + " .Actual : " + thresholdMessage);
 		s_assert.assertAll();
 	}
-	
+
 
 	/***
 	 * qTest : TC-396 Add to Autoship Cart - Consultant
@@ -1034,8 +1034,7 @@ public class AutoshipTest extends StoreFrontWebsiteBaseTest{
 		// Login to Application
 		sfHomePage.loginToStoreFront(consultantWithoutPulseAndWithoutCRP(), password,true);
 		sfShopSkinCarePage = sfHomePage.clickAllProducts();
-		sfShopSkinCarePage.refineProductByCategory(TestConstants.CONSULTANT_CRP_AUTOSHIP_PRODUCT_CATEGORY);
-		sfShopSkinCarePage.addProductToCart(productNumber, orderType);
+		sfShopSkinCarePage.addProductToCart(productNumber, orderType,validProductId);
 		// Add to CRP From Category Page
 		s_assert.assertTrue(sfShopSkinCarePage.isEnrollNowPopupIsDisplayed(),"Enroll now popup does not get displayed after Clicking Add to CRP Button from Category Page");
 		sfShopSkinCarePage.clickOptionFromEnrollNowPopup("Yes");
@@ -1064,8 +1063,9 @@ public class AutoshipTest extends StoreFrontWebsiteBaseTest{
 
 		// Add to CRP from quick View Popup
 		sfHomePage.clickAllProducts();
-		sfShopSkinCarePage.refineProductByCategory(TestConstants.CONSULTANT_CRP_AUTOSHIP_PRODUCT_CATEGORY);
-		sfShopSkinCarePage.clickOnQuickViewLinkForProduct(productNumber);
+		sfHomePage.clickSearchIcon();
+		sfHomePage.searchEntityAndHitEnter(validProductId);
+		sfShopSkinCarePage.clickOnQuickViewLinkThroughProductId(validProductId);
 		sfShopSkinCarePage.addProductToCartFromQuickViewPopup(orderType);
 		s_assert.assertTrue(sfShopSkinCarePage.isEnrollNowPopupIsDisplayed(),"Enroll now popup does not get displayed after Clicking Add to CRP Button from Quick View Popup");
 		sfShopSkinCarePage.clickOptionFromEnrollNowPopup("Yes");
@@ -1094,8 +1094,9 @@ public class AutoshipTest extends StoreFrontWebsiteBaseTest{
 
 		// Add to CRP from PDP
 		sfHomePage.clickAllProducts();
-		sfShopSkinCarePage.refineProductByCategory(TestConstants.CONSULTANT_CRP_AUTOSHIP_PRODUCT_CATEGORY);
-		sfProductDetailPage = sfShopSkinCarePage.clickNameOfProductOnAllProductPage(productNumber);
+		sfHomePage.clickSearchIcon();
+		sfHomePage.searchEntityAndHitEnter(validProductId);
+		sfProductDetailPage = sfShopSkinCarePage.clickNameOfProductThroughProductId(validProductId);
 		sfProductDetailPage.addProductToCartFromProductDetailPageAfterLogin(orderType);
 		s_assert.assertTrue(sfShopSkinCarePage.isEnrollNowPopupIsDisplayed(),"Enroll now popup does not get displayed after Clicking Add to CRP Button from PDP Page");
 		sfShopSkinCarePage.clickOptionFromEnrollNowPopup("Yes");
@@ -1564,8 +1565,7 @@ public class AutoshipTest extends StoreFrontWebsiteBaseTest{
 		String currentURL = null;
 		sfHomePage.loginToStoreFront(pcUserWithPWSSponsor(), password,true);
 		sfShopSkinCarePage = sfHomePage.clickAllProductsCRP();
-		sfShopSkinCarePage.refineProductByCategory(TestConstants.PC_PERKS_AUTOSHIP_PRODUCT_CATEGORY);
-		sfShopSkinCarePage.addProductToCart(TestConstants.PRODUCT_NUMBER, TestConstants.ORDER_TYPE_PC_PERKS);
+		sfShopSkinCarePage.addProductToCart(TestConstants.PRODUCT_NUMBER, TestConstants.ORDER_TYPE_PC_PERKS,validProductId);
 		sfAutoshipCartPage = sfShopSkinCarePage.checkoutTheCartFromPopUpForAutoship();
 		sfCheckoutPage = sfAutoshipCartPage.clickOnPCPerksCheckoutButton();
 		sfCheckoutPage.clickSaveButton();

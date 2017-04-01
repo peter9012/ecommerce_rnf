@@ -341,6 +341,7 @@ public class StoreFrontWebsiteBasePage extends RFBasePage {
 	private String topNavigationSublinksWithTitleLoc = topNavigationLoc + "//*[contains(@title,'%s')]";
 	private String quantityTBForSpecificProductLoc = "//span[normalize-space(text())='%s']//following::input[contains(@id,'quantity') and not(@readonly)][1]";
 	private String updateLinkForSpecificProductLoc = "//span[normalize-space(text())='%s']//following::input[contains(@id,'quantity') and not(@readonly)][1]/following::input[@value='update'][1]";
+	protected String productNameLinkThroughProductIdLoc = "//a[contains(@href,'%s') and @class='name']";
 
 	private String RFO_DB = null;
 	private static String productName = null;
@@ -4111,9 +4112,26 @@ public class StoreFrontWebsiteBasePage extends RFBasePage {
 		logger.info("Update link of " + productName + " is clicked");
 		return this;
 	}
-	
+
 	public void pauseExecutionFor(int lTimeInMilliSeconds){
 		driver.pauseExecutionFor(lTimeInMilliSeconds);
+	}
+
+	/***
+	 * This method click on first product name on all product page
+	 * 
+	 * @param
+	 * @return object of product detail page
+	 * 
+	 */
+	public StoreFrontProductDetailPage clickNameOfProductThroughProductId(String productId){
+		String productName = driver.findElement(By.xpath(String.format(productNameLinkThroughProductIdLoc,productId))).getText();
+		if(driver.isElementVisible(By.xpath(String.format(productNameLinkThroughProductIdLoc, productId)))){
+			driver.clickByJS(RFWebsiteDriver.driver,By.xpath(String.format(productNameLinkThroughProductIdLoc, productId)));
+		}
+		logger.info("product name "+productName+ "Clicked");
+		driver.waitForPageLoad();
+		return new StoreFrontProductDetailPage(driver);
 	}
 
 }

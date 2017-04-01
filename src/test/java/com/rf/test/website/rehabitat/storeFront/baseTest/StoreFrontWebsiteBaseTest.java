@@ -60,6 +60,8 @@ public class StoreFrontWebsiteBaseTest extends RFBaseTest {
 	protected String randomWords = null;
 	protected String validProductName = null;
 	protected String validProductId = null;
+	protected String secondValidProductName = null;
+	protected String secondValidProductId = null;
 
 	protected String updatedAddressLine1 = null;
 	protected String updatedAddressLine2 = null;
@@ -149,6 +151,8 @@ public class StoreFrontWebsiteBaseTest extends RFBaseTest {
 			stateAbbreviation = TestConstants.STATE_US_ABBREVIATION;
 			validProductName = TestConstants.VALID_PRODUCT_NAME_US;
 			validProductId = TestConstants.VALID_PRODUCT_ID_US;
+			secondValidProductId = TestConstants.SECOND_VALID_PRODUCT_ID_US;
+			secondValidProductName = TestConstants.SECOND_VALID_PRODUCT_NAME_US;
 		}
 		else if(countryName.equalsIgnoreCase("ca")){
 			addressLine1 = TestConstants.ADDRESS_LINE_1_CA;
@@ -163,6 +167,8 @@ public class StoreFrontWebsiteBaseTest extends RFBaseTest {
 			stateAbbreviation = TestConstants.STATE_CA_ABBREVIATION;
 			validProductName = TestConstants.VALID_PRODUCT_NAME_CA;
 			validProductId = TestConstants.VALID_PRODUCT_ID_CA;
+			secondValidProductId = TestConstants.SECOND_VALID_PRODUCT_ID_CA;
+			secondValidProductName = TestConstants.SECOND_VALID_PRODUCT_NAME_CA;
 		}
 		else if(countryName.equalsIgnoreCase("au")){
 			addressLine1 = TestConstants.ADDRESS_LINE_1_AU;
@@ -218,7 +224,7 @@ public class StoreFrontWebsiteBaseTest extends RFBaseTest {
 		driver.get(driver.getURL()+"/"+country.toUpperCase());
 		logger.info("Navigated to base URL");
 		driver.waitForPageLoad();
-	//	driver.pauseExecutionFor(2000);
+		//	driver.pauseExecutionFor(2000);
 	}
 
 	public void navigateToStoreFrontBaseURLWithoutCountry(){

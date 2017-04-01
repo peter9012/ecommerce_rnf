@@ -84,6 +84,7 @@ public class StoreFrontShopSkinCarePage extends StoreFrontWebsiteBasePage{
 	private String productPriceThroughProductNumberLoc = "//div[@id='product_listing']/descendant::span[contains(text(),'%s')][%s]/following-sibling::span[contains(@class,'productPrice')]";
 	private String addToCartDDLoc = "//div[@id='product_listing']/descendant::span[contains(text(),'%s')][%s]";
 	private String randomCategoryName = randomProductCategoryCheckbox+"/following::span[1]/span[2]";
+	private String quickViewLinkThroughProductIdLoc = "//a[contains(@href,'%s') and @class='name']/preceding::a[@class='thumb'][1]";
 
 	/***
 	 * This method verify the product price filter High to Low applied successfully
@@ -1086,6 +1087,19 @@ public class StoreFrontShopSkinCarePage extends StoreFrontWebsiteBasePage{
 		}
 		logger.info("No Product Found for the Selected Range on All Products Page");
 		return null;
+	}
+
+	/**
+	 * This method click on quick view link of product
+	 * @return StoreFrontShopSkinCarePage object
+	 */
+	public StoreFrontShopSkinCarePage clickOnQuickViewLinkThroughProductId(String productId){
+		driver.waitForElementPresent(By.xpath(String.format(quickViewLinkThroughProductIdLoc, productId)));
+		driver.pauseExecutionFor(2000);
+		driver.click(By.xpath(String.format(quickViewLinkThroughProductIdLoc, productId)));
+		logger.info("Clicked on quick view for product id : " + productId);
+		driver.waitForLoadingImageToDisappear();
+		return this;
 	}
 
 }

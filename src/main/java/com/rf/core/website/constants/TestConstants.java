@@ -30,6 +30,10 @@ public class TestConstants {
 	public static final String ORDER_TYPE_ENROLLMENT = "Enrollment";
 	public static final String VALID_PRODUCT_ID_US = "UNRJ001";
 	public static final String VALID_PRODUCT_NAME_US = "UNBLEMISH Regimen for Acne";
+	public static final String SECOND_VALID_PRODUCT_ID_US = "AAEY015";
+	public static final String SECOND_VALID_PRODUCT_NAME_US = "REDEFINE Multi-Function Eye Cream";
+	public static final String SECOND_VALID_PRODUCT_ID_CA = "AARG001-01";
+	public static final String SECOND_VALID_PRODUCT_NAME_CA = "REDEFINE Regimen";
 	public static final String VALID_PRODUCT_ID_CA = "UNRJ001-01";
 	public static final String VALID_PRODUCT_NAME_CA = "UNBLEMISH Regimen";
 	public static final String VALID_PRODUCT_NAME_AU = "REDEFINE AMP MD System";
@@ -230,7 +234,7 @@ public class TestConstants {
 	public static final String CARD_NUMBER_AMEX = "373953192351004";
 	public static final String CARD_NUMBER_MASTERCARD = "5424180279791773";
 	public static final String CARD_NUMBER_DISCOVER = "6011000991200035";
-	
+
 	public static final String INTEGRATION_LAG_IN_MS ="";
 
 }

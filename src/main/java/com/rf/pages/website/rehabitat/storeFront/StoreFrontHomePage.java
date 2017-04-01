@@ -23,7 +23,7 @@ public class StoreFrontHomePage extends StoreFrontWebsiteBasePage{
 	private static final Logger logger = LogManager
 			.getLogger(StoreFrontHomePage.class.getName());
 
-	private final By PERSONAL_RESULTS_KIT_REDEFINE_REGIMEN_LOC = By.xpath("//div[@class='owl-item active']//label[normalize-space(text())='Personal Results Kit - REDEFINE']/preceding-sibling::input[1]");
+	private final By PERSONAL_RESULTS_KIT_REDEFINE_REGIMEN_LOC = By.xpath("//form[@id='consultant-choose-kit-form']/descendant::label[contains(text(),'REDEFINE')][2]/preceding-sibling::input[1]");
 	private final By SHOW_MORE_BTN_LOC = By.xpath("//a[contains(text(),'Show More')]");
 	private final By ENROLL_NOW_BUTTON_LOC = By.xpath("//a[text()='Enroll Now']");
 	private final By FIRST_EVENT_CALENDAR_LOC = By.xpath("//h3[contains(text(),'Presentations')]/following::a[text()='EVENT CALENDER'][1]");

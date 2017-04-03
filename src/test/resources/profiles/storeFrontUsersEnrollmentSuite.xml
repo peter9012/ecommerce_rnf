@@ -23,7 +23,7 @@
 			<class
 				name="com.rf.test.website.rehabitat.storeFront.RCEnrollmentTest">
 				<methods>
-					<include name="testRCEnrollmentWithOrderWithoutSponsor_550"></include>
+					<include name="testRCEnrollmentWithSponsor"></include>
 				</methods>
 			</class>
 		</classes>

@@ -8,13 +8,15 @@ public class UserLoginTest extends PulseWebsiteBaseTest{
 	public void testUserLogin_US(String username,String fname, String lname, String account, String country){
 		pulseHomePage=pulseLoginPage.enterCredentailsAndLogin(username, password);
 		s_assert.assertTrue(pulseHomePage.isHomePagePresent(), "Login Failed for username "+username);
-		s_assert.assertAll();		
+		s_assert.assertAll();
+		System.out.println(username);
 	}
 	
 	@Test(dataProvider="rfTestData")
 	public void testUserLogin_CA(String username,String fname, String lname, String account, String country){
 		pulseHomePage=pulseLoginPage.enterCredentailsAndLogin(username, password);
 		s_assert.assertTrue(pulseHomePage.isHomePagePresent(), "Login Failed for username "+username);
-		s_assert.assertAll();		
+		s_assert.assertAll();
+		System.out.println(username);
 	}
 }

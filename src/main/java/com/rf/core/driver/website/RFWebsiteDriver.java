@@ -100,8 +100,7 @@ public class RFWebsiteDriver implements RFDriver,WebDriver {
 			driver = new ChromeDriver(capabilities);
 		}
 		else if(browser.equalsIgnoreCase("headless")){
-			driver = new HtmlUnitDriver();		
-
+			driver = new HtmlUnitDriver();	
 		}
 		else if(browser.equalsIgnoreCase("ie")){
 			System.setProperty("webdriver.ie.driver", "src/test/resources/IEDriverServer.exe");

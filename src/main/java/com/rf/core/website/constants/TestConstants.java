@@ -10,7 +10,7 @@ public class TestConstants {
 	public static final String ABOUT_ME = "About Me";
 	public static final String BECOME_A_CONSULTANT = "Become A Consultant";
 	public static final String SHOP_SKINCARE = "Shop Skincare";
-	public static final String SPONSOR = "purush";
+	public static final String SPONSOR = "con";
 	//public static final String SPONSOR = "purush@consult2.com";
 	public static final String SPONSOR_PREFIX = "purushb2b2";
 	public static final String SPONSOR_3_CHARS = "tes";

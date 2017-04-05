@@ -23,7 +23,6 @@ public class ConsultantEnrollmentTest extends StoreFrontWebsiteBaseTest{
 		s_assert.assertAll();
 	}
 
-
 	/***
 	 * qTest : TC-224 Find a consultant/search- Prefix
 	 * 

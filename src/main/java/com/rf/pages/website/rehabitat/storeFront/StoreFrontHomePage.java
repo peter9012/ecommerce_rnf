@@ -513,7 +513,7 @@ public class StoreFrontHomePage extends StoreFrontWebsiteBasePage{
 	 * @return boolean
 	 */
 	public boolean isWelcomeUserElementDisplayed(){
-		//driver.quickWaitForElementPresent(WELCOME_DROPDOWN_LOC,2);
+		driver.quickWaitForElementPresent(WELCOME_DROPDOWN_LOC,2);
 		return driver.isElementPresent(WELCOME_DROPDOWN_LOC);
 	}
 

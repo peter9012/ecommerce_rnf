@@ -26,7 +26,7 @@ public class StoreFrontAutoshipCartPage extends StoreFrontWebsiteBasePage{
 	private final By SUBSCRIBE_TO_PULSE_BTN_LOC = By.id("confirmsubmitsubs");
 
 	private String removeLinkForProductInAutoshipCartLoc = "//span[contains(normalize-space(text()),'%s')]/following::input[@id='autoship_remove'][1]";
-	private String qtyTBForProductInAutoshipCartLoc = "//span[contains(normalize-space(text()),'%s')]/following::input[@name='qty' and not(@disabled)][1]";
+	private String qtyTBForProductInAutoshipCartLoc = "//span[contains(normalize-space(text()),'%s')]/following::input[@name='quantity' or @name='qty' and not(@disabled)][1]";
 	private String updatedQtyLinkForProductInAutoshipCartLoc = "//span[contains(normalize-space(text()),'%s')]/following::input[@value='Update Qty'][1]";
 	private String quantityOfSpecificItemInCartLoc = "//ul[contains(@class,'item-list')]/descendant::input[contains(@class,'quantity-input')][%s]";
 	private String updateQuantityLinkForSpecificItemLoc  = "//ul[contains(@class,'item-list')]/descendant::input[contains(@value,'Update Qty')][%s]";

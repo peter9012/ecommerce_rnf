@@ -272,8 +272,8 @@ public class StoreFrontShopSkinCarePage extends StoreFrontWebsiteBasePage{
 	 * 
 	 */
 	public boolean isCheckoutPopupDisplayed(){
-		driver.pauseExecutionFor(3000);
-		return driver.findElement(CHECKOUT_BUTTON_POPUP_LOC).isDisplayed();
+		driver.pauseExecutionFor(6000);
+		return driver.isElementVisible(CHECKOUT_BUTTON_POPUP_LOC);
 	}
 
 	/**

@@ -13,7 +13,7 @@ public class TestConstants {
 	public static final String SPONSOR = "con";
 	//public static final String SPONSOR = "purush@consult2.com";
 	public static final String SPONSOR_PREFIX = "purushb2b2";
-	public static final String SPONSOR_3_CHARS = "tes";
+	public static final String SPONSOR_3_CHARS = "con";
 	public static final String SPONSOR_FIRST_NAME = "Purush";
 	public static final String SPONSOR_LAST_NAME = "Born";
 	public static final String SPONSOR_EMAIL = "purush.born@rf.com";

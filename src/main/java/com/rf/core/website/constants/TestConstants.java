@@ -236,5 +236,9 @@ public class TestConstants {
 	public static final String CARD_NUMBER_DISCOVER = "6011000991200035";
 
 	public static final String INTEGRATION_LAG_IN_MS ="";
+	public static final String USERNAME_SFDC_QA2 = "crmqa@rodanandfields.com.qa1";
+	public static final String PASSWORD_SFDC = "RF60Spear";
+	public static final String USERTYPE_PREFERRED_CUSTOMER = "Preferred Customer";
+	public static final String USERTYPE_RETAIL_CUSTOMER = "Retail Customer";
 
 }

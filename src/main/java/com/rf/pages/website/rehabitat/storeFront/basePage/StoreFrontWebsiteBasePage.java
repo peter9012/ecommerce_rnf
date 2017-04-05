@@ -298,7 +298,12 @@ public class StoreFrontWebsiteBasePage extends RFBasePage {
 	private final By WHY_RF_LOC = By.xpath(topNavigationLoc + "//a[contains(@title,'WHY')]");
 	private final By MEET_OUR_COMMUNITY_LOC = By.xpath(topNavigationLoc + "//a[contains(@title,'MEET OUR')]");
 	private final By EEROR_PAGE_LOC = By.xpath("//b[contains(text(),'Status code')]");
-
+	private final By LOGIN_BTN_FOR_SFDC_LOC = By.id("Login");
+	private final By SEARCH_INPUT_FIELD_LOC = By.id("phSearchInput");
+	private final By SUGGESTED_EMAIL_LOC = By.id("phSearchInput_autoCompleteBoxId");
+	private final By USER_NAME_IFRMAE = By.xpath("//div[@id='navigatortab']//iframe[contains(@class,'border-panel')]");
+	
+	private String activeUserInSfdcLoc = "//td[contains(text(),'%s')]/following::td[contains(text(),'Active')][1]/following::a[contains(text(),'%s')][1]";
 	protected String randomCategoryNameLoc = "//input[@id='%s']/..";
 	private String selectAndContinueSponserLoc = "//div[@id='findConsultantResultArea']/descendant::div[contains(@class,'consultant-box')][%s]//input[@id='consultantUid']";
 	protected String priceOfProductLoc = "//div[contains(@class,'product__listing')]/descendant::span[@id='retail'][contains(text(),'$')][%s]";
@@ -4134,4 +4139,84 @@ public class StoreFrontWebsiteBasePage extends RFBasePage {
 		return new StoreFrontProductDetailPage(driver);
 	}
 
+	/***
+	 * This method will return the sfdc URL
+	 * 
+	 * @param
+	 * @return store front Base page object
+	 */
+	public StoreFrontWebsiteBasePage navigateToSFDCUrl() {
+		driver.get(driver.getSFDCURL());
+		return this;
+	}
+	
+	
+	/***
+	 * This method will login to the sfdc
+	 * 
+	 * @param
+	 * @return store front Base page object
+	 */
+	public StoreFrontWebsiteBasePage loginToSFDC(String username, String password) {
+		closeAllOpenedTabs();
+		driver.pauseExecutionFor(1000);
+		driver.quickWaitForElementPresent(USERNAME_TXTFLD_LOC, 3);
+		driver.type(USERNAME_TXTFLD_LOC, username);
+		logger.info("username entered as " + username);
+		driver.type(PASSWORD_TXTFLD_LOC, password);
+		logger.info("password entered as  " + password);
+		driver.click(LOGIN_BTN_FOR_SFDC_LOC);
+		logger.info("login button clicked for SFDC");
+		driver.waitForPageLoad();
+		return this;
+	}
+	
+	/***
+	 * This method will search the username in SFDC
+	 * 
+	 * @param username
+	 * @return store front Base page object
+	 */
+	public StoreFrontWebsiteBasePage clickAnyTypeOfActiveCustomerInSearchResultOfSFDC(String username) {
+		driver.type(SEARCH_INPUT_FIELD_LOC, username);
+		logger.info("User searched as "+username);
+		driver.click(SUGGESTED_EMAIL_LOC);
+		logger.info("Clicked on suggested email address");
+		return this;
+	}
+	
+	/***
+	 * This method will search the username in SFDC
+	 * 
+	 * @param username
+	 * @return store front Base page object
+	 */
+	public boolean isUserPresentInSFDC(String userType, String emailID) {
+		boolean isUserPresent = false;
+		driver.switchTo().frame(driver.findElement(USER_NAME_IFRMAE));
+		isUserPresent =  driver.isElementPresent(By.xpath(String.format(activeUserInSfdcLoc, userType, emailID)));
+		driver.switchTo().defaultContent();
+		return isUserPresent;
+	}
+	
+	public void closeAllOpenedTabs(){
+		int totalOpenedTabs = 0;
+		totalOpenedTabs = driver.findElements(By.xpath("//li[contains(@id,'navigatortab__scc-pt')]")).size();
+		for(int count=1;count<=3;count++){
+			logger.info("total opened tabs = "+totalOpenedTabs);
+			Actions actions = new Actions(RFWebsiteDriver.driver);
+			for(int i=totalOpenedTabs;i>=1;i--){
+				//driver.waitForElementPresent(By.xpath("//li[contains(@id,'navigatortab__scc-pt')]["+i+"]/descendant::a[@class='x-tab-strip-close']"));
+				actions.moveToElement(driver.findElement(By.xpath("//li[contains(@id,'navigatortab__scc-pt')]["+i+"]/descendant::a[@class='x-tab-strip-close']"))).click().build().perform();
+				//driver.click(By.xpath("//li[contains(@id,'navigatortab__scc-pt')]["+i+"]/descendant::a[@class='x-tab-strip-close']"));
+				driver.pauseExecutionFor(1000);
+			}
+			totalOpenedTabs = driver.findElements(By.xpath("//li[contains(@id,'navigatortab__scc-pt')]")).size();
+			if(totalOpenedTabs==0){
+				break;
+			}else{
+				continue;
+			}
+		}
+	}
 }

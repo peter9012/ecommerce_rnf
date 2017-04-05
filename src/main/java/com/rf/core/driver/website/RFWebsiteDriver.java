@@ -180,6 +180,11 @@ public class RFWebsiteDriver implements RFDriver,WebDriver {
 		return propertyFile.getProperty("databaseNameRFO");
 	}
 
+	public String getSFDCURL() {
+		String sfdcUrl = propertyFile.getProperty("sfdcURL");
+		return sfdcUrl;
+	}
+
 	/**
 	 * @param locator
 	 * @return

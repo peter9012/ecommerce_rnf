@@ -10,6 +10,7 @@ import com.rf.core.utils.DBUtil;
 import com.rf.core.website.constants.TestConstants;
 import com.rf.core.website.constants.dbQueries.DBQueries_RFO;
 import com.rf.pages.website.rehabitat.storeFront.StoreFrontCartPage;
+import com.rf.pages.website.rehabitat.storeFront.StoreFrontCheckoutPage;
 import com.rf.pages.website.rehabitat.storeFront.StoreFrontShopSkinCarePage;
 import com.rf.test.website.rehabitat.storeFront.baseTest.StoreFrontWebsiteBaseTest;
 
@@ -74,7 +75,7 @@ public class AccountsIntegrationTest extends StoreFrontWebsiteBaseTest{
 		s_assert.assertEquals(count, "1","Count is "+count+" Account= "+consultantWithPulseAndWithCRP+" has NOT flown into RFO");
 		s_assert.assertAll(); 
 	}
-	
+
 	/***
 	 * 	 
 	 * Description : This test validates that account flow of PC to RFO
@@ -126,7 +127,7 @@ public class AccountsIntegrationTest extends StoreFrontWebsiteBaseTest{
 		s_assert.assertEquals(count, "1","Count is "+count+" Account= "+pcUserWithPWSSponsor+" has NOT flown into RFO");
 		s_assert.assertAll(); 
 	}
-	
+
 	/***
 	 * 	 
 	 * Description : This test validates that account flow of RC to RFO
@@ -174,5 +175,168 @@ public class AccountsIntegrationTest extends StoreFrontWebsiteBaseTest{
 		s_assert.assertEquals(count, "1","Count is "+count+" Account= "+rcWithOrderWithoutSponsor+" has NOT flown into RFO");
 		s_assert.assertAll(); 
 	}
-	
+
+	/***
+	 * 	 
+	 * Description : This test validates that account flow of SFDC for consultant
+	 * 
+	 *     
+	 */
+	@Test(enabled=true)
+	public void testConsultantAccountFlowToSFDC(){
+		RFO_DB = driver.getDBNameRFO(); 
+		timeStamp = CommonUtils.getCurrentTimeStamp();
+		randomWords = CommonUtils.getRandomWord(5);  
+		lastName = TestConstants.LAST_NAME+randomWords;
+		email = firstName+"conswpwcrp"+timeStamp+TestConstants.EMAIL_SUFFIX;
+		String socialInsuranceNumber = String.valueOf(CommonUtils.getRandomNum(100000000, 999999999));
+		String prefix = firstName+timeStamp;
+		sfHomePage.clickEnrollNow();
+		sfHomePage.searchSponsor(TestConstants.SPONSOR);
+		sfHomePage.selectFirstSponsorFromList();
+		sfHomePage.enterConsultantEnrollmentDetails(firstName, lastName, email, password, socialInsuranceNumber);
+		sfHomePage.clickNextButton();
+		sfHomePage.chooseProductFromKitPage();
+		sfHomePage.enterPrefix(prefix);
+		sfHomePage.clickNextButton();
+		sfHomePage.clickSaveButton();
+		sfHomePage.enterConsultantShippingDetails(firstName, lastName, addressLine1, addressLine2 ,city, state, postalCode, phoneNumber);
+		sfHomePage.clickShippingDetailsNextbutton();
+		sfHomePage.enterUserBillingDetails(cardType, cardNumber, cardName, CVV);
+		sfHomePage.clickBillingDetailsNextbutton();
+		if(sfHomePage.hasTokenizationFailed()==true){
+			sfHomePage.enterUserBillingDetails(cardType, cardNumber, cardName, CVV);
+			sfHomePage.clickBillingDetailsNextbutton();
+		}
+		sfHomePage.selectPoliciesAndProceduresChkBox();
+		sfHomePage.selectIAcknowledgeChkBox();
+		sfHomePage.selectTermsAndConditionsChkBox();
+		sfHomePage.selectConsentFormChkBox();
+		sfHomePage.clickBecomeAConsultant();
+		s_assert.assertTrue(sfHomePage.isEnrollemntSuccessfulMsgDisplayed(), "Expected 'ENROLLMENT SUCCESSFUL' msg has NOT displayed"); 
+		sfHomePage.addFirstProductForCRPCheckout(validProductName,validProductId);
+		sfCheckoutPage = sfHomePage.checkoutCRPBag();
+		sfCheckoutPage.clickSaveButton();
+		sfCheckoutPage.clickShippingDetailsNextbutton();
+		sfCheckoutPage.clickBillingDetailsNextbutton();
+		sfCheckoutPage.selectTermsAndConditionsCheckBoxForAutoshipOrder();
+		//  sfCheckoutPage.selectCheckboxForPoliciesAndProcedures();
+		sfCheckoutPage.clickConfirmAutoshipOrderButton();
+		s_assert.assertTrue(sfCheckoutPage.isCRPOrderConfirmedSuccessMsgAppeared(),"CRP Order confirmed success messge is not appeared");
+		sfCheckoutPage.clickRodanAndFieldsLogo();
+		consultantWithPulseAndWithCRP=email;
+		sfCheckoutPage.clickWelcomeDropdown();
+		sfCheckoutPage.logout();
+		sfCheckoutPage = new StoreFrontCheckoutPage(driver);
+		sfCheckoutPage.navigateToSFDCUrl();
+		sfCheckoutPage.loginToSFDC(TestConstants.USERNAME_SFDC_QA2, TestConstants.PASSWORD_SFDC);
+		sfCheckoutPage.pauseExecutionFor(300000);
+		sfCheckoutPage.clickAnyTypeOfActiveCustomerInSearchResultOfSFDC(consultantWithPulseAndWithCRP);
+		s_assert.assertTrue(sfHomePage.isUserPresentInSFDC(TestConstants.USER_TYPE_CONSULTANT,consultantWithPulseAndWithCRP), "Expected user"+TestConstants.USER_TYPE_CONSULTANT+" "+consultantWithPulseAndWithCRP+ "not found in SFDC");
+		s_assert.assertAll(); 
+	}
+
+	/***
+	 * 	 
+	 * Description : This test validates that account flow of SFDC for PC
+	 * 
+	 *     
+	 */
+	@Test(enabled=true)
+	public void testPCAccountFlowToSFDC(){
+		RFO_DB = driver.getDBNameRFO(); 
+		timeStamp = CommonUtils.getCurrentTimeStamp();
+		randomWords = CommonUtils.getRandomWord(5);		
+		lastName = TestConstants.LAST_NAME+randomWords;
+		email = firstName+"pcwpwsspon"+timeStamp+TestConstants.EMAIL_SUFFIX;
+		sfCartPage = new StoreFrontCartPage(driver);
+		sfShopSkinCarePage = new StoreFrontShopSkinCarePage(driver);
+		sfHomePage.clickLoginIcon();
+		sfCheckoutPage=sfHomePage.clickSignUpNowLink();
+		sfCheckoutPage.fillNewUserDetails(TestConstants.USER_TYPE_PC, firstName, lastName, email, password);
+		sfCheckoutPage.clickCreateAccountButton(TestConstants.USER_TYPE_PC);
+		sfCartPage.clickAddMoreItemsBtn();
+		sfShopSkinCarePage.addProductToCart(TestConstants.PRODUCT_NUMBER, TestConstants.ORDER_TYPE_ENROLLMENT,validProductId);
+		sfCartPage = sfShopSkinCarePage.checkoutTheCartFromPopUp();
+		sfCartPage.clickCheckoutBtn();
+		sfCartPage.searchSponsor(TestConstants.SPONSOR);
+		sfHomePage.selectFirstSponsorFromList();
+		sfCheckoutPage.clickSaveButton();
+		sfCheckoutPage.enterShippingDetails(firstName+" "+lastName, addressLine1, addressLine2, city, state, postalCode, phoneNumber);
+		sfCheckoutPage.clickShippingDetailsNextbutton();
+		sfCheckoutPage.enterUserBillingDetails(cardType, cardNumber, cardName, CVV);
+		sfCheckoutPage.clickBillingDetailsNextbutton();
+		if(sfCheckoutPage.hasTokenizationFailed()==true){
+			sfCheckoutPage.enterUserBillingDetails(cardType, cardNumber, cardName, CVV);
+			sfCheckoutPage.clickBillingDetailsNextbutton();
+		}
+		sfCheckoutPage.selectIAcknowledgePCChkBox();
+		sfCheckoutPage.selectPCTermsAndConditionsChkBox();
+		sfCheckoutPage.clickPlaceOrderButton();
+		s_assert.assertTrue(sfHomePage.hasPCEnrolledSuccessfully(), "PC has not been enrolled successfully");
+		sfCheckoutPage.clickRodanAndFieldsLogo();
+		pcUserWithPWSSponsor=email;
+		sfCheckoutPage.clickWelcomeDropdown();
+		sfCheckoutPage.logout();
+		sfCheckoutPage = new StoreFrontCheckoutPage(driver);
+		sfCheckoutPage.navigateToSFDCUrl();
+		sfCheckoutPage.loginToSFDC(TestConstants.USERNAME_SFDC_QA2, TestConstants.PASSWORD_SFDC);
+		sfCheckoutPage.pauseExecutionFor(300000);
+		sfCheckoutPage.clickAnyTypeOfActiveCustomerInSearchResultOfSFDC(pcUserWithPWSSponsor);
+		s_assert.assertTrue(sfHomePage.isUserPresentInSFDC(TestConstants.USERTYPE_PREFERRED_CUSTOMER,pcUserWithPWSSponsor), "Expected user"+TestConstants.USERTYPE_PREFERRED_CUSTOMER+" "+pcUserWithPWSSponsor+ "not found in SFDC");
+		s_assert.assertAll(); 
+	}
+
+	/***
+	 * 	 
+	 * Description : This test validates that account flow of SFDC for RC
+	 * 
+	 *     
+	 */
+	@Test(enabled=true)
+	public void testRCAccountFlowToSFDC(){
+		String count=null;
+		RFO_DB = driver.getDBNameRFO(); 
+		List<Map<String, Object>> randomConsultantList =  null;
+		timeStamp = CommonUtils.getCurrentTimeStamp();
+		email = firstName+"rc"+timeStamp+TestConstants.EMAIL_SUFFIX;
+		randomWords = CommonUtils.getRandomWord(5);		
+		lastName = TestConstants.LAST_NAME+randomWords;
+		navigateToStoreFrontBaseURL();
+		sfCartPage = new StoreFrontCartPage(driver);
+		sfShopSkinCarePage = new StoreFrontShopSkinCarePage(driver);
+		sfHomePage.clickLoginIcon();
+		sfCheckoutPage=sfHomePage.clickSignUpNowLink();
+		sfCheckoutPage.fillNewUserDetails(TestConstants.USER_TYPE_RC, firstName, lastName, email, password);
+		sfCheckoutPage.clickCreateAccountButton(TestConstants.USER_TYPE_RC);
+		s_assert.assertTrue(sfHomePage.isWelcomeUserElementDisplayed(), "RC has not been enrolled successfully");
+		sfShopSkinCarePage = sfHomePage.clickAllProducts();
+		sfShopSkinCarePage.addProductToCart(TestConstants.PRODUCT_NUMBER, TestConstants.ORDER_TYPE_ENROLLMENT, validProductId);
+		sfCartPage = sfShopSkinCarePage.checkoutTheCartFromPopUp();
+		sfCheckoutPage = sfCartPage.checkoutTheCart();
+		sfCartPage.searchSponsor(TestConstants.SPONSOR);
+		sfHomePage.selectFirstSponsorFromList();
+		sfCheckoutPage.clickSaveButton();
+		sfCheckoutPage.enterShippingDetails(firstName+" "+lastName, addressLine1, addressLine2, city, state, postalCode, phoneNumber);
+		sfCheckoutPage.clickShippingDetailsNextbutton();
+		sfCheckoutPage.enterUserBillingDetails(cardType, cardNumber, cardName, CVV);
+		sfCheckoutPage.clickBillingDetailsNextbutton();
+		if(sfCheckoutPage.hasTokenizationFailed()==true){
+			sfCheckoutPage.enterUserBillingDetails(cardType, cardNumber, cardName, CVV);
+			sfCheckoutPage.clickBillingDetailsNextbutton();
+		}
+		sfCheckoutPage.selectTermsAndConditionsChkBox();
+		sfCheckoutPage.clickPlaceOrderButton();
+		rcWithOrderWithoutSponsor=email;
+		sfCheckoutPage.clickWelcomeDropdown();
+		sfCheckoutPage.logout();
+		sfCheckoutPage = new StoreFrontCheckoutPage(driver);
+		sfCheckoutPage.navigateToSFDCUrl();
+		sfCheckoutPage.loginToSFDC(TestConstants.USERNAME_SFDC_QA2, TestConstants.PASSWORD_SFDC);
+		sfCheckoutPage.pauseExecutionFor(300000);
+		sfCheckoutPage.clickAnyTypeOfActiveCustomerInSearchResultOfSFDC(rcWithOrderWithoutSponsor);
+		s_assert.assertTrue(sfHomePage.isUserPresentInSFDC(TestConstants.USERTYPE_RETAIL_CUSTOMER,rcWithOrderWithoutSponsor), "Expected user"+TestConstants.USERTYPE_RETAIL_CUSTOMER+" "+rcWithOrderWithoutSponsor+ "not found in SFDC");
+		s_assert.assertAll(); 
+	}
+
 }

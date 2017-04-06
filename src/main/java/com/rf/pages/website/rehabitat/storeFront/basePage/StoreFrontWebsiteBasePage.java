@@ -302,7 +302,7 @@ public class StoreFrontWebsiteBasePage extends RFBasePage {
 	private final By SEARCH_INPUT_FIELD_LOC = By.id("phSearchInput");
 	private final By SUGGESTED_EMAIL_LOC = By.id("phSearchInput_autoCompleteBoxId");
 	private final By USER_NAME_IFRMAE = By.xpath("//div[@id='navigatortab']//iframe[contains(@class,'border-panel')]");
-	
+
 	private String activeUserInSfdcLoc = "//td[contains(text(),'%s')]/following::td[contains(text(),'Active')][1]/following::a[contains(text(),'%s')][1]";
 	protected String randomCategoryNameLoc = "//input[@id='%s']/..";
 	private String selectAndContinueSponserLoc = "//div[@id='findConsultantResultArea']/descendant::div[contains(@class,'consultant-box')][%s]//input[@id='consultantUid']";
@@ -526,12 +526,12 @@ public class StoreFrontWebsiteBasePage extends RFBasePage {
 	 * 
 	 */
 	public StoreFrontWebsiteBasePage searchSponsor(String sponsor) {
-		//driver.pauseExecutionFor(2000);
+		driver.pauseExecutionFor(2000);
 		driver.type(SPONSOR_SEARCH_FIELD_LOC, sponsor);
 		logger.info("Entered sponsor as " + sponsor);
 		driver.click(SEARCH_SPONSOR_LOC);
 		logger.info("Clicked on 'Search' button");
-		//	driver.pauseExecutionFor(2000);
+		// driver.pauseExecutionFor(2000);
 		return this;
 	}
 
@@ -4149,8 +4149,8 @@ public class StoreFrontWebsiteBasePage extends RFBasePage {
 		driver.get(driver.getSFDCURL());
 		return this;
 	}
-	
-	
+
+
 	/***
 	 * This method will login to the sfdc
 	 * 
@@ -4170,7 +4170,7 @@ public class StoreFrontWebsiteBasePage extends RFBasePage {
 		driver.waitForPageLoad();
 		return this;
 	}
-	
+
 	/***
 	 * This method will search the username in SFDC
 	 * 
@@ -4184,7 +4184,7 @@ public class StoreFrontWebsiteBasePage extends RFBasePage {
 		logger.info("Clicked on suggested email address");
 		return this;
 	}
-	
+
 	/***
 	 * This method will search the username in SFDC
 	 * 
@@ -4198,7 +4198,7 @@ public class StoreFrontWebsiteBasePage extends RFBasePage {
 		driver.switchTo().defaultContent();
 		return isUserPresent;
 	}
-	
+
 	public void closeAllOpenedTabs(){
 		int totalOpenedTabs = 0;
 		totalOpenedTabs = driver.findElements(By.xpath("//li[contains(@id,'navigatortab__scc-pt')]")).size();

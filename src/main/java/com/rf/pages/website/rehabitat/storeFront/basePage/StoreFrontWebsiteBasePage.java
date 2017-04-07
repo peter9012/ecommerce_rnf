@@ -3897,8 +3897,8 @@ public class StoreFrontWebsiteBasePage extends RFBasePage {
 	public StoreFrontShopSkinCarePage clickAllProducts() {
 		driver.quickWaitForElementPresent(SHOP_SKINCARE_LOC);
 		mouseHoverOn(TestConstants.SHOP_SKINCARE);
-		//driver.click(ALL_PRODUCTS_LOC);
-		clickCategoryLink("UNBLEMISH");
+		driver.click(ALL_PRODUCTS_LOC);
+		//clickCategoryLink("UNBLEMISH");
 		//driver.get(driver.getCurrentUrl()+"/All-Skincare/c/shopskincare");
 		logger.info("clicked on 'All Products'");
 		driver.waitForPageLoad();

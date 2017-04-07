@@ -3,12 +3,12 @@
 	<listeners>
 		<listener class-name="org.uncommons.reportng.HTMLReporter" />
 		<listener class-name="org.uncommons.reportng.JUnitXMLReporter" />
-		<!-- <listener class-name="com.rf.core.listeners.RetryListener" /> -->
+		<listener class-name="com.rf.core.listeners.RetryListener" />
 		<listener class-name="com.rf.core.listeners.TestListner" />
 	</listeners>
 	<test name="storeFrontMiniRegressionTest">
 		<classes>
-			<class
+			<!-- <class
 				name="com.rf.test.website.rehabitat.storeFront.ConsultantEnrollmentTest">
 				<methods>
 					<include name="testConsultantEnrollmentWithPulseAndCRP_231"></include>
@@ -27,15 +27,15 @@
 					<include name="testRCEnrollmentWithOrderWithoutSponsor_550"></include>
 					<include name="testRCEnrollmentWithSponsor"></include>
 				</methods>
-			</class>
+			</class> -->
 			<class name="com.rf.test.website.rehabitat.storeFront.BillingProfileTest">
 				<methods>
 					<include name="testAddEditBillingProfileFromMyAccountForConsultant"></include>
-					<include name="testAddEditBillingProfileFromMyAccountForPC"></include>
-					<include name="testAddEditBillingProfileFromMyAccountForRC"></include>
+				<!-- 	<include name="testAddEditBillingProfileFromMyAccountForPC"></include>
+					<include name="testAddEditBillingProfileFromMyAccountForRC"></include> -->
 					<include name="testAddEditBillingProfileAtAdhocCartForConsultant_429"></include>
-					<include name="testAddEditBillingProfileAtAdhocCartForPC_431"></include>
-					<include name="testAddEditBillingProfileAtAdhocCartForRC_430"></include>
+					<!-- <include name="testAddEditBillingProfileAtAdhocCartForPC_431"></include>
+					<include name="testAddEditBillingProfileAtAdhocCartForRC_430"></include> -->
 				</methods>
 			</class>
 
@@ -43,36 +43,36 @@
 				name="com.rf.test.website.rehabitat.storeFront.shippingProfile.AddAndDeleteShippingTest">
 				<methods>
 					<include name="testAddEditShippingAddressFromMyAccountForConsultant"></include>
-					<include name="testAddEditShippingAddressFromMyAccountForPC"></include>
-					<include name="testAddEditShippingAddressFromMyAccountForRC"></include>
+<!-- 					<include name="testAddEditShippingAddressFromMyAccountForPC"></include>
+					<include name="testAddEditShippingAddressFromMyAccountForRC"></include> -->
 					<include name="testAddEditShippingProfileAtAdhocCartForConsultant"></include>
-					<include name="testAddEditShippingProfileAtAdhocCartForPC"></include>
-					<include name="testAddEditShippingProfileAtAdhocCartForRC"></include>
+					<!-- <include name="testAddEditShippingProfileAtAdhocCartForPC"></include>
+					<include name="testAddEditShippingProfileAtAdhocCartForRC"></include> -->
 				</methods>
 			</class>
 			<class name="com.rf.test.website.rehabitat.storeFront.OrdersTest">
 				<methods>
 					<include name="testOrderDetailsOrderNumberLink_520"></include>
-					<include name="testPlacedAnAdhocOrderFromPC"></include>
-					<include name="testPlacedAnAdhocOrderFromRC"></include>
+					<!-- <include name="testPlacedAnAdhocOrderFromPC"></include>
+					<include name="testPlacedAnAdhocOrderFromRC"></include> -->
 				</methods>
 			</class>
 			<class name="com.rf.test.website.rehabitat.storeFront.AutoshipTest">
 				<methods>
 					<include name="testAddToAutoshipCartConsultant"></include>
-					<include name="testAddToAutoshipCartPC"></include>
+				<!-- 	<include name="testAddToAutoshipCartPC"></include> -->
 					<include
 						name="testConsultantAutoshipCartCRPEnrollmentCRPReminderBanner_405"></include>
 					<include name="testPlaceConsultantAutoshipOrderAndVerifyDateAndStatus"></include>
-					<include name="testPlacePCAutoshipOrderAndVerifyDateAndStatus"></include>
+					<!-- <include name="testPlacePCAutoshipOrderAndVerifyDateAndStatus"></include> -->
 					<include
 						name="testUpdateAutoshipAddAbillingAddressToExistingProfileConsultant_423"></include>
-					<include
-						name="testUpdateAutoshipAddABillingAddressToExistingProfilePC_424"></include>
+					<!-- <include
+						name="testUpdateAutoshipAddABillingAddressToExistingProfilePC_424"></include> -->
 						<include
 						name="testUpdateAutoshipCartEditShipAddressConsultant_398"></include>
-						<include
-						name="testUpdateAutoshipCartEditShipAddressPC_399"></include>
+						<!-- <include
+						name="testUpdateAutoshipCartEditShipAddressPC_399"></include> -->
 				</methods>
 			</class>
 			<class name="com.rf.test.website.rehabitat.storeFront.MyAccountTest">

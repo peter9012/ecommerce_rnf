@@ -7,7 +7,6 @@ import com.rf.test.website.rehabitat.storeFront.baseTest.StoreFrontWebsiteBaseTe
 
 public class ViewAreasOfSiteFromHomePageTest extends StoreFrontWebsiteBaseTest{
 
-
 	/***
 	 * qTest : TC-4 Home Page Navigate And View Area Of The Site
 	 * Description : This test validates category, Category landing pages, toggle button,

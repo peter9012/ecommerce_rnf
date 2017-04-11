@@ -45,6 +45,12 @@ public class StoreFrontWebsiteBasePage extends RFBasePage {
 		this.driver = driver;
 	}
 
+	private final By POPUP_CLOSE_LOC = By.xpath("//*[@class='close']");
+	private final By PULSE_USERNAME_TXTFLD_LOC = By.xpath("//input[@name='username']");
+	private final By PULSE_PASSWORD_TXTFLD_LOC = By.xpath("//input[@name='password']");
+	private final By PULSE_LOGIN_BUTTON_LOC = By.xpath("//input[@value='Sign In']");
+	private final By PULSE_DD_LOC = By.xpath("//span[@class='UserID']");
+	private final By PULSE_ORDER_TAB_LOC = By.xpath("//span[text()='Orders']");
 	private final By OKTA_IMG_LOC = By.xpath("//img[contains(@alt,'Okta')]");
 	protected final By TOTAL_CATEGORY_NAME_LOC = By.xpath("//div[@id='product-facet']//descendant::ul[2]/li//input[contains(@id,'ID')]");
 	private final By SELECT_AND_CONTINUE_FIRST_SPONSER_LOC = By.xpath(
@@ -1473,37 +1479,6 @@ public class StoreFrontWebsiteBasePage extends RFBasePage {
 	 */
 	public boolean isCRPAutoshipHeaderPresentOnCartPage() {
 		return driver.isElementVisible(CRP_AUTOSHIP_CART_HEADER_LOC);
-	}
-
-	/***
-	 * This method click check my pulse link from welcome dropdown.
-	 * 
-	 * @param
-	 * @return store front base page object
-	 * 
-	 */
-	public StoreFrontWebsiteBasePage navigateToCheckMyPulsePage() {
-		driver.click(WELCOME_DD_CHECK_MY_PULSE_LOC);
-		logger.info("check my pulse clicked from welcome dropdown");
-		driver.waitForLoadingImageToDisappear();
-		driver.waitForPageLoad();
-		return this;
-	}
-
-	/***
-	 * This method click orders link from welcome drop down
-	 * 
-	 * @param
-	 * @return store front orders page object
-	 * 
-	 */
-	public StoreFrontHomePage logout() {
-		driver.click(LOGOUT_LOC);
-		logger.info("logout link clicked from welcome dropdown");
-		driver.waitForLoadingImageToDisappear();
-		driver.waitForPageLoad();
-		driver.pauseExecutionFor(2000);
-		return new StoreFrontHomePage(driver);
 	}
 
 	/***
@@ -4218,5 +4193,99 @@ public class StoreFrontWebsiteBasePage extends RFBasePage {
 				continue;
 			}
 		}
+	}
+
+	/***
+	 * This method will close popup on page.
+	 * 
+	 * @param 
+	 * @return store front Base page object
+	 * 
+	 */
+	public StoreFrontWebsiteBasePage closePopup(){
+		if(driver.isElementPresent(POPUP_CLOSE_LOC))
+			driver.click(POPUP_CLOSE_LOC);
+		logger.info("clicked on close icon of popup");
+		return this;
+	}
+
+	/***
+	 * This method will login to the pulse
+	 * 
+	 * @param username password
+	 * @return store front Base page object
+	 */
+	public StoreFrontWebsiteBasePage loginToPulse(String username, String password) {
+		closeAllOpenedTabs();
+		driver.pauseExecutionFor(1000);
+		driver.quickWaitForElementPresent(PULSE_USERNAME_TXTFLD_LOC, 3);
+		if(driver.isElementPresent(PULSE_USERNAME_TXTFLD_LOC)){
+			driver.type(PULSE_USERNAME_TXTFLD_LOC, username);
+			logger.info("username entered as " + username);
+			driver.type(PULSE_PASSWORD_TXTFLD_LOC, password);
+			logger.info("password entered as  " + password);
+			driver.click(PULSE_LOGIN_BUTTON_LOC);
+			logger.info("login button clicked for pulse");
+			driver.waitForPageLoad();
+			driver.pauseExecutionFor(3000);
+		}
+		return this;
+	}
+
+	/***
+	 * This method validates user in pulse
+	 * 
+	 * @param
+	 * @return boolean value
+	 * 
+	 */
+	public boolean isUserPresentInPulse(){
+		return driver.isElementPresent(PULSE_DD_LOC);
+	}
+
+	/***
+	 * This method click orders link from welcome drop down
+	 * 
+	 * @param
+	 * @return store front orders page object
+	 * 
+	 */
+	public StoreFrontWebsiteBasePage navigateToPulseOrdersTab() {
+		driver.click(PULSE_ORDER_TAB_LOC);
+		logger.info("orders tab clicked in pulse");
+		driver.waitForLoadingImageToDisappear();
+		driver.waitForPageLoad();
+		return this;
+	}
+
+	/***
+	 * This method click orders link from welcome drop down
+	 * 
+	 * @param
+	 * @return store front orders page object
+	 * 
+	 */
+	public StoreFrontHomePage logout() {
+		driver.clickByJS(RFWebsiteDriver.driver,LOGOUT_LOC);
+		logger.info("logout link clicked from welcome dropdown");
+		driver.waitForLoadingImageToDisappear();
+		driver.waitForPageLoad();
+		driver.pauseExecutionFor(2000);
+		return new StoreFrontHomePage(driver);
+	}
+
+	/***
+	 * This method click check my pulse link from welcome dropdown.
+	 * 
+	 * @param
+	 * @return store front base page object
+	 * 
+	 */
+	public StoreFrontWebsiteBasePage navigateToCheckMyPulsePage() {
+		driver.clickByJS(RFWebsiteDriver.driver,WELCOME_DD_CHECK_MY_PULSE_LOC);
+		logger.info("check my pulse clicked from welcome dropdown");
+		driver.waitForLoadingImageToDisappear();
+		driver.waitForPageLoad();
+		return this;
 	}
 }

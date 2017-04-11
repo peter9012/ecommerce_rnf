@@ -8,12 +8,12 @@ import com.rf.core.website.constants.TestConstants;
 import com.rf.test.website.rehabitat.storeFront.baseTest.StoreFrontWebsiteBaseTest;
 
 @Listeners({org.uncommons.reportng.HTMLReporter.class,
-	        org.uncommons.reportng.JUnitXMLReporter.class,
-	        com.rf.core.listeners.TestListner.class})
+	org.uncommons.reportng.JUnitXMLReporter.class,
+	com.rf.core.listeners.TestListner.class})
 public class OrdersTest extends StoreFrontWebsiteBaseTest{
 
 	private String productName = null;
-	
+
 	/***
 	 * qTest : TC-180 Order History- Link to Order details
 	 * Description : This test validates Details link under Actions drop down
@@ -1159,6 +1159,7 @@ public class OrdersTest extends StoreFrontWebsiteBaseTest{
 		s_assert.assertAll();
 	}
 
+
 	/***
 	 * qTest : TC-315 Ship method- Ad Hoc carts
 	 * Description : This test case validates the change in shipping method for the adhoc order 
@@ -1190,7 +1191,7 @@ public class OrdersTest extends StoreFrontWebsiteBaseTest{
 		sfCheckoutPage.clickPlaceOrderButton();
 		shippingMethodAtOrderConfirmationPage = sfCheckoutPage.getShippingMethodAfterPlacedOrder();
 		s_assert.assertTrue(selectedShippingMethodLabel.contains(changedShippingMethodLabel),"Shipping method does not get updated at Checkout page. Expected : " + changedShippingMethodLabel + ". Actual : " + selectedShippingMethodLabel);
-		s_assert.assertTrue(titleOfSelectedShipppingMethod.contains(titleOfShippingMethodAfterNextButton),"Shipping method title is not found as expected after Shipping details next button. Expected : " + titleOfSelectedShipppingMethod + ". Actual : " + titleOfShippingMethodAfterNextButton);
+		s_assert.assertTrue(titleOfShippingMethodAfterNextButton.contains(titleOfSelectedShipppingMethod),"Shipping method title is not found as expected after Shipping details next button. Expected : " + titleOfSelectedShipppingMethod + ". Actual : " + titleOfShippingMethodAfterNextButton);
 		s_assert.assertTrue(shippingMethodAtOrderConfirmationPage.contains(titleOfSelectedShipppingMethod),"Shipping method is not found as expected on order confirmation page after placing order. Expected : " + titleOfSelectedShipppingMethod + ". Actual : " + shippingMethodAtOrderConfirmationPage);
 		s_assert.assertAll();
 	}
@@ -1740,7 +1741,7 @@ public class OrdersTest extends StoreFrontWebsiteBaseTest{
 		//s_assert.assertTrue(productUnitPriceAtOrderDetailsPage.contains(yourPrice),"Product unit price is not matching. Expected is:"+yourPrice+"But found is "+productUnitPriceAtOrderDetailsPage);
 		s_assert.assertAll();
 	}
-	
+
 	// Placed an adhoc order from consultant
 	@Test
 	public void testPlacedAnAdhocOrderFromConsultant(){

@@ -322,6 +322,17 @@ public class StoreFrontWebsiteBaseTest extends RFBaseTest {
 		return suiteName;
 	}
 
+	public String getSFDCUserName() {
+		String sfdcUserName = propertyFile.getProperty("sfdcUserName");
+		return sfdcUserName;
+	}
+
+	public String getSFDCPassword() {
+		String sfdcPassword = propertyFile.getProperty("sfdcPassword");
+		return sfdcPassword;
+	}
+
+
 	@BeforeMethod(alwaysRun=true)
 	public void beforeMethod() throws Exception{
 		s_assert = new SoftAssert();

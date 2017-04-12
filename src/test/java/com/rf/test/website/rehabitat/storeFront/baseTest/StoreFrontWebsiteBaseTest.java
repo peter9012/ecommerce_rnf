@@ -305,8 +305,8 @@ public class StoreFrontWebsiteBaseTest extends RFBaseTest {
 		return userPropertyFile.getProperty("rcWithoutOrder");
 	}
 
-	public String pcWithSigleBillingProfile(){
-		return userPropertyFile.getProperty("pcWithSigleBillingProfile");
+	public String pcUserHavingSingleBillingProfile(){
+		return userPropertyFile.getProperty("pcUserHavingSingleBillingProfile");
 	}
 
 	public String consultantWithPulseAndWithCRPForCancellation(){

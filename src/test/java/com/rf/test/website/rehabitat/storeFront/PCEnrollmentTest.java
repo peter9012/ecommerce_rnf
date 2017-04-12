@@ -466,7 +466,9 @@ public class PCEnrollmentTest extends StoreFrontWebsiteBaseTest{
 		sfCheckoutPage.clickPlaceOrderButton();
 		sfCheckoutPage.clickRodanAndFieldsLogo();
 		s_assert.assertTrue(sfHomePage.hasPCEnrolledSuccessfully(), "PC has not been enrolled successfully");
-		s_assert.assertAll();
 		pcUserHavingSingleBillingProfile = email;
+		userPropertyFile.loadProps(userProps);
+		setUsers("pcUserHavingSingleBillingProfile", pcUserHavingSingleBillingProfile);
+		s_assert.assertAll();
 	}
 }

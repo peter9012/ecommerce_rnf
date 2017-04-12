@@ -113,7 +113,6 @@ public class RCEnrollmentTest extends StoreFrontWebsiteBaseTest{
 		sfCheckoutPage.clickPlaceOrderButton();
 		s_assert.assertTrue(sfCheckoutPage.isOrderPlacedSuccessfully(), "Adhoc order is not placed successfully by PC");
 		s_assert.assertAll();
-		System.out.println(email);
 	}
 
 	@Test(enabled=true)
@@ -131,6 +130,8 @@ public class RCEnrollmentTest extends StoreFrontWebsiteBaseTest{
 		sfCheckoutPage.clickCreateAccountButton(TestConstants.USER_TYPE_RC);
 		s_assert.assertTrue(sfHomePage.isWelcomeUserElementDisplayed(), "RC has not been enrolled successfully");
 		rcWithoutOrder=email;
+		userPropertyFile.loadProps(userProps);
+		setUsers("rcWithoutOrder", rcWithoutOrder);
 		s_assert.assertAll();
 	}
 }

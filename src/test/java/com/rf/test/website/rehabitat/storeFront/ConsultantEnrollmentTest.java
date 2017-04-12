@@ -794,8 +794,9 @@ public class ConsultantEnrollmentTest extends StoreFrontWebsiteBaseTest{
 		s_assert.assertTrue(sfCheckoutPage.isCRPOrderConfirmedSuccessMsgAppeared(),"CRP Order confirmed success messge is not appeared");
 		sfCheckoutPage.clickRodanAndFieldsLogo();
 		consultantWithPulseAndWithCRPForCancellation=email;
+		userPropertyFile.loadProps(userProps);
+		setUsers("consultantWithPulseAndWithCRPForCancellation", consultantWithPulseAndWithCRPForCancellation);
 		s_assert.assertAll();	
-
 	}
 
 	//For CONSULTANT_EMAIL_SPONSOR_WITHOUT_PWS

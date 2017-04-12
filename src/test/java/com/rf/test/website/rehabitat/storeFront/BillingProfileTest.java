@@ -328,7 +328,7 @@ public class BillingProfileTest extends StoreFrontWebsiteBaseTest{
 		int countOfDefaultProfiles = 0;
 
 		//Login as PC user.
-		sfHomePage.loginToStoreFront(pcWithSigleBillingProfile(), password,true);
+		sfHomePage.loginToStoreFront(pcUserHavingSingleBillingProfile(), password,true);
 		sfHomePage.clickWelcomeDropdown();
 		sfBillingInfoPage = sfHomePage.navigateToBillingInfoPage();
 		currentURL = sfBillingInfoPage.getCurrentURL().toLowerCase();

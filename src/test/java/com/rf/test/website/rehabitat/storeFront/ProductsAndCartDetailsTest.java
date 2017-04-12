@@ -127,7 +127,7 @@ public class ProductsAndCartDetailsTest extends StoreFrontWebsiteBaseTest{
 	 * 
 	 * Description : This test validates the links Present under welcome DD.
 	 * 
-	 * 				
+	 *     
 	 */
 	@Test(enabled=true)
 	public void testVerifyLinksUnderWelcomeDD_66(){
@@ -183,7 +183,7 @@ public class ProductsAndCartDetailsTest extends StoreFrontWebsiteBaseTest{
 		sfHomePage.navigateToPCPerksFAQPage();
 		currentURL = sfHomePage.getCurrentURL().toLowerCase();
 		title = sfHomePage.getCurrentpageTitle();
-		s_assert.assertTrue(currentURL.contains(pcPerksFAQPage), "Expected URL should contain "+pcPerksFAQPage+" but actual on UI is"+currentURL);
+		s_assert.assertTrue(currentURL.contains(pcPerksFAQPage) || currentURL.contains("pc-perks-questions"), "Expected URL should contain "+pcPerksFAQPage+" but actual on UI is"+currentURL);
 		s_assert.assertTrue(title.contains(pcPerksFAQPageTitle), "Expected title should contain "+pcPerksFAQPageTitle+" but actual title on UI is"+title);
 		sfHomePage.clickWelcomeDropdown();
 		sfAutoshipStatusPage = sfHomePage.navigateToPCPerksStatusPage();

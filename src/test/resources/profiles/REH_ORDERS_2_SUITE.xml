@@ -8,7 +8,7 @@
 	</listeners>
 	<test name="storeFrontOrdersTest_2">
 		<classes>
-			<class
+			<!-- <class
 				name="com.rf.test.website.rehabitat.storeFront.ConsultantEnrollmentTest">
 				<methods>
 					<include name="testConsultantEnrollmentWithPulseAndCRP_231"></include>
@@ -23,7 +23,7 @@
 				<methods>
 					<include name="testRCEnrollmentWithOrderWithoutSponsor_550"></include>
 				</methods>
-			</class>
+			</class> -->
 			<class name="com.rf.test.website.rehabitat.storeFront.OrdersTest">
 				<methods>
 					<include

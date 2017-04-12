@@ -1001,7 +1001,7 @@ public class StoreFrontShopSkinCarePage extends StoreFrontWebsiteBasePage{
 		if(orderType.equals(TestConstants.ORDER_TYPE_ENROLLMENT)){
 			logger.info("Adding product for Enrollment");
 		}
-		else if(orderType.equals(TestConstants.ORDER_TYPE_ADHOC)&& driver.isElementPresent(By.xpath(String.format(productPriceThroughProdIdLoc,productId,TestConstants.ORDER_TYPE_ADHOC)))){
+		else if(orderType.equals(TestConstants.ORDER_TYPE_ADHOC)&& driver.isElementVisible(By.xpath(String.format(productPriceThroughProdIdLoc,productId,TestConstants.ORDER_TYPE_ADHOC)))){
 			priceToAssert = driver.getText(By.xpath(String.format(productPriceThroughProdIdLoc,productId,TestConstants.ORDER_TYPE_ADHOC))).replace("$","");
 			driver.clickByJS(RFWebsiteDriver.driver,By.xpath(String.format(addToCartDDThroughProdIdLoc,productId,TestConstants.ORDER_TYPE_ADHOC)));
 		}

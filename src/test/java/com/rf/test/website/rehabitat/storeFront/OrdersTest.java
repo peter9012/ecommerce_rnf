@@ -1267,7 +1267,7 @@ public class OrdersTest extends StoreFrontWebsiteBaseTest{
 		sfShopSkinCarePage = sfHomePage.clickAllProducts();
 		sfShopSkinCarePage.addProductToCart(TestConstants.PRODUCT_NUMBER, TestConstants.ORDER_TYPE_ADHOC, validProductId);
 		sfShopSkinCarePage.checkoutTheCartFromPopUp();
-		productName = sfCartPage.getProductName("1");
+		productName = sfCartPage.getProductName(validProductId);
 		productQuantity = sfCartPage.getQuantityOfProductFromCart("1");
 		sfCheckoutPage=sfCartPage.checkoutTheCart();
 		sfCheckoutPage.clickSaveButton();
@@ -1592,7 +1592,7 @@ public class OrdersTest extends StoreFrontWebsiteBaseTest{
 		sfShopSkinCarePage = sfHomePage.clickAllProducts();
 		sfShopSkinCarePage.addProductToCart(TestConstants.PRODUCT_NUMBER, TestConstants.ORDER_TYPE_ADHOC, validProductId);
 		sfShopSkinCarePage.checkoutTheCartFromPopUp();
-		productName = sfCartPage.getProductName("1");
+		productName = sfCartPage.getProductName(validProductId);
 		productQuantity = sfCartPage.getQuantityOfProductFromCart("1");
 		sfCheckoutPage=sfCartPage.checkoutTheCart();
 		sfCheckoutPage.clickSaveButton();
@@ -1683,7 +1683,7 @@ public class OrdersTest extends StoreFrontWebsiteBaseTest{
 		sfShopSkinCarePage = sfHomePage.clickAllProducts();
 		sfShopSkinCarePage.addProductToCart(TestConstants.PRODUCT_NUMBER, TestConstants.ORDER_TYPE_ADHOC, validProductId);
 		sfShopSkinCarePage.checkoutTheCartFromPopUp();
-		productName = sfCartPage.getProductName("1");
+		productName = sfCartPage.getProductName(validProductId);
 		productQuantity = sfCartPage.getQuantityOfProductFromCart("1");
 		sfCheckoutPage=sfCartPage.checkoutTheCart();
 		sfCheckoutPage.clickContinueWithoutConsultantLink();
@@ -1739,33 +1739,6 @@ public class OrdersTest extends StoreFrontWebsiteBaseTest{
 		s_assert.assertTrue(sfOrdersPage.isProductNamePresentOnOrderDetailPage(productName),"Product name is not matching. Expected is:"+productName+"But not found");
 		//s_assert.assertTrue(productSVValue.contains(productSVAtOrderDetailsPage),"Product SV value is not matching. Expected is:"+productSVValue+"But found is "+productSVAtOrderDetailsPage);
 		//s_assert.assertTrue(productUnitPriceAtOrderDetailsPage.contains(yourPrice),"Product unit price is not matching. Expected is:"+yourPrice+"But found is "+productUnitPriceAtOrderDetailsPage);
-		s_assert.assertAll();
-	}
-
-	// Placed an adhoc order from consultant
-	@Test
-	public void testPlacedAnAdhocOrderFromConsultant(){
-		sfHomePage.loginToStoreFront(consultantWithPulseAndWithCRP(), password,true);
-		sfCartPage = sfHomePage.clickMiniCartBagLink();
-		sfCartPage.removeAllProductsFromCart();
-		sfCartPage.clickRodanAndFieldsLogo();
-		sfShopSkinCarePage = sfHomePage.clickAllProducts();
-		productName = validProductName;
-		sfShopSkinCarePage.addProductToCart(TestConstants.PRODUCT_NUMBER, TestConstants.ORDER_TYPE_ADHOC,validProductId);
-		sfShopSkinCarePage.checkoutTheCartFromPopUp();
-		sfCheckoutPage=sfCartPage.checkoutTheCart();
-		sfCheckoutPage.clickSaveButton();
-		sfCheckoutPage.clickShippingDetailsNextbutton();
-		sfCheckoutPage.clickAddNewBillingProfileButton();
-		sfCheckoutPage.enterUserBillingDetails(cardType, cardNumber, cardName, CVV);
-		sfCheckoutPage.clickBillingDetailsNextbutton();
-		if(sfCheckoutPage.hasTokenizationFailed()==true){
-			sfCheckoutPage.enterUserBillingDetails(cardType, cardNumber, cardName, CVV);
-			sfCheckoutPage.clickBillingDetailsNextbutton();
-		}
-		sfCheckoutPage.selectPCTermsAndConditionsChkBox();
-		sfCheckoutPage.clickPlaceOrderButton();
-		s_assert.assertTrue(sfCheckoutPage.isOrderPlacedSuccessfully(),"Order not placed. Thank you message is not displayed");
 		s_assert.assertAll();
 	}
 

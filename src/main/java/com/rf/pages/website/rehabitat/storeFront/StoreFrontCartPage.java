@@ -42,7 +42,7 @@ public class StoreFrontCartPage extends StoreFrontWebsiteBasePage{
 	private String productPriceInAllItemsInCartLoc = "//li[@class='item-list-item']//div[@class='item-info']//span[@class='item-name' and contains(text(),'%s')]/ancestor::div[1]/following-sibling::div[@class='item-price-info']";
 	private String recentlyViewProductOnCartPageLoc = "//div[@id='recentlyViewedTitle']/following::div[@class='owl-item active']//a[contains(text(),'%s')]";
 	private String removeLinkForProductOnCartLoc = "//button[@id='removeEntry_%s']";
-	private String productNameInCartLoc = "//ul[contains(@class,'cart__list')]/descendant::li[@class='item-list-item'][%s]//span[@class='item-name']";
+	private String productNameInCartLoc = "//ul[contains(@class,'cart__list')]/descendant::div[contains(text(),'%s')]/preceding::span[@class='item-name'][1]";
 
 	/***
 	 * This method get product item code 

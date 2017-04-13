@@ -8,6 +8,22 @@
 	</listeners>
 	<test name="storeFrontMyAccountTest_1">
 		<classes>
+			<class
+				name="com.rf.test.website.rehabitat.storeFront.ConsultantEnrollmentTest">
+				<methods>
+					<include name="testConsultantEnrollmentWithPulseAndCRP_231"></include>
+				</methods>
+			</class>
+			<class name="com.rf.test.website.rehabitat.storeFront.PCEnrollmentTest">
+				<methods>
+					<include name="testPCEnrollmentWithPWSSponsor_452"></include>
+				</methods>
+			</class>
+			<class name="com.rf.test.website.rehabitat.storeFront.RCEnrollmentTest">
+				<methods>
+					<include name="testRCEnrollmentWithOrderWithoutSponsor_550"></include>
+				</methods>
+			</class>
 			<class name="com.rf.test.website.rehabitat.storeFront.MyAccountTest">
 				<methods>
 					<include name="testVerifyAccountInfoPageForUsers_178"></include>

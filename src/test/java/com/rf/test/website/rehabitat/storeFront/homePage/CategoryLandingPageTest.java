@@ -133,7 +133,7 @@ public class CategoryLandingPageTest extends StoreFrontWebsiteBaseTest{
 	 * and add to bag button is present or not 
 	 *     
 	 */
-	@Test(enabled=false)
+	@Test(enabled=true)
 	public void testFeaturedCategoryLandingPage_97(){
 		String category_Featured = "FEATURED";
 		String currentURL = null;
@@ -151,16 +151,6 @@ public class CategoryLandingPageTest extends StoreFrontWebsiteBaseTest{
 	 */
 	@Test(enabled=true)
 	public void testConsultantOnlyCategoryAppearsForTheConsultantUser_90(){
-		sfHomePage.loginToStoreFront(pcUserWithPWSSponsor(),  password,true);
-		sfHomePage.mouseHoverOn(TestConstants.SHOP_SKINCARE);
-		s_assert.assertFalse(sfHomePage.isConsultantOnlyProductsLinkDisplayed(), "Consultant Only Link should NOT be present for PC user");
-		sfHomePage.clickWelcomeDropdown();
-		sfHomePage.logout();
-		sfHomePage.loginToStoreFront(rcWithOrderWithoutSponsor(),  password,true);
-		sfHomePage.mouseHoverOn(TestConstants.SHOP_SKINCARE);
-		s_assert.assertFalse(sfHomePage.isConsultantOnlyProductsLinkDisplayed(), "Consultant Only Link should NOT be present for RC user");
-		sfHomePage.clickWelcomeDropdown();
-		sfHomePage.logout();
 		sfHomePage.loginToStoreFront(consultantWithPulseAndWithCRP(),  password,true);
 		sfHomePage.mouseHoverOn(TestConstants.SHOP_SKINCARE);
 		s_assert.assertTrue(sfHomePage.isConsultantOnlyProductsLinkDisplayed(), "Consultant Only Link should NOT be present for PC user");
@@ -169,6 +159,16 @@ public class CategoryLandingPageTest extends StoreFrontWebsiteBaseTest{
 		sfShopSkinCarePage.isAddToCartDDOptionsDisplayed(TestConstants.USER_TYPE_CONSULTANT);
 		sfShopSkinCarePage.clickOnQuickViewLinkForProduct("1");
 		s_assert.assertTrue(sfShopSkinCarePage.isPricePresentOnQuickViewPopup(),"Price is not present for Product on Quick view popup for consultant Only products");
+		sfHomePage.clickWelcomeDropdown();
+		sfHomePage.logout();
+		sfHomePage.loginToStoreFront(rcWithOrderWithoutSponsor(),  password,true);
+		sfHomePage.mouseHoverOn(TestConstants.SHOP_SKINCARE);
+		s_assert.assertFalse(sfHomePage.isConsultantOnlyProductsLinkDisplayed(), "Consultant Only Link should NOT be present for RC user");
+		sfHomePage.clickWelcomeDropdown();
+		sfHomePage.logout();
+		sfHomePage.loginToStoreFront(pcUserWithPWSSponsor(),  password,true);
+		sfHomePage.mouseHoverOn(TestConstants.SHOP_SKINCARE);
+		s_assert.assertFalse(sfHomePage.isConsultantOnlyProductsLinkDisplayed(), "Consultant Only Link should NOT be present for PC user");
 		s_assert.assertAll();
 	}
 

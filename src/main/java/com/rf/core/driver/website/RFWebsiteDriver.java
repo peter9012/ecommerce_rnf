@@ -93,7 +93,9 @@ public class RFWebsiteDriver implements RFDriver,WebDriver {
 		if (browser.equalsIgnoreCase("firefox"))
 			driver = new FirefoxDriver(prof);
 		else if (browser.equalsIgnoreCase("chrome")){
+
 			System.setProperty("webdriver.chrome.driver", "src/test/resources/chromedriver.exe");
+
 			ChromeOptions options = new ChromeOptions();
 			options.addArguments("no-sandbox");
 			options.addArguments("chrome.switches","--disable-extensions");
@@ -105,8 +107,7 @@ public class RFWebsiteDriver implements RFDriver,WebDriver {
 			driver = new ChromeDriver(capabilities);
 		}
 		else if(browser.equalsIgnoreCase("headless")){
-			driver = new HtmlUnitDriver();		
-
+			driver = new HtmlUnitDriver();	
 		}
 		else if(browser.equalsIgnoreCase("ie")){
 			System.setProperty("webdriver.ie.driver", "src/test/resources/IEDriverServer.exe");
@@ -197,6 +198,15 @@ public class RFWebsiteDriver implements RFDriver,WebDriver {
 		return environment;
 	}
 
+	public String getDBNameRFO(){
+		return propertyFile.getProperty("databaseNameRFO");
+	}
+
+	public String getSFDCURL() {
+		String sfdcUrl = propertyFile.getProperty("sfdcURL");
+		return sfdcUrl;
+	}
+
 	/**
 	 * @param locator
 	 * @return
@@ -270,7 +280,7 @@ public class RFWebsiteDriver implements RFDriver,WebDriver {
 		if(isElementFound ==false)
 			logger.info("ELEMENT NOT FOUND");		
 	}
-	
+
 	public void waitForElementIsPresent(By locator, int timeout) {
 		logger.info("wait started for "+locator);
 		turnOffImplicitWaits(1);
@@ -531,9 +541,9 @@ public class RFWebsiteDriver implements RFDriver,WebDriver {
 			}catch(Exception e){
 				continue;
 			}
-			
+
 		}
-			turnOnImplicitWaits();
+		turnOnImplicitWaits();
 		if(isElementFound ==false)
 			logger.info("ELEMENT NOT FOUND");  
 	}
@@ -725,7 +735,7 @@ public class RFWebsiteDriver implements RFDriver,WebDriver {
 		}
 		turnOnImplicitWaits();
 	}
-	
+
 	public void click(By locator,int timeout) {		
 		waitForElementToBeClickable(locator, timeout);
 		//movetToElementJavascript(locator);
@@ -1167,6 +1177,45 @@ public class RFWebsiteDriver implements RFDriver,WebDriver {
 		}
 
 		return FullSnapShotFilePath;
+	}
+
+	public static String takeSnapShotAndRetPathForVerificationFailures(WebDriver driver, String methodName) throws Exception {
+		String FullSnapShotFilePath = "";
+		try {
+			logger.info("Taking Screenshot");
+			File scrFile = ((TakesScreenshot) driver)
+					.getScreenshotAs(OutputType.FILE);
+			String sFilename = null;
+			sFilename = "verificationFailure_Screenshot_"+methodName+"-"+getDateTimeInMilliSeconds()+".png";
+			FullSnapShotFilePath = System.getProperty("user.dir")
+					+ "\\output\\ScreenShots\\" + sFilename;
+			FileUtils.copyFile(scrFile, new File(FullSnapShotFilePath));
+		} catch (Exception e) {
+
+		}
+
+		return FullSnapShotFilePath;
+	}
+
+	/**
+	 * Returns current Date Time
+	 * 
+	 * @return
+	 */
+	public static String getDateTimeInMilliSeconds() {
+		String sDateTime = "";
+		try {
+			SimpleDateFormat sdfDate = new SimpleDateFormat("dd-MM-yyyy");
+			SimpleDateFormat sdfTime = new SimpleDateFormat("HH:mm:ss:SSS");
+			Date now = new Date();
+			String strDate = sdfDate.format(now);
+			String strTime = sdfTime.format(now);
+			strTime = strTime.replace(":", "-");
+			sDateTime = "D" + strDate + "_T" + strTime;
+		} catch (Exception e) {
+			System.err.println(e);
+		}
+		return sDateTime;
 	}
 
 	/**

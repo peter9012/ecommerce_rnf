@@ -23,7 +23,6 @@ public class ConsultantEnrollmentTest extends StoreFrontWebsiteBaseTest{
 		s_assert.assertAll();
 	}
 
-
 	/***
 	 * qTest : TC-224 Find a consultant/search- Prefix
 	 * 
@@ -694,7 +693,8 @@ public class ConsultantEnrollmentTest extends StoreFrontWebsiteBaseTest{
 		userPropertyFile.loadProps(userProps);
 		setUsers("consultantWithPulseAndWithCRP", consultantWithPulseAndWithCRP);
 		setUsers("pwsPrefix", pwsPrefix);
-		s_assert.assertAll();  
+		s_assert.assertAll(); 
+		System.out.println(email);
 	}
 
 	/***
@@ -794,8 +794,9 @@ public class ConsultantEnrollmentTest extends StoreFrontWebsiteBaseTest{
 		s_assert.assertTrue(sfCheckoutPage.isCRPOrderConfirmedSuccessMsgAppeared(),"CRP Order confirmed success messge is not appeared");
 		sfCheckoutPage.clickRodanAndFieldsLogo();
 		consultantWithPulseAndWithCRPForCancellation=email;
+		userPropertyFile.loadProps(userProps);
+		setUsers("consultantWithPulseAndWithCRPForCancellation", consultantWithPulseAndWithCRPForCancellation);
 		s_assert.assertAll();	
-
 	}
 
 	//For CONSULTANT_EMAIL_SPONSOR_WITHOUT_PWS

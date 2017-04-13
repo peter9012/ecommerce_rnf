@@ -366,18 +366,19 @@ public class StoreFrontProductDetailPage extends StoreFrontWebsiteBasePage{
 		String priceToAssert = null;
 		driver.pauseExecutionFor(3000);
 		driver.moveToElementByJS(ADD_TO_CART_BUTTON_AT_PRODUCT_DETAIL_PAGE_LOGIN_LOC);
-		driver.clickByAction(ADD_TO_CART_BUTTON_AT_PRODUCT_DETAIL_PAGE_LOGIN_LOC);
+		driver.pauseExecutionFor(1000);
+		driver.clickByJS(ADD_TO_CART_BUTTON_AT_PRODUCT_DETAIL_PAGE_LOGIN_LOC);
 		if(orderType.equals(TestConstants.ORDER_TYPE_ADHOC)&& driver.isElementVisible(By.xpath(String.format(productPriceOnProductDetailsPageThroughOrderTypeLoc,TestConstants.ORDER_TYPE_ADHOC)))){
 			priceToAssert = driver.getText(By.xpath(String.format(productPriceOnProductDetailsPageThroughOrderTypeLoc,TestConstants.ORDER_TYPE_ADHOC))).replace("$","");
-			driver.clickByAction(By.xpath(String.format(productPriceOnProductDetailsPageThroughOrderTypeLoc,TestConstants.ORDER_TYPE_ADHOC)));
+			driver.clickByJS(By.xpath(String.format(productPriceOnProductDetailsPageThroughOrderTypeLoc,TestConstants.ORDER_TYPE_ADHOC)));
 		}
 		else if(orderType.equals(TestConstants.ORDER_TYPE_PC_PERKS)&& driver.isElementVisible(By.xpath(String.format(productPriceOnProductDetailsPageThroughOrderTypeLoc,TestConstants.ORDER_TYPE_PC_PERKS)))){
 			priceToAssert = driver.getText(By.xpath(String.format(productPriceOnProductDetailsPageThroughOrderTypeLoc,TestConstants.ORDER_TYPE_PC_PERKS))).replace("$","");
-			driver.clickByAction(By.xpath(String.format(productPriceOnProductDetailsPageThroughOrderTypeLoc,TestConstants.ORDER_TYPE_PC_PERKS)));
+			driver.clickByJS(By.xpath(String.format(productPriceOnProductDetailsPageThroughOrderTypeLoc,TestConstants.ORDER_TYPE_PC_PERKS)));
 		}
 		else if(orderType.equals(TestConstants.ORDER_TYPE_CRP)&& driver.isElementVisible(By.xpath(String.format(productPriceOnProductDetailsPageThroughOrderTypeLoc,TestConstants.ORDER_TYPE_CRP)))){
 			priceToAssert = driver.getText(By.xpath(String.format(productPriceOnProductDetailsPageThroughOrderTypeLoc,"Add to CRP"))).replace("$","");
-			driver.clickByAction(By.xpath(String.format(productPriceOnProductDetailsPageThroughOrderTypeLoc,"Add to CRP")));
+			driver.clickByJS(By.xpath(String.format(productPriceOnProductDetailsPageThroughOrderTypeLoc,"Add to CRP")));
 		}
 		logger.info("Add To Cart clicked, order type is "+orderType);
 		return priceToAssert;

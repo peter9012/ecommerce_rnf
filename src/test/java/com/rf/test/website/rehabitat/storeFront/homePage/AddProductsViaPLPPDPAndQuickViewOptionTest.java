@@ -77,9 +77,10 @@ public class AddProductsViaPLPPDPAndQuickViewOptionTest extends StoreFrontWebsit
 		//Login to application.
 		sfHomePage.loginToStoreFront(pcUserWithPWSSponsor(),  password,true);
 		sfShopSkinCarePage = sfHomePage.clickAllProducts();
-		sfShopSkinCarePage.refineProductByCategory(TestConstants.PC_PERKS_AUTOSHIP_PRODUCT_CATEGORY);
-		selectedProductName = sfShopSkinCarePage.getProductNameFromAllProductPage(TestConstants.PRODUCT_NUMBER);
-		sfShopSkinCarePage.clickOnQuickViewLinkForProduct("1");
+		sfHomePage.clickSearchIcon();
+		sfHomePage.searchEntityAndHitEnter(validProductId);
+		selectedProductName = validProductName;
+		sfShopSkinCarePage.clickOnQuickViewLinkThroughProductId(validProductId);
 		s_assert.assertTrue(sfShopSkinCarePage.isProductNamePresentAtQuickViewPopupAsExpected(selectedProductName),
 				"Product name is not present as expected on quick view poup");
 		sfShopSkinCarePage.addProductToCartFromQuickViewPopup(TestConstants.ORDER_TYPE_PC_PERKS);
@@ -91,8 +92,8 @@ public class AddProductsViaPLPPDPAndQuickViewOptionTest extends StoreFrontWebsit
 				"Expected URL should contain "+textToAssertInURL+" but actual on UI is "+currentURL);
 		s_assert.assertTrue(sfAutoshipCartPage.isPCPerksCartHeaderPresentOnCartPage(),
 				"PC Perks Cart Header is not present on Cart Page as expected");
-		s_assert.assertTrue((sfAutoshipCartPage.isProductAddedToCartPresentOnCartPage(selectedProductName)),
-				"Product added to PC Perks is not present on Cart page");
+		s_assert.assertTrue((sfAutoshipCartPage.isProductPresentInAutoShipCart(selectedProductName)),
+				"Product added to PC Perks is not present on Autoship Cart page");
 		s_assert.assertAll();
 	}
 
@@ -111,29 +112,25 @@ public class AddProductsViaPLPPDPAndQuickViewOptionTest extends StoreFrontWebsit
 		String prefix = pwsPrefix();
 		sfHomePage.navigateToUrl(sfHomePage.getCurrentURL() + "/pws/" + prefix);
 		sfHomePage.loginToStoreFront(consultantWithPulseAndWithCRP(),  password,true);
-		sfShopSkinCarePage = sfHomePage.clickAllProducts();
-		sfShopSkinCarePage.refineProductByCategory(TestConstants.CONSULTANT_CRP_AUTOSHIP_PRODUCT_CATEGORY);
-		productName = sfShopSkinCarePage.getProductNameFromAllProductPage(TestConstants.PRODUCT_NUMBER);
-		sfAutoshipCartPage = sfShopSkinCarePage.clickAutoshipLink();
-		if(sfAutoshipCartPage.isProductAddedToCartPresentOnCartPage(productName)){
-			productQuantity = sfAutoshipCartPage.getQuantityOfSpecificProductFromAutoshipCart(productName).trim(); 
+		productName = validProductName;
+		sfAutoshipCartPage = sfHomePage.clickAutoshipLink();
+		if(sfAutoshipCartPage.isProductPresentInAutoShipCart(productName)){
+			productQuantity = sfAutoshipCartPage.getQtyOfProductFromAutoShipCart(productName); 
 			isProductPresent = true;
 		}
 		sfAutoshipCartPage.clickRodanAndFieldsLogo();
-		sfAutoshipCartPage.clickAllProducts();
-		sfShopSkinCarePage.refineProductByCategory(TestConstants.CONSULTANT_CRP_AUTOSHIP_PRODUCT_CATEGORY);
-		sfShopSkinCarePage.addProductToCart(TestConstants.PRODUCT_NUMBER, TestConstants.ORDER_TYPE_CRP);
+		sfShopSkinCarePage = sfAutoshipCartPage.clickAllProducts();
+		sfShopSkinCarePage.addProductToCart(TestConstants.PRODUCT_NUMBER, TestConstants.ORDER_TYPE_CRP,validProductId);
 		s_assert.assertTrue(sfShopSkinCarePage.isCheckoutPopupDisplayed(),"Expected checkout popup is not displayed while adding product from PLP");
 		sfShopSkinCarePage.checkoutTheCartFromPopUp();
 		if(isProductPresent){
 			updatedQuantity = sfAutoshipCartPage.updateQuantityByOne(productQuantity).trim();
-			updatedQuantityFromUI = sfAutoshipCartPage.getQuantityOfSpecificProductFromAutoshipCart(productName).trim();
+			updatedQuantityFromUI = sfAutoshipCartPage.getQtyOfProductFromAutoShipCart(productName);
 			s_assert.assertTrue(updatedQuantityFromUI.equals(updatedQuantity), "Added item from PLP is not present into cart");
 		}else{
-			s_assert.assertTrue(sfAutoshipCartPage.isProductAddedToCartPresentOnCartPage(productName), "Added item from PLP is not present into cart");
+			s_assert.assertTrue(sfAutoshipCartPage.isProductPresentInAutoShipCart(productName), "Added item from PLP is not present into cart");
 		}
 		s_assert.assertAll();
 	}
-
 
 }

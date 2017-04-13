@@ -1,6 +1,7 @@
 package com.rf.pages.website.rehabitat.storeFront;
 
 import org.openqa.selenium.By;
+import org.openqa.selenium.Keys;
 import org.openqa.selenium.NoSuchElementException;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.interactions.Actions;
@@ -42,7 +43,7 @@ public class StoreFrontCartPage extends StoreFrontWebsiteBasePage{
 	private String productPriceInAllItemsInCartLoc = "//li[@class='item-list-item']//div[@class='item-info']//span[@class='item-name' and contains(text(),'%s')]/ancestor::div[1]/following-sibling::div[@class='item-price-info']";
 	private String recentlyViewProductOnCartPageLoc = "//div[@id='recentlyViewedTitle']/following::div[@class='owl-item active']//a[contains(text(),'%s')]";
 	private String removeLinkForProductOnCartLoc = "//button[@id='removeEntry_%s']";
-	private String productNameInCartLoc = "//ul[contains(@class,'cart__list')]/descendant::li[@class='item-list-item'][%s]//span[@class='item-name']";
+	private String productNameInCartLoc = "//ul[contains(@class,'cart__list')]/descendant::div[contains(text(),'%s')]/preceding::span[@class='item-name'][1]";
 
 	/***
 	 * This method get product item code 
@@ -200,7 +201,7 @@ public class StoreFrontCartPage extends StoreFrontWebsiteBasePage{
 	 * @return StoreFrontCartPage object
 	 */
 	public StoreFrontCartPage clickOnCartLoginLink(){
-		driver.click(CART_LOGIN_LOC);
+		driver.clickByJS(CART_LOGIN_LOC);
 		logger.info("Clicked on login link from top navigation");
 		return this;
 	}
@@ -212,6 +213,7 @@ public class StoreFrontCartPage extends StoreFrontWebsiteBasePage{
 	 * @return String price
 	 */
 	public String getPriceOfProductFromAllItemsInCart(String productName){
+		driver.pauseExecutionFor(1000);
 		String price = driver.getText(By.xpath(String.format(productPriceInAllItemsInCartLoc,productName))).replace("$","").trim();
 		return price;
 	}
@@ -418,7 +420,8 @@ public class StoreFrontCartPage extends StoreFrontWebsiteBasePage{
 	 * 
 	 */
 	public StoreFrontCartPage pressEscapeKeyForDismissingPromotionOverlay(){
-		driver.pressEscapeKey();
+		//driver.pressEscapeKey();
+		driver.findElement(PC_PERKS_PROMOTION_POPUP_LOC).sendKeys(Keys.ESCAPE);
 		return this;
 	}
 
@@ -460,7 +463,7 @@ public class StoreFrontCartPage extends StoreFrontWebsiteBasePage{
 		driver.pauseExecutionFor(2000);
 		int totalLinksPresent = driver.findElements(REMOVE_LINK_FOR_PRODUCTS_IN_CART_LOC).size();
 		for(int i = 1;i<=totalLinksPresent;i++){
-			driver.pauseExecutionFor(5000);
+			driver.pauseExecutionFor(6000);
 			List<WebElement> removeLinksForAllProducts = null;
 			removeLinksForAllProducts = driver.findElements(REMOVE_LINK_FOR_PRODUCTS_IN_CART_LOC);
 			removeLinksForAllProducts.get(0).click();

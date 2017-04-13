@@ -22,9 +22,11 @@ public class TestListner implements ITestListener {
 	private static final Logger logger = LogManager.getLogger(TestListner.class
 			.getName());
 
+	private static ITestResult currentMethod;
 
 	@Override
 	public void onTestStart(ITestResult tr) {
+		currentMethod = tr;
 		logger.info("\n******************************************************************************************************************************"+
 				"\n\t\t\t\t\tTEST CASE NAME:                  "+ tr.getMethod().getMethodName()+
 				"\n******************************************************************************************************************************");
@@ -80,6 +82,10 @@ public class TestListner implements ITestListener {
 	public void onStart(ITestContext context) {
 		// TODO Auto-generated method stub
 
+	}
+
+	public static String getCurrentRunningMethodName() {
+		return currentMethod.getMethod().getMethodName();
 	}
 
 }

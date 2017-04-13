@@ -1,0 +1,345 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<suite name="storeFrontFullRegressionSuite">
+	<listeners>
+		<listener class-name="org.uncommons.reportng.HTMLReporter" />
+		<listener class-name="org.uncommons.reportng.JUnitXMLReporter" />
+		<!-- <listener class-name="com.rf.core.listeners.RetryListener" /> -->
+		<listener class-name="com.rf.core.listeners.TestListner" />
+	</listeners>
+	<test name="storeFrontFullRegressionTest">
+		<classes>
+			<class	name="com.rf.test.website.rehabitat.storeFront.ConsultantEnrollmentTest">
+				<methods>
+					<include name="testConsultantEnrollmentWithPulseAndCRP_231"></include>
+					<include name="testConsultantEnrollmentWithoutCRPAndWithoutPulse_468"></include>
+					<include name="testConsultantEnrollmentPersonalBusinessPortfolio_290"></include>
+					<include name="testRequestSponsorConsultantEnrollment_261"></include>
+					<include name="testSponsorSearchFromFindAConsultantAndPagination_275"></include>
+					<include name="testSearchNonExistingSponsor_273"></include>
+					<include name="testViewHideCTADetailsInEnrollmentKit_291"></include>
+					<include name="testNortDakotaConsultantEnrollmentValidBillingAddress_485"></include>
+					<include name="testConsultantEnrollmentNorthDakotaChecked_492"></include>
+					<include name="testQuebecDisclaimerPresentUnderKitSelection_490"></include>
+					<include name="testQuebecDisclaimerPresentUnderKitSelection_491"></include>
+					<include name="testConsultantEnrollmentNorthDakotaUnchecked_493"></include>
+					<include name="testConsultantEnrollmentApplyAsBusinessEntityLink_373"></include>
+					<include name="testConsultantEnrollmentWithPulseSubscription_467"></include>
+					<include name="testConsultantEnrollmentWithExistingPrefix_469"></include>
+				</methods>
+			</class>
+	 		<class name="com.rf.test.website.rehabitat.storeFront.PCEnrollmentTest">
+				<methods>
+					<include name="testPCEnrollmentWithoutSponsor"></include>
+					<include name="testPCEnrollmentWithPWSSponsor_452"></include>
+					<include name="testPCIncompleteEnrollment_451"></include>
+					<include name="testPCEnrollmentTCCheckboxSelected_480"></include>
+					<include name="testPCEnrollmentTCCheckboxNotSelected_481"></include>
+					<include name="testPCEnrollmentSelectSponsor_495"></include>
+					<include name="testAutoAssignConsultantPcEnrollment_573"></include>
+					<include name="testUpdateSponserDuringPCEnrollment_574"></include>
+					<include name="testUpdateSponserAfterPCEnrollment_575"></include>
+					<include name="testPCRegisteringFromPWSWillHaveDefaultsponsor_496"></include>
+				</methods>
+			</class>
+			<class name="com.rf.test.website.rehabitat.storeFront.RCEnrollmentTest">
+				<methods>
+					<include name="testRCEnrollmentWithOrderWithoutSponsor_550"></include>
+					<include name="testRCEnrollmentWithSponsor"></include>
+					<include name="testRCEnrollmentFromPWSSite_551"></include>
+				</methods>
+			</class>
+			<class name="com.rf.test.website.rehabitat.storeFront.BillingProfileTest">
+				<methods>
+					<include name="testAddEditBillingProfileFromMyAccountForConsultant"></include>
+					<include name="testAddEditBillingProfileFromMyAccountForPC"></include>
+					<include name="testAddEditBillingProfileFromMyAccountForRC"></include>
+					<include name="testAddEditBillingProfileAtAdhocCartForConsultant_429"></include>
+					<include name="testAddEditBillingProfileAtAdhocCartForPC_431"></include>
+					<include name="testAddEditBillingProfileAtAdhocCartForRC_430"></include>
+				</methods>
+			</class>
+			<class name="com.rf.test.website.rehabitat.storeFront.shippingProfile.AddAndDeleteShippingTest">
+				<methods>
+					<include name="testAddEditShippingAddressFromMyAccountForConsultant"></include>
+					<include name="testAddEditShippingAddressFromMyAccountForPC"></include>
+					<include name="testAddEditShippingAddressFromMyAccountForRC"></include>
+					<include name="testAddEditShippingProfileAtAdhocCartForConsultant"></include>
+					<include name="testAddEditShippingProfileAtAdhocCartForPC"></include>
+					<include name="testAddEditShippingProfileAtAdhocCartForRC"></include>
+				</methods>
+			</class>
+			<class name="com.rf.test.website.rehabitat.storeFront.OrdersTest">
+				<methods>
+					<include name="testOrderDetailsOrderNumberLink_520"></include>
+					<include name="testPlacedAnAdhocOrderFromPC"></include>
+					<include name="testPlacedAnAdhocOrderFromRC"></include>
+				</methods>
+			</class>
+			<class name="com.rf.test.website.rehabitat.storeFront.AutoshipTest">
+				<methods>
+					<include name="testAddToAutoshipCartConsultant"></include>
+					<include name="testAddToAutoshipCartPC"></include>
+					<include name="testConsultantAutoshipCartCRPEnrollmentCRPReminderBanner_405"></include>
+					<include name="testPlaceConsultantAutoshipOrderAndVerifyDateAndStatus"></include>
+					<include name="testPlacePCAutoshipOrderAndVerifyDateAndStatus"></include>
+					<include name="testUpdateAutoshipAddAbillingAddressToExistingProfileConsultant_423"></include>
+					<include name="testUpdateAutoshipAddABillingAddressToExistingProfilePC_424"></include>
+					<include name="testUpdateAutoshipCartEditShipAddressConsultant_398"></include>
+					<include name="testUpdateAutoshipCartEditShipAddressPC_399"></include>
+				</methods>
+			</class>
+			<class name="com.rf.test.website.rehabitat.storeFront.MyAccountTest">
+				<methods>
+					<include name="testConsultantFirstTimePulseEnrollment_380"></include>
+				</methods>
+			</class>
+			<class name="com.rf.test.website.rehabitat.storeFront.AboutMeTest">
+				<methods>
+					<include name="testConsultantAddsTheContentOnTheQuestions_614"></include>
+					<include name="testPersonalizingPWSAboutMePageSaveChanges_579"></include>					
+				</methods>
+			</class>
+			
+			<class name="com.rf.test.website.rehabitat.storeFront.AutoshipTest">
+				<methods>
+					<include name="testUpdateAutoshipCartEditShipAddressPC_399"></include>
+					<include name="testUpdateAutoshipAddABillingProfileInvalid_422"></include>
+					<include name="testUpdateAutoshipNegativeUserCantAddABillingProfile_418"></include>
+					<include name="testUpdateAutoshipCartEditABillingProfilePC_401"></include>
+					<include name="testUpdateAutoshipCartUserCantEditShipmentSectionOnThisPage_407"></include>
+					<include name="testEditPCPerks_450"></include>
+					<include name="testUpdateAutoshipAddABillingAddressToExistingProfileInvalid_425"></include>
+					<include name="testCartPageAddMoreItemsButtonPC_333"></include>
+					<include name="testVerifyCartAndCheckoutPageForuser_484"></include>
+					<include name="testUpdateAutoshipCartEditShipAddressConsultant_398"></include>
+					<include name="testUpdateAutoshipCartEditABillingProfileConsultant_400"></include>
+					<include name="testCartPageUpdateBillingShippingAddressLinkConsultant_334"></include>
+					<include name="testUpdateAutoshipAddAbillingProfileConsultant_416"></include>
+					<include name="testUpdateAutoshipUserCantAddABillingProfilePC_417"></include>
+					<include name="testConsultantAutoshipStatusCancelCRP_449"></include>
+					<include name="testConsultantAutoshipCartCRPEnrollmentCRPReminderBanner_405"></include>
+					<include name="testConsultantAutoshipStatus_448"></include>
+					<include name="testDelayPCAutoshipBy30Days_455"></include>
+				</methods>
+			</class>
+			<class name="com.rf.test.website.rehabitat.storeFront.AutoshipTest">
+				<methods>
+					<include name="testDelayPCAutoshipBy60Days_456"></include>
+					<include name="testUpdateAutoshipAddAbillingAddressToNewProfile_420"></include>
+					<include name="testUpdateAutoshipCartOrderSummary_326"></include>
+					<include name="testUpdateAutoshipCart_327"></include>
+					<include name="testVerifyUpdateChangesOnAutoShipCartWithoutClickSave_510"></include>
+					<include name="testConsultantAutoshipCartPulseSubscriptionStatus_353"></include>
+					<include name="testCartPageTotalSVAndAdditionalSV_336"></include>
+					<include name="testAddToAutoshipCartConsultant_396"></include>
+					<include name="testAddToAutoshipCartPC_397"></include>
+					<include name="testPCAutoshipCartMaintenanceAndThreshold_406"></include>
+					<include name="testUpdateAutoshipAddAbillingAddressToNewProfilePC_421"></include>
+					<include name="testConsultantAutoshipCartCRPEnrollmentProductsSectionCancel_403"></include>
+					<include name="testConsultantAutoshipCartCRPEnrollmentProductsSectionConfirm_404"></include>
+					<include name="testPCReplenishmentOrderConfirmation_541"></include>
+					<include name="testUpdateAutoshipAddAbillingAddressToExistingProfileConsultant_423"></include>
+					<include name="testUpdateAutoshipAddABillingAddressToExistingProfilePC_424"></include>
+					<include name="testEnrollInCRPAfterConsultantEnrollment_539"></include>
+					<include name="testVerifyUpdateChangesOnAutoShipCartAfterClickSave_509"></include>
+				</methods>
+			</class>
+			<class name="com.rf.test.website.rehabitat.storeFront.BillingProfileTest">
+				<methods>
+					<include name="testBillingInformation_505"></include>
+					<include name="testAddNewBillingAddressToNewlyCreatedBillingProfile_386"></include>
+					<include name="testBillingInformationDefaultPaymentProfilesMultipleProfiles_475"></include>
+					<include name="testBillingProfileSelectAnBillingAddressNewProfile_426"></include>
+					<include name="testBillingProfileSelectAnBillingAddressBlankDropdown_428"></include>
+					<include name="testBillingProfileSelectAnBillingAddressExistingProfile_427"></include>
+					<include name="testBillingInformationDefaultPaymentProfilesSingleProfile_474"></include>
+					<include name="testEditABillingProfile_527"></include>
+					<include name="testAddNewBillingAddressToExistingBillingProfile_385"></include>
+					<include name="testTokenizationMyAccount_453"></include>
+					<include name="testTokenizationCheckout_454"></include>
+					<include name="testAddEditBillingProfileAtAdhocCartForConsultant_429"></include>
+					<include name="testAddEditBillingProfileAtAdhocCartForPC_431"></include>
+					<include name="testAddEditBillingProfileAtAdhocCartForRC_430"></include>
+				</methods>
+			</class>
+			<class name="com.rf.test.website.rehabitat.storeFront.homePage.AccessCategoryLandingPageFromHeaderTest"></class>
+				<class name="com.rf.test.website.rehabitat.storeFront.homePage.AccessContentPagesUnderAboutRFSectionTest"></class>
+				<class name="com.rf.test.website.rehabitat.storeFront.homePage.AccessContentPagesUnderBecomeAConsultantTest"></class>
+				<class name="com.rf.test.website.rehabitat.storeFront.homePage.AccessFooterLinksTest"></class>
+				<class name="com.rf.test.website.rehabitat.storeFront.homePage.AccessLinkToCreateNewRFAccountTest"></class>
+				<class name="com.rf.test.website.rehabitat.storeFront.homePage.AccessLoginFromHomePageTest"></class>
+				<class name="com.rf.test.website.rehabitat.storeFront.homePage.AddProductsViaPLPPDPAndQuickViewOptionTest"></class>
+				<class name="com.rf.test.website.rehabitat.storeFront.homePage.CategoryLandingPageTest"></class>
+				<class name="com.rf.test.website.rehabitat.storeFront.homePage.FindAConsultantLinkTest"></class>
+				<class name="com.rf.test.website.rehabitat.storeFront.homePage.FooterSectionTest"></class>
+				<class name="com.rf.test.website.rehabitat.storeFront.homePage.MeetTheDoctorsTest"></class>
+				<class name="com.rf.test.website.rehabitat.storeFront.homePage.MiniCartTest"></class>
+				<class name="com.rf.test.website.rehabitat.storeFront.homePage.NavigateToHomePageFromLogoTest"></class>
+				<class name="com.rf.test.website.rehabitat.storeFront.homePage.NewRFAccountTest"></class>
+				<class name="com.rf.test.website.rehabitat.storeFront.homePage.PartialSearchTest"></class>
+				<class name="com.rf.test.website.rehabitat.storeFront.homePage.ProductQuickViewTest"></class>
+				<class name="com.rf.test.website.rehabitat.storeFront.homePage.RFSocialMediaLinksTest"></class>
+				<class name="com.rf.test.website.rehabitat.storeFront.homePage.SuccessfulUserLoginTest"></class>
+				<class name="com.rf.test.website.rehabitat.storeFront.homePage.SwitchCountryTogglesTest"></class>
+				<class name="com.rf.test.website.rehabitat.storeFront.homePage.TermsAndConditionsTest"></class>
+				<class name="com.rf.test.website.rehabitat.storeFront.homePage.UnsuccessfulUserLoginTest"></class>
+				<class name="com.rf.test.website.rehabitat.storeFront.homePage.ViewAreasOfSiteFromHomePageTest"></class>
+				<class name="com.rf.test.website.rehabitat.storeFront.homePage.ViewFooterThroughoutTheSite"></class>
+				<class name="com.rf.test.website.rehabitat.storeFront.homePage.ViewSearchBoxInHeaderNavigationTest"></class>
+				<class name="com.rf.test.website.rehabitat.storeFront.homePage.refinement.RefinementByPriceTest"></class>
+				<class name="com.rf.test.website.rehabitat.storeFront.homePage.refinement.RefinementByRegimenTest"></class>
+				<class name="com.rf.test.website.rehabitat.storeFront.homePage.refinement.RefinementWithMultipleRegimensTest"></class>
+				<class name="com.rf.test.website.rehabitat.storeFront.homePage.refinement.RFRefineRemovalTest"></class>
+				<class name="com.rf.test.website.rehabitat.storeFront.homePage.shopSkincareHeaderNavigation.CategoryFAQPageTest"></class>
+				<class name="com.rf.test.website.rehabitat.storeFront.homePage.shopSkincareHeaderNavigation.CategoryResultsPageTest"></class>
+				<class name="com.rf.test.website.rehabitat.storeFront.homePage.shopSkincareHeaderNavigation.FeatureProductTest"></class>
+				<class name="com.rf.test.website.rehabitat.storeFront.TopNavigationTest"></class>
+				<class name="com.rf.test.website.rehabitat.storeFront.RedirectionAfterLoginTest"></class>
+				<class name="com.rf.test.website.rehabitat.storeFront.AboutMeTest"></class>
+				<class name="com.rf.test.website.rehabitat.storeFront.MyAccountTest">
+				<methods>
+					<include name="testVerifyAccountInfoPageForUsers_178"></include>
+					<include name="testDisabledUsernameOnAccountInfoPageForUsers_179"></include>
+					<include name="testEmailIDFormatErrorValidation_249"></include>
+					<include name="testUpdateFirstAndLastNameOnCheckoutPageForUser_230"></include>
+					<include name="testAccountInfoPageMandatoryFieldValidation_248"></include>
+					<include name="testViewPulseDetails_276"></include>
+					<include name="testUpdateSpouseInformation_284"></include>
+					<include name="testUpdateInvalidSpouseInformation_370"></include>
+					<include name="testUpdateAccountInfoWithValidDetails_288"></include>
+					<include name="testUpdateAccountInfoWithInvalidDetails_289"></include>
+					<include name="testUpdateAccountInfoWithInvalidDetails_301"></include>
+					<include name="testVerifyLogoutFunctionality_329"></include>
+					<include name="testVerifyLoginFunctionalityInMultipleTabs_330"></include>
+					<include name="testVerifyCRPAutoShipPage_331"></include>
+					<include name="testVerifyCheckMyPulsePage_357"></include>
+					<include name="testUpdateAndVerifyPasswordForUser_392"></include>
+					<include name="testEmailYourConsultantValid_285"></include>
+					<include name="testEmailYourConsultantInvalid_286"></include>
+					<include name="testOrderHistory_387"></include>
+					<include name="testPasswordResetIncorrectCurrentPwd_282"></include>
+				</methods>
+			</class>
+			<class name="com.rf.test.website.rehabitat.storeFront.MyAccountTest">
+				<methods>
+					<include name="testPasswordResetInvalidScenrios_283"></include>
+					<include name="testResetPasswordValidDetails_281"></include>
+					<include name="testDelayPCAutoshipBy30Days_440"></include>
+					<include name="testDelayPCAutoshipBy60Days_441"></include>
+					<include name="testDelayPCAutoshipBy30DaysWithoutClickUpdate_442"></include>
+					<include name="testVerifyPCPerksAutoshipCartPageFromAutoShipDetailsPage_279"></include>
+					<include name="testVerifyPCPerksAutoshipDetails_280"></include>
+					<include name="testEditPWSOfUserSubscribedToPulse_518"></include>
+					<include name="testEditPWSOfUserNotSubscribedToPulse_519"></include>
+					<include name="testEnrollUserInPulseFromOrderHistoryPage_359"></include>
+					<include name="testVerifyPulseLinkOnOrderPage_360"></include>
+					<include name="testVerifyPulseStatusAndNextBillShipDate_361"></include>
+					<include name="testVerifySponserNameOnAccountInfoPage_287"></include>
+					<include name="testReEnnrollmentInPulseWithin180DaysWithOtherUserPrefix_369"></include>
+					<include name="testReCaptchaSubmitAsUnselected_473"></include>
+					<include name="testConsultantFirstTimePulseEnrollment_277"></include>
+					<include name="testPasswordFormatErrorValidation_250"></include>
+					<include name="testReportAProblemOrderHistory_358"></include>
+					<include name="testReEnnrollmentInPulseWithin180DaysOfExistingAutoSuggestedPrefix_278"></include>
+					<include name="testConsultantFirstTimePulseEnrollment_380"></include>
+				</methods>
+			</class>
+			<class name="com.rf.test.website.rehabitat.storeFront.OrdersTest">
+				<methods>
+					<include name="testOrderHistoryLinkToOrderDetails_180"></include>
+					<include name="testCheckoutPageEditsEditShippingInformation_298"></include>
+					<include name="testCheckoutPageEditsCheckEditOptions_295"></include>
+					<include name="testCheckoutPageEditsEditShippingMethod_299"></include>
+					<include name="testCheckoutPageEditsEditCart_300"></include>
+					<include name="testBillingProfileAddAnAddressToExistingProfile_302"></include>
+					<include name="testBillingProfileAddAnAddressToNewProfile_303"></include>
+					<include name="testAddingAPaymentMethodErrors_305"></include>
+					<include name="testAddAPaymentMethodCheckout_310"></include>
+					<include name="testShippingMethodPCDirectPCEnrollment_311"></include>
+					<include name="testShipMethodPCExistingPCPlaceAdhocOrder_314"></include>
+					<include name="testConsultantCanNotShipToQuebec_316"></include>
+					<include name="testShippingToPORRboxes_319"></include>
+					<include name="testBillingProfileAddAnAddressWithInvalidDetailsToExistingProfile_366"></include>
+					<include name="testBillingProfileAddAnAddressWithInvalidDetailsToNewProfile_367"></include>
+					<include name="testOrderConfirmationForAdhocOrders_409"></include>
+					<include name="testUserShouldntAbleToChangeTheSponsorAfterConsultantAccountCreated_414"></include>
+					<include name="testUserShouldntAbleToChangeTheSponsorAfterPCAccountCreated_415"></include>
+					<include name="testChooseAConsultantRFCorporateSponsorPCFirstCheckoutFromPWS_458"></include>
+					<include name="testReviewAndPlaceOrder_470"></include>
+					<include name="testAddAShipAddressCheckoutExistingUser_324"></include>
+					<include name="testAddressVerificationShippingProfile_317"></include>
+					<include name="testOrderHistoryReportAProlemOrderLevelAllFieldsFilled_482"></include>
+					<include name="testOrderDetailsActionDetailslink_521"></include>
+					<include name="testOrderDetailsTrackOrderStatusForNewOrder_543"></include>
+				</methods>
+			</class>
+			<class name="com.rf.test.website.rehabitat.storeFront.OrdersTest">
+				<methods>
+					<include name="testOrderHistoryReportAProblemProductLevelWithEmptyFields_483"></include>
+					<include name="testRetailUserCheckoutChooseAConsultantSingleSearch_476"></include>
+					<include name="testRetailUserCheckoutChooseAConsultantChangeSelectedSponsor_478"></include>
+					<include name="testRetailUserCheckoutChooseAConsultantCheckoutWithCorporate_479"></include>
+					<include name="testEditAShipAddressCheckoutInvalidDetails_322"></include>
+					<include name="testEditAShipAddressCheckoutValidDetails_321"></include>
+					<include name="testReviewAndPlaceOrderEditCart_471"></include>
+					<include name="testAddAShipAddressCheckoutFirstTime_323"></include>
+					<include name="testChooseAConsultantRFCorporateSponsorPCFirstCheckoutFromCorp_457"></include>
+					<include name="testOrderHistoryReportAProblemFieldValidations_227"></include>
+					<include name="testOrderHistoryReportAProblemConfirmationPage_228"></include>
+					<include name="testShipMethodAdHocCarts_315"></include>
+					<include name="testAddressVerificationBillingProfile_318"></include>
+					<include name="testOrderHistoryReturnOrderReturnDoNotExist_517"></include>
+					<include name="testOrderDetailsOrderNumberLink_520"></include>
+					<include name="testRetailUserCheckoutChooseAConsultantMultipleSearch_477"></include>
+					<include name="testShipMethodPCExistingPCChangesShippingMethod_313"></include>
+					<include name="testChooseAConsultantRFCorporateSponsorRCCheckoutFromCorporate_459"></include>
+					<include name="testOrderHistoryReportAProblemProductLevelWithEmptyFields_487"></include>
+					<include name="testShippingMethodCostShouldReduceForConsultantAdhocOrderWithMoreThanHundredSVValue_233"></include>
+					<include name="testPCUserIsInTheProcessOfPlacingAnAdhocOrderLessThan90_354"></include>
+					<include name="testPCUserIsInTheProcessOfPlacingAnAdhocOrderMoreThan90_355"></include>
+				</methods>
+			</class>
+			<class name="com.rf.test.website.rehabitat.storeFront.ProductsAndCartDetailsTest">
+				<methods>
+					<include name="testSortAndUnsortProductBaseOnPriceFilter_62"></include>
+					<include name="testVerifyProductDetailPageAndTabsOnProductDetailPage_64"></include>
+					<include name="testVerifyProductDetailPageAndRecentlyViewTabsOnProductDetailPage_65"></include>
+					<include name="testVerifyLinksUnderWelcomeDD_66"></include>
+					<include name="testQuickViewAddToCart_342"></include>
+					<include name="testAddToCart_339"></include>
+					<include name="testCartPageCheckoutCTAConsultantOrPC_497"></include>
+					<include name="testCartPageCheckoutCTARC_498"></include>
+					<include name="testCartPageCheckoutCTAAnonymousLogin_499"></include>
+					<include name="testLoginPriorToCheckoutLoginAsExistingUser_185"></include>
+					<include name="testLoginPriorToCheckoutNewUser_186"></include>
+					<include name="testCartPagePCPerksTermsAndConditionsPCUser_222"></include>
+					<include name="testCartPagePCPerksTermsAndConditionsPCUser_221"></include>
+					<include name="testAddProductToCartAndUpdateQuantity_67"></include>
+					<include name="testVerifyPCUserProductDetailsOnCartPage_163"></include>
+					<include name="testVerifyConsultantUserProductDetailsOnCartPage_164"></include>
+					<include name="testProductPricingAnonymous_501"></include>
+					<include name="testProductPricingRC_502"></include>
+					<include name="testProductDetailsPageQty_157"></include>
+					<include name="testProductDetailsPageProductPricingConsultant_158"></include>
+					<include name="testProductDetailsPageProductPricingPC_159"></include>
+					<include name="testFeaturedProductsCategoryLandingPage_160"></include>
+					<include name="testCartPagePCPerksPromotionMessageLinkAnonymousUser_165"></include>
+					<include name="testCartPagePCPerksPromotionMessageLinkRetailUser_166"></include>
+					<include name="testCartPagePCPerksPromotionMessageLinkPreferredCustomer_167"></include>
+				</methods>
+			</class>
+			<class name="com.rf.test.website.rehabitat.storeFront.ProductsAndCartDetailsTest">
+			</class>
+			<class name="com.rf.test.website.rehabitat.storeFront.shippingProfile.AddAndDeleteShippingTest">
+				<methods>
+					<exclude name="testAddEditShippingAddressFromMyAccountForConsultant"></exclude>
+					<exclude name="testAddEditShippingAddressFromMyAccountForPC"></exclude>
+					<exclude name="testAddEditShippingAddressFromMyAccountForRC"></exclude>
+					<exclude name="testAddEditShippingProfileAtAdhocCartForConsultant"></exclude>
+					<exclude name="testAddEditShippingProfileAtAdhocCartForPC"></exclude>
+					<exclude name="testAddEditShippingProfileAtAdhocCartForRC"></exclude>
+				</methods>
+			</class>
+		</classes>
+	</test>
+</suite>					

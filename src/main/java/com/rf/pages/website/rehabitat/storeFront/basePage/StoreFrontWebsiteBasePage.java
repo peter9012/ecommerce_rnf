@@ -46,7 +46,15 @@ public class StoreFrontWebsiteBasePage extends RFBasePage {
 	}
 
 
+
 	private final By ADD_MORE_ITEMS_BTN_LOC = By.xpath("//div[@class='container']/descendant::button[contains(text(),'Add More Items')][2]");
+
+	private final By POPUP_CLOSE_LOC = By.xpath("//*[@class='close']");
+	private final By PULSE_USERNAME_TXTFLD_LOC = By.xpath("//input[@name='username']");
+	private final By PULSE_PASSWORD_TXTFLD_LOC = By.xpath("//input[@name='password']");
+	private final By PULSE_LOGIN_BUTTON_LOC = By.xpath("//input[@value='Sign In']");
+	private final By PULSE_DD_LOC = By.xpath("//span[@class='UserID']");
+	private final By PULSE_ORDER_TAB_LOC = By.xpath("//span[text()='Orders']");
 	private final By OKTA_IMG_LOC = By.xpath("//img[contains(@alt,'Okta')]");
 	protected final By TOTAL_CATEGORY_NAME_LOC = By.xpath("//div[@id='product-facet']//descendant::ul[2]/li//input[contains(@id,'ID')]");
 	private final By SELECT_AND_CONTINUE_FIRST_SPONSER_LOC = By.xpath(
@@ -304,7 +312,12 @@ public class StoreFrontWebsiteBasePage extends RFBasePage {
 	private final By WHY_RF_LOC = By.xpath(topNavigationLoc + "//a[contains(@title,'WHY')]");
 	private final By MEET_OUR_COMMUNITY_LOC = By.xpath(topNavigationLoc + "//a[contains(@title,'MEET OUR')]");
 	private final By EEROR_PAGE_LOC = By.xpath("//b[contains(text(),'Status code')]");
+	private final By LOGIN_BTN_FOR_SFDC_LOC = By.id("Login");
+	private final By SEARCH_INPUT_FIELD_LOC = By.id("phSearchInput");
+	private final By SUGGESTED_EMAIL_LOC = By.id("phSearchInput_autoCompleteBoxId");
+	private final By USER_NAME_IFRMAE = By.xpath("//div[@id='navigatortab']//iframe[contains(@class,'border-panel')]");
 
+	private String activeUserInSfdcLoc = "//td[contains(text(),'%s')]/following::td[contains(text(),'Active')][1]/following::a[contains(text(),'%s')][1]";
 	protected String randomCategoryNameLoc = "//input[@id='%s']/..";
 	private String selectAndContinueSponserLoc = "//div[@id='findConsultantResultArea']/descendant::div[contains(@class,'consultant-box')][%s]//input[@id='consultantUid']";
 	protected String priceOfProductLoc = "//div[contains(@class,'product__listing')]/descendant::span[@id='retail'][contains(text(),'$')][%s]";
@@ -333,7 +346,7 @@ public class StoreFrontWebsiteBasePage extends RFBasePage {
 	private String activePageLoc = "//span[contains(text(),'%s')]/parent::li";
 	private String navigationPageNumberLoc = "//ul[@class='pagination']//a[contains(text(),'%s')]";
 	private String subLinkUnderAboutRFLoc = topNavigationLoc + "//a[@title='%s']/following::a[text()='%s'][1]";
-	private String footerLinkLoc = "//div[@class='footer-sections']//a[text()='%s']";
+	private String footerLinkLoc = "//div[@class='footer-sections']//a[contains(text(),'%s')]";
 	protected String countryOptionsInToggleButtonLoc = "//div[@class='wSelect-options-holder']//div[contains(text(),'%s')]";
 	private String socialMediaLinkAtFooterLoc = "//a[contains(@class,'%s')]";
 	private String sponsorEmptyFieldValidationOnPopUpLoc = "//label[@id='sponsor.%s-error'][contains(text(),'%s')]";
@@ -348,6 +361,7 @@ public class StoreFrontWebsiteBasePage extends RFBasePage {
 	private String topNavigationSublinksWithTitleLoc = topNavigationLoc + "//*[contains(@title,'%s')]";
 	private String quantityTBForSpecificProductLoc = "//span[normalize-space(text())='%s']//following::input[contains(@id,'quantity') and not(@readonly)][1]";
 	private String updateLinkForSpecificProductLoc = "//span[normalize-space(text())='%s']//following::input[contains(@id,'quantity') and not(@readonly)][1]/following::input[@value='update'][1]";
+	protected String productNameLinkThroughProductIdLoc = "//a[contains(@href,'%s') and @class='name']";
 
 	private String RFO_DB = null;
 	private static String productName = null;
@@ -374,7 +388,7 @@ public class StoreFrontWebsiteBasePage extends RFBasePage {
 			driver.moveToElementByJS(ABOUT_ME_LOC);
 			logger.info("mouseHovered on 'Shop Skincare'");
 		}
-		driver.pauseExecutionFor(500);
+		driver.pauseExecutionFor(3000);
 		return this;
 	}
 	/***
@@ -393,7 +407,7 @@ public class StoreFrontWebsiteBasePage extends RFBasePage {
 	 * @return boolean
 	 */
 	public StoreFrontShopSkinCarePage clickConsultantOnlyProductsLink() {
-		driver.click(CONSULTANT_ONLY_PRODUCTS_LINK_LOC);
+		driver.clickByJS(CONSULTANT_ONLY_PRODUCTS_LINK_LOC);
 		logger.info("Clicked on Consultant Only link");
 		return new StoreFrontShopSkinCarePage(driver);
 	}
@@ -457,7 +471,7 @@ public class StoreFrontWebsiteBasePage extends RFBasePage {
 	 */
 	public StoreFrontWebsiteBasePage clickExecutiveTeam() {
 		mouseHoverOn(TestConstants.ABOUT_RF);
-		driver.click(EXECUTIVE_TEAM_LOC);
+		driver.clickByJS(EXECUTIVE_TEAM_LOC);
 		logger.info("clicked on 'Executuve Team'");
 		return this;
 	}
@@ -530,12 +544,12 @@ public class StoreFrontWebsiteBasePage extends RFBasePage {
 	 * 
 	 */
 	public StoreFrontWebsiteBasePage searchSponsor(String sponsor) {
-		//driver.pauseExecutionFor(2000);
+		driver.pauseExecutionFor(2000);
 		driver.type(SPONSOR_SEARCH_FIELD_LOC, sponsor);
 		logger.info("Entered sponsor as " + sponsor);
 		driver.click(SEARCH_SPONSOR_LOC);
 		logger.info("Clicked on 'Search' button");
-		//	driver.pauseExecutionFor(2000);
+		// driver.pauseExecutionFor(2000);
 		return this;
 	}
 
@@ -607,7 +621,7 @@ public class StoreFrontWebsiteBasePage extends RFBasePage {
 	 */
 	public StoreFrontWebsiteBasePage clickEvents() {
 		mouseHoverOn(TestConstants.BECOME_A_CONSULTANT);
-		driver.click(EVENTS_LOC);
+		driver.clickByJS(EVENTS_LOC);
 		logger.info("clicked on 'Events link'");
 		return this;
 	}
@@ -660,7 +674,7 @@ public class StoreFrontWebsiteBasePage extends RFBasePage {
 	 */
 	public StoreFrontWebsiteBasePage clickMeetOurCommunityLink() {
 		mouseHoverOn(TestConstants.BECOME_A_CONSULTANT);
-		driver.click(MEET_OUR_COMMUNITY_LOC);
+		driver.clickByJS(MEET_OUR_COMMUNITY_LOC);
 		logger.info("clicked on 'MEET OUR COMMUNITY' link");
 		return this;
 	}
@@ -674,7 +688,7 @@ public class StoreFrontWebsiteBasePage extends RFBasePage {
 	 */
 	public StoreFrontWebsiteBasePage clickWhoWeAreLink() {
 		mouseHoverOn(TestConstants.ABOUT_RF);
-		driver.click(WHO_WE_ARE_LINK_LOC);
+		driver.clickByJS(WHO_WE_ARE_LINK_LOC);
 		logger.info("clicked on 'WHO WE ARE' link");
 		driver.pauseExecutionFor(2000);
 		return this;
@@ -689,8 +703,9 @@ public class StoreFrontWebsiteBasePage extends RFBasePage {
 	 */
 	public StoreFrontWebsiteBasePage clickMeetTheDoctorsLink() {
 		mouseHoverOn(TestConstants.ABOUT_RF);
-		driver.click(MEET_THE_DOCTORS_LINK_LOC);
+		driver.clickByJS(MEET_THE_DOCTORS_LINK_LOC);
 		logger.info("clicked on 'MEET THE DOCTORS' link");
+		driver.pauseExecutionFor(2000);
 		return this;
 	}
 
@@ -703,7 +718,7 @@ public class StoreFrontWebsiteBasePage extends RFBasePage {
 	 */
 	public StoreFrontWebsiteBasePage clickGivingBackLink() {
 		mouseHoverOn(TestConstants.ABOUT_RF);
-		driver.click(GIVING_BACK_LINK_LOC);
+		driver.clickByJS(GIVING_BACK_LINK_LOC);
 		logger.info("clicked on 'GIVING BACK'link");
 		return this;
 	}
@@ -860,7 +875,7 @@ public class StoreFrontWebsiteBasePage extends RFBasePage {
 	 */
 	public StoreFrontWebsiteBasePage navigateToShopSkinCareSubLinks(String LinkName, String sublinkName) {
 		mouseHoverOn(TestConstants.SHOP_SKINCARE);
-		driver.click(By.xpath(String.format(subLinkUnderAboutRFLoc, LinkName, sublinkName)));
+		driver.clickByJS(By.xpath(String.format(subLinkUnderAboutRFLoc, LinkName, sublinkName)));
 		logger.info("clicked on sublink" + "'" + sublinkName + "'");
 		driver.waitForLoadingImageToDisappear();
 		driver.waitForPageLoad();
@@ -904,6 +919,7 @@ public class StoreFrontWebsiteBasePage extends RFBasePage {
 	public StoreFrontWebsiteBasePage clickLoginIcon() {
 		driver.click(LOGIN_ICON_LOC);
 		logger.info("Login icon clicked");
+		driver.pauseExecutionFor(1000);
 		return this;
 	}
 
@@ -1047,7 +1063,7 @@ public class StoreFrontWebsiteBasePage extends RFBasePage {
 	 */
 	public boolean isTopNavigationSublinkDisplayed(String topNavigationLink, String sublink) {
 		mouseHoverOn(topNavigationLink);
-		return driver.isElementVisible(By.xpath(String.format(topNavigationSublinksWithTitleLoc, sublink)));
+		return driver.isElementPresent(By.xpath(String.format(topNavigationSublinksWithTitleLoc, sublink)));
 	}
 
 	/***
@@ -1385,7 +1401,7 @@ public class StoreFrontWebsiteBasePage extends RFBasePage {
 	 */
 	public StoreFrontWebsiteBasePage clickCategoryLink(String categoryName) {
 		mouseHoverOn(TestConstants.SHOP_SKINCARE);
-		driver.click(By.xpath(String.format(topNavigationSublinksWithTextLoc, categoryName)));
+		driver.clickByJS(By.xpath(String.format(topNavigationSublinksWithTextLoc, categoryName)));
 		logger.info("Category " + categoryName + " clicked");
 		return this;
 	}
@@ -1480,37 +1496,6 @@ public class StoreFrontWebsiteBasePage extends RFBasePage {
 	 */
 	public boolean isCRPAutoshipHeaderPresentOnCartPage() {
 		return driver.isElementVisible(CRP_AUTOSHIP_CART_HEADER_LOC);
-	}
-
-	/***
-	 * This method click check my pulse link from welcome dropdown.
-	 * 
-	 * @param
-	 * @return store front base page object
-	 * 
-	 */
-	public StoreFrontWebsiteBasePage navigateToCheckMyPulsePage() {
-		driver.click(WELCOME_DD_CHECK_MY_PULSE_LOC);
-		logger.info("check my pulse clicked from welcome dropdown");
-		driver.waitForLoadingImageToDisappear();
-		driver.waitForPageLoad();
-		return this;
-	}
-
-	/***
-	 * This method click orders link from welcome drop down
-	 * 
-	 * @param
-	 * @return store front orders page object
-	 * 
-	 */
-	public StoreFrontHomePage logout() {
-		driver.click(LOGOUT_LOC);
-		logger.info("logout link clicked from welcome dropdown");
-		driver.waitForLoadingImageToDisappear();
-		driver.waitForPageLoad();
-		driver.pauseExecutionFor(2000);
-		return new StoreFrontHomePage(driver);
 	}
 
 	/***
@@ -2003,6 +1988,7 @@ public class StoreFrontWebsiteBasePage extends RFBasePage {
 	 * 
 	 */
 	public int getTotalNoOfProduct() {
+		driver.pauseExecutionFor(2000);
 		int totalNoOfProducts = driver.findElements(TOTAL_NO_OF_PRODUCTS_LOC).size();
 		logger.info("Total no of products are: " + totalNoOfProducts);
 		return totalNoOfProducts;
@@ -2389,6 +2375,7 @@ public class StoreFrontWebsiteBasePage extends RFBasePage {
 	 * 
 	 */
 	public StoreFrontWebsiteBasePage loginToStoreFrontExcludingClickOnLoginIcon(String username, String password) {
+		driver.pauseExecutionFor(2000);
 		driver.type(USERNAME_TXTFLD_LOC, username);
 		logger.info("username entered as " + username);
 		driver.type(PASSWORD_TXTFLD_LOC, password);
@@ -2426,6 +2413,7 @@ public class StoreFrontWebsiteBasePage extends RFBasePage {
 		driver.click(CHECKOUT_BUTTON_POPUP_LOC);
 		logger.info("Clicked on checkout button on the popup");
 		driver.waitForPageLoad();
+		driver.pauseExecutionFor(2000);
 		// driver.waitForLoadingImageToDisappear();
 		return new StoreFrontCartPage(driver);
 	}
@@ -2813,7 +2801,7 @@ public class StoreFrontWebsiteBasePage extends RFBasePage {
 	 */
 	public StoreFrontWebsiteBasePage clickWhyRF() {
 		mouseHoverOn(TestConstants.BECOME_A_CONSULTANT);
-		driver.click(WHY_RF_LOC);
+		driver.clickByJS(WHY_RF_LOC);
 		driver.waitForPageLoad();
 		logger.info("clicked on 'Why R+F'");
 		return this;
@@ -2829,7 +2817,7 @@ public class StoreFrontWebsiteBasePage extends RFBasePage {
 	 */
 	public StoreFrontWebsiteBasePage clickProgramsAndIncentives() {
 		mouseHoverOn(TestConstants.BECOME_A_CONSULTANT);
-		driver.click(PROGRAMS_AND_INCENTIVES_LOC);
+		driver.clickByJS(PROGRAMS_AND_INCENTIVES_LOC);
 		driver.waitForPageLoad();
 		logger.info("clicked on 'PROGRAMS & INCENTIVES' link");
 		return this;
@@ -2872,6 +2860,7 @@ public class StoreFrontWebsiteBasePage extends RFBasePage {
 	 * 
 	 */
 	public boolean isSponserSearchPageDisplayed() {
+		driver.waitForElementToBeVisible(SPONSOR_SEARCH_FIELD_LOC, 10);
 		return driver.isElementVisible(SPONSOR_SEARCH_FIELD_LOC);
 	}
 
@@ -3796,7 +3785,7 @@ public class StoreFrontWebsiteBasePage extends RFBasePage {
 				driver.pauseExecutionFor(2000);
 				mouseHoverOn(TestConstants.SHOP_SKINCARE);
 			}
-			driver.click(By.xpath(String.format(topNavigationSublinksWithTextLoc, linkName)));
+			driver.clickByJS(By.xpath(String.format(topNavigationSublinksWithTextLoc, linkName)));
 		}
 		logger.info("clicked on" + "'" + linkName + "'" + "under shopskincare");
 		driver.waitForLoadingImageToDisappear();
@@ -3947,7 +3936,7 @@ public class StoreFrontWebsiteBasePage extends RFBasePage {
 		//driver.get(driver.getCurrentUrl()+"/All-Skincare/c/shopskincare");
 		logger.info("clicked on 'All Products'");
 		driver.waitForPageLoad();
-		productPriceFilterHighToLow();
+		//productPriceFilterHighToLow();
 		return new StoreFrontShopSkinCarePage(driver);
 	}**/
 
@@ -4045,6 +4034,7 @@ public class StoreFrontWebsiteBasePage extends RFBasePage {
 		driver.get(driver.getCurrentUrl().replace("?clear=true","")+"/All-Skincare/c/shopskincare");
 		logger.info("clicked on 'All Products'");
 		driver.waitForPageLoad();
+		driver.pauseExecutionFor(2000);
 		productPriceFilterHighToLow();
 		return new StoreFrontShopSkinCarePage(driver);
 	}
@@ -4176,8 +4166,203 @@ public class StoreFrontWebsiteBasePage extends RFBasePage {
 		//driver.click(By.xpath(String.format(updateLinkForSpecificProductLoc,productName)));
 		driver.clickByJS(By.xpath(String.format(updateLinkForSpecificProductLoc,productName)));
 		logger.info("Update link of " + productName + " is clicked");
+		driver.pauseExecutionFor(3000);
+		return this;
+	}
+
+	public void pauseExecutionFor(int lTimeInMilliSeconds){
+		driver.pauseExecutionFor(lTimeInMilliSeconds);
+	}
+
+	/***
+	 * This method click on first product name on all product page
+	 * 
+	 * @param
+	 * @return object of product detail page
+	 * 
+	 */
+	public StoreFrontProductDetailPage clickNameOfProductThroughProductId(String productId){
+		String productName = driver.findElement(By.xpath(String.format(productNameLinkThroughProductIdLoc,productId))).getText();
+		if(driver.isElementVisible(By.xpath(String.format(productNameLinkThroughProductIdLoc, productId)))){
+			driver.clickByJS(RFWebsiteDriver.driver,By.xpath(String.format(productNameLinkThroughProductIdLoc, productId)));
+		}
+		logger.info("product name "+productName+ "Clicked");
+		driver.waitForPageLoad();
+		return new StoreFrontProductDetailPage(driver);
+	}
+
+	/***
+	 * This method will return the sfdc URL
+	 * 
+	 * @param
+	 * @return store front Base page object
+	 */
+	public StoreFrontWebsiteBasePage navigateToSFDCUrl() {
+		driver.get(driver.getSFDCURL());
 		return this;
 	}
 
 
+	/***
+	 * This method will login to the sfdc
+	 * 
+	 * @param
+	 * @return store front Base page object
+	 */
+	public StoreFrontWebsiteBasePage loginToSFDC(String username, String password) {
+		closeAllOpenedTabs();
+		driver.pauseExecutionFor(1000);
+		driver.quickWaitForElementPresent(USERNAME_TXTFLD_LOC, 3);
+		driver.type(USERNAME_TXTFLD_LOC, username);
+		logger.info("username entered as " + username);
+		driver.type(PASSWORD_TXTFLD_LOC, password);
+		logger.info("password entered as  " + password);
+		driver.click(LOGIN_BTN_FOR_SFDC_LOC);
+		logger.info("login button clicked for SFDC");
+		driver.waitForPageLoad();
+		return this;
+	}
+
+	/***
+	 * This method will search the username in SFDC
+	 * 
+	 * @param username
+	 * @return store front Base page object
+	 */
+	public StoreFrontWebsiteBasePage clickAnyTypeOfActiveCustomerInSearchResultOfSFDC(String username) {
+		driver.type(SEARCH_INPUT_FIELD_LOC, username);
+		logger.info("User searched as "+username);
+		driver.click(SUGGESTED_EMAIL_LOC);
+		logger.info("Clicked on suggested email address");
+		return this;
+	}
+
+	/***
+	 * This method will search the username in SFDC
+	 * 
+	 * @param username
+	 * @return store front Base page object
+	 */
+	public boolean isUserPresentInSFDC(String userType, String emailID) {
+		boolean isUserPresent = false;
+		driver.switchTo().frame(driver.findElement(USER_NAME_IFRMAE));
+		isUserPresent =  driver.isElementPresent(By.xpath(String.format(activeUserInSfdcLoc, userType, emailID)));
+		driver.switchTo().defaultContent();
+		return isUserPresent;
+	}
+
+	public void closeAllOpenedTabs(){
+		int totalOpenedTabs = 0;
+		totalOpenedTabs = driver.findElements(By.xpath("//li[contains(@id,'navigatortab__scc-pt')]")).size();
+		for(int count=1;count<=3;count++){
+			logger.info("total opened tabs = "+totalOpenedTabs);
+			Actions actions = new Actions(RFWebsiteDriver.driver);
+			for(int i=totalOpenedTabs;i>=1;i--){
+				//driver.waitForElementPresent(By.xpath("//li[contains(@id,'navigatortab__scc-pt')]["+i+"]/descendant::a[@class='x-tab-strip-close']"));
+				actions.moveToElement(driver.findElement(By.xpath("//li[contains(@id,'navigatortab__scc-pt')]["+i+"]/descendant::a[@class='x-tab-strip-close']"))).click().build().perform();
+				//driver.click(By.xpath("//li[contains(@id,'navigatortab__scc-pt')]["+i+"]/descendant::a[@class='x-tab-strip-close']"));
+				driver.pauseExecutionFor(1000);
+			}
+			totalOpenedTabs = driver.findElements(By.xpath("//li[contains(@id,'navigatortab__scc-pt')]")).size();
+			if(totalOpenedTabs==0){
+				break;
+			}else{
+				continue;
+			}
+		}
+	}
+
+	/***
+	 * This method will close popup on page.
+	 * 
+	 * @param 
+	 * @return store front Base page object
+	 * 
+	 */
+	public StoreFrontWebsiteBasePage closePopup(){
+		if(driver.isElementPresent(POPUP_CLOSE_LOC))
+			driver.click(POPUP_CLOSE_LOC);
+		logger.info("clicked on close icon of popup");
+		return this;
+	}
+
+	/***
+	 * This method will login to the pulse
+	 * 
+	 * @param username password
+	 * @return store front Base page object
+	 */
+	public StoreFrontWebsiteBasePage loginToPulse(String username, String password) {
+		closeAllOpenedTabs();
+		driver.pauseExecutionFor(1000);
+		driver.quickWaitForElementPresent(PULSE_USERNAME_TXTFLD_LOC, 3);
+		if(driver.isElementPresent(PULSE_USERNAME_TXTFLD_LOC)){
+			driver.type(PULSE_USERNAME_TXTFLD_LOC, username);
+			logger.info("username entered as " + username);
+			driver.type(PULSE_PASSWORD_TXTFLD_LOC, password);
+			logger.info("password entered as  " + password);
+			driver.click(PULSE_LOGIN_BUTTON_LOC);
+			logger.info("login button clicked for pulse");
+			driver.waitForPageLoad();
+			driver.pauseExecutionFor(3000);
+		}
+		return this;
+	}
+
+	/***
+	 * This method validates user in pulse
+	 * 
+	 * @param
+	 * @return boolean value
+	 * 
+	 */
+	public boolean isUserPresentInPulse(){
+		return driver.isElementPresent(PULSE_DD_LOC);
+	}
+
+	/***
+	 * This method click orders link from welcome drop down
+	 * 
+	 * @param
+	 * @return store front orders page object
+	 * 
+	 */
+	public StoreFrontWebsiteBasePage navigateToPulseOrdersTab() {
+		driver.click(PULSE_ORDER_TAB_LOC);
+		logger.info("orders tab clicked in pulse");
+		driver.waitForLoadingImageToDisappear();
+		driver.waitForPageLoad();
+		return this;
+	}
+
+	/***
+	 * This method click orders link from welcome drop down
+	 * 
+	 * @param
+	 * @return store front orders page object
+	 * 
+	 */
+	public StoreFrontHomePage logout() {
+		driver.clickByJS(RFWebsiteDriver.driver,LOGOUT_LOC);
+		logger.info("logout link clicked from welcome dropdown");
+		driver.waitForLoadingImageToDisappear();
+		driver.waitForPageLoad();
+		driver.pauseExecutionFor(2000);
+		return new StoreFrontHomePage(driver);
+	}
+
+	/***
+	 * This method click check my pulse link from welcome dropdown.
+	 * 
+	 * @param
+	 * @return store front base page object
+	 * 
+	 */
+	public StoreFrontWebsiteBasePage navigateToCheckMyPulsePage() {
+		driver.clickByJS(RFWebsiteDriver.driver,WELCOME_DD_CHECK_MY_PULSE_LOC);
+		logger.info("check my pulse clicked from welcome dropdown");
+		driver.waitForLoadingImageToDisappear();
+		driver.waitForPageLoad();
+		return this;
+	}
 }

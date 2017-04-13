@@ -637,7 +637,7 @@ public class StoreFrontCheckoutPage extends StoreFrontWebsiteBasePage{
 	public StoreFrontCheckoutPage searchForConsultant(String consultant){
 		driver.type(CONSULTANT_NAME_ID_FIELD_LOC, consultant);
 		logger.info("entered consultant name as "+consultant);
-		driver.click(CONSULTANT_SEARCH_BTN_LOC);
+		driver.clickByJS(RFWebsiteDriver.driver, CONSULTANT_SEARCH_BTN_LOC);
 		logger.info("Consultant search btn clicked");
 		return this;
 	}

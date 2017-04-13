@@ -113,6 +113,50 @@ public class CommonUtils {
 		return strCurrentDay;
 	}
 
+	public static int convertMonthInToDigitFormat(String monthFromUI){
+		monthFromUI = monthFromUI.toLowerCase();
+		int month = 0;
+		switch (monthFromUI) {  
+		case "jan":
+			month=1;
+			break;
+		case "feb":
+			month=2;
+			break;
+		case "mar":
+			month=3;
+			break;
+		case "apr":
+			month=4;
+			break;
+		case "may":
+			month=5;
+			break;
+		case "jun":
+			month=6;
+			break;
+		case "jul":
+			month=7;
+			break;
+		case "aug":
+			month=8;
+			break;
+		case "sep":
+			month=9;
+			break;
+		case "oct":
+			month=10;
+			break;
+		case "nov":
+			month=11;
+			break;
+		case "dec":
+			month=12;
+			break;
+		}
+		return month;
+	}
+
 	public static String convertDBDateFormatToUIFormat(String DBDate){
 		String UIMonth=null;
 		String[] splittedDate = DBDate.split(" ");

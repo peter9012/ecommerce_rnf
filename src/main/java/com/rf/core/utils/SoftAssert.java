@@ -10,6 +10,7 @@ import org.apache.logging.log4j.Logger;
 import org.testng.asserts.IAssert;
 import org.testng.collections.Maps;
 import com.rf.core.driver.website.RFWebsiteDriver;
+import com.rf.core.listeners.TestListner;
 
 public class SoftAssert extends org.testng.asserts.SoftAssert {
 	private static final Logger logger = LogManager
@@ -73,8 +74,9 @@ public class SoftAssert extends org.testng.asserts.SoftAssert {
 		try {
 			logger.info("VERIFICATION FAILED: " + ex.getMessage());
 			logger.info("Expected: " + a.getExpected());
-			logger.info("Actual: " + a.getActual());			
-			String sScreenshotPath= RFWebsiteDriver.takeSnapShotAndRetPath(RFWebsiteDriver.driver);
+			logger.info("Actual: " + a.getActual());
+			String testMethod = TestListner.getCurrentRunningMethodName();
+			String sScreenshotPath= RFWebsiteDriver.takeSnapShotAndRetPathForVerificationFailures(RFWebsiteDriver.driver,testMethod);
 			logger.info("Snapshot Path :<a href='" + sScreenshotPath + "'>"+ sScreenshotPath+"</a>\n");
 			m_errors.put(ex, a);
 		} catch (Exception e) {
@@ -84,8 +86,7 @@ public class SoftAssert extends org.testng.asserts.SoftAssert {
 	}
 
 
-	public boolean isEqual(int iExpected, int iActual)
-	{
+	public boolean isEqual(int iExpected, int iActual){
 		boolean flag = false;
 
 		if (iExpected == iActual) {

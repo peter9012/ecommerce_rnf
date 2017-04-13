@@ -6,14 +6,11 @@ import java.net.MalformedURLException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
-import java.util.Properties;
 import java.util.Set;
 
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
-import org.openqa.selenium.By;
 import org.testng.ITestContext;
-import org.testng.annotations.AfterGroups;
 import org.testng.annotations.AfterSuite;
 import org.testng.annotations.BeforeClass;
 import org.testng.annotations.BeforeMethod;
@@ -21,7 +18,6 @@ import org.testng.annotations.BeforeSuite;
 
 import com.rf.core.driver.website.RFWebsiteDriver;
 import com.rf.core.utils.HtmlLogger;
-import com.rf.core.utils.PropertyFile;
 import com.rf.core.utils.SoftAssert;
 import com.rf.core.website.constants.TestConstants;
 import com.rf.pages.website.rehabitat.storeFront.StoreFrontAboutMePage;
@@ -64,6 +60,8 @@ public class StoreFrontWebsiteBaseTest extends RFBaseTest {
 	protected String randomWords = null;
 	protected String validProductName = null;
 	protected String validProductId = null;
+	protected String secondValidProductName = null;
+	protected String secondValidProductId = null;
 
 	protected String updatedAddressLine1 = null;
 	protected String updatedAddressLine2 = null;
@@ -96,7 +94,7 @@ public class StoreFrontWebsiteBaseTest extends RFBaseTest {
 	protected StoreFrontAutoshipCartPage sfAutoshipCartPage;
 	protected StoreFrontAboutMePage sfAboutMePage;
 
-	StringBuilder verificationErrors = new StringBuilder();
+	//StringBuilder verificationErrors = new StringBuilder();
 	protected String password=null;
 	protected String countryId=null;
 	protected String country=null;
@@ -153,6 +151,8 @@ public class StoreFrontWebsiteBaseTest extends RFBaseTest {
 			stateAbbreviation = TestConstants.STATE_US_ABBREVIATION;
 			validProductName = TestConstants.VALID_PRODUCT_NAME_US;
 			validProductId = TestConstants.VALID_PRODUCT_ID_US;
+			secondValidProductId = TestConstants.SECOND_VALID_PRODUCT_ID_US;
+			secondValidProductName = TestConstants.SECOND_VALID_PRODUCT_NAME_US;
 		}
 		else if(countryName.equalsIgnoreCase("ca")){
 			addressLine1 = TestConstants.ADDRESS_LINE_1_CA;
@@ -167,6 +167,8 @@ public class StoreFrontWebsiteBaseTest extends RFBaseTest {
 			stateAbbreviation = TestConstants.STATE_CA_ABBREVIATION;
 			validProductName = TestConstants.VALID_PRODUCT_NAME_CA;
 			validProductId = TestConstants.VALID_PRODUCT_ID_CA;
+			secondValidProductId = TestConstants.SECOND_VALID_PRODUCT_ID_CA;
+			secondValidProductName = TestConstants.SECOND_VALID_PRODUCT_NAME_CA;
 		}
 		else if(countryName.equalsIgnoreCase("au")){
 			addressLine1 = TestConstants.ADDRESS_LINE_1_AU;
@@ -222,7 +224,7 @@ public class StoreFrontWebsiteBaseTest extends RFBaseTest {
 		driver.get(driver.getURL()+"/"+country.toUpperCase());
 		logger.info("Navigated to base URL");
 		driver.waitForPageLoad();
-	//	driver.pauseExecutionFor(2000);
+		//	driver.pauseExecutionFor(2000);
 	}
 
 	public void navigateToStoreFrontBaseURLWithoutCountry(){
@@ -303,8 +305,8 @@ public class StoreFrontWebsiteBaseTest extends RFBaseTest {
 		return userPropertyFile.getProperty("rcWithoutOrder");
 	}
 
-	public String pcWithSigleBillingProfile(){
-		return userPropertyFile.getProperty("pcWithSigleBillingProfile");
+	public String pcUserHavingSingleBillingProfile(){
+		return userPropertyFile.getProperty("pcUserHavingSingleBillingProfile");
 	}
 
 	public String consultantWithPulseAndWithCRPForCancellation(){
@@ -319,6 +321,17 @@ public class StoreFrontWebsiteBaseTest extends RFBaseTest {
 		String suiteName = context.getCurrentXmlTest().getSuite().getName();
 		return suiteName;
 	}
+
+	public String getSFDCUserName() {
+		String sfdcUserName = propertyFile.getProperty("sfdcUserName");
+		return sfdcUserName;
+	}
+
+	public String getSFDCPassword() {
+		String sfdcPassword = propertyFile.getProperty("sfdcPassword");
+		return sfdcPassword;
+	}
+
 
 	@BeforeMethod(alwaysRun=true)
 	public void beforeMethod() throws Exception{
@@ -336,5 +349,4 @@ public class StoreFrontWebsiteBaseTest extends RFBaseTest {
 			navigateToStoreFrontBaseURL();
 		}   
 	}
-
 }

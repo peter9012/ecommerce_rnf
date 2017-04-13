@@ -36,7 +36,7 @@ public class StoreFrontShopSkinCarePage extends StoreFrontWebsiteBasePage{
 	private final By ADD_TO_CART_BTN_ON_QUICK_VIEW_POPUP_LOC = By.xpath("//div[@id='myModal' and contains(@style,'display')]//button[contains(text(),'Add to bag')]");
 	private final By CHECKOUT_BUTTON_POPUP_LOC = By.xpath("//a[contains(text(),'Checkout')]");
 	private final By SHOP_BY_PRICE_FILTER_OPTION_LOW_TO_HIGH_LOC = By.xpath("//select[@id='sortOptions1']/descendant::option[3]");
-	private final By REFINE_PRODUCT_CATEGORY_FILTER_DD_LOC = By.xpath("//div[@id='product-facet']/descendant::div[text()[normalize-space()='Shop by Category']]");
+	private final By REFINE_PRODUCT_CATEGORY_FILTER_DD_LOC = By.xpath("//div[@id='product-facet']/descendant::div[text()[normalize-space()='Shop by Category'] or text()[normalize-space()='Shop by category']]");
 	private final By ADD_TO_CART_BUTTON_FROM_QUICK_VIEW_POPUP_LOC=By.xpath("//div[@class='addToCartBtn-wrapper']/button");
 	private final By CLOSE_QUICK_VIEW_OPTION_POPUP_LOC=By.xpath("//button[@class='close']");
 	private final By PRODUCT_IMAGE_QUICK_VIEW_POPUP_LOC=By.xpath(".//*[@id='myModal']//div[@class='quick-view-popup']");
@@ -65,6 +65,9 @@ public class StoreFrontShopSkinCarePage extends StoreFrontWebsiteBasePage{
 	private final By ADD_TO_CART_ONE_TIME_ORDER_LOC = By.xpath("//div[@id='product_listing']/descendant::span[contains(text(),'One Time Order')][1]");
 	private final By ADD_TO_CART_BTN_IN_FORM_ON_QUICK_VIEW_POPUP_LOC = By.xpath("//div[@id='myModal' and contains(@style,'display')]//button[contains(text(),'Add to bag')]/following::button[1]");
 
+	protected String addToCartButtonThroughProdIdLoc = "//a[contains(@href,'%s') and @class='name']/following::button[contains(text(),'Add to bag')][1]";
+	private String productPriceThroughProdIdLoc = "//a[contains(@href,'%s') and @class='name']//following::span[contains(text(),'%s')][1]/following-sibling::span[contains(@class,'productPrice')]";
+	private String addToCartDDThroughProdIdLoc = "//a[contains(@href,'%s') and @class='name']//following::span[contains(text(),'%s')][1]";
 	private String randomCategoryIDLoc = "//div[@id='product-facet']//descendant::ul[2]/li[%s]//descendant::input[contains(@id,'ID')]";
 	private String retailAndSVPriceLoc = "//div[@class='product-item'][%s]//span[@class='totalSV']";
 	private String consultantPriceLoc="//div[@class='product-item'][%s]//span[@id='retail']";
@@ -84,6 +87,7 @@ public class StoreFrontShopSkinCarePage extends StoreFrontWebsiteBasePage{
 	private String productPriceThroughProductNumberLoc = "//div[@id='product_listing']/descendant::span[contains(text(),'%s')][%s]/following-sibling::span[contains(@class,'productPrice')]";
 	private String addToCartDDLoc = "//div[@id='product_listing']/descendant::span[contains(text(),'%s')][%s]";
 	private String randomCategoryName = randomProductCategoryCheckbox+"/following::span[1]/span[2]";
+	private String quickViewLinkThroughProductIdLoc = "//a[contains(@href,'%s') and @class='name']/preceding::a[@class='thumb'][1]";
 
 	/***
 	 * This method verify the product price filter High to Low applied successfully
@@ -95,6 +99,7 @@ public class StoreFrontShopSkinCarePage extends StoreFrontWebsiteBasePage{
 	 */
 
 	public boolean isPriceFilterHighToLowAppliedSuccessfully(){
+		driver.pauseExecutionFor(3000);
 		int totalProducts = driver.findElements(TOTAL_PRODUCTS_LOC).size();
 		if(totalProducts>=3){
 			String firstProductPrice = driver.findElement(By.xpath(String.format(priceOfProductLoc, "1"))).getText().split("\\$")[1].trim();
@@ -133,6 +138,7 @@ public class StoreFrontShopSkinCarePage extends StoreFrontWebsiteBasePage{
 	}
 
 	public boolean isPriceFilterLowToHighAppliedSuccessfully(){
+		driver.pauseExecutionFor(3000);
 		int totalProducts = driver.findElements(TOTAL_PRODUCTS_LOC).size();
 		if(totalProducts>=3){
 			String firstProductPrice = driver.findElement(By.xpath(String.format(priceOfProductLoc, "1"))).getText().split("\\$")[1].trim();
@@ -272,8 +278,8 @@ public class StoreFrontShopSkinCarePage extends StoreFrontWebsiteBasePage{
 	 * 
 	 */
 	public boolean isCheckoutPopupDisplayed(){
-		driver.pauseExecutionFor(3000);
-		return driver.findElement(CHECKOUT_BUTTON_POPUP_LOC).isDisplayed();
+		driver.pauseExecutionFor(6000);
+		return driver.isElementVisible(CHECKOUT_BUTTON_POPUP_LOC);
 	}
 
 	/**
@@ -281,8 +287,10 @@ public class StoreFrontShopSkinCarePage extends StoreFrontWebsiteBasePage{
 	 * @return StoreFrontShopSkinCarePage object
 	 */
 	public StoreFrontShopSkinCarePage clickOnAddMoreItemsOnCheckoutPopUp(){
+		driver.waitForElementIsPresent(ADD_MORE_ITEMS_BUTTON_ON_CHCKOUT_POPUP_LOC, 10);
 		driver.click(ADD_MORE_ITEMS_BUTTON_ON_CHCKOUT_POPUP_LOC);
 		logger.info("Clicked on Add more items Button on the checkout popup");
+		driver.pauseExecutionFor(4000);
 		return this;
 	}
 
@@ -585,6 +593,7 @@ public class StoreFrontShopSkinCarePage extends StoreFrontWebsiteBasePage{
 	 * 
 	 */
 	public boolean isProductImagePresentAtQuickViewPopup(){
+		driver.waitForElementToBeVisible(PRODUCT_IMG_ON_QUICK_VIEW_POPUP_LOC, 10);
 		return driver.isElementVisible(PRODUCT_IMG_ON_QUICK_VIEW_POPUP_LOC);
 	}
 
@@ -804,6 +813,7 @@ public class StoreFrontShopSkinCarePage extends StoreFrontWebsiteBasePage{
 		driver.click(CLEAR_ALL_LINK_LOC);
 		logger.info("Clear all link clicked to remove all applied product filter.");
 		driver.waitForPageLoad();
+		driver.pauseExecutionFor(3000);
 		return this;
 	}
 
@@ -1000,14 +1010,14 @@ public class StoreFrontShopSkinCarePage extends StoreFrontWebsiteBasePage{
 	 * @throws AWTException 
 	 * 
 	 */
-	public String addProductToCart(String productNumber,String orderType,String product){
+	public String addProductToCart(String productNumber,String orderType,String productId){
 		String priceToAssert = null;
 
 		driver.pauseExecutionFor(5000);
 
 		driver.waitForElementPresent(By.xpath(String.format(addToCartButtonLoc, productNumber)), 15);
 		clickSearchIcon();
-		searchEntityAndHitEnter(product);
+		searchEntityAndHitEnter(productId);
 		driver.pauseExecutionFor(2000);
 		driver.moveToElementByJS(By.xpath(String.format(addToCartButtonWithFormLoc, productNumber)));
 		driver.clickByJS( By.xpath(String.format(addToCartButtonWithFormLoc, productNumber)));
@@ -1031,7 +1041,6 @@ public class StoreFrontShopSkinCarePage extends StoreFrontWebsiteBasePage{
 		logger.info("Add To Cart clicked, order type is "+orderType);
 		return priceToAssert;
 	}
-
 
 	/***
 	 * This method validates that default filter has been applied
@@ -1059,6 +1068,7 @@ public class StoreFrontShopSkinCarePage extends StoreFrontWebsiteBasePage{
 	public StoreFrontShopSkinCarePage enterQuantityonQuickViewPopup(String qty){
 		driver.pauseExecutionFor(3000);
 		driver.typeByJS(QTY_TF_ON_QUICK_VIEW_POPUP_LOC,qty);
+
 		return this;
 	}
 
@@ -1105,6 +1115,20 @@ public class StoreFrontShopSkinCarePage extends StoreFrontWebsiteBasePage{
 		}
 		logger.info("No Product Found for the Selected Range on All Products Page");
 		return null;
+	}
+
+
+	/**
+	 * This method click on quick view link of product
+	 * @return StoreFrontShopSkinCarePage object
+	 */
+	public StoreFrontShopSkinCarePage clickOnQuickViewLinkThroughProductId(String productId){
+		driver.waitForElementPresent(By.xpath(String.format(quickViewLinkThroughProductIdLoc, productId)));
+		driver.pauseExecutionFor(2000);
+		driver.click(By.xpath(String.format(quickViewLinkThroughProductIdLoc, productId)));
+		logger.info("Clicked on quick view for product id : " + productId);
+		driver.waitForLoadingImageToDisappear();
+		return this;
 	}
 
 }

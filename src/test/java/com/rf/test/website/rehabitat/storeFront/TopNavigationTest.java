@@ -196,6 +196,7 @@ public class TopNavigationTest extends StoreFrontWebsiteBaseTest{
 		String currentURL = null;
 		String executiveTeamURL = "executive-team";
 		String whoWeAreURL = "who-we-are";
+		String aboutRodanFields = "about-rodan-fields";
 		String givingBackURL ="giving-back";
 		//Verify meet the doctors link.
 		sfHomePage.clickMeetTheDoctorsLink();
@@ -203,7 +204,7 @@ public class TopNavigationTest extends StoreFrontWebsiteBaseTest{
 		//Verify giving back link.
 		sfHomePage.clickGivingBackLink();
 		currentURL = sfHomePage.getCurrentURL().toLowerCase();
-		s_assert.assertTrue(currentURL.contains(givingBackURL), "Expected URL should contain "+givingBackURL+ "but actual on UI is"+currentURL);
+		s_assert.assertTrue(currentURL.contains(givingBackURL)||currentURL.contains("pfc-foundation"), "Expected URL should contain "+givingBackURL+ "but actual on UI is"+currentURL);
 		//Verify executive team link.
 		sfHomePage.clickExecutiveTeam();
 		currentURL = sfHomePage.getCurrentURL().toLowerCase();
@@ -211,7 +212,7 @@ public class TopNavigationTest extends StoreFrontWebsiteBaseTest{
 		//Verify who we are link.
 		sfHomePage.clickWhoWeAreLink();
 		currentURL = sfHomePage.getCurrentURL().toLowerCase();
-		s_assert.assertTrue(currentURL.contains(whoWeAreURL), "Expected URL should contain "+whoWeAreURL+ "but actual on UI is"+currentURL);
+		s_assert.assertTrue(currentURL.contains(whoWeAreURL) ||currentURL.contains(aboutRodanFields), "Expected URL should contain "+whoWeAreURL+ "but actual on UI is"+currentURL);
 		s_assert.assertAll();
 	}
 
@@ -303,24 +304,28 @@ public class TopNavigationTest extends StoreFrontWebsiteBaseTest{
 		String expectedURLForReverseFAQ = "reverse-faq";
 		String expectedURLForRedefineFAQ = "redefine-faq";
 		String expectedURLForUnblemishFAQ = "unblemish-faq";
+		String expectedURLForSootheQuestions = "soothe-questions";
+		String expectedURLForReverseQuestions = "reverse-questions";
+		String expectedURLForRedefineQuestion = "redefine-questions";
+		String expectedURLForUnblemishQuestions = "unblemish-questions";
 
 		sfHomePage.loginToStoreFront(rcWithOrderWithoutSponsor(),  password,true);
 		//Verify FAQ page for soothe regimen.
 		sfHomePage.navigateToShopSkinCareSubLinks(sootheLinkUnderShopSkincare, sublinkNameUnderShopSkincare);
 		currentURL = sfHomePage.getCurrentURL().toLowerCase();
-		s_assert.assertTrue(currentURL.contains(expectedURLForSootheFAQ), "Expected URL should contain" +expectedURLForSootheFAQ+ ". but actual on UI is"+currentURL);
+		s_assert.assertTrue(currentURL.contains(expectedURLForSootheFAQ) || currentURL.contains(expectedURLForSootheQuestions) , "Expected URL should contain" +expectedURLForSootheFAQ+ ". but actual on UI is"+currentURL);
 		//Verify FAQ page for Reverse regimen.
 		sfHomePage.navigateToShopSkinCareSubLinks(reverseLinkUnderShopSkincare, sublinkNameUnderShopSkincare);
 		currentURL = sfHomePage.getCurrentURL().toLowerCase();
-		s_assert.assertTrue(currentURL.contains(expectedURLForReverseFAQ), "Expected URL should contain" +expectedURLForReverseFAQ+ ". but actual on UI is"+currentURL);
+		s_assert.assertTrue(currentURL.contains(expectedURLForReverseFAQ) || currentURL.contains(expectedURLForReverseQuestions), "Expected URL should contain" +expectedURLForReverseFAQ+ ". but actual on UI is"+currentURL);
 		//Verify FAQ page for Redefine regimen.
 		sfHomePage.navigateToShopSkinCareSubLinks(redefineLinkUnderShopSkincare, sublinkNameUnderShopSkincare);
 		currentURL = sfHomePage.getCurrentURL().toLowerCase();
-		s_assert.assertTrue(currentURL.contains(expectedURLForRedefineFAQ), "Expected URL should contain" +expectedURLForRedefineFAQ+ ". but actual on UI is"+currentURL);
+		s_assert.assertTrue(currentURL.contains(expectedURLForRedefineFAQ) || currentURL.contains(expectedURLForRedefineQuestion), "Expected URL should contain" +expectedURLForRedefineFAQ+ ". but actual on UI is"+currentURL);
 		//Verify FAQ page for Unblemish regimen.
 		sfHomePage.navigateToShopSkinCareSubLinks(unblemishLinkUnderShopSkincare, sublinkNameUnderShopSkincare);
 		currentURL = sfHomePage.getCurrentURL().toLowerCase();
-		s_assert.assertTrue(currentURL.contains(expectedURLForUnblemishFAQ), "Expected URL should contain" +expectedURLForUnblemishFAQ+ ". but actual on UI is"+currentURL);
+		s_assert.assertTrue(currentURL.contains(expectedURLForUnblemishFAQ) || currentURL.contains(expectedURLForUnblemishQuestions), "Expected URL should contain" +expectedURLForUnblemishFAQ+ ". but actual on UI is"+currentURL);
 		s_assert.assertAll();
 	}
 
@@ -404,7 +409,7 @@ public class TopNavigationTest extends StoreFrontWebsiteBaseTest{
 	 * sponsor search page
 	 *     
 	 */
-	@Test(enabled=true)
+	@Test(enabled=false)//functionality changed
 	public void testBecomeAConsultantAtWhyRFPage_72(){
 		sfHomePage.clickWhyRF();
 		sfHomePage.clickEnrollNowButton();

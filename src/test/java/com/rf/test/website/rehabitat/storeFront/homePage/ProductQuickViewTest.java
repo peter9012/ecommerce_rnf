@@ -7,7 +7,6 @@ import com.rf.test.website.rehabitat.storeFront.baseTest.StoreFrontWebsiteBaseTe
 
 public class ProductQuickViewTest extends StoreFrontWebsiteBaseTest{
 
-
 	/***
 	 * qTest: TC-150 Anonymous User: Product Quick View
 	 * 

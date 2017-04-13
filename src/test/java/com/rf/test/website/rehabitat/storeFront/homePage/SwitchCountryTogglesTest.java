@@ -68,7 +68,7 @@ public class SwitchCountryTogglesTest extends StoreFrontWebsiteBaseTest{
 	@Test(enabled=true)
 	public void testDefaultCorpAndBizURLRedirectsToUS_1(){
 		String currentURL = null;
-		String corpURL = country;
+		String corpURL = "us";
 		String prefix = pwsPrefix();
 		navigateToStoreFrontBaseURLWithoutCountry();
 		currentURL = sfHomePage.getCurrentURL().toLowerCase();

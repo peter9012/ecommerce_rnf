@@ -24,8 +24,10 @@ public class RFRefineRemovalTest extends StoreFrontWebsiteBaseTest{
 		//0 to 49 price range
 		sfHomePage.selectFirstOptionInShopByPriceFilter();
 		totalNoOfProduct = sfHomePage.getTotalNoOfProduct();
+		System.out.println("Total no of product is"+totalNoOfProduct);
 		s_assert.assertTrue(sfHomePage.isShopByPriceFirstFilterChecked(), "Fisrt option of shop by price filter is not checked");
 		for(int i=1; i<=totalNoOfProduct; i++){
+		
 			s_assert.assertTrue(sfHomePage.isShopByPriceFilterAppliedSuccessfully(i,priceRange0to49), "product no "+i+"is out of range according to filter i.e. '0 to 49'");
 		}
 		sfHomePage.selectFirstOptionInShopByPriceFilter();

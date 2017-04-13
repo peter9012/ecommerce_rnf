@@ -1,12 +1,18 @@
 package com.rf.test.website.rehabitat.storeFront;
 
+import org.testng.annotations.Listeners;
 import org.testng.annotations.Test;
 
 import com.rf.core.utils.CommonUtils;
 import com.rf.core.website.constants.TestConstants;
 import com.rf.test.website.rehabitat.storeFront.baseTest.StoreFrontWebsiteBaseTest;
 
+@Listeners({org.uncommons.reportng.HTMLReporter.class,
+	org.uncommons.reportng.JUnitXMLReporter.class,
+	com.rf.core.listeners.TestListner.class})
 public class OrdersTest extends StoreFrontWebsiteBaseTest{
+
+	private String productName = null;
 
 	/***
 	 * qTest : TC-180 Order History- Link to Order details
@@ -1168,6 +1174,7 @@ public class OrdersTest extends StoreFrontWebsiteBaseTest{
 		s_assert.assertAll();
 	}
 
+
 	/***
 	 * qTest : TC-315 Ship method- Ad Hoc carts
 	 * Description : This test case validates the change in shipping method for the adhoc order 
@@ -1199,7 +1206,7 @@ public class OrdersTest extends StoreFrontWebsiteBaseTest{
 		sfCheckoutPage.clickPlaceOrderButton();
 		shippingMethodAtOrderConfirmationPage = sfCheckoutPage.getShippingMethodAfterPlacedOrder();
 		s_assert.assertTrue(selectedShippingMethodLabel.contains(changedShippingMethodLabel),"Shipping method does not get updated at Checkout page. Expected : " + changedShippingMethodLabel + ". Actual : " + selectedShippingMethodLabel);
-		s_assert.assertTrue(titleOfSelectedShipppingMethod.contains(titleOfShippingMethodAfterNextButton),"Shipping method title is not found as expected after Shipping details next button. Expected : " + titleOfSelectedShipppingMethod + ". Actual : " + titleOfShippingMethodAfterNextButton);
+		s_assert.assertTrue(titleOfShippingMethodAfterNextButton.contains(titleOfSelectedShipppingMethod),"Shipping method title is not found as expected after Shipping details next button. Expected : " + titleOfSelectedShipppingMethod + ". Actual : " + titleOfShippingMethodAfterNextButton);
 		s_assert.assertTrue(shippingMethodAtOrderConfirmationPage.contains(titleOfSelectedShipppingMethod),"Shipping method is not found as expected on order confirmation page after placing order. Expected : " + titleOfSelectedShipppingMethod + ". Actual : " + shippingMethodAtOrderConfirmationPage);
 		s_assert.assertAll();
 	}
@@ -1275,7 +1282,7 @@ public class OrdersTest extends StoreFrontWebsiteBaseTest{
 		sfShopSkinCarePage = sfHomePage.clickAllProducts();
 		sfShopSkinCarePage.addProductToCart(TestConstants.PRODUCT_NUMBER, TestConstants.ORDER_TYPE_ADHOC, validProductId);
 		sfShopSkinCarePage.checkoutTheCartFromPopUp();
-		productName = sfCartPage.getProductName("1");
+		productName = sfCartPage.getProductName(validProductId);
 		productQuantity = sfCartPage.getQuantityOfProductFromCart("1");
 		sfCheckoutPage=sfCartPage.checkoutTheCart();
 		sfCheckoutPage.clickSaveButton();
@@ -1600,7 +1607,7 @@ public class OrdersTest extends StoreFrontWebsiteBaseTest{
 		sfShopSkinCarePage = sfHomePage.clickAllProducts();
 		sfShopSkinCarePage.addProductToCart(TestConstants.PRODUCT_NUMBER, TestConstants.ORDER_TYPE_ADHOC, validProductId);
 		sfShopSkinCarePage.checkoutTheCartFromPopUp();
-		productName = sfCartPage.getProductName("1");
+		productName = sfCartPage.getProductName(validProductId);
 		productQuantity = sfCartPage.getQuantityOfProductFromCart("1");
 		sfCheckoutPage=sfCartPage.checkoutTheCart();
 		sfCheckoutPage.clickSaveButton();
@@ -1691,7 +1698,7 @@ public class OrdersTest extends StoreFrontWebsiteBaseTest{
 		sfShopSkinCarePage = sfHomePage.clickAllProducts();
 		sfShopSkinCarePage.addProductToCart(TestConstants.PRODUCT_NUMBER, TestConstants.ORDER_TYPE_ADHOC, validProductId);
 		sfShopSkinCarePage.checkoutTheCartFromPopUp();
-		productName = sfCartPage.getProductName("1");
+		productName = sfCartPage.getProductName(validProductId);
 		productQuantity = sfCartPage.getQuantityOfProductFromCart("1");
 		sfCheckoutPage=sfCartPage.checkoutTheCart();
 		sfCheckoutPage.clickContinueWithoutConsultantLink();
@@ -1747,30 +1754,6 @@ public class OrdersTest extends StoreFrontWebsiteBaseTest{
 		s_assert.assertTrue(sfOrdersPage.isProductNamePresentOnOrderDetailPage(productName),"Product name is not matching. Expected is:"+productName+"But not found");
 		//s_assert.assertTrue(productSVValue.contains(productSVAtOrderDetailsPage),"Product SV value is not matching. Expected is:"+productSVValue+"But found is "+productSVAtOrderDetailsPage);
 		//s_assert.assertTrue(productUnitPriceAtOrderDetailsPage.contains(yourPrice),"Product unit price is not matching. Expected is:"+yourPrice+"But found is "+productUnitPriceAtOrderDetailsPage);
-		s_assert.assertAll();
-	}
-	// Placed an adhoc order from consultant
-	public void testPlacedAnAdhocOrderFromConsultant(){
-		sfHomePage.loginToStoreFront(consultantWithPulseAndWithCRP(), password,true);
-		sfCartPage = sfHomePage.clickMiniCartBagLink();
-		sfCartPage.removeAllProductsFromCart();
-		sfCartPage.clickRodanAndFieldsLogo();
-		sfShopSkinCarePage = sfHomePage.clickAllProducts();
-		sfShopSkinCarePage.addProductToCart(TestConstants.PRODUCT_NUMBER, TestConstants.ORDER_TYPE_ADHOC);
-		sfShopSkinCarePage.checkoutTheCartFromPopUp();
-		sfCheckoutPage=sfCartPage.checkoutTheCart();
-		sfCheckoutPage.clickSaveButton();
-		sfCheckoutPage.clickShippingDetailsNextbutton();
-		sfCheckoutPage.clickAddNewBillingProfileButton();
-		sfCheckoutPage.enterUserBillingDetails(cardType, cardNumber, cardName, CVV);
-		sfCheckoutPage.clickBillingDetailsNextbutton();
-		if(sfCheckoutPage.hasTokenizationFailed()==true){
-			sfCheckoutPage.enterUserBillingDetails(cardType, cardNumber, cardName, CVV);
-			sfCheckoutPage.clickBillingDetailsNextbutton();
-		}
-		sfCheckoutPage.selectPCTermsAndConditionsChkBox();
-		sfCheckoutPage.clickPlaceOrderButton();
-		s_assert.assertTrue(sfCheckoutPage.isOrderPlacedSuccessfully(),"Order not placed. Thank you message is not displayed");
 		s_assert.assertAll();
 	}
 

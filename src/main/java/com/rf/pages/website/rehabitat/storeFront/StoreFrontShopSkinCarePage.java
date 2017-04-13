@@ -587,6 +587,7 @@ public class StoreFrontShopSkinCarePage extends StoreFrontWebsiteBasePage{
 	 * 
 	 */
 	public boolean isProductImagePresentAtQuickViewPopup(){
+		driver.waitForElementToBeVisible(PRODUCT_IMG_ON_QUICK_VIEW_POPUP_LOC, 10);
 		return driver.isElementVisible(PRODUCT_IMG_ON_QUICK_VIEW_POPUP_LOC);
 	}
 

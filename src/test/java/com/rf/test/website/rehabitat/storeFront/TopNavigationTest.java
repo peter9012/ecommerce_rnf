@@ -409,7 +409,7 @@ public class TopNavigationTest extends StoreFrontWebsiteBaseTest{
 	 * sponsor search page
 	 *     
 	 */
-	@Test(enabled=true)
+	@Test(enabled=false)//functionality changed
 	public void testBecomeAConsultantAtWhyRFPage_72(){
 		sfHomePage.clickWhyRF();
 		sfHomePage.clickEnrollNowButton();

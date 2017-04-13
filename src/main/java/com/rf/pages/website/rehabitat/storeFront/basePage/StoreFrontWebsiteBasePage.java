@@ -2809,6 +2809,7 @@ public class StoreFrontWebsiteBasePage extends RFBasePage {
 	 * 
 	 */
 	public boolean isSponserSearchPageDisplayed() {
+		driver.waitForElementToBeVisible(SPONSOR_SEARCH_FIELD_LOC, 10);
 		return driver.isElementVisible(SPONSOR_SEARCH_FIELD_LOC);
 	}
 

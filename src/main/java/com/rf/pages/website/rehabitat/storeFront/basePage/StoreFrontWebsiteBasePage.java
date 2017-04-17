@@ -1669,63 +1669,15 @@ public class StoreFrontWebsiteBasePage extends RFBasePage {
 		WebElement nameOnCardElement = driver.findElement(NAME_ON_CARD_LOC);
 		actions.click(nameOnCardElement).sendKeys(nameOnCardElement, nameOnCard).build().perform();
 		logger.info("Entered card name as" + nameOnCard);
-		//		driver.click(EXP_MONTH_DD_LOC);
-		//		driver.pauseExecutionFor(1000);
-		//		logger.info("Exp month dropdown clicked");
-		//		driver.click(EXP_MONTH_LOC);
-		//		driver.pauseExecutionFor(1000);
-		//		logger.info("Exp month selected");
-		//		driver.click(EXP_YEAR_DD_LOC);
-		//		driver.pauseExecutionFor(1000);
-		//		logger.info("Exp year dropdown clicked");
-		//		driver.click(EXP_YEAR_LOC);
-		//		driver.pauseExecutionFor(1000);
-		//		logger.info("Exp year selected");
 		driver.type(EXP_MONTH_DD_LOC, "12");
 		driver.type(EXP_YEAR_DD_LOC, "2025");
 		driver.type(CVV_LOC, CVV);
 		//driver.pauseExecutionFor(1000);
 		logger.info("Entered CVV as" + CVV);
-		//driver.pauseExecutionFor(1000);
-		//driver.waitForTokenizing();
-		//driver.waitForPageLoad();		
-		return this;
-	}
-
-	/***
-	 * This method enter the user billing details
-	 * 
-	 * @param Card
-	 *            type, card number, card name, CVV, Exp month
-	 * @return store front Home page object
-	 * 
-	 */
-	public StoreFrontWebsiteBasePage enterUserBillingDetails(String cardType, String cardNumber, String nameOnCard,
-			String CVV, String month, String year) {
-		driver.switchTo().frame(driver.findElement(IFRAME_LOC));
-		logger.info("Switched into iframe");
 		driver.clickByJS(RFWebsiteDriver.driver, CARD_TYPE_DD_LOC);
 		logger.info("Card type dropdown clicked");
 		driver.click(By.xpath(String.format(cardTypeLoc, cardType)));
 		logger.info("Card type selected as " + cardType);
-		driver.type(CARD_NUMBER_LOC, cardNumber);
-		logger.info("Entered card number as" + cardNumber);
-		driver.type(NAME_ON_CARD_LOC, nameOnCard);
-		logger.info("Entered card name as" + nameOnCard);
-		Actions actions = new Actions(RFWebsiteDriver.driver);
-		actions.doubleClick(driver.findElement(EXP_MONTH_DD_LOC)).build().perform();
-		logger.info("Exp month dropdown clicked");
-		driver.click(By.xpath(String.format(expMonthLoc, month)));
-		logger.info("Exp month selected as " + month);
-		driver.pauseExecutionFor(2000);
-		actions.doubleClick(driver.findElement(EXP_YEAR_DD_LOC)).build().perform();
-		logger.info("Exp year dropdown clicked");
-		driver.click(INVALID_EXP_YEAR_LOC);
-		logger.info("Exp year selected as" + year);
-		driver.type(CVV_LOC, CVV);
-		logger.info("Entered CVV as" + CVV);
-		driver.switchTo().defaultContent();
-		logger.info("Switched to default content");
 		return this;
 	}
 

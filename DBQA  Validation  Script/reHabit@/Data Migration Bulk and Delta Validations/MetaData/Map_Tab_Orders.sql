@@ -121,7 +121,7 @@ VALUES
 ,--p_validtomonth
 (N'RFOpetaions.Hybris.OrderPayment' ,N'VendorID',N'bigint' ,N'Reference.CreditCardTypes' ,N'Hybris.dbo.paymentInfos' ,N'p_type' ,N'bigint' ,N'OrderNumber' ,N'Hybris.dbo.enusValue' , N'ref' ,N'OrderPayment',N'') 
 ,--p_type
-(N'RFOpetaions.Hybris.OrderPayment' ,N'paymentprovider',N'nvarchar(50)' ,N' ' ,N'Hybris.dbo.paymentTrasactions' ,N'paymentprovider' ,N'nvarchar(255)' ,N'OrderNumber' ,N'' , N'c2c' ,N'OrderPayment',N'') 
+(N'RFOpetaions.Hybris.OrderPayment' ,N'paymentprovider',N'nvarchar(50)' ,N' ' ,N'Hybris.dbo.paymentTrasactions' ,N'p_paymentprovider' ,N'nvarchar(255)' ,N'OrderNumber' ,N'' , N'c2c' ,N'OrderPayment',N'') 
 ,--paymentprovider
 (N'RodanFieldsLive.dbo.OrderPayments' ,N'AccountNumber',N'nvarchar' ,N'' ,N'Hybris.dbo.paymentInfos' ,N'p_number' ,N'nvarchar(255)' ,N'OrderNumber' ,N'' , N'c2c' ,N'OrderPayment',N'') 
 ,--p_number

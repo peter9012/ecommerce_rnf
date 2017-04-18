@@ -166,6 +166,150 @@ WHILE @Max >= @int
     END
 
 
+
+
+
+
+
+
+	USE DM_QA
+GO 
+
+DECLARE @sourceColumn NVARCHAR(30) ,
+    @TargetColumn NVARCHAR(30) ,
+    @flag NVARCHAR(10) ,
+    @Owner NVARCHAR(50) ,
+    @key NVARCHAR(50) ,
+    @int INT ,
+    @Max INT
+			
+			
+
+SELECT  @Max = MAX(MapID)
+FROM    dbqa.Map_tab
+			
+          
+
+SET @int = 1
+WHILE @Max >= @int
+    BEGIN
+        SELECT  @sourceColumn = SourceColumn ,
+                @TargetColumn = TargetColumn ,
+                @Owner = [Owner] ,
+                @flag = [flag] ,
+                @Key = [Key]
+        FROM    dbqa.Map_tab
+        WHERE   MapID = @int	
+				
+        UPDATE  dbqa.Map_tab
+        SET     [SQL Stmt] = CASE WHEN sourceDatatypes LIKE ( 'nvarchar%' )
+                                  THEN 'SELECT  b.TargetKey, ' + @sourceColumn
+                                       + ', ' + @TargetColumn + ' from #Source a 
+			JOIN #Target b ON a.SourceKey=b.TargetKey 
+			WHERE ISNULL(a.' + @sourceColumn + ','' '' ) <> ISNULL(b.'
+                                       + @TargetColumn + ','' '' ) '
+                                  WHEN sourceDatatypes LIKE 'date%'
+                                  THEN 'SELECT  b.TargetKey, ' + @sourceColumn
+                                       + ', ' + @TargetColumn + ' from #Source a 
+			JOIN #Target b ON a.SourceKey=b.TargetKey 
+			WHERE CAST(ISNULL(a.' + @sourceColumn
+                                       + ',''2018-01-01'' )AS DATE) <> CAST(ISNULL(b.'
+                                       + @TargetColumn
+                                       + ',''2018-01-01 '' )AS DATE) '
+                                  WHEN sourceDatatypes IN ( 'money', 'int',
+                                                            'bigint' )
+                                  THEN 'SELECT  b.TargetKey, ' + @sourceColumn
+                                       + ', ' + @TargetColumn + ' from #Source a 
+			JOIN #Target b ON a.SourceKey=b.TargetKey 
+			WHERE ISNULL(a.' + @sourceColumn + ',0 ) <> ISNULL(b.'
+                                       + @TargetColumn + ',0 ) '
+                                  ELSE 'SELECT  b.TargetKey, ' + @sourceColumn
+                                       + ', ' + @TargetColumn + ' from #Source a 
+			JOIN #Target b ON a.SourceKey=b.TargetKey 
+			WHERE a.' + @sourceColumn + ' <> b.' + @TargetColumn + ' '
+                             END
+        WHERE   MapID = @int
+                AND flag IN ('c2c','ref','upd')
+                AND [Owner] IN ( 'OKTA' )
+			
+        SET @int = @int + 1
+    END
+	GO
+
+
+
+
+
+
+
+	USE DM_QA
+GO 
+
+DECLARE @sourceColumn NVARCHAR(30) ,
+    @TargetColumn NVARCHAR(30) ,
+    @flag NVARCHAR(10) ,
+    @Owner NVARCHAR(50) ,
+    @key NVARCHAR(50) ,
+    @int INT ,
+    @Max INT
+			
+			
+
+SELECT  @Max = MAX(MapID)
+FROM    dbqa.Map_tab
+			
+          
+
+SET @int = 1
+WHILE @Max >= @int
+    BEGIN
+        SELECT  @sourceColumn = SourceColumn ,
+                @TargetColumn = TargetColumn ,
+                @Owner = [Owner] ,
+                @flag = [flag] ,
+                @Key = [Key]
+        FROM    dbqa.Map_tab
+        WHERE   MapID = @int	
+				
+        UPDATE  dbqa.Map_tab
+        SET     [SQL Stmt] = CASE WHEN sourceDatatypes LIKE ( 'nvarchar%' )
+                                  THEN 'SELECT  b.TargetKey, ' + @sourceColumn
+                                       + ', ' + @TargetColumn + ' from #Source a 
+			JOIN #Target b ON a.SourceKey=b.TargetKey 
+			WHERE ISNULL(a.' + @sourceColumn + ','' '' ) <> ISNULL(b.'
+                                       + @TargetColumn + ','' '' ) '
+                                  WHEN sourceDatatypes LIKE 'date%'
+                                  THEN 'SELECT  b.TargetKey, ' + @sourceColumn
+                                       + ', ' + @TargetColumn + ' from #Source a 
+			JOIN #Target b ON a.SourceKey=b.TargetKey 
+			WHERE CAST(ISNULL(a.' + @sourceColumn
+                                       + ',''2018-01-01'' )AS DATE) <> CAST(ISNULL(b.'
+                                       + @TargetColumn
+                                       + ',''2018-01-01 '' )AS DATE) '
+                                  WHEN sourceDatatypes IN ( 'money', 'int',
+                                                            'bigint' )
+                                  THEN 'SELECT  b.TargetKey, ' + @sourceColumn
+                                       + ', ' + @TargetColumn + ' from #Source a 
+			JOIN #Target b ON a.SourceKey=b.TargetKey 
+			WHERE ISNULL(a.' + @sourceColumn + ',0 ) <> ISNULL(b.'
+                                       + @TargetColumn + ',0 ) '
+                                  ELSE 'SELECT  b.TargetKey, ' + @sourceColumn
+                                       + ', ' + @TargetColumn + ' from #Source a 
+			JOIN #Target b ON a.SourceKey=b.TargetKey 
+			WHERE a.' + @sourceColumn + ' <> b.' + @TargetColumn + ' '
+                             END
+        WHERE   MapID = @int
+                AND flag IN ('c2c')
+                AND [Owner] IN ( 'PWS_US', 'PWS_CA')
+			
+        SET @int = @int + 1
+    END
+	GO
+
+
+
+
+
 				
 
 --SELECT * FROM dbqa.Map_tab Where flag='def'

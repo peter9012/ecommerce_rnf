@@ -8,29 +8,44 @@ DECLARE @message NVARCHAR(max)
 
 
 
-SET @message='AutoshipHeader Validation Started.'
+SET @message=CONCAT('***********************************************',
+                           CHAR(10),'AutoshipHeader Validation Started.',
+                           CHAR(10),
+                           '************************************************')
  EXECUTE dbqa.uspPrintMessage @message
 EXECUTE  dbqa.uspAutoshipHeader_delta  @StartDate,@EndDate
 
-SET @message='AutoshipItems Validation Started.'
+SET @message=CONCAT('***********************************************',
+                           CHAR(10),'AutoshipItems Validation Started.',
+                           CHAR(10),
+                           '************************************************')
  EXECUTE dbqa.uspPrintMessage @message
 EXECUTE  dbqa.uspAutoship_Item_delta  @StartDate,@EndDate
 
 
-SET @message='AutoshipPayment  Validation Started.'
+SET @message=CONCAT('***********************************************',
+                           CHAR(10),'AutoshipPayment  Validation Started.',
+                           CHAR(10),
+                           '************************************************')
  EXECUTE dbqa.uspPrintMessage @message
  EXECUTE dbqa.uspAutoshipPayment_delta   @StartDate,@EndDate
 
 
 
 
- SET @message='AutoshipBillingAddress Validation Started.'
+ SET @message=CONCAT('***********************************************',
+                           CHAR(10),'AutoshipBillingAddress Validation Started.',
+                           CHAR(10),
+                           '************************************************')
  EXECUTE dbqa.uspPrintMessage @message
 EXECUTE dbqa.uspAutoshipPaymentAddresses_delta  @StartDate,@EndDate
 
 
 
-SET @message='AutoshipShippingAddress Validation Started.'
+SET @message=CONCAT('***********************************************',
+                           CHAR(10),'AutoshipShippingAddress Validation Started.',
+                           CHAR(10),
+                           '************************************************')
  EXECUTE dbqa.uspPrintMessage @message
 EXECUTE dbqa.uspAutoshipShippingAddress_delta  @StartDate,@EndDate
 

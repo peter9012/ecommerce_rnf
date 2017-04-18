@@ -65,7 +65,7 @@ VALUES
 ,--p_code- ReturnRequest
 (N'RFOperations.Hybris.ReturnOrder' ,N'ReturnNumber',N'nvarchar(255)' ,N' ' ,N'Hybris.dbo.returnrequest' ,N'p_rma' ,N'nvarchar(255)' ,N'ReturnNumber' ,N'' , N'c2c' ,N'ReturnOrder',N'') 
 ,--p_rma- ReturnRequest
-(N'RFOperations.Hybris.ReturnOrder' ,N'OrderID',N'bigint' ,N' ' ,N'Hybris.dbo.returnrequest' ,N'p_order' ,N'nvarchar(255)' ,N'ReturnNumber' ,N'Hybris.dbo.orders' , N'ref' ,N'ReturnOrder',N'') 
+(N'RFOperations.Hybris.ReturnOrder' ,N'OrderNumber',N'bigint' ,N' ' ,N'Hybris.dbo.returnrequest' ,N'p_order' ,N'nvarchar(255)' ,N'ReturnNumber' ,N'Hybris.dbo.orders' , N'ref' ,N'ReturnOrder',N'') 
 ,--p_order- ReturnRequest
 
 
@@ -128,13 +128,13 @@ VALUES
 ,--p_validtomonth
 (N'RFOpetions.Hybris.ReturnPayment' ,N'AmountToBeAuthorized',N'bigint' ,N' ' ,N'Hybris.dbo.paymenttransactions' ,N'p_plannedamount' ,N'decimal(30,8)' ,N'ReturnNumber' ,N' ' , N'c2c' ,N'ReturnPayment',N'') 
 ,--p_plannedamount
-(N'RodanFieldslive.dbo.Orderpayment' ,N'number,Validtomonth,validtoyear',N'nvarchar' ,N' CONCAT(SUBSTRING(number, 1, 6),SUBSTRING(number,( LEN(number) - 3 ), 4),validToMonth, validToYear)' ,N'Hybris.dbo.paymentinfos' ,N'p_subscriptionid' ,N'nvarchar(255)' ,N'ReturnNumber' ,N' ' , N'c2c' ,N'ReturnPayment',N'') 
+(N'RodanFieldslive.dbo.Orderpayment' ,N'SubscriptionID',N'nvarchar' ,N' CONCAT(SUBSTRING(number, 1, 6),SUBSTRING(number,( LEN(number) - 3 ), 4),validToMonth, validToYear)' ,N'Hybris.dbo.paymentinfos' ,N'p_subscriptionid' ,N'nvarchar(255)' ,N'ReturnNumber' ,N' ' , N'c2c' ,N'ReturnPayment',N'') 
 ,--p_subscriptionid
 (N'RodanFieldslive.dbo.Orderpayment' ,N'Name',N'nvarchar(255)' ,N'BillingFirstName,LastName ' ,N'Hybris.dbo.paymentinfos' ,N'p_ccowner' ,N'nvarchar(255)' ,N'ReturnNumber' ,N' ' , N'c2c' ,N'ReturnPayment',N'') 
 ,--p_ccowner
 (N'RodanFieldslive.dbo.Orderpayment' ,N'AccountNumber',N'nvarchar(255)' ,N'BillingFirstName,LastName ' ,N'Hybris.dbo.paymentinfos' ,N'p_number' ,N'nvarchar(255)' ,N'ReturnNumber' ,N' ' , N'c2c' ,N'ReturnPayment',N'') 
 ,--p_number
-(N'' ,N'',N'' ,N' Hybris System Attributes' ,N'Hybris.dbo.paymentinfos' ,N'p_user' ,N'bigint' ,N'ReturnNumber' ,N' Hybris.dbo.users' , N'ref' ,N'ReturnPayment',N'') 
+(N'RFOpetions.Hybris.ReturnPayment' ,N'AccountID',N'bigint' ,N' ' ,N'Hybris.dbo.paymentinfos' ,N'p_user' ,N'bigint' ,N'ReturnNumber' ,N' Hybris.dbo.users' , N'ref' ,N'ReturnPayment',N'') 
 ,--p_user
 (N'' ,N'',N'' ,N' Hybris System Attributes' ,N'Hybris.dbo.paymentinfos' ,N'p_duplicate' ,N'tinyint' ,N'ReturnNumber' ,N' Defaulted to 1' , N'def' ,N'ReturnPayment',N'') 
 ,--p_duplicate						

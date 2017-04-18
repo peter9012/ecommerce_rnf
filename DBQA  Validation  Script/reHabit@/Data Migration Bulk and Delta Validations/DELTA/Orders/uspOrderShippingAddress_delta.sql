@@ -39,20 +39,22 @@ AS
 
 
         SET NOCOUNT ON 
-        SET @message = ' STEP: 1.RFOSource Table Started to Load.'
+        SET @message = CONCAT(' STEP: 1.RFOSource Table Started to Load.',
+                              CHAR(10),
+                              '-----------------------------------------------')
         EXECUTE dbqa.uspPrintMessage @message
 
         SELECT  ro.OrderNumber AS [RFOKey] ,
-                CountryID ,--	p_country
-                FirstName ,--	p_firstname
-                LastName ,--	p_lastname
+                osa.CountryID ,--	p_country
+                osa.FirstName ,--	p_firstname
+                osa.LastName ,--	p_lastname
                 Address1 ,--	p_streetname
                 AddressLine2 ,--	p_streetNumber
                 PostalCode ,--	p_postalcode
                 Locale ,--	p_town
                 Region ,--	p_region
                 Telephone ,--	p_phone1
-                MiddleName ,--	p_middlename
+                osa.MiddleName ,--	p_middlename
                 BirthDay ,--	p_dateofbirth
                 GenderID --	p_gender	
         INTO    #RFO
@@ -62,14 +64,18 @@ AS
                 JOIN RFOperations.RFO_Accounts.accountcontacts ac ON ac.AccountId = ro.AccountID
         WHERE   EXISTS ( SELECT 1
                          FROM   Hybris.dbo.Orders ho
-                                JOIN Hybris.dbo.composedtype ct ON ct.pk = ho.Typepkstring
-                                                              AND ct.internalcode <> 'returnOrder'
+                                JOIN Hybris.dbo.composedtypes ct ON ct.pk = ho.Typepkstring
+                                                              AND ct.internalcode = 'Order'
                          WHERE  ho.p_code = ro.OrderNumber )
                 AND osa.ServerModifiedDate BETWEEN @StartDate
                                            AND     @EndDate
 
 
         SET @message = 'STEP: 2.RFOSource Table Loaded and Target Table Started to Load'
+        EXECUTE dbqa.uspPrintMessage @message
+
+        SET @message = CONCAT('STEP: 2.Target Table Started to Load', CHAR(10),
+                              '-----------------------------------------------')
         EXECUTE dbqa.uspPrintMessage @message
 
         SELECT  co.p_isocode AS p_country ,--	CountryID
@@ -92,25 +98,30 @@ AS
                 JOIN Hybris.dbo.orders ho ON ho.pk = ad.OwnerPkString
                                              AND ad.p_duplicate = 1
                 JOIN Hybris.dbo.composedtypes ct ON ct.pk = ho.TypePkString
-                                                    AND ct.InternalCode <> 'ReturnOrder'
+                                                    AND ct.InternalCode = 'Order'
                 JOIN Hybris.dbo.countries co ON co.pk = ad.p_country
                 JOIN Hybris.dbo.regions re ON re.pk = ad.p_region
-                JOIN Hybris.dbo.enumerationvalues g ON g.pk = ad.p_gender
+                LEFT JOIN Hybris.dbo.enumerationvalues g ON g.pk = ad.p_gender
         WHERE   ad.modifiedTS BETWEEN @StartDate AND @EndDate
 
 
 	
+        SET @message = CONCAT(' STEP:3.Creating Indexes in Temps', CHAR(10),
+                              '-----------------------------------------------')
+        EXECUTE dbqa.uspPrintMessage @message  
+	
         CREATE NONCLUSTERED INDEX cls_RFO ON #RFO(RFOKey)  
         CREATE NONCLUSTERED INDEX cls_Hybris ON  #Hybris(HybrisKey)   
 
-        SET @message = ' STEP:3.Hybris Table Loaded and Starting to Validate'
-        EXECUTE dbqa.uspPrintMessage @message  
+    
 
 --++++++++++++++++++++++++++++++++++++
 -- TOTAL COUNT VALIDATION
 --++++++++++++++++++++++++++++++++++++
 
-        SET @message = ' STEP: 4.initiating COUNT Validation  '
+        SET @message = CONCAT(' STEP: 4.initiating COUNT Validation  ',
+                              CHAR(10),
+                              '-----------------------------------------------')
         EXECUTE dbqa.uspPrintMessage @message
 
         SELECT  @SourceCount = COUNT(DISTINCT [RFOKey])
@@ -152,7 +163,9 @@ AS
 --++++++++++++++++++--++++++++++++++++++
 -- RFO  Duplicate Vaidation.
 --++++++++++++++++++--++++++++++++++++++
-        SET @message = ' STEP: 5.initiating DUPLICATE Need to updaete Scripts   '
+        SET @message = CONCAT(' STEP: 5.initiating DUPLICATE Need to updaete Scripts and Need to delete from End to End Temps   ',
+                              CHAR(10),
+                              '-----------------------------------------------')
         EXECUTE dbqa.uspPrintMessage @message
 
 --SET @SourceCount = 0
@@ -265,7 +278,9 @@ AS
 --++++++++++++++++++++++++++++++++++++++++++
 -- MISSING IN SOURCE AND MISSING IN TARGET 
 --++++++++++++++++++++++++++++++++++++++++++
-        SET @message = ' STEP: 6.initiating MISSING Validation now '
+        SET @message = CONCAT(' STEP: 6.initiating MISSING Validation',
+                              CHAR(10),
+                              '-----------------------------------------------')
         EXECUTE dbqa.uspPrintMessage @message
 
         SELECT  a.[RFOKey] ,
@@ -337,7 +352,7 @@ AS
                   Owner ,
                   Flag ,
                   SourceColumn ,
-                  TargetCoulumn ,
+                  TargetColumn ,
                   [Key] ,
                   SourceValue ,
                   TargetValue
@@ -347,7 +362,7 @@ AS
                         @Owner , -- Owner - nvarchar(50)
                         [Missing From ] , -- Flag - nvarchar(10)
                         N'' , -- SourceColumn - nvarchar(50)
-                        N'' , -- TargetCoulumn - nvarchar(50)
+                        N'' , -- TargetColumn - nvarchar(50)
                         @Key , -- Key - nvarchar(50)
                         [RFOKey] , -- SourceValue - nvarchar(50)
                         [HybrisKey]
@@ -359,7 +374,7 @@ AS
                         @Owner , -- Owner - nvarchar(50)
                         [Missing From ] , -- Flag - nvarchar(10)
                         N'' , -- SourceColumn - nvarchar(50)
-                        N'' , -- TargetCoulumn - nvarchar(50)
+                        N'' , -- TargetColumn - nvarchar(50)
                         @Key , -- Key - nvarchar(50)
                         [RFOKey] , -- SourceValue - nvarchar(50)
                         [HybrisKey]
@@ -374,7 +389,9 @@ AS
 
 -- MixNMatch
 
-        SET @message = ' STEP: 7.initiating MIXMATCH Validation '
+        SET @message = CONCAT(' STEP: 7.initiating MIXMATCH Validation ',
+                              CHAR(10),
+                              '-----------------------------------------------')
         EXECUTE dbqa.uspPrintMessage @message
 
 
@@ -460,7 +477,7 @@ AS
                   Owner ,
                   Flag ,
                   SourceColumn ,
-                  TargetCoulumn ,
+                  TargetColumn ,
                   [Key] ,
                   SourceValue ,
                   TargetValue
@@ -470,7 +487,7 @@ AS
                         @Owner , -- Owner - nvarchar(50)
                         @ValidationType , -- Flag - nvarchar(10)
                         RFOKey , -- SourceColumn - nvarchar(50)
-                        HybrisKey , -- TargetCoulumn - nvarchar(50)
+                        HybrisKey , -- TargetColumn - nvarchar(50)
                         @Key , -- Key - nvarchar(50)
                         RFC , -- SourceValue - nvarchar(50)
                         HBC
@@ -482,7 +499,9 @@ AS
  --VALIDATION STARTING FOR END TO END 
 --++++++++++++++++++++++++++++++++++++++++++++++++++
 		
-        SET @message = ' STEP: 8.Removing Issues for END TO END Validaion  '
+        SET @message = CONCAT(' STEP: 8.Removing Issues for END TO END Validaion',
+                              CHAR(10),
+                              '-----------------------------------------------')
         EXECUTE dbqa.uspPrintMessage @message
 
 
@@ -496,9 +515,9 @@ AS
                 JOIN #MixMatch m ON m.RFOkey = a.RFOKey
 
 
-        DELETE  a
-        FROM    #RFO a
-                JOIN #DupRFO m ON m.RFOkey = a.RFOKey
+        --DELETE  a
+        --FROM    #RFO a
+        --        JOIN #DupRFO m ON m.RFOkey = a.RFOKey
 
 
         DELETE  a
@@ -508,15 +527,24 @@ AS
         DELETE  a
         FROM    #Hybris a
                 JOIN #MixMatch m ON m.HybrisKey = a.HybrisKey	
-        DELETE  a
-        FROM    #Hybris a
-                JOIN #DupHybris m ON m.HybrisKey = a.HybrisKey	
+        --DELETE  a
+        --FROM    #Hybris a
+        --        JOIN #DupHybris m ON m.HybrisKey = a.HybrisKey	
 
         DROP TABLE #missing
         DROP TABLE #MixMatch
         DROP TABLE #DupRFO
         DROP TABLE #DupHybris
 
+        SET @sourceCount = 0
+        SELECT  @sourceCount = COUNT(RFOKey)
+        FROM    #RFO a
+                JOIN #Hybris b ON a.RFOKey = b.HybrisKey
+
+        SET @message = CONCAT(' STEP: 9. Total Record Counts for End to End = ',
+                              CAST(@SourceCount AS NVARCHAR(25)), CHAR(10),
+                              '-----------------------------------------------')
+        EXECUTE dbqa.uspPrintMessage @message
 
 
         IF OBJECT_ID('Tempdb.dbo.#Temp') IS NOT NULL
@@ -530,7 +558,7 @@ AS
 
 
 		
-		
+			
         DECLARE @MaxRow INT ,
             @RowNumber INT ,
             @rowCounts INT= 0 ,
@@ -546,15 +574,17 @@ AS
             );
 
 
+
+       
         SELECT  @MaxRow = MAX(RowNumber)
         FROM    #Temp
         IF ISNULL(@MaxRow, 0) > 0
             BEGIN
-        
-                SET @Message = 'STEP: 9.Validation Started For Columnt To Column with  total fields= '
-                    + CAST(@MaxRow AS NVARCHAR(20))              
+                SET @Message = CONCAT('STEP: 10. Validation Started For Columnt To Column with  total fields= ',
+                                      CAST(@MaxRow AS NVARCHAR(20)), CHAR(10),
+                                      '-----------------------------------------------')
+                   
                 EXECUTE dbqa.uspPrintMessage @message
-
 
 
                 SET @RowNumber = 1
@@ -572,8 +602,11 @@ AS
 
                         SET @Message = CONCAT('Column Validation Started For ',
                                               CAST(@RowNumber AS NVARCHAR(20)),
-                                              '. ', @TargetColumn)
+                                              '. ', @TargetColumn, CHAR(10),
+                                              '-----------------------------------------------')
+
                         EXECUTE dbqa.uspPrintMessage @message
+ 
 
                         INSERT  INTO @temp
                                 ( [key], SourceValue,--[SourceColumn]
@@ -587,8 +620,10 @@ AS
                             BEGIN
                                 SET @Message = CONCAT('Total IssueCount=',
                                                       CAST(@rowCounts AS NVARCHAR(12)),
-                                                      ' for ', @TargetColumn)
-
+                                                      ' for ', @TargetColumn,
+                                                      CHAR(10),
+                                                      '-----------------------------------------------')
+                                EXECUTE dbqa.uspPrintMessage @message
 
                                 INSERT  INTO dbqa.SourceTargetLog
                                         ( FlowTypes ,
@@ -599,7 +634,7 @@ AS
                                           comments ,
                                           ExecutionStatus
                                         )
-                                VALUES  ( @Owner , -- FlowTypes - nvarchar(50)
+                                VALUES  ( @Flows , -- FlowTypes - nvarchar(50)
                                           CONCAT(@Flag, '_EndToEnd') , -- ValidationTypes - nvarchar(50)
                                           @Owner , -- Owner - nvarchar(50)
                                           @rowCounts , -- SourceCount - int
@@ -614,18 +649,18 @@ AS
                                           [Owner] ,
                                           Flag ,
                                           SourceColumn ,
-                                          TargetCoulumn ,
+                                          TargetColumn ,
                                           [Key] ,
                                           SourceValue ,
                                           TargetValue
                                         )
                                         SELECT TOP 10
-                                                @Owner ,
+                                                @Flows ,
                                                 @Owner ,
                                                 CONCAT(@Flag, '_EndToEnd') ,
                                                 @SourceColumn ,
                                                 @TargetColumn ,
-                                                @Key ,
+                                                CONCAT(@Key, '=', [Key]) ,
                                                 SourceValue ,
                                                 TargetValue
                                         FROM    @temp
@@ -663,7 +698,4 @@ AS
 
 
             END
-
-
-
     END 

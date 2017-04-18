@@ -10,27 +10,42 @@ DECLARE @message NVARCHAR(max)
 
 
 
-SET @message='AccountHeader Validation Started.'
+SET @message=CONCAT('***********************************************',
+                           CHAR(10), 'AccountHeader Validation Started.',
+                           CHAR(10),
+                           '************************************************')
  EXECUTE dbqa.uspPrintMessage @message
-EXECUTE  dbqa.upsAccountHeader_Delta @LoadDate, @StartDate,@EndDate
+EXECUTE  dbqa.uspAccountHeader_Delta @LoadDate, @StartDate,@EndDate
 
-SET @message='AccountPaymentProfile Validation Started.'
+SET @message=CONCAT('***********************************************',
+                           CHAR(10), 'AccountPaymentProfile Validation Started.',
+                           CHAR(10),
+                           '************************************************')
  EXECUTE dbqa.uspPrintMessage @message
  EXECUTE dbqa.uspAccountPaymentProfiles_delta  @LoadDate, @StartDate,@EndDate
 
 
-SET @message='AccountContactAddress Validation Started.'
+SET @message=CONCAT('***********************************************',
+                           CHAR(10), 'AccountContactAddress Validation Started.',
+                           CHAR(10),
+                           '************************************************')
  EXECUTE dbqa.uspPrintMessage @message
  EXECUTE dbqa.uspAccountContactAddress_delta @LoadDate, @StartDate,@EndDate
 
 
- SET @message='AccountBillingAddress Validation Started.'
+ SET @message=CONCAT('***********************************************',
+                           CHAR(10), 'AccountBillingAddress Validation Started.',
+                           CHAR(10),
+                           '************************************************')
  EXECUTE dbqa.uspPrintMessage @message
 EXECUTE dbqa.uspAccountsBillingAddress_delta @LoadDate, @StartDate,@EndDate
 
 
 
-SET @message='AccountShippingAddress Validation Started.'
+SET @message=CONCAT('***********************************************',
+                           CHAR(10), 'AccountShippingAddress Validation Started.',
+                           CHAR(10),
+                           '************************************************')
  EXECUTE dbqa.uspPrintMessage @message
 EXECUTE dbqa.uspAccountsShippingAddress_delta @LoadDate, @StartDate,@EndDate
 

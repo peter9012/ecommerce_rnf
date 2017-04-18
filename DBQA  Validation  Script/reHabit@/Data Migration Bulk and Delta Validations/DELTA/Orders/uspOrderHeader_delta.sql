@@ -42,7 +42,9 @@ AS
 
         SET NOCOUNT ON 
 
-        SET @message = ' STEP: 1.RFOSource Table Started to Load.'
+        SET @message = CONCAT(' STEP: 1.RFOSource Table Started to Load.',
+                              CHAR(10),
+                              '-----------------------------------------------')
         EXECUTE dbqa.uspPrintMessage @message
 
 
@@ -67,7 +69,7 @@ AS
                 donotship , --	p_donotship,
                 ( os.ShippingCost + os.HandlingCost ) AS ShippingCost , --	p_deliverycost
                 ( os.TaxOnShippingCost + os.TaxOnHandlingCost ) AS TaxOnShippingCost  --	p_taxonshippingcost       
-        INTO    #RFOOrders
+        INTO    #RFO
         FROM    RFOperations.Hybris.Orders ro
                 JOIN RFOperations.RFO_Reference.Countries co ON co.CountryID = ro.CountryID
                 JOIN RFOperations.RFO_Reference.Currency cu ON cu.CurrencyID = ro.CurrencyID
@@ -78,13 +80,14 @@ AS
                 LEFT JOIN RFOperations.Hybris.OrderShipment os ON os.OrderID = ro.OrderID
         WHERE   EXISTS ( SELECT 1
                          FROM   Hybris.dbo.users u
-                         WHERE  u.p_customerid = ab.AccountNumber )
+                         WHERE  u.p_customerid = CAST(ab.AccountID AS NVARCHAR(225)) )
                 AND ro.ServerModifiedDate BETWEEN @StartDate
                                           AND     @EndDate 
 													   
 
 
-        SET @message = 'STEP: 2.RFOSource Table Loaded and Target Table Started to Load'
+        SET @message = CONCAT('STEP: 2.Target Table Started to Load', CHAR(10),
+                              '-----------------------------------------------')
         EXECUTE dbqa.uspPrintMessage @message
 	
 
@@ -104,7 +107,7 @@ AS
                 o.p_totaltax , --	TotalTax
                 o.p_totaldiscounts AS p_totaldiscount , --	TotalDiscount
                 o.p_cv , --	CV
-                o.p_totalsv AS p_qv , --	QV
+                o.p_totalsv , --	QV
                 c.p_taxexempt AS isTaxExempt , --	TaxExempt
                 o.p_donotship , --	donotship
                 o.p_deliverycost , --	ShippingCost
@@ -115,14 +118,16 @@ AS
                 o.p_fraudulent , -- SET False.
                 o.p_net ,-- SET 0.
                 o.p_paymentcost , -- SET 0
-                o.p_ptentiallyfraudulent -- SET 0
-        INTO    #HybrisOrders
+                o.p_potentiallyfraudulent   -- SET 0
+        INTO    #Hybris
        --SELECT * 
         FROM    Hybris.dbo.orders o
                 JOIN Hybris.dbo.enumerationvalues s ON s.pk = o.p_status
                 JOIN Hybris.dbo.countries co ON co.pk = o.p_country
                 JOIN Hybris.dbo.currencies cu ON cu.pk = o.p_currency
                 JOIN Hybris.dbo.enumerationvalues ct ON ct.pk = o.p_carttype
+                JOIN Hybris.dbo.composedtypes ot ON ot.pk = o.TypePkString
+                                                    AND ot.InternalCode = 'Order'
                 JOIN Hybris.dbo.users u ON u.pk = o.p_user
                 LEFT JOIN Hybris.dbo.users cons ON cons.pk = o.p_consultantdetails
                 LEFT JOIN Hybris.dbo.enumerationvalues t ON t.PK = o.p_deliverystatus
@@ -149,20 +154,22 @@ Scenario Validation for Orders:
 */
 
 
-
+        SET @message = CONCAT('Step:3.Creating Indexes on Temps', CHAR(10),
+                              '-----------------------------------------------')
+        EXECUTE dbqa.uspPrintMessage @message  
 		
 		
         CREATE CLUSTERED INDEX cls_RFO ON #RFO(RFOKey)
         CREATE CLUSTERED INDEX cls_Hybris ON  #Hybris(HybrisKey)
 
-        SET @message = ' STEP:3.Hybris Table Loaded and Starting to Validate'
-        EXECUTE dbqa.uspPrintMessage @message  
 
 --++++++++++++++++++++++++++++++++++++
 -- TOTAL COUNT VALIDATION
 --++++++++++++++++++++++++++++++++++++
 
-        SET @message = ' STEP: 4.initiating COUNT Validation  '
+        SET @message = CONCAT(' STEP: 4.initiating COUNT Validation  ',
+                              CHAR(10),
+                              '-----------------------------------------------')
         EXECUTE dbqa.uspPrintMessage @message
 
         SELECT  @SourceCount = COUNT(DISTINCT [RFOKey])
@@ -205,7 +212,9 @@ Scenario Validation for Orders:
 -- RFO  Duplicate Vaidation.
 --++++++++++++++++++--++++++++++++++++++
 
-        SET @message = ' STEP: 5.initiating DUPLICATE Need to updaete Scripts   '
+        SET @message = CONCAT(' STEP: 5.initiating DUPLICATE Need to updaete Scripts ',
+                              CHAR(10),
+                              '-----------------------------------------------')
         EXECUTE dbqa.uspPrintMessage @message
 
         SET @SourceCount = 0
@@ -309,7 +318,9 @@ Scenario Validation for Orders:
 --++++++++++++++++++++++++++++++++++++++++++
 -- MISSING IN SOURCE AND MISSING IN TARGET 
 --++++++++++++++++++++++++++++++++++++++++++
-        SET @message = ' STEP: 6.initiating MISSING Validation now '
+        SET @message = CONCAT(' STEP: 6.initiating MISSING Validation ',
+                              CHAR(10),
+                              '-----------------------------------------------')
         EXECUTE dbqa.uspPrintMessage @message
 
  
@@ -381,7 +392,7 @@ Scenario Validation for Orders:
                   Owner ,
                   Flag ,
                   SourceColumn ,
-                  TargetCoulumn ,
+                  TargetColumn ,
                   [Key] ,
                   SourceValue ,
                   TargetValue
@@ -391,7 +402,7 @@ Scenario Validation for Orders:
                         @Owner , -- Owner - nvarchar(50)
                         [Missing From ] , -- Flag - nvarchar(10)
                         N'' , -- SourceColumn - nvarchar(50)
-                        N'' , -- TargetCoulumn - nvarchar(50)
+                        N'' , -- TargetColumn - nvarchar(50)
                         @Key , -- Key - nvarchar(50)
                         [RFOKey] , -- SourceValue - nvarchar(50)
                         [HybrisKey]
@@ -403,7 +414,7 @@ Scenario Validation for Orders:
                         @Owner , -- Owner - nvarchar(50)
                         [Missing From ] , -- Flag - nvarchar(10)
                         N'' , -- SourceColumn - nvarchar(50)
-                        N'' , -- TargetCoulumn - nvarchar(50)
+                        N'' , -- TargetColumn - nvarchar(50)
                         @Key , -- Key - nvarchar(50)
                         [RFOKey] , -- SourceValue - nvarchar(50)
                         [HybrisKey]
@@ -417,7 +428,9 @@ Scenario Validation for Orders:
  --VALIDATION STARTING FOR END TO END 
 --++++++++++++++++++++++++++++++++++++++++++++++++++
 		
-        SET @message = ' STEP: 7.Removing Issues for END TO END Validaion  '
+        SET @message = CONCAT(' STEP: 7.Removing Issues for END TO END Validaion  ',
+                              CHAR(10),
+                              '-----------------------------------------------')
         EXECUTE dbqa.uspPrintMessage @message
 
       	
@@ -439,7 +452,15 @@ Scenario Validation for Orders:
 
         DROP TABLE #missing
  
+        SET @sourceCount = 0
+        SELECT  @sourceCount = COUNT(RFOKey)
+        FROM    #RFO a
+                JOIN #Hybris b ON a.RFOKey = b.HybrisKey
 
+        SET @message = CONCAT(' STEP: 8. Total Record Counts for End to End = ',
+                              CAST(@SourceCount AS NVARCHAR(25)), CHAR(10),
+                              '-----------------------------------------------')
+        EXECUTE dbqa.uspPrintMessage @message
 
         SELECT  * ,
                 ROW_NUMBER() OVER ( ORDER BY mapID ) AS [RowNumber]
@@ -467,15 +488,16 @@ Scenario Validation for Orders:
 
 
 
+       
         SELECT  @MaxRow = MAX(RowNumber)
         FROM    #Temp
         IF ISNULL(@MaxRow, 0) > 0
             BEGIN
-        
-                SET @Message = 'STEP: 9.Validation Started For Columnt To Column with  total fields= '
-                    + CAST(@MaxRow AS NVARCHAR(20))              
+                SET @Message = CONCAT('STEP: 9. Validation Started For Columnt To Column with  total fields= ',
+                                      CAST(@MaxRow AS NVARCHAR(20)), CHAR(10),
+                                      '-----------------------------------------------')
+                   
                 EXECUTE dbqa.uspPrintMessage @message
-
 
 
                 SET @RowNumber = 1
@@ -493,8 +515,11 @@ Scenario Validation for Orders:
 
                         SET @Message = CONCAT('Column Validation Started For ',
                                               CAST(@RowNumber AS NVARCHAR(20)),
-                                              '. ', @TargetColumn)
+                                              '. ', @TargetColumn, CHAR(10),
+                                              '-----------------------------------------------')
+
                         EXECUTE dbqa.uspPrintMessage @message
+ 
 
                         INSERT  INTO @temp
                                 ( [key], SourceValue,--[SourceColumn]
@@ -508,8 +533,10 @@ Scenario Validation for Orders:
                             BEGIN
                                 SET @Message = CONCAT('Total IssueCount=',
                                                       CAST(@rowCounts AS NVARCHAR(12)),
-                                                      ' for ', @TargetColumn)
-
+                                                      ' for ', @TargetColumn,
+                                                      CHAR(10),
+                                                      '-----------------------------------------------')
+                                EXECUTE dbqa.uspPrintMessage @message
 
                                 INSERT  INTO dbqa.SourceTargetLog
                                         ( FlowTypes ,
@@ -520,7 +547,7 @@ Scenario Validation for Orders:
                                           comments ,
                                           ExecutionStatus
                                         )
-                                VALUES  ( @Owner , -- FlowTypes - nvarchar(50)
+                                VALUES  ( @Flows , -- FlowTypes - nvarchar(50)
                                           CONCAT(@Flag, '_EndToEnd') , -- ValidationTypes - nvarchar(50)
                                           @Owner , -- Owner - nvarchar(50)
                                           @rowCounts , -- SourceCount - int
@@ -535,18 +562,18 @@ Scenario Validation for Orders:
                                           [Owner] ,
                                           Flag ,
                                           SourceColumn ,
-                                          TargetCoulumn ,
+                                          TargetColumn ,
                                           [Key] ,
                                           SourceValue ,
                                           TargetValue
                                         )
                                         SELECT TOP 10
-                                                @Owner ,
+                                                @Flows ,
                                                 @Owner ,
                                                 CONCAT(@Flag, '_EndToEnd') ,
                                                 @SourceColumn ,
                                                 @TargetColumn ,
-                                                @Key ,
+                                                CONCAT(@Key, '=', [Key]) ,
                                                 SourceValue ,
                                                 TargetValue
                                         FROM    @temp

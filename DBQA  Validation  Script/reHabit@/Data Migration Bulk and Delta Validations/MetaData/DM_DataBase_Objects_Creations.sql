@@ -45,7 +45,7 @@ GO
 
 
 
-CREATE PROCEDURE dbqa.[uspPrintMessage] 
+CREATE PROCEDURE dbqa.uspPrintMessage
 	@Message NVARCHAR(4000)
    ,@ElapsedTime VARCHAR(30) = NULL
 AS 
@@ -147,14 +147,14 @@ USE DM_QA
 GO 
 
 IF OBJECT_ID(N'dbqa.ErrorLog') IS NULL
-    CREATE TABLE dbqa.ErrorLog
+    CREATE   TABLE dbqa.ErrorLog
         (
           LogID INT IDENTITY(1, 1) ,
           FlowTypes NVARCHAR(50) ,-- Data Migrations
           [Owner] NVARCHAR(50) ,-- Accounts
           Flag NVARCHAR(50) ,-- c2c ,missing or duplicates
           SourceColumn NVARCHAR(50) ,
-          TargetCoulumn NVARCHAR(50) ,
+          TargetColumn NVARCHAR(50) ,
           [Key] NVARCHAR(50) ,
           SourceValue NVARCHAR(50) ,
           TargetValue NVARCHAR(50) ,

@@ -41,7 +41,9 @@ AS
 
 
 
-        SET @message = ' STEP: 1.RFOSource Table Started to Load.'
+        SET @message = CONCAT(' STEP: 1.RFOSource Table Started to Load.',
+                              CHAR(10),
+                              '-----------------------------------------------')
         EXECUTE dbqa.uspPrintMessage @message
 
 
@@ -72,12 +74,14 @@ AS
                          WHERE  apa.AutoShipID = asa.AutoshipID )
                 AND EXISTS ( SELECT 1
                              FROM   Hybris.dbo.users u
-                             WHERE  u.p_customerid = a.accountid )
+                             WHERE  u.p_customerid = CAST(a.AccountID AS NVARCHAR(225)) )
                 AND a.Active = 1
                 AND asa.ServerModifiedDate BETWEEN @StartDate
                                            AND     @EndDate 
 	
-        SET @message = 'STEP: 2.RFOSource Table Loaded and Target Table Started to Load'
+        SET @message = CONCAT('STEP: 2.RFOSource Table Loaded and Target Table Started to Load',
+                              CHAR(10),
+                              '-----------------------------------------------')
         EXECUTE dbqa.uspPrintMessage @message
 		 
        
@@ -112,7 +116,8 @@ AS
 
 
 
-        SET @message = ' STEP:3.Hybris Table Loaded and Starting to Validate'
+        SET @message = CONCAT(' STEP:3.Creating Indexes in temps', CHAR(10),
+                              '-----------------------------------------------')
         EXECUTE dbqa.uspPrintMessage @message   
 
 	
@@ -127,7 +132,9 @@ AS
 --++++++++++++++++++++++++++++++++++++++++++++++++++++
 
       
-        SET @message = ' STEP: 4.initiating COUNT Validation  '
+        SET @message = CONCAT(' STEP: 4.initiating COUNT Validation  ',
+                              CHAR(10),
+                              '-----------------------------------------------')
         EXECUTE dbqa.uspPrintMessage @message
 
         SELECT  @SourceCount = COUNT([RFOKey])
@@ -174,7 +181,9 @@ AS
 --  DUPLICATE VALIDATION
 --++++++++++++++++++--++++++++++++++++++
 
-        SET @message = ' STEP: 5.initiating DUPLICATE Need to updaete Scripts   '
+        SET @message = CONCAT(' STEP: 5.initiating DUPLICATE Need to updaete Scripts ',
+                              CHAR(10),
+                              '-----------------------------------------------')
         EXECUTE dbqa.uspPrintMessage @message
 
 
@@ -279,7 +288,9 @@ AS
 --++++++++++++++++++++++++++++++++++++++++++
 
 
-        SET @message = ' STEP: 6.initiating MISSING Validation now '
+        SET @message = CONCAT(' STEP: 6.initiating MISSING Validation  ',
+                              CHAR(10),
+                              '-----------------------------------------------')
         EXECUTE dbqa.uspPrintMessage @message
 
 
@@ -358,7 +369,7 @@ AS
                   Owner ,
                   Flag ,
                   SourceColumn ,
-                  TargetCoulumn ,
+                  TargetColumn ,
                   [Key] ,
                   SourceValue ,
                   TargetValue
@@ -368,7 +379,7 @@ AS
                         @owner , -- Owner - nvarchar(50)
                         [Missing From ] , -- Flag - nvarchar(10)
                         N'' , -- SourceColumn - nvarchar(50)
-                        N'' , -- TargetCoulumn - nvarchar(50)
+                        N'' , -- TargetColumn - nvarchar(50)
                         @key , -- Key - nvarchar(50)
                         RFOKey , -- SourceValue - nvarchar(50)
                         HybrisKey
@@ -380,7 +391,7 @@ AS
                         @owner , -- Owner - nvarchar(50)
                         [Missing From ] , -- Flag - nvarchar(10)
                         N'' , -- SourceColumn - nvarchar(50)
-                        N'' , -- TargetCoulumn - nvarchar(50)
+                        N'' , -- TargetColumn - nvarchar(50)
                         @key , -- Key - nvarchar(50)
                         RFOKey , -- SourceValue - nvarchar(50)
                         HybrisKey
@@ -392,11 +403,15 @@ AS
 
 
 -- MixNMatch
-        SET @message = ' STEP: 7.initiating MIXMATCH Validation '
+        SET @message = CONCAT(' STEP: 7.initiating MIXMATCH Validation ',
+                              CHAR(10),
+                              '-----------------------------------------------')
         EXECUTE dbqa.uspPrintMessage @message
 
         SELECT  a.RFOKey ,
                 b.[HybrisKey] ,
+                RFC ,
+                HBC ,
                 CASE WHEN a.RFC > b.HBC
                      THEN 'paymentInfos Not Loaded in hybris'
                      WHEN a.RFC < b.HBC
@@ -475,7 +490,7 @@ AS
                   Owner ,
                   Flag ,
                   SourceColumn ,
-                  TargetCoulumn ,
+                  TargetColumn ,
                   [Key] ,
                   SourceValue ,
                   TargetValue
@@ -485,7 +500,7 @@ AS
                         @owner , -- Owner - nvarchar(50)
                         @validationtype , -- Flag - nvarchar(10)
                         RFOKey , -- SourceColumn - nvarchar(50)
-                        HybrisKey , -- TargetCoulumn - nvarchar(50)
+                        HybrisKey , -- TargetColumn - nvarchar(50)
                         @key , -- Key - nvarchar(50)
                         RFC , -- SourceValue - nvarchar(50)
                         HBC
@@ -500,7 +515,9 @@ AS
 	
 
 
-        SET @message = ' STEP: 8.Removing Issues for END TO END Validaion  '
+        SET @message = CONCAT(' STEP: 8.Removing Issues for END TO END Validaion',
+                              CHAR(10),
+                              '-----------------------------------------------')
         EXECUTE dbqa.uspPrintMessage @message
 
 
@@ -524,6 +541,19 @@ AS
 
         DROP TABLE #missing
         DROP TABLE #MixMatch
+
+
+
+        SET @sourceCount = 0
+        SELECT  @sourceCount = COUNT(RFOKey)
+        FROM    #RFO a
+                JOIN #Hybris b ON a.RFOKey = b.HybrisKey
+
+        SET @message = CONCAT(' STEP: 9. Total Record Counts for End to End = ',
+                              CAST(@SourceCount AS NVARCHAR(25)), CHAR(10),
+                              '-----------------------------------------------')
+        EXECUTE dbqa.uspPrintMessage @message
+
 
 
         IF OBJECT_ID('Tempdb.dbo.#Temp') IS NOT NULL
@@ -560,11 +590,11 @@ AS
         FROM    #Temp
         IF ISNULL(@MaxRow, 0) > 0
             BEGIN
-        
-                SET @Message = 'STEP: 9.Validation Started For Columnt To Column with  total fields= '
-                    + CAST(@MaxRow AS NVARCHAR(20))              
+                SET @Message = CONCAT('STEP: 10. Validation Started For Columnt To Column with  total fields= ',
+                                      CAST(@MaxRow AS NVARCHAR(20)), CHAR(10),
+                                      '-----------------------------------------------')
+                   
                 EXECUTE dbqa.uspPrintMessage @message
-
 
 
                 SET @RowNumber = 1
@@ -582,8 +612,11 @@ AS
 
                         SET @Message = CONCAT('Column Validation Started For ',
                                               CAST(@RowNumber AS NVARCHAR(20)),
-                                              '. ', @TargetColumn)
+                                              '. ', @TargetColumn, CHAR(10),
+                                              '-----------------------------------------------')
+
                         EXECUTE dbqa.uspPrintMessage @message
+ 
 
                         INSERT  INTO @temp
                                 ( [key], SourceValue,--[SourceColumn]
@@ -597,8 +630,10 @@ AS
                             BEGIN
                                 SET @Message = CONCAT('Total IssueCount=',
                                                       CAST(@rowCounts AS NVARCHAR(12)),
-                                                      ' for ', @TargetColumn)
-
+                                                      ' for ', @TargetColumn,
+                                                      CHAR(10),
+                                                      '-----------------------------------------------')
+                                EXECUTE dbqa.uspPrintMessage @message
 
                                 INSERT  INTO dbqa.SourceTargetLog
                                         ( FlowTypes ,
@@ -609,7 +644,7 @@ AS
                                           comments ,
                                           ExecutionStatus
                                         )
-                                VALUES  ( @Owner , -- FlowTypes - nvarchar(50)
+                                VALUES  ( @Flows , -- FlowTypes - nvarchar(50)
                                           CONCAT(@Flag, '_EndToEnd') , -- ValidationTypes - nvarchar(50)
                                           @Owner , -- Owner - nvarchar(50)
                                           @rowCounts , -- SourceCount - int
@@ -624,18 +659,18 @@ AS
                                           [Owner] ,
                                           Flag ,
                                           SourceColumn ,
-                                          TargetCoulumn ,
+                                          TargetColumn ,
                                           [Key] ,
                                           SourceValue ,
                                           TargetValue
                                         )
                                         SELECT TOP 10
-                                                @Owner ,
+                                                @Flows ,
                                                 @Owner ,
                                                 CONCAT(@Flag, '_EndToEnd') ,
                                                 @SourceColumn ,
                                                 @TargetColumn ,
-                                                @Key ,
+                                                CONCAT(@Key, '=', [Key]) ,
                                                 SourceValue ,
                                                 TargetValue
                                         FROM    @temp
@@ -673,12 +708,4 @@ AS
 
 
             END
-
-
-
-
-
-
-
-
     END 

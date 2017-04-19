@@ -177,7 +177,7 @@ public class StoreFrontWebsiteBasePage extends RFBasePage {
 	private final By I_ACKNOWLEDGE_PC_CHK_BOX_LOC = By.xpath("//input[@id='Terms2']");
 	private final By BILLING_NEXT_BUTTON_LOC = By.id("cmdSubmit");
 	private final By BECOME_A_CONSULTANT_BTN_LOC = By.id("placeOrder");
-	private final By ENROLLMENT_SUCCESSFUL_MSG_LOC = By.xpath("//*[contains(text(),'ENROLLMENT SUCCESSFUL') or contains(text(),'Step One is complete. Your order number is')]");
+	private final By ENROLLMENT_SUCCESSFUL_MSG_LOC = By.xpath("//*[contains(text(),'SUCCESSFUL') or contains(text(),'Step One is complete. Your order number is')]");
 	private final By REMOVE_LINK_LOC = By.xpath("//a[contains(text(),'REMOVE')]");
 	private final By CONSULTANT_ONLY_PRODUCTS_LINK_LOC = By
 			.xpath("//div[@class='navbar-inverse']//a[@title='CONSULTANT ONLY']");

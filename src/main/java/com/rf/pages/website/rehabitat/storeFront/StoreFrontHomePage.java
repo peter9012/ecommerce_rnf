@@ -85,7 +85,9 @@ public class StoreFrontHomePage extends StoreFrontWebsiteBasePage{
 	private final By PRODUCT_SEARCH_AUTOSUGGESTION_LOC = By.xpath("//div[@class='name']");
 	private final By MEET_THE_DOCTORS_TXT_LOC = By.xpath("//h1[contains(text(),'Meet the Doctors')]");
 	private final By CONTINUE_SHOPPING_CRP_BTN_LOC = By.xpath("//button[contains(text(),'Continue')]");
+	private final By ALL_CRP_PRODUCTS_QV_LOC = By.xpath("//span[@class='totalSV']");
 
+	private String addToCRPBtnForSpecificCRPProductLoc = "//div[@id='product_category']/following::span[contains(text(),'Add to CRP')][%s]";
 	private String addToCRPBtnForSpecificProductLoc = "//a[contains(@href,'%s')]/following::h3[contains(normalize-space(text()),'%s')]/following::span[contains(text(),'Add to CRP')][1]";
 	private String appliedFilterNameLoc = "//div[@id='applied_filters']/descendant::li[contains(text(),'%s')]";
 	private String specificProductAddToCRPBtnLoc = "//div[@id='product_category']/following-sibling::div/descendant::span[text()='Add to CRP'][%s]";
@@ -979,14 +981,25 @@ public class StoreFrontHomePage extends StoreFrontWebsiteBasePage{
 	 */
 	public StoreFrontHomePage addFirstProductForCRPCheckout(String productName,String productId){
 		clickShowMoreButton();
-		driver.clickByJS(RFWebsiteDriver.driver,By.xpath(String.format(addToCRPBtnForSpecificProductLoc,productId, productName)));
-		logger.info("Clicked Add to CRP button of Product : " + productName);
-		driver.pauseExecutionFor(2000);
+		boolean isValidProductVisible = driver.isElementVisible(By.xpath(String.format(addToCRPBtnForSpecificProductLoc,productId, productName)));
+		if(isValidProductVisible){
+			driver.clickByJS(RFWebsiteDriver.driver,By.xpath(String.format(addToCRPBtnForSpecificProductLoc,productId, productName)));
+			logger.info("Clicked Add to CRP button of Product : " + productName);
+			driver.pauseExecutionFor(2000);
+		}
+		else{
+			selectCRPProductWithQVValue();
+		}
 		while(driver.isElementPresent(CRP_CHECKOUT_BTN_LOC)==false){
 			driver.clickByJS(RFWebsiteDriver.driver, CONTINUE_SHOPPING_CRP_BTN_LOC);
 			driver.pauseExecutionFor(1000);
-			driver.clickByJS(RFWebsiteDriver.driver,By.xpath(String.format(addToCRPBtnForSpecificProductLoc, productName)));
-			logger.info("Clicked Add to CRP button of Product : " + productName);
+			if(isValidProductVisible){
+				driver.clickByJS(RFWebsiteDriver.driver,By.xpath(String.format(addToCRPBtnForSpecificProductLoc,productId, productName)));
+				logger.info("Clicked Add to CRP button of Product : " + productName);
+			}
+			else{
+				selectCRPProductWithQVValue();
+			}
 		}
 		return this;
 	}
@@ -1135,6 +1148,26 @@ public class StoreFrontHomePage extends StoreFrontWebsiteBasePage{
 			countryName="ca";
 		}
 		return countryName;
+	}
+
+	/***
+	 * This method select CRP product with QV Value
+	 * 
+	 * @param country name
+	 * @return country name
+	 */
+	public void selectCRPProductWithQVValue(){
+		List<WebElement> crpProducts = driver.findElements(ALL_CRP_PRODUCTS_QV_LOC);
+		int productIndex = 0;
+		for(WebElement product : crpProducts){
+			productIndex++;
+			String qvValueAsString = product.getText().split("\\$")[0].replaceAll("QV:","").replaceAll("[^-?0-9]+","");
+			int qvValueAsInt = Integer.parseInt(qvValueAsString);
+			if(qvValueAsInt>0){
+				driver.click(By.xpath(String.format(addToCRPBtnForSpecificCRPProductLoc,productIndex)));
+				break;
+			}
+		}
 	}
 
 }

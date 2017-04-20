@@ -308,6 +308,7 @@ public class StoreFrontWebsiteBasePage extends RFBasePage {
 	private final By SEARCH_INPUT_FIELD_LOC = By.id("phSearchInput");
 	private final By SUGGESTED_EMAIL_LOC = By.id("phSearchInput_autoCompleteBoxId");
 	private final By USER_NAME_IFRMAE = By.xpath("//div[@id='navigatortab']//iframe[contains(@class,'border-panel')]");
+	protected final By EDIT_AUTOSHIP_LOC = By.xpath("//a[text()='Edit PC Perks' or text()='Edit CRP']");
 
 	private String activeUserInSfdcLoc = "//td[contains(text(),'%s')]/following::td[contains(text(),'Active')][1]/following::a[contains(text(),'%s')][1]";
 	protected String randomCategoryNameLoc = "//input[@id='%s']/..";
@@ -2519,9 +2520,10 @@ public class StoreFrontWebsiteBasePage extends RFBasePage {
 	 * 
 	 * @return
 	 */
-	public StoreFrontAutoshipCartPage clickOnAutoshipCartLink() {
-		driver.click(AUTOSHIP_CART_LINK_LOC);
-		logger.info("Clicked on autoship cart link in top navigation");
+	public StoreFrontAutoshipCartPage clickAutoshipLink() {
+		clickWelcomeDropdown();
+		driver.click(EDIT_AUTOSHIP_LOC);
+		logger.info("Clicked on edit autoship link under welcome DD");
 		driver.waitForPageLoad();
 		return new StoreFrontAutoshipCartPage(driver);
 	}
@@ -2575,20 +2577,6 @@ public class StoreFrontWebsiteBasePage extends RFBasePage {
 		String subtotal = driver.findElement(SUBTOTAL_LOC).getText();
 		logger.info("Subtotal of product is " + subtotal);
 		return subtotal;
-	}
-
-	/***
-	 * This method clicked on autoship link
-	 * 
-	 * @param
-	 * @return Store front website base page obj
-	 * 
-	 */
-
-	public StoreFrontAutoshipCartPage clickAutoshipLink() {
-		driver.click(AUTOSHIP_TEXT_LOC);
-		logger.info("clicked on autoship link");
-		return new StoreFrontAutoshipCartPage(driver);
 	}
 
 	/***

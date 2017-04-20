@@ -356,7 +356,7 @@ public class AddAndDeleteShippingTest extends StoreFrontWebsiteBaseTest{
 		
 		//Login as Cons
 		sfHomePage.loginToStoreFront(consultantWithPulseAndWithCRP(),password,true);
-		sfAutoshipCartPage = sfHomePage.clickOnAutoshipCartLink();
+		sfAutoshipCartPage = sfHomePage.clickAutoshipLink();
 		currentURL = sfAutoshipCartPage.getCurrentURL().toLowerCase();
 		s_assert.assertTrue(currentURL.contains(textToAssertInURL), "Expected URL should contain "+textToAssertInURL+" but actual on UI is "+currentURL);
 		sfCheckoutPage = sfAutoshipCartPage.clickOnCRPCheckoutButton();

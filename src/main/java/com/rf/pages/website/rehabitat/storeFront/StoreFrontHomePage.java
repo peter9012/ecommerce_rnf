@@ -844,8 +844,10 @@ public class StoreFrontHomePage extends StoreFrontWebsiteBasePage{
 	 *ii) autoship element on the page
 	 */
 	public boolean hasPCEnrolledSuccessfully(){
-		return driver.isElementVisible(WELCOME_DROPDOWN_LOC)
-				&& driver.isElementVisible(AUTOSHIP_TEXT_LOC);		
+		clickWelcomeDropdown();
+		driver.pauseExecutionFor(1000);
+		return driver.isElementPresent(EDIT_AUTOSHIP_LOC);
+						
 	}
 
 	/***

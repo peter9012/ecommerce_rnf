@@ -26,7 +26,7 @@ public class AutoshipTest extends StoreFrontWebsiteBaseTest{
 
 		//Login to application.
 		sfHomePage.loginToStoreFront(pcUserWithPWSSponsor(), password,true);
-		sfAutoshipCartPage = sfHomePage.clickOnAutoshipCartLink();
+		sfAutoshipCartPage = sfHomePage.clickAutoshipLink();
 		currentURL = sfAutoshipCartPage.getCurrentURL().toLowerCase();
 		s_assert.assertTrue(currentURL.contains(textToAssertInURL), "Expected URL should contain "+textToAssertInURL+" but actual on UI is "+currentURL);
 		sfCheckoutPage = sfAutoshipCartPage.clickOnPCPerksCheckoutButton();
@@ -76,7 +76,7 @@ public class AutoshipTest extends StoreFrontWebsiteBaseTest{
 
 		//Login to application.
 		sfHomePage.loginToStoreFront(pcUserWithPWSSponsor(), password,true);
-		sfAutoshipCartPage = sfHomePage.clickOnAutoshipCartLink();
+		sfAutoshipCartPage = sfHomePage.clickAutoshipLink();
 		currentURL = sfAutoshipCartPage.getCurrentURL().toLowerCase();
 		s_assert.assertTrue(currentURL.contains(textToAssertInURL), "Expected URL should contain "+textToAssertInURL+" but actual on UI is "+currentURL);
 		sfCheckoutPage = sfAutoshipCartPage.clickOnPCPerksCheckoutButton();
@@ -112,7 +112,7 @@ public class AutoshipTest extends StoreFrontWebsiteBaseTest{
 		String currentURL = null;
 		//Login to application.
 		sfHomePage.loginToStoreFront(consultantWithPulseAndWithCRP(), password,true);
-		sfAutoshipCartPage = sfHomePage.clickOnAutoshipCartLink();
+		sfAutoshipCartPage = sfHomePage.clickAutoshipLink();
 		currentURL = sfAutoshipCartPage.getCurrentURL().toLowerCase();
 		s_assert.assertTrue(currentURL.contains(textToAssertInURL), "Expected URL should contain "+textToAssertInURL+" but actual on UI is "+currentURL);
 		s_assert.assertFalse(sfAutoshipCartPage.isBillingSectionPresent(),"Billing Updation option is not present at Autoship cart page");
@@ -131,7 +131,7 @@ public class AutoshipTest extends StoreFrontWebsiteBaseTest{
 		String textToAssertInURL = "autoship/cart";
 		//Login to application.
 		sfHomePage.loginToStoreFront(consultantWithPulseAndWithCRP(), password,true);
-		sfAutoshipCartPage = sfHomePage.clickOnAutoshipCartLink();
+		sfAutoshipCartPage = sfHomePage.clickAutoshipLink();
 		currentURL = sfAutoshipCartPage.getCurrentURL().toLowerCase();
 		s_assert.assertTrue(currentURL.contains(textToAssertInURL), "Expected URL should contain "+textToAssertInURL+" but actual on UI is "+currentURL);
 		s_assert.assertTrue(sfAutoshipCartPage.isCRPAutoshipHeaderPresentOnCartPage(),"CRP Autoship header is not present on Autoship cart page");
@@ -174,7 +174,7 @@ public class AutoshipTest extends StoreFrontWebsiteBaseTest{
 
 		//Login to application.
 		sfHomePage.loginToStoreFront(consultantWithPulseAndWithCRP(), password,true);
-		sfAutoshipCartPage = sfHomePage.clickOnAutoshipCartLink();
+		sfAutoshipCartPage = sfHomePage.clickAutoshipLink();
 		currentURL = sfAutoshipCartPage.getCurrentURL().toLowerCase();
 		s_assert.assertTrue(currentURL.contains(textToAssertInURL), "Expected URL should contain "+textToAssertInURL+" but actual on UI is "+currentURL);
 		sfCheckoutPage = sfAutoshipCartPage.clickOnCRPCheckoutButton();
@@ -210,7 +210,7 @@ public class AutoshipTest extends StoreFrontWebsiteBaseTest{
 		String expectedPageTile = TestConstants.TITLE_OF_ALL_SKINCARE_PAGE;
 		//Login to application.
 		sfHomePage.loginToStoreFront(pcUserWithPWSSponsor(), password,true);
-		sfAutoshipCartPage = sfHomePage.clickOnAutoshipCartLink();
+		sfAutoshipCartPage = sfHomePage.clickAutoshipLink();
 		currentURL = sfAutoshipCartPage.getCurrentURL().toLowerCase();
 		s_assert.assertTrue(currentURL.contains(textToAssertInURL), "Expected URL should contain "+textToAssertInURL+" but actual on UI is "+currentURL);
 		sfShopSkinCarePage = sfAutoshipCartPage.clickAddMoreItemsBtn();
@@ -269,7 +269,7 @@ public class AutoshipTest extends StoreFrontWebsiteBaseTest{
 
 		//Login to application as Cons User
 		sfHomePage.loginToStoreFront(consultantWithPulseAndWithCRP(), password,true);
-		sfAutoshipCartPage = sfHomePage.clickOnAutoshipCartLink();
+		sfAutoshipCartPage = sfHomePage.clickAutoshipLink();
 		currentURL = sfAutoshipCartPage.getCurrentURL().toLowerCase();
 		s_assert.assertTrue(currentURL.contains(textToAssertInURL), "Expected URL should contain "+textToAssertInURL+" but actual on UI is "+currentURL);
 		sfCheckoutPage = sfAutoshipCartPage.clickOnCRPCheckoutButton();
@@ -321,7 +321,7 @@ public class AutoshipTest extends StoreFrontWebsiteBaseTest{
 
 		//Login to application.
 		sfHomePage.loginToStoreFront(consultantWithPulseAndWithCRP(),password,true);
-		sfAutoshipCartPage = sfHomePage.clickOnAutoshipCartLink();
+		sfAutoshipCartPage = sfHomePage.clickAutoshipLink();
 		currentURL = sfAutoshipCartPage.getCurrentURL().toLowerCase();
 		s_assert.assertTrue(currentURL.contains(textToAssertInURL), "Expected URL should contain "+textToAssertInURL+" but actual on UI is "+currentURL);
 		sfCheckoutPage = sfAutoshipCartPage.clickOnCRPCheckoutButton();
@@ -413,7 +413,7 @@ public class AutoshipTest extends StoreFrontWebsiteBaseTest{
 
 		//Login to application.
 		sfHomePage.loginToStoreFront(consultantWithPulseAndWithCRP(),  password,true);
-		sfAutoshipCartPage = sfHomePage.clickOnAutoshipCartLink();
+		sfAutoshipCartPage = sfHomePage.clickAutoshipLink();
 		currentURL = sfAutoshipCartPage.getCurrentURL().toLowerCase();
 		s_assert.assertTrue(currentURL.contains(textToAssertInURL), "Expected URL should contain "+textToAssertInURL+" but actual on UI is "+currentURL);
 		sfCheckoutPage = sfAutoshipCartPage.clickOnCRPCheckoutButton();
@@ -432,7 +432,7 @@ public class AutoshipTest extends StoreFrontWebsiteBaseTest{
 		//sfCheckoutPage.selectTermsAndConditionsCheckBoxForAutoshipOrder();
 		//		sfCheckoutPage.selectCheckboxForPoliciesAndProcedures();
 		sfCheckoutPage.clickConfirmAutoshipOrderButton();
-		sfCheckoutPage.clickOnAutoshipCartLink();
+		sfCheckoutPage.clickAutoshipLink();
 		sfAutoshipCartPage.clickOnCRPCheckoutButton();
 		sfCheckoutPage.clickSaveButton();
 		sfCheckoutPage.clickShippingDetailsNextbutton();
@@ -454,7 +454,7 @@ public class AutoshipTest extends StoreFrontWebsiteBaseTest{
 
 		//Login to application.
 		sfHomePage.loginToStoreFront(pcUserWithPWSSponsor(), password,true);
-		sfAutoshipCartPage = sfHomePage.clickOnAutoshipCartLink();
+		sfAutoshipCartPage = sfHomePage.clickAutoshipLink();
 		currentURL = sfAutoshipCartPage.getCurrentURL().toLowerCase();
 		s_assert.assertTrue(currentURL.contains(textToAssertInURL), "Expected URL should contain "+textToAssertInURL+" but actual on UI is "+currentURL);
 		s_assert.assertFalse(sfAutoshipCartPage.isShippingSectionPresent(),"Shipping Updation option is not present at Autoship cart page");
@@ -637,7 +637,7 @@ public class AutoshipTest extends StoreFrontWebsiteBaseTest{
 
 		//Login to application and navigated to Checkout from Autoship cart page 
 		sfHomePage.loginToStoreFront(consultantWithPulseAndWithCRP(), password,true);
-		sfAutoshipCartPage = sfHomePage.clickOnAutoshipCartLink();
+		sfAutoshipCartPage = sfHomePage.clickAutoshipLink();
 		currentURL = sfAutoshipCartPage.getCurrentURL().toLowerCase();
 		s_assert.assertTrue(currentURL.contains(textToAssertInURL), "Expected URL should contain "+textToAssertInURL+" but actual on UI is "+currentURL);
 		sfCheckoutPage = sfAutoshipCartPage.clickOnCRPCheckoutButton();
@@ -664,7 +664,7 @@ public class AutoshipTest extends StoreFrontWebsiteBaseTest{
 		sfCheckoutPage.clickConfirmAutoshipOrderButton();
 
 		// Navigate again to Autoship checkout to verify billing profile for future autoship.
-		sfCheckoutPage.clickOnAutoshipCartLink();
+		sfCheckoutPage.clickAutoshipLink();
 		sfAutoshipCartPage.clickOnCRPCheckoutButton();
 		sfCheckoutPage.clickSaveButton();
 		sfCheckoutPage.clickShippingDetailsNextbutton();
@@ -951,7 +951,7 @@ public class AutoshipTest extends StoreFrontWebsiteBaseTest{
 
 		//Login to application and navigated to Checkout from Autoship cart page 
 		sfHomePage.loginToStoreFront(pcUserWithPWSSponsor(), password,true);
-		sfAutoshipCartPage = sfHomePage.clickOnAutoshipCartLink();
+		sfAutoshipCartPage = sfHomePage.clickAutoshipLink();
 		currentURL = sfAutoshipCartPage.getCurrentURL().toLowerCase();
 		s_assert.assertTrue(currentURL.contains(textToAssertInURL), "Expected URL should contain "+textToAssertInURL+" but actual on UI is "+currentURL);
 		sfCheckoutPage = sfAutoshipCartPage.clickOnPCPerksCheckoutButton();
@@ -976,7 +976,7 @@ public class AutoshipTest extends StoreFrontWebsiteBaseTest{
 		sfCheckoutPage.clickConfirmAutoshipOrderButton();
 
 		// Navigate again to Autoship checkout to verify billing profile for future autoship.
-		sfCheckoutPage.clickOnAutoshipCartLink();
+		sfCheckoutPage.clickAutoshipLink();
 		sfAutoshipCartPage.clickOnPCPerksCheckoutButton();
 		sfCheckoutPage.clickSaveButton();
 		sfCheckoutPage.clickShippingDetailsNextbutton();
@@ -1294,7 +1294,7 @@ public class AutoshipTest extends StoreFrontWebsiteBaseTest{
 
 		//Login to application.
 		sfHomePage.loginToStoreFront(pcUserWithPWSSponsor(), password,true);
-		sfAutoshipCartPage = sfHomePage.clickOnAutoshipCartLink();
+		sfAutoshipCartPage = sfHomePage.clickAutoshipLink();
 		currentURL = sfAutoshipCartPage.getCurrentURL().toLowerCase();
 		s_assert.assertTrue(currentURL.contains(textToAssertInURL), "Expected URL should contain "+textToAssertInURL+" but actual on UI is "+currentURL);
 		sfCheckoutPage = sfAutoshipCartPage.clickOnPCPerksCheckoutButton();
@@ -1359,7 +1359,7 @@ public class AutoshipTest extends StoreFrontWebsiteBaseTest{
 
 		//Login to application.
 		sfHomePage.loginToStoreFront(consultantWithPulseAndWithCRP(), password,true);
-		sfAutoshipCartPage = sfHomePage.clickOnAutoshipCartLink();
+		sfAutoshipCartPage = sfHomePage.clickAutoshipLink();
 		currentURL = sfAutoshipCartPage.getCurrentURL().toLowerCase();
 		s_assert.assertTrue(currentURL.contains(textToAssertInURL), "Expected URL should contain "+textToAssertInURL+" but actual on UI is "+currentURL);
 		sfCheckoutPage = sfAutoshipCartPage.clickOnCRPCheckoutButton();
@@ -1396,7 +1396,7 @@ public class AutoshipTest extends StoreFrontWebsiteBaseTest{
 		//		sfCheckoutPage.selectTermsAndConditionsCheckBoxForAutoshipOrder();
 		//		sfCheckoutPage.clickConfirmAutoshipOrderButton();
 		//		// Repeating AutoShip Checkout flow for Billing Profile Verification
-		//		sfCheckoutPage.clickOnAutoshipCartLink();
+		//		sfCheckoutPage.clickAutoshipLink();
 		//		sfAutoshipCartPage.clickOnCRPCheckoutButton();
 		//		sfCheckoutPage.clickSaveButton();
 		//		sfCheckoutPage.clickShippingDetailsNextbutton();
@@ -1430,7 +1430,7 @@ public class AutoshipTest extends StoreFrontWebsiteBaseTest{
 
 		//Login to application.
 		sfHomePage.loginToStoreFront(pcUserWithPWSSponsor(),password,true);
-		sfAutoshipCartPage = sfHomePage.clickOnAutoshipCartLink();
+		sfAutoshipCartPage = sfHomePage.clickAutoshipLink();
 		currentURL = sfAutoshipCartPage.getCurrentURL().toLowerCase();
 		s_assert.assertTrue(currentURL.contains(textToAssertInURL), "Expected URL should contain "+textToAssertInURL+" but actual on UI is "+currentURL);
 		sfCheckoutPage = sfAutoshipCartPage.clickOnPCPerksCheckoutButton();
@@ -1469,7 +1469,7 @@ public class AutoshipTest extends StoreFrontWebsiteBaseTest{
 		//		sfCheckoutPage.clickConfirmAutoshipOrderButton();
 		//		
 		//		// Repeating AutoShip Checkout flow for Billing Profile Verification
-		//		sfCheckoutPage.clickOnAutoshipCartLink();
+		//		sfCheckoutPage.clickAutoshipLink();
 		//		sfAutoshipCartPage.clickOnPCPerksCheckoutButton();
 		//		sfCheckoutPage.clickSaveButton();
 		//		sfCheckoutPage.clickShippingDetailsNextbutton();
@@ -1502,7 +1502,7 @@ public class AutoshipTest extends StoreFrontWebsiteBaseTest{
 
 		//Login to application.
 		sfHomePage.loginToStoreFront(pcUserWithPWSSponsor(),  password,true);
-		sfAutoshipCartPage = sfHomePage.clickOnAutoshipCartLink();
+		sfAutoshipCartPage = sfHomePage.clickAutoshipLink();
 		currentURL = sfAutoshipCartPage.getCurrentURL().toLowerCase();
 		s_assert.assertTrue(currentURL.contains(textToAssertInURL), "Expected URL should contain "+textToAssertInURL+" but actual on UI is "+currentURL);
 		sfCheckoutPage = sfAutoshipCartPage.clickOnPCPerksCheckoutButton();

@@ -4,19 +4,20 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-
 import org.testng.annotations.AfterClass;
 import org.testng.annotations.BeforeClass;
 import org.testng.annotations.Test;
 
+import com.rf.core.listeners.InvocationCountListener;
 import com.rf.core.utils.CommonUtils;
 import com.rf.core.utils.ExcelUtil;
 import com.rf.core.website.constants.TestConstants;
 import com.rf.test.website.rehabitat.storeFront.baseTest.StoreFrontWebsiteBaseTest;
 
+
 public class ECCOrdersTest extends StoreFrontWebsiteBaseTest{
 
-	private static final int var=3;
+	private static final int var=1;
 	private static int consOrdercounter=0;
 	private static int pcOrdercounter=0;
 	private static int rcOrdercounter=0;
@@ -34,6 +35,8 @@ public class ECCOrdersTest extends StoreFrontWebsiteBaseTest{
 	private String userEmail = null;
 	private String tax = null;
 	Map<String,String> cardDetails = null;
+	private static int varCount = 0;
+	private String shippingAddress;
 
 	private static final String FILE_PATH=System.getProperty("user.dir")+"\\src\\test\\resources\\ordersECC\\";
 	private static final String FILE_NAME_US = "ordersECC_US.xlsx";
@@ -43,6 +46,8 @@ public class ECCOrdersTest extends StoreFrontWebsiteBaseTest{
 	@Test(priority=1,invocationCount=var)
 	public void testPlaceAnAdhocOrderFromConsultant(){
 		String productNumber = null;
+		randomWords = CommonUtils.getRandomWord(5);		
+		lastName = TestConstants.LAST_NAME+randomWords;
 		userEmail = consultantWithPulseAndWithCRP();
 		sfHomePage.loginToStoreFront(userEmail, password,true);
 		sfCartPage = sfHomePage.clickMiniCartBagLink();
@@ -58,6 +63,10 @@ public class ECCOrdersTest extends StoreFrontWebsiteBaseTest{
 		itemQty = sfCartPage.getQuantityOfProductFromCart("1");
 		sfCheckoutPage=sfCartPage.checkoutTheCart();
 		sfCheckoutPage.clickSaveButton();
+		sfCheckoutPage.clickAddNewShippingAddressButton();
+		setRandomAddressAsPerCountry();
+		shippingAddress = getCompleteShippingAddress();
+		sfCheckoutPage.enterShippingDetails(firstName+" "+lastName, addressLine1, addressLine2, city, state, postalCode, phoneNumber);
 		sfCheckoutPage.clickShippingDetailsNextbutton();
 		sfCheckoutPage.clickAddNewBillingProfileButton();
 		cardDetails = getCardDetailsUsingType(cardType);
@@ -88,6 +97,8 @@ public class ECCOrdersTest extends StoreFrontWebsiteBaseTest{
 	@Test(priority=2,invocationCount=var)
 	public void testPlaceAnAdhocOrderFromPC(){
 		String productNumber = null;
+		randomWords = CommonUtils.getRandomWord(5);		
+		lastName = TestConstants.LAST_NAME+randomWords;
 		userEmail = pcUserWithPWSSponsor();
 		sfHomePage.loginToStoreFront(userEmail, password,true);
 		sfCartPage = sfHomePage.clickMiniCartBagLink();
@@ -104,6 +115,10 @@ public class ECCOrdersTest extends StoreFrontWebsiteBaseTest{
 		itemQty = sfCartPage.getQuantityOfProductFromCart("1");
 		sfCheckoutPage=sfCartPage.checkoutTheCart();
 		sfCheckoutPage.clickSaveButton();
+		sfCheckoutPage.clickAddNewShippingAddressButton();
+		setRandomAddressAsPerCountry();
+		shippingAddress = getCompleteShippingAddress();
+		sfCheckoutPage.enterShippingDetails(firstName+" "+lastName, addressLine1, addressLine2, city, state, postalCode, phoneNumber);
 		sfCheckoutPage.clickShippingDetailsNextbutton();
 		sfCheckoutPage.clickAddNewBillingProfileButton();
 		cardDetails = getCardDetailsUsingType(cardType);
@@ -134,6 +149,8 @@ public class ECCOrdersTest extends StoreFrontWebsiteBaseTest{
 	@Test(priority=3,invocationCount=var)
 	public void testPlaceAnAdhocOrderFromRC(){
 		String productNumber = null;
+		randomWords = CommonUtils.getRandomWord(5);		
+		lastName = TestConstants.LAST_NAME+randomWords;
 		userEmail = rcWithOrderWithoutSponsor();
 		sfHomePage.loginToStoreFront(userEmail, password,true);
 		sfCartPage = sfHomePage.clickMiniCartBagLink();
@@ -150,6 +167,10 @@ public class ECCOrdersTest extends StoreFrontWebsiteBaseTest{
 		sfCheckoutPage=sfCartPage.checkoutTheCart();
 		sfCheckoutPage.clickContinueWithoutConsultantLink();
 		sfCheckoutPage.clickSaveButton();
+		sfCheckoutPage.clickAddNewShippingAddressButton();
+		setRandomAddressAsPerCountry();
+		shippingAddress = getCompleteShippingAddress();
+		sfCheckoutPage.enterShippingDetails(firstName+" "+lastName, addressLine1, addressLine2, city, state, postalCode, phoneNumber);
 		sfCheckoutPage.clickShippingDetailsNextbutton();
 		sfCheckoutPage.clickAddNewBillingProfileButton();
 		cardDetails = getCardDetailsUsingType(cardType);
@@ -180,6 +201,7 @@ public class ECCOrdersTest extends StoreFrontWebsiteBaseTest{
 	public void createExcelSheets(){
 		ExcelUtil.createNewSheetInECCOrdersExcelFile(getFilePathAsPerCountry(country));
 		ExcelUtil.setHeadingsInTheExcel(setColumnHeadings());
+		varCount = InvocationCountListener.getInvocationCount();
 	}
 
 	@AfterClass(alwaysRun=true)
@@ -198,6 +220,7 @@ public class ECCOrdersTest extends StoreFrontWebsiteBaseTest{
 		orderDetails.add(totalPrice);
 		orderDetails.add(tax);
 		orderDetails.add(orderStatus);
+		orderDetails.add(shippingAddress);
 		return orderDetails;
 	}
 
@@ -212,6 +235,7 @@ public class ECCOrdersTest extends StoreFrontWebsiteBaseTest{
 		columnHeadings.add(TestConstants.TOTAL_PRICE_HEADING);
 		columnHeadings.add(TestConstants.TAX_HEADING);
 		columnHeadings.add(TestConstants.ORDER_STATUS_HEADING);
+		columnHeadings.add(TestConstants.SHIPPING_ADDRESS_HEADING);
 		return columnHeadings;
 	}
 
@@ -221,7 +245,7 @@ public class ECCOrdersTest extends StoreFrontWebsiteBaseTest{
 			setAllCardsAndSelectionCount();
 		}
 		cardSelectionCounter++;
-		if(cardSelectionCounter == var){
+		if(cardSelectionCounter == varCount){
 			cardSelectionCounter = 0;
 		}
 
@@ -260,8 +284,8 @@ public class ECCOrdersTest extends StoreFrontWebsiteBaseTest{
 		//	cardsListForRandomSelection.add(amexCard);
 		cardsListForRandomSelection.add(masterCard);
 		cardsListForRandomSelection.add(discoverCard);
-		fixedSelectionCountForAllCards = var/3;
-		//	fixedSelectionCountForAllCards = var/4;
+		fixedSelectionCountForAllCards = varCount/3;
+		//	fixedSelectionCountForAllCards = varCount/4;
 		fixedSelectionCountToReset = fixedSelectionCountForAllCards;
 	}
 
@@ -308,5 +332,69 @@ public class ECCOrdersTest extends StoreFrontWebsiteBaseTest{
 			ExcelUtil.setOrderDetailsInECCExcelFile(TestConstants.ECC_ORDER_TYPE_RC_ADHOC, counter, orderDetails);
 		}
 	}
+
+	public void setRandomAddressAsPerCountry(){
+		int addressToSelect = CommonUtils.getRandomNum(1,3);
+		if(country.equalsIgnoreCase("us")){
+			switch(addressToSelect){  
+			case 1:
+				addressLine1 = TestConstants.ADDRESS_LINE_1_US;
+				addressLine2 = TestConstants.ADDRESS_LINE_2_US;
+				city = TestConstants.CITY_US;
+				state = TestConstants.STATE_US;
+				postalCode = TestConstants.POSTAL_CODE_US;
+				break;
+			case 2:
+				addressLine1 = TestConstants.SECOND_ADDRESS_LINE_1_US;
+				addressLine2 = TestConstants.SECOND_ADDRESS_LINE_2_US;
+				city = TestConstants.SECOND_CITY_US;
+				state = TestConstants.STATE_US;
+				postalCode = TestConstants.SECOND_POSTAL_CODE_US;
+				break;
+			case 3:
+				addressLine1 = TestConstants.THIRD_ADDRESS_LINE_1_US;
+				addressLine2 = TestConstants.THIRD_ADDRESS_LINE_2_US;
+				city = TestConstants.THIRD_CITY_US;
+				state = TestConstants.STATE_US;
+				postalCode = TestConstants.THIRD_POSTAL_CODE_US;
+				break; 
+			default:;
+			}
+		}
+		else if(country.equalsIgnoreCase("ca")){
+			switch(addressToSelect){  
+			case 1:
+				addressLine1 = TestConstants.ADDRESS_LINE_1_CA;
+				addressLine2 = TestConstants.ADDRESS_LINE_2_CA;
+				city = TestConstants.CITY_CA;
+				state = TestConstants.STATE_CA;
+				postalCode = TestConstants.POSTAL_CODE_CA;
+				break;  
+			case 2:
+				addressLine1 = TestConstants.SECOND_ADDRESS_LINE_1_CA;
+				addressLine2 = TestConstants.SECOND_ADDRESS_LINE_2_CA;
+				city = TestConstants.SECOND_CITY_CA;
+				state = TestConstants.STATE_CA;
+				postalCode = TestConstants.SECOND_POSTAL_CODE_CA;
+				break;
+			case 3:
+				addressLine1 = TestConstants.THIRD_ADDRESS_LINE_1_CA;
+				addressLine2 = TestConstants.THIRD_ADDRESS_LINE_2_CA;
+				city = TestConstants.THIRD_CITY_CA;
+				state = TestConstants.STATE_CA;
+				postalCode = TestConstants.THIRD_POSTAL_CODE_CA;
+				break;
+			default:;
+			}
+		}
+	}
+
+	public String getCompleteShippingAddress(){
+		return addressLine1 + " " + addressLine2 + " " + city + " " + state + " " + postalCode;
+
+	}
+
+
+
 
 }

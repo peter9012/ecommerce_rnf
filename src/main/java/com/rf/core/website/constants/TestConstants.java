@@ -92,6 +92,17 @@ public class TestConstants {
 	public static final String CITY_ND_US = "Bismarck";
 	public static final String POSTAL_CODE_ND_US = "58503";
 	public static final String STATE_ND_US = "North Dakota";
+	
+	public static final String THIRD_ADDRESS_LINE_1_US = "20 Maple Avenue";
+	public static final String THIRD_ADDRESS_LINE_2_US = "";
+	public static final String THIRD_CITY_US = "San Pedro";
+	public static final String THIRD_POSTAL_CODE_US = "90731";
+	 
+	public static final String THIRD_ADDRESS_LINE_1_CA = "116 St & 85 Ave";
+	public static final String THIRD_ADDRESS_LINE_2_CA = "";
+	public static final String THIRD_CITY_CA = "Edmonton";
+	public static final String THIRD_POSTAL_CODE_CA = "T6G 2R3";
+	public static final String SHIPPING_ADDRESS_HEADING = "SHIPPING_ADDRESS";
 
 	//Canada
 	public static final String ADDRESS_LINE_1_CA = "5940 Macleod Trail SW Suite 500";

@@ -5,6 +5,7 @@ import java.io.File;
 import org.openqa.selenium.Dimension;
 
 import java.net.MalformedURLException;
+import java.net.URL;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
@@ -22,6 +23,7 @@ import org.openqa.selenium.Capabilities;
 import org.openqa.selenium.JavascriptExecutor;
 import org.openqa.selenium.Keys;
 import org.openqa.selenium.OutputType;
+import org.openqa.selenium.Platform;
 import org.openqa.selenium.StaleElementReferenceException;
 import org.openqa.selenium.TakesScreenshot;
 import org.openqa.selenium.WebDriver;
@@ -45,6 +47,8 @@ import org.testng.Reporter;
 import com.rf.core.driver.RFDriver;
 import com.rf.core.utils.DBUtil;
 import com.rf.core.utils.PropertyFile;
+
+import io.appium.java_client.android.AndroidDriver;
 
 /**
  * @author ShubhamMathur RFWebsiteDriver extends implements Webdriver and
@@ -76,48 +80,60 @@ public class RFWebsiteDriver implements RFDriver,WebDriver {
 	 *             Prepares the environment that tests to be run on
 	 */
 	public void loadApplication() throws MalformedURLException {
-		browser=System.getProperty("browser");
-		if(StringUtils.isEmpty(browser)){
-			browser = propertyFile.getProperty("browser");
-		}
-		FirefoxProfile prof = new FirefoxProfile();
-		prof.setPreference("brower.startup.homepage", "about:blank");
-		prof.setPreference("startup.homepage_welcome_url", "about:blank");
-		prof.setPreference("startup.homepage_welcome_url.additional",  "about:blank");
-		if (browser.equalsIgnoreCase("firefox"))
-			driver = new FirefoxDriver(prof);
-		else if (browser.equalsIgnoreCase("chrome")){
-			System.out.println("chrome");
-			System.setProperty("webdriver.chrome.driver", "src\\test\\resources\\chromedriver.exe");
-			ChromeOptions options = new ChromeOptions();
-			options.addArguments("no-sandbox");
-			options.addArguments("chrome.switches","--disable-extensions");
-			options.addArguments("disable-popup-blocking");
+		if(propertyFile.getProperty("device").equalsIgnoreCase("mobile")){
 			DesiredCapabilities capabilities = new DesiredCapabilities();
-			capabilities.setCapability(ChromeOptions.CAPABILITY, options);
-			// for clearing cache
-			capabilities.setCapability(CapabilityType.ForSeleniumServer.ENSURING_CLEAN_SESSION, true);
-			driver = new ChromeDriver(capabilities);
+			capabilities.setCapability("browserName", BrowserType.CHROME);
+			capabilities.setCapability("deviceName", "MOTO G3");
+			capabilities.setCapability("platformName", Platform.ANDROID);
+			capabilities.setCapability("platformVersion", "6.0");
+			driver= new AndroidDriver(new URL("http://127.0.0.1:4723/wd/hub"), capabilities);
 		}
-		else if(browser.equalsIgnoreCase("headless")){
-			driver = new HtmlUnitDriver();	
+		else{
+
+
+			browser=System.getProperty("browser");
+			if(StringUtils.isEmpty(browser)){
+				browser = propertyFile.getProperty("browser");
+			}
+			FirefoxProfile prof = new FirefoxProfile();
+			prof.setPreference("brower.startup.homepage", "about:blank");
+			prof.setPreference("startup.homepage_welcome_url", "about:blank");
+			prof.setPreference("startup.homepage_welcome_url.additional",  "about:blank");
+			if (browser.equalsIgnoreCase("firefox"))
+				driver = new FirefoxDriver(prof);
+			else if (browser.equalsIgnoreCase("chrome")){
+				System.out.println("chrome");
+				System.setProperty("webdriver.chrome.driver", "src\\test\\resources\\chromedriver.exe");
+				ChromeOptions options = new ChromeOptions();
+				options.addArguments("no-sandbox");
+				options.addArguments("chrome.switches","--disable-extensions");
+				options.addArguments("disable-popup-blocking");
+				DesiredCapabilities capabilities = new DesiredCapabilities();
+				capabilities.setCapability(ChromeOptions.CAPABILITY, options);
+				// for clearing cache
+				capabilities.setCapability(CapabilityType.ForSeleniumServer.ENSURING_CLEAN_SESSION, true);
+				driver = new ChromeDriver(capabilities);
+			}
+			else if(browser.equalsIgnoreCase("headless")){
+				driver = new HtmlUnitDriver();	
+			}
+			else if(browser.equalsIgnoreCase("ie")){
+				System.setProperty("webdriver.ie.driver", "src/test/resources/IEDriverServer.exe");
+				DesiredCapabilities capabilities = new DesiredCapabilities();
+				// for clearing cache
+				capabilities.setCapability(CapabilityType.ForSeleniumServer.ENSURING_CLEAN_SESSION, true);
+				driver = new InternetExplorerDriver(capabilities);
+			}
+			driver.manage().timeouts().implicitlyWait(20, TimeUnit.SECONDS);
+			driver.manage().window().maximize();
+			if (browser.equalsIgnoreCase("firefox")){
+				System.out.println(driver.manage().window().getSize());
+				Dimension d = new Dimension(1936, 1056);
+				driver.manage().window().setSize(d);
+				System.out.println("Dimension reset to larger");
+				System.out.println(driver.manage().window().getSize());	
+			}
 		}
-		else if(browser.equalsIgnoreCase("ie")){
-			System.setProperty("webdriver.ie.driver", "src/test/resources/IEDriverServer.exe");
-			DesiredCapabilities capabilities = new DesiredCapabilities();
-			// for clearing cache
-			capabilities.setCapability(CapabilityType.ForSeleniumServer.ENSURING_CLEAN_SESSION, true);
-			driver = new InternetExplorerDriver(capabilities);
-		}
-		driver.manage().timeouts().implicitlyWait(20, TimeUnit.SECONDS);
-		driver.manage().window().maximize();
-		if (browser.equalsIgnoreCase("firefox")){
-			System.out.println(driver.manage().window().getSize());
-			Dimension d = new Dimension(1936, 1056);
-			driver.manage().window().setSize(d);
-			System.out.println("Dimension reset to larger");
-			System.out.println(driver.manage().window().getSize());	
-		}		
 		logger.info("Window is maximized");
 		// for clearing cookies
 		driver.manage().deleteAllCookies();

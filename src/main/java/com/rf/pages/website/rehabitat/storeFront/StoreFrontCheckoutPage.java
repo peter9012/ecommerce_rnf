@@ -211,11 +211,12 @@ public class StoreFrontCheckoutPage extends StoreFrontWebsiteBasePage{
 		logger.info("password entered as "+password);
 		driver.type(CONFIRM_PASSWORD_LOC,password);
 		logger.info("confirm entered as "+password);
-		if(userType.equals(TestConstants.USER_TYPE_PC)){
-			driver.pauseExecutionFor(1000);
-			driver.clickByJS(RFWebsiteDriver.driver,PC_PERKS_CHECKBOX_LOC);
-			logger.info("PC perks checkbox is checked");
-		}
+		selectAllTermsAndConditionsCheckboxes(userType);
+		/*if(userType.equals(TestConstants.USER_TYPE_PC)){
+		   driver.pauseExecutionFor(1000);
+		   driver.clickByJS(RFWebsiteDriver.driver,PC_PERKS_CHECKBOX_LOC);
+		   logger.info("PC perks checkbox is checked");
+		  }*/
 		return this;
 	}
 

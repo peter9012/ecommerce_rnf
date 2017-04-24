@@ -70,7 +70,7 @@ public class RFWebsiteDriver implements RFDriver,WebDriver {
 	public RFWebsiteDriver(PropertyFile propertyFile) {
 		//super();
 		this.propertyFile = propertyFile;	
-		
+
 	}
 
 	private static final Logger logger = LogManager
@@ -1064,9 +1064,10 @@ public class RFWebsiteDriver implements RFDriver,WebDriver {
 		driver.manage().timeouts().implicitlyWait(time, TimeUnit.SECONDS);
 	}
 
-	//	public void turnOnImplicitWaits(int time) {
-	//		driver.manage().timeouts().implicitlyWait(time, TimeUnit.SECONDS);
-	//	}
+	public void clickByJS(WebDriver driver,WebElement element) {
+		JavascriptExecutor executor = (JavascriptExecutor) driver;
+		executor.executeScript("arguments[0].click();", element);
+	}
 
 	public void clickByJS(WebDriver driver, By by) {
 		quickWaitForElementPresent(by);

@@ -45,6 +45,10 @@ public class StoreFrontWebsiteBasePage extends RFBasePage {
 		this.driver = driver;
 	}
 
+	private final By ALL_TERMS_CHECKBOX_FOR_CONS_LOC = By.xpath("//input[@type='checkbox'][contains(@id,'Terms')]");
+	private final By ALL_TERMS_CHECKBOX_FOR_PC_LOC = By.xpath("//ul[@class='pcPerksLoginPage']//input[@type='checkbox']");
+	private final By ALL_TERMS_CHECKBOX_FOR_RC_LOC = By.xpath("//ul[@class='pcPerksLoginPage']//label[not(contains(text(),'I want to join PC Perks'))]/preceding-sibling::input[@type='checkbox'][1]");
+	private final By ALL_TERMS_CHECKBOX_LOC = By.xpath("//input[@type='checkbox'][contains(@id,'Terms')]");
 	private final By POPUP_CLOSE_LOC = By.xpath("//*[@class='close']");
 	private final By PULSE_USERNAME_TXTFLD_LOC = By.xpath("//input[@name='username']");
 	private final By PULSE_PASSWORD_TXTFLD_LOC = By.xpath("//input[@name='password']");
@@ -1673,7 +1677,7 @@ public class StoreFrontWebsiteBasePage extends RFBasePage {
 		driver.type(EXP_MONTH_DD_LOC, "12");
 		driver.type(EXP_YEAR_DD_LOC, "2025");
 		driver.type(CVV_LOC, CVV);
-		//driver.pauseExecutionFor(1000);
+		driver.pauseExecutionFor(1000);
 		logger.info("Entered CVV as" + CVV);
 		driver.clickByJS(RFWebsiteDriver.driver, CARD_TYPE_DD_LOC);
 		logger.info("Card type dropdown clicked");
@@ -4229,4 +4233,25 @@ public class StoreFrontWebsiteBasePage extends RFBasePage {
 		driver.waitForPageLoad();
 		return this;
 	}
+
+	 public StoreFrontWebsiteBasePage selectAllTermsAndConditionsCheckboxes(String userType){
+		  List<WebElement> allTermsAndConditionsCheckboxes = null;
+		  if(userType.equals(TestConstants.USER_TYPE_CONSULTANT)){
+		   allTermsAndConditionsCheckboxes = driver.findElements(ALL_TERMS_CHECKBOX_FOR_CONS_LOC);
+		  }
+		  else if(userType.equals(TestConstants.USER_TYPE_PC)){
+		   allTermsAndConditionsCheckboxes = driver.findElements(ALL_TERMS_CHECKBOX_FOR_PC_LOC);
+		  }
+		  else if(userType.equals(TestConstants.USER_TYPE_RC)){
+		   allTermsAndConditionsCheckboxes = driver.findElements(ALL_TERMS_CHECKBOX_FOR_RC_LOC);
+		  }
+		  
+		  for(WebElement checkbox : allTermsAndConditionsCheckboxes){
+		   String label = checkbox.getAttribute("name");
+		   driver.clickByJS(RFWebsiteDriver.driver,checkbox);
+		   logger.info("Checkbox selected for "+label.toUpperCase());
+		   driver.pauseExecutionFor(1000);
+		  }
+		  return this;
+		 }
 }

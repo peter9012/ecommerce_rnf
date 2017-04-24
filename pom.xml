@@ -150,6 +150,7 @@
 					</properties>
 					<systemPropertyVariables>
 						<testprops>${envproperties}</testprops>
+						<testprops>${invoCount}</testprops>
 					</systemPropertyVariables>
 					<useFile>true</useFile>
 					<testFailureIgnore>false</testFailureIgnore>

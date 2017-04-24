@@ -69,7 +69,8 @@ public class RFWebsiteDriver implements RFDriver,WebDriver {
 
 	public RFWebsiteDriver(PropertyFile propertyFile) {
 		//super();
-		this.propertyFile = propertyFile;			
+		this.propertyFile = propertyFile;	
+		
 	}
 
 	private static final Logger logger = LogManager

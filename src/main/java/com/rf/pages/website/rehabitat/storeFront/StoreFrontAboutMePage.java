@@ -75,6 +75,7 @@ public class StoreFrontAboutMePage extends StoreFrontWebsiteBasePage{
 	 * 
 	 */
 	public boolean isContactMeHeaderPresentOnAboutMePage(){
+		driver.waitForElementToBeVisible(CONTACT_ME_HEADER_LOC, 10);
 		return driver.isElementVisible(CONTACT_ME_HEADER_LOC);
 
 	}
@@ -87,9 +88,10 @@ public class StoreFrontAboutMePage extends StoreFrontWebsiteBasePage{
 	 * 
 	 */
 	public boolean isExpectedQuesPresentOnAboutMePage(String ques){
+		driver.waitForElementToBeVisible(By.xpath(String.format(quesOnAboutMePageLoc,ques)), 10);
 		return driver.isElementVisible(By.xpath(String.format(quesOnAboutMePageLoc,ques)));
 
-	}
+	} 
 
 	/***
 	 * This method validates the presence of answer of 'What I love most about Rodan and Fields' ques on about me page

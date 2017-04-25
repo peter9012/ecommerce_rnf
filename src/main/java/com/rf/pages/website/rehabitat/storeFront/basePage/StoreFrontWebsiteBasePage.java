@@ -2956,7 +2956,7 @@ public class StoreFrontWebsiteBasePage extends RFBasePage {
 	 * 
 	 */
 	public StoreFrontAboutMePage navigateToEditPWSPage() {
-		driver.click(WELCOME_DD_EDIT_PWS_LOC);
+		driver.clickByJS(RFWebsiteDriver.driver,WELCOME_DD_EDIT_PWS_LOC);
 		logger.info("Edit PWS clicked from welcome dropdown");
 		driver.waitForLoadingImageToDisappear();
 		driver.waitForPageLoad();
@@ -4234,24 +4234,24 @@ public class StoreFrontWebsiteBasePage extends RFBasePage {
 		return this;
 	}
 
-	 public StoreFrontWebsiteBasePage selectAllTermsAndConditionsCheckboxes(String userType){
-		  List<WebElement> allTermsAndConditionsCheckboxes = null;
-		  if(userType.equals(TestConstants.USER_TYPE_CONSULTANT)){
-		   allTermsAndConditionsCheckboxes = driver.findElements(ALL_TERMS_CHECKBOX_FOR_CONS_LOC);
-		  }
-		  else if(userType.equals(TestConstants.USER_TYPE_PC)){
-		   allTermsAndConditionsCheckboxes = driver.findElements(ALL_TERMS_CHECKBOX_FOR_PC_LOC);
-		  }
-		  else if(userType.equals(TestConstants.USER_TYPE_RC)){
-		   allTermsAndConditionsCheckboxes = driver.findElements(ALL_TERMS_CHECKBOX_FOR_RC_LOC);
-		  }
-		  
-		  for(WebElement checkbox : allTermsAndConditionsCheckboxes){
-		   String label = checkbox.getAttribute("name");
-		   driver.clickByJS(RFWebsiteDriver.driver,checkbox);
-		   logger.info("Checkbox selected for "+label.toUpperCase());
-		   driver.pauseExecutionFor(1000);
-		  }
-		  return this;
-		 }
+	public StoreFrontWebsiteBasePage selectAllTermsAndConditionsCheckboxes(String userType){
+		List<WebElement> allTermsAndConditionsCheckboxes = null;
+		if(userType.equals(TestConstants.USER_TYPE_CONSULTANT)){
+			allTermsAndConditionsCheckboxes = driver.findElements(ALL_TERMS_CHECKBOX_FOR_CONS_LOC);
+		}
+		else if(userType.equals(TestConstants.USER_TYPE_PC)){
+			allTermsAndConditionsCheckboxes = driver.findElements(ALL_TERMS_CHECKBOX_FOR_PC_LOC);
+		}
+		else if(userType.equals(TestConstants.USER_TYPE_RC)){
+			allTermsAndConditionsCheckboxes = driver.findElements(ALL_TERMS_CHECKBOX_FOR_RC_LOC);
+		}
+
+		for(WebElement checkbox : allTermsAndConditionsCheckboxes){
+			String label = checkbox.getAttribute("name");
+			driver.clickByJS(RFWebsiteDriver.driver,checkbox);
+			logger.info("Checkbox selected for "+label.toUpperCase());
+			driver.pauseExecutionFor(1000);
+		}
+		return this;
+	}
 }

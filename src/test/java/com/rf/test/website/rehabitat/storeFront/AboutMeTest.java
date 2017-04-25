@@ -16,7 +16,7 @@ public class AboutMeTest extends StoreFrontWebsiteBaseTest{
 	 * 
 	 *     
 	 */
-	@Test(enabled=true)
+	@Test(enabled=false)//functionality not available 
 	public void testPWSSitesAccessJoinURL_578(){
 		String homePageURL = null;
 		String currentURL = null;

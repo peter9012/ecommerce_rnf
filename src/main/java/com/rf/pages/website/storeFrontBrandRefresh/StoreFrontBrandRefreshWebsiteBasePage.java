@@ -21,7 +21,7 @@ public class StoreFrontBrandRefreshWebsiteBasePage extends RFBasePage{
 	private static String regimenProductLoc = "//div[@id='ProductCategories']//span[text()='%s']/preceding::p[1]//img";
 	private static String businessSystemSubLink= "//div[@id='RFContent']//a[contains(@href,'%s')]";
 	private static String regimenImageOnPwsLoc = "//div[@id='ProductCategories']//p[@class='productInfo']//span[text()='%s']/../preceding-sibling::p/a";
-	private static String myAccountLinkAfterLoginLink = "//nav[@id='Col1']//span[text()='%s']/..";
+	private static String myAccountLinkAfterLoginLink = "//div[@id='menuDiv']/descendant::ul[@class='Nav'][1]//span[text()='%s']/..";
 	private static String orderManagementSublink = "//a[@class='IconLink']//span[contains(text(),'%s')]";
 	private static String linkUnderShopSkinCareOrBeAConsultant = "//div[@id='LeftNav']//a/span[text()='%s']";
 	private static String consultantOnlyProduct= "//p[contains(text(),'%s')]/preceding::a[1]/img";
@@ -94,8 +94,8 @@ public class StoreFrontBrandRefreshWebsiteBasePage extends RFBasePage{
 
 	public void clickAddToCartButtonAfterLogin() {
 		try{
-			driver.waitForElementPresent((By.xpath("//span[text()='Add to Bag']")));
-			driver.click(By.xpath("//span[text()='Add to Bag']"));
+			driver.waitForElementPresent((By.xpath("//*[text()='Add to Bag']")));
+			driver.click(By.xpath("//*[text()='Add to Bag']"));
 			System.out.println("Add to Bag button on ProdDetailPage is clicked");
 		}
 		catch(NoSuchElementException e){
@@ -332,7 +332,7 @@ public class StoreFrontBrandRefreshWebsiteBasePage extends RFBasePage{
 		try{
 			driver.quickWaitForElementPresent(By.xpath(String.format(myAccountLinkAfterLoginLink, linkName)));
 			Actions actions = new Actions(RFWebsiteDriver.driver);
-			actions.moveToElement(driver.findElement(By.xpath(String.format("//nav[@id='Col1']//span[text()='%s']/..", linkName)))).click().build().perform();
+			actions.moveToElement(driver.findElement(By.xpath(String.format("//div[@id='menuDiv']/descendant::ul[@class='Nav'][1]//span[text()='%s']/..", linkName)))).click().build().perform();
 			logger.info("my account link is clicked");
 		}
 		catch(NoSuchElementException e){

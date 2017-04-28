@@ -220,7 +220,7 @@ public class StoreFrontBrandRefreshHomePage extends StoreFrontBrandRefreshWebsit
 	private static final By PASSWORD_TXTFLD_CHECKOUT_PAGE_LOC = By.xpath("//input[contains(@id,'uxPasswordText')]");
 	private static final By SIGN_IN_BTN_CHECKOUT_PAGE_LOC = By.xpath("//a[contains(@id,'lnkLogin')]");
 	private static final By RENEW_LATER_LINK = By.xpath("//a[@id='renewLater']");
-	private static final By FORGOT_PASSWORD_PWS_LINK_LOC = By.xpath("//a[contains(text(),'Forgot password')]");
+	private static final By FORGOT_PASSWORD_PWS_LINK_LOC = By.xpath("//a[@id='uxForgotPasswordLink']");
 	private static final By CHANGE_PASSWORD_TEXT_LOC = By.xpath("//div[@id='ContentWrapper']//h3[contains(text(),'Recover Password')]");
 	private static final By SEND_EMAIL_BTN_LOC = By.xpath("//input[@value='Submit']");
 	private static final By EMAIL_ADDRESS_FIELD_LOC = By.xpath("//label[contains(text(),'Email Address')]/following-sibling::input[@type='text']");
@@ -563,7 +563,7 @@ public class StoreFrontBrandRefreshHomePage extends StoreFrontBrandRefreshWebsit
 
 	public void selectRegimen(String regimen){
 		regimen = regimen.toUpperCase();
-		driver.get(driver.getURL()+"/Shop/"+regimen+"/Products");
+		driver.get(driver.getURL()+"/Shop/REVERSE-BRIGHTENING/products");
 
 		//		driver.quickWaitForElementPresent(By.xpath(String.format(regimenLoc, regimen)));
 		//		driver.click(By.xpath(String.format(regimenLoc, regimen)));

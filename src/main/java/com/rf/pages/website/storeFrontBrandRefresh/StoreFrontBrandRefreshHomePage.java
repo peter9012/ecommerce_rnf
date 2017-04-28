@@ -549,7 +549,7 @@ public class StoreFrontBrandRefreshHomePage extends StoreFrontBrandRefreshWebsit
 		driver.waitForElementPresent(USERNAME_TEXT_BOX_LOC);
 		driver.type(USERNAME_TEXT_BOX_LOC, userName);
 		logger.info("Entered Username is: "+userName);
-		driver.click(PASSWORD_TXTFLD_ONFOCUS_LOC);
+		//driver.click(PASSWORD_TXTFLD_ONFOCUS_LOC);
 		driver.type(PASSWORD_TEXT_BOX_LOC, password);
 		logger.info("Entered Password is: "+password);
 		Actions actions = new Actions(RFWebsiteDriver.driver);
@@ -777,7 +777,7 @@ public class StoreFrontBrandRefreshHomePage extends StoreFrontBrandRefreshWebsit
 		logout();
 		driver.waitForElementPresent(USERNAME_TXTFLD_LOC);
 		driver.type(USERNAME_TXTFLD_LOC, username);
-		driver.click(PASSWORD_TXTFLD_ONFOCUS_LOC);
+		//driver.click(PASSWORD_TXTFLD_ONFOCUS_LOC);
 		driver.type(PASSWORD_TXTFLD_LOC,password);  
 		logger.info("login username is "+username);
 		logger.info("login password is "+password);
@@ -790,7 +790,7 @@ public class StoreFrontBrandRefreshHomePage extends StoreFrontBrandRefreshWebsit
 	public void loginAsRCUser(String username,String password){
 		driver.waitForElementPresent(USERNAME_TXTFLD_LOC);
 		driver.type(USERNAME_TXTFLD_LOC, username);
-		driver.click(PASSWORD_TXTFLD_ONFOCUS_LOC);
+		//driver.click(PASSWORD_TXTFLD_ONFOCUS_LOC);
 		driver.type(PASSWORD_TXTFLD_LOC,password);  
 		logger.info("login username is "+username);
 		logger.info("login password is "+password);

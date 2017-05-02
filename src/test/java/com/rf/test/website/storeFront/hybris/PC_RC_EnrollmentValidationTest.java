@@ -1263,8 +1263,7 @@ public class PC_RC_EnrollmentValidationTest extends RFWebsiteBaseTest{
 		storeFrontHomePage.clickPlaceOrderBtn();
 		s_assert.assertTrue(storeFrontHomePage.isOrderPlacedSuccessfully(), "Order Not placed successfully");
 		String currentPWSUrl=driver.getCurrentUrl();
-		s_assert.assertTrue(storeFrontHomePage.verifyPWSAfterSuccessfulEnrollment(currentPWSUrl,bizPWS.split("\\:")[1]),"PWS of the RC after enrollment is not same as the one it started enrollment");
-
+		s_assert.assertTrue(storeFrontHomePage.verifyPWSAfterSuccessfulEnrollment(currentPWSUrl.toLowerCase(),bizPWS.split("\\:")[1].toLowerCase()),"PWS of the RC after enrollment is not same as the one it started enrollment");
 		s_assert.assertAll();	
 
 	}
@@ -1479,7 +1478,7 @@ public class PC_RC_EnrollmentValidationTest extends RFWebsiteBaseTest{
 			//Click on Check out
 			storeFrontHomePage.clickOnCheckoutButton();
 
-		
+
 			//Enter the User information and DO NOT check the "Become a Preferred Customer" checkbox and click the create account button
 			String rcEmailAddress = firstNameRC+"@xyz.com";
 			storeFrontHomePage.enterNewRCDetails(firstNameRC, TestConstants.LAST_NAME+randomNum, rcEmailAddress, password);
@@ -1488,7 +1487,7 @@ public class PC_RC_EnrollmentValidationTest extends RFWebsiteBaseTest{
 			storeFrontHomePage.enterMainAccountInfo();
 			logger.info("Main account details entered");
 
-		
+
 			// sponser search by Account Number
 			List<Map<String, Object>> sponsorIdList = DBUtil.performDatabaseQuery(DBQueries_RFO.callQueryWithArguement(DBQueries_RFO.GET_ACCOUNT_NUMBER_FROM_EMAIL_ADDRESS,consultantEmailAddress),RFO_DB);
 			String sponsorId = String.valueOf(getValueFromQueryResult(sponsorIdList, "AccountNumber"));
@@ -1524,44 +1523,16 @@ public class PC_RC_EnrollmentValidationTest extends RFWebsiteBaseTest{
 		RFO_DB = driver.getDBNameRFO();
 		int randomNum = CommonUtils.getRandomNum(10000, 1000000);  
 		country = driver.getCountry();
-		String requiredCountry=null;
-		String requiredCountryId=null;
 		storeFrontHomePage = new StoreFrontHomePage(driver);
 		String firstName=TestConstants.FIRST_NAME+randomNum;
 		String emailAddress=firstName+TestConstants.EMAIL_ADDRESS_SUFFIX;
 
-		//Get Cross Country Sponser from database.
-		if(driver.getCountry().equalsIgnoreCase("us")){
-			requiredCountry ="ca";
-			requiredCountryId="40";
-		}else{
-			requiredCountry ="us";
-			requiredCountryId="236";
-		}
-		List<Map<String, Object>> randomConsultantList = DBUtil.performDatabaseQuery(DBQueries_RFO.callQueryWithArguementPWS(DBQueries_RFO.GET_RANDOM_ACTIVE_CONSULTANT_WITH_PWS_RFO,driver.getEnvironment()+".com",requiredCountry,requiredCountryId),RFO_DB);
-		String comPWSOfSponser=String.valueOf(getValueFromQueryResult(randomConsultantList, "URL"));
+		List<Map<String, Object>> randomConsultantList = DBUtil.performDatabaseQuery(DBQueries_RFO.callQueryWithArguementPWS(DBQueries_RFO.GET_RANDOM_ACTIVE_CONSULTANT_WITH_PWS_RFO,driver.getEnvironment()+".com",country,countryId),RFO_DB);
 		String accountID = String.valueOf(getValueFromQueryResult(randomConsultantList, "AccountID"));
 		// sponser search by Account Number
 		List<Map<String, Object>> sponsorIdList = DBUtil.performDatabaseQuery(DBQueries_RFO.callQueryWithArguement(DBQueries_RFO.GET_ACCOUNT_NUMBER_FOR_PWS,accountID),RFO_DB);
 		String accountnumber = String.valueOf(getValueFromQueryResult(sponsorIdList, "AccountNumber"));
-		comPWSOfSponser=storeFrontHomePage.convertCountryInPWS(comPWSOfSponser);
-		//Open com pws of Sponser
-		storeFrontHomePage.openConsultantPWS(comPWSOfSponser);
-		while(true){
-			if(driver.getCurrentUrl().contains("sitenotfound")){
-				randomConsultantList = DBUtil.performDatabaseQuery(DBQueries_RFO.callQueryWithArguementPWS(DBQueries_RFO.GET_RANDOM_ACTIVE_CONSULTANT_WITH_PWS_RFO,driver.getEnvironment()+".com",requiredCountry,requiredCountryId),RFO_DB);
-				comPWSOfSponser=String.valueOf(getValueFromQueryResult(randomConsultantList, "URL"));
-				accountID = String.valueOf(getValueFromQueryResult(randomConsultantList, "AccountID"));
-				// sponser search by Account Number
-				sponsorIdList = DBUtil.performDatabaseQuery(DBQueries_RFO.callQueryWithArguement(DBQueries_RFO.GET_ACCOUNT_NUMBER_FOR_PWS,accountID),RFO_DB);
-				accountnumber = String.valueOf(getValueFromQueryResult(sponsorIdList, "AccountNumber"));
-				comPWSOfSponser=storeFrontHomePage.convertCountryInPWS(comPWSOfSponser);
-				storeFrontHomePage.openConsultantPWS(comPWSOfSponser); 
-				continue;
-			}else
-				break;
-		} 
-		logger.info("Pws to start enroll is "+comPWSOfSponser);
+
 		//Hover shop now and click all products link.
 		storeFrontHomePage.hoverOnShopLinkAndClickAllProductsLinks();
 
@@ -1580,11 +1551,11 @@ public class PC_RC_EnrollmentValidationTest extends RFWebsiteBaseTest{
 		storeFrontHomePage.enterNewPCDetails(firstName, TestConstants.LAST_NAME+randomNum, password,emailAddress);
 
 		//Assert continue without sponser link is not present
-		s_assert.assertFalse(storeFrontHomePage.verifyContinueWithoutSponserLinkPresent(), "Continue without Sponser link is present on pws enrollment");
+		s_assert.assertTrue(storeFrontHomePage.verifyContinueWithoutSponserLinkPresent(), "Continue without Sponser link is present on pws enrollment");
 		s_assert.assertTrue(storeFrontHomePage.verifyNotYourSponsorLinkIsPresent(),"Not your Sponser link is not present.");
 
 		//Click not your sponser link and verify continue without sponser link is present.
-		storeFrontHomePage.clickOnNotYourSponsorLink();
+		//storeFrontHomePage.clickOnNotYourSponsorLink();
 		s_assert.assertTrue(storeFrontHomePage.verifySponserSearchFieldIsPresent(),"Sponser search field is not present");
 
 		//Enter the Main account info and DO NOT check the "Become a Preferred Customer" and click next
@@ -3059,17 +3030,17 @@ public class PC_RC_EnrollmentValidationTest extends RFWebsiteBaseTest{
 		s_assert.assertTrue(storeFrontHomePage.isOrderPlacedSuccessfully(), "Order Not placed successfully");
 		String orderNumber = storeFrontHomePage.getOrderNumberAfterPlacingOrder();
 		s_assert.assertTrue(storeFrontHomePage.verifyWelcomeDropdownToCheckUserRegistered(), "User NOT registered successfully");
-//		cscockpitLoginPage = new CSCockpitLoginPage(driver);
-//		cscockpitCustomerSearchTabPage = new CSCockpitCustomerSearchTabPage(driver);
-//		cscockpitOrderTabPage = new CSCockpitOrderTabPage(driver);
-//		driver.get(driver.getCSCockpitURL());
-//		cscockpitCustomerSearchTabPage = cscockpitLoginPage.clickLoginBtn();
-//		cscockpitCustomerSearchTabPage.clickOrderSearchTab();
-//		cscockpitOrderTabPage.enterOrderNumber(orderNumber);
-//		String randomCustomerSequenceNumber = String.valueOf(cscockpitCustomerSearchTabPage.getRandomCustomerFromSearchResult());
-//		cscockpitCustomerSearchTabPage.clickCIDNumberInCustomerSearchTab(randomCustomerSequenceNumber);
-//		String originationName = cscockpitOrderTabPage.getOriginationNameFromOrderInfo();
-//		s_assert.assertTrue(caConsultantPWS.contains(originationName),"origination name is "+originationName+" while ca consultant pws is "+caConsultantPWS+"");
+		//		cscockpitLoginPage = new CSCockpitLoginPage(driver);
+		//		cscockpitCustomerSearchTabPage = new CSCockpitCustomerSearchTabPage(driver);
+		//		cscockpitOrderTabPage = new CSCockpitOrderTabPage(driver);
+		//		driver.get(driver.getCSCockpitURL());
+		//		cscockpitCustomerSearchTabPage = cscockpitLoginPage.clickLoginBtn();
+		//		cscockpitCustomerSearchTabPage.clickOrderSearchTab();
+		//		cscockpitOrderTabPage.enterOrderNumber(orderNumber);
+		//		String randomCustomerSequenceNumber = String.valueOf(cscockpitCustomerSearchTabPage.getRandomCustomerFromSearchResult());
+		//		cscockpitCustomerSearchTabPage.clickCIDNumberInCustomerSearchTab(randomCustomerSequenceNumber);
+		//		String originationName = cscockpitOrderTabPage.getOriginationNameFromOrderInfo();
+		//		s_assert.assertTrue(caConsultantPWS.contains(originationName),"origination name is "+originationName+" while ca consultant pws is "+caConsultantPWS+"");
 		s_assert.assertAll();
 	}
 

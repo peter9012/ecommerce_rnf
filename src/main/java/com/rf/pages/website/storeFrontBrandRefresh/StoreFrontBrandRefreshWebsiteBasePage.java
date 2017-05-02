@@ -28,6 +28,7 @@ public class StoreFrontBrandRefreshWebsiteBasePage extends RFBasePage{
 	private static String sublinkUnderShopSkinCareOrBeAConsultant = "//div[@id='LeftNav']//a/span[text()='%s']/../..//span[text()='%s']";
 	private static String consultantOnlyProductonPWSLoc= "//span[contains(text(),'%s')]/preceding::a[1]/img";
 
+	private static final By CHANGE_SHIPPING_ADDRESS_LOC = By.xpath("//span[contains(text(),'Change Shipping Address')]/ancestor::a[1]");
 	protected static final By BE_A_CONSULTANT_LOC = By.xpath("//span[text()='Become a Consultant']");
 	private static final By ORDER_NUMBER_AFTER_PLACED = By.xpath("//span[contains(@id,'uxOrderNumber')]//cufon");
 	private static final By EDIT_ORDER_UNDER_MY_ACCOUNT_LOC = By.xpath("//span[text()=' Edit Order']");
@@ -556,6 +557,18 @@ public class StoreFrontBrandRefreshWebsiteBasePage extends RFBasePage{
 		driver.navigate().refresh();
 		driver.waitForPageLoad();
 		driver.pauseExecutionFor(2000);
+	}
+
+	public void clickChangeShippingAddressBtn(){
+		if(driver.isElementPresent(CHANGE_SHIPPING_ADDRESS_LOC)){
+			driver.click(CHANGE_SHIPPING_ADDRESS_LOC);
+			logger.info("Change Shipping Address button clicked");
+			driver.waitForPageLoad();
+			driver.pauseExecutionFor(3000);
+		}
+		else{
+			logger.info("User does not have any Shipping Address Yet");
+		}
 	}
 
 }

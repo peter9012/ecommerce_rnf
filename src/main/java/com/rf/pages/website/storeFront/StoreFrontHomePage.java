@@ -1383,7 +1383,7 @@ public class StoreFrontHomePage extends StoreFrontRFWebsiteBasePage {
 	}
 
 	public boolean verifyContinueWithoutSponserLinkPresent(){
-		return driver.findElement(By.id("continue-no-sponsor")).isDisplayed();
+		return driver.isElementPresent(By.id("continue-no-sponsor"));
 	}
 
 	public boolean verifyRequestASponsorBtn(){

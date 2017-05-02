@@ -788,4 +788,78 @@ public class BizPWSTest extends RFBrandRefreshWebsiteBaseTest{
 		s_assert.assertTrue(storeFrontBrandRefreshHomePage.validateExistingConsultantPopUp(consultantEmailID),"Existing Consultant Pop Up is not displayed!!");
 		s_assert.assertAll();
 	}
+	
+	   //RC -  Shipping Address
+	  @Test
+	  public void testRCUserShippingAddressUpdate(){
+	   RFL_DB = driver.getDBNameRFL();
+	   int randomNumber = CommonUtils.getRandomNum(10000, 1000000);
+	   String regimen = TestConstantsRFL.REGIMEN_NAME_REVERSE;
+	   String addressName = "Home";
+	   String shippingProfileFirstName = TestConstantsRFL.SHIPPING_PROFILE_FIRST_NAME+randomNumber;
+	   String shippingProfileLastName = TestConstantsRFL.SHIPPING_PROFILE_LAST_NAME;
+	   String addressLine1 =  TestConstantsRFL.ADDRESS_LINE1;
+	   String postalCode = TestConstantsRFL.POSTAL_CODE;
+	   String phnNumber = TestConstantsRFL.NEW_ADDRESS_PHONE_NUMBER_US;
+	   
+	   List<Map<String, Object>> randomRCList =  null;
+	   String rcEmailID = null;
+
+	   randomRCList = DBUtil.performDatabaseQuery(DBQueries_RFL.GET_RANDOM_ACTIVE_RC_EMAILID,RFL_DB);
+	   rcEmailID = (String) getValueFromQueryResult(randomRCList, "EmailAddress");
+	   storeFrontBrandRefreshHomePage.mouseHoverShopSkinCareAndClickLink(regimen);
+	   storeFrontBrandRefreshHomePage.clickAddToCartBtn();
+	   storeFrontBrandRefreshHomePage.clickCheckoutBtn();
+	   storeFrontBrandRefreshHomePage.loginAsUserOnCheckoutPage(rcEmailID, password);
+	   s_assert.assertFalse(storeFrontBrandRefreshHomePage.isSignInButtonPresent(), "RC user not logged in successfully");
+	   s_assert.assertTrue(driver.getCurrentUrl().toLowerCase().contains("consultantlocator"), "RC user not redirected to consultant locator after login");
+	   storeFrontBrandRefreshHomePage.clickContinueWithoutConsultantLink();
+	   storeFrontBrandRefreshHomePage.clickChangeShippingAddressBtn();
+	   storeFrontBrandRefreshHomePage.enterShippingProfileDetailsForPWS(addressName, shippingProfileFirstName, shippingProfileLastName, addressLine1, postalCode, phnNumber);
+	   storeFrontBrandRefreshHomePage.clickUseThisAddressShippingInformationBtn();
+	   storeFrontBrandRefreshHomePage.clickUseAsEnteredBtn();
+	   storeFrontBrandRefreshHomePage.clickContinueBtnForPCAndRC();
+	   s_assert.assertTrue(storeFrontBrandRefreshHomePage.getShippingAddressName().contains(shippingProfileFirstName),"Shipping address name expected is "+shippingProfileFirstName+" While on UI is "+storeFrontBrandRefreshHomePage.getShippingAddressName());
+	   s_assert.assertAll();
+	  }
+	  
+	  
+	  //RC - Billing Profile
+	  @Test
+	  public void testRCUserBillingProfileUpdate(){
+	   RFL_DB = driver.getDBNameRFL();
+	   int randomNumber = CommonUtils.getRandomNum(10000, 1000000);
+	   String firstName = TestConstantsRFL.FIRST_NAME;
+	   String postalCode = TestConstantsRFL.POSTAL_CODE;
+	   String cardNumber = TestConstantsRFL.CARD_NUMBER;
+	   String nameOnCard = firstName;
+	   String expMonth = TestConstantsRFL.EXP_MONTH;
+	   String expYear = TestConstantsRFL.EXP_YEAR;
+	   String regimen = TestConstantsRFL.REGIMEN_NAME_REVERSE;
+	   String phnNumber = TestConstantsRFL.NEW_ADDRESS_PHONE_NUMBER_US;
+	   String addressLine1 =  TestConstantsRFL.ADDRESS_LINE1;
+	   String billingName =TestConstantsRFL.BILLING_PROFILE_NAME;
+	   String billingProfileFirstName = TestConstantsRFL.SHIPPING_PROFILE_FIRST_NAME;
+	   String billingProfileLastName = TestConstantsRFL.SHIPPING_PROFILE_LAST_NAME+randomNumber;
+	   List<Map<String, Object>> randomRCList =  null;
+	   String rcEmailID = null;
+
+	   randomRCList = DBUtil.performDatabaseQuery(DBQueries_RFL.GET_RANDOM_ACTIVE_RC_EMAILID,RFL_DB);
+	   rcEmailID = (String) getValueFromQueryResult(randomRCList, "EmailAddress");
+	   storeFrontBrandRefreshHomePage.mouseHoverShopSkinCareAndClickLink(regimen);
+	   storeFrontBrandRefreshHomePage.clickAddToCartBtn();
+	   storeFrontBrandRefreshHomePage.clickCheckoutBtn();
+	   storeFrontBrandRefreshHomePage.loginAsUserOnCheckoutPage(rcEmailID, password);
+	   s_assert.assertFalse(storeFrontBrandRefreshHomePage.isSignInButtonPresent(), "RC user not logged in successfully");
+	   s_assert.assertTrue(driver.getCurrentUrl().toLowerCase().contains("consultantlocator"), "RC user not redirected to consultant locator after login");
+	   storeFrontBrandRefreshHomePage.clickContinueWithoutConsultantLink();
+	   storeFrontBrandRefreshHomePage.clickContinueBtnForPCAndRC();
+	   storeFrontBrandRefreshHomePage.clickChangeBillingInformationBtn();
+	   storeFrontBrandRefreshHomePage.enterBillingInfo(billingName, billingProfileFirstName, billingProfileLastName, nameOnCard, cardNumber, expMonth, expYear, addressLine1, postalCode, phnNumber,CVV);
+	   storeFrontBrandRefreshHomePage.clickUseThisBillingInformationBtn();
+	   storeFrontBrandRefreshHomePage.clickUseAsEnteredBtn();
+	   s_assert.assertTrue(storeFrontBrandRefreshHomePage.getBillingAddressName().contains(billingProfileFirstName), "Expected billing profile name is: "+billingProfileFirstName+" Actual on UI is: "+storeFrontBrandRefreshHomePage.getBillingAddressName());
+	   s_assert.assertAll();
+	  }
+	
 }

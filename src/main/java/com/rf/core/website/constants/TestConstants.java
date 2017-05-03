@@ -128,7 +128,7 @@ public class TestConstants {
 	public static final String CONSULTANT_PASSWORD_STG2 = "111Maiden$";
 	public static final String CONSULTANT_NEW_PASSWORD = "111maiden$";
 	public static final String SOCIAL_INSURANCE_NUMBER = "223334444";
-	public static final String SOCIAL_INSURANCE_NUMBER_INVALID = "111111111";
+	public static final String SOCIAL_INSURANCE_NUMBER_INVALID = "000000000";
 
 	public static final String CONSULTANT_USERNAME = "consultantuserstg@xyz.com";
 

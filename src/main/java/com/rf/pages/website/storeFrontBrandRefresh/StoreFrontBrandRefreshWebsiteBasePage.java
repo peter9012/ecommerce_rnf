@@ -58,7 +58,6 @@ public class StoreFrontBrandRefreshWebsiteBasePage extends RFBasePage{
 	private static final By SHOP_SKINCARE_LOC = By.xpath("//span[text()='Shop Skincare']");
 	private static final By SELECTED_HIGHLIGHT_LINK = By.xpath("//div[@id='ContentWrapper']//a[@class='selected']/span");
 	private static final By CHANGE_BILLING_INFO = By.xpath("//a[contains(@id,'uxBillingInfo_uxChange')]");
-	private static final By USE_THIS_BILLING_INFORMATION = By.xpath("//a[contains(@id,'uxUseNewPayment')]");
 	private static final By SHOP_SKINCARE_ON_PWS_LOC = By.xpath("//span[text()='SHOP SKINCARE']");
 	private static final By PRODUCT_LINK_UNDER_SHOP_SKIN_CARE = By.xpath("//span[text()='CONSULTANT-ONLY PRODUCTS']");
 	private static final By COM_PWS_CONSULTANT_ENROLLMENT = By.xpath("//div[@class='websitePrefix']/ul[@class='domainResults']/li[1]");
@@ -67,6 +66,8 @@ public class StoreFrontBrandRefreshWebsiteBasePage extends RFBasePage{
 	private static final By ABOUT_RF_LOC = By.xpath("//span[text()='About R+F']");
 	private static final By RODAN_AND_FIELDS_IMG_LOC = By.xpath("//div[@id='logo']//img");
 	protected static final By CONTINUE_BTN_PREFERRED_PROFILE_PAGE_LOC = By.xpath("//*[contains(@id,'uxContinue')]");
+	private final By MY_ACCOUNT_FROM_TOP_NAV_LOC =  By.xpath("//nav[@id='header']//a[text()='My Account']");
+	private static final By USE_THIS_BILLING_INFORMATION = By.xpath("//a[contains(@id,'uxUseNewPayment') or contains(@id,'uxContinueAndEdit')]");
 
 	protected RFWebsiteDriver driver;
 	private String RFL_DB = null;
@@ -275,14 +276,6 @@ public class StoreFrontBrandRefreshWebsiteBasePage extends RFBasePage{
 		String linkName = driver.findElement(SELECTED_HIGHLIGHT_LINK).getText();
 		logger.info("Selected And highlight link: "+linkName);
 		return linkName;
-	}
-
-	public void clickChangeBillingInformationBtn(){
-		driver.waitForElementPresent(CHANGE_BILLING_INFO);
-		driver.click(CHANGE_BILLING_INFO);
-		logger.info("Change billing information button clicked");
-		driver.waitForPageLoad();
-		driver.pauseExecutionFor(3000);
 	}
 
 	public void clickUseThisBillingInformationBtn(){
@@ -568,6 +561,24 @@ public class StoreFrontBrandRefreshWebsiteBasePage extends RFBasePage{
 		}
 		else{
 			logger.info("User does not have any Shipping Address Yet");
+		}
+	}
+
+	public void clickHeaderLinkFromTopNav() {
+		driver.click(MY_ACCOUNT_FROM_TOP_NAV_LOC);
+		logger.info("my account link is clicked");
+	}
+
+
+	public void clickChangeBillingInformationBtn(){
+		if(driver.isElementPresent(CHANGE_BILLING_INFO)){
+			driver.click(CHANGE_BILLING_INFO);
+			logger.info("Change billing information button clicked");
+			driver.waitForPageLoad();
+			driver.pauseExecutionFor(3000);
+		}
+		else{
+			logger.info("User does not have any Billing Information Yet");
 		}
 	}
 

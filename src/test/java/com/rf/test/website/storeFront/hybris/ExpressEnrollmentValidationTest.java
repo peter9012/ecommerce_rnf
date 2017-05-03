@@ -99,7 +99,7 @@ public class ExpressEnrollmentValidationTest extends RFWebsiteBaseTest{
 		storeFrontHomePage.selectKitAndEnrollmentType(kitName, regimenName, enrollmentType);
 		//validate error message for invalid password
 		storeFrontHomePage.enterInvalidPassword(TestConstants.PASSWORD_BELOW_6CHARS);
-		s_assert.assertTrue(storeFrontHomePage.getInvalidPasswordMessage().contains("Please enter 6 characters or more"), "Error message for invalid password does not visible");
+		s_assert.assertTrue(storeFrontHomePage.getInvalidPasswordMessage().contains("Please enter 6-24 characters, with at least 1 number and 1 letter."), "Error message for invalid password does not visible");
 		//validate error message for invalid confirm password
 		storeFrontHomePage.enterPassword(password);
 		storeFrontHomePage.enterInvalidConfirmPassword(TestConstants.PASSWORD_BELOW_6CHARS);

@@ -836,8 +836,10 @@ public class StoreFrontUpdateCartPage extends StoreFrontRFWebsiteBasePage{
 	}
 
 	public void clickOnAddANewShippingAddress(){
-		driver.waitForElementPresent(By.xpath("//a[contains(text(),'Add new shipping address')]"));
-		driver.clickByJS(RFWebsiteDriver.driver,driver.findElement(By.xpath("//a[contains(text(),'Add new shipping address')]")));
+		if(driver.isElementPresent(By.xpath("//a[contains(text(),'Add new shipping address')]"))){
+			driver.waitForElementPresent(By.xpath("//a[contains(text(),'Add new shipping address')]"));
+			driver.clickByJS(RFWebsiteDriver.driver,driver.findElement(By.xpath("//a[contains(text(),'Add new shipping address')]")));
+		}
 	}
 
 	public void selectNewShippingAddressStateOnCartPage(){
@@ -1586,4 +1588,8 @@ public class StoreFrontUpdateCartPage extends StoreFrontRFWebsiteBasePage{
 		return !(deliveryCharges==null);
 	}
 
+	public String getUpdatedBillingAddressPresentOnOrderConfirmationPage(){
+		String billingAddresName = driver.findElement(By.xpath("//div[@id='confirm-left-shopping']/div[2]//div[contains(@class,'bill-method')]/span[@class='font-bold']")).getText();
+		return billingAddresName.trim();
+	}
 }

@@ -2895,8 +2895,8 @@ public class StoreFrontHomePage extends StoreFrontRFWebsiteBasePage {
 	}
 
 	public boolean validateConsultantNameOnTopRightCorner(){
-		driver.waitForElementPresent(By.xpath("//div[@id='dis_name']"));
-		return driver.isElementPresent(By.xpath("//div[@id='dis_name']"));
+		driver.waitForElementPresent(By.xpath("//div[contains(@class,'consultant-info')]"));
+		return driver.isElementPresent(By.xpath("//div[contains(@class,'consultant-info')]"));
 	}
 
 	public boolean verifyHeroBannerOnLoginPage(){
@@ -4145,11 +4145,10 @@ public class StoreFrontHomePage extends StoreFrontRFWebsiteBasePage {
 
 	public boolean isSolutionToolContentBlockPresent() {
 		//https://bhopkins.myrfostg2.com/ca/dynamic/url/solutionTool
-		driver.waitForElementPresent(By.xpath("//a[@href='/ca/dynamic/url/solutionTool']"));///div[@id='corp-start-boxes']/div[1]/div[3]//h3[text()='SOLUTION TOOL']"));
-		return driver.isElementPresent(By.xpath("//a[@href='/ca/dynamic/url/solutionTool']"));
+		driver.waitForElementPresent(By.xpath("//div[@id='corp-start-boxes']/descendant::h3[contains(text(),'SOLUTION TOOL')][1]"));///div[@id='corp-start-boxes']/div[1]/div[3]//h3[text()='SOLUTION TOOL']"));
+		return driver.isElementPresent(By.xpath("//div[@id='corp-start-boxes']/descendant::h3[contains(text(),'SOLUTION TOOL')][1]"));
 	}
-
-
+	
 	public boolean isAccessSolutionToolPresent() {
 		boolean status = false;
 		driver.get(driver.getCurrentUrl()+"/dynamic/url/solutionTool");

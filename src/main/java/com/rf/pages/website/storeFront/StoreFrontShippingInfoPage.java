@@ -181,13 +181,13 @@ public class StoreFrontShippingInfoPage extends StoreFrontRFWebsiteBasePage{
 		boolean isFirstNamePresent = false;
 		driver.waitForElementPresent(By.xpath("//div[@id='multiple-billing-profiles']/div[contains(@class,'sel-profile')]"));
 		List<WebElement> allBillingProfiles = driver.findElements(By.xpath("//div[@id='multiple-billing-profiles']/div[contains(@class,'sel-profile')]"));  
-		for(int i=1;i<=allBillingProfiles.size();i++){   
-			isFirstNamePresent = driver.findElement(By.xpath("//div[@id='multiple-billing-profiles']/div["+i+"]/p/span[1]")).getText().toLowerCase().contains(firstName.toLowerCase());
-			if(isFirstNamePresent == true){    
-				return true;
+		for(WebElement e:allBillingProfiles){
+			if(e.getText().contains(firstName)==true){
+				isFirstNamePresent=true;
+				break;
 			}
 		}
-		return false;
+		return isFirstNamePresent;
 	}
 
 	public String getAddressUpdateConfirmationMessageFromUI(){

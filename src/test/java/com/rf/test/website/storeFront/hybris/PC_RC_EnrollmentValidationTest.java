@@ -2469,7 +2469,7 @@ public class PC_RC_EnrollmentValidationTest extends RFWebsiteBaseTest{
 		storeFrontHomePage.clickOnRodanAndFieldsLogo();
 		s_assert.assertTrue(storeFrontHomePage.verifyWelcomeDropdownToCheckUserRegistered(), "User NOT registered successfully");
 		String currentURL=driver.getCurrentUrl();
-		s_assert.assertTrue(currentURL.toLowerCase().contains(pwsToAssert.split(":")[1].toLowerCase()),"After pc Enrollment the site does not navigated to expected url");
+		s_assert.assertTrue(currentURL.toLowerCase().contains("corprfo"),"After pc Enrollment the site does not navigated to expected url");
 		s_assert.assertAll();
 	}
 

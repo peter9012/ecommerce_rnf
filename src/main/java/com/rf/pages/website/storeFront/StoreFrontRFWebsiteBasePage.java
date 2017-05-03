@@ -1692,21 +1692,8 @@ public class StoreFrontRFWebsiteBasePage extends RFBasePage{
 	public void enterWebsitePrefixName(String name){
 		driver.waitForElementPresent(By.id("webSitePrefix"));
 		driver.type(By.id("webSitePrefix"), name);
+		logger.info("entered prefix name is"+name);
 		driver.findElement(By.id("webSitePrefix")).sendKeys(Keys.TAB);
-		driver.pauseExecutionFor(2000);
-		try{
-			if(driver.isElementPresent(By.xpath("//span[@class='icon-search']"))==true){
-				driver.click(By.xpath("//span[@class='icon-search']"));
-				driver.findElement(By.id("webSitePrefix")).sendKeys(Keys.TAB);
-				driver.pauseExecutionFor(1500);
-			}}catch(Exception e){
-				try{
-					driver.waitForElementNotPresent(By.xpath("//h3[text()='DECIDE TODAY HOW TOMORROW LOOKS']"));
-					driver.click(By.xpath("//h3[text()='DECIDE TODAY HOW TOMORROW LOOKS']"));
-				}catch(Exception e1){
-					driver.click(By.xpath("//form[@id='crpEnrollment']//img[contains(@src,'pulse-blue')]")); 
-				} } 
-		driver.waitForLoadingImageToDisappear();
 		driver.pauseExecutionFor(2000);
 	}
 
@@ -2256,4 +2243,35 @@ public class StoreFrontRFWebsiteBasePage extends RFBasePage{
 		driver.waitForPageLoad();
 	}
 
+
+	public void deleteShippingAddress(String shippingProfileName){
+		driver.waitForElementPresent(By.xpath("//div[@id='multiple-billing-profiles']//span[contains(text(),'"+shippingProfileName+"')]/ancestor::div[1]//a[@class='deleteAddress']"));
+		driver.click(By.xpath("//div[@id='multiple-billing-profiles']//span[contains(text(),'"+shippingProfileName+"')]/ancestor::div[1]//a[@class='deleteAddress']"));
+		logger.info("Shipping profile deleted as: "+shippingProfileName);
+		driver.click(By.xpath("//input[contains(@value,'delete this profile')]"));
+		driver.waitForPageLoad();
+	}
+
+
+	public void clickUseAsEnteredOnQASPopup() throws InterruptedException{
+		try{			
+			driver.quickWaitForElementPresent(By.xpath("//*[@id='QAS_RefineBtn']"));
+			driver.click(By.xpath("//*[@id='QAS_RefineBtn']"));
+			logger.info("QAS Popup clicked");
+		}catch(Exception e){
+
+		}
+		driver.waitForLoadingImageToDisappear();
+	}
+
+	public void clickOnDeleteOfBillingProfile(String profileName){
+		driver.waitForLoadingImageToDisappear();
+		driver.waitForElementPresent(By.xpath("//span[contains(text(),'"+profileName+"')]/ancestor::div[1]//a[text()='Delete']"));
+		driver.clickByJS(RFWebsiteDriver.driver,driver.findElement(By.xpath("//span[contains(text(),'"+profileName+"')]/ancestor::div[1]//a[text()='Delete']")));
+		driver.waitForPageLoad();
+		logger.info("billing profile"+profileName+" 's delete link clicked");
+		driver.click(By.xpath("//input[@value='Yes, delete this profile']"));
+		logger.info("Clicked on confirm delete on popup.");
+		driver.waitForPageLoad();
+	}
 }

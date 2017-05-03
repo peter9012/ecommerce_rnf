@@ -49,6 +49,9 @@ public class StoreFrontBrandRefreshHomePage extends StoreFrontBrandRefreshWebsit
 	private static String viewDetailsOnOrderHistoryPage = "//div[@class='divTable CartTable']//div[@class='divTableBody']/div[%s]//a[contains(text(),'View Details')]";
 	private static String orderNumberOnOrderHistoryPage = "//div[@class='divTable CartTable']//div[@class='divTableBody']/descendant::div[%s]/descendant::div[1]";
 
+	private static final By USE_THIS_ADDRESS_SHIPPING_INFORMATION = By.xpath("//a[contains(@id,'uxUseNewAddress') or contains(@id,'uxContinueAndEdit')]");
+	private String deleteButtonForProfileLoc = "//span[contains(text(),'%s')]/following::a[text()='Delete'][1]";
+	private String specificprofileInSavedProfilesLoc = "//.[contains(text(),'Saved') and contains(text(),'')]/following-sibling::div[1]//span[contains(text(),'%s')]";
 	private static final By PRODUCTS_LIST_LOC = By.xpath("//div[@id='FullPageItemList']");
 	private static final By RESULTS_TEXT_LOC = By.xpath("//div[@id='RFContent']//h1[contains(text(),'REAL RESULTS')]");
 	private static final By TESTIMONIAL_PAGE_CONTENT_LOC = By.xpath("//div[@id='RFContent']/div/div/blockquote[1]/div[1]");
@@ -227,7 +230,6 @@ public class StoreFrontBrandRefreshHomePage extends StoreFrontBrandRefreshWebsit
 	private static final By EDIT_ORDER_UNDER_MY_ACCOUNT_LOC = By.xpath("//span[text()=' Edit Order']");
 	private static final By CHANGE_LINK_FOR_SHIPPING_INFO_ON_PWS = By.xpath("//a[contains(@id,'uxChangeShippingLink')]");
 	private static final By SHIPPING_ADDRESS_NAME_LOC = By.xpath("//*[text()='Shipping to:']/../span[1]");
-	private static final By USE_THIS_ADDRESS_SHIPPING_INFORMATION = By.xpath("//a[contains(@id,'uxUseNewAddress')]");
 	private static final By ENROLL_NOW_LINK = By.xpath("//span[text()='Enroll Now']");
 	private static final By WEBSITE_PREFIX_BIZ_PWS = By.xpath("//li[@id='Abailable1']");
 	private static final By CHANGE_MY_PC_PERKS_STATUS_UNDER_MYACCOUNT_LINK = By.xpath("//a[@class='IconLink']/span[text()=' Change my PC Perks Status']");
@@ -1491,49 +1493,6 @@ public class StoreFrontBrandRefreshHomePage extends StoreFrontBrandRefreshWebsit
 	//		logger.info("Phone number entered as: "+phnNumber);
 	//	}
 
-	public void enterBillingInfo(String billingName, String firstName,String lastName,String cardName,String cardNumer,String month,String year,String addressLine1,String postalCode,String phnNumber,String CVV){
-		driver.type(BILLING_NAME_FOR_BILLING_PROFILE, billingName);
-		logger.info("Billing profile name entered as: "+billingName);
-		driver.type(ATTENTION_FIRST_NAME, firstName);
-		//driver.type(BILLING_FIRST_NAME, firstName);
-		logger.info("Attention first name entered as: "+firstName);
-		driver.type(ATTENTION_LAST_NAME, lastName);
-		//driver.type(BILLING_LAST_NAME, lastName);
-		logger.info("Attention last name entered as: "+lastName);
-		driver.type(NAME_ON_CARD, cardName);
-		logger.info("Card Name entered as: "+cardName);
-		driver.type(CREDIT_CARD_NUMBER_INPUT_FIELD, cardNumer);
-		logger.info("Card number entered as: "+cardNumer);
-		driver.type(By.id("ctl00_ContentPlaceHolder1_uxBillingEditor_uxCreditCardCvv"), CVV);
-		logger.info("CVV entered as: "+CVV);
-		driver.click(EXPIRATION_DATE_MONTH_DD);
-		logger.info("Expiration month dropdown clicked");
-		driver.click(By.xpath(String.format(expiryMonthLoc, month)));
-		logger.info("Expiry month selected is: "+month);
-		driver.click(EXPIRATION_DATE_YEAR_DD);
-		logger.info("Expiration year dropdown clicked");
-		driver.click(By.xpath(String.format(expiryYearLoc, year)));
-		logger.info("Expiry year selected is: "+year);
-		driver.type(ADDRESS_LINE_1, addressLine1);
-		logger.info("Billing street address entered as: "+addressLine1);
-		driver.type(ZIP_CODE, postalCode+"\t");
-		logger.info("Postal code entered as: "+postalCode);
-		driver.pauseExecutionFor(3000);
-		//		driver.findElement(By.xpath("//input[contains(@id,'uxCityDropDown_Input')]")).click();
-		//		driver.waitForStorfrontLegacyLoadingImageToDisappear();
-		//driver.pauseExecutionFor(5000);
-		Actions actions = new Actions(RFWebsiteDriver.driver);
-		actions.moveToElement(driver.findElement(CITY_DD)).click().build().perform();
-		//driver.click(CITY_DD);
-		logger.info("City dropdown clicked");
-		driver.waitForElementPresent(FIRST_VALUE_OF_CITY_DD);
-		driver.click(FIRST_VALUE_OF_CITY_DD);
-		logger.info("City selected");
-		//  driver.type(CITY_DD, "Fremont");
-		//  logger.info("City Selected");
-		driver.type(PHONE_NUMBER_BILLING_PROFILE_PAGE,phnNumber);
-		logger.info("Phone number entered as: "+phnNumber);
-	}
 
 	public void clickRenewLater(){
 		try {
@@ -2167,5 +2126,62 @@ public class StoreFrontBrandRefreshHomePage extends StoreFrontBrandRefreshWebsit
 		logger.info("Existing Billing profile name is "+name);
 		return name;
 	}
+	
+	public StoreFrontBrandRefreshHomePage selectDeleteForProfileAndAcceptConfirmationAlert(String profile){
+		  driver.click(By.xpath(String.format(deleteButtonForProfileLoc,profile)));
+		  logger.info("Delete Link Clicked for "+profile);
+		  driver.switchAndAcceptAlert();
+		  driver.navigate().refresh();
+		  return this;
+		}
+		 
+		public boolean isProfilePresentInSavedProfiles(String profile){
+		  return driver.isElementPresent(By.xpath(String.format(specificprofileInSavedProfilesLoc, profile)));
+		}
+
+
+		public void enterBillingInfo(String billingName, String firstName,String lastName,String cardName,String cardNumer,String month,String year,String addressLine1,String postalCode,String phnNumber,String CVV){
+		  driver.type(BILLING_NAME_FOR_BILLING_PROFILE, billingName);
+		  logger.info("Billing profile name entered as: "+billingName);
+		  driver.type(ATTENTION_FIRST_NAME, firstName);
+		  //driver.type(BILLING_FIRST_NAME, firstName);
+		  logger.info("Attention first name entered as: "+firstName);
+		  driver.type(ATTENTION_LAST_NAME, lastName);
+		  //driver.type(BILLING_LAST_NAME, lastName);
+		  logger.info("Attention last name entered as: "+lastName);
+		  driver.type(NAME_ON_CARD, cardName);
+		  logger.info("Card Name entered as: "+cardName);
+		  driver.type(CREDIT_CARD_NUMBER_INPUT_FIELD, cardNumer);
+		  logger.info("Card number entered as: "+cardNumer);
+		  driver.type(By.xpath("//input[contains(@id,'uxCreditCardCvv')]"), CVV);
+		  logger.info("CVV entered as: "+CVV);
+		  driver.click(EXPIRATION_DATE_MONTH_DD);
+		  logger.info("Expiration month dropdown clicked");
+		  driver.click(By.xpath(String.format(expiryMonthLoc, month)));
+		  logger.info("Expiry month selected is: "+month);
+		  driver.click(EXPIRATION_DATE_YEAR_DD);
+		  logger.info("Expiration year dropdown clicked");
+		  driver.click(By.xpath(String.format(expiryYearLoc, year)));
+		  logger.info("Expiry year selected is: "+year);
+		  driver.type(ADDRESS_LINE_1, addressLine1);
+		  logger.info("Billing street address entered as: "+addressLine1);
+		  driver.type(ZIP_CODE, postalCode+"\t");
+		  logger.info("Postal code entered as: "+postalCode);
+		  driver.pauseExecutionFor(3000);
+		  //  driver.findElement(By.xpath("//input[contains(@id,'uxCityDropDown_Input')]")).click();
+		  //  driver.waitForStorfrontLegacyLoadingImageToDisappear();
+		  //driver.pauseExecutionFor(5000);
+		  Actions actions = new Actions(RFWebsiteDriver.driver);
+		  actions.moveToElement(driver.findElement(CITY_DD)).click().build().perform();
+		  //driver.click(CITY_DD);
+		  logger.info("City dropdown clicked");
+		  driver.waitForElementPresent(FIRST_VALUE_OF_CITY_DD);
+		  driver.click(FIRST_VALUE_OF_CITY_DD);
+		  logger.info("City selected");
+		  //  driver.type(CITY_DD, "Fremont");
+		  //  logger.info("City Selected");
+		  driver.type(PHONE_NUMBER_BILLING_PROFILE_PAGE,phnNumber);
+		  logger.info("Phone number entered as: "+phnNumber);
+		 }
 
 }

@@ -17,6 +17,7 @@ import org.apache.commons.io.FileUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
+import org.openqa.selenium.Alert;
 import org.openqa.selenium.By;
 import org.openqa.selenium.JavascriptExecutor;
 import org.openqa.selenium.OutputType;
@@ -75,7 +76,7 @@ public class RFWebsiteDriver implements RFDriver,WebDriver {
 		if(StringUtils.isEmpty(browser)){
 			browser = propertyFile.getProperty("browser");
 		}
-		
+
 		FirefoxProfile prof = new FirefoxProfile();
 		prof.setPreference("brower.startup.homepage", "about:blank");
 		prof.setPreference("startup.homepage_welcome_url", "about:blank");
@@ -124,7 +125,7 @@ public class RFWebsiteDriver implements RFDriver,WebDriver {
 		String dbUsername = null;
 		String dbPassword = null;
 		String dbDomain = null;
-        
+
 		dbIP=System.getProperty("dbIP");
 		if(StringUtils.isEmpty(dbIP)){
 			dbIP = propertyFile.getProperty("dbIP");
@@ -168,25 +169,25 @@ public class RFWebsiteDriver implements RFDriver,WebDriver {
 		if (propertyFile.getProperty("environment").equalsIgnoreCase("tst1"))
 		{
 			return propertyFile.getProperty("pwsBase")+".biz";
-			}
+		}
 		else
 		{
 			return propertyFile.getProperty("pwsBase")+getEnvironment()+".biz";
 		}
 	}
-	
+
 	public String getComPWSURL() {
 		//		return propertyFile.getProperty("pwsComBase");
 		if (propertyFile.getProperty("environment").equalsIgnoreCase("tst1"))
 		{
 			return propertyFile.getProperty("pwsBase")+".com";
-			}
+		}
 		else
 		{
 			return propertyFile.getProperty("pwsBase")+getEnvironment()+".com";
 		}
 	}
-	
+
 	public String getDBNameRFL(){
 		return propertyFile.getProperty("databaseNameRFL");
 	}
@@ -554,6 +555,11 @@ public class RFWebsiteDriver implements RFDriver,WebDriver {
 	public void moveToELement(By locator) {
 		Actions build = new Actions(driver);
 		build.moveToElement(driver.findElement(locator));
+	}
+
+	public void switchAndAcceptAlert(){
+		Alert alert = driver.switchTo().alert();
+		alert.accept();
 	}
 
 	public void get(String Url) {
@@ -959,7 +965,7 @@ public class RFWebsiteDriver implements RFDriver,WebDriver {
 		logger.info("Switched to second window whose title is "+driver.getTitle());	
 		return parentWindow;
 	}
-	
+
 	public void switchToChildWindow(String parentWinHandle){
 		Set<String> allWindows = driver.getWindowHandles();
 		logger.info("total windows opened = "+allWindows.size());
